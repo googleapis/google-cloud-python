@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 import base64
-
 import re
 
+import sqlalchemy
 from alembic.ddl.base import (
     ColumnNullable,
     ColumnType,
@@ -26,32 +26,30 @@ from alembic.ddl.base import (
 from google.api_core.client_options import ClientOptions
 from google.auth.credentials import AnonymousCredentials
 from google.cloud.spanner_v1 import Client, TransactionOptions
-from sqlalchemy.exc import NoSuchTableError
-from sqlalchemy.sql import elements
-from sqlalchemy import ForeignKeyConstraint, types, TypeDecorator, PickleType
+from google.cloud.spanner_v1.data_types import JsonObject
+from sqlalchemy import ForeignKeyConstraint, PickleType, TypeDecorator, types
 from sqlalchemy.engine.base import Engine
 from sqlalchemy.engine.default import DefaultDialect, DefaultExecutionContext
 from sqlalchemy.event import listens_for
+from sqlalchemy.exc import NoSuchTableError
 from sqlalchemy.ext.compiler import compiles
 from sqlalchemy.pool import Pool
+from sqlalchemy.sql import elements, expression
 from sqlalchemy.sql.compiler import (
-    selectable,
+    OPERATORS,
+    RESERVED_WORDS,
     DDLCompiler,
     GenericTypeCompiler,
     IdentifierPreparer,
     SQLCompiler,
-    OPERATORS,
-    RESERVED_WORDS,
+    selectable,
 )
 from sqlalchemy.sql.default_comparator import operator_lookup
 from sqlalchemy.sql.operators import json_getitem_op
-from sqlalchemy.sql import expression
 
-from google.cloud.spanner_v1.data_types import JsonObject
 from google.cloud import spanner_dbapi
-from google.cloud.sqlalchemy_spanner._opentelemetry_tracing import trace_call
 from google.cloud.sqlalchemy_spanner import version as sqlalchemy_spanner_version
-import sqlalchemy
+from google.cloud.sqlalchemy_spanner._opentelemetry_tracing import trace_call
 
 USING_SQLACLCHEMY_20 = False
 if sqlalchemy.__version__.split(".")[0] == "2":
@@ -223,9 +221,9 @@ class SpannerExecutionContext(DefaultExecutionContext):
         if ignore_transaction_warnings is not None:
             conn = self._dbapi_connection.connection
             if conn is not None and hasattr(conn, "_connection_variables"):
-                conn._connection_variables[
-                    "ignore_transaction_warnings"
-                ] = ignore_transaction_warnings
+                conn._connection_variables["ignore_transaction_warnings"] = (
+                    ignore_transaction_warnings
+                )
 
     def fire_sequence(self, seq, type_):
         """Builds a statement for fetching next value of the sequence."""
@@ -416,7 +414,7 @@ class SpannerSQLCompiler(SQLCompiler):
             text += "\n LIMIT " + self.process(select._limit_clause, **kw)
         if select._offset_clause is not None:
             if select._limit_clause is None:
-                text += f"\n LIMIT {9223372036854775807-select._offset}"
+                text += f"\n LIMIT {9223372036854775807 - select._offset}"
             text += " OFFSET " + self.process(select._offset_clause, **kw)
         return text
 
@@ -1025,9 +1023,7 @@ class SpannerDialect(DefaultDialect):
             SELECT table_name
             FROM information_schema.views
             WHERE TABLE_SCHEMA='{}'
-            """.format(
-            schema or ""
-        )
+            """.format(schema or "")
 
         all_views = []
         with connection.connection.database.snapshot() as snap:
@@ -1056,9 +1052,7 @@ class SpannerDialect(DefaultDialect):
             SELECT name
             FROM information_schema.sequences
             WHERE SCHEMA='{}'
-            """.format(
-            schema or ""
-        )
+            """.format(schema or "")
         all_sequences = []
         with connection.connection.database.snapshot() as snap:
             rows = list(snap.execute_sql(sql))
@@ -1087,9 +1081,7 @@ class SpannerDialect(DefaultDialect):
             SELECT view_definition
             FROM information_schema.views
             WHERE TABLE_SCHEMA='{schema_name}' AND TABLE_NAME='{view_name}'
-            """.format(
-            schema_name=schema or "", view_name=view_name
-        )
+            """.format(schema_name=schema or "", view_name=view_name)
 
         with connection.connection.database.snapshot() as snap:
             rows = list(snap.execute_sql(sql))
@@ -1623,9 +1615,7 @@ class SpannerDialect(DefaultDialect):
 SELECT table_name
 FROM information_schema.tables
 WHERE table_type = 'BASE TABLE' AND table_schema = '{schema}'
-""".format(
-            schema=schema or ""
-        )
+""".format(schema=schema or "")
 
         table_names = []
         with connection.connection.database.snapshot() as snap:
@@ -1661,9 +1651,7 @@ WHERE
     AND tc.TABLE_SCHEMA="{table_schema}"
     AND tc.CONSTRAINT_TYPE = "UNIQUE"
     AND tc.CONSTRAINT_NAME IS NOT NULL
-""".format(
-            table_schema=schema or "", table_name=table_name
-        )
+""".format(table_schema=schema or "", table_name=table_name)
 
         cols = []
         with connection.connection.database.snapshot() as snap:
@@ -1696,9 +1684,7 @@ SELECT true
 FROM INFORMATION_SCHEMA.TABLES
 WHERE TABLE_SCHEMA="{table_schema}" AND TABLE_NAME="{table_name}"
 LIMIT 1
-""".format(
-                    table_schema=schema or "", table_name=table_name
-                )
+""".format(table_schema=schema or "", table_name=table_name)
             )
 
             for _ in rows:
@@ -1723,9 +1709,7 @@ LIMIT 1
                 WHERE NAME="{sequence_name}"
                 AND SCHEMA="{schema}"
                 LIMIT 1
-                """.format(
-                    sequence_name=sequence_name, schema=schema or ""
-                )
+                """.format(sequence_name=sequence_name, schema=schema or "")
             )
 
             for _ in rows:

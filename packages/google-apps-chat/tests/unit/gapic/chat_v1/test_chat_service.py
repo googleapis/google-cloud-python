@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -149,6 +144,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1351,8 +1361,8 @@ def test_chat_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        gc_message.CreateMessageRequest,
-        dict,
+        gc_message.CreateMessageRequest(),
+        {},
     ],
 )
 def test_create_message(request_type, transport: str = "grpc"):
@@ -1363,7 +1373,7 @@ def test_create_message(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_message), "__call__") as call:
@@ -1375,6 +1385,7 @@ def test_create_message(request_type, transport: str = "grpc"):
             fallback_text="fallback_text_value",
             argument_text="argument_text_value",
             thread_reply=True,
+            silent=True,
             client_assigned_message_id="client_assigned_message_id_value",
         )
         response = client.create_message(request)
@@ -1393,6 +1404,7 @@ def test_create_message(request_type, transport: str = "grpc"):
     assert response.fallback_text == "fallback_text_value"
     assert response.argument_text == "argument_text_value"
     assert response.thread_reply is True
+    assert response.silent is True
     assert response.client_assigned_message_id == "client_assigned_message_id_value"
 
 
@@ -1422,12 +1434,13 @@ def test_create_message_non_empty_request_with_auto_populated_field():
         client.create_message(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gc_message.CreateMessageRequest(
+        request_msg = gc_message.CreateMessageRequest(
             parent="parent_value",
             thread_key="thread_key_value",
             request_id="request_id_value",
             message_id="message_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_message_use_cached_wrapped_rpc():
@@ -1508,9 +1521,14 @@ async def test_create_message_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_message_async(
-    transport: str = "grpc_asyncio", request_type=gc_message.CreateMessageRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gc_message.CreateMessageRequest(),
+        {},
+    ],
+)
+async def test_create_message_async(request_type, transport: str = "grpc_asyncio"):
     client = ChatServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1518,7 +1536,7 @@ async def test_create_message_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_message), "__call__") as call:
@@ -1531,6 +1549,7 @@ async def test_create_message_async(
                 fallback_text="fallback_text_value",
                 argument_text="argument_text_value",
                 thread_reply=True,
+                silent=True,
                 client_assigned_message_id="client_assigned_message_id_value",
             )
         )
@@ -1550,12 +1569,8 @@ async def test_create_message_async(
     assert response.fallback_text == "fallback_text_value"
     assert response.argument_text == "argument_text_value"
     assert response.thread_reply is True
+    assert response.silent is True
     assert response.client_assigned_message_id == "client_assigned_message_id_value"
-
-
-@pytest.mark.asyncio
-async def test_create_message_async_from_dict():
-    await test_create_message_async(request_type=dict)
 
 
 def test_create_message_field_headers():
@@ -1720,8 +1735,8 @@ async def test_create_message_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        message.ListMessagesRequest,
-        dict,
+        message.ListMessagesRequest(),
+        {},
     ],
 )
 def test_list_messages(request_type, transport: str = "grpc"):
@@ -1732,7 +1747,7 @@ def test_list_messages(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_messages), "__call__") as call:
@@ -1779,12 +1794,13 @@ def test_list_messages_non_empty_request_with_auto_populated_field():
         client.list_messages(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == message.ListMessagesRequest(
+        request_msg = message.ListMessagesRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_messages_use_cached_wrapped_rpc():
@@ -1865,9 +1881,14 @@ async def test_list_messages_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_messages_async(
-    transport: str = "grpc_asyncio", request_type=message.ListMessagesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        message.ListMessagesRequest(),
+        {},
+    ],
+)
+async def test_list_messages_async(request_type, transport: str = "grpc_asyncio"):
     client = ChatServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1875,7 +1896,7 @@ async def test_list_messages_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_messages), "__call__") as call:
@@ -1896,11 +1917,6 @@ async def test_list_messages_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListMessagesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_messages_async_from_dict():
-    await test_list_messages_async(request_type=dict)
 
 
 def test_list_messages_field_headers():
@@ -2230,11 +2246,7 @@ async def test_list_messages_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_messages(request={})
-        ).pages:
+        async for page_ in (await client.list_messages(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -2243,8 +2255,8 @@ async def test_list_messages_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        membership.ListMembershipsRequest,
-        dict,
+        membership.ListMembershipsRequest(),
+        {},
     ],
 )
 def test_list_memberships(request_type, transport: str = "grpc"):
@@ -2255,7 +2267,7 @@ def test_list_memberships(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_memberships), "__call__") as call:
@@ -2301,11 +2313,12 @@ def test_list_memberships_non_empty_request_with_auto_populated_field():
         client.list_memberships(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == membership.ListMembershipsRequest(
+        request_msg = membership.ListMembershipsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_memberships_use_cached_wrapped_rpc():
@@ -2388,9 +2401,14 @@ async def test_list_memberships_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_memberships_async(
-    transport: str = "grpc_asyncio", request_type=membership.ListMembershipsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        membership.ListMembershipsRequest(),
+        {},
+    ],
+)
+async def test_list_memberships_async(request_type, transport: str = "grpc_asyncio"):
     client = ChatServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2398,7 +2416,7 @@ async def test_list_memberships_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_memberships), "__call__") as call:
@@ -2419,11 +2437,6 @@ async def test_list_memberships_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListMembershipsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_memberships_async_from_dict():
-    await test_list_memberships_async(request_type=dict)
 
 
 def test_list_memberships_field_headers():
@@ -2753,11 +2766,7 @@ async def test_list_memberships_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_memberships(request={})
-        ).pages:
+        async for page_ in (await client.list_memberships(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -2766,8 +2775,8 @@ async def test_list_memberships_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        membership.GetMembershipRequest,
-        dict,
+        membership.GetMembershipRequest(),
+        {},
     ],
 )
 def test_get_membership(request_type, transport: str = "grpc"):
@@ -2778,7 +2787,7 @@ def test_get_membership(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_membership), "__call__") as call:
@@ -2826,9 +2835,10 @@ def test_get_membership_non_empty_request_with_auto_populated_field():
         client.get_membership(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == membership.GetMembershipRequest(
+        request_msg = membership.GetMembershipRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_membership_use_cached_wrapped_rpc():
@@ -2909,9 +2919,14 @@ async def test_get_membership_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_membership_async(
-    transport: str = "grpc_asyncio", request_type=membership.GetMembershipRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        membership.GetMembershipRequest(),
+        {},
+    ],
+)
+async def test_get_membership_async(request_type, transport: str = "grpc_asyncio"):
     client = ChatServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2919,7 +2934,7 @@ async def test_get_membership_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_membership), "__call__") as call:
@@ -2944,11 +2959,6 @@ async def test_get_membership_async(
     assert response.name == "name_value"
     assert response.state == membership.Membership.MembershipState.JOINED
     assert response.role == membership.Membership.MembershipRole.ROLE_MEMBER
-
-
-@pytest.mark.asyncio
-async def test_get_membership_async_from_dict():
-    await test_get_membership_async(request_type=dict)
 
 
 def test_get_membership_field_headers():
@@ -3097,8 +3107,8 @@ async def test_get_membership_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        message.GetMessageRequest,
-        dict,
+        message.GetMessageRequest(),
+        {},
     ],
 )
 def test_get_message(request_type, transport: str = "grpc"):
@@ -3109,7 +3119,7 @@ def test_get_message(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_message), "__call__") as call:
@@ -3121,6 +3131,7 @@ def test_get_message(request_type, transport: str = "grpc"):
             fallback_text="fallback_text_value",
             argument_text="argument_text_value",
             thread_reply=True,
+            silent=True,
             client_assigned_message_id="client_assigned_message_id_value",
         )
         response = client.get_message(request)
@@ -3139,6 +3150,7 @@ def test_get_message(request_type, transport: str = "grpc"):
     assert response.fallback_text == "fallback_text_value"
     assert response.argument_text == "argument_text_value"
     assert response.thread_reply is True
+    assert response.silent is True
     assert response.client_assigned_message_id == "client_assigned_message_id_value"
 
 
@@ -3165,9 +3177,10 @@ def test_get_message_non_empty_request_with_auto_populated_field():
         client.get_message(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == message.GetMessageRequest(
+        request_msg = message.GetMessageRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_message_use_cached_wrapped_rpc():
@@ -3248,9 +3261,14 @@ async def test_get_message_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_message_async(
-    transport: str = "grpc_asyncio", request_type=message.GetMessageRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        message.GetMessageRequest(),
+        {},
+    ],
+)
+async def test_get_message_async(request_type, transport: str = "grpc_asyncio"):
     client = ChatServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3258,7 +3276,7 @@ async def test_get_message_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_message), "__call__") as call:
@@ -3271,6 +3289,7 @@ async def test_get_message_async(
                 fallback_text="fallback_text_value",
                 argument_text="argument_text_value",
                 thread_reply=True,
+                silent=True,
                 client_assigned_message_id="client_assigned_message_id_value",
             )
         )
@@ -3290,12 +3309,8 @@ async def test_get_message_async(
     assert response.fallback_text == "fallback_text_value"
     assert response.argument_text == "argument_text_value"
     assert response.thread_reply is True
+    assert response.silent is True
     assert response.client_assigned_message_id == "client_assigned_message_id_value"
-
-
-@pytest.mark.asyncio
-async def test_get_message_async_from_dict():
-    await test_get_message_async(request_type=dict)
 
 
 def test_get_message_field_headers():
@@ -3440,8 +3455,8 @@ async def test_get_message_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gc_message.UpdateMessageRequest,
-        dict,
+        gc_message.UpdateMessageRequest(),
+        {},
     ],
 )
 def test_update_message(request_type, transport: str = "grpc"):
@@ -3452,7 +3467,7 @@ def test_update_message(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_message), "__call__") as call:
@@ -3464,6 +3479,7 @@ def test_update_message(request_type, transport: str = "grpc"):
             fallback_text="fallback_text_value",
             argument_text="argument_text_value",
             thread_reply=True,
+            silent=True,
             client_assigned_message_id="client_assigned_message_id_value",
         )
         response = client.update_message(request)
@@ -3482,6 +3498,7 @@ def test_update_message(request_type, transport: str = "grpc"):
     assert response.fallback_text == "fallback_text_value"
     assert response.argument_text == "argument_text_value"
     assert response.thread_reply is True
+    assert response.silent is True
     assert response.client_assigned_message_id == "client_assigned_message_id_value"
 
 
@@ -3506,7 +3523,8 @@ def test_update_message_non_empty_request_with_auto_populated_field():
         client.update_message(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gc_message.UpdateMessageRequest()
+        request_msg = gc_message.UpdateMessageRequest()
+        assert args[0] == request_msg
 
 
 def test_update_message_use_cached_wrapped_rpc():
@@ -3587,9 +3605,14 @@ async def test_update_message_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_message_async(
-    transport: str = "grpc_asyncio", request_type=gc_message.UpdateMessageRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gc_message.UpdateMessageRequest(),
+        {},
+    ],
+)
+async def test_update_message_async(request_type, transport: str = "grpc_asyncio"):
     client = ChatServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3597,7 +3620,7 @@ async def test_update_message_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_message), "__call__") as call:
@@ -3610,6 +3633,7 @@ async def test_update_message_async(
                 fallback_text="fallback_text_value",
                 argument_text="argument_text_value",
                 thread_reply=True,
+                silent=True,
                 client_assigned_message_id="client_assigned_message_id_value",
             )
         )
@@ -3629,12 +3653,8 @@ async def test_update_message_async(
     assert response.fallback_text == "fallback_text_value"
     assert response.argument_text == "argument_text_value"
     assert response.thread_reply is True
+    assert response.silent is True
     assert response.client_assigned_message_id == "client_assigned_message_id_value"
-
-
-@pytest.mark.asyncio
-async def test_update_message_async_from_dict():
-    await test_update_message_async(request_type=dict)
 
 
 def test_update_message_field_headers():
@@ -3789,8 +3809,8 @@ async def test_update_message_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        message.DeleteMessageRequest,
-        dict,
+        message.DeleteMessageRequest(),
+        {},
     ],
 )
 def test_delete_message(request_type, transport: str = "grpc"):
@@ -3801,7 +3821,7 @@ def test_delete_message(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_message), "__call__") as call:
@@ -3842,9 +3862,10 @@ def test_delete_message_non_empty_request_with_auto_populated_field():
         client.delete_message(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == message.DeleteMessageRequest(
+        request_msg = message.DeleteMessageRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_message_use_cached_wrapped_rpc():
@@ -3925,9 +3946,14 @@ async def test_delete_message_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_message_async(
-    transport: str = "grpc_asyncio", request_type=message.DeleteMessageRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        message.DeleteMessageRequest(),
+        {},
+    ],
+)
+async def test_delete_message_async(request_type, transport: str = "grpc_asyncio"):
     client = ChatServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3935,7 +3961,7 @@ async def test_delete_message_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_message), "__call__") as call:
@@ -3951,11 +3977,6 @@ async def test_delete_message_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_message_async_from_dict():
-    await test_delete_message_async(request_type=dict)
 
 
 def test_delete_message_field_headers():
@@ -4100,8 +4121,8 @@ async def test_delete_message_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        attachment.GetAttachmentRequest,
-        dict,
+        attachment.GetAttachmentRequest(),
+        {},
     ],
 )
 def test_get_attachment(request_type, transport: str = "grpc"):
@@ -4112,7 +4133,7 @@ def test_get_attachment(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_attachment), "__call__") as call:
@@ -4166,9 +4187,10 @@ def test_get_attachment_non_empty_request_with_auto_populated_field():
         client.get_attachment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == attachment.GetAttachmentRequest(
+        request_msg = attachment.GetAttachmentRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_attachment_use_cached_wrapped_rpc():
@@ -4249,9 +4271,14 @@ async def test_get_attachment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_attachment_async(
-    transport: str = "grpc_asyncio", request_type=attachment.GetAttachmentRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        attachment.GetAttachmentRequest(),
+        {},
+    ],
+)
+async def test_get_attachment_async(request_type, transport: str = "grpc_asyncio"):
     client = ChatServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4259,7 +4286,7 @@ async def test_get_attachment_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_attachment), "__call__") as call:
@@ -4290,11 +4317,6 @@ async def test_get_attachment_async(
     assert response.thumbnail_uri == "thumbnail_uri_value"
     assert response.download_uri == "download_uri_value"
     assert response.source == attachment.Attachment.Source.DRIVE_FILE
-
-
-@pytest.mark.asyncio
-async def test_get_attachment_async_from_dict():
-    await test_get_attachment_async(request_type=dict)
 
 
 def test_get_attachment_field_headers():
@@ -4443,8 +4465,8 @@ async def test_get_attachment_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        attachment.UploadAttachmentRequest,
-        dict,
+        attachment.UploadAttachmentRequest(),
+        {},
     ],
 )
 def test_upload_attachment(request_type, transport: str = "grpc"):
@@ -4455,7 +4477,7 @@ def test_upload_attachment(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4501,10 +4523,11 @@ def test_upload_attachment_non_empty_request_with_auto_populated_field():
         client.upload_attachment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == attachment.UploadAttachmentRequest(
+        request_msg = attachment.UploadAttachmentRequest(
             parent="parent_value",
             filename="filename_value",
         )
+        assert args[0] == request_msg
 
 
 def test_upload_attachment_use_cached_wrapped_rpc():
@@ -4587,9 +4610,14 @@ async def test_upload_attachment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_upload_attachment_async(
-    transport: str = "grpc_asyncio", request_type=attachment.UploadAttachmentRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        attachment.UploadAttachmentRequest(),
+        {},
+    ],
+)
+async def test_upload_attachment_async(request_type, transport: str = "grpc_asyncio"):
     client = ChatServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4597,7 +4625,7 @@ async def test_upload_attachment_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4617,11 +4645,6 @@ async def test_upload_attachment_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, attachment.UploadAttachmentResponse)
-
-
-@pytest.mark.asyncio
-async def test_upload_attachment_async_from_dict():
-    await test_upload_attachment_async(request_type=dict)
 
 
 def test_upload_attachment_field_headers():
@@ -4692,8 +4715,8 @@ async def test_upload_attachment_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        space.ListSpacesRequest,
-        dict,
+        space.ListSpacesRequest(),
+        {},
     ],
 )
 def test_list_spaces(request_type, transport: str = "grpc"):
@@ -4704,7 +4727,7 @@ def test_list_spaces(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_spaces), "__call__") as call:
@@ -4749,10 +4772,11 @@ def test_list_spaces_non_empty_request_with_auto_populated_field():
         client.list_spaces(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == space.ListSpacesRequest(
+        request_msg = space.ListSpacesRequest(
             page_token="page_token_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_spaces_use_cached_wrapped_rpc():
@@ -4833,9 +4857,14 @@ async def test_list_spaces_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_spaces_async(
-    transport: str = "grpc_asyncio", request_type=space.ListSpacesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        space.ListSpacesRequest(),
+        {},
+    ],
+)
+async def test_list_spaces_async(request_type, transport: str = "grpc_asyncio"):
     client = ChatServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4843,7 +4872,7 @@ async def test_list_spaces_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_spaces), "__call__") as call:
@@ -4864,11 +4893,6 @@ async def test_list_spaces_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListSpacesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_spaces_async_from_dict():
-    await test_list_spaces_async(request_type=dict)
 
 
 def test_list_spaces_pager(transport_name: str = "grpc"):
@@ -5052,11 +5076,7 @@ async def test_list_spaces_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_spaces(request={})
-        ).pages:
+        async for page_ in (await client.list_spaces(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -5065,8 +5085,8 @@ async def test_list_spaces_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        space.SearchSpacesRequest,
-        dict,
+        space.SearchSpacesRequest(),
+        {},
     ],
 )
 def test_search_spaces(request_type, transport: str = "grpc"):
@@ -5077,7 +5097,7 @@ def test_search_spaces(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.search_spaces), "__call__") as call:
@@ -5125,11 +5145,12 @@ def test_search_spaces_non_empty_request_with_auto_populated_field():
         client.search_spaces(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == space.SearchSpacesRequest(
+        request_msg = space.SearchSpacesRequest(
             page_token="page_token_value",
             query="query_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_search_spaces_use_cached_wrapped_rpc():
@@ -5210,9 +5231,14 @@ async def test_search_spaces_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_search_spaces_async(
-    transport: str = "grpc_asyncio", request_type=space.SearchSpacesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        space.SearchSpacesRequest(),
+        {},
+    ],
+)
+async def test_search_spaces_async(request_type, transport: str = "grpc_asyncio"):
     client = ChatServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5220,7 +5246,7 @@ async def test_search_spaces_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.search_spaces), "__call__") as call:
@@ -5243,11 +5269,6 @@ async def test_search_spaces_async(
     assert isinstance(response, pagers.SearchSpacesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.total_size == 1086
-
-
-@pytest.mark.asyncio
-async def test_search_spaces_async_from_dict():
-    await test_search_spaces_async(request_type=dict)
 
 
 def test_search_spaces_pager(transport_name: str = "grpc"):
@@ -5431,11 +5452,7 @@ async def test_search_spaces_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.search_spaces(request={})
-        ).pages:
+        async for page_ in (await client.search_spaces(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -5444,8 +5461,8 @@ async def test_search_spaces_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        space.GetSpaceRequest,
-        dict,
+        space.GetSpaceRequest(),
+        {},
     ],
 )
 def test_get_space(request_type, transport: str = "grpc"):
@@ -5456,7 +5473,7 @@ def test_get_space(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_space), "__call__") as call:
@@ -5528,9 +5545,10 @@ def test_get_space_non_empty_request_with_auto_populated_field():
         client.get_space(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == space.GetSpaceRequest(
+        request_msg = space.GetSpaceRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_space_use_cached_wrapped_rpc():
@@ -5609,9 +5627,14 @@ async def test_get_space_async_use_cached_wrapped_rpc(transport: str = "grpc_asy
 
 
 @pytest.mark.asyncio
-async def test_get_space_async(
-    transport: str = "grpc_asyncio", request_type=space.GetSpaceRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        space.GetSpaceRequest(),
+        {},
+    ],
+)
+async def test_get_space_async(request_type, transport: str = "grpc_asyncio"):
     client = ChatServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5619,7 +5642,7 @@ async def test_get_space_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_space), "__call__") as call:
@@ -5667,11 +5690,6 @@ async def test_get_space_async(
     assert response.admin_installed is True
     assert response.customer == "customer_value"
     assert response.space_uri == "space_uri_value"
-
-
-@pytest.mark.asyncio
-async def test_get_space_async_from_dict():
-    await test_get_space_async(request_type=dict)
 
 
 def test_get_space_field_headers():
@@ -5816,8 +5834,8 @@ async def test_get_space_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gc_space.CreateSpaceRequest,
-        dict,
+        gc_space.CreateSpaceRequest(),
+        {},
     ],
 )
 def test_create_space(request_type, transport: str = "grpc"):
@@ -5828,7 +5846,7 @@ def test_create_space(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_space), "__call__") as call:
@@ -5900,9 +5918,10 @@ def test_create_space_non_empty_request_with_auto_populated_field():
         client.create_space(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gc_space.CreateSpaceRequest(
+        request_msg = gc_space.CreateSpaceRequest(
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_space_use_cached_wrapped_rpc():
@@ -5983,9 +6002,14 @@ async def test_create_space_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_space_async(
-    transport: str = "grpc_asyncio", request_type=gc_space.CreateSpaceRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gc_space.CreateSpaceRequest(),
+        {},
+    ],
+)
+async def test_create_space_async(request_type, transport: str = "grpc_asyncio"):
     client = ChatServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5993,7 +6017,7 @@ async def test_create_space_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_space), "__call__") as call:
@@ -6041,11 +6065,6 @@ async def test_create_space_async(
     assert response.admin_installed is True
     assert response.customer == "customer_value"
     assert response.space_uri == "space_uri_value"
-
-
-@pytest.mark.asyncio
-async def test_create_space_async_from_dict():
-    await test_create_space_async(request_type=dict)
 
 
 def test_create_space_flattened():
@@ -6131,8 +6150,8 @@ async def test_create_space_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        space_setup.SetUpSpaceRequest,
-        dict,
+        space_setup.SetUpSpaceRequest(),
+        {},
     ],
 )
 def test_set_up_space(request_type, transport: str = "grpc"):
@@ -6143,7 +6162,7 @@ def test_set_up_space(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_up_space), "__call__") as call:
@@ -6215,9 +6234,10 @@ def test_set_up_space_non_empty_request_with_auto_populated_field():
         client.set_up_space(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == space_setup.SetUpSpaceRequest(
+        request_msg = space_setup.SetUpSpaceRequest(
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_set_up_space_use_cached_wrapped_rpc():
@@ -6298,9 +6318,14 @@ async def test_set_up_space_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_set_up_space_async(
-    transport: str = "grpc_asyncio", request_type=space_setup.SetUpSpaceRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        space_setup.SetUpSpaceRequest(),
+        {},
+    ],
+)
+async def test_set_up_space_async(request_type, transport: str = "grpc_asyncio"):
     client = ChatServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6308,7 +6333,7 @@ async def test_set_up_space_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_up_space), "__call__") as call:
@@ -6358,16 +6383,11 @@ async def test_set_up_space_async(
     assert response.space_uri == "space_uri_value"
 
 
-@pytest.mark.asyncio
-async def test_set_up_space_async_from_dict():
-    await test_set_up_space_async(request_type=dict)
-
-
 @pytest.mark.parametrize(
     "request_type",
     [
-        gc_space.UpdateSpaceRequest,
-        dict,
+        gc_space.UpdateSpaceRequest(),
+        {},
     ],
 )
 def test_update_space(request_type, transport: str = "grpc"):
@@ -6378,7 +6398,7 @@ def test_update_space(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_space), "__call__") as call:
@@ -6448,7 +6468,8 @@ def test_update_space_non_empty_request_with_auto_populated_field():
         client.update_space(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gc_space.UpdateSpaceRequest()
+        request_msg = gc_space.UpdateSpaceRequest()
+        assert args[0] == request_msg
 
 
 def test_update_space_use_cached_wrapped_rpc():
@@ -6529,9 +6550,14 @@ async def test_update_space_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_space_async(
-    transport: str = "grpc_asyncio", request_type=gc_space.UpdateSpaceRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gc_space.UpdateSpaceRequest(),
+        {},
+    ],
+)
+async def test_update_space_async(request_type, transport: str = "grpc_asyncio"):
     client = ChatServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6539,7 +6565,7 @@ async def test_update_space_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_space), "__call__") as call:
@@ -6587,11 +6613,6 @@ async def test_update_space_async(
     assert response.admin_installed is True
     assert response.customer == "customer_value"
     assert response.space_uri == "space_uri_value"
-
-
-@pytest.mark.asyncio
-async def test_update_space_async_from_dict():
-    await test_update_space_async(request_type=dict)
 
 
 def test_update_space_field_headers():
@@ -6746,8 +6767,8 @@ async def test_update_space_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        space.DeleteSpaceRequest,
-        dict,
+        space.DeleteSpaceRequest(),
+        {},
     ],
 )
 def test_delete_space(request_type, transport: str = "grpc"):
@@ -6758,7 +6779,7 @@ def test_delete_space(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_space), "__call__") as call:
@@ -6799,9 +6820,10 @@ def test_delete_space_non_empty_request_with_auto_populated_field():
         client.delete_space(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == space.DeleteSpaceRequest(
+        request_msg = space.DeleteSpaceRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_space_use_cached_wrapped_rpc():
@@ -6882,9 +6904,14 @@ async def test_delete_space_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_space_async(
-    transport: str = "grpc_asyncio", request_type=space.DeleteSpaceRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        space.DeleteSpaceRequest(),
+        {},
+    ],
+)
+async def test_delete_space_async(request_type, transport: str = "grpc_asyncio"):
     client = ChatServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6892,7 +6919,7 @@ async def test_delete_space_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_space), "__call__") as call:
@@ -6908,11 +6935,6 @@ async def test_delete_space_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_space_async_from_dict():
-    await test_delete_space_async(request_type=dict)
 
 
 def test_delete_space_field_headers():
@@ -7057,8 +7079,8 @@ async def test_delete_space_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        space.CompleteImportSpaceRequest,
-        dict,
+        space.CompleteImportSpaceRequest(),
+        {},
     ],
 )
 def test_complete_import_space(request_type, transport: str = "grpc"):
@@ -7069,7 +7091,7 @@ def test_complete_import_space(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7114,9 +7136,10 @@ def test_complete_import_space_non_empty_request_with_auto_populated_field():
         client.complete_import_space(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == space.CompleteImportSpaceRequest(
+        request_msg = space.CompleteImportSpaceRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_complete_import_space_use_cached_wrapped_rpc():
@@ -7202,8 +7225,15 @@ async def test_complete_import_space_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        space.CompleteImportSpaceRequest(),
+        {},
+    ],
+)
 async def test_complete_import_space_async(
-    transport: str = "grpc_asyncio", request_type=space.CompleteImportSpaceRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ChatServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -7212,7 +7242,7 @@ async def test_complete_import_space_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7232,11 +7262,6 @@ async def test_complete_import_space_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, space.CompleteImportSpaceResponse)
-
-
-@pytest.mark.asyncio
-async def test_complete_import_space_async_from_dict():
-    await test_complete_import_space_async(request_type=dict)
 
 
 def test_complete_import_space_field_headers():
@@ -7307,8 +7332,8 @@ async def test_complete_import_space_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        space.FindDirectMessageRequest,
-        dict,
+        space.FindDirectMessageRequest(),
+        {},
     ],
 )
 def test_find_direct_message(request_type, transport: str = "grpc"):
@@ -7319,7 +7344,7 @@ def test_find_direct_message(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7395,9 +7420,10 @@ def test_find_direct_message_non_empty_request_with_auto_populated_field():
         client.find_direct_message(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == space.FindDirectMessageRequest(
+        request_msg = space.FindDirectMessageRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_find_direct_message_use_cached_wrapped_rpc():
@@ -7482,9 +7508,14 @@ async def test_find_direct_message_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_find_direct_message_async(
-    transport: str = "grpc_asyncio", request_type=space.FindDirectMessageRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        space.FindDirectMessageRequest(),
+        {},
+    ],
+)
+async def test_find_direct_message_async(request_type, transport: str = "grpc_asyncio"):
     client = ChatServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7492,7 +7523,7 @@ async def test_find_direct_message_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7544,16 +7575,11 @@ async def test_find_direct_message_async(
     assert response.space_uri == "space_uri_value"
 
 
-@pytest.mark.asyncio
-async def test_find_direct_message_async_from_dict():
-    await test_find_direct_message_async(request_type=dict)
-
-
 @pytest.mark.parametrize(
     "request_type",
     [
-        space.FindGroupChatsRequest,
-        dict,
+        space.FindGroupChatsRequest(),
+        {},
     ],
 )
 def test_find_group_chats(request_type, transport: str = "grpc"):
@@ -7564,7 +7590,7 @@ def test_find_group_chats(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.find_group_chats), "__call__") as call:
@@ -7608,9 +7634,10 @@ def test_find_group_chats_non_empty_request_with_auto_populated_field():
         client.find_group_chats(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == space.FindGroupChatsRequest(
+        request_msg = space.FindGroupChatsRequest(
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_find_group_chats_use_cached_wrapped_rpc():
@@ -7693,9 +7720,14 @@ async def test_find_group_chats_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_find_group_chats_async(
-    transport: str = "grpc_asyncio", request_type=space.FindGroupChatsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        space.FindGroupChatsRequest(),
+        {},
+    ],
+)
+async def test_find_group_chats_async(request_type, transport: str = "grpc_asyncio"):
     client = ChatServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7703,7 +7735,7 @@ async def test_find_group_chats_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.find_group_chats), "__call__") as call:
@@ -7724,11 +7756,6 @@ async def test_find_group_chats_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.FindGroupChatsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_find_group_chats_async_from_dict():
-    await test_find_group_chats_async(request_type=dict)
 
 
 def test_find_group_chats_pager(transport_name: str = "grpc"):
@@ -7912,11 +7939,7 @@ async def test_find_group_chats_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.find_group_chats(request={})
-        ).pages:
+        async for page_ in (await client.find_group_chats(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -7925,8 +7948,8 @@ async def test_find_group_chats_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gc_membership.CreateMembershipRequest,
-        dict,
+        gc_membership.CreateMembershipRequest(),
+        {},
     ],
 )
 def test_create_membership(request_type, transport: str = "grpc"):
@@ -7937,7 +7960,7 @@ def test_create_membership(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7989,9 +8012,10 @@ def test_create_membership_non_empty_request_with_auto_populated_field():
         client.create_membership(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gc_membership.CreateMembershipRequest(
+        request_msg = gc_membership.CreateMembershipRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_membership_use_cached_wrapped_rpc():
@@ -8074,9 +8098,14 @@ async def test_create_membership_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_membership_async(
-    transport: str = "grpc_asyncio", request_type=gc_membership.CreateMembershipRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gc_membership.CreateMembershipRequest(),
+        {},
+    ],
+)
+async def test_create_membership_async(request_type, transport: str = "grpc_asyncio"):
     client = ChatServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -8084,7 +8113,7 @@ async def test_create_membership_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8111,11 +8140,6 @@ async def test_create_membership_async(
     assert response.name == "name_value"
     assert response.state == gc_membership.Membership.MembershipState.JOINED
     assert response.role == gc_membership.Membership.MembershipRole.ROLE_MEMBER
-
-
-@pytest.mark.asyncio
-async def test_create_membership_async_from_dict():
-    await test_create_membership_async(request_type=dict)
 
 
 def test_create_membership_field_headers():
@@ -8282,8 +8306,8 @@ async def test_create_membership_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gc_membership.UpdateMembershipRequest,
-        dict,
+        gc_membership.UpdateMembershipRequest(),
+        {},
     ],
 )
 def test_update_membership(request_type, transport: str = "grpc"):
@@ -8294,7 +8318,7 @@ def test_update_membership(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8344,7 +8368,8 @@ def test_update_membership_non_empty_request_with_auto_populated_field():
         client.update_membership(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gc_membership.UpdateMembershipRequest()
+        request_msg = gc_membership.UpdateMembershipRequest()
+        assert args[0] == request_msg
 
 
 def test_update_membership_use_cached_wrapped_rpc():
@@ -8427,9 +8452,14 @@ async def test_update_membership_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_membership_async(
-    transport: str = "grpc_asyncio", request_type=gc_membership.UpdateMembershipRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gc_membership.UpdateMembershipRequest(),
+        {},
+    ],
+)
+async def test_update_membership_async(request_type, transport: str = "grpc_asyncio"):
     client = ChatServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -8437,7 +8467,7 @@ async def test_update_membership_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8464,11 +8494,6 @@ async def test_update_membership_async(
     assert response.name == "name_value"
     assert response.state == gc_membership.Membership.MembershipState.JOINED
     assert response.role == gc_membership.Membership.MembershipRole.ROLE_MEMBER
-
-
-@pytest.mark.asyncio
-async def test_update_membership_async_from_dict():
-    await test_update_membership_async(request_type=dict)
 
 
 def test_update_membership_field_headers():
@@ -8635,8 +8660,8 @@ async def test_update_membership_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        membership.DeleteMembershipRequest,
-        dict,
+        membership.DeleteMembershipRequest(),
+        {},
     ],
 )
 def test_delete_membership(request_type, transport: str = "grpc"):
@@ -8647,7 +8672,7 @@ def test_delete_membership(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8699,9 +8724,10 @@ def test_delete_membership_non_empty_request_with_auto_populated_field():
         client.delete_membership(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == membership.DeleteMembershipRequest(
+        request_msg = membership.DeleteMembershipRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_membership_use_cached_wrapped_rpc():
@@ -8784,9 +8810,14 @@ async def test_delete_membership_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_membership_async(
-    transport: str = "grpc_asyncio", request_type=membership.DeleteMembershipRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        membership.DeleteMembershipRequest(),
+        {},
+    ],
+)
+async def test_delete_membership_async(request_type, transport: str = "grpc_asyncio"):
     client = ChatServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -8794,7 +8825,7 @@ async def test_delete_membership_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8821,11 +8852,6 @@ async def test_delete_membership_async(
     assert response.name == "name_value"
     assert response.state == membership.Membership.MembershipState.JOINED
     assert response.role == membership.Membership.MembershipRole.ROLE_MEMBER
-
-
-@pytest.mark.asyncio
-async def test_delete_membership_async_from_dict():
-    await test_delete_membership_async(request_type=dict)
 
 
 def test_delete_membership_field_headers():
@@ -8982,8 +9008,8 @@ async def test_delete_membership_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gc_reaction.CreateReactionRequest,
-        dict,
+        gc_reaction.CreateReactionRequest(),
+        {},
     ],
 )
 def test_create_reaction(request_type, transport: str = "grpc"):
@@ -8994,7 +9020,7 @@ def test_create_reaction(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_reaction), "__call__") as call:
@@ -9038,9 +9064,10 @@ def test_create_reaction_non_empty_request_with_auto_populated_field():
         client.create_reaction(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gc_reaction.CreateReactionRequest(
+        request_msg = gc_reaction.CreateReactionRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_reaction_use_cached_wrapped_rpc():
@@ -9121,9 +9148,14 @@ async def test_create_reaction_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_reaction_async(
-    transport: str = "grpc_asyncio", request_type=gc_reaction.CreateReactionRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gc_reaction.CreateReactionRequest(),
+        {},
+    ],
+)
+async def test_create_reaction_async(request_type, transport: str = "grpc_asyncio"):
     client = ChatServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -9131,7 +9163,7 @@ async def test_create_reaction_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_reaction), "__call__") as call:
@@ -9152,11 +9184,6 @@ async def test_create_reaction_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, gc_reaction.Reaction)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_create_reaction_async_from_dict():
-    await test_create_reaction_async(request_type=dict)
 
 
 def test_create_reaction_field_headers():
@@ -9315,8 +9342,8 @@ async def test_create_reaction_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        reaction.ListReactionsRequest,
-        dict,
+        reaction.ListReactionsRequest(),
+        {},
     ],
 )
 def test_list_reactions(request_type, transport: str = "grpc"):
@@ -9327,7 +9354,7 @@ def test_list_reactions(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_reactions), "__call__") as call:
@@ -9373,11 +9400,12 @@ def test_list_reactions_non_empty_request_with_auto_populated_field():
         client.list_reactions(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reaction.ListReactionsRequest(
+        request_msg = reaction.ListReactionsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_reactions_use_cached_wrapped_rpc():
@@ -9458,9 +9486,14 @@ async def test_list_reactions_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_reactions_async(
-    transport: str = "grpc_asyncio", request_type=reaction.ListReactionsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        reaction.ListReactionsRequest(),
+        {},
+    ],
+)
+async def test_list_reactions_async(request_type, transport: str = "grpc_asyncio"):
     client = ChatServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -9468,7 +9501,7 @@ async def test_list_reactions_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_reactions), "__call__") as call:
@@ -9489,11 +9522,6 @@ async def test_list_reactions_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListReactionsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_reactions_async_from_dict():
-    await test_list_reactions_async(request_type=dict)
 
 
 def test_list_reactions_field_headers():
@@ -9823,11 +9851,7 @@ async def test_list_reactions_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_reactions(request={})
-        ).pages:
+        async for page_ in (await client.list_reactions(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -9836,8 +9860,8 @@ async def test_list_reactions_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        reaction.DeleteReactionRequest,
-        dict,
+        reaction.DeleteReactionRequest(),
+        {},
     ],
 )
 def test_delete_reaction(request_type, transport: str = "grpc"):
@@ -9848,7 +9872,7 @@ def test_delete_reaction(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_reaction), "__call__") as call:
@@ -9889,9 +9913,10 @@ def test_delete_reaction_non_empty_request_with_auto_populated_field():
         client.delete_reaction(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reaction.DeleteReactionRequest(
+        request_msg = reaction.DeleteReactionRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_reaction_use_cached_wrapped_rpc():
@@ -9972,9 +9997,14 @@ async def test_delete_reaction_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_reaction_async(
-    transport: str = "grpc_asyncio", request_type=reaction.DeleteReactionRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        reaction.DeleteReactionRequest(),
+        {},
+    ],
+)
+async def test_delete_reaction_async(request_type, transport: str = "grpc_asyncio"):
     client = ChatServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -9982,7 +10012,7 @@ async def test_delete_reaction_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_reaction), "__call__") as call:
@@ -9998,11 +10028,6 @@ async def test_delete_reaction_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_reaction_async_from_dict():
-    await test_delete_reaction_async(request_type=dict)
 
 
 def test_delete_reaction_field_headers():
@@ -10147,8 +10172,8 @@ async def test_delete_reaction_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        reaction.CreateCustomEmojiRequest,
-        dict,
+        reaction.CreateCustomEmojiRequest(),
+        {},
     ],
 )
 def test_create_custom_emoji(request_type, transport: str = "grpc"):
@@ -10159,7 +10184,7 @@ def test_create_custom_emoji(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10211,7 +10236,8 @@ def test_create_custom_emoji_non_empty_request_with_auto_populated_field():
         client.create_custom_emoji(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reaction.CreateCustomEmojiRequest()
+        request_msg = reaction.CreateCustomEmojiRequest()
+        assert args[0] == request_msg
 
 
 def test_create_custom_emoji_use_cached_wrapped_rpc():
@@ -10296,9 +10322,14 @@ async def test_create_custom_emoji_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_custom_emoji_async(
-    transport: str = "grpc_asyncio", request_type=reaction.CreateCustomEmojiRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        reaction.CreateCustomEmojiRequest(),
+        {},
+    ],
+)
+async def test_create_custom_emoji_async(request_type, transport: str = "grpc_asyncio"):
     client = ChatServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -10306,7 +10337,7 @@ async def test_create_custom_emoji_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10335,11 +10366,6 @@ async def test_create_custom_emoji_async(
     assert response.uid == "uid_value"
     assert response.emoji_name == "emoji_name_value"
     assert response.temporary_image_uri == "temporary_image_uri_value"
-
-
-@pytest.mark.asyncio
-async def test_create_custom_emoji_async_from_dict():
-    await test_create_custom_emoji_async(request_type=dict)
 
 
 def test_create_custom_emoji_flattened():
@@ -10431,8 +10457,8 @@ async def test_create_custom_emoji_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        reaction.GetCustomEmojiRequest,
-        dict,
+        reaction.GetCustomEmojiRequest(),
+        {},
     ],
 )
 def test_get_custom_emoji(request_type, transport: str = "grpc"):
@@ -10443,7 +10469,7 @@ def test_get_custom_emoji(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_custom_emoji), "__call__") as call:
@@ -10493,9 +10519,10 @@ def test_get_custom_emoji_non_empty_request_with_auto_populated_field():
         client.get_custom_emoji(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reaction.GetCustomEmojiRequest(
+        request_msg = reaction.GetCustomEmojiRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_custom_emoji_use_cached_wrapped_rpc():
@@ -10578,9 +10605,14 @@ async def test_get_custom_emoji_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_custom_emoji_async(
-    transport: str = "grpc_asyncio", request_type=reaction.GetCustomEmojiRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        reaction.GetCustomEmojiRequest(),
+        {},
+    ],
+)
+async def test_get_custom_emoji_async(request_type, transport: str = "grpc_asyncio"):
     client = ChatServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -10588,7 +10620,7 @@ async def test_get_custom_emoji_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_custom_emoji), "__call__") as call:
@@ -10615,11 +10647,6 @@ async def test_get_custom_emoji_async(
     assert response.uid == "uid_value"
     assert response.emoji_name == "emoji_name_value"
     assert response.temporary_image_uri == "temporary_image_uri_value"
-
-
-@pytest.mark.asyncio
-async def test_get_custom_emoji_async_from_dict():
-    await test_get_custom_emoji_async(request_type=dict)
 
 
 def test_get_custom_emoji_field_headers():
@@ -10768,8 +10795,8 @@ async def test_get_custom_emoji_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        reaction.ListCustomEmojisRequest,
-        dict,
+        reaction.ListCustomEmojisRequest(),
+        {},
     ],
 )
 def test_list_custom_emojis(request_type, transport: str = "grpc"):
@@ -10780,7 +10807,7 @@ def test_list_custom_emojis(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10829,10 +10856,11 @@ def test_list_custom_emojis_non_empty_request_with_auto_populated_field():
         client.list_custom_emojis(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reaction.ListCustomEmojisRequest(
+        request_msg = reaction.ListCustomEmojisRequest(
             page_token="page_token_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_custom_emojis_use_cached_wrapped_rpc():
@@ -10917,9 +10945,14 @@ async def test_list_custom_emojis_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_custom_emojis_async(
-    transport: str = "grpc_asyncio", request_type=reaction.ListCustomEmojisRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        reaction.ListCustomEmojisRequest(),
+        {},
+    ],
+)
+async def test_list_custom_emojis_async(request_type, transport: str = "grpc_asyncio"):
     client = ChatServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -10927,7 +10960,7 @@ async def test_list_custom_emojis_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10950,11 +10983,6 @@ async def test_list_custom_emojis_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListCustomEmojisAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_custom_emojis_async_from_dict():
-    await test_list_custom_emojis_async(request_type=dict)
 
 
 def test_list_custom_emojis_pager(transport_name: str = "grpc"):
@@ -11146,11 +11174,7 @@ async def test_list_custom_emojis_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_custom_emojis(request={})
-        ).pages:
+        async for page_ in (await client.list_custom_emojis(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -11159,8 +11183,8 @@ async def test_list_custom_emojis_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        reaction.DeleteCustomEmojiRequest,
-        dict,
+        reaction.DeleteCustomEmojiRequest(),
+        {},
     ],
 )
 def test_delete_custom_emoji(request_type, transport: str = "grpc"):
@@ -11171,7 +11195,7 @@ def test_delete_custom_emoji(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11216,9 +11240,10 @@ def test_delete_custom_emoji_non_empty_request_with_auto_populated_field():
         client.delete_custom_emoji(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reaction.DeleteCustomEmojiRequest(
+        request_msg = reaction.DeleteCustomEmojiRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_custom_emoji_use_cached_wrapped_rpc():
@@ -11303,9 +11328,14 @@ async def test_delete_custom_emoji_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_custom_emoji_async(
-    transport: str = "grpc_asyncio", request_type=reaction.DeleteCustomEmojiRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        reaction.DeleteCustomEmojiRequest(),
+        {},
+    ],
+)
+async def test_delete_custom_emoji_async(request_type, transport: str = "grpc_asyncio"):
     client = ChatServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -11313,7 +11343,7 @@ async def test_delete_custom_emoji_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11331,11 +11361,6 @@ async def test_delete_custom_emoji_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_custom_emoji_async_from_dict():
-    await test_delete_custom_emoji_async(request_type=dict)
 
 
 def test_delete_custom_emoji_field_headers():
@@ -11488,8 +11513,8 @@ async def test_delete_custom_emoji_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        space_read_state.GetSpaceReadStateRequest,
-        dict,
+        space_read_state.GetSpaceReadStateRequest(),
+        {},
     ],
 )
 def test_get_space_read_state(request_type, transport: str = "grpc"):
@@ -11500,7 +11525,7 @@ def test_get_space_read_state(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11548,9 +11573,10 @@ def test_get_space_read_state_non_empty_request_with_auto_populated_field():
         client.get_space_read_state(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == space_read_state.GetSpaceReadStateRequest(
+        request_msg = space_read_state.GetSpaceReadStateRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_space_read_state_use_cached_wrapped_rpc():
@@ -11635,9 +11661,15 @@ async def test_get_space_read_state_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        space_read_state.GetSpaceReadStateRequest(),
+        {},
+    ],
+)
 async def test_get_space_read_state_async(
-    transport: str = "grpc_asyncio",
-    request_type=space_read_state.GetSpaceReadStateRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ChatServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -11646,7 +11678,7 @@ async def test_get_space_read_state_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11669,11 +11701,6 @@ async def test_get_space_read_state_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, space_read_state.SpaceReadState)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_get_space_read_state_async_from_dict():
-    await test_get_space_read_state_async(request_type=dict)
 
 
 def test_get_space_read_state_field_headers():
@@ -11830,8 +11857,8 @@ async def test_get_space_read_state_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gc_space_read_state.UpdateSpaceReadStateRequest,
-        dict,
+        gc_space_read_state.UpdateSpaceReadStateRequest(),
+        {},
     ],
 )
 def test_update_space_read_state(request_type, transport: str = "grpc"):
@@ -11842,7 +11869,7 @@ def test_update_space_read_state(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11888,7 +11915,8 @@ def test_update_space_read_state_non_empty_request_with_auto_populated_field():
         client.update_space_read_state(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gc_space_read_state.UpdateSpaceReadStateRequest()
+        request_msg = gc_space_read_state.UpdateSpaceReadStateRequest()
+        assert args[0] == request_msg
 
 
 def test_update_space_read_state_use_cached_wrapped_rpc():
@@ -11974,9 +12002,15 @@ async def test_update_space_read_state_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gc_space_read_state.UpdateSpaceReadStateRequest(),
+        {},
+    ],
+)
 async def test_update_space_read_state_async(
-    transport: str = "grpc_asyncio",
-    request_type=gc_space_read_state.UpdateSpaceReadStateRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ChatServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -11985,7 +12019,7 @@ async def test_update_space_read_state_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12008,11 +12042,6 @@ async def test_update_space_read_state_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, gc_space_read_state.SpaceReadState)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_update_space_read_state_async_from_dict():
-    await test_update_space_read_state_async(request_type=dict)
 
 
 def test_update_space_read_state_field_headers():
@@ -12179,8 +12208,8 @@ async def test_update_space_read_state_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        thread_read_state.GetThreadReadStateRequest,
-        dict,
+        thread_read_state.GetThreadReadStateRequest(),
+        {},
     ],
 )
 def test_get_thread_read_state(request_type, transport: str = "grpc"):
@@ -12191,7 +12220,7 @@ def test_get_thread_read_state(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12239,9 +12268,10 @@ def test_get_thread_read_state_non_empty_request_with_auto_populated_field():
         client.get_thread_read_state(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == thread_read_state.GetThreadReadStateRequest(
+        request_msg = thread_read_state.GetThreadReadStateRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_thread_read_state_use_cached_wrapped_rpc():
@@ -12327,9 +12357,15 @@ async def test_get_thread_read_state_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        thread_read_state.GetThreadReadStateRequest(),
+        {},
+    ],
+)
 async def test_get_thread_read_state_async(
-    transport: str = "grpc_asyncio",
-    request_type=thread_read_state.GetThreadReadStateRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ChatServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -12338,7 +12374,7 @@ async def test_get_thread_read_state_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12361,11 +12397,6 @@ async def test_get_thread_read_state_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, thread_read_state.ThreadReadState)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_get_thread_read_state_async_from_dict():
-    await test_get_thread_read_state_async(request_type=dict)
 
 
 def test_get_thread_read_state_field_headers():
@@ -12522,8 +12553,8 @@ async def test_get_thread_read_state_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        space_event.GetSpaceEventRequest,
-        dict,
+        space_event.GetSpaceEventRequest(),
+        {},
     ],
 )
 def test_get_space_event(request_type, transport: str = "grpc"):
@@ -12534,7 +12565,7 @@ def test_get_space_event(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_space_event), "__call__") as call:
@@ -12580,9 +12611,10 @@ def test_get_space_event_non_empty_request_with_auto_populated_field():
         client.get_space_event(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == space_event.GetSpaceEventRequest(
+        request_msg = space_event.GetSpaceEventRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_space_event_use_cached_wrapped_rpc():
@@ -12663,9 +12695,14 @@ async def test_get_space_event_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_space_event_async(
-    transport: str = "grpc_asyncio", request_type=space_event.GetSpaceEventRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        space_event.GetSpaceEventRequest(),
+        {},
+    ],
+)
+async def test_get_space_event_async(request_type, transport: str = "grpc_asyncio"):
     client = ChatServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -12673,7 +12710,7 @@ async def test_get_space_event_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_space_event), "__call__") as call:
@@ -12696,11 +12733,6 @@ async def test_get_space_event_async(
     assert isinstance(response, space_event.SpaceEvent)
     assert response.name == "name_value"
     assert response.event_type == "event_type_value"
-
-
-@pytest.mark.asyncio
-async def test_get_space_event_async_from_dict():
-    await test_get_space_event_async(request_type=dict)
 
 
 def test_get_space_event_field_headers():
@@ -12849,8 +12881,8 @@ async def test_get_space_event_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        space_event.ListSpaceEventsRequest,
-        dict,
+        space_event.ListSpaceEventsRequest(),
+        {},
     ],
 )
 def test_list_space_events(request_type, transport: str = "grpc"):
@@ -12861,7 +12893,7 @@ def test_list_space_events(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12911,11 +12943,12 @@ def test_list_space_events_non_empty_request_with_auto_populated_field():
         client.list_space_events(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == space_event.ListSpaceEventsRequest(
+        request_msg = space_event.ListSpaceEventsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_space_events_use_cached_wrapped_rpc():
@@ -12998,9 +13031,14 @@ async def test_list_space_events_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_space_events_async(
-    transport: str = "grpc_asyncio", request_type=space_event.ListSpaceEventsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        space_event.ListSpaceEventsRequest(),
+        {},
+    ],
+)
+async def test_list_space_events_async(request_type, transport: str = "grpc_asyncio"):
     client = ChatServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -13008,7 +13046,7 @@ async def test_list_space_events_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -13031,11 +13069,6 @@ async def test_list_space_events_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListSpaceEventsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_space_events_async_from_dict():
-    await test_list_space_events_async(request_type=dict)
 
 
 def test_list_space_events_field_headers():
@@ -13391,11 +13424,7 @@ async def test_list_space_events_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_space_events(request={})
-        ).pages:
+        async for page_ in (await client.list_space_events(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -13404,8 +13433,8 @@ async def test_list_space_events_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        space_notification_setting.GetSpaceNotificationSettingRequest,
-        dict,
+        space_notification_setting.GetSpaceNotificationSettingRequest(),
+        {},
     ],
 )
 def test_get_space_notification_setting(request_type, transport: str = "grpc"):
@@ -13416,7 +13445,7 @@ def test_get_space_notification_setting(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -13474,9 +13503,10 @@ def test_get_space_notification_setting_non_empty_request_with_auto_populated_fi
         client.get_space_notification_setting(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == space_notification_setting.GetSpaceNotificationSettingRequest(
+        request_msg = space_notification_setting.GetSpaceNotificationSettingRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_space_notification_setting_use_cached_wrapped_rpc():
@@ -13562,9 +13592,15 @@ async def test_get_space_notification_setting_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        space_notification_setting.GetSpaceNotificationSettingRequest(),
+        {},
+    ],
+)
 async def test_get_space_notification_setting_async(
-    transport: str = "grpc_asyncio",
-    request_type=space_notification_setting.GetSpaceNotificationSettingRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ChatServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -13573,7 +13609,7 @@ async def test_get_space_notification_setting_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -13606,11 +13642,6 @@ async def test_get_space_notification_setting_async(
         response.mute_setting
         == space_notification_setting.SpaceNotificationSetting.MuteSetting.UNMUTED
     )
-
-
-@pytest.mark.asyncio
-async def test_get_space_notification_setting_async_from_dict():
-    await test_get_space_notification_setting_async(request_type=dict)
 
 
 def test_get_space_notification_setting_field_headers():
@@ -13767,8 +13798,8 @@ async def test_get_space_notification_setting_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gc_space_notification_setting.UpdateSpaceNotificationSettingRequest,
-        dict,
+        gc_space_notification_setting.UpdateSpaceNotificationSettingRequest(),
+        {},
     ],
 )
 def test_update_space_notification_setting(request_type, transport: str = "grpc"):
@@ -13779,7 +13810,7 @@ def test_update_space_notification_setting(request_type, transport: str = "grpc"
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -13835,10 +13866,10 @@ def test_update_space_notification_setting_non_empty_request_with_auto_populated
         client.update_space_notification_setting(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == gc_space_notification_setting.UpdateSpaceNotificationSettingRequest()
+        request_msg = (
+            gc_space_notification_setting.UpdateSpaceNotificationSettingRequest()
         )
+        assert args[0] == request_msg
 
 
 def test_update_space_notification_setting_use_cached_wrapped_rpc():
@@ -13924,9 +13955,15 @@ async def test_update_space_notification_setting_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gc_space_notification_setting.UpdateSpaceNotificationSettingRequest(),
+        {},
+    ],
+)
 async def test_update_space_notification_setting_async(
-    transport: str = "grpc_asyncio",
-    request_type=gc_space_notification_setting.UpdateSpaceNotificationSettingRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ChatServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -13935,7 +13972,7 @@ async def test_update_space_notification_setting_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -13968,11 +14005,6 @@ async def test_update_space_notification_setting_async(
         response.mute_setting
         == gc_space_notification_setting.SpaceNotificationSetting.MuteSetting.UNMUTED
     )
-
-
-@pytest.mark.asyncio
-async def test_update_space_notification_setting_async_from_dict():
-    await test_update_space_notification_setting_async(request_type=dict)
 
 
 def test_update_space_notification_setting_field_headers():
@@ -14151,8 +14183,8 @@ async def test_update_space_notification_setting_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gc_section.CreateSectionRequest,
-        dict,
+        gc_section.CreateSectionRequest(),
+        {},
     ],
 )
 def test_create_section(request_type, transport: str = "grpc"):
@@ -14163,7 +14195,7 @@ def test_create_section(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_section), "__call__") as call:
@@ -14213,9 +14245,10 @@ def test_create_section_non_empty_request_with_auto_populated_field():
         client.create_section(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gc_section.CreateSectionRequest(
+        request_msg = gc_section.CreateSectionRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_section_use_cached_wrapped_rpc():
@@ -14296,9 +14329,14 @@ async def test_create_section_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_section_async(
-    transport: str = "grpc_asyncio", request_type=gc_section.CreateSectionRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gc_section.CreateSectionRequest(),
+        {},
+    ],
+)
+async def test_create_section_async(request_type, transport: str = "grpc_asyncio"):
     client = ChatServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -14306,7 +14344,7 @@ async def test_create_section_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_section), "__call__") as call:
@@ -14333,11 +14371,6 @@ async def test_create_section_async(
     assert response.display_name == "display_name_value"
     assert response.sort_order == 1091
     assert response.type_ == gc_section.Section.SectionType.CUSTOM_SECTION
-
-
-@pytest.mark.asyncio
-async def test_create_section_async_from_dict():
-    await test_create_section_async(request_type=dict)
 
 
 def test_create_section_field_headers():
@@ -14492,8 +14525,8 @@ async def test_create_section_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        section.DeleteSectionRequest,
-        dict,
+        section.DeleteSectionRequest(),
+        {},
     ],
 )
 def test_delete_section(request_type, transport: str = "grpc"):
@@ -14504,7 +14537,7 @@ def test_delete_section(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_section), "__call__") as call:
@@ -14545,9 +14578,10 @@ def test_delete_section_non_empty_request_with_auto_populated_field():
         client.delete_section(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == section.DeleteSectionRequest(
+        request_msg = section.DeleteSectionRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_section_use_cached_wrapped_rpc():
@@ -14628,9 +14662,14 @@ async def test_delete_section_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_section_async(
-    transport: str = "grpc_asyncio", request_type=section.DeleteSectionRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        section.DeleteSectionRequest(),
+        {},
+    ],
+)
+async def test_delete_section_async(request_type, transport: str = "grpc_asyncio"):
     client = ChatServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -14638,7 +14677,7 @@ async def test_delete_section_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_section), "__call__") as call:
@@ -14654,11 +14693,6 @@ async def test_delete_section_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_section_async_from_dict():
-    await test_delete_section_async(request_type=dict)
 
 
 def test_delete_section_field_headers():
@@ -14803,8 +14837,8 @@ async def test_delete_section_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gc_section.UpdateSectionRequest,
-        dict,
+        gc_section.UpdateSectionRequest(),
+        {},
     ],
 )
 def test_update_section(request_type, transport: str = "grpc"):
@@ -14815,7 +14849,7 @@ def test_update_section(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_section), "__call__") as call:
@@ -14863,7 +14897,8 @@ def test_update_section_non_empty_request_with_auto_populated_field():
         client.update_section(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gc_section.UpdateSectionRequest()
+        request_msg = gc_section.UpdateSectionRequest()
+        assert args[0] == request_msg
 
 
 def test_update_section_use_cached_wrapped_rpc():
@@ -14944,9 +14979,14 @@ async def test_update_section_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_section_async(
-    transport: str = "grpc_asyncio", request_type=gc_section.UpdateSectionRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gc_section.UpdateSectionRequest(),
+        {},
+    ],
+)
+async def test_update_section_async(request_type, transport: str = "grpc_asyncio"):
     client = ChatServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -14954,7 +14994,7 @@ async def test_update_section_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_section), "__call__") as call:
@@ -14981,11 +15021,6 @@ async def test_update_section_async(
     assert response.display_name == "display_name_value"
     assert response.sort_order == 1091
     assert response.type_ == gc_section.Section.SectionType.CUSTOM_SECTION
-
-
-@pytest.mark.asyncio
-async def test_update_section_async_from_dict():
-    await test_update_section_async(request_type=dict)
 
 
 def test_update_section_field_headers():
@@ -15140,8 +15175,8 @@ async def test_update_section_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        section.ListSectionsRequest,
-        dict,
+        section.ListSectionsRequest(),
+        {},
     ],
 )
 def test_list_sections(request_type, transport: str = "grpc"):
@@ -15152,7 +15187,7 @@ def test_list_sections(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_sections), "__call__") as call:
@@ -15197,10 +15232,11 @@ def test_list_sections_non_empty_request_with_auto_populated_field():
         client.list_sections(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == section.ListSectionsRequest(
+        request_msg = section.ListSectionsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_sections_use_cached_wrapped_rpc():
@@ -15281,9 +15317,14 @@ async def test_list_sections_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_sections_async(
-    transport: str = "grpc_asyncio", request_type=section.ListSectionsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        section.ListSectionsRequest(),
+        {},
+    ],
+)
+async def test_list_sections_async(request_type, transport: str = "grpc_asyncio"):
     client = ChatServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -15291,7 +15332,7 @@ async def test_list_sections_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_sections), "__call__") as call:
@@ -15312,11 +15353,6 @@ async def test_list_sections_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListSectionsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_sections_async_from_dict():
-    await test_list_sections_async(request_type=dict)
 
 
 def test_list_sections_field_headers():
@@ -15646,11 +15682,7 @@ async def test_list_sections_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_sections(request={})
-        ).pages:
+        async for page_ in (await client.list_sections(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -15659,8 +15691,8 @@ async def test_list_sections_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        section.PositionSectionRequest,
-        dict,
+        section.PositionSectionRequest(),
+        {},
     ],
 )
 def test_position_section(request_type, transport: str = "grpc"):
@@ -15671,7 +15703,7 @@ def test_position_section(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.position_section), "__call__") as call:
@@ -15712,9 +15744,10 @@ def test_position_section_non_empty_request_with_auto_populated_field():
         client.position_section(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == section.PositionSectionRequest(
+        request_msg = section.PositionSectionRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_position_section_use_cached_wrapped_rpc():
@@ -15797,9 +15830,14 @@ async def test_position_section_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_position_section_async(
-    transport: str = "grpc_asyncio", request_type=section.PositionSectionRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        section.PositionSectionRequest(),
+        {},
+    ],
+)
+async def test_position_section_async(request_type, transport: str = "grpc_asyncio"):
     client = ChatServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -15807,7 +15845,7 @@ async def test_position_section_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.position_section), "__call__") as call:
@@ -15825,11 +15863,6 @@ async def test_position_section_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, section.PositionSectionResponse)
-
-
-@pytest.mark.asyncio
-async def test_position_section_async_from_dict():
-    await test_position_section_async(request_type=dict)
 
 
 def test_position_section_field_headers():
@@ -15896,8 +15929,8 @@ async def test_position_section_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        section.ListSectionItemsRequest,
-        dict,
+        section.ListSectionItemsRequest(),
+        {},
     ],
 )
 def test_list_section_items(request_type, transport: str = "grpc"):
@@ -15908,7 +15941,7 @@ def test_list_section_items(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -15958,11 +15991,12 @@ def test_list_section_items_non_empty_request_with_auto_populated_field():
         client.list_section_items(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == section.ListSectionItemsRequest(
+        request_msg = section.ListSectionItemsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_section_items_use_cached_wrapped_rpc():
@@ -16047,9 +16081,14 @@ async def test_list_section_items_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_section_items_async(
-    transport: str = "grpc_asyncio", request_type=section.ListSectionItemsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        section.ListSectionItemsRequest(),
+        {},
+    ],
+)
+async def test_list_section_items_async(request_type, transport: str = "grpc_asyncio"):
     client = ChatServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -16057,7 +16096,7 @@ async def test_list_section_items_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -16080,11 +16119,6 @@ async def test_list_section_items_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListSectionItemsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_section_items_async_from_dict():
-    await test_list_section_items_async(request_type=dict)
 
 
 def test_list_section_items_field_headers():
@@ -16430,11 +16464,7 @@ async def test_list_section_items_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_section_items(request={})
-        ).pages:
+        async for page_ in (await client.list_section_items(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -16443,8 +16473,8 @@ async def test_list_section_items_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        section.MoveSectionItemRequest,
-        dict,
+        section.MoveSectionItemRequest(),
+        {},
     ],
 )
 def test_move_section_item(request_type, transport: str = "grpc"):
@@ -16455,7 +16485,7 @@ def test_move_section_item(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -16501,10 +16531,11 @@ def test_move_section_item_non_empty_request_with_auto_populated_field():
         client.move_section_item(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == section.MoveSectionItemRequest(
+        request_msg = section.MoveSectionItemRequest(
             name="name_value",
             target_section="target_section_value",
         )
+        assert args[0] == request_msg
 
 
 def test_move_section_item_use_cached_wrapped_rpc():
@@ -16587,9 +16618,14 @@ async def test_move_section_item_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_move_section_item_async(
-    transport: str = "grpc_asyncio", request_type=section.MoveSectionItemRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        section.MoveSectionItemRequest(),
+        {},
+    ],
+)
+async def test_move_section_item_async(request_type, transport: str = "grpc_asyncio"):
     client = ChatServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -16597,7 +16633,7 @@ async def test_move_section_item_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -16617,11 +16653,6 @@ async def test_move_section_item_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, section.MoveSectionItemResponse)
-
-
-@pytest.mark.asyncio
-async def test_move_section_item_async_from_dict():
-    await test_move_section_item_async(request_type=dict)
 
 
 def test_move_section_item_field_headers():
@@ -16851,6 +16882,7 @@ def test_create_message_rest_required_fields(
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
+            "create_message_notification_options",
             "message_id",
             "message_reply_option",
             "request_id",
@@ -16903,7 +16935,7 @@ def test_create_message_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_message_rest_unset_required_fields():
@@ -16915,6 +16947,7 @@ def test_create_message_rest_unset_required_fields():
     assert set(unset_fields) == (
         set(
             (
+                "createMessageNotificationOptions",
                 "messageId",
                 "messageReplyOption",
                 "requestId",
@@ -17106,7 +17139,7 @@ def test_list_messages_rest_required_fields(request_type=message.ListMessagesReq
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_messages_rest_unset_required_fields():
@@ -17367,7 +17400,7 @@ def test_list_memberships_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_memberships_rest_unset_required_fields():
@@ -17620,7 +17653,7 @@ def test_get_membership_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_membership_rest_unset_required_fields():
@@ -17794,7 +17827,7 @@ def test_get_message_rest_required_fields(request_type=message.GetMessageRequest
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_message_rest_unset_required_fields():
@@ -17973,7 +18006,7 @@ def test_update_message_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_message_rest_unset_required_fields():
@@ -18161,7 +18194,7 @@ def test_delete_message_rest_required_fields(request_type=message.DeleteMessageR
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_message_rest_unset_required_fields():
@@ -18335,7 +18368,7 @@ def test_get_attachment_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_attachment_rest_unset_required_fields():
@@ -18519,7 +18552,7 @@ def test_upload_attachment_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_upload_attachment_rest_unset_required_fields():
@@ -18761,7 +18794,7 @@ def test_search_spaces_rest_required_fields(request_type=space.SearchSpacesReque
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_search_spaces_rest_unset_required_fields():
@@ -18953,7 +18986,7 @@ def test_get_space_rest_required_fields(request_type=space.GetSpaceRequest):
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_space_rest_unset_required_fields():
@@ -19125,7 +19158,7 @@ def test_create_space_rest_required_fields(request_type=gc_space.CreateSpaceRequ
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_space_rest_unset_required_fields():
@@ -19293,7 +19326,7 @@ def test_set_up_space_rest_required_fields(request_type=space_setup.SetUpSpaceRe
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_set_up_space_rest_unset_required_fields():
@@ -19414,7 +19447,7 @@ def test_update_space_rest_required_fields(request_type=gc_space.UpdateSpaceRequ
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_space_rest_unset_required_fields():
@@ -19602,7 +19635,7 @@ def test_delete_space_rest_required_fields(request_type=space.DeleteSpaceRequest
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_space_rest_unset_required_fields():
@@ -19782,7 +19815,7 @@ def test_complete_import_space_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_complete_import_space_rest_unset_required_fields():
@@ -19917,7 +19950,7 @@ def test_find_direct_message_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_find_direct_message_rest_unset_required_fields():
@@ -20141,7 +20174,7 @@ def test_create_membership_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_membership_rest_unset_required_fields():
@@ -20332,7 +20365,7 @@ def test_update_membership_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_membership_rest_unset_required_fields():
@@ -20528,7 +20561,7 @@ def test_delete_membership_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_membership_rest_unset_required_fields():
@@ -20705,7 +20738,7 @@ def test_create_reaction_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_reaction_rest_unset_required_fields():
@@ -20900,7 +20933,7 @@ def test_list_reactions_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_reactions_rest_unset_required_fields():
@@ -21144,7 +21177,7 @@ def test_delete_reaction_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_reaction_rest_unset_required_fields():
@@ -21319,7 +21352,7 @@ def test_create_custom_emoji_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_custom_emoji_rest_unset_required_fields():
@@ -21497,7 +21530,7 @@ def test_get_custom_emoji_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_custom_emoji_rest_unset_required_fields():
@@ -21775,7 +21808,7 @@ def test_delete_custom_emoji_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_custom_emoji_rest_unset_required_fields():
@@ -21953,7 +21986,7 @@ def test_get_space_read_state_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_space_read_state_rest_unset_required_fields():
@@ -22133,7 +22166,7 @@ def test_update_space_read_state_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_space_read_state_rest_unset_required_fields():
@@ -22328,7 +22361,7 @@ def test_get_thread_read_state_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_thread_read_state_rest_unset_required_fields():
@@ -22508,7 +22541,7 @@ def test_get_space_event_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_space_event_rest_unset_required_fields():
@@ -22707,7 +22740,7 @@ def test_list_space_events_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_space_events_rest_unset_required_fields():
@@ -22969,7 +23002,7 @@ def test_get_space_notification_setting_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_space_notification_setting_rest_unset_required_fields():
@@ -23158,7 +23191,7 @@ def test_update_space_notification_setting_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_space_notification_setting_rest_unset_required_fields():
@@ -23361,7 +23394,7 @@ def test_create_section_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_section_rest_unset_required_fields():
@@ -23542,7 +23575,7 @@ def test_delete_section_rest_required_fields(request_type=section.DeleteSectionR
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_section_rest_unset_required_fields():
@@ -23714,7 +23747,7 @@ def test_update_section_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_section_rest_unset_required_fields():
@@ -23905,7 +23938,7 @@ def test_list_sections_rest_required_fields(request_type=section.ListSectionsReq
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_sections_rest_unset_required_fields():
@@ -24153,7 +24186,7 @@ def test_position_section_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_position_section_rest_unset_required_fields():
@@ -24285,7 +24318,7 @@ def test_list_section_items_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_section_items_rest_unset_required_fields():
@@ -24538,7 +24571,7 @@ def test_move_section_item_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_move_section_item_rest_unset_required_fields():
@@ -24740,7 +24773,6 @@ def test_create_message_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gc_message.CreateMessageRequest()
-
         assert args[0] == request_msg
 
 
@@ -24761,7 +24793,6 @@ def test_list_messages_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = message.ListMessagesRequest()
-
         assert args[0] == request_msg
 
 
@@ -24782,7 +24813,6 @@ def test_list_memberships_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = membership.ListMembershipsRequest()
-
         assert args[0] == request_msg
 
 
@@ -24803,7 +24833,6 @@ def test_get_membership_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = membership.GetMembershipRequest()
-
         assert args[0] == request_msg
 
 
@@ -24824,7 +24853,6 @@ def test_get_message_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = message.GetMessageRequest()
-
         assert args[0] == request_msg
 
 
@@ -24845,7 +24873,6 @@ def test_update_message_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gc_message.UpdateMessageRequest()
-
         assert args[0] == request_msg
 
 
@@ -24866,7 +24893,6 @@ def test_delete_message_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = message.DeleteMessageRequest()
-
         assert args[0] == request_msg
 
 
@@ -24887,7 +24913,6 @@ def test_get_attachment_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = attachment.GetAttachmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -24910,7 +24935,6 @@ def test_upload_attachment_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = attachment.UploadAttachmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -24931,7 +24955,6 @@ def test_list_spaces_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = space.ListSpacesRequest()
-
         assert args[0] == request_msg
 
 
@@ -24952,7 +24975,6 @@ def test_search_spaces_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = space.SearchSpacesRequest()
-
         assert args[0] == request_msg
 
 
@@ -24973,7 +24995,6 @@ def test_get_space_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = space.GetSpaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -24994,7 +25015,6 @@ def test_create_space_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gc_space.CreateSpaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -25015,7 +25035,6 @@ def test_set_up_space_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = space_setup.SetUpSpaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -25036,7 +25055,6 @@ def test_update_space_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gc_space.UpdateSpaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -25057,7 +25075,6 @@ def test_delete_space_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = space.DeleteSpaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -25080,7 +25097,6 @@ def test_complete_import_space_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = space.CompleteImportSpaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -25103,7 +25119,6 @@ def test_find_direct_message_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = space.FindDirectMessageRequest()
-
         assert args[0] == request_msg
 
 
@@ -25124,7 +25139,6 @@ def test_find_group_chats_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = space.FindGroupChatsRequest()
-
         assert args[0] == request_msg
 
 
@@ -25147,7 +25161,6 @@ def test_create_membership_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gc_membership.CreateMembershipRequest()
-
         assert args[0] == request_msg
 
 
@@ -25170,7 +25183,6 @@ def test_update_membership_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gc_membership.UpdateMembershipRequest()
-
         assert args[0] == request_msg
 
 
@@ -25193,7 +25205,6 @@ def test_delete_membership_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = membership.DeleteMembershipRequest()
-
         assert args[0] == request_msg
 
 
@@ -25214,7 +25225,6 @@ def test_create_reaction_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gc_reaction.CreateReactionRequest()
-
         assert args[0] == request_msg
 
 
@@ -25235,7 +25245,6 @@ def test_list_reactions_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reaction.ListReactionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -25256,7 +25265,6 @@ def test_delete_reaction_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reaction.DeleteReactionRequest()
-
         assert args[0] == request_msg
 
 
@@ -25279,7 +25287,6 @@ def test_create_custom_emoji_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reaction.CreateCustomEmojiRequest()
-
         assert args[0] == request_msg
 
 
@@ -25300,7 +25307,6 @@ def test_get_custom_emoji_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reaction.GetCustomEmojiRequest()
-
         assert args[0] == request_msg
 
 
@@ -25323,7 +25329,6 @@ def test_list_custom_emojis_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reaction.ListCustomEmojisRequest()
-
         assert args[0] == request_msg
 
 
@@ -25346,7 +25351,6 @@ def test_delete_custom_emoji_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reaction.DeleteCustomEmojiRequest()
-
         assert args[0] == request_msg
 
 
@@ -25369,7 +25373,6 @@ def test_get_space_read_state_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = space_read_state.GetSpaceReadStateRequest()
-
         assert args[0] == request_msg
 
 
@@ -25392,7 +25395,6 @@ def test_update_space_read_state_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gc_space_read_state.UpdateSpaceReadStateRequest()
-
         assert args[0] == request_msg
 
 
@@ -25415,7 +25417,6 @@ def test_get_thread_read_state_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = thread_read_state.GetThreadReadStateRequest()
-
         assert args[0] == request_msg
 
 
@@ -25436,7 +25437,6 @@ def test_get_space_event_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = space_event.GetSpaceEventRequest()
-
         assert args[0] == request_msg
 
 
@@ -25459,7 +25459,6 @@ def test_list_space_events_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = space_event.ListSpaceEventsRequest()
-
         assert args[0] == request_msg
 
 
@@ -25482,7 +25481,6 @@ def test_get_space_notification_setting_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = space_notification_setting.GetSpaceNotificationSettingRequest()
-
         assert args[0] == request_msg
 
 
@@ -25507,7 +25505,6 @@ def test_update_space_notification_setting_empty_call_grpc():
         request_msg = (
             gc_space_notification_setting.UpdateSpaceNotificationSettingRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -25528,7 +25525,6 @@ def test_create_section_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gc_section.CreateSectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -25549,7 +25545,6 @@ def test_delete_section_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = section.DeleteSectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -25570,7 +25565,6 @@ def test_update_section_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gc_section.UpdateSectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -25591,7 +25585,6 @@ def test_list_sections_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = section.ListSectionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -25612,7 +25605,6 @@ def test_position_section_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = section.PositionSectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -25635,7 +25627,6 @@ def test_list_section_items_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = section.ListSectionItemsRequest()
-
         assert args[0] == request_msg
 
 
@@ -25658,7 +25649,6 @@ def test_move_section_item_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = section.MoveSectionItemRequest()
-
         assert args[0] == request_msg
 
 
@@ -25696,6 +25686,7 @@ async def test_create_message_empty_call_grpc_asyncio():
                 fallback_text="fallback_text_value",
                 argument_text="argument_text_value",
                 thread_reply=True,
+                silent=True,
                 client_assigned_message_id="client_assigned_message_id_value",
             )
         )
@@ -25705,7 +25696,6 @@ async def test_create_message_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gc_message.CreateMessageRequest()
-
         assert args[0] == request_msg
 
 
@@ -25732,7 +25722,6 @@ async def test_list_messages_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = message.ListMessagesRequest()
-
         assert args[0] == request_msg
 
 
@@ -25759,7 +25748,6 @@ async def test_list_memberships_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = membership.ListMembershipsRequest()
-
         assert args[0] == request_msg
 
 
@@ -25788,7 +25776,6 @@ async def test_get_membership_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = membership.GetMembershipRequest()
-
         assert args[0] == request_msg
 
 
@@ -25812,6 +25799,7 @@ async def test_get_message_empty_call_grpc_asyncio():
                 fallback_text="fallback_text_value",
                 argument_text="argument_text_value",
                 thread_reply=True,
+                silent=True,
                 client_assigned_message_id="client_assigned_message_id_value",
             )
         )
@@ -25821,7 +25809,6 @@ async def test_get_message_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = message.GetMessageRequest()
-
         assert args[0] == request_msg
 
 
@@ -25845,6 +25832,7 @@ async def test_update_message_empty_call_grpc_asyncio():
                 fallback_text="fallback_text_value",
                 argument_text="argument_text_value",
                 thread_reply=True,
+                silent=True,
                 client_assigned_message_id="client_assigned_message_id_value",
             )
         )
@@ -25854,7 +25842,6 @@ async def test_update_message_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gc_message.UpdateMessageRequest()
-
         assert args[0] == request_msg
 
 
@@ -25877,7 +25864,6 @@ async def test_delete_message_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = message.DeleteMessageRequest()
-
         assert args[0] == request_msg
 
 
@@ -25909,7 +25895,6 @@ async def test_get_attachment_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = attachment.GetAttachmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -25936,7 +25921,6 @@ async def test_upload_attachment_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = attachment.UploadAttachmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -25963,7 +25947,6 @@ async def test_list_spaces_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = space.ListSpacesRequest()
-
         assert args[0] == request_msg
 
 
@@ -25991,7 +25974,6 @@ async def test_search_spaces_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = space.SearchSpacesRequest()
-
         assert args[0] == request_msg
 
 
@@ -26030,7 +26012,6 @@ async def test_get_space_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = space.GetSpaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -26069,7 +26050,6 @@ async def test_create_space_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gc_space.CreateSpaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -26108,7 +26088,6 @@ async def test_set_up_space_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = space_setup.SetUpSpaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -26147,7 +26126,6 @@ async def test_update_space_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gc_space.UpdateSpaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -26170,7 +26148,6 @@ async def test_delete_space_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = space.DeleteSpaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -26197,7 +26174,6 @@ async def test_complete_import_space_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = space.CompleteImportSpaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -26238,7 +26214,6 @@ async def test_find_direct_message_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = space.FindDirectMessageRequest()
-
         assert args[0] == request_msg
 
 
@@ -26265,7 +26240,6 @@ async def test_find_group_chats_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = space.FindGroupChatsRequest()
-
         assert args[0] == request_msg
 
 
@@ -26296,7 +26270,6 @@ async def test_create_membership_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gc_membership.CreateMembershipRequest()
-
         assert args[0] == request_msg
 
 
@@ -26327,7 +26300,6 @@ async def test_update_membership_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gc_membership.UpdateMembershipRequest()
-
         assert args[0] == request_msg
 
 
@@ -26358,7 +26330,6 @@ async def test_delete_membership_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = membership.DeleteMembershipRequest()
-
         assert args[0] == request_msg
 
 
@@ -26385,7 +26356,6 @@ async def test_create_reaction_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gc_reaction.CreateReactionRequest()
-
         assert args[0] == request_msg
 
 
@@ -26412,7 +26382,6 @@ async def test_list_reactions_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reaction.ListReactionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -26435,7 +26404,6 @@ async def test_delete_reaction_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reaction.DeleteReactionRequest()
-
         assert args[0] == request_msg
 
 
@@ -26467,7 +26435,6 @@ async def test_create_custom_emoji_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reaction.CreateCustomEmojiRequest()
-
         assert args[0] == request_msg
 
 
@@ -26497,7 +26464,6 @@ async def test_get_custom_emoji_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reaction.GetCustomEmojiRequest()
-
         assert args[0] == request_msg
 
 
@@ -26526,7 +26492,6 @@ async def test_list_custom_emojis_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reaction.ListCustomEmojisRequest()
-
         assert args[0] == request_msg
 
 
@@ -26551,7 +26516,6 @@ async def test_delete_custom_emoji_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reaction.DeleteCustomEmojiRequest()
-
         assert args[0] == request_msg
 
 
@@ -26580,7 +26544,6 @@ async def test_get_space_read_state_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = space_read_state.GetSpaceReadStateRequest()
-
         assert args[0] == request_msg
 
 
@@ -26609,7 +26572,6 @@ async def test_update_space_read_state_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gc_space_read_state.UpdateSpaceReadStateRequest()
-
         assert args[0] == request_msg
 
 
@@ -26638,7 +26600,6 @@ async def test_get_thread_read_state_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = thread_read_state.GetThreadReadStateRequest()
-
         assert args[0] == request_msg
 
 
@@ -26666,7 +26627,6 @@ async def test_get_space_event_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = space_event.GetSpaceEventRequest()
-
         assert args[0] == request_msg
 
 
@@ -26695,7 +26655,6 @@ async def test_list_space_events_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = space_event.ListSpaceEventsRequest()
-
         assert args[0] == request_msg
 
 
@@ -26726,7 +26685,6 @@ async def test_get_space_notification_setting_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = space_notification_setting.GetSpaceNotificationSettingRequest()
-
         assert args[0] == request_msg
 
 
@@ -26759,7 +26717,6 @@ async def test_update_space_notification_setting_empty_call_grpc_asyncio():
         request_msg = (
             gc_space_notification_setting.UpdateSpaceNotificationSettingRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -26789,7 +26746,6 @@ async def test_create_section_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gc_section.CreateSectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -26812,7 +26768,6 @@ async def test_delete_section_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = section.DeleteSectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -26842,7 +26797,6 @@ async def test_update_section_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gc_section.UpdateSectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -26869,7 +26823,6 @@ async def test_list_sections_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = section.ListSectionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -26894,7 +26847,6 @@ async def test_position_section_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = section.PositionSectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -26923,7 +26875,6 @@ async def test_list_section_items_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = section.ListSectionItemsRequest()
-
         assert args[0] == request_msg
 
 
@@ -26950,7 +26901,6 @@ async def test_move_section_item_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = section.MoveSectionItemRequest()
-
         assert args[0] == request_msg
 
 
@@ -27452,6 +27402,7 @@ def test_create_message_rest_call_success(request_type):
         ],
         "matched_url": {"url": "url_value"},
         "thread_reply": True,
+        "silent": True,
         "client_assigned_message_id": "client_assigned_message_id_value",
         "emoji_reaction_summaries": [
             {
@@ -27559,6 +27510,7 @@ def test_create_message_rest_call_success(request_type):
             fallback_text="fallback_text_value",
             argument_text="argument_text_value",
             thread_reply=True,
+            silent=True,
             client_assigned_message_id="client_assigned_message_id_value",
         )
 
@@ -27582,6 +27534,7 @@ def test_create_message_rest_call_success(request_type):
     assert response.fallback_text == "fallback_text_value"
     assert response.argument_text == "argument_text_value"
     assert response.thread_reply is True
+    assert response.silent is True
     assert response.client_assigned_message_id == "client_assigned_message_id_value"
 
 
@@ -28091,6 +28044,7 @@ def test_get_message_rest_call_success(request_type):
             fallback_text="fallback_text_value",
             argument_text="argument_text_value",
             thread_reply=True,
+            silent=True,
             client_assigned_message_id="client_assigned_message_id_value",
         )
 
@@ -28114,6 +28068,7 @@ def test_get_message_rest_call_success(request_type):
     assert response.fallback_text == "fallback_text_value"
     assert response.argument_text == "argument_text_value"
     assert response.thread_reply is True
+    assert response.silent is True
     assert response.client_assigned_message_id == "client_assigned_message_id_value"
 
 
@@ -28670,6 +28625,7 @@ def test_update_message_rest_call_success(request_type):
         ],
         "matched_url": {"url": "url_value"},
         "thread_reply": True,
+        "silent": True,
         "client_assigned_message_id": "client_assigned_message_id_value",
         "emoji_reaction_summaries": [
             {
@@ -28777,6 +28733,7 @@ def test_update_message_rest_call_success(request_type):
             fallback_text="fallback_text_value",
             argument_text="argument_text_value",
             thread_reply=True,
+            silent=True,
             client_assigned_message_id="client_assigned_message_id_value",
         )
 
@@ -28800,6 +28757,7 @@ def test_update_message_rest_call_success(request_type):
     assert response.fallback_text == "fallback_text_value"
     assert response.argument_text == "argument_text_value"
     assert response.thread_reply is True
+    assert response.silent is True
     assert response.client_assigned_message_id == "client_assigned_message_id_value"
 
 
@@ -34655,7 +34613,6 @@ def test_create_message_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gc_message.CreateMessageRequest()
-
         assert args[0] == request_msg
 
 
@@ -34675,7 +34632,6 @@ def test_list_messages_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = message.ListMessagesRequest()
-
         assert args[0] == request_msg
 
 
@@ -34695,7 +34651,6 @@ def test_list_memberships_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = membership.ListMembershipsRequest()
-
         assert args[0] == request_msg
 
 
@@ -34715,7 +34670,6 @@ def test_get_membership_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = membership.GetMembershipRequest()
-
         assert args[0] == request_msg
 
 
@@ -34735,7 +34689,6 @@ def test_get_message_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = message.GetMessageRequest()
-
         assert args[0] == request_msg
 
 
@@ -34755,7 +34708,6 @@ def test_update_message_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gc_message.UpdateMessageRequest()
-
         assert args[0] == request_msg
 
 
@@ -34775,7 +34727,6 @@ def test_delete_message_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = message.DeleteMessageRequest()
-
         assert args[0] == request_msg
 
 
@@ -34795,7 +34746,6 @@ def test_get_attachment_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = attachment.GetAttachmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -34817,7 +34767,6 @@ def test_upload_attachment_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = attachment.UploadAttachmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -34837,7 +34786,6 @@ def test_list_spaces_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = space.ListSpacesRequest()
-
         assert args[0] == request_msg
 
 
@@ -34857,7 +34805,6 @@ def test_search_spaces_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = space.SearchSpacesRequest()
-
         assert args[0] == request_msg
 
 
@@ -34877,7 +34824,6 @@ def test_get_space_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = space.GetSpaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -34897,7 +34843,6 @@ def test_create_space_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gc_space.CreateSpaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -34917,7 +34862,6 @@ def test_set_up_space_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = space_setup.SetUpSpaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -34937,7 +34881,6 @@ def test_update_space_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gc_space.UpdateSpaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -34957,7 +34900,6 @@ def test_delete_space_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = space.DeleteSpaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -34979,7 +34921,6 @@ def test_complete_import_space_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = space.CompleteImportSpaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -35001,7 +34942,6 @@ def test_find_direct_message_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = space.FindDirectMessageRequest()
-
         assert args[0] == request_msg
 
 
@@ -35021,7 +34961,6 @@ def test_find_group_chats_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = space.FindGroupChatsRequest()
-
         assert args[0] == request_msg
 
 
@@ -35043,7 +34982,6 @@ def test_create_membership_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gc_membership.CreateMembershipRequest()
-
         assert args[0] == request_msg
 
 
@@ -35065,7 +35003,6 @@ def test_update_membership_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gc_membership.UpdateMembershipRequest()
-
         assert args[0] == request_msg
 
 
@@ -35087,7 +35024,6 @@ def test_delete_membership_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = membership.DeleteMembershipRequest()
-
         assert args[0] == request_msg
 
 
@@ -35107,7 +35043,6 @@ def test_create_reaction_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gc_reaction.CreateReactionRequest()
-
         assert args[0] == request_msg
 
 
@@ -35127,7 +35062,6 @@ def test_list_reactions_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reaction.ListReactionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -35147,7 +35081,6 @@ def test_delete_reaction_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reaction.DeleteReactionRequest()
-
         assert args[0] == request_msg
 
 
@@ -35169,7 +35102,6 @@ def test_create_custom_emoji_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reaction.CreateCustomEmojiRequest()
-
         assert args[0] == request_msg
 
 
@@ -35189,7 +35121,6 @@ def test_get_custom_emoji_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reaction.GetCustomEmojiRequest()
-
         assert args[0] == request_msg
 
 
@@ -35211,7 +35142,6 @@ def test_list_custom_emojis_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reaction.ListCustomEmojisRequest()
-
         assert args[0] == request_msg
 
 
@@ -35233,7 +35163,6 @@ def test_delete_custom_emoji_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = reaction.DeleteCustomEmojiRequest()
-
         assert args[0] == request_msg
 
 
@@ -35255,7 +35184,6 @@ def test_get_space_read_state_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = space_read_state.GetSpaceReadStateRequest()
-
         assert args[0] == request_msg
 
 
@@ -35277,7 +35205,6 @@ def test_update_space_read_state_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gc_space_read_state.UpdateSpaceReadStateRequest()
-
         assert args[0] == request_msg
 
 
@@ -35299,7 +35226,6 @@ def test_get_thread_read_state_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = thread_read_state.GetThreadReadStateRequest()
-
         assert args[0] == request_msg
 
 
@@ -35319,7 +35245,6 @@ def test_get_space_event_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = space_event.GetSpaceEventRequest()
-
         assert args[0] == request_msg
 
 
@@ -35341,7 +35266,6 @@ def test_list_space_events_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = space_event.ListSpaceEventsRequest()
-
         assert args[0] == request_msg
 
 
@@ -35363,7 +35287,6 @@ def test_get_space_notification_setting_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = space_notification_setting.GetSpaceNotificationSettingRequest()
-
         assert args[0] == request_msg
 
 
@@ -35387,7 +35310,6 @@ def test_update_space_notification_setting_empty_call_rest():
         request_msg = (
             gc_space_notification_setting.UpdateSpaceNotificationSettingRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -35407,7 +35329,6 @@ def test_create_section_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gc_section.CreateSectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -35427,7 +35348,6 @@ def test_delete_section_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = section.DeleteSectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -35447,7 +35367,6 @@ def test_update_section_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gc_section.UpdateSectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -35467,7 +35386,6 @@ def test_list_sections_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = section.ListSectionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -35487,7 +35405,6 @@ def test_position_section_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = section.PositionSectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -35509,7 +35426,6 @@ def test_list_section_items_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = section.ListSectionItemsRequest()
-
         assert args[0] == request_msg
 
 
@@ -35531,7 +35447,6 @@ def test_move_section_item_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = section.MoveSectionItemRequest()
-
         assert args[0] == request_msg
 
 

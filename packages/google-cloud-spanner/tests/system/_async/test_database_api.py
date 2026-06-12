@@ -179,7 +179,10 @@ async def test_transaction_manual_abort_retry(shared_database):
         transaction.insert_or_update(sd.TABLE, sd.COLUMNS, sd.ROW_DATA)
 
     await shared_database.run_in_transaction(_unit_of_work)
-    assert attempts == 2
+    # Expect at least 2 attempts due to our simulated manual abort on first try.
+    # We use >= 2 rather than == 2 because the live Spanner server can also
+    # trigger transient abort retries depending on real-world GCP resource contention.
+    assert attempts >= 2
 
 
 @pytest.mark.asyncio

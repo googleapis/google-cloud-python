@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -46,11 +46,24 @@ class RequestStatusPerDestination(proto.Message):
         request_status (google.ads.datamanager_v1.types.RequestStatusPerDestination.RequestStatus):
             The request status of the destination.
         error_info (google.ads.datamanager_v1.types.ErrorInfo):
-            An error info error containing the error
-            reason and error counts related to the upload.
+            An error info error containing the error reason and error
+            counts related to the upload. Only populated if the
+            [``request_status``][google.ads.datamanager.v1.RequestStatusPerDestination.request_status]
+            is
+            [``FAILED``][google.ads.datamanager.v1.RequestStatusPerDestination.RequestStatus.FAILED]
+            or
+            [``PARTIAL_SUCCESS``][google.ads.datamanager.v1.RequestStatusPerDestination.RequestStatus.PARTIAL_SUCCESS].
+            This field isn't populated while the request has
+            [``request_status``][google.ads.datamanager.v1.RequestStatusPerDestination.request_status]
+            of
+            [``PROCESSING``][google.ads.datamanager.v1.RequestStatusPerDestination.RequestStatus.PROCESSING].
         warning_info (google.ads.datamanager_v1.types.WarningInfo):
-            A warning info containing the warning reason
-            and warning counts related to the upload.
+            A warning info containing the warning reason and warning
+            counts related to the upload. This field isn't populated
+            while the request has
+            [``request_status``][google.ads.datamanager.v1.RequestStatusPerDestination.request_status]
+            of
+            [``PROCESSING``][google.ads.datamanager.v1.RequestStatusPerDestination.RequestStatus.PROCESSING].
         audience_members_ingestion_status (google.ads.datamanager_v1.types.RequestStatusPerDestination.IngestAudienceMembersStatus):
             The status of the ingest audience members
             request.
@@ -74,13 +87,25 @@ class RequestStatusPerDestination(proto.Message):
             REQUEST_STATUS_UNKNOWN (0):
                 The request status is unknown.
             SUCCESS (1):
-                The request succeeded.
+                Processing succeeded for all records without any errors.
+                However, there may be warnings in the
+                [``warning_info``][google.ads.datamanager.v1.RequestStatusPerDestination.warning_info]
+                field.
             PROCESSING (2):
                 The request is processing.
             FAILED (3):
-                The request failed.
+                Processing failed for all records. Check the
+                [``error_info``][google.ads.datamanager.v1.RequestStatusPerDestination.error_info]
+                field for error details, and check the
+                [``warning_info``][google.ads.datamanager.v1.RequestStatusPerDestination.warning_info]
+                field for warning details.
             PARTIAL_SUCCESS (4):
-                The request partially succeeded.
+                Processing completed successfully without errors for some
+                records, but failed with errors for other records. Check the
+                [``error_info``][google.ads.datamanager.v1.RequestStatusPerDestination.error_info]
+                field for error details, and check the
+                [``warning_info``][google.ads.datamanager.v1.RequestStatusPerDestination.warning_info]
+                field for warning details.
         """
 
         REQUEST_STATUS_UNKNOWN = 0
@@ -88,6 +113,28 @@ class RequestStatusPerDestination(proto.Message):
         PROCESSING = 2
         FAILED = 3
         PARTIAL_SUCCESS = 4
+
+    class DataType(proto.Enum):
+        r"""The type of data.
+
+        Values:
+            DATA_TYPE_UNSPECIFIED (0):
+                The data type is unspecified.
+            EMAIL (1):
+                The data is an email address.
+            PHONE_NUMBER (2):
+                The data is a phone number.
+            ADDRESS (3):
+                The data is a physical address.
+            IP_ADDRESS (4):
+                The data is an IP address.
+        """
+
+        DATA_TYPE_UNSPECIFIED = 0
+        EMAIL = 1
+        PHONE_NUMBER = 2
+        ADDRESS = 3
+        IP_ADDRESS = 4
 
     class IngestAudienceMembersStatus(proto.Message):
         r"""The status of the ingest audience members request.
@@ -125,6 +172,11 @@ class RequestStatusPerDestination(proto.Message):
                 destination.
 
                 This field is a member of `oneof`_ ``status``.
+            composite_data_ingestion_status (google.ads.datamanager_v1.types.RequestStatusPerDestination.IngestCompositeDataStatus):
+                The status of the composite data ingestion to
+                the destination.
+
+                This field is a member of `oneof`_ ``status``.
         """
 
         user_data_ingestion_status: "RequestStatusPerDestination.IngestUserDataStatus" = proto.Field(
@@ -156,6 +208,12 @@ class RequestStatusPerDestination(proto.Message):
             number=5,
             oneof="status",
             message="RequestStatusPerDestination.IngestPpidDataStatus",
+        )
+        composite_data_ingestion_status: "RequestStatusPerDestination.IngestCompositeDataStatus" = proto.Field(
+            proto.MESSAGE,
+            number=6,
+            oneof="status",
+            message="RequestStatusPerDestination.IngestCompositeDataStatus",
         )
 
     class RemoveAudienceMembersStatus(proto.Message):
@@ -192,6 +250,11 @@ class RequestStatusPerDestination(proto.Message):
             ppid_data_removal_status (google.ads.datamanager_v1.types.RequestStatusPerDestination.RemovePpidDataStatus):
                 The status of the ppid data removal from the
                 destination.
+
+                This field is a member of `oneof`_ ``status``.
+            composite_data_removal_status (google.ads.datamanager_v1.types.RequestStatusPerDestination.RemoveCompositeDataStatus):
+                The status of the composite data removal from
+                the destination.
 
                 This field is a member of `oneof`_ ``status``.
         """
@@ -231,6 +294,12 @@ class RequestStatusPerDestination(proto.Message):
                 oneof="status",
                 message="RequestStatusPerDestination.RemovePpidDataStatus",
             )
+        )
+        composite_data_removal_status: "RequestStatusPerDestination.RemoveCompositeDataStatus" = proto.Field(
+            proto.MESSAGE,
+            number=6,
+            oneof="status",
+            message="RequestStatusPerDestination.RemoveCompositeDataStatus",
         )
 
     class IngestEventsStatus(proto.Message):
@@ -513,6 +582,94 @@ class RequestStatusPerDestination(proto.Message):
             number=1,
         )
         ppid_count: int = proto.Field(
+            proto.INT64,
+            number=2,
+        )
+
+    class IngestCompositeDataStatus(proto.Message):
+        r"""The status of the composite data ingestion to the destination
+        containing stats related to the ingestion.
+
+        Attributes:
+            record_count (int):
+                The total count of audience members sent in
+                the upload request for the destination. Includes
+                all audience members in the request, regardless
+                of whether they were successfully ingested or
+                not.
+            data_type_counts (MutableSequence[google.ads.datamanager_v1.types.RequestStatusPerDestination.DataTypeCount]):
+                The total count of data types sent in the
+                upload request for the destination, broken down
+                by data type. Includes all data types in the
+                request, regardless of whether they were
+                successfully ingested or not.
+            upload_match_rate_range (google.ads.datamanager_v1.types.MatchRateRange):
+                The match rate range of the upload.
+        """
+
+        record_count: int = proto.Field(
+            proto.INT64,
+            number=1,
+        )
+        data_type_counts: MutableSequence[
+            "RequestStatusPerDestination.DataTypeCount"
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message="RequestStatusPerDestination.DataTypeCount",
+        )
+        upload_match_rate_range: match_rate.MatchRateRange = proto.Field(
+            proto.ENUM,
+            number=3,
+            enum=match_rate.MatchRateRange,
+        )
+
+    class RemoveCompositeDataStatus(proto.Message):
+        r"""The status of the composite data removal from the
+        destination.
+
+        Attributes:
+            record_count (int):
+                The total count of audience members sent in
+                the removal request. Includes all audience
+                members in the request, regardless of whether
+                they were successfully removed or not.
+            data_type_counts (MutableSequence[google.ads.datamanager_v1.types.RequestStatusPerDestination.DataTypeCount]):
+                The total count of data types sent in the
+                removal request, broken down by data type.
+                Includes all data types in the request,
+                regardless of whether they were successfully
+                removed or not.
+        """
+
+        record_count: int = proto.Field(
+            proto.INT64,
+            number=1,
+        )
+        data_type_counts: MutableSequence[
+            "RequestStatusPerDestination.DataTypeCount"
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message="RequestStatusPerDestination.DataTypeCount",
+        )
+
+    class DataTypeCount(proto.Message):
+        r"""The count for a specific data type.
+
+        Attributes:
+            type_ (google.ads.datamanager_v1.types.RequestStatusPerDestination.DataType):
+                The type of data.
+            count (int):
+                The count for this data type.
+        """
+
+        type_: "RequestStatusPerDestination.DataType" = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum="RequestStatusPerDestination.DataType",
+        )
+        count: int = proto.Field(
             proto.INT64,
             number=2,
         )

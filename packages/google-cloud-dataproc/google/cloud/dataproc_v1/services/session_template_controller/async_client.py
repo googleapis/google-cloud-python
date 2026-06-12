@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -84,6 +84,10 @@ class SessionTemplateControllerAsyncClient:
     )
     _DEFAULT_UNIVERSE = SessionTemplateControllerClient._DEFAULT_UNIVERSE
 
+    crypto_key_path = staticmethod(SessionTemplateControllerClient.crypto_key_path)
+    parse_crypto_key_path = staticmethod(
+        SessionTemplateControllerClient.parse_crypto_key_path
+    )
     service_path = staticmethod(SessionTemplateControllerClient.service_path)
     parse_service_path = staticmethod(
         SessionTemplateControllerClient.parse_service_path

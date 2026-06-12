@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -236,6 +236,30 @@ class SessionControllerClient(metaclass=SessionControllerClientMeta):
                 instance.
         """
         return self._transport
+
+    @staticmethod
+    def crypto_key_path(
+        project: str,
+        location: str,
+        key_ring: str,
+        crypto_key: str,
+    ) -> str:
+        """Returns a fully-qualified crypto_key string."""
+        return "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}".format(
+            project=project,
+            location=location,
+            key_ring=key_ring,
+            crypto_key=crypto_key,
+        )
+
+    @staticmethod
+    def parse_crypto_key_path(path: str) -> Dict[str, str]:
+        """Parses a crypto_key path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/keyRings/(?P<key_ring>.+?)/cryptoKeys/(?P<crypto_key>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
 
     @staticmethod
     def service_path(
@@ -816,12 +840,8 @@ class SessionControllerClient(metaclass=SessionControllerClientMeta):
                 client = dataproc_v1.SessionControllerClient()
 
                 # Initialize request argument(s)
-                session = dataproc_v1.Session()
-                session.name = "name_value"
-
                 request = dataproc_v1.CreateSessionRequest(
                     parent="parent_value",
-                    session=session,
                     session_id="session_id_value",
                 )
 

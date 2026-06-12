@@ -1268,7 +1268,7 @@ def test_unicode_doc(client, cleanup, database):
     assert snapshot2.reference.id == explicit_doc_id
 
 
-@pytest.fixture
+@pytest.fixture(scope="module")
 def query_docs(client, database):
     collection_id = "qs" + UNIQUE_RESOURCE_ID
     sub_collection = "child" + UNIQUE_RESOURCE_ID
@@ -1297,13 +1297,13 @@ def query_docs(client, database):
         operation()
 
 
-@pytest.fixture
+@pytest.fixture(scope="module")
 def collection(query_docs):
     collection, _, _ = query_docs
     return collection
 
 
-@pytest.fixture
+@pytest.fixture(scope="module")
 def query(collection):
     return collection.where(filter=FieldFilter("a", "==", 1))
 
@@ -1671,9 +1671,12 @@ def test_query_stream_or_get_w_explain_options_analyze_false(
 @pytest.mark.parametrize("method", ["execute", "stream"])
 @pytest.mark.parametrize("database", [FIRESTORE_ENTERPRISE_DB], indirect=True)
 def test_pipeline_explain_options_explain_mode(database, method, query_docs):
-    """Explain currently not supported by backend. Expect error"""
     from google.cloud.firestore_v1.query_profile import (
+        ExplainStats,
         PipelineExplainOptions,
+    )
+    from google.cloud.firestore_v1.types.explain_stats import (
+        ExplainStats as ExplainStats_pb,
     )
 
     collection, _, _ = query_docs
@@ -1685,11 +1688,14 @@ def test_pipeline_explain_options_explain_mode(database, method, query_docs):
     method_under_test = getattr(pipeline, method)
     explain_options = PipelineExplainOptions(mode="explain")
 
-    # for now, expect error on explain mode
-    with pytest.raises(InvalidArgument) as e:
-        results = method_under_test(explain_options=explain_options)
-        list(results)
-    assert "Explain execution mode is not supported" in str(e)
+    results = method_under_test(explain_options=explain_options)
+    results_list = list(results)
+    assert len(results_list) == 0
+
+    # Verify explain_stats.
+    explain_stats = results.explain_stats
+    assert isinstance(explain_stats, ExplainStats)
+    assert isinstance(explain_stats.get_raw(), ExplainStats_pb)
 
 
 @pytest.mark.skipif(
@@ -2330,7 +2336,11 @@ def test_watch_document(client, cleanup, database):
     doc_ref.set({"first": "Jane", "last": "Doe", "born": 1900})
     cleanup(doc_ref.delete)
 
-    sleep(1)
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/17428):
+    # Investigate why these sleep/polling delays are needed for listener tests.
+    # Having arbitrary delays is fragile and can lead to flakiness.
+    # Explore event-driven synchronization.
+    sleep(0.2)
 
     # Setup listener
     def on_snapshot(docs, changes, read_time):
@@ -2343,12 +2353,12 @@ def test_watch_document(client, cleanup, database):
     # Alter document
     doc_ref.set({"first": "Ada", "last": "Lovelace", "born": 1815})
 
-    sleep(1)
+    sleep(0.2)
 
-    for _ in range(10):
+    for _ in range(50):
         if on_snapshot.called_count > 0:
             break
-        sleep(1)
+        sleep(0.2)
 
     if on_snapshot.called_count not in (1, 2):
         raise AssertionError(
@@ -2378,15 +2388,19 @@ def test_watch_collection(client, cleanup, database):
 
     collection_ref.on_snapshot(on_snapshot)
 
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/17428):
+    # Investigate why these sleep/polling delays are needed for listener tests.
+    # Having arbitrary delays is fragile and can lead to flakiness.
+    # Explore event-driven synchronization.
     # delay here so initial on_snapshot occurs and isn't combined with set
-    sleep(1)
+    sleep(0.2)
 
     doc_ref.set({"first": "Ada", "last": "Lovelace", "born": 1815})
 
-    for _ in range(10):
+    for _ in range(50):
         if on_snapshot.born == 1815:
             break
-        sleep(1)
+        sleep(0.2)
 
     if on_snapshot.born != 1815:
         raise AssertionError(
@@ -2405,7 +2419,11 @@ def test_watch_query(client, cleanup, database):
     doc_ref.set({"first": "Jane", "last": "Doe", "born": 1900})
     cleanup(doc_ref.delete)
 
-    sleep(1)
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/17428):
+    # Investigate why these sleep/polling delays are needed for listener tests.
+    # Having arbitrary delays is fragile and can lead to flakiness.
+    # Explore event-driven synchronization.
+    sleep(0.2)
 
     # Setup listener
     def on_snapshot(docs, changes, read_time):
@@ -2423,10 +2441,10 @@ def test_watch_query(client, cleanup, database):
     # Alter document
     doc_ref.set({"first": "Ada", "last": "Lovelace", "born": 1815})
 
-    for _ in range(10):
+    for _ in range(50):
         if on_snapshot.called_count == 1:
             return
-        sleep(1)
+        sleep(0.2)
 
     if on_snapshot.called_count != 1:
         raise AssertionError(
@@ -2800,7 +2818,11 @@ def test_watch_query_order(client, cleanup, database):
     on_snapshot.failed = None
     query_ref.on_snapshot(on_snapshot)
 
-    sleep(1)
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/17428):
+    # Investigate why these sleep/polling delays are needed for listener tests.
+    # Having arbitrary delays is fragile and can lead to flakiness.
+    # Explore event-driven synchronization.
+    sleep(0.2)
 
     doc_ref1.set({"first": "Ada", "last": "Lovelace", "born": 1815})
     cleanup(doc_ref1.delete)
@@ -2817,10 +2839,10 @@ def test_watch_query_order(client, cleanup, database):
     doc_ref5.set({"first": "Ada", "last": "lovelace", "born": 1815})
     cleanup(doc_ref5.delete)
 
-    for _ in range(10):
+    for _ in range(50):
         if on_snapshot.last_doc_count == 5:
             break
-        sleep(1)
+        sleep(0.2)
 
     if on_snapshot.failed:
         raise on_snapshot.failed

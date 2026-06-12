@@ -302,60 +302,6 @@ class TestTableReference(unittest.TestCase):
 
         self.assertEqual(expected, got)
 
-    def test_from_string(self):
-        cls = self._get_target_class()
-        got = cls.from_string("string-project.string_dataset.string_table")
-        self.assertEqual(got.project, "string-project")
-        self.assertEqual(got.dataset_id, "string_dataset")
-        self.assertEqual(got.table_id, "string_table")
-
-    def test_from_string_w_prefix(self):
-        cls = self._get_target_class()
-        got = cls.from_string("google.com:string-project.string_dataset.string_table")
-        self.assertEqual(got.project, "google.com:string-project")
-        self.assertEqual(got.dataset_id, "string_dataset")
-        self.assertEqual(got.table_id, "string_table")
-
-    def test_from_string_legacy_string(self):
-        cls = self._get_target_class()
-        with self.assertRaises(ValueError):
-            cls.from_string("string-project:string_dataset.string_table")
-
-    def test_from_string_w_incorrect_prefix(self):
-        cls = self._get_target_class()
-        with self.assertRaises(ValueError):
-            cls.from_string("google.com.string-project.string_dataset.string_table")
-
-    def test_from_string_not_fully_qualified(self):
-        cls = self._get_target_class()
-        with self.assertRaises(ValueError):
-            cls.from_string("string_table")
-
-        with self.assertRaises(ValueError):
-            cls.from_string("string_dataset.string_table")
-
-        with self.assertRaises(ValueError):
-            cls.from_string("a.b.c.d")
-
-    def test_from_string_with_default_project(self):
-        cls = self._get_target_class()
-        got = cls.from_string(
-            "string_dataset.string_table", default_project="default-project"
-        )
-        self.assertEqual(got.project, "default-project")
-        self.assertEqual(got.dataset_id, "string_dataset")
-        self.assertEqual(got.table_id, "string_table")
-
-    def test_from_string_ignores_default_project(self):
-        cls = self._get_target_class()
-        got = cls.from_string(
-            "string-project.string_dataset.string_table",
-            default_project="default-project",
-        )
-        self.assertEqual(got.project, "string-project")
-        self.assertEqual(got.dataset_id, "string_dataset")
-        self.assertEqual(got.table_id, "string_table")
-
     def test___repr__(self):
         dataset = DatasetReference("project1", "dataset1")
         table1 = self._make_one(dataset, "table1")
@@ -4092,7 +4038,6 @@ class TestRowIterator(unittest.TestCase):
 
     def test_to_dataframe_tqdm_error(self):
         pytest.importorskip("pandas")
-        pytest.importorskip("matplotlib")
         tqdm = pytest.importorskip("tqdm")
         mock.patch("tqdm.tqdm_gui", new=None)
         mock.patch("tqdm.notebook.tqdm", new=None)

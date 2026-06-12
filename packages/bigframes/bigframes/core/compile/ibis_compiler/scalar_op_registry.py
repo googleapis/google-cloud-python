@@ -16,7 +16,7 @@ from __future__ import annotations
 
 import functools
 import typing
-from typing import cast
+from typing import Any, cast
 
 import bigframes_vendored.ibis.expr.api as ibis_api
 import bigframes_vendored.ibis.expr.datatypes as ibis_dtypes
@@ -1034,44 +1034,8 @@ def timedelta_floor_op_impl(x: ibis_types.NumericValue):
     return ibis_api.case().when(x > ibis.literal(0), x.floor()).else_(x.ceil()).end()
 
 
-@scalar_op_compiler.register_unary_op(ops.RemoteFunctionOp, pass_op=True)
-def remote_function_op_impl(x: ibis_types.Value, op: ops.RemoteFunctionOp):
-    udf_sig = op.function_def.signature
-    assert not udf_sig.is_virtual  # should have been devirtualized in lowering pass
-    ibis_py_sig = (tuple(arg.py_type for arg in udf_sig.inputs), udf_sig.output.py_type)
-
-    @ibis_udf.scalar.builtin(
-        name=str(op.function_def.routine_ref), signature=ibis_py_sig
-    )
-    def udf(input): ...
-
-    x_transformed = udf(x)
-    if not op.apply_on_null:
-        return ibis_api.case().when(x.isnull(), x).else_(x_transformed).end()
-    return x_transformed
-
-
-@scalar_op_compiler.register_binary_op(ops.BinaryRemoteFunctionOp, pass_op=True)
-def binary_remote_function_op_impl(
-    x: ibis_types.Value, y: ibis_types.Value, op: ops.BinaryRemoteFunctionOp
-):
-    udf_sig = op.function_def.signature
-    assert not udf_sig.is_virtual  # should have been devirtualized in lowering pass
-    ibis_py_sig = (tuple(arg.py_type for arg in udf_sig.inputs), udf_sig.output.py_type)
-
-    @ibis_udf.scalar.builtin(
-        name=str(op.function_def.routine_ref), signature=ibis_py_sig
-    )
-    def udf(input1, input2): ...
-
-    x_transformed = udf(x, y)
-    return x_transformed
-
-
-@scalar_op_compiler.register_nary_op(ops.NaryRemoteFunctionOp, pass_op=True)
-def nary_remote_function_op_impl(
-    *operands: ibis_types.Value, op: ops.NaryRemoteFunctionOp
-):
+@scalar_op_compiler.register_nary_op(ops.RemoteFunctionOp, pass_op=True)
+def remote_function_op_impl(*values: ibis_types.Value, op: ops.RemoteFunctionOp):
     udf_sig = op.function_def.signature
     assert not udf_sig.is_virtual  # should have been devirtualized in lowering pass
     ibis_py_sig = (tuple(arg.py_type for arg in udf_sig.inputs), udf_sig.output.py_type)
@@ -1084,8 +1048,7 @@ def nary_remote_function_op_impl(
     )
     def udf(*inputs): ...
 
-    result = udf(*operands)
-    return result
+    return udf(*values)
 
 
 @scalar_op_compiler.register_unary_op(ops.MapOp, pass_op=True)
@@ -1920,7 +1883,7 @@ def ai_generate(
         _construct_prompt(values, op.prompt_context),  # type: ignore
         op.connection_id,  # type: ignore
         op.endpoint,  # type: ignore
-        op.request_type.upper(),  # type: ignore
+        op.request_type,  # type: ignore
         op.model_params,  # type: ignore
         op.output_schema,  # type: ignore
     ).to_expr()
@@ -1934,7 +1897,7 @@ def ai_generate_bool(
         _construct_prompt(values, op.prompt_context),  # type: ignore
         op.connection_id,  # type: ignore
         op.endpoint,  # type: ignore
-        op.request_type.upper(),  # type: ignore
+        op.request_type,  # type: ignore
         op.model_params,  # type: ignore
     ).to_expr()
 
@@ -1947,7 +1910,7 @@ def ai_generate_int(
         _construct_prompt(values, op.prompt_context),  # type: ignore
         op.connection_id,  # type: ignore
         op.endpoint,  # type: ignore
-        op.request_type.upper(),  # type: ignore
+        op.request_type,  # type: ignore
         op.model_params,  # type: ignore
     ).to_expr()
 
@@ -1960,7 +1923,7 @@ def ai_generate_double(
         _construct_prompt(values, op.prompt_context),  # type: ignore
         op.connection_id,  # type: ignore
         op.endpoint,  # type: ignore
-        op.request_type.upper(),  # type: ignore
+        op.request_type,  # type: ignore
         op.model_params,  # type: ignore
     ).to_expr()
 
@@ -1972,7 +1935,7 @@ def ai_embed(value: ibis_types.Value, op: ops.AIEmbed) -> ibis_types.StructValue
         connection_id=op.connection_id,  # type: ignore
         endpoint=op.endpoint,  # type: ignore
         model=op.model,  # type: ignore
-        task_type=op.task_type.upper() if op.task_type is not None else None,  # type: ignore
+        task_type=op.task_type,  # type: ignore
         title=op.title,  # type: ignore
         model_params=op.model_params,  # type: ignore
     ).to_expr()
@@ -1984,7 +1947,7 @@ def ai_if(*values: ibis_types.Value, op: ops.AIIf) -> ibis_types.StructValue:
         _construct_prompt(values, op.prompt_context),  # type: ignore
         op.connection_id,  # type: ignore
         op.endpoint,  # type: ignore
-        op.optimization_mode.upper() if op.optimization_mode is not None else None,  # type: ignore
+        op.optimization_mode,  # type: ignore
         op.max_error_ratio,  # type: ignore
     ).to_expr()
 
@@ -1996,7 +1959,12 @@ def ai_classify(
     return ai_ops.AIClassify(
         _construct_prompt(values, op.prompt_context),  # type: ignore
         op.categories,  # type: ignore
+        _construct_examples(op.examples),  # type: ignore
         op.connection_id,  # type: ignore
+        op.endpoint,  # type: ignore
+        op.output_mode,  # type: ignore
+        op.optimization_mode,  # type: ignore
+        op.max_error_ratio,  # type: ignore
     ).to_expr()
 
 
@@ -2005,6 +1973,8 @@ def ai_score(*values: ibis_types.Value, op: ops.AIScore) -> ibis_types.StructVal
     return ai_ops.AIScore(
         _construct_prompt(values, op.prompt_context),  # type: ignore
         op.connection_id,  # type: ignore
+        op.endpoint,  # type: ignore
+        op.max_error_ratio,  # type: ignore
     ).to_expr()
 
 
@@ -2036,6 +2006,25 @@ def _construct_prompt(
             prompt[f"_field_{idx + 1}"] = elem
 
     return ibis.struct(prompt)
+
+
+def _construct_examples(
+    examples: tuple[tuple[str, str | tuple[str, ...]], ...] | None,
+) -> ibis_types.ArrayValue | None:
+    if examples is None:
+        return None
+
+    results: list[ibis_types.StructValue] = []
+
+    for example in examples:
+        value: Any = example[1]
+        if isinstance(example[1], (list, tuple)):
+            value = list(example[1])
+
+        ibis_example = ibis.struct({"_field_1": example[0], "_field_2": value})
+        results.append(ibis_example)
+
+    return ibis.array(results)
 
 
 @scalar_op_compiler.register_nary_op(ops.RowKey, pass_op=True)

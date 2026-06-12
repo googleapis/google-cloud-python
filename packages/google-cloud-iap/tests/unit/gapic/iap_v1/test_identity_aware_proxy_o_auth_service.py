@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -111,6 +106,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1441,8 +1451,8 @@ def test_identity_aware_proxy_o_auth_service_client_create_channel_credentials_f
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.ListBrandsRequest,
-        dict,
+        service.ListBrandsRequest(),
+        {},
     ],
 )
 def test_list_brands(request_type, transport: str = "grpc"):
@@ -1453,7 +1463,7 @@ def test_list_brands(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_brands), "__call__") as call:
@@ -1494,9 +1504,10 @@ def test_list_brands_non_empty_request_with_auto_populated_field():
         client.list_brands(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListBrandsRequest(
+        request_msg = service.ListBrandsRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_brands_use_cached_wrapped_rpc():
@@ -1577,9 +1588,14 @@ async def test_list_brands_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_brands_async(
-    transport: str = "grpc_asyncio", request_type=service.ListBrandsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListBrandsRequest(),
+        {},
+    ],
+)
+async def test_list_brands_async(request_type, transport: str = "grpc_asyncio"):
     client = IdentityAwareProxyOAuthServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1587,7 +1603,7 @@ async def test_list_brands_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_brands), "__call__") as call:
@@ -1605,11 +1621,6 @@ async def test_list_brands_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.ListBrandsResponse)
-
-
-@pytest.mark.asyncio
-async def test_list_brands_async_from_dict():
-    await test_list_brands_async(request_type=dict)
 
 
 def test_list_brands_field_headers():
@@ -1676,8 +1687,8 @@ async def test_list_brands_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.CreateBrandRequest,
-        dict,
+        service.CreateBrandRequest(),
+        {},
     ],
 )
 def test_create_brand(request_type, transport: str = "grpc"):
@@ -1688,7 +1699,7 @@ def test_create_brand(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_brand), "__call__") as call:
@@ -1738,9 +1749,10 @@ def test_create_brand_non_empty_request_with_auto_populated_field():
         client.create_brand(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CreateBrandRequest(
+        request_msg = service.CreateBrandRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_brand_use_cached_wrapped_rpc():
@@ -1821,9 +1833,14 @@ async def test_create_brand_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_brand_async(
-    transport: str = "grpc_asyncio", request_type=service.CreateBrandRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.CreateBrandRequest(),
+        {},
+    ],
+)
+async def test_create_brand_async(request_type, transport: str = "grpc_asyncio"):
     client = IdentityAwareProxyOAuthServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1831,7 +1848,7 @@ async def test_create_brand_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_brand), "__call__") as call:
@@ -1858,11 +1875,6 @@ async def test_create_brand_async(
     assert response.support_email == "support_email_value"
     assert response.application_title == "application_title_value"
     assert response.org_internal_only is True
-
-
-@pytest.mark.asyncio
-async def test_create_brand_async_from_dict():
-    await test_create_brand_async(request_type=dict)
 
 
 def test_create_brand_field_headers():
@@ -1927,8 +1939,8 @@ async def test_create_brand_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.GetBrandRequest,
-        dict,
+        service.GetBrandRequest(),
+        {},
     ],
 )
 def test_get_brand(request_type, transport: str = "grpc"):
@@ -1939,7 +1951,7 @@ def test_get_brand(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_brand), "__call__") as call:
@@ -1989,9 +2001,10 @@ def test_get_brand_non_empty_request_with_auto_populated_field():
         client.get_brand(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetBrandRequest(
+        request_msg = service.GetBrandRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_brand_use_cached_wrapped_rpc():
@@ -2070,9 +2083,14 @@ async def test_get_brand_async_use_cached_wrapped_rpc(transport: str = "grpc_asy
 
 
 @pytest.mark.asyncio
-async def test_get_brand_async(
-    transport: str = "grpc_asyncio", request_type=service.GetBrandRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetBrandRequest(),
+        {},
+    ],
+)
+async def test_get_brand_async(request_type, transport: str = "grpc_asyncio"):
     client = IdentityAwareProxyOAuthServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2080,7 +2098,7 @@ async def test_get_brand_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_brand), "__call__") as call:
@@ -2107,11 +2125,6 @@ async def test_get_brand_async(
     assert response.support_email == "support_email_value"
     assert response.application_title == "application_title_value"
     assert response.org_internal_only is True
-
-
-@pytest.mark.asyncio
-async def test_get_brand_async_from_dict():
-    await test_get_brand_async(request_type=dict)
 
 
 def test_get_brand_field_headers():
@@ -2176,8 +2189,8 @@ async def test_get_brand_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.CreateIdentityAwareProxyClientRequest,
-        dict,
+        service.CreateIdentityAwareProxyClientRequest(),
+        {},
     ],
 )
 def test_create_identity_aware_proxy_client(request_type, transport: str = "grpc"):
@@ -2188,7 +2201,7 @@ def test_create_identity_aware_proxy_client(request_type, transport: str = "grpc
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2240,9 +2253,10 @@ def test_create_identity_aware_proxy_client_non_empty_request_with_auto_populate
         client.create_identity_aware_proxy_client(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CreateIdentityAwareProxyClientRequest(
+        request_msg = service.CreateIdentityAwareProxyClientRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_identity_aware_proxy_client_use_cached_wrapped_rpc():
@@ -2328,9 +2342,15 @@ async def test_create_identity_aware_proxy_client_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.CreateIdentityAwareProxyClientRequest(),
+        {},
+    ],
+)
 async def test_create_identity_aware_proxy_client_async(
-    transport: str = "grpc_asyncio",
-    request_type=service.CreateIdentityAwareProxyClientRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = IdentityAwareProxyOAuthServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2339,7 +2359,7 @@ async def test_create_identity_aware_proxy_client_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2366,11 +2386,6 @@ async def test_create_identity_aware_proxy_client_async(
     assert response.name == "name_value"
     assert response.secret == "secret_value"
     assert response.display_name == "display_name_value"
-
-
-@pytest.mark.asyncio
-async def test_create_identity_aware_proxy_client_async_from_dict():
-    await test_create_identity_aware_proxy_client_async(request_type=dict)
 
 
 def test_create_identity_aware_proxy_client_field_headers():
@@ -2441,8 +2456,8 @@ async def test_create_identity_aware_proxy_client_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.ListIdentityAwareProxyClientsRequest,
-        dict,
+        service.ListIdentityAwareProxyClientsRequest(),
+        {},
     ],
 )
 def test_list_identity_aware_proxy_clients(request_type, transport: str = "grpc"):
@@ -2453,7 +2468,7 @@ def test_list_identity_aware_proxy_clients(request_type, transport: str = "grpc"
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2502,10 +2517,11 @@ def test_list_identity_aware_proxy_clients_non_empty_request_with_auto_populated
         client.list_identity_aware_proxy_clients(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListIdentityAwareProxyClientsRequest(
+        request_msg = service.ListIdentityAwareProxyClientsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_identity_aware_proxy_clients_use_cached_wrapped_rpc():
@@ -2591,9 +2607,15 @@ async def test_list_identity_aware_proxy_clients_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListIdentityAwareProxyClientsRequest(),
+        {},
+    ],
+)
 async def test_list_identity_aware_proxy_clients_async(
-    transport: str = "grpc_asyncio",
-    request_type=service.ListIdentityAwareProxyClientsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = IdentityAwareProxyOAuthServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2602,7 +2624,7 @@ async def test_list_identity_aware_proxy_clients_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2625,11 +2647,6 @@ async def test_list_identity_aware_proxy_clients_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListIdentityAwareProxyClientsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_identity_aware_proxy_clients_async_from_dict():
-    await test_list_identity_aware_proxy_clients_async(request_type=dict)
 
 
 def test_list_identity_aware_proxy_clients_field_headers():
@@ -2891,9 +2908,7 @@ async def test_list_identity_aware_proxy_clients_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
+        async for page_ in (
             await client.list_identity_aware_proxy_clients(request={})
         ).pages:
             pages.append(page_)
@@ -2904,8 +2919,8 @@ async def test_list_identity_aware_proxy_clients_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.GetIdentityAwareProxyClientRequest,
-        dict,
+        service.GetIdentityAwareProxyClientRequest(),
+        {},
     ],
 )
 def test_get_identity_aware_proxy_client(request_type, transport: str = "grpc"):
@@ -2916,7 +2931,7 @@ def test_get_identity_aware_proxy_client(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2968,9 +2983,10 @@ def test_get_identity_aware_proxy_client_non_empty_request_with_auto_populated_f
         client.get_identity_aware_proxy_client(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetIdentityAwareProxyClientRequest(
+        request_msg = service.GetIdentityAwareProxyClientRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_identity_aware_proxy_client_use_cached_wrapped_rpc():
@@ -3056,9 +3072,15 @@ async def test_get_identity_aware_proxy_client_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetIdentityAwareProxyClientRequest(),
+        {},
+    ],
+)
 async def test_get_identity_aware_proxy_client_async(
-    transport: str = "grpc_asyncio",
-    request_type=service.GetIdentityAwareProxyClientRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = IdentityAwareProxyOAuthServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3067,7 +3089,7 @@ async def test_get_identity_aware_proxy_client_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3094,11 +3116,6 @@ async def test_get_identity_aware_proxy_client_async(
     assert response.name == "name_value"
     assert response.secret == "secret_value"
     assert response.display_name == "display_name_value"
-
-
-@pytest.mark.asyncio
-async def test_get_identity_aware_proxy_client_async_from_dict():
-    await test_get_identity_aware_proxy_client_async(request_type=dict)
 
 
 def test_get_identity_aware_proxy_client_field_headers():
@@ -3169,8 +3186,8 @@ async def test_get_identity_aware_proxy_client_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.ResetIdentityAwareProxyClientSecretRequest,
-        dict,
+        service.ResetIdentityAwareProxyClientSecretRequest(),
+        {},
     ],
 )
 def test_reset_identity_aware_proxy_client_secret(
@@ -3183,7 +3200,7 @@ def test_reset_identity_aware_proxy_client_secret(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3235,9 +3252,10 @@ def test_reset_identity_aware_proxy_client_secret_non_empty_request_with_auto_po
         client.reset_identity_aware_proxy_client_secret(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ResetIdentityAwareProxyClientSecretRequest(
+        request_msg = service.ResetIdentityAwareProxyClientSecretRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_reset_identity_aware_proxy_client_secret_use_cached_wrapped_rpc():
@@ -3323,9 +3341,15 @@ async def test_reset_identity_aware_proxy_client_secret_async_use_cached_wrapped
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ResetIdentityAwareProxyClientSecretRequest(),
+        {},
+    ],
+)
 async def test_reset_identity_aware_proxy_client_secret_async(
-    transport: str = "grpc_asyncio",
-    request_type=service.ResetIdentityAwareProxyClientSecretRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = IdentityAwareProxyOAuthServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3334,7 +3358,7 @@ async def test_reset_identity_aware_proxy_client_secret_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3361,11 +3385,6 @@ async def test_reset_identity_aware_proxy_client_secret_async(
     assert response.name == "name_value"
     assert response.secret == "secret_value"
     assert response.display_name == "display_name_value"
-
-
-@pytest.mark.asyncio
-async def test_reset_identity_aware_proxy_client_secret_async_from_dict():
-    await test_reset_identity_aware_proxy_client_secret_async(request_type=dict)
 
 
 def test_reset_identity_aware_proxy_client_secret_field_headers():
@@ -3436,8 +3455,8 @@ async def test_reset_identity_aware_proxy_client_secret_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.DeleteIdentityAwareProxyClientRequest,
-        dict,
+        service.DeleteIdentityAwareProxyClientRequest(),
+        {},
     ],
 )
 def test_delete_identity_aware_proxy_client(request_type, transport: str = "grpc"):
@@ -3448,7 +3467,7 @@ def test_delete_identity_aware_proxy_client(request_type, transport: str = "grpc
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3493,9 +3512,10 @@ def test_delete_identity_aware_proxy_client_non_empty_request_with_auto_populate
         client.delete_identity_aware_proxy_client(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.DeleteIdentityAwareProxyClientRequest(
+        request_msg = service.DeleteIdentityAwareProxyClientRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_identity_aware_proxy_client_use_cached_wrapped_rpc():
@@ -3581,9 +3601,15 @@ async def test_delete_identity_aware_proxy_client_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.DeleteIdentityAwareProxyClientRequest(),
+        {},
+    ],
+)
 async def test_delete_identity_aware_proxy_client_async(
-    transport: str = "grpc_asyncio",
-    request_type=service.DeleteIdentityAwareProxyClientRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = IdentityAwareProxyOAuthServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3592,7 +3618,7 @@ async def test_delete_identity_aware_proxy_client_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3610,11 +3636,6 @@ async def test_delete_identity_aware_proxy_client_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_identity_aware_proxy_client_async_from_dict():
-    await test_delete_identity_aware_proxy_client_async(request_type=dict)
 
 
 def test_delete_identity_aware_proxy_client_field_headers():
@@ -3786,7 +3807,7 @@ def test_list_brands_rest_required_fields(request_type=service.ListBrandsRequest
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_brands_rest_unset_required_fields():
@@ -3905,7 +3926,7 @@ def test_create_brand_rest_required_fields(request_type=service.CreateBrandReque
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_brand_rest_unset_required_fields():
@@ -4031,7 +4052,7 @@ def test_get_brand_rest_required_fields(request_type=service.GetBrandRequest):
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_brand_rest_unset_required_fields():
@@ -4157,7 +4178,7 @@ def test_create_identity_aware_proxy_client_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_identity_aware_proxy_client_rest_unset_required_fields():
@@ -4301,7 +4322,7 @@ def test_list_identity_aware_proxy_clients_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_identity_aware_proxy_clients_rest_unset_required_fields():
@@ -4501,7 +4522,7 @@ def test_get_identity_aware_proxy_client_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_identity_aware_proxy_client_rest_unset_required_fields():
@@ -4633,7 +4654,7 @@ def test_reset_identity_aware_proxy_client_secret_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_reset_identity_aware_proxy_client_secret_rest_unset_required_fields():
@@ -4759,7 +4780,7 @@ def test_delete_identity_aware_proxy_client_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_identity_aware_proxy_client_rest_unset_required_fields():
@@ -4896,7 +4917,6 @@ def test_list_brands_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListBrandsRequest()
-
         assert args[0] == request_msg
 
 
@@ -4917,7 +4937,6 @@ def test_create_brand_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateBrandRequest()
-
         assert args[0] == request_msg
 
 
@@ -4938,7 +4957,6 @@ def test_get_brand_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetBrandRequest()
-
         assert args[0] == request_msg
 
 
@@ -4961,7 +4979,6 @@ def test_create_identity_aware_proxy_client_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateIdentityAwareProxyClientRequest()
-
         assert args[0] == request_msg
 
 
@@ -4984,7 +5001,6 @@ def test_list_identity_aware_proxy_clients_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListIdentityAwareProxyClientsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5007,7 +5023,6 @@ def test_get_identity_aware_proxy_client_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetIdentityAwareProxyClientRequest()
-
         assert args[0] == request_msg
 
 
@@ -5030,7 +5045,6 @@ def test_reset_identity_aware_proxy_client_secret_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ResetIdentityAwareProxyClientSecretRequest()
-
         assert args[0] == request_msg
 
 
@@ -5053,7 +5067,6 @@ def test_delete_identity_aware_proxy_client_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteIdentityAwareProxyClientRequest()
-
         assert args[0] == request_msg
 
 
@@ -5092,7 +5105,6 @@ async def test_list_brands_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListBrandsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5122,7 +5134,6 @@ async def test_create_brand_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateBrandRequest()
-
         assert args[0] == request_msg
 
 
@@ -5152,7 +5163,6 @@ async def test_get_brand_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetBrandRequest()
-
         assert args[0] == request_msg
 
 
@@ -5183,7 +5193,6 @@ async def test_create_identity_aware_proxy_client_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateIdentityAwareProxyClientRequest()
-
         assert args[0] == request_msg
 
 
@@ -5212,7 +5221,6 @@ async def test_list_identity_aware_proxy_clients_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListIdentityAwareProxyClientsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5243,7 +5251,6 @@ async def test_get_identity_aware_proxy_client_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetIdentityAwareProxyClientRequest()
-
         assert args[0] == request_msg
 
 
@@ -5274,7 +5281,6 @@ async def test_reset_identity_aware_proxy_client_secret_empty_call_grpc_asyncio(
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ResetIdentityAwareProxyClientSecretRequest()
-
         assert args[0] == request_msg
 
 
@@ -5299,7 +5305,6 @@ async def test_delete_identity_aware_proxy_client_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteIdentityAwareProxyClientRequest()
-
         assert args[0] == request_msg
 
 
@@ -6553,7 +6558,6 @@ def test_list_brands_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListBrandsRequest()
-
         assert args[0] == request_msg
 
 
@@ -6573,7 +6577,6 @@ def test_create_brand_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateBrandRequest()
-
         assert args[0] == request_msg
 
 
@@ -6593,7 +6596,6 @@ def test_get_brand_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetBrandRequest()
-
         assert args[0] == request_msg
 
 
@@ -6615,7 +6617,6 @@ def test_create_identity_aware_proxy_client_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateIdentityAwareProxyClientRequest()
-
         assert args[0] == request_msg
 
 
@@ -6637,7 +6638,6 @@ def test_list_identity_aware_proxy_clients_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListIdentityAwareProxyClientsRequest()
-
         assert args[0] == request_msg
 
 
@@ -6659,7 +6659,6 @@ def test_get_identity_aware_proxy_client_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetIdentityAwareProxyClientRequest()
-
         assert args[0] == request_msg
 
 
@@ -6681,7 +6680,6 @@ def test_reset_identity_aware_proxy_client_secret_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ResetIdentityAwareProxyClientSecretRequest()
-
         assert args[0] == request_msg
 
 
@@ -6703,7 +6701,6 @@ def test_delete_identity_aware_proxy_client_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteIdentityAwareProxyClientRequest()
-
         assert args[0] == request_msg
 
 

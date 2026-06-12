@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -155,6 +155,9 @@ class DataDiscoverySpec(proto.Message):
                 Optional. Configuration for CSV data.
             json_options (google.cloud.dataplex_v1.types.DataDiscoverySpec.StorageConfig.JsonOptions):
                 Optional. Configuration for JSON data.
+            unstructured_data_options (google.cloud.dataplex_v1.types.DataDiscoverySpec.StorageConfig.UnstructuredDataOptions):
+                Optional. Specifies configuration for
+                unstructured data discovery.
         """
 
         class CsvOptions(proto.Message):
@@ -226,6 +229,21 @@ class DataDiscoverySpec(proto.Message):
                 number=2,
             )
 
+        class UnstructuredDataOptions(proto.Message):
+            r"""Describes options for unstructured data discovery.
+
+            Attributes:
+                semantic_inference_enabled (bool):
+                    Optional. Specifies whether deeper semantic
+                    inference over the objects' contents using GenAI
+                    is enabled.
+            """
+
+            semantic_inference_enabled: bool = proto.Field(
+                proto.BOOL,
+                number=2,
+            )
+
         include_patterns: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=1,
@@ -243,6 +261,11 @@ class DataDiscoverySpec(proto.Message):
             proto.MESSAGE,
             number=4,
             message="DataDiscoverySpec.StorageConfig.JsonOptions",
+        )
+        unstructured_data_options: "DataDiscoverySpec.StorageConfig.UnstructuredDataOptions" = proto.Field(
+            proto.MESSAGE,
+            number=5,
+            message="DataDiscoverySpec.StorageConfig.UnstructuredDataOptions",
         )
 
     bigquery_publishing_config: BigQueryPublishingConfig = proto.Field(

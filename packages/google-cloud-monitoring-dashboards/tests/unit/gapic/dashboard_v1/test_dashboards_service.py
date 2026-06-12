@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import os
 
 # try/except added for compatibility with python < 3.8
@@ -69,6 +70,21 @@ from google.cloud.monitoring_dashboard_v1.types import (
     widget,
     xychart,
 )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 # Anonymous Credentials with universe domain property. If no universe domain is provided, then

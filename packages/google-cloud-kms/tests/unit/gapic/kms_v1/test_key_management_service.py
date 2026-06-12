@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -127,6 +122,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1395,8 +1405,8 @@ def test_key_management_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.ListKeyRingsRequest,
-        dict,
+        service.ListKeyRingsRequest(),
+        {},
     ],
 )
 def test_list_key_rings(request_type, transport: str = "grpc"):
@@ -1407,7 +1417,7 @@ def test_list_key_rings(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_key_rings), "__call__") as call:
@@ -1456,12 +1466,13 @@ def test_list_key_rings_non_empty_request_with_auto_populated_field():
         client.list_key_rings(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListKeyRingsRequest(
+        request_msg = service.ListKeyRingsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_key_rings_use_cached_wrapped_rpc():
@@ -1542,9 +1553,14 @@ async def test_list_key_rings_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_key_rings_async(
-    transport: str = "grpc_asyncio", request_type=service.ListKeyRingsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListKeyRingsRequest(),
+        {},
+    ],
+)
+async def test_list_key_rings_async(request_type, transport: str = "grpc_asyncio"):
     client = KeyManagementServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1552,7 +1568,7 @@ async def test_list_key_rings_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_key_rings), "__call__") as call:
@@ -1575,11 +1591,6 @@ async def test_list_key_rings_async(
     assert isinstance(response, pagers.ListKeyRingsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.total_size == 1086
-
-
-@pytest.mark.asyncio
-async def test_list_key_rings_async_from_dict():
-    await test_list_key_rings_async(request_type=dict)
 
 
 def test_list_key_rings_field_headers():
@@ -1909,11 +1920,7 @@ async def test_list_key_rings_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_key_rings(request={})
-        ).pages:
+        async for page_ in (await client.list_key_rings(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -1922,8 +1929,8 @@ async def test_list_key_rings_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.ListCryptoKeysRequest,
-        dict,
+        service.ListCryptoKeysRequest(),
+        {},
     ],
 )
 def test_list_crypto_keys(request_type, transport: str = "grpc"):
@@ -1934,7 +1941,7 @@ def test_list_crypto_keys(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_crypto_keys), "__call__") as call:
@@ -1983,12 +1990,13 @@ def test_list_crypto_keys_non_empty_request_with_auto_populated_field():
         client.list_crypto_keys(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListCryptoKeysRequest(
+        request_msg = service.ListCryptoKeysRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_crypto_keys_use_cached_wrapped_rpc():
@@ -2071,9 +2079,14 @@ async def test_list_crypto_keys_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_crypto_keys_async(
-    transport: str = "grpc_asyncio", request_type=service.ListCryptoKeysRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListCryptoKeysRequest(),
+        {},
+    ],
+)
+async def test_list_crypto_keys_async(request_type, transport: str = "grpc_asyncio"):
     client = KeyManagementServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2081,7 +2094,7 @@ async def test_list_crypto_keys_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_crypto_keys), "__call__") as call:
@@ -2104,11 +2117,6 @@ async def test_list_crypto_keys_async(
     assert isinstance(response, pagers.ListCryptoKeysAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.total_size == 1086
-
-
-@pytest.mark.asyncio
-async def test_list_crypto_keys_async_from_dict():
-    await test_list_crypto_keys_async(request_type=dict)
 
 
 def test_list_crypto_keys_field_headers():
@@ -2438,11 +2446,7 @@ async def test_list_crypto_keys_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_crypto_keys(request={})
-        ).pages:
+        async for page_ in (await client.list_crypto_keys(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -2451,8 +2455,8 @@ async def test_list_crypto_keys_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.ListCryptoKeyVersionsRequest,
-        dict,
+        service.ListCryptoKeyVersionsRequest(),
+        {},
     ],
 )
 def test_list_crypto_key_versions(request_type, transport: str = "grpc"):
@@ -2463,7 +2467,7 @@ def test_list_crypto_key_versions(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2516,12 +2520,13 @@ def test_list_crypto_key_versions_non_empty_request_with_auto_populated_field():
         client.list_crypto_key_versions(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListCryptoKeyVersionsRequest(
+        request_msg = service.ListCryptoKeyVersionsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_crypto_key_versions_use_cached_wrapped_rpc():
@@ -2607,8 +2612,15 @@ async def test_list_crypto_key_versions_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListCryptoKeyVersionsRequest(),
+        {},
+    ],
+)
 async def test_list_crypto_key_versions_async(
-    transport: str = "grpc_asyncio", request_type=service.ListCryptoKeyVersionsRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = KeyManagementServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2617,7 +2629,7 @@ async def test_list_crypto_key_versions_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2642,11 +2654,6 @@ async def test_list_crypto_key_versions_async(
     assert isinstance(response, pagers.ListCryptoKeyVersionsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.total_size == 1086
-
-
-@pytest.mark.asyncio
-async def test_list_crypto_key_versions_async_from_dict():
-    await test_list_crypto_key_versions_async(request_type=dict)
 
 
 def test_list_crypto_key_versions_field_headers():
@@ -2994,11 +3001,7 @@ async def test_list_crypto_key_versions_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_crypto_key_versions(request={})
-        ).pages:
+        async for page_ in (await client.list_crypto_key_versions(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -3007,8 +3010,8 @@ async def test_list_crypto_key_versions_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.ListImportJobsRequest,
-        dict,
+        service.ListImportJobsRequest(),
+        {},
     ],
 )
 def test_list_import_jobs(request_type, transport: str = "grpc"):
@@ -3019,7 +3022,7 @@ def test_list_import_jobs(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_import_jobs), "__call__") as call:
@@ -3068,12 +3071,13 @@ def test_list_import_jobs_non_empty_request_with_auto_populated_field():
         client.list_import_jobs(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListImportJobsRequest(
+        request_msg = service.ListImportJobsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_import_jobs_use_cached_wrapped_rpc():
@@ -3156,9 +3160,14 @@ async def test_list_import_jobs_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_import_jobs_async(
-    transport: str = "grpc_asyncio", request_type=service.ListImportJobsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListImportJobsRequest(),
+        {},
+    ],
+)
+async def test_list_import_jobs_async(request_type, transport: str = "grpc_asyncio"):
     client = KeyManagementServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3166,7 +3175,7 @@ async def test_list_import_jobs_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_import_jobs), "__call__") as call:
@@ -3189,11 +3198,6 @@ async def test_list_import_jobs_async(
     assert isinstance(response, pagers.ListImportJobsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.total_size == 1086
-
-
-@pytest.mark.asyncio
-async def test_list_import_jobs_async_from_dict():
-    await test_list_import_jobs_async(request_type=dict)
 
 
 def test_list_import_jobs_field_headers():
@@ -3523,11 +3527,7 @@ async def test_list_import_jobs_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_import_jobs(request={})
-        ).pages:
+        async for page_ in (await client.list_import_jobs(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -3536,8 +3536,8 @@ async def test_list_import_jobs_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.ListRetiredResourcesRequest,
-        dict,
+        service.ListRetiredResourcesRequest(),
+        {},
     ],
 )
 def test_list_retired_resources(request_type, transport: str = "grpc"):
@@ -3548,7 +3548,7 @@ def test_list_retired_resources(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3599,10 +3599,11 @@ def test_list_retired_resources_non_empty_request_with_auto_populated_field():
         client.list_retired_resources(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListRetiredResourcesRequest(
+        request_msg = service.ListRetiredResourcesRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_retired_resources_use_cached_wrapped_rpc():
@@ -3688,8 +3689,15 @@ async def test_list_retired_resources_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListRetiredResourcesRequest(),
+        {},
+    ],
+)
 async def test_list_retired_resources_async(
-    transport: str = "grpc_asyncio", request_type=service.ListRetiredResourcesRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = KeyManagementServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3698,7 +3706,7 @@ async def test_list_retired_resources_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3723,11 +3731,6 @@ async def test_list_retired_resources_async(
     assert isinstance(response, pagers.ListRetiredResourcesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.total_size == 1086
-
-
-@pytest.mark.asyncio
-async def test_list_retired_resources_async_from_dict():
-    await test_list_retired_resources_async(request_type=dict)
 
 
 def test_list_retired_resources_field_headers():
@@ -4073,11 +4076,7 @@ async def test_list_retired_resources_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_retired_resources(request={})
-        ).pages:
+        async for page_ in (await client.list_retired_resources(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -4086,8 +4085,8 @@ async def test_list_retired_resources_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.GetKeyRingRequest,
-        dict,
+        service.GetKeyRingRequest(),
+        {},
     ],
 )
 def test_get_key_ring(request_type, transport: str = "grpc"):
@@ -4098,7 +4097,7 @@ def test_get_key_ring(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_key_ring), "__call__") as call:
@@ -4142,9 +4141,10 @@ def test_get_key_ring_non_empty_request_with_auto_populated_field():
         client.get_key_ring(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetKeyRingRequest(
+        request_msg = service.GetKeyRingRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_key_ring_use_cached_wrapped_rpc():
@@ -4225,9 +4225,14 @@ async def test_get_key_ring_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_key_ring_async(
-    transport: str = "grpc_asyncio", request_type=service.GetKeyRingRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetKeyRingRequest(),
+        {},
+    ],
+)
+async def test_get_key_ring_async(request_type, transport: str = "grpc_asyncio"):
     client = KeyManagementServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4235,7 +4240,7 @@ async def test_get_key_ring_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_key_ring), "__call__") as call:
@@ -4256,11 +4261,6 @@ async def test_get_key_ring_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, resources.KeyRing)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_get_key_ring_async_from_dict():
-    await test_get_key_ring_async(request_type=dict)
 
 
 def test_get_key_ring_field_headers():
@@ -4405,8 +4405,8 @@ async def test_get_key_ring_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.GetCryptoKeyRequest,
-        dict,
+        service.GetCryptoKeyRequest(),
+        {},
     ],
 )
 def test_get_crypto_key(request_type, transport: str = "grpc"):
@@ -4417,7 +4417,7 @@ def test_get_crypto_key(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_crypto_key), "__call__") as call:
@@ -4467,9 +4467,10 @@ def test_get_crypto_key_non_empty_request_with_auto_populated_field():
         client.get_crypto_key(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetCryptoKeyRequest(
+        request_msg = service.GetCryptoKeyRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_crypto_key_use_cached_wrapped_rpc():
@@ -4550,9 +4551,14 @@ async def test_get_crypto_key_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_crypto_key_async(
-    transport: str = "grpc_asyncio", request_type=service.GetCryptoKeyRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetCryptoKeyRequest(),
+        {},
+    ],
+)
+async def test_get_crypto_key_async(request_type, transport: str = "grpc_asyncio"):
     client = KeyManagementServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4560,7 +4566,7 @@ async def test_get_crypto_key_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_crypto_key), "__call__") as call:
@@ -4587,11 +4593,6 @@ async def test_get_crypto_key_async(
     assert response.purpose == resources.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT
     assert response.import_only is True
     assert response.crypto_key_backend == "crypto_key_backend_value"
-
-
-@pytest.mark.asyncio
-async def test_get_crypto_key_async_from_dict():
-    await test_get_crypto_key_async(request_type=dict)
 
 
 def test_get_crypto_key_field_headers():
@@ -4736,8 +4737,8 @@ async def test_get_crypto_key_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.GetCryptoKeyVersionRequest,
-        dict,
+        service.GetCryptoKeyVersionRequest(),
+        {},
     ],
 )
 def test_get_crypto_key_version(request_type, transport: str = "grpc"):
@@ -4748,7 +4749,7 @@ def test_get_crypto_key_version(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4821,9 +4822,10 @@ def test_get_crypto_key_version_non_empty_request_with_auto_populated_field():
         client.get_crypto_key_version(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetCryptoKeyVersionRequest(
+        request_msg = service.GetCryptoKeyVersionRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_crypto_key_version_use_cached_wrapped_rpc():
@@ -4909,8 +4911,15 @@ async def test_get_crypto_key_version_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetCryptoKeyVersionRequest(),
+        {},
+    ],
+)
 async def test_get_crypto_key_version_async(
-    transport: str = "grpc_asyncio", request_type=service.GetCryptoKeyVersionRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = KeyManagementServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4919,7 +4928,7 @@ async def test_get_crypto_key_version_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4967,11 +4976,6 @@ async def test_get_crypto_key_version_async(
         == "external_destruction_failure_reason_value"
     )
     assert response.reimport_eligible is True
-
-
-@pytest.mark.asyncio
-async def test_get_crypto_key_version_async_from_dict():
-    await test_get_crypto_key_version_async(request_type=dict)
 
 
 def test_get_crypto_key_version_field_headers():
@@ -5128,8 +5132,8 @@ async def test_get_crypto_key_version_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.GetPublicKeyRequest,
-        dict,
+        service.GetPublicKeyRequest(),
+        {},
     ],
 )
 def test_get_public_key(request_type, transport: str = "grpc"):
@@ -5140,7 +5144,7 @@ def test_get_public_key(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_public_key), "__call__") as call:
@@ -5195,9 +5199,10 @@ def test_get_public_key_non_empty_request_with_auto_populated_field():
         client.get_public_key(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetPublicKeyRequest(
+        request_msg = service.GetPublicKeyRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_public_key_use_cached_wrapped_rpc():
@@ -5278,9 +5283,14 @@ async def test_get_public_key_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_public_key_async(
-    transport: str = "grpc_asyncio", request_type=service.GetPublicKeyRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetPublicKeyRequest(),
+        {},
+    ],
+)
+async def test_get_public_key_async(request_type, transport: str = "grpc_asyncio"):
     client = KeyManagementServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5288,7 +5298,7 @@ async def test_get_public_key_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_public_key), "__call__") as call:
@@ -5320,11 +5330,6 @@ async def test_get_public_key_async(
     assert response.name == "name_value"
     assert response.protection_level == resources.ProtectionLevel.SOFTWARE
     assert response.public_key_format == resources.PublicKey.PublicKeyFormat.PEM
-
-
-@pytest.mark.asyncio
-async def test_get_public_key_async_from_dict():
-    await test_get_public_key_async(request_type=dict)
 
 
 def test_get_public_key_field_headers():
@@ -5469,8 +5474,8 @@ async def test_get_public_key_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.GetImportJobRequest,
-        dict,
+        service.GetImportJobRequest(),
+        {},
     ],
 )
 def test_get_import_job(request_type, transport: str = "grpc"):
@@ -5481,7 +5486,7 @@ def test_get_import_job(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_import_job), "__call__") as call:
@@ -5536,9 +5541,10 @@ def test_get_import_job_non_empty_request_with_auto_populated_field():
         client.get_import_job(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetImportJobRequest(
+        request_msg = service.GetImportJobRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_import_job_use_cached_wrapped_rpc():
@@ -5619,9 +5625,14 @@ async def test_get_import_job_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_import_job_async(
-    transport: str = "grpc_asyncio", request_type=service.GetImportJobRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetImportJobRequest(),
+        {},
+    ],
+)
+async def test_get_import_job_async(request_type, transport: str = "grpc_asyncio"):
     client = KeyManagementServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5629,7 +5640,7 @@ async def test_get_import_job_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_import_job), "__call__") as call:
@@ -5661,11 +5672,6 @@ async def test_get_import_job_async(
     assert response.protection_level == resources.ProtectionLevel.SOFTWARE
     assert response.state == resources.ImportJob.ImportJobState.PENDING_GENERATION
     assert response.crypto_key_backend == "crypto_key_backend_value"
-
-
-@pytest.mark.asyncio
-async def test_get_import_job_async_from_dict():
-    await test_get_import_job_async(request_type=dict)
 
 
 def test_get_import_job_field_headers():
@@ -5810,8 +5816,8 @@ async def test_get_import_job_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.GetRetiredResourceRequest,
-        dict,
+        service.GetRetiredResourceRequest(),
+        {},
     ],
 )
 def test_get_retired_resource(request_type, transport: str = "grpc"):
@@ -5822,7 +5828,7 @@ def test_get_retired_resource(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5874,9 +5880,10 @@ def test_get_retired_resource_non_empty_request_with_auto_populated_field():
         client.get_retired_resource(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetRetiredResourceRequest(
+        request_msg = service.GetRetiredResourceRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_retired_resource_use_cached_wrapped_rpc():
@@ -5961,8 +5968,15 @@ async def test_get_retired_resource_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetRetiredResourceRequest(),
+        {},
+    ],
+)
 async def test_get_retired_resource_async(
-    transport: str = "grpc_asyncio", request_type=service.GetRetiredResourceRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = KeyManagementServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5971,7 +5985,7 @@ async def test_get_retired_resource_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5998,11 +6012,6 @@ async def test_get_retired_resource_async(
     assert response.name == "name_value"
     assert response.original_resource == "original_resource_value"
     assert response.resource_type == "resource_type_value"
-
-
-@pytest.mark.asyncio
-async def test_get_retired_resource_async_from_dict():
-    await test_get_retired_resource_async(request_type=dict)
 
 
 def test_get_retired_resource_field_headers():
@@ -6159,8 +6168,8 @@ async def test_get_retired_resource_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.CreateKeyRingRequest,
-        dict,
+        service.CreateKeyRingRequest(),
+        {},
     ],
 )
 def test_create_key_ring(request_type, transport: str = "grpc"):
@@ -6171,7 +6180,7 @@ def test_create_key_ring(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_key_ring), "__call__") as call:
@@ -6216,10 +6225,11 @@ def test_create_key_ring_non_empty_request_with_auto_populated_field():
         client.create_key_ring(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CreateKeyRingRequest(
+        request_msg = service.CreateKeyRingRequest(
             parent="parent_value",
             key_ring_id="key_ring_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_key_ring_use_cached_wrapped_rpc():
@@ -6300,9 +6310,14 @@ async def test_create_key_ring_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_key_ring_async(
-    transport: str = "grpc_asyncio", request_type=service.CreateKeyRingRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.CreateKeyRingRequest(),
+        {},
+    ],
+)
+async def test_create_key_ring_async(request_type, transport: str = "grpc_asyncio"):
     client = KeyManagementServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6310,7 +6325,7 @@ async def test_create_key_ring_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_key_ring), "__call__") as call:
@@ -6331,11 +6346,6 @@ async def test_create_key_ring_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, resources.KeyRing)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_create_key_ring_async_from_dict():
-    await test_create_key_ring_async(request_type=dict)
 
 
 def test_create_key_ring_field_headers():
@@ -6500,8 +6510,8 @@ async def test_create_key_ring_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.CreateCryptoKeyRequest,
-        dict,
+        service.CreateCryptoKeyRequest(),
+        {},
     ],
 )
 def test_create_crypto_key(request_type, transport: str = "grpc"):
@@ -6512,7 +6522,7 @@ def test_create_crypto_key(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6567,10 +6577,11 @@ def test_create_crypto_key_non_empty_request_with_auto_populated_field():
         client.create_crypto_key(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CreateCryptoKeyRequest(
+        request_msg = service.CreateCryptoKeyRequest(
             parent="parent_value",
             crypto_key_id="crypto_key_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_crypto_key_use_cached_wrapped_rpc():
@@ -6653,9 +6664,14 @@ async def test_create_crypto_key_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_crypto_key_async(
-    transport: str = "grpc_asyncio", request_type=service.CreateCryptoKeyRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.CreateCryptoKeyRequest(),
+        {},
+    ],
+)
+async def test_create_crypto_key_async(request_type, transport: str = "grpc_asyncio"):
     client = KeyManagementServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6663,7 +6679,7 @@ async def test_create_crypto_key_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6692,11 +6708,6 @@ async def test_create_crypto_key_async(
     assert response.purpose == resources.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT
     assert response.import_only is True
     assert response.crypto_key_backend == "crypto_key_backend_value"
-
-
-@pytest.mark.asyncio
-async def test_create_crypto_key_async_from_dict():
-    await test_create_crypto_key_async(request_type=dict)
 
 
 def test_create_crypto_key_field_headers():
@@ -6869,8 +6880,8 @@ async def test_create_crypto_key_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.CreateCryptoKeyVersionRequest,
-        dict,
+        service.CreateCryptoKeyVersionRequest(),
+        {},
     ],
 )
 def test_create_crypto_key_version(request_type, transport: str = "grpc"):
@@ -6881,7 +6892,7 @@ def test_create_crypto_key_version(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6954,9 +6965,10 @@ def test_create_crypto_key_version_non_empty_request_with_auto_populated_field()
         client.create_crypto_key_version(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CreateCryptoKeyVersionRequest(
+        request_msg = service.CreateCryptoKeyVersionRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_crypto_key_version_use_cached_wrapped_rpc():
@@ -7042,8 +7054,15 @@ async def test_create_crypto_key_version_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.CreateCryptoKeyVersionRequest(),
+        {},
+    ],
+)
 async def test_create_crypto_key_version_async(
-    transport: str = "grpc_asyncio", request_type=service.CreateCryptoKeyVersionRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = KeyManagementServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -7052,7 +7071,7 @@ async def test_create_crypto_key_version_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7100,11 +7119,6 @@ async def test_create_crypto_key_version_async(
         == "external_destruction_failure_reason_value"
     )
     assert response.reimport_eligible is True
-
-
-@pytest.mark.asyncio
-async def test_create_crypto_key_version_async_from_dict():
-    await test_create_crypto_key_version_async(request_type=dict)
 
 
 def test_create_crypto_key_version_field_headers():
@@ -7271,8 +7285,8 @@ async def test_create_crypto_key_version_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.DeleteCryptoKeyRequest,
-        dict,
+        service.DeleteCryptoKeyRequest(),
+        {},
     ],
 )
 def test_delete_crypto_key(request_type, transport: str = "grpc"):
@@ -7283,7 +7297,7 @@ def test_delete_crypto_key(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7328,9 +7342,10 @@ def test_delete_crypto_key_non_empty_request_with_auto_populated_field():
         client.delete_crypto_key(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.DeleteCryptoKeyRequest(
+        request_msg = service.DeleteCryptoKeyRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_crypto_key_use_cached_wrapped_rpc():
@@ -7423,9 +7438,14 @@ async def test_delete_crypto_key_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_crypto_key_async(
-    transport: str = "grpc_asyncio", request_type=service.DeleteCryptoKeyRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.DeleteCryptoKeyRequest(),
+        {},
+    ],
+)
+async def test_delete_crypto_key_async(request_type, transport: str = "grpc_asyncio"):
     client = KeyManagementServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7433,7 +7453,7 @@ async def test_delete_crypto_key_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7453,11 +7473,6 @@ async def test_delete_crypto_key_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_crypto_key_async_from_dict():
-    await test_delete_crypto_key_async(request_type=dict)
 
 
 def test_delete_crypto_key_field_headers():
@@ -7614,8 +7629,8 @@ async def test_delete_crypto_key_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.DeleteCryptoKeyVersionRequest,
-        dict,
+        service.DeleteCryptoKeyVersionRequest(),
+        {},
     ],
 )
 def test_delete_crypto_key_version(request_type, transport: str = "grpc"):
@@ -7626,7 +7641,7 @@ def test_delete_crypto_key_version(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7671,9 +7686,10 @@ def test_delete_crypto_key_version_non_empty_request_with_auto_populated_field()
         client.delete_crypto_key_version(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.DeleteCryptoKeyVersionRequest(
+        request_msg = service.DeleteCryptoKeyVersionRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_crypto_key_version_use_cached_wrapped_rpc():
@@ -7769,8 +7785,15 @@ async def test_delete_crypto_key_version_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.DeleteCryptoKeyVersionRequest(),
+        {},
+    ],
+)
 async def test_delete_crypto_key_version_async(
-    transport: str = "grpc_asyncio", request_type=service.DeleteCryptoKeyVersionRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = KeyManagementServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -7779,7 +7802,7 @@ async def test_delete_crypto_key_version_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7799,11 +7822,6 @@ async def test_delete_crypto_key_version_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_crypto_key_version_async_from_dict():
-    await test_delete_crypto_key_version_async(request_type=dict)
 
 
 def test_delete_crypto_key_version_field_headers():
@@ -7960,8 +7978,8 @@ async def test_delete_crypto_key_version_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.ImportCryptoKeyVersionRequest,
-        dict,
+        service.ImportCryptoKeyVersionRequest(),
+        {},
     ],
 )
 def test_import_crypto_key_version(request_type, transport: str = "grpc"):
@@ -7972,7 +7990,7 @@ def test_import_crypto_key_version(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8047,11 +8065,12 @@ def test_import_crypto_key_version_non_empty_request_with_auto_populated_field()
         client.import_crypto_key_version(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ImportCryptoKeyVersionRequest(
+        request_msg = service.ImportCryptoKeyVersionRequest(
             parent="parent_value",
             crypto_key_version="crypto_key_version_value",
             import_job="import_job_value",
         )
+        assert args[0] == request_msg
 
 
 def test_import_crypto_key_version_use_cached_wrapped_rpc():
@@ -8137,8 +8156,15 @@ async def test_import_crypto_key_version_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ImportCryptoKeyVersionRequest(),
+        {},
+    ],
+)
 async def test_import_crypto_key_version_async(
-    transport: str = "grpc_asyncio", request_type=service.ImportCryptoKeyVersionRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = KeyManagementServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -8147,7 +8173,7 @@ async def test_import_crypto_key_version_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8195,11 +8221,6 @@ async def test_import_crypto_key_version_async(
         == "external_destruction_failure_reason_value"
     )
     assert response.reimport_eligible is True
-
-
-@pytest.mark.asyncio
-async def test_import_crypto_key_version_async_from_dict():
-    await test_import_crypto_key_version_async(request_type=dict)
 
 
 def test_import_crypto_key_version_field_headers():
@@ -8270,8 +8291,8 @@ async def test_import_crypto_key_version_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.CreateImportJobRequest,
-        dict,
+        service.CreateImportJobRequest(),
+        {},
     ],
 )
 def test_create_import_job(request_type, transport: str = "grpc"):
@@ -8282,7 +8303,7 @@ def test_create_import_job(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8342,10 +8363,11 @@ def test_create_import_job_non_empty_request_with_auto_populated_field():
         client.create_import_job(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CreateImportJobRequest(
+        request_msg = service.CreateImportJobRequest(
             parent="parent_value",
             import_job_id="import_job_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_import_job_use_cached_wrapped_rpc():
@@ -8428,9 +8450,14 @@ async def test_create_import_job_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_import_job_async(
-    transport: str = "grpc_asyncio", request_type=service.CreateImportJobRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.CreateImportJobRequest(),
+        {},
+    ],
+)
+async def test_create_import_job_async(request_type, transport: str = "grpc_asyncio"):
     client = KeyManagementServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -8438,7 +8465,7 @@ async def test_create_import_job_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8472,11 +8499,6 @@ async def test_create_import_job_async(
     assert response.protection_level == resources.ProtectionLevel.SOFTWARE
     assert response.state == resources.ImportJob.ImportJobState.PENDING_GENERATION
     assert response.crypto_key_backend == "crypto_key_backend_value"
-
-
-@pytest.mark.asyncio
-async def test_create_import_job_async_from_dict():
-    await test_create_import_job_async(request_type=dict)
 
 
 def test_create_import_job_field_headers():
@@ -8649,8 +8671,8 @@ async def test_create_import_job_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.UpdateCryptoKeyRequest,
-        dict,
+        service.UpdateCryptoKeyRequest(),
+        {},
     ],
 )
 def test_update_crypto_key(request_type, transport: str = "grpc"):
@@ -8661,7 +8683,7 @@ def test_update_crypto_key(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8713,7 +8735,8 @@ def test_update_crypto_key_non_empty_request_with_auto_populated_field():
         client.update_crypto_key(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.UpdateCryptoKeyRequest()
+        request_msg = service.UpdateCryptoKeyRequest()
+        assert args[0] == request_msg
 
 
 def test_update_crypto_key_use_cached_wrapped_rpc():
@@ -8796,9 +8819,14 @@ async def test_update_crypto_key_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_crypto_key_async(
-    transport: str = "grpc_asyncio", request_type=service.UpdateCryptoKeyRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.UpdateCryptoKeyRequest(),
+        {},
+    ],
+)
+async def test_update_crypto_key_async(request_type, transport: str = "grpc_asyncio"):
     client = KeyManagementServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -8806,7 +8834,7 @@ async def test_update_crypto_key_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8835,11 +8863,6 @@ async def test_update_crypto_key_async(
     assert response.purpose == resources.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT
     assert response.import_only is True
     assert response.crypto_key_backend == "crypto_key_backend_value"
-
-
-@pytest.mark.asyncio
-async def test_update_crypto_key_async_from_dict():
-    await test_update_crypto_key_async(request_type=dict)
 
 
 def test_update_crypto_key_field_headers():
@@ -9002,8 +9025,8 @@ async def test_update_crypto_key_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.UpdateCryptoKeyVersionRequest,
-        dict,
+        service.UpdateCryptoKeyVersionRequest(),
+        {},
     ],
 )
 def test_update_crypto_key_version(request_type, transport: str = "grpc"):
@@ -9014,7 +9037,7 @@ def test_update_crypto_key_version(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9085,7 +9108,8 @@ def test_update_crypto_key_version_non_empty_request_with_auto_populated_field()
         client.update_crypto_key_version(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.UpdateCryptoKeyVersionRequest()
+        request_msg = service.UpdateCryptoKeyVersionRequest()
+        assert args[0] == request_msg
 
 
 def test_update_crypto_key_version_use_cached_wrapped_rpc():
@@ -9171,8 +9195,15 @@ async def test_update_crypto_key_version_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.UpdateCryptoKeyVersionRequest(),
+        {},
+    ],
+)
 async def test_update_crypto_key_version_async(
-    transport: str = "grpc_asyncio", request_type=service.UpdateCryptoKeyVersionRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = KeyManagementServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -9181,7 +9212,7 @@ async def test_update_crypto_key_version_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9229,11 +9260,6 @@ async def test_update_crypto_key_version_async(
         == "external_destruction_failure_reason_value"
     )
     assert response.reimport_eligible is True
-
-
-@pytest.mark.asyncio
-async def test_update_crypto_key_version_async_from_dict():
-    await test_update_crypto_key_version_async(request_type=dict)
 
 
 def test_update_crypto_key_version_field_headers():
@@ -9400,8 +9426,8 @@ async def test_update_crypto_key_version_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.UpdateCryptoKeyPrimaryVersionRequest,
-        dict,
+        service.UpdateCryptoKeyPrimaryVersionRequest(),
+        {},
     ],
 )
 def test_update_crypto_key_primary_version(request_type, transport: str = "grpc"):
@@ -9412,7 +9438,7 @@ def test_update_crypto_key_primary_version(request_type, transport: str = "grpc"
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9467,10 +9493,11 @@ def test_update_crypto_key_primary_version_non_empty_request_with_auto_populated
         client.update_crypto_key_primary_version(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.UpdateCryptoKeyPrimaryVersionRequest(
+        request_msg = service.UpdateCryptoKeyPrimaryVersionRequest(
             name="name_value",
             crypto_key_version_id="crypto_key_version_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_crypto_key_primary_version_use_cached_wrapped_rpc():
@@ -9556,9 +9583,15 @@ async def test_update_crypto_key_primary_version_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.UpdateCryptoKeyPrimaryVersionRequest(),
+        {},
+    ],
+)
 async def test_update_crypto_key_primary_version_async(
-    transport: str = "grpc_asyncio",
-    request_type=service.UpdateCryptoKeyPrimaryVersionRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = KeyManagementServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -9567,7 +9600,7 @@ async def test_update_crypto_key_primary_version_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9596,11 +9629,6 @@ async def test_update_crypto_key_primary_version_async(
     assert response.purpose == resources.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT
     assert response.import_only is True
     assert response.crypto_key_backend == "crypto_key_backend_value"
-
-
-@pytest.mark.asyncio
-async def test_update_crypto_key_primary_version_async_from_dict():
-    await test_update_crypto_key_primary_version_async(request_type=dict)
 
 
 def test_update_crypto_key_primary_version_field_headers():
@@ -9763,8 +9791,8 @@ async def test_update_crypto_key_primary_version_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.DestroyCryptoKeyVersionRequest,
-        dict,
+        service.DestroyCryptoKeyVersionRequest(),
+        {},
     ],
 )
 def test_destroy_crypto_key_version(request_type, transport: str = "grpc"):
@@ -9775,7 +9803,7 @@ def test_destroy_crypto_key_version(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9848,9 +9876,10 @@ def test_destroy_crypto_key_version_non_empty_request_with_auto_populated_field(
         client.destroy_crypto_key_version(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.DestroyCryptoKeyVersionRequest(
+        request_msg = service.DestroyCryptoKeyVersionRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_destroy_crypto_key_version_use_cached_wrapped_rpc():
@@ -9936,8 +9965,15 @@ async def test_destroy_crypto_key_version_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.DestroyCryptoKeyVersionRequest(),
+        {},
+    ],
+)
 async def test_destroy_crypto_key_version_async(
-    transport: str = "grpc_asyncio", request_type=service.DestroyCryptoKeyVersionRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = KeyManagementServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -9946,7 +9982,7 @@ async def test_destroy_crypto_key_version_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9994,11 +10030,6 @@ async def test_destroy_crypto_key_version_async(
         == "external_destruction_failure_reason_value"
     )
     assert response.reimport_eligible is True
-
-
-@pytest.mark.asyncio
-async def test_destroy_crypto_key_version_async_from_dict():
-    await test_destroy_crypto_key_version_async(request_type=dict)
 
 
 def test_destroy_crypto_key_version_field_headers():
@@ -10155,8 +10186,8 @@ async def test_destroy_crypto_key_version_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.RestoreCryptoKeyVersionRequest,
-        dict,
+        service.RestoreCryptoKeyVersionRequest(),
+        {},
     ],
 )
 def test_restore_crypto_key_version(request_type, transport: str = "grpc"):
@@ -10167,7 +10198,7 @@ def test_restore_crypto_key_version(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10240,9 +10271,10 @@ def test_restore_crypto_key_version_non_empty_request_with_auto_populated_field(
         client.restore_crypto_key_version(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.RestoreCryptoKeyVersionRequest(
+        request_msg = service.RestoreCryptoKeyVersionRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_restore_crypto_key_version_use_cached_wrapped_rpc():
@@ -10328,8 +10360,15 @@ async def test_restore_crypto_key_version_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.RestoreCryptoKeyVersionRequest(),
+        {},
+    ],
+)
 async def test_restore_crypto_key_version_async(
-    transport: str = "grpc_asyncio", request_type=service.RestoreCryptoKeyVersionRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = KeyManagementServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -10338,7 +10377,7 @@ async def test_restore_crypto_key_version_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10386,11 +10425,6 @@ async def test_restore_crypto_key_version_async(
         == "external_destruction_failure_reason_value"
     )
     assert response.reimport_eligible is True
-
-
-@pytest.mark.asyncio
-async def test_restore_crypto_key_version_async_from_dict():
-    await test_restore_crypto_key_version_async(request_type=dict)
 
 
 def test_restore_crypto_key_version_field_headers():
@@ -10547,8 +10581,8 @@ async def test_restore_crypto_key_version_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.EncryptRequest,
-        dict,
+        service.EncryptRequest(),
+        {},
     ],
 )
 def test_encrypt(request_type, transport: str = "grpc"):
@@ -10559,7 +10593,7 @@ def test_encrypt(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.encrypt), "__call__") as call:
@@ -10611,9 +10645,10 @@ def test_encrypt_non_empty_request_with_auto_populated_field():
         client.encrypt(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.EncryptRequest(
+        request_msg = service.EncryptRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_encrypt_use_cached_wrapped_rpc():
@@ -10692,9 +10727,14 @@ async def test_encrypt_async_use_cached_wrapped_rpc(transport: str = "grpc_async
 
 
 @pytest.mark.asyncio
-async def test_encrypt_async(
-    transport: str = "grpc_asyncio", request_type=service.EncryptRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.EncryptRequest(),
+        {},
+    ],
+)
+async def test_encrypt_async(request_type, transport: str = "grpc_asyncio"):
     client = KeyManagementServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -10702,7 +10742,7 @@ async def test_encrypt_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.encrypt), "__call__") as call:
@@ -10731,11 +10771,6 @@ async def test_encrypt_async(
     assert response.verified_plaintext_crc32c is True
     assert response.verified_additional_authenticated_data_crc32c is True
     assert response.protection_level == resources.ProtectionLevel.SOFTWARE
-
-
-@pytest.mark.asyncio
-async def test_encrypt_async_from_dict():
-    await test_encrypt_async(request_type=dict)
 
 
 def test_encrypt_field_headers():
@@ -10894,8 +10929,8 @@ async def test_encrypt_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.DecryptRequest,
-        dict,
+        service.DecryptRequest(),
+        {},
     ],
 )
 def test_decrypt(request_type, transport: str = "grpc"):
@@ -10906,7 +10941,7 @@ def test_decrypt(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.decrypt), "__call__") as call:
@@ -10954,9 +10989,10 @@ def test_decrypt_non_empty_request_with_auto_populated_field():
         client.decrypt(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.DecryptRequest(
+        request_msg = service.DecryptRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_decrypt_use_cached_wrapped_rpc():
@@ -11035,9 +11071,14 @@ async def test_decrypt_async_use_cached_wrapped_rpc(transport: str = "grpc_async
 
 
 @pytest.mark.asyncio
-async def test_decrypt_async(
-    transport: str = "grpc_asyncio", request_type=service.DecryptRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.DecryptRequest(),
+        {},
+    ],
+)
+async def test_decrypt_async(request_type, transport: str = "grpc_asyncio"):
     client = KeyManagementServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -11045,7 +11086,7 @@ async def test_decrypt_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.decrypt), "__call__") as call:
@@ -11070,11 +11111,6 @@ async def test_decrypt_async(
     assert response.plaintext == b"plaintext_blob"
     assert response.used_primary is True
     assert response.protection_level == resources.ProtectionLevel.SOFTWARE
-
-
-@pytest.mark.asyncio
-async def test_decrypt_async_from_dict():
-    await test_decrypt_async(request_type=dict)
 
 
 def test_decrypt_field_headers():
@@ -11233,8 +11269,8 @@ async def test_decrypt_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.RawEncryptRequest,
-        dict,
+        service.RawEncryptRequest(),
+        {},
     ],
 )
 def test_raw_encrypt(request_type, transport: str = "grpc"):
@@ -11245,7 +11281,7 @@ def test_raw_encrypt(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.raw_encrypt), "__call__") as call:
@@ -11303,9 +11339,10 @@ def test_raw_encrypt_non_empty_request_with_auto_populated_field():
         client.raw_encrypt(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.RawEncryptRequest(
+        request_msg = service.RawEncryptRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_raw_encrypt_use_cached_wrapped_rpc():
@@ -11386,9 +11423,14 @@ async def test_raw_encrypt_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_raw_encrypt_async(
-    transport: str = "grpc_asyncio", request_type=service.RawEncryptRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.RawEncryptRequest(),
+        {},
+    ],
+)
+async def test_raw_encrypt_async(request_type, transport: str = "grpc_asyncio"):
     client = KeyManagementServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -11396,7 +11438,7 @@ async def test_raw_encrypt_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.raw_encrypt), "__call__") as call:
@@ -11431,11 +11473,6 @@ async def test_raw_encrypt_async(
     assert response.verified_initialization_vector_crc32c is True
     assert response.name == "name_value"
     assert response.protection_level == resources.ProtectionLevel.SOFTWARE
-
-
-@pytest.mark.asyncio
-async def test_raw_encrypt_async_from_dict():
-    await test_raw_encrypt_async(request_type=dict)
 
 
 def test_raw_encrypt_field_headers():
@@ -11502,8 +11539,8 @@ async def test_raw_encrypt_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.RawDecryptRequest,
-        dict,
+        service.RawDecryptRequest(),
+        {},
     ],
 )
 def test_raw_decrypt(request_type, transport: str = "grpc"):
@@ -11514,7 +11551,7 @@ def test_raw_decrypt(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.raw_decrypt), "__call__") as call:
@@ -11566,9 +11603,10 @@ def test_raw_decrypt_non_empty_request_with_auto_populated_field():
         client.raw_decrypt(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.RawDecryptRequest(
+        request_msg = service.RawDecryptRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_raw_decrypt_use_cached_wrapped_rpc():
@@ -11649,9 +11687,14 @@ async def test_raw_decrypt_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_raw_decrypt_async(
-    transport: str = "grpc_asyncio", request_type=service.RawDecryptRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.RawDecryptRequest(),
+        {},
+    ],
+)
+async def test_raw_decrypt_async(request_type, transport: str = "grpc_asyncio"):
     client = KeyManagementServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -11659,7 +11702,7 @@ async def test_raw_decrypt_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.raw_decrypt), "__call__") as call:
@@ -11688,11 +11731,6 @@ async def test_raw_decrypt_async(
     assert response.verified_ciphertext_crc32c is True
     assert response.verified_additional_authenticated_data_crc32c is True
     assert response.verified_initialization_vector_crc32c is True
-
-
-@pytest.mark.asyncio
-async def test_raw_decrypt_async_from_dict():
-    await test_raw_decrypt_async(request_type=dict)
 
 
 def test_raw_decrypt_field_headers():
@@ -11759,8 +11797,8 @@ async def test_raw_decrypt_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.AsymmetricSignRequest,
-        dict,
+        service.AsymmetricSignRequest(),
+        {},
     ],
 )
 def test_asymmetric_sign(request_type, transport: str = "grpc"):
@@ -11771,7 +11809,7 @@ def test_asymmetric_sign(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.asymmetric_sign), "__call__") as call:
@@ -11823,9 +11861,10 @@ def test_asymmetric_sign_non_empty_request_with_auto_populated_field():
         client.asymmetric_sign(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.AsymmetricSignRequest(
+        request_msg = service.AsymmetricSignRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_asymmetric_sign_use_cached_wrapped_rpc():
@@ -11906,9 +11945,14 @@ async def test_asymmetric_sign_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_asymmetric_sign_async(
-    transport: str = "grpc_asyncio", request_type=service.AsymmetricSignRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.AsymmetricSignRequest(),
+        {},
+    ],
+)
+async def test_asymmetric_sign_async(request_type, transport: str = "grpc_asyncio"):
     client = KeyManagementServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -11916,7 +11960,7 @@ async def test_asymmetric_sign_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.asymmetric_sign), "__call__") as call:
@@ -11945,11 +11989,6 @@ async def test_asymmetric_sign_async(
     assert response.name == "name_value"
     assert response.verified_data_crc32c is True
     assert response.protection_level == resources.ProtectionLevel.SOFTWARE
-
-
-@pytest.mark.asyncio
-async def test_asymmetric_sign_async_from_dict():
-    await test_asymmetric_sign_async(request_type=dict)
 
 
 def test_asymmetric_sign_field_headers():
@@ -12108,8 +12147,8 @@ async def test_asymmetric_sign_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.AsymmetricDecryptRequest,
-        dict,
+        service.AsymmetricDecryptRequest(),
+        {},
     ],
 )
 def test_asymmetric_decrypt(request_type, transport: str = "grpc"):
@@ -12120,7 +12159,7 @@ def test_asymmetric_decrypt(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12172,9 +12211,10 @@ def test_asymmetric_decrypt_non_empty_request_with_auto_populated_field():
         client.asymmetric_decrypt(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.AsymmetricDecryptRequest(
+        request_msg = service.AsymmetricDecryptRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_asymmetric_decrypt_use_cached_wrapped_rpc():
@@ -12259,9 +12299,14 @@ async def test_asymmetric_decrypt_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_asymmetric_decrypt_async(
-    transport: str = "grpc_asyncio", request_type=service.AsymmetricDecryptRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.AsymmetricDecryptRequest(),
+        {},
+    ],
+)
+async def test_asymmetric_decrypt_async(request_type, transport: str = "grpc_asyncio"):
     client = KeyManagementServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -12269,7 +12314,7 @@ async def test_asymmetric_decrypt_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12296,11 +12341,6 @@ async def test_asymmetric_decrypt_async(
     assert response.plaintext == b"plaintext_blob"
     assert response.verified_ciphertext_crc32c is True
     assert response.protection_level == resources.ProtectionLevel.SOFTWARE
-
-
-@pytest.mark.asyncio
-async def test_asymmetric_decrypt_async_from_dict():
-    await test_asymmetric_decrypt_async(request_type=dict)
 
 
 def test_asymmetric_decrypt_field_headers():
@@ -12467,8 +12507,8 @@ async def test_asymmetric_decrypt_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.MacSignRequest,
-        dict,
+        service.MacSignRequest(),
+        {},
     ],
 )
 def test_mac_sign(request_type, transport: str = "grpc"):
@@ -12479,7 +12519,7 @@ def test_mac_sign(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.mac_sign), "__call__") as call:
@@ -12529,9 +12569,10 @@ def test_mac_sign_non_empty_request_with_auto_populated_field():
         client.mac_sign(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.MacSignRequest(
+        request_msg = service.MacSignRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_mac_sign_use_cached_wrapped_rpc():
@@ -12610,9 +12651,14 @@ async def test_mac_sign_async_use_cached_wrapped_rpc(transport: str = "grpc_asyn
 
 
 @pytest.mark.asyncio
-async def test_mac_sign_async(
-    transport: str = "grpc_asyncio", request_type=service.MacSignRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.MacSignRequest(),
+        {},
+    ],
+)
+async def test_mac_sign_async(request_type, transport: str = "grpc_asyncio"):
     client = KeyManagementServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -12620,7 +12666,7 @@ async def test_mac_sign_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.mac_sign), "__call__") as call:
@@ -12647,11 +12693,6 @@ async def test_mac_sign_async(
     assert response.mac == b"mac_blob"
     assert response.verified_data_crc32c is True
     assert response.protection_level == resources.ProtectionLevel.SOFTWARE
-
-
-@pytest.mark.asyncio
-async def test_mac_sign_async_from_dict():
-    await test_mac_sign_async(request_type=dict)
 
 
 def test_mac_sign_field_headers():
@@ -12810,8 +12851,8 @@ async def test_mac_sign_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.MacVerifyRequest,
-        dict,
+        service.MacVerifyRequest(),
+        {},
     ],
 )
 def test_mac_verify(request_type, transport: str = "grpc"):
@@ -12822,7 +12863,7 @@ def test_mac_verify(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.mac_verify), "__call__") as call:
@@ -12876,9 +12917,10 @@ def test_mac_verify_non_empty_request_with_auto_populated_field():
         client.mac_verify(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.MacVerifyRequest(
+        request_msg = service.MacVerifyRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_mac_verify_use_cached_wrapped_rpc():
@@ -12957,9 +12999,14 @@ async def test_mac_verify_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_mac_verify_async(
-    transport: str = "grpc_asyncio", request_type=service.MacVerifyRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.MacVerifyRequest(),
+        {},
+    ],
+)
+async def test_mac_verify_async(request_type, transport: str = "grpc_asyncio"):
     client = KeyManagementServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -12967,7 +13014,7 @@ async def test_mac_verify_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.mac_verify), "__call__") as call:
@@ -12998,11 +13045,6 @@ async def test_mac_verify_async(
     assert response.verified_mac_crc32c is True
     assert response.verified_success_integrity is True
     assert response.protection_level == resources.ProtectionLevel.SOFTWARE
-
-
-@pytest.mark.asyncio
-async def test_mac_verify_async_from_dict():
-    await test_mac_verify_async(request_type=dict)
 
 
 def test_mac_verify_field_headers():
@@ -13171,8 +13213,8 @@ async def test_mac_verify_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.DecapsulateRequest,
-        dict,
+        service.DecapsulateRequest(),
+        {},
     ],
 )
 def test_decapsulate(request_type, transport: str = "grpc"):
@@ -13183,7 +13225,7 @@ def test_decapsulate(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.decapsulate), "__call__") as call:
@@ -13235,9 +13277,10 @@ def test_decapsulate_non_empty_request_with_auto_populated_field():
         client.decapsulate(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.DecapsulateRequest(
+        request_msg = service.DecapsulateRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_decapsulate_use_cached_wrapped_rpc():
@@ -13318,9 +13361,14 @@ async def test_decapsulate_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_decapsulate_async(
-    transport: str = "grpc_asyncio", request_type=service.DecapsulateRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.DecapsulateRequest(),
+        {},
+    ],
+)
+async def test_decapsulate_async(request_type, transport: str = "grpc_asyncio"):
     client = KeyManagementServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -13328,7 +13376,7 @@ async def test_decapsulate_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.decapsulate), "__call__") as call:
@@ -13357,11 +13405,6 @@ async def test_decapsulate_async(
     assert response.shared_secret_crc32c == 1979
     assert response.verified_ciphertext_crc32c is True
     assert response.protection_level == resources.ProtectionLevel.SOFTWARE
-
-
-@pytest.mark.asyncio
-async def test_decapsulate_async_from_dict():
-    await test_decapsulate_async(request_type=dict)
 
 
 def test_decapsulate_field_headers():
@@ -13428,8 +13471,8 @@ async def test_decapsulate_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.GenerateRandomBytesRequest,
-        dict,
+        service.GenerateRandomBytesRequest(),
+        {},
     ],
 )
 def test_generate_random_bytes(request_type, transport: str = "grpc"):
@@ -13440,7 +13483,7 @@ def test_generate_random_bytes(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -13488,9 +13531,10 @@ def test_generate_random_bytes_non_empty_request_with_auto_populated_field():
         client.generate_random_bytes(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GenerateRandomBytesRequest(
+        request_msg = service.GenerateRandomBytesRequest(
             location="location_value",
         )
+        assert args[0] == request_msg
 
 
 def test_generate_random_bytes_use_cached_wrapped_rpc():
@@ -13576,8 +13620,15 @@ async def test_generate_random_bytes_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GenerateRandomBytesRequest(),
+        {},
+    ],
+)
 async def test_generate_random_bytes_async(
-    transport: str = "grpc_asyncio", request_type=service.GenerateRandomBytesRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = KeyManagementServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -13586,7 +13637,7 @@ async def test_generate_random_bytes_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -13609,11 +13660,6 @@ async def test_generate_random_bytes_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.GenerateRandomBytesResponse)
     assert response.data == b"data_blob"
-
-
-@pytest.mark.asyncio
-async def test_generate_random_bytes_async_from_dict():
-    await test_generate_random_bytes_async(request_type=dict)
 
 
 def test_generate_random_bytes_field_headers():
@@ -13902,7 +13948,7 @@ def test_list_key_rings_rest_required_fields(request_type=service.ListKeyRingsRe
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_key_rings_rest_unset_required_fields():
@@ -14162,7 +14208,7 @@ def test_list_crypto_keys_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_crypto_keys_rest_unset_required_fields():
@@ -14431,7 +14477,7 @@ def test_list_crypto_key_versions_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_crypto_key_versions_rest_unset_required_fields():
@@ -14698,7 +14744,7 @@ def test_list_import_jobs_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_import_jobs_rest_unset_required_fields():
@@ -14963,7 +15009,7 @@ def test_list_retired_resources_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_retired_resources_rest_unset_required_fields():
@@ -15210,7 +15256,7 @@ def test_get_key_ring_rest_required_fields(request_type=service.GetKeyRingReques
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_key_ring_rest_unset_required_fields():
@@ -15385,7 +15431,7 @@ def test_get_crypto_key_rest_required_fields(request_type=service.GetCryptoKeyRe
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_crypto_key_rest_unset_required_fields():
@@ -15570,7 +15616,7 @@ def test_get_crypto_key_version_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_crypto_key_version_rest_unset_required_fields():
@@ -15750,7 +15796,7 @@ def test_get_public_key_rest_required_fields(request_type=service.GetPublicKeyRe
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_public_key_rest_unset_required_fields():
@@ -15928,7 +15974,7 @@ def test_get_import_job_rest_required_fields(request_type=service.GetImportJobRe
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_import_job_rest_unset_required_fields():
@@ -16112,7 +16158,7 @@ def test_get_retired_resource_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_retired_resource_rest_unset_required_fields():
@@ -16308,7 +16354,7 @@ def test_create_key_ring_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_key_ring_rest_unset_required_fields():
@@ -16521,7 +16567,7 @@ def test_create_crypto_key_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_crypto_key_rest_unset_required_fields():
@@ -16725,7 +16771,7 @@ def test_create_crypto_key_version_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_crypto_key_version_rest_unset_required_fields():
@@ -16918,7 +16964,7 @@ def test_delete_crypto_key_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_crypto_key_rest_unset_required_fields():
@@ -17102,7 +17148,7 @@ def test_delete_crypto_key_version_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_crypto_key_version_rest_unset_required_fields():
@@ -17290,7 +17336,7 @@ def test_import_crypto_key_version_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_import_crypto_key_version_rest_unset_required_fields():
@@ -17437,7 +17483,7 @@ def test_create_import_job_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_import_job_rest_unset_required_fields():
@@ -17630,7 +17676,7 @@ def test_update_crypto_key_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_crypto_key_rest_unset_required_fields():
@@ -17825,7 +17871,7 @@ def test_update_crypto_key_version_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_crypto_key_version_rest_unset_required_fields():
@@ -18027,7 +18073,7 @@ def test_update_crypto_key_primary_version_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_crypto_key_primary_version_rest_unset_required_fields():
@@ -18227,7 +18273,7 @@ def test_destroy_crypto_key_version_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_destroy_crypto_key_version_rest_unset_required_fields():
@@ -18413,7 +18459,7 @@ def test_restore_crypto_key_version_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_restore_crypto_key_version_rest_unset_required_fields():
@@ -18596,7 +18642,7 @@ def test_encrypt_rest_required_fields(request_type=service.EncryptRequest):
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_encrypt_rest_unset_required_fields():
@@ -18789,7 +18835,7 @@ def test_decrypt_rest_required_fields(request_type=service.DecryptRequest):
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_decrypt_rest_unset_required_fields():
@@ -18982,7 +19028,7 @@ def test_raw_encrypt_rest_required_fields(request_type=service.RawEncryptRequest
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_raw_encrypt_rest_unset_required_fields():
@@ -19117,7 +19163,7 @@ def test_raw_decrypt_rest_required_fields(request_type=service.RawDecryptRequest
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_raw_decrypt_rest_unset_required_fields():
@@ -19247,7 +19293,7 @@ def test_asymmetric_sign_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_asymmetric_sign_rest_unset_required_fields():
@@ -19438,7 +19484,7 @@ def test_asymmetric_decrypt_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_asymmetric_decrypt_rest_unset_required_fields():
@@ -19631,7 +19677,7 @@ def test_mac_sign_rest_required_fields(request_type=service.MacSignRequest):
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_mac_sign_rest_unset_required_fields():
@@ -19828,7 +19874,7 @@ def test_mac_verify_rest_required_fields(request_type=service.MacVerifyRequest):
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_mac_verify_rest_unset_required_fields():
@@ -20024,7 +20070,7 @@ def test_decapsulate_rest_required_fields(request_type=service.DecapsulateReques
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_decapsulate_rest_unset_required_fields():
@@ -20270,7 +20316,6 @@ def test_list_key_rings_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListKeyRingsRequest()
-
         assert args[0] == request_msg
 
 
@@ -20291,7 +20336,6 @@ def test_list_crypto_keys_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListCryptoKeysRequest()
-
         assert args[0] == request_msg
 
 
@@ -20314,7 +20358,6 @@ def test_list_crypto_key_versions_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListCryptoKeyVersionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -20335,7 +20378,6 @@ def test_list_import_jobs_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListImportJobsRequest()
-
         assert args[0] == request_msg
 
 
@@ -20358,7 +20400,6 @@ def test_list_retired_resources_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListRetiredResourcesRequest()
-
         assert args[0] == request_msg
 
 
@@ -20379,7 +20420,6 @@ def test_get_key_ring_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetKeyRingRequest()
-
         assert args[0] == request_msg
 
 
@@ -20400,7 +20440,6 @@ def test_get_crypto_key_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetCryptoKeyRequest()
-
         assert args[0] == request_msg
 
 
@@ -20423,7 +20462,6 @@ def test_get_crypto_key_version_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetCryptoKeyVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -20444,7 +20482,6 @@ def test_get_public_key_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetPublicKeyRequest()
-
         assert args[0] == request_msg
 
 
@@ -20465,7 +20502,6 @@ def test_get_import_job_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetImportJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -20488,7 +20524,6 @@ def test_get_retired_resource_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetRetiredResourceRequest()
-
         assert args[0] == request_msg
 
 
@@ -20509,7 +20544,6 @@ def test_create_key_ring_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateKeyRingRequest()
-
         assert args[0] == request_msg
 
 
@@ -20532,7 +20566,6 @@ def test_create_crypto_key_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateCryptoKeyRequest()
-
         assert args[0] == request_msg
 
 
@@ -20555,7 +20588,6 @@ def test_create_crypto_key_version_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateCryptoKeyVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -20578,7 +20610,6 @@ def test_delete_crypto_key_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteCryptoKeyRequest()
-
         assert args[0] == request_msg
 
 
@@ -20601,7 +20632,6 @@ def test_delete_crypto_key_version_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteCryptoKeyVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -20624,7 +20654,6 @@ def test_import_crypto_key_version_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ImportCryptoKeyVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -20647,7 +20676,6 @@ def test_create_import_job_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateImportJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -20670,7 +20698,6 @@ def test_update_crypto_key_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateCryptoKeyRequest()
-
         assert args[0] == request_msg
 
 
@@ -20693,7 +20720,6 @@ def test_update_crypto_key_version_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateCryptoKeyVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -20716,7 +20742,6 @@ def test_update_crypto_key_primary_version_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateCryptoKeyPrimaryVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -20739,7 +20764,6 @@ def test_destroy_crypto_key_version_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DestroyCryptoKeyVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -20762,7 +20786,6 @@ def test_restore_crypto_key_version_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.RestoreCryptoKeyVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -20783,7 +20806,6 @@ def test_encrypt_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.EncryptRequest()
-
         assert args[0] == request_msg
 
 
@@ -20804,7 +20826,6 @@ def test_decrypt_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DecryptRequest()
-
         assert args[0] == request_msg
 
 
@@ -20825,7 +20846,6 @@ def test_raw_encrypt_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.RawEncryptRequest()
-
         assert args[0] == request_msg
 
 
@@ -20846,7 +20866,6 @@ def test_raw_decrypt_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.RawDecryptRequest()
-
         assert args[0] == request_msg
 
 
@@ -20867,7 +20886,6 @@ def test_asymmetric_sign_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.AsymmetricSignRequest()
-
         assert args[0] == request_msg
 
 
@@ -20890,7 +20908,6 @@ def test_asymmetric_decrypt_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.AsymmetricDecryptRequest()
-
         assert args[0] == request_msg
 
 
@@ -20911,7 +20928,6 @@ def test_mac_sign_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.MacSignRequest()
-
         assert args[0] == request_msg
 
 
@@ -20932,7 +20948,6 @@ def test_mac_verify_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.MacVerifyRequest()
-
         assert args[0] == request_msg
 
 
@@ -20953,7 +20968,6 @@ def test_decapsulate_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DecapsulateRequest()
-
         assert args[0] == request_msg
 
 
@@ -20976,7 +20990,6 @@ def test_generate_random_bytes_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GenerateRandomBytesRequest()
-
         assert args[0] == request_msg
 
 
@@ -21018,7 +21031,6 @@ async def test_list_key_rings_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListKeyRingsRequest()
-
         assert args[0] == request_msg
 
 
@@ -21046,7 +21058,6 @@ async def test_list_crypto_keys_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListCryptoKeysRequest()
-
         assert args[0] == request_msg
 
 
@@ -21076,7 +21087,6 @@ async def test_list_crypto_key_versions_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListCryptoKeyVersionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -21104,7 +21114,6 @@ async def test_list_import_jobs_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListImportJobsRequest()
-
         assert args[0] == request_msg
 
 
@@ -21134,7 +21143,6 @@ async def test_list_retired_resources_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListRetiredResourcesRequest()
-
         assert args[0] == request_msg
 
 
@@ -21161,7 +21169,6 @@ async def test_get_key_ring_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetKeyRingRequest()
-
         assert args[0] == request_msg
 
 
@@ -21191,7 +21198,6 @@ async def test_get_crypto_key_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetCryptoKeyRequest()
-
         assert args[0] == request_msg
 
 
@@ -21228,7 +21234,6 @@ async def test_get_crypto_key_version_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetCryptoKeyVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -21259,7 +21264,6 @@ async def test_get_public_key_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetPublicKeyRequest()
-
         assert args[0] == request_msg
 
 
@@ -21290,7 +21294,6 @@ async def test_get_import_job_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetImportJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -21321,7 +21324,6 @@ async def test_get_retired_resource_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetRetiredResourceRequest()
-
         assert args[0] == request_msg
 
 
@@ -21348,7 +21350,6 @@ async def test_create_key_ring_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateKeyRingRequest()
-
         assert args[0] == request_msg
 
 
@@ -21380,7 +21381,6 @@ async def test_create_crypto_key_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateCryptoKeyRequest()
-
         assert args[0] == request_msg
 
 
@@ -21417,7 +21417,6 @@ async def test_create_crypto_key_version_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateCryptoKeyVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -21444,7 +21443,6 @@ async def test_delete_crypto_key_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteCryptoKeyRequest()
-
         assert args[0] == request_msg
 
 
@@ -21471,7 +21469,6 @@ async def test_delete_crypto_key_version_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteCryptoKeyVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -21508,7 +21505,6 @@ async def test_import_crypto_key_version_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ImportCryptoKeyVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -21541,7 +21537,6 @@ async def test_create_import_job_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateImportJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -21573,7 +21568,6 @@ async def test_update_crypto_key_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateCryptoKeyRequest()
-
         assert args[0] == request_msg
 
 
@@ -21610,7 +21604,6 @@ async def test_update_crypto_key_version_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateCryptoKeyVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -21642,7 +21635,6 @@ async def test_update_crypto_key_primary_version_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateCryptoKeyPrimaryVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -21679,7 +21671,6 @@ async def test_destroy_crypto_key_version_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DestroyCryptoKeyVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -21716,7 +21707,6 @@ async def test_restore_crypto_key_version_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.RestoreCryptoKeyVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -21747,7 +21737,6 @@ async def test_encrypt_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.EncryptRequest()
-
         assert args[0] == request_msg
 
 
@@ -21776,7 +21765,6 @@ async def test_decrypt_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DecryptRequest()
-
         assert args[0] == request_msg
 
 
@@ -21810,7 +21798,6 @@ async def test_raw_encrypt_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.RawEncryptRequest()
-
         assert args[0] == request_msg
 
 
@@ -21841,7 +21828,6 @@ async def test_raw_decrypt_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.RawDecryptRequest()
-
         assert args[0] == request_msg
 
 
@@ -21872,7 +21858,6 @@ async def test_asymmetric_sign_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.AsymmetricSignRequest()
-
         assert args[0] == request_msg
 
 
@@ -21903,7 +21888,6 @@ async def test_asymmetric_decrypt_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.AsymmetricDecryptRequest()
-
         assert args[0] == request_msg
 
 
@@ -21933,7 +21917,6 @@ async def test_mac_sign_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.MacSignRequest()
-
         assert args[0] == request_msg
 
 
@@ -21965,7 +21948,6 @@ async def test_mac_verify_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.MacVerifyRequest()
-
         assert args[0] == request_msg
 
 
@@ -21996,7 +21978,6 @@ async def test_decapsulate_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DecapsulateRequest()
-
         assert args[0] == request_msg
 
 
@@ -22025,7 +22006,6 @@ async def test_generate_random_bytes_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GenerateRandomBytesRequest()
-
         assert args[0] == request_msg
 
 
@@ -27711,7 +27691,6 @@ def test_list_key_rings_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListKeyRingsRequest()
-
         assert args[0] == request_msg
 
 
@@ -27731,7 +27710,6 @@ def test_list_crypto_keys_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListCryptoKeysRequest()
-
         assert args[0] == request_msg
 
 
@@ -27753,7 +27731,6 @@ def test_list_crypto_key_versions_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListCryptoKeyVersionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -27773,7 +27750,6 @@ def test_list_import_jobs_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListImportJobsRequest()
-
         assert args[0] == request_msg
 
 
@@ -27795,7 +27771,6 @@ def test_list_retired_resources_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListRetiredResourcesRequest()
-
         assert args[0] == request_msg
 
 
@@ -27815,7 +27790,6 @@ def test_get_key_ring_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetKeyRingRequest()
-
         assert args[0] == request_msg
 
 
@@ -27835,7 +27809,6 @@ def test_get_crypto_key_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetCryptoKeyRequest()
-
         assert args[0] == request_msg
 
 
@@ -27857,7 +27830,6 @@ def test_get_crypto_key_version_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetCryptoKeyVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -27877,7 +27849,6 @@ def test_get_public_key_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetPublicKeyRequest()
-
         assert args[0] == request_msg
 
 
@@ -27897,7 +27868,6 @@ def test_get_import_job_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetImportJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -27919,7 +27889,6 @@ def test_get_retired_resource_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetRetiredResourceRequest()
-
         assert args[0] == request_msg
 
 
@@ -27939,7 +27908,6 @@ def test_create_key_ring_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateKeyRingRequest()
-
         assert args[0] == request_msg
 
 
@@ -27961,7 +27929,6 @@ def test_create_crypto_key_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateCryptoKeyRequest()
-
         assert args[0] == request_msg
 
 
@@ -27983,7 +27950,6 @@ def test_create_crypto_key_version_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateCryptoKeyVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -28005,7 +27971,6 @@ def test_delete_crypto_key_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteCryptoKeyRequest()
-
         assert args[0] == request_msg
 
 
@@ -28027,7 +27992,6 @@ def test_delete_crypto_key_version_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteCryptoKeyVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -28049,7 +28013,6 @@ def test_import_crypto_key_version_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ImportCryptoKeyVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -28071,7 +28034,6 @@ def test_create_import_job_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateImportJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -28093,7 +28055,6 @@ def test_update_crypto_key_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateCryptoKeyRequest()
-
         assert args[0] == request_msg
 
 
@@ -28115,7 +28076,6 @@ def test_update_crypto_key_version_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateCryptoKeyVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -28137,7 +28097,6 @@ def test_update_crypto_key_primary_version_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateCryptoKeyPrimaryVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -28159,7 +28118,6 @@ def test_destroy_crypto_key_version_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DestroyCryptoKeyVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -28181,7 +28139,6 @@ def test_restore_crypto_key_version_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.RestoreCryptoKeyVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -28201,7 +28158,6 @@ def test_encrypt_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.EncryptRequest()
-
         assert args[0] == request_msg
 
 
@@ -28221,7 +28177,6 @@ def test_decrypt_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DecryptRequest()
-
         assert args[0] == request_msg
 
 
@@ -28241,7 +28196,6 @@ def test_raw_encrypt_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.RawEncryptRequest()
-
         assert args[0] == request_msg
 
 
@@ -28261,7 +28215,6 @@ def test_raw_decrypt_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.RawDecryptRequest()
-
         assert args[0] == request_msg
 
 
@@ -28281,7 +28234,6 @@ def test_asymmetric_sign_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.AsymmetricSignRequest()
-
         assert args[0] == request_msg
 
 
@@ -28303,7 +28255,6 @@ def test_asymmetric_decrypt_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.AsymmetricDecryptRequest()
-
         assert args[0] == request_msg
 
 
@@ -28323,7 +28274,6 @@ def test_mac_sign_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.MacSignRequest()
-
         assert args[0] == request_msg
 
 
@@ -28343,7 +28293,6 @@ def test_mac_verify_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.MacVerifyRequest()
-
         assert args[0] == request_msg
 
 
@@ -28363,7 +28312,6 @@ def test_decapsulate_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DecapsulateRequest()
-
         assert args[0] == request_msg
 
 
@@ -28385,7 +28333,6 @@ def test_generate_random_bytes_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GenerateRandomBytesRequest()
-
         assert args[0] == request_msg
 
 

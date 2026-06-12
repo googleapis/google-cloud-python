@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -65,6 +65,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 
@@ -238,6 +239,80 @@ class SaasDeploymentsClient(metaclass=SaasDeploymentsClientMeta):
                 instance.
         """
         return self._transport
+
+    @staticmethod
+    def application_path(
+        project: str,
+        location: str,
+        application: str,
+    ) -> str:
+        """Returns a fully-qualified application string."""
+        return (
+            "projects/{project}/locations/{location}/applications/{application}".format(
+                project=project,
+                location=location,
+                application=application,
+            )
+        )
+
+    @staticmethod
+    def parse_application_path(path: str) -> Dict[str, str]:
+        """Parses a application path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/applications/(?P<application>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def application_template_path(
+        project: str,
+        location: str,
+        space: str,
+        applicationTemplate: str,
+    ) -> str:
+        """Returns a fully-qualified application_template string."""
+        return "projects/{project}/locations/{location}/spaces/{space}/applicationTemplates/{applicationTemplate}".format(
+            project=project,
+            location=location,
+            space=space,
+            applicationTemplate=applicationTemplate,
+        )
+
+    @staticmethod
+    def parse_application_template_path(path: str) -> Dict[str, str]:
+        """Parses a application_template path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/spaces/(?P<space>.+?)/applicationTemplates/(?P<applicationTemplate>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def application_template_revision_path(
+        project: str,
+        location: str,
+        space: str,
+        application_template: str,
+        revision: str,
+    ) -> str:
+        """Returns a fully-qualified application_template_revision string."""
+        return "projects/{project}/locations/{location}/spaces/{space}/applicationTemplates/{application_template}/revisions/{revision}".format(
+            project=project,
+            location=location,
+            space=space,
+            application_template=application_template,
+            revision=revision,
+        )
+
+    @staticmethod
+    def parse_application_template_revision_path(path: str) -> Dict[str, str]:
+        """Parses a application_template_revision path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/spaces/(?P<space>.+?)/applicationTemplates/(?P<application_template>.+?)/revisions/(?P<revision>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
 
     @staticmethod
     def release_path(
@@ -3472,7 +3547,7 @@ class SaasDeploymentsClient(metaclass=SaasDeploymentsClientMeta):
 
                 This is a base object that contains the
                 common fields in all unit operations.
-                Next: 19
+                Next: 22
 
         """
         # Create or coerce a protobuf request object.
@@ -3617,7 +3692,7 @@ class SaasDeploymentsClient(metaclass=SaasDeploymentsClientMeta):
 
                 This is a base object that contains the
                 common fields in all unit operations.
-                Next: 19
+                Next: 22
 
         """
         # Create or coerce a protobuf request object.
@@ -3763,7 +3838,7 @@ class SaasDeploymentsClient(metaclass=SaasDeploymentsClientMeta):
 
                 This is a base object that contains the
                 common fields in all unit operations.
-                Next: 19
+                Next: 22
 
         """
         # Create or coerce a protobuf request object.

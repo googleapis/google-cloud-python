@@ -60,7 +60,7 @@ LINT_PATHS = [
 
 DEFAULT_PYTHON_VERSION = "3.14"
 
-ALL_PYTHON = ["3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
+ALL_PYTHON = ["3.10", "3.11", "3.12", "3.13", "3.14"]
 UNIT_TEST_STANDARD_DEPENDENCIES = [
     "mock",
     PYTEST_VERSION,
@@ -123,9 +123,7 @@ nox.options.sessions = [
     # TODO(tswast): Consider removing this when unit_noextras and cover is run
     # from GitHub actions.
     "unit_noextras",
-    "system-3.10",  # No extras.
     "system-3.12",  # No extras.
-    f"system-{DEFAULT_PYTHON_VERSION}",  # All extras.
     "cover",
     # TODO(b/401609005): remove
     "cleanup",
@@ -142,9 +140,20 @@ def lint(session):
     Returns a failure if the linters find linting errors or sufficiently
     serious code quality issues.
     """
-    session.install("flake8", RUFF_VERSION)
+    session.install(RUFF_VERSION)
 
-    # 2. Check formatting
+    # Check imports
+    session.run(
+        "ruff",
+        "check",
+        "--select",
+        "I,F",
+        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
+        "--line-length=88",  # Standard Black line length
+        *LINT_PATHS,
+    )
+
+    # Check formatting
     session.run(
         "ruff",
         "format",
@@ -190,7 +199,7 @@ def format(session):
         "ruff",
         "check",
         "--select",
-        "I",
+        "I,F",
         "--fix",
         f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
         "--line-length=88",  # Standard Black line length
@@ -274,8 +283,6 @@ def run_unit(session, install_test_extra):
 @nox.session(python=ALL_PYTHON)
 @nox.parametrize("test_extra", [True, False])
 def unit(session, test_extra):
-    if session.python in ("3.7", "3.8", "3.9"):
-        session.skip("Python 3.9 and below are not supported")
     if test_extra:
         run_unit(session, install_test_extra=test_extra)
     else:
@@ -378,9 +385,6 @@ def run_system(
 @nox.session(python="3.12")
 def system(session: nox.sessions.Session):
     """Run the system test suite."""
-    if session.python in ("3.7", "3.8", "3.9"):
-        session.skip("Python 3.9 and below are not supported")
-
     run_system(
         session=session,
         prefix_name="system",
@@ -422,6 +426,16 @@ def doctest(session: nox.sessions.Session):
             "bigframes/display/anywidget.py",
             "--ignore",
             "bigframes/bigquery/_operations/ai.py",
+            "--ignore",
+            "bigframes/bigquery/ai.py",
+            "--ignore",
+            "bigframes/ml",
+            "--ignore",
+            "bigframes/operations/ai.py",
+            "--ignore",
+            "bigframes/operations/semantics.py",
+            "--ignore",
+            "third_party/bigframes_vendored/sklearn",
         ),
         test_folder="bigframes",
         check_cov=True,
@@ -610,11 +624,11 @@ def prerelease(session: nox.sessions.Session, tests_path, extra_pytest_options=(
         # Workaround https://github.com/googleapis/python-db-dtypes-pandas/issues/178
         "db-dtypes",
         # Ensure we catch breaking changes in the client libraries early.
-        "git+https://github.com/googleapis/python-bigquery.git#egg=google-cloud-bigquery",
+        "git+https://github.com/googleapis/google-cloud-python.git#egg=google-cloud-bigquery&subdirectory=packages/google-cloud-bigquery",
         "--upgrade",
         "-e",
         "git+https://github.com/googleapis/google-cloud-python.git#egg=google-cloud-bigquery-storage&subdirectory=packages/google-cloud-bigquery-storage",
-        "git+https://github.com/googleapis/python-bigquery-pandas.git#egg=pandas-gbq",
+        "git+https://github.com/googleapis/google-cloud-python.git#egg=pandas-gbq&subdirectory=packages/pandas-gbq",
     )
 
     # Print out prerelease package versions.
@@ -714,6 +728,7 @@ def notebook(session: nox.Session):
         "notebooks/generative_ai/sentiment_analysis.ipynb",  # Too slow
         "notebooks/generative_ai/bq_dataframes_llm_vector_search.ipynb",  # Limited quota for vector index ddl statements on table.
         "notebooks/generative_ai/bq_dataframes_ml_drug_name_generation.ipynb",  # Needs CONNECTION.
+        "notebooks/generative_ai/ai_movie_poster.ipynb",  # Needs CONNECTION.
         # TODO(b/366290533): to protect BQML quota
         "notebooks/vertex_sdk/sdk2_bigframes_pytorch.ipynb",  # Needs BUCKET_URI.
         "notebooks/vertex_sdk/sdk2_bigframes_sklearn.ipynb",  # Needs BUCKET_URI.
@@ -730,6 +745,8 @@ def notebook(session: nox.Session):
         # This anywidget notebook uses deferred execution, so it won't
         # produce metrics for the performance benchmark script.
         "notebooks/dataframes/anywidget_mode.ipynb",
+        # Needs a connection
+        "notebooks/remote_functions/remote_function_vertex_claude_model.ipynb",
     ]
 
     # Convert each Path notebook object to a string using a list comprehension,
@@ -1039,7 +1056,7 @@ def mypy(session):
     # Editable mode is not compatible with mypy when there are multiple
     # package directories. See:
     # https://github.com/python/mypy/issues/10564#issuecomment-851687749
-    session.install(".")
+    session.install("--no-cache-dir", ".")
 
     # Just install the dependencies' type info directly, since "mypy --install-types"
     # might require an additional pass.

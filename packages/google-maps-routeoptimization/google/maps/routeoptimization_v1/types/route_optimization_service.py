@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -4020,8 +4020,9 @@ class VehicleFullness(proto.Message):
 
             This field is a member of `oneof`_ ``_max_load``.
         active_span (float):
-            The ratio (vehicle_end_time - vehicle_start_time) / (latest_vehicle_end_time - earliest_vehicle_start_time) for a given vehicle. If the denominator is not present, it uses
-            ([ShipmentModel.global_end_time][google.maps.routeoptimization.v1.ShipmentModel.global_end_time] -
+            The ratio (vehicle_end_time - vehicle_start_time) / (latest_vehicle_end_time - earliest_vehicle_start_time) for a given vehicle. If the denominator is not present, it uses ([ShipmentModel.global_end_time][google.maps.routeoptimization.v1.ShipmentModel.global_end_time]
+            ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
             [ShipmentModel.global_start_time][google.maps.routeoptimization.v1.ShipmentModel.global_start_time])
             instead.
 

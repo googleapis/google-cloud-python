@@ -1,5 +1,6 @@
 # py standard imports
 import asyncio
+import datetime
 import gc
 import os
 import random
@@ -20,6 +21,10 @@ from google.cloud.storage.asyncio.async_appendable_object_writer import (
 from google.cloud.storage.asyncio.async_grpc_client import AsyncGrpcClient
 from google.cloud.storage.asyncio.async_multi_range_downloader import (
     AsyncMultiRangeDownloader,
+)
+from google.cloud.storage.blob import (
+    ObjectContexts,
+    ObjectCustomContextPayload,
 )
 
 pytestmark = pytest.mark.skipif(
@@ -347,6 +352,11 @@ def test_write_from_blob(
     object_name = f"test_from_blob-{str(uuid.uuid4())[:4]}"
     content_type = "text/plain"
     metadata = {"environment": "system-test"}
+    cache_control = "public, max-age=3600"
+    content_disposition = "attachment; filename=test.txt"
+    content_encoding = "identity"
+    content_language = "en"
+    custom_time = datetime.datetime(2025, 1, 1, 12, 0, 0, tzinfo=datetime.timezone.utc)
     test_data = b"system-test-data"
 
     async def _run():
@@ -354,6 +364,11 @@ def test_write_from_blob(
         blob = storage_client.bucket(_ZONAL_BUCKET).blob(object_name)
         blob.content_type = content_type
         blob.metadata = metadata
+        blob.cache_control = cache_control
+        blob.content_disposition = content_disposition
+        blob.content_encoding = content_encoding
+        blob.content_language = content_language
+        blob.custom_time = custom_time
 
         # 2. Use from_blob to create the writer
         writer = AsyncAppendableObjectWriter.from_blob(grpc_client, blob)
@@ -369,6 +384,11 @@ def test_write_from_blob(
 
         assert obj.content_type == content_type
         assert obj.metadata["environment"] == "system-test"
+        assert obj.cache_control == cache_control
+        assert obj.content_disposition == content_disposition
+        assert obj.content_encoding == content_encoding
+        assert obj.content_language == content_language
+        assert int(obj.custom_time.timestamp()) == int(custom_time.timestamp())
 
         blobs_to_delete.append(blob)
 
@@ -413,6 +433,36 @@ def test_write_from_blob_with_kms_key(
         blobs_to_delete.append(blob)
 
     event_loop.run_until_complete(_run())
+
+
+@pytest.mark.asyncio
+async def test_write_blob_with_contexts(storage_client, blobs_to_delete):
+    async_client = await create_async_grpc_client()
+    blob_name = f"ObjectContextsGrpc-{uuid.uuid4().hex}"
+
+    bucket = storage_client.bucket(_ZONAL_BUCKET)
+    blob = bucket.blob(blob_name)
+    blob.contexts = ObjectContexts(
+        blob, custom={"foo": ObjectCustomContextPayload(value="bar")}
+    )
+    writer = AsyncAppendableObjectWriter.from_blob(async_client, blob)
+    await writer.open()
+    await writer.append(b"grpc-test")
+    await writer.close(finalize_on_close=True)
+
+    try:
+        blobs = list(
+            storage_client.list_blobs(_ZONAL_BUCKET, filter_='contexts."foo"="bar"')
+        )
+        names = [b.name for b in blobs]
+        assert blob_name in names
+
+        # Assert contexts via gRPC GetObject
+        obj_proto = await async_client.get_object(_ZONAL_BUCKET, blob_name)
+        assert "foo" in obj_proto.contexts.custom
+        assert obj_proto.contexts.custom["foo"].value == "bar"
+    finally:
+        blobs_to_delete.append(storage_client.bucket(_ZONAL_BUCKET).blob(blob_name))
 
 
 def test_read_unfinalized_appendable_object(
@@ -811,7 +861,7 @@ def test_mrd_concurrent_download_cancellation(
     Tests that downloading gracefully manages memory and internal references
     when tasks are canceled during active multiplexing, without breaking remaining downloads.
     """
-    object_size = 5 * 1024 * 1024  # 5MB
+    object_size = 20 * 1024 * 1024  # 20MB
     object_name = f"test_mrd_cancel-{uuid.uuid4()}"
 
     async def _run():
@@ -828,7 +878,7 @@ def test_mrd_concurrent_download_cancellation(
             grpc_client_direct, _ZONAL_BUCKET, object_name
         ) as mrd:
             tasks = []
-            num_chunks = 100
+            num_chunks = 40
             chunk_size = object_size // num_chunks
             buffers = [BytesIO() for _ in range(num_chunks)]
 
@@ -840,8 +890,8 @@ def test_mrd_concurrent_download_cancellation(
                     )
                 )
 
-            # Let the loop start sending Bidi requests
-            await asyncio.sleep(0.01)
+            # Yield control to event loop so tasks send Bidi requests, but do not wait for server responses
+            await asyncio.sleep(0)
 
             # Cancel a subset of evenly distributed tasks
             for i in range(0, num_chunks, 2):
@@ -906,6 +956,91 @@ def test_mrd_concurrent_download_out_of_bounds(
             # Verify fully OOB request returned Exception
             assert isinstance(results[1], OutOfRange)
 
+        del writer
+        gc.collect()
+        blobs_to_delete.append(storage_client.bucket(_ZONAL_BUCKET).blob(object_name))
+
+    event_loop.run_until_complete(_run())
+
+
+@pytest.mark.parametrize(
+    "read_start, read_length, enable_checksum",
+    [
+        (0, 0, True),
+        (0, 1024 * 1024, True),
+        (0, 0, False),
+    ],
+)
+def test_mrd_checksum_validation(
+    storage_client,
+    blobs_to_delete,
+    event_loop,
+    grpc_client_direct,
+    read_start,
+    read_length,
+    enable_checksum,
+):
+    """
+    Tests full downloads with specified offset, length, and enable_checksum toggle on finalized objects.
+    """
+    object_size = 1024 * 1024  # 1MB
+    object_name = f"test_mrd_chksum-{uuid.uuid4()}"
+
+    async def _run():
+        object_data = os.urandom(object_size)
+
+        writer = AsyncAppendableObjectWriter(
+            grpc_client_direct, _ZONAL_BUCKET, object_name
+        )
+        await writer.open()
+        await writer.append(object_data)
+        await writer.close(finalize_on_close=True)
+
+        async with AsyncMultiRangeDownloader(
+            grpc_client_direct, _ZONAL_BUCKET, object_name
+        ) as mrd:
+            buffer = BytesIO()
+            await mrd.download_ranges(
+                [(read_start, read_length, buffer)], enable_checksum=enable_checksum
+            )
+            assert buffer.getvalue() == object_data
+
+        # cleanup
+        del writer
+        gc.collect()
+        blobs_to_delete.append(storage_client.bucket(_ZONAL_BUCKET).blob(object_name))
+
+    event_loop.run_until_complete(_run())
+
+
+def test_mrd_checksum_unfinalized_appendable_skipped(
+    storage_client, blobs_to_delete, event_loop, grpc_client_direct
+):
+    """
+    Verifies that live, unfinalized appendable objects skip the full-object checksum check
+    naturally without raising any exceptions.
+    """
+    object_name = f"test_mrd_chksum_unfin-{uuid.uuid4()}"
+
+    async def _run():
+        writer = AsyncAppendableObjectWriter(
+            grpc_client_direct, _ZONAL_BUCKET, object_name
+        )
+        await writer.open()
+        await writer.append(_BYTES_TO_UPLOAD)
+        await writer.flush()  # Flushed but not finalized!
+
+        # Download the unfinalized appendable object with enable_checksum=True
+        async with AsyncMultiRangeDownloader(
+            grpc_client_direct, _ZONAL_BUCKET, object_name
+        ) as mrd:
+            buffer = BytesIO()
+            # Since it's unfinalized, it should skip the checksum check without raising
+            await mrd.download_ranges([(0, 0, buffer)], enable_checksum=True)
+            assert buffer.getvalue() == _BYTES_TO_UPLOAD
+
+        # cleanup
+        await writer.close()
         del writer
         gc.collect()
         blobs_to_delete.append(storage_client.bucket(_ZONAL_BUCKET).blob(object_name))

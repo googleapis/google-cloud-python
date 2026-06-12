@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -136,6 +131,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1493,8 +1503,8 @@ def test_organization_security_profile_group_service_client_create_channel_crede
 @pytest.mark.parametrize(
     "request_type",
     [
-        security_profile_group_service.ListSecurityProfileGroupsRequest,
-        dict,
+        security_profile_group_service.ListSecurityProfileGroupsRequest(),
+        {},
     ],
 )
 def test_list_security_profile_groups(request_type, transport: str = "grpc"):
@@ -1505,7 +1515,7 @@ def test_list_security_profile_groups(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1556,12 +1566,11 @@ def test_list_security_profile_groups_non_empty_request_with_auto_populated_fiel
         client.list_security_profile_groups(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[
-            0
-        ] == security_profile_group_service.ListSecurityProfileGroupsRequest(
+        request_msg = security_profile_group_service.ListSecurityProfileGroupsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_security_profile_groups_use_cached_wrapped_rpc():
@@ -1647,9 +1656,15 @@ async def test_list_security_profile_groups_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        security_profile_group_service.ListSecurityProfileGroupsRequest(),
+        {},
+    ],
+)
 async def test_list_security_profile_groups_async(
-    transport: str = "grpc_asyncio",
-    request_type=security_profile_group_service.ListSecurityProfileGroupsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OrganizationSecurityProfileGroupServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1658,7 +1673,7 @@ async def test_list_security_profile_groups_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1681,11 +1696,6 @@ async def test_list_security_profile_groups_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListSecurityProfileGroupsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_security_profile_groups_async_from_dict():
-    await test_list_security_profile_groups_async(request_type=dict)
 
 
 def test_list_security_profile_groups_field_headers():
@@ -2044,9 +2054,7 @@ async def test_list_security_profile_groups_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
+        async for page_ in (
             await client.list_security_profile_groups(request={})
         ).pages:
             pages.append(page_)
@@ -2057,8 +2065,8 @@ async def test_list_security_profile_groups_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        security_profile_group_service.GetSecurityProfileGroupRequest,
-        dict,
+        security_profile_group_service.GetSecurityProfileGroupRequest(),
+        {},
     ],
 )
 def test_get_security_profile_group(request_type, transport: str = "grpc"):
@@ -2069,7 +2077,7 @@ def test_get_security_profile_group(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2131,9 +2139,10 @@ def test_get_security_profile_group_non_empty_request_with_auto_populated_field(
         client.get_security_profile_group(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == security_profile_group_service.GetSecurityProfileGroupRequest(
+        request_msg = security_profile_group_service.GetSecurityProfileGroupRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_security_profile_group_use_cached_wrapped_rpc():
@@ -2219,9 +2228,15 @@ async def test_get_security_profile_group_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        security_profile_group_service.GetSecurityProfileGroupRequest(),
+        {},
+    ],
+)
 async def test_get_security_profile_group_async(
-    transport: str = "grpc_asyncio",
-    request_type=security_profile_group_service.GetSecurityProfileGroupRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OrganizationSecurityProfileGroupServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2230,7 +2245,7 @@ async def test_get_security_profile_group_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2267,11 +2282,6 @@ async def test_get_security_profile_group_async(
     assert response.custom_mirroring_profile == "custom_mirroring_profile_value"
     assert response.custom_intercept_profile == "custom_intercept_profile_value"
     assert response.url_filtering_profile == "url_filtering_profile_value"
-
-
-@pytest.mark.asyncio
-async def test_get_security_profile_group_async_from_dict():
-    await test_get_security_profile_group_async(request_type=dict)
 
 
 def test_get_security_profile_group_field_headers():
@@ -2428,8 +2438,8 @@ async def test_get_security_profile_group_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        security_profile_group_service.CreateSecurityProfileGroupRequest,
-        dict,
+        security_profile_group_service.CreateSecurityProfileGroupRequest(),
+        {},
     ],
 )
 def test_create_security_profile_group(request_type, transport: str = "grpc"):
@@ -2440,7 +2450,7 @@ def test_create_security_profile_group(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2486,12 +2496,11 @@ def test_create_security_profile_group_non_empty_request_with_auto_populated_fie
         client.create_security_profile_group(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[
-            0
-        ] == security_profile_group_service.CreateSecurityProfileGroupRequest(
+        request_msg = security_profile_group_service.CreateSecurityProfileGroupRequest(
             parent="parent_value",
             security_profile_group_id="security_profile_group_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_security_profile_group_use_cached_wrapped_rpc():
@@ -2587,9 +2596,15 @@ async def test_create_security_profile_group_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        security_profile_group_service.CreateSecurityProfileGroupRequest(),
+        {},
+    ],
+)
 async def test_create_security_profile_group_async(
-    transport: str = "grpc_asyncio",
-    request_type=security_profile_group_service.CreateSecurityProfileGroupRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OrganizationSecurityProfileGroupServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2598,7 +2613,7 @@ async def test_create_security_profile_group_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2618,11 +2633,6 @@ async def test_create_security_profile_group_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_security_profile_group_async_from_dict():
-    await test_create_security_profile_group_async(request_type=dict)
 
 
 def test_create_security_profile_group_field_headers():
@@ -2807,8 +2817,8 @@ async def test_create_security_profile_group_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        security_profile_group_service.UpdateSecurityProfileGroupRequest,
-        dict,
+        security_profile_group_service.UpdateSecurityProfileGroupRequest(),
+        {},
     ],
 )
 def test_update_security_profile_group(request_type, transport: str = "grpc"):
@@ -2819,7 +2829,7 @@ def test_update_security_profile_group(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2862,10 +2872,8 @@ def test_update_security_profile_group_non_empty_request_with_auto_populated_fie
         client.update_security_profile_group(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == security_profile_group_service.UpdateSecurityProfileGroupRequest()
-        )
+        request_msg = security_profile_group_service.UpdateSecurityProfileGroupRequest()
+        assert args[0] == request_msg
 
 
 def test_update_security_profile_group_use_cached_wrapped_rpc():
@@ -2961,9 +2969,15 @@ async def test_update_security_profile_group_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        security_profile_group_service.UpdateSecurityProfileGroupRequest(),
+        {},
+    ],
+)
 async def test_update_security_profile_group_async(
-    transport: str = "grpc_asyncio",
-    request_type=security_profile_group_service.UpdateSecurityProfileGroupRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OrganizationSecurityProfileGroupServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2972,7 +2986,7 @@ async def test_update_security_profile_group_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2992,11 +3006,6 @@ async def test_update_security_profile_group_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_security_profile_group_async_from_dict():
-    await test_update_security_profile_group_async(request_type=dict)
 
 
 def test_update_security_profile_group_field_headers():
@@ -3171,8 +3180,8 @@ async def test_update_security_profile_group_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        security_profile_group_service.DeleteSecurityProfileGroupRequest,
-        dict,
+        security_profile_group_service.DeleteSecurityProfileGroupRequest(),
+        {},
     ],
 )
 def test_delete_security_profile_group(request_type, transport: str = "grpc"):
@@ -3183,7 +3192,7 @@ def test_delete_security_profile_group(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3229,12 +3238,11 @@ def test_delete_security_profile_group_non_empty_request_with_auto_populated_fie
         client.delete_security_profile_group(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[
-            0
-        ] == security_profile_group_service.DeleteSecurityProfileGroupRequest(
+        request_msg = security_profile_group_service.DeleteSecurityProfileGroupRequest(
             name="name_value",
             etag="etag_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_security_profile_group_use_cached_wrapped_rpc():
@@ -3330,9 +3338,15 @@ async def test_delete_security_profile_group_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        security_profile_group_service.DeleteSecurityProfileGroupRequest(),
+        {},
+    ],
+)
 async def test_delete_security_profile_group_async(
-    transport: str = "grpc_asyncio",
-    request_type=security_profile_group_service.DeleteSecurityProfileGroupRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OrganizationSecurityProfileGroupServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3341,7 +3355,7 @@ async def test_delete_security_profile_group_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3361,11 +3375,6 @@ async def test_delete_security_profile_group_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_security_profile_group_async_from_dict():
-    await test_delete_security_profile_group_async(request_type=dict)
 
 
 def test_delete_security_profile_group_field_headers():
@@ -3522,8 +3531,8 @@ async def test_delete_security_profile_group_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        security_profile_group_service.ListSecurityProfilesRequest,
-        dict,
+        security_profile_group_service.ListSecurityProfilesRequest(),
+        {},
     ],
 )
 def test_list_security_profiles(request_type, transport: str = "grpc"):
@@ -3534,7 +3543,7 @@ def test_list_security_profiles(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3583,10 +3592,11 @@ def test_list_security_profiles_non_empty_request_with_auto_populated_field():
         client.list_security_profiles(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == security_profile_group_service.ListSecurityProfilesRequest(
+        request_msg = security_profile_group_service.ListSecurityProfilesRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_security_profiles_use_cached_wrapped_rpc():
@@ -3672,9 +3682,15 @@ async def test_list_security_profiles_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        security_profile_group_service.ListSecurityProfilesRequest(),
+        {},
+    ],
+)
 async def test_list_security_profiles_async(
-    transport: str = "grpc_asyncio",
-    request_type=security_profile_group_service.ListSecurityProfilesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OrganizationSecurityProfileGroupServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3683,7 +3699,7 @@ async def test_list_security_profiles_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3706,11 +3722,6 @@ async def test_list_security_profiles_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListSecurityProfilesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_security_profiles_async_from_dict():
-    await test_list_security_profiles_async(request_type=dict)
 
 
 def test_list_security_profiles_field_headers():
@@ -4066,11 +4077,7 @@ async def test_list_security_profiles_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_security_profiles(request={})
-        ).pages:
+        async for page_ in (await client.list_security_profiles(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -4079,8 +4086,8 @@ async def test_list_security_profiles_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        security_profile_group_service.GetSecurityProfileRequest,
-        dict,
+        security_profile_group_service.GetSecurityProfileRequest(),
+        {},
     ],
 )
 def test_get_security_profile(request_type, transport: str = "grpc"):
@@ -4091,7 +4098,7 @@ def test_get_security_profile(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4148,9 +4155,10 @@ def test_get_security_profile_non_empty_request_with_auto_populated_field():
         client.get_security_profile(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == security_profile_group_service.GetSecurityProfileRequest(
+        request_msg = security_profile_group_service.GetSecurityProfileRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_security_profile_use_cached_wrapped_rpc():
@@ -4235,9 +4243,15 @@ async def test_get_security_profile_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        security_profile_group_service.GetSecurityProfileRequest(),
+        {},
+    ],
+)
 async def test_get_security_profile_async(
-    transport: str = "grpc_asyncio",
-    request_type=security_profile_group_service.GetSecurityProfileRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OrganizationSecurityProfileGroupServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4246,7 +4260,7 @@ async def test_get_security_profile_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4278,11 +4292,6 @@ async def test_get_security_profile_async(
         response.type_
         == security_profile_group.SecurityProfile.ProfileType.THREAT_PREVENTION
     )
-
-
-@pytest.mark.asyncio
-async def test_get_security_profile_async_from_dict():
-    await test_get_security_profile_async(request_type=dict)
 
 
 def test_get_security_profile_field_headers():
@@ -4439,8 +4448,8 @@ async def test_get_security_profile_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        security_profile_group_service.CreateSecurityProfileRequest,
-        dict,
+        security_profile_group_service.CreateSecurityProfileRequest(),
+        {},
     ],
 )
 def test_create_security_profile(request_type, transport: str = "grpc"):
@@ -4451,7 +4460,7 @@ def test_create_security_profile(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4497,10 +4506,11 @@ def test_create_security_profile_non_empty_request_with_auto_populated_field():
         client.create_security_profile(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == security_profile_group_service.CreateSecurityProfileRequest(
+        request_msg = security_profile_group_service.CreateSecurityProfileRequest(
             parent="parent_value",
             security_profile_id="security_profile_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_security_profile_use_cached_wrapped_rpc():
@@ -4596,9 +4606,15 @@ async def test_create_security_profile_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        security_profile_group_service.CreateSecurityProfileRequest(),
+        {},
+    ],
+)
 async def test_create_security_profile_async(
-    transport: str = "grpc_asyncio",
-    request_type=security_profile_group_service.CreateSecurityProfileRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OrganizationSecurityProfileGroupServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4607,7 +4623,7 @@ async def test_create_security_profile_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4627,11 +4643,6 @@ async def test_create_security_profile_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_security_profile_async_from_dict():
-    await test_create_security_profile_async(request_type=dict)
 
 
 def test_create_security_profile_field_headers():
@@ -4856,8 +4867,8 @@ async def test_create_security_profile_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        security_profile_group_service.UpdateSecurityProfileRequest,
-        dict,
+        security_profile_group_service.UpdateSecurityProfileRequest(),
+        {},
     ],
 )
 def test_update_security_profile(request_type, transport: str = "grpc"):
@@ -4868,7 +4879,7 @@ def test_update_security_profile(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4911,7 +4922,8 @@ def test_update_security_profile_non_empty_request_with_auto_populated_field():
         client.update_security_profile(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == security_profile_group_service.UpdateSecurityProfileRequest()
+        request_msg = security_profile_group_service.UpdateSecurityProfileRequest()
+        assert args[0] == request_msg
 
 
 def test_update_security_profile_use_cached_wrapped_rpc():
@@ -5007,9 +5019,15 @@ async def test_update_security_profile_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        security_profile_group_service.UpdateSecurityProfileRequest(),
+        {},
+    ],
+)
 async def test_update_security_profile_async(
-    transport: str = "grpc_asyncio",
-    request_type=security_profile_group_service.UpdateSecurityProfileRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OrganizationSecurityProfileGroupServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5018,7 +5036,7 @@ async def test_update_security_profile_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5038,11 +5056,6 @@ async def test_update_security_profile_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_security_profile_async_from_dict():
-    await test_update_security_profile_async(request_type=dict)
 
 
 def test_update_security_profile_field_headers():
@@ -5257,8 +5270,8 @@ async def test_update_security_profile_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        security_profile_group_service.DeleteSecurityProfileRequest,
-        dict,
+        security_profile_group_service.DeleteSecurityProfileRequest(),
+        {},
     ],
 )
 def test_delete_security_profile(request_type, transport: str = "grpc"):
@@ -5269,7 +5282,7 @@ def test_delete_security_profile(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5315,10 +5328,11 @@ def test_delete_security_profile_non_empty_request_with_auto_populated_field():
         client.delete_security_profile(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == security_profile_group_service.DeleteSecurityProfileRequest(
+        request_msg = security_profile_group_service.DeleteSecurityProfileRequest(
             name="name_value",
             etag="etag_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_security_profile_use_cached_wrapped_rpc():
@@ -5414,9 +5428,15 @@ async def test_delete_security_profile_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        security_profile_group_service.DeleteSecurityProfileRequest(),
+        {},
+    ],
+)
 async def test_delete_security_profile_async(
-    transport: str = "grpc_asyncio",
-    request_type=security_profile_group_service.DeleteSecurityProfileRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OrganizationSecurityProfileGroupServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5425,7 +5445,7 @@ async def test_delete_security_profile_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5445,11 +5465,6 @@ async def test_delete_security_profile_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_security_profile_async_from_dict():
-    await test_delete_security_profile_async(request_type=dict)
 
 
 def test_delete_security_profile_field_headers():
@@ -5727,7 +5742,7 @@ def test_list_security_profile_groups_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_security_profile_groups_rest_unset_required_fields():
@@ -5990,7 +6005,7 @@ def test_get_security_profile_group_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_security_profile_group_rest_unset_required_fields():
@@ -6197,7 +6212,7 @@ def test_create_security_profile_group_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_security_profile_group_rest_unset_required_fields():
@@ -6396,7 +6411,7 @@ def test_update_security_profile_group_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_security_profile_group_rest_unset_required_fields():
@@ -6600,7 +6615,7 @@ def test_delete_security_profile_group_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_security_profile_group_rest_unset_required_fields():
@@ -6796,7 +6811,7 @@ def test_list_security_profiles_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_security_profiles_rest_unset_required_fields():
@@ -7054,7 +7069,7 @@ def test_get_security_profile_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_security_profile_rest_unset_required_fields():
@@ -7256,7 +7271,7 @@ def test_create_security_profile_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_security_profile_rest_unset_required_fields():
@@ -7465,7 +7480,7 @@ def test_update_security_profile_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_security_profile_rest_unset_required_fields():
@@ -7679,7 +7694,7 @@ def test_delete_security_profile_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_security_profile_rest_unset_required_fields():
@@ -7876,7 +7891,6 @@ def test_list_security_profile_groups_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = security_profile_group_service.ListSecurityProfileGroupsRequest()
-
         assert args[0] == request_msg
 
 
@@ -7899,7 +7913,6 @@ def test_get_security_profile_group_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = security_profile_group_service.GetSecurityProfileGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -7922,7 +7935,6 @@ def test_create_security_profile_group_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = security_profile_group_service.CreateSecurityProfileGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -7945,7 +7957,6 @@ def test_update_security_profile_group_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = security_profile_group_service.UpdateSecurityProfileGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -7968,7 +7979,6 @@ def test_delete_security_profile_group_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = security_profile_group_service.DeleteSecurityProfileGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -7993,7 +8003,6 @@ def test_list_security_profiles_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = security_profile_group_service.ListSecurityProfilesRequest()
-
         assert args[0] == request_msg
 
 
@@ -8016,7 +8025,6 @@ def test_get_security_profile_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = security_profile_group_service.GetSecurityProfileRequest()
-
         assert args[0] == request_msg
 
 
@@ -8039,7 +8047,6 @@ def test_create_security_profile_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = security_profile_group_service.CreateSecurityProfileRequest()
-
         assert args[0] == request_msg
 
 
@@ -8062,7 +8069,6 @@ def test_update_security_profile_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = security_profile_group_service.UpdateSecurityProfileRequest()
-
         assert args[0] == request_msg
 
 
@@ -8085,7 +8091,6 @@ def test_delete_security_profile_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = security_profile_group_service.DeleteSecurityProfileRequest()
-
         assert args[0] == request_msg
 
 
@@ -8128,7 +8133,6 @@ async def test_list_security_profile_groups_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = security_profile_group_service.ListSecurityProfileGroupsRequest()
-
         assert args[0] == request_msg
 
 
@@ -8164,7 +8168,6 @@ async def test_get_security_profile_group_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = security_profile_group_service.GetSecurityProfileGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -8191,7 +8194,6 @@ async def test_create_security_profile_group_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = security_profile_group_service.CreateSecurityProfileGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -8218,7 +8220,6 @@ async def test_update_security_profile_group_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = security_profile_group_service.UpdateSecurityProfileGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -8245,7 +8246,6 @@ async def test_delete_security_profile_group_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = security_profile_group_service.DeleteSecurityProfileGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -8274,7 +8274,6 @@ async def test_list_security_profiles_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = security_profile_group_service.ListSecurityProfilesRequest()
-
         assert args[0] == request_msg
 
 
@@ -8306,7 +8305,6 @@ async def test_get_security_profile_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = security_profile_group_service.GetSecurityProfileRequest()
-
         assert args[0] == request_msg
 
 
@@ -8333,7 +8331,6 @@ async def test_create_security_profile_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = security_profile_group_service.CreateSecurityProfileRequest()
-
         assert args[0] == request_msg
 
 
@@ -8360,7 +8357,6 @@ async def test_update_security_profile_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = security_profile_group_service.UpdateSecurityProfileRequest()
-
         assert args[0] == request_msg
 
 
@@ -8387,7 +8383,6 @@ async def test_delete_security_profile_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = security_profile_group_service.DeleteSecurityProfileRequest()
-
         assert args[0] == request_msg
 
 
@@ -10766,7 +10761,6 @@ def test_list_security_profile_groups_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = security_profile_group_service.ListSecurityProfileGroupsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10788,7 +10782,6 @@ def test_get_security_profile_group_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = security_profile_group_service.GetSecurityProfileGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -10810,7 +10803,6 @@ def test_create_security_profile_group_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = security_profile_group_service.CreateSecurityProfileGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -10832,7 +10824,6 @@ def test_update_security_profile_group_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = security_profile_group_service.UpdateSecurityProfileGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -10854,7 +10845,6 @@ def test_delete_security_profile_group_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = security_profile_group_service.DeleteSecurityProfileGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -10876,7 +10866,6 @@ def test_list_security_profiles_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = security_profile_group_service.ListSecurityProfilesRequest()
-
         assert args[0] == request_msg
 
 
@@ -10898,7 +10887,6 @@ def test_get_security_profile_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = security_profile_group_service.GetSecurityProfileRequest()
-
         assert args[0] == request_msg
 
 
@@ -10920,7 +10908,6 @@ def test_create_security_profile_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = security_profile_group_service.CreateSecurityProfileRequest()
-
         assert args[0] == request_msg
 
 
@@ -10942,7 +10929,6 @@ def test_update_security_profile_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = security_profile_group_service.UpdateSecurityProfileRequest()
-
         assert args[0] == request_msg
 
 
@@ -10964,7 +10950,6 @@ def test_delete_security_profile_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = security_profile_group_service.DeleteSecurityProfileRequest()
-
         assert args[0] == request_msg
 
 

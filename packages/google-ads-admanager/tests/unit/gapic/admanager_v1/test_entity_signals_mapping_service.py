@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -115,6 +110,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1351,7 +1361,7 @@ def test_get_entity_signals_mapping_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_entity_signals_mapping_rest_unset_required_fields():
@@ -1549,7 +1559,7 @@ def test_list_entity_signals_mappings_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_entity_signals_mappings_rest_unset_required_fields():
@@ -1818,7 +1828,7 @@ def test_create_entity_signals_mapping_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_entity_signals_mapping_rest_unset_required_fields():
@@ -2018,7 +2028,7 @@ def test_update_entity_signals_mapping_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_entity_signals_mapping_rest_unset_required_fields():
@@ -2029,15 +2039,7 @@ def test_update_entity_signals_mapping_rest_unset_required_fields():
     unset_fields = transport.update_entity_signals_mapping._get_unset_required_fields(
         {}
     )
-    assert set(unset_fields) == (
-        set(("updateMask",))
-        & set(
-            (
-                "entitySignalsMapping",
-                "updateMask",
-            )
-        )
-    )
+    assert set(unset_fields) == (set(("updateMask",)) & set(("entitySignalsMapping",)))
 
 
 def test_update_entity_signals_mapping_rest_flattened():
@@ -2228,7 +2230,7 @@ def test_batch_create_entity_signals_mappings_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_batch_create_entity_signals_mappings_rest_unset_required_fields():
@@ -2444,7 +2446,7 @@ def test_batch_update_entity_signals_mappings_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_batch_update_entity_signals_mappings_rest_unset_required_fields():
@@ -3685,6 +3687,69 @@ def test_batch_update_entity_signals_mappings_rest_interceptors(null_interceptor
         post_with_metadata.assert_called_once()
 
 
+def test_cancel_operation_rest_bad_request(
+    request_type=operations_pb2.CancelOperationRequest,
+):
+    client = EntitySignalsMappingServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "networks/sample1/operations/reports/runs/sample2"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.cancel_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.CancelOperationRequest,
+        dict,
+    ],
+)
+def test_cancel_operation_rest(request_type):
+    client = EntitySignalsMappingServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "networks/sample1/operations/reports/runs/sample2"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = "{}"
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        response = client.cancel_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
 def test_get_operation_rest_bad_request(
     request_type=operations_pb2.GetOperationRequest,
 ):
@@ -3773,7 +3838,6 @@ def test_get_entity_signals_mapping_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = entity_signals_mapping_service.GetEntitySignalsMappingRequest()
-
         assert args[0] == request_msg
 
 
@@ -3795,7 +3859,6 @@ def test_list_entity_signals_mappings_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = entity_signals_mapping_service.ListEntitySignalsMappingsRequest()
-
         assert args[0] == request_msg
 
 
@@ -3817,7 +3880,6 @@ def test_create_entity_signals_mapping_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = entity_signals_mapping_service.CreateEntitySignalsMappingRequest()
-
         assert args[0] == request_msg
 
 
@@ -3839,7 +3901,6 @@ def test_update_entity_signals_mapping_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = entity_signals_mapping_service.UpdateEntitySignalsMappingRequest()
-
         assert args[0] == request_msg
 
 
@@ -3863,7 +3924,6 @@ def test_batch_create_entity_signals_mappings_empty_call_rest():
         request_msg = (
             entity_signals_mapping_service.BatchCreateEntitySignalsMappingsRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -3887,7 +3947,6 @@ def test_batch_update_entity_signals_mappings_empty_call_rest():
         request_msg = (
             entity_signals_mapping_service.BatchUpdateEntitySignalsMappingsRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -3920,6 +3979,7 @@ def test_entity_signals_mapping_service_base_transport():
         "batch_create_entity_signals_mappings",
         "batch_update_entity_signals_mappings",
         "get_operation",
+        "cancel_operation",
     )
     for method in methods:
         with pytest.raises(NotImplementedError):
@@ -3956,7 +4016,10 @@ def test_entity_signals_mapping_service_base_transport_with_credentials_file():
         load_creds.assert_called_once_with(
             "credentials.json",
             scopes=None,
-            default_scopes=("https://www.googleapis.com/auth/admanager",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/admanager",
+                "https://www.googleapis.com/auth/admanager.readonly",
+            ),
             quota_project_id="octopus",
         )
 
@@ -3982,7 +4045,10 @@ def test_entity_signals_mapping_service_auth_adc():
         EntitySignalsMappingServiceClient()
         adc.assert_called_once_with(
             scopes=None,
-            default_scopes=("https://www.googleapis.com/auth/admanager",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/admanager",
+                "https://www.googleapis.com/auth/admanager.readonly",
+            ),
             quota_project_id=None,
         )
 

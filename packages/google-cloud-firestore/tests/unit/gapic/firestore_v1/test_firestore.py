@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -129,6 +124,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1291,8 +1301,8 @@ def test_firestore_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        firestore.GetDocumentRequest,
-        dict,
+        firestore.GetDocumentRequest(),
+        {},
     ],
 )
 def test_get_document(request_type, transport: str = "grpc"):
@@ -1303,7 +1313,7 @@ def test_get_document(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_document), "__call__") as call:
@@ -1347,9 +1357,10 @@ def test_get_document_non_empty_request_with_auto_populated_field():
         client.get_document(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firestore.GetDocumentRequest(
+        request_msg = firestore.GetDocumentRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_document_use_cached_wrapped_rpc():
@@ -1430,9 +1441,14 @@ async def test_get_document_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_document_async(
-    transport: str = "grpc_asyncio", request_type=firestore.GetDocumentRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        firestore.GetDocumentRequest(),
+        {},
+    ],
+)
+async def test_get_document_async(request_type, transport: str = "grpc_asyncio"):
     client = FirestoreAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1440,7 +1456,7 @@ async def test_get_document_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_document), "__call__") as call:
@@ -1461,11 +1477,6 @@ async def test_get_document_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, document.Document)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_get_document_async_from_dict():
-    await test_get_document_async(request_type=dict)
 
 
 def test_get_document_field_headers():
@@ -1530,8 +1541,8 @@ async def test_get_document_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        firestore.ListDocumentsRequest,
-        dict,
+        firestore.ListDocumentsRequest(),
+        {},
     ],
 )
 def test_list_documents(request_type, transport: str = "grpc"):
@@ -1542,7 +1553,7 @@ def test_list_documents(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_documents), "__call__") as call:
@@ -1589,12 +1600,13 @@ def test_list_documents_non_empty_request_with_auto_populated_field():
         client.list_documents(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firestore.ListDocumentsRequest(
+        request_msg = firestore.ListDocumentsRequest(
             parent="parent_value",
             collection_id="collection_id_value",
             page_token="page_token_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_documents_use_cached_wrapped_rpc():
@@ -1675,9 +1687,14 @@ async def test_list_documents_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_documents_async(
-    transport: str = "grpc_asyncio", request_type=firestore.ListDocumentsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        firestore.ListDocumentsRequest(),
+        {},
+    ],
+)
+async def test_list_documents_async(request_type, transport: str = "grpc_asyncio"):
     client = FirestoreAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1685,7 +1702,7 @@ async def test_list_documents_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_documents), "__call__") as call:
@@ -1706,11 +1723,6 @@ async def test_list_documents_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDocumentsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_documents_async_from_dict():
-    await test_list_documents_async(request_type=dict)
 
 
 def test_list_documents_field_headers():
@@ -1965,11 +1977,7 @@ async def test_list_documents_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_documents(request={})
-        ).pages:
+        async for page_ in (await client.list_documents(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -1978,8 +1986,8 @@ async def test_list_documents_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        firestore.UpdateDocumentRequest,
-        dict,
+        firestore.UpdateDocumentRequest(),
+        {},
     ],
 )
 def test_update_document(request_type, transport: str = "grpc"):
@@ -1990,7 +1998,7 @@ def test_update_document(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_document), "__call__") as call:
@@ -2032,7 +2040,8 @@ def test_update_document_non_empty_request_with_auto_populated_field():
         client.update_document(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firestore.UpdateDocumentRequest()
+        request_msg = firestore.UpdateDocumentRequest()
+        assert args[0] == request_msg
 
 
 def test_update_document_use_cached_wrapped_rpc():
@@ -2113,9 +2122,14 @@ async def test_update_document_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_document_async(
-    transport: str = "grpc_asyncio", request_type=firestore.UpdateDocumentRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        firestore.UpdateDocumentRequest(),
+        {},
+    ],
+)
+async def test_update_document_async(request_type, transport: str = "grpc_asyncio"):
     client = FirestoreAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2123,7 +2137,7 @@ async def test_update_document_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_document), "__call__") as call:
@@ -2144,11 +2158,6 @@ async def test_update_document_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, gf_document.Document)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_update_document_async_from_dict():
-    await test_update_document_async(request_type=dict)
 
 
 def test_update_document_field_headers():
@@ -2307,8 +2316,8 @@ async def test_update_document_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        firestore.DeleteDocumentRequest,
-        dict,
+        firestore.DeleteDocumentRequest(),
+        {},
     ],
 )
 def test_delete_document(request_type, transport: str = "grpc"):
@@ -2319,7 +2328,7 @@ def test_delete_document(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_document), "__call__") as call:
@@ -2360,9 +2369,10 @@ def test_delete_document_non_empty_request_with_auto_populated_field():
         client.delete_document(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firestore.DeleteDocumentRequest(
+        request_msg = firestore.DeleteDocumentRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_document_use_cached_wrapped_rpc():
@@ -2443,9 +2453,14 @@ async def test_delete_document_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_document_async(
-    transport: str = "grpc_asyncio", request_type=firestore.DeleteDocumentRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        firestore.DeleteDocumentRequest(),
+        {},
+    ],
+)
+async def test_delete_document_async(request_type, transport: str = "grpc_asyncio"):
     client = FirestoreAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2453,7 +2468,7 @@ async def test_delete_document_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_document), "__call__") as call:
@@ -2469,11 +2484,6 @@ async def test_delete_document_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_document_async_from_dict():
-    await test_delete_document_async(request_type=dict)
 
 
 def test_delete_document_field_headers():
@@ -2618,8 +2628,8 @@ async def test_delete_document_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        firestore.BatchGetDocumentsRequest,
-        dict,
+        firestore.BatchGetDocumentsRequest(),
+        {},
     ],
 )
 def test_batch_get_documents(request_type, transport: str = "grpc"):
@@ -2630,7 +2640,7 @@ def test_batch_get_documents(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2676,9 +2686,10 @@ def test_batch_get_documents_non_empty_request_with_auto_populated_field():
         client.batch_get_documents(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firestore.BatchGetDocumentsRequest(
+        request_msg = firestore.BatchGetDocumentsRequest(
             database="database_value",
         )
+        assert args[0] == request_msg
 
 
 def test_batch_get_documents_use_cached_wrapped_rpc():
@@ -2763,9 +2774,14 @@ async def test_batch_get_documents_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_batch_get_documents_async(
-    transport: str = "grpc_asyncio", request_type=firestore.BatchGetDocumentsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        firestore.BatchGetDocumentsRequest(),
+        {},
+    ],
+)
+async def test_batch_get_documents_async(request_type, transport: str = "grpc_asyncio"):
     client = FirestoreAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2773,7 +2789,7 @@ async def test_batch_get_documents_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2795,11 +2811,6 @@ async def test_batch_get_documents_async(
     # Establish that the response is the type that we expect.
     message = await response.read()
     assert isinstance(message, firestore.BatchGetDocumentsResponse)
-
-
-@pytest.mark.asyncio
-async def test_batch_get_documents_async_from_dict():
-    await test_batch_get_documents_async(request_type=dict)
 
 
 def test_batch_get_documents_field_headers():
@@ -2871,8 +2882,8 @@ async def test_batch_get_documents_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        firestore.BeginTransactionRequest,
-        dict,
+        firestore.BeginTransactionRequest(),
+        {},
     ],
 )
 def test_begin_transaction(request_type, transport: str = "grpc"):
@@ -2883,7 +2894,7 @@ def test_begin_transaction(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2931,9 +2942,10 @@ def test_begin_transaction_non_empty_request_with_auto_populated_field():
         client.begin_transaction(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firestore.BeginTransactionRequest(
+        request_msg = firestore.BeginTransactionRequest(
             database="database_value",
         )
+        assert args[0] == request_msg
 
 
 def test_begin_transaction_use_cached_wrapped_rpc():
@@ -3016,9 +3028,14 @@ async def test_begin_transaction_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_begin_transaction_async(
-    transport: str = "grpc_asyncio", request_type=firestore.BeginTransactionRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        firestore.BeginTransactionRequest(),
+        {},
+    ],
+)
+async def test_begin_transaction_async(request_type, transport: str = "grpc_asyncio"):
     client = FirestoreAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3026,7 +3043,7 @@ async def test_begin_transaction_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3049,11 +3066,6 @@ async def test_begin_transaction_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, firestore.BeginTransactionResponse)
     assert response.transaction == b"transaction_blob"
-
-
-@pytest.mark.asyncio
-async def test_begin_transaction_async_from_dict():
-    await test_begin_transaction_async(request_type=dict)
 
 
 def test_begin_transaction_field_headers():
@@ -3210,8 +3222,8 @@ async def test_begin_transaction_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        firestore.CommitRequest,
-        dict,
+        firestore.CommitRequest(),
+        {},
     ],
 )
 def test_commit(request_type, transport: str = "grpc"):
@@ -3222,7 +3234,7 @@ def test_commit(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.commit), "__call__") as call:
@@ -3263,9 +3275,10 @@ def test_commit_non_empty_request_with_auto_populated_field():
         client.commit(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firestore.CommitRequest(
+        request_msg = firestore.CommitRequest(
             database="database_value",
         )
+        assert args[0] == request_msg
 
 
 def test_commit_use_cached_wrapped_rpc():
@@ -3344,9 +3357,14 @@ async def test_commit_async_use_cached_wrapped_rpc(transport: str = "grpc_asynci
 
 
 @pytest.mark.asyncio
-async def test_commit_async(
-    transport: str = "grpc_asyncio", request_type=firestore.CommitRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        firestore.CommitRequest(),
+        {},
+    ],
+)
+async def test_commit_async(request_type, transport: str = "grpc_asyncio"):
     client = FirestoreAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3354,7 +3372,7 @@ async def test_commit_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.commit), "__call__") as call:
@@ -3372,11 +3390,6 @@ async def test_commit_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, firestore.CommitResponse)
-
-
-@pytest.mark.asyncio
-async def test_commit_async_from_dict():
-    await test_commit_async(request_type=dict)
 
 
 def test_commit_field_headers():
@@ -3535,8 +3548,8 @@ async def test_commit_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        firestore.RollbackRequest,
-        dict,
+        firestore.RollbackRequest(),
+        {},
     ],
 )
 def test_rollback(request_type, transport: str = "grpc"):
@@ -3547,7 +3560,7 @@ def test_rollback(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.rollback), "__call__") as call:
@@ -3588,9 +3601,10 @@ def test_rollback_non_empty_request_with_auto_populated_field():
         client.rollback(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firestore.RollbackRequest(
+        request_msg = firestore.RollbackRequest(
             database="database_value",
         )
+        assert args[0] == request_msg
 
 
 def test_rollback_use_cached_wrapped_rpc():
@@ -3669,9 +3683,14 @@ async def test_rollback_async_use_cached_wrapped_rpc(transport: str = "grpc_asyn
 
 
 @pytest.mark.asyncio
-async def test_rollback_async(
-    transport: str = "grpc_asyncio", request_type=firestore.RollbackRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        firestore.RollbackRequest(),
+        {},
+    ],
+)
+async def test_rollback_async(request_type, transport: str = "grpc_asyncio"):
     client = FirestoreAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3679,7 +3698,7 @@ async def test_rollback_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.rollback), "__call__") as call:
@@ -3695,11 +3714,6 @@ async def test_rollback_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_rollback_async_from_dict():
-    await test_rollback_async(request_type=dict)
 
 
 def test_rollback_field_headers():
@@ -3854,8 +3868,8 @@ async def test_rollback_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        firestore.RunQueryRequest,
-        dict,
+        firestore.RunQueryRequest(),
+        {},
     ],
 )
 def test_run_query(request_type, transport: str = "grpc"):
@@ -3866,7 +3880,7 @@ def test_run_query(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.run_query), "__call__") as call:
@@ -3908,9 +3922,10 @@ def test_run_query_non_empty_request_with_auto_populated_field():
         client.run_query(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firestore.RunQueryRequest(
+        request_msg = firestore.RunQueryRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_run_query_use_cached_wrapped_rpc():
@@ -3989,9 +4004,14 @@ async def test_run_query_async_use_cached_wrapped_rpc(transport: str = "grpc_asy
 
 
 @pytest.mark.asyncio
-async def test_run_query_async(
-    transport: str = "grpc_asyncio", request_type=firestore.RunQueryRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        firestore.RunQueryRequest(),
+        {},
+    ],
+)
+async def test_run_query_async(request_type, transport: str = "grpc_asyncio"):
     client = FirestoreAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3999,7 +4019,7 @@ async def test_run_query_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.run_query), "__call__") as call:
@@ -4019,11 +4039,6 @@ async def test_run_query_async(
     # Establish that the response is the type that we expect.
     message = await response.read()
     assert isinstance(message, firestore.RunQueryResponse)
-
-
-@pytest.mark.asyncio
-async def test_run_query_async_from_dict():
-    await test_run_query_async(request_type=dict)
 
 
 def test_run_query_field_headers():
@@ -4091,8 +4106,8 @@ async def test_run_query_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        firestore.ExecutePipelineRequest,
-        dict,
+        firestore.ExecutePipelineRequest(),
+        {},
     ],
 )
 def test_execute_pipeline(request_type, transport: str = "grpc"):
@@ -4103,7 +4118,7 @@ def test_execute_pipeline(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.execute_pipeline), "__call__") as call:
@@ -4145,9 +4160,10 @@ def test_execute_pipeline_non_empty_request_with_auto_populated_field():
         client.execute_pipeline(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firestore.ExecutePipelineRequest(
+        request_msg = firestore.ExecutePipelineRequest(
             database="database_value",
         )
+        assert args[0] == request_msg
 
 
 def test_execute_pipeline_use_cached_wrapped_rpc():
@@ -4230,9 +4246,14 @@ async def test_execute_pipeline_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_execute_pipeline_async(
-    transport: str = "grpc_asyncio", request_type=firestore.ExecutePipelineRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        firestore.ExecutePipelineRequest(),
+        {},
+    ],
+)
+async def test_execute_pipeline_async(request_type, transport: str = "grpc_asyncio"):
     client = FirestoreAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4240,7 +4261,7 @@ async def test_execute_pipeline_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.execute_pipeline), "__call__") as call:
@@ -4262,16 +4283,11 @@ async def test_execute_pipeline_async(
     assert isinstance(message, firestore.ExecutePipelineResponse)
 
 
-@pytest.mark.asyncio
-async def test_execute_pipeline_async_from_dict():
-    await test_execute_pipeline_async(request_type=dict)
-
-
 @pytest.mark.parametrize(
     "request_type",
     [
-        firestore.RunAggregationQueryRequest,
-        dict,
+        firestore.RunAggregationQueryRequest(),
+        {},
     ],
 )
 def test_run_aggregation_query(request_type, transport: str = "grpc"):
@@ -4282,7 +4298,7 @@ def test_run_aggregation_query(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4328,9 +4344,10 @@ def test_run_aggregation_query_non_empty_request_with_auto_populated_field():
         client.run_aggregation_query(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firestore.RunAggregationQueryRequest(
+        request_msg = firestore.RunAggregationQueryRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_run_aggregation_query_use_cached_wrapped_rpc():
@@ -4416,8 +4433,15 @@ async def test_run_aggregation_query_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        firestore.RunAggregationQueryRequest(),
+        {},
+    ],
+)
 async def test_run_aggregation_query_async(
-    transport: str = "grpc_asyncio", request_type=firestore.RunAggregationQueryRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = FirestoreAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4426,7 +4450,7 @@ async def test_run_aggregation_query_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4448,11 +4472,6 @@ async def test_run_aggregation_query_async(
     # Establish that the response is the type that we expect.
     message = await response.read()
     assert isinstance(message, firestore.RunAggregationQueryResponse)
-
-
-@pytest.mark.asyncio
-async def test_run_aggregation_query_async_from_dict():
-    await test_run_aggregation_query_async(request_type=dict)
 
 
 def test_run_aggregation_query_field_headers():
@@ -4524,8 +4543,8 @@ async def test_run_aggregation_query_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        firestore.PartitionQueryRequest,
-        dict,
+        firestore.PartitionQueryRequest(),
+        {},
     ],
 )
 def test_partition_query(request_type, transport: str = "grpc"):
@@ -4536,7 +4555,7 @@ def test_partition_query(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.partition_query), "__call__") as call:
@@ -4581,10 +4600,11 @@ def test_partition_query_non_empty_request_with_auto_populated_field():
         client.partition_query(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firestore.PartitionQueryRequest(
+        request_msg = firestore.PartitionQueryRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_partition_query_use_cached_wrapped_rpc():
@@ -4665,9 +4685,14 @@ async def test_partition_query_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_partition_query_async(
-    transport: str = "grpc_asyncio", request_type=firestore.PartitionQueryRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        firestore.PartitionQueryRequest(),
+        {},
+    ],
+)
+async def test_partition_query_async(request_type, transport: str = "grpc_asyncio"):
     client = FirestoreAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4675,7 +4700,7 @@ async def test_partition_query_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.partition_query), "__call__") as call:
@@ -4696,11 +4721,6 @@ async def test_partition_query_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.PartitionQueryAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_partition_query_async_from_dict():
-    await test_partition_query_async(request_type=dict)
 
 
 def test_partition_query_field_headers():
@@ -4948,11 +4968,7 @@ async def test_partition_query_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.partition_query(request={})
-        ).pages:
+        async for page_ in (await client.partition_query(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -4961,8 +4977,8 @@ async def test_partition_query_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        firestore.WriteRequest,
-        dict,
+        firestore.WriteRequest(),
+        {},
     ],
 )
 def test_write(request_type, transport: str = "grpc"):
@@ -4973,7 +4989,7 @@ def test_write(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
     requests = [request]
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5068,9 +5084,14 @@ async def test_write_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio
 
 
 @pytest.mark.asyncio
-async def test_write_async(
-    transport: str = "grpc_asyncio", request_type=firestore.WriteRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        firestore.WriteRequest(),
+        {},
+    ],
+)
+async def test_write_async(request_type, transport: str = "grpc_asyncio"):
     client = FirestoreAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5078,7 +5099,7 @@ async def test_write_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
     requests = [request]
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5098,16 +5119,11 @@ async def test_write_async(
     assert isinstance(message, firestore.WriteResponse)
 
 
-@pytest.mark.asyncio
-async def test_write_async_from_dict():
-    await test_write_async(request_type=dict)
-
-
 @pytest.mark.parametrize(
     "request_type",
     [
-        firestore.ListenRequest,
-        dict,
+        firestore.ListenRequest(),
+        {},
     ],
 )
 def test_listen(request_type, transport: str = "grpc"):
@@ -5118,7 +5134,7 @@ def test_listen(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
     requests = [request]
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5213,9 +5229,14 @@ async def test_listen_async_use_cached_wrapped_rpc(transport: str = "grpc_asynci
 
 
 @pytest.mark.asyncio
-async def test_listen_async(
-    transport: str = "grpc_asyncio", request_type=firestore.ListenRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        firestore.ListenRequest(),
+        {},
+    ],
+)
+async def test_listen_async(request_type, transport: str = "grpc_asyncio"):
     client = FirestoreAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5223,7 +5244,7 @@ async def test_listen_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
     requests = [request]
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5245,16 +5266,11 @@ async def test_listen_async(
     assert isinstance(message, firestore.ListenResponse)
 
 
-@pytest.mark.asyncio
-async def test_listen_async_from_dict():
-    await test_listen_async(request_type=dict)
-
-
 @pytest.mark.parametrize(
     "request_type",
     [
-        firestore.ListCollectionIdsRequest,
-        dict,
+        firestore.ListCollectionIdsRequest(),
+        {},
     ],
 )
 def test_list_collection_ids(request_type, transport: str = "grpc"):
@@ -5265,7 +5281,7 @@ def test_list_collection_ids(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5316,10 +5332,11 @@ def test_list_collection_ids_non_empty_request_with_auto_populated_field():
         client.list_collection_ids(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firestore.ListCollectionIdsRequest(
+        request_msg = firestore.ListCollectionIdsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_collection_ids_use_cached_wrapped_rpc():
@@ -5404,9 +5421,14 @@ async def test_list_collection_ids_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_collection_ids_async(
-    transport: str = "grpc_asyncio", request_type=firestore.ListCollectionIdsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        firestore.ListCollectionIdsRequest(),
+        {},
+    ],
+)
+async def test_list_collection_ids_async(request_type, transport: str = "grpc_asyncio"):
     client = FirestoreAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5414,7 +5436,7 @@ async def test_list_collection_ids_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5439,11 +5461,6 @@ async def test_list_collection_ids_async(
     assert isinstance(response, pagers.ListCollectionIdsAsyncPager)
     assert response.collection_ids == ["collection_ids_value"]
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_collection_ids_async_from_dict():
-    await test_list_collection_ids_async(request_type=dict)
 
 
 def test_list_collection_ids_field_headers():
@@ -5789,11 +5806,7 @@ async def test_list_collection_ids_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_collection_ids(request={})
-        ).pages:
+        async for page_ in (await client.list_collection_ids(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -5802,8 +5815,8 @@ async def test_list_collection_ids_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        firestore.BatchWriteRequest,
-        dict,
+        firestore.BatchWriteRequest(),
+        {},
     ],
 )
 def test_batch_write(request_type, transport: str = "grpc"):
@@ -5814,7 +5827,7 @@ def test_batch_write(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.batch_write), "__call__") as call:
@@ -5855,9 +5868,10 @@ def test_batch_write_non_empty_request_with_auto_populated_field():
         client.batch_write(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firestore.BatchWriteRequest(
+        request_msg = firestore.BatchWriteRequest(
             database="database_value",
         )
+        assert args[0] == request_msg
 
 
 def test_batch_write_use_cached_wrapped_rpc():
@@ -5938,9 +5952,14 @@ async def test_batch_write_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_batch_write_async(
-    transport: str = "grpc_asyncio", request_type=firestore.BatchWriteRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        firestore.BatchWriteRequest(),
+        {},
+    ],
+)
+async def test_batch_write_async(request_type, transport: str = "grpc_asyncio"):
     client = FirestoreAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5948,7 +5967,7 @@ async def test_batch_write_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.batch_write), "__call__") as call:
@@ -5966,11 +5985,6 @@ async def test_batch_write_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, firestore.BatchWriteResponse)
-
-
-@pytest.mark.asyncio
-async def test_batch_write_async_from_dict():
-    await test_batch_write_async(request_type=dict)
 
 
 def test_batch_write_field_headers():
@@ -6037,8 +6051,8 @@ async def test_batch_write_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        firestore.CreateDocumentRequest,
-        dict,
+        firestore.CreateDocumentRequest(),
+        {},
     ],
 )
 def test_create_document(request_type, transport: str = "grpc"):
@@ -6049,7 +6063,7 @@ def test_create_document(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_document), "__call__") as call:
@@ -6095,11 +6109,12 @@ def test_create_document_non_empty_request_with_auto_populated_field():
         client.create_document(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == firestore.CreateDocumentRequest(
+        request_msg = firestore.CreateDocumentRequest(
             parent="parent_value",
             collection_id="collection_id_value",
             document_id="document_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_document_use_cached_wrapped_rpc():
@@ -6180,9 +6195,14 @@ async def test_create_document_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_document_async(
-    transport: str = "grpc_asyncio", request_type=firestore.CreateDocumentRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        firestore.CreateDocumentRequest(),
+        {},
+    ],
+)
+async def test_create_document_async(request_type, transport: str = "grpc_asyncio"):
     client = FirestoreAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6190,7 +6210,7 @@ async def test_create_document_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_document), "__call__") as call:
@@ -6211,11 +6231,6 @@ async def test_create_document_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, document.Document)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_create_document_async_from_dict():
-    await test_create_document_async(request_type=dict)
 
 
 def test_create_document_field_headers():
@@ -6393,7 +6408,7 @@ def test_get_document_rest_required_fields(request_type=firestore.GetDocumentReq
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_document_rest_unset_required_fields():
@@ -6534,7 +6549,7 @@ def test_list_documents_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_documents_rest_unset_required_fields():
@@ -6735,7 +6750,7 @@ def test_update_document_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_document_rest_unset_required_fields():
@@ -6927,7 +6942,7 @@ def test_delete_document_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_document_rest_unset_required_fields():
@@ -7113,7 +7128,7 @@ def test_batch_get_documents_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_batch_get_documents_rest_unset_required_fields():
@@ -7236,7 +7251,7 @@ def test_begin_transaction_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_begin_transaction_rest_unset_required_fields():
@@ -7413,7 +7428,7 @@ def test_commit_rest_required_fields(request_type=firestore.CommitRequest):
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_commit_rest_unset_required_fields():
@@ -7593,7 +7608,7 @@ def test_rollback_rest_required_fields(request_type=firestore.RollbackRequest):
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_rollback_rest_unset_required_fields():
@@ -7781,7 +7796,7 @@ def test_run_query_rest_required_fields(request_type=firestore.RunQueryRequest):
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_run_query_rest_unset_required_fields():
@@ -7907,7 +7922,7 @@ def test_execute_pipeline_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_execute_pipeline_rest_unset_required_fields():
@@ -8036,7 +8051,7 @@ def test_run_aggregation_query_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_run_aggregation_query_rest_unset_required_fields():
@@ -8157,7 +8172,7 @@ def test_partition_query_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_partition_query_rest_unset_required_fields():
@@ -8365,7 +8380,7 @@ def test_list_collection_ids_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_collection_ids_rest_unset_required_fields():
@@ -8605,7 +8620,7 @@ def test_batch_write_rest_required_fields(request_type=firestore.BatchWriteReque
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_batch_write_rest_unset_required_fields():
@@ -8737,7 +8752,7 @@ def test_create_document_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_document_rest_unset_required_fields():
@@ -8886,7 +8901,6 @@ def test_get_document_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firestore.GetDocumentRequest()
-
         assert args[0] == request_msg
 
 
@@ -8907,7 +8921,6 @@ def test_list_documents_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firestore.ListDocumentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -8928,7 +8941,6 @@ def test_update_document_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firestore.UpdateDocumentRequest()
-
         assert args[0] == request_msg
 
 
@@ -8949,7 +8961,6 @@ def test_delete_document_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firestore.DeleteDocumentRequest()
-
         assert args[0] == request_msg
 
 
@@ -8972,7 +8983,6 @@ def test_batch_get_documents_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firestore.BatchGetDocumentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -8995,7 +9005,6 @@ def test_begin_transaction_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firestore.BeginTransactionRequest()
-
         assert args[0] == request_msg
 
 
@@ -9016,7 +9025,6 @@ def test_commit_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firestore.CommitRequest()
-
         assert args[0] == request_msg
 
 
@@ -9037,7 +9045,6 @@ def test_rollback_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firestore.RollbackRequest()
-
         assert args[0] == request_msg
 
 
@@ -9058,7 +9065,6 @@ def test_run_query_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firestore.RunQueryRequest()
-
         assert args[0] == request_msg
 
 
@@ -9079,7 +9085,6 @@ def test_execute_pipeline_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firestore.ExecutePipelineRequest()
-
         assert args[0] == request_msg
 
 
@@ -9102,7 +9107,6 @@ def test_run_aggregation_query_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firestore.RunAggregationQueryRequest()
-
         assert args[0] == request_msg
 
 
@@ -9123,7 +9127,6 @@ def test_partition_query_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firestore.PartitionQueryRequest()
-
         assert args[0] == request_msg
 
 
@@ -9146,7 +9149,6 @@ def test_list_collection_ids_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firestore.ListCollectionIdsRequest()
-
         assert args[0] == request_msg
 
 
@@ -9167,7 +9169,6 @@ def test_batch_write_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firestore.BatchWriteRequest()
-
         assert args[0] == request_msg
 
 
@@ -9188,7 +9189,6 @@ def test_create_document_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firestore.CreateDocumentRequest()
-
         assert args[0] == request_msg
 
 
@@ -9209,7 +9209,6 @@ def test_execute_pipeline_routing_parameters_request_1_grpc():
         request_msg = firestore.ExecutePipelineRequest(
             **{"database": "projects/sample1/sample2"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"project_id": "sample1"}
@@ -9237,7 +9236,6 @@ def test_execute_pipeline_routing_parameters_request_2_grpc():
         request_msg = firestore.ExecutePipelineRequest(
             **{"database": "projects/sample1/databases/sample2/sample3"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"project_id": "sample1", "database_id": "sample2"}
@@ -9283,7 +9281,6 @@ async def test_get_document_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firestore.GetDocumentRequest()
-
         assert args[0] == request_msg
 
 
@@ -9310,7 +9307,6 @@ async def test_list_documents_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firestore.ListDocumentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -9337,7 +9333,6 @@ async def test_update_document_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firestore.UpdateDocumentRequest()
-
         assert args[0] == request_msg
 
 
@@ -9360,7 +9355,6 @@ async def test_delete_document_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firestore.DeleteDocumentRequest()
-
         assert args[0] == request_msg
 
 
@@ -9388,7 +9382,6 @@ async def test_batch_get_documents_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firestore.BatchGetDocumentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -9417,7 +9410,6 @@ async def test_begin_transaction_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firestore.BeginTransactionRequest()
-
         assert args[0] == request_msg
 
 
@@ -9442,7 +9434,6 @@ async def test_commit_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firestore.CommitRequest()
-
         assert args[0] == request_msg
 
 
@@ -9465,7 +9456,6 @@ async def test_rollback_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firestore.RollbackRequest()
-
         assert args[0] == request_msg
 
 
@@ -9491,7 +9481,6 @@ async def test_run_query_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firestore.RunQueryRequest()
-
         assert args[0] == request_msg
 
 
@@ -9517,7 +9506,6 @@ async def test_execute_pipeline_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firestore.ExecutePipelineRequest()
-
         assert args[0] == request_msg
 
 
@@ -9545,7 +9533,6 @@ async def test_run_aggregation_query_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firestore.RunAggregationQueryRequest()
-
         assert args[0] == request_msg
 
 
@@ -9572,7 +9559,6 @@ async def test_partition_query_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firestore.PartitionQueryRequest()
-
         assert args[0] == request_msg
 
 
@@ -9602,7 +9588,6 @@ async def test_list_collection_ids_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firestore.ListCollectionIdsRequest()
-
         assert args[0] == request_msg
 
 
@@ -9627,7 +9612,6 @@ async def test_batch_write_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firestore.BatchWriteRequest()
-
         assert args[0] == request_msg
 
 
@@ -9654,7 +9638,6 @@ async def test_create_document_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firestore.CreateDocumentRequest()
-
         assert args[0] == request_msg
 
 
@@ -9680,7 +9663,6 @@ async def test_execute_pipeline_routing_parameters_request_1_grpc_asyncio():
         request_msg = firestore.ExecutePipelineRequest(
             **{"database": "projects/sample1/sample2"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"project_id": "sample1"}
@@ -9713,7 +9695,6 @@ async def test_execute_pipeline_routing_parameters_request_2_grpc_asyncio():
         request_msg = firestore.ExecutePipelineRequest(
             **{"database": "projects/sample1/databases/sample2/sample3"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"project_id": "sample1", "database_id": "sample2"}
@@ -12086,7 +12067,6 @@ def test_get_document_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firestore.GetDocumentRequest()
-
         assert args[0] == request_msg
 
 
@@ -12106,7 +12086,6 @@ def test_list_documents_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firestore.ListDocumentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -12126,7 +12105,6 @@ def test_update_document_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firestore.UpdateDocumentRequest()
-
         assert args[0] == request_msg
 
 
@@ -12146,7 +12124,6 @@ def test_delete_document_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firestore.DeleteDocumentRequest()
-
         assert args[0] == request_msg
 
 
@@ -12168,7 +12145,6 @@ def test_batch_get_documents_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firestore.BatchGetDocumentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -12190,7 +12166,6 @@ def test_begin_transaction_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firestore.BeginTransactionRequest()
-
         assert args[0] == request_msg
 
 
@@ -12210,7 +12185,6 @@ def test_commit_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firestore.CommitRequest()
-
         assert args[0] == request_msg
 
 
@@ -12230,7 +12204,6 @@ def test_rollback_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firestore.RollbackRequest()
-
         assert args[0] == request_msg
 
 
@@ -12250,7 +12223,6 @@ def test_run_query_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firestore.RunQueryRequest()
-
         assert args[0] == request_msg
 
 
@@ -12270,7 +12242,6 @@ def test_execute_pipeline_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firestore.ExecutePipelineRequest()
-
         assert args[0] == request_msg
 
 
@@ -12292,7 +12263,6 @@ def test_run_aggregation_query_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firestore.RunAggregationQueryRequest()
-
         assert args[0] == request_msg
 
 
@@ -12312,7 +12282,6 @@ def test_partition_query_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firestore.PartitionQueryRequest()
-
         assert args[0] == request_msg
 
 
@@ -12334,7 +12303,6 @@ def test_list_collection_ids_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firestore.ListCollectionIdsRequest()
-
         assert args[0] == request_msg
 
 
@@ -12354,7 +12322,6 @@ def test_batch_write_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firestore.BatchWriteRequest()
-
         assert args[0] == request_msg
 
 
@@ -12374,7 +12341,6 @@ def test_create_document_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = firestore.CreateDocumentRequest()
-
         assert args[0] == request_msg
 
 
@@ -12394,7 +12360,6 @@ def test_execute_pipeline_routing_parameters_request_1_rest():
         request_msg = firestore.ExecutePipelineRequest(
             **{"database": "projects/sample1/sample2"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"project_id": "sample1"}
@@ -12421,7 +12386,6 @@ def test_execute_pipeline_routing_parameters_request_2_rest():
         request_msg = firestore.ExecutePipelineRequest(
             **{"database": "projects/sample1/databases/sample2/sample3"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"project_id": "sample1", "database_id": "sample2"}

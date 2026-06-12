@@ -1,0 +1,527 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import csv
+import os
+import re
+from unittest import mock
+from unittest.mock import patch
+import pytest
+import yaml
+from version_scanner import ConfigManager, scan_file, write_csv_report
+
+# Test ConfigManager
+@pytest.mark.parametrize("dependency, version, expected", [
+    (
+        "python", 
+        "3.7", 
+        {"name": "python", "version": "3.7", "major": "3", "minor": "7", "minor_plus_one": "8", "minor_minus_one": "6"}
+    ),
+    (
+        "protobuf", 
+        "4.25.8", 
+        {"name": "protobuf", "version": "4.25.8", "major": "4", "minor": "25", "patch": "8", "minor_plus_one": "26", "minor_minus_one": "24"}
+    ),
+    (
+        "foo", 
+        "3", 
+        {"name": "foo", "version": "3", "major": "3"}
+    ),
+])
+def test_compute_variables(dependency, version, expected):
+    cm = ConfigManager("dummy_path", dependency, version)
+    vars = cm._compute_variables()
+    assert vars == expected
+
+# Test scan_file
+def test_scan_file_positive(tmp_path):
+    test_file = tmp_path / "test.py"
+    test_file.write_text("python_requires = '>=3.7'\n")
+    
+    rules = [
+        {"name": "python_requires_check", "pattern": re.compile(r"python_requires\s*=\s*['\"]>=3\.7['\"]")}
+    ]
+    
+    results = scan_file(str(test_file), rules)
+    assert len(results) == 1
+    assert results[0]["rule_name"] == "python_requires_check"
+    assert results[0]["line_number"] == 1
+    assert results[0]["matched_string"] == "python_requires = '>=3.7'"
+
+def test_scan_file_negative(tmp_path):
+    test_file = tmp_path / "test.py"
+    test_file.write_text("python_requires = '>=3.8'\n")
+    
+    rules = [
+        {"name": "python_requires_check", "pattern": re.compile(r"python_requires\s*=\s*['\"]>=3\.7['\"]")}
+    ]
+    
+    results = scan_file(str(test_file), rules)
+    assert len(results) == 0
+
+def test_scan_file_ignores_pragma(tmp_path):
+    test_file = tmp_path / "test.py"
+    test_file.write_text("python_requires = '>=3.7'  # version-scanner: ignore\n")
+    
+    rules = [
+        {"name": "python_requires_check", "pattern": re.compile(r"python_requires\s*=\s*['\"]>=3\.7['\"]")}
+    ]
+    
+    results = scan_file(str(test_file), rules)
+    assert len(results) == 0
+
+def test_scan_file_ignores_next_line(tmp_path):
+    test_file = tmp_path / "test.py"
+    test_file.write_text("# version-scanner: ignore-next-line\npython_requires = '>=3.7'\n")
+    
+    rules = [
+        {"name": "python_requires_check", "pattern": re.compile(r"python_requires\s*=\s*['\"]>=3\.7['\"]")}
+    ]
+    
+    results = scan_file(str(test_file), rules)
+    assert len(results) == 0
+
+def test_scan_repository_flags_filename(tmp_path):
+    test_file = tmp_path / "test-3.9.txt"
+    test_file.write_text("clean content\n")
+    
+    rules = []
+    
+    from version_scanner import scan_repository
+    results = scan_repository(str(tmp_path), rules, version_string="3.9")
+    
+    assert len(results) == 1
+    assert results[0]["rule_name"] == "filename_match"
+    assert results[0]["matched_string"] == "3.9"
+
+# Test directory scan simulation
+def test_directory_scan(tmp_path):
+    # Create dummy files
+    p1 = tmp_path / "pkg1"
+    p1.mkdir()
+    f1 = p1 / "setup.py"
+    f1.write_text("python_requires = '>=3.7'\n")
+    
+    p2 = tmp_path / "pkg2"
+    p2.mkdir()
+    f2 = p2 / "clean.py"
+    f2.write_text("print('Hello')\n")
+    
+    rules = [
+        {"name": "python_requires_check", "pattern": re.compile(r"python_requires\s*=\s*['\"]>=3\.7['\"]")}
+    ]
+    
+    results = []
+    for root, dirs, files in os.walk(tmp_path):
+        for file in files:
+            file_path = os.path.join(root, file)
+            results.extend(scan_file(file_path, rules))
+            
+    assert len(results) == 1
+    assert results[0]["rule_name"] == "python_requires_check"
+
+# Test write_csv_report
+def test_write_csv_report(tmp_path):
+    output_file = tmp_path / "report.csv"
+    matches = [
+        {
+            "file_path": "./setup.py",
+            "rule_name": "python_requires_check",
+            "line_number": 1,
+            "matched_string": "python_requires = '>=3.7'",
+            "context_line": "python_requires = '>=3.7'"
+        }
+    ]
+    
+    write_csv_report(str(output_file), matches)
+    
+    assert output_file.exists()
+    
+    with open(output_file, 'r', encoding='utf-8', newline='') as f:
+        reader = csv.DictReader(f)
+        rows = list(reader)
+        
+    assert len(rows) == 1
+    assert rows[0]["file_path"] == "./setup.py"
+    assert rows[0]["rule_name"] == "python_requires_check"
+    assert rows[0]["line_number"] == "1"
+    assert rows[0]["matched_string"] == "python_requires = '>=3.7'"
+    assert rows[0]["context_line"] == "python_requires = '>=3.7'"
+
+
+def test_load_config(tmp_path):
+    config_file = tmp_path / "config.yaml"
+    config_file.write_text("""
+rules:
+  - name: test_rule
+    rules:
+      - python{version}
+""")
+    
+    cm = ConfigManager(str(config_file), "python", "3.7")
+    rules = cm.load_config()
+    
+    assert len(rules) == 1
+    assert rules[0]["name"] == "test_rule"
+    assert rules[0]["pattern"] == "python3.7"
+
+
+@pytest.mark.parametrize("template, expected_warning", [
+    ("python{missing_var}", "Warning: Missing variable for interpolation"),
+    ("python{version", "Warning: Invalid format string"),
+])
+def test_load_config_error_handling(tmp_path, capsys, template, expected_warning):
+    config_file = tmp_path / "config.yaml"
+    config_file.write_text(f"""
+rules:
+  - name: test_rule
+    rules:
+      - {template}
+""")
+    
+    cm = ConfigManager(str(config_file), "python", "3.7")
+    rules = cm.load_config()
+    
+    assert len(rules) == 0
+    
+    captured = capsys.readouterr()
+    assert expected_warning in captured.err
+
+
+def test_load_config_permission_error(tmp_path, capsys):
+    config_file = tmp_path / "config.yaml"
+    config_file.write_text("rules: []")
+    
+    cm = ConfigManager(str(config_file), "python", "3.7")
+    
+    with patch("builtins.open", side_effect=PermissionError("Permission denied")):
+        with pytest.raises(SystemExit) as excinfo:
+            cm.load_config()
+            
+    assert excinfo.value.code == 1
+    captured = capsys.readouterr()
+    assert "Error: Permission denied reading config file" in captured.err
+def test_main_package_file_permission_error(tmp_path, capsys):
+    package_file = tmp_path / "packages.txt"
+    package_file.write_text("packages/pkg_a")
+    
+    import sys
+    test_args = ["version_scanner.py", "-d", "python", "-v", "3.7", "--package-file", str(package_file)]
+    
+    real_open = open
+    def side_effect(file, *args, **kwargs):
+        if str(file) == str(package_file):
+            raise PermissionError("Permission denied")
+        return real_open(file, *args, **kwargs)
+        
+    with patch("sys.argv", test_args):
+        with patch("builtins.open", side_effect=side_effect):
+            with pytest.raises(SystemExit) as excinfo:
+                from version_scanner import main
+                main()
+                
+    assert excinfo.value.code == 1
+    captured = capsys.readouterr()
+    assert "Error: Permission denied reading package file" in captured.err
+def test_main_package_file_not_found(capsys):
+    import sys
+    test_args = ["version_scanner.py", "-d", "python", "-v", "3.7", "--package-file", "non_existent_file.txt"]
+    
+    with patch("sys.argv", test_args):
+        with pytest.raises(SystemExit) as excinfo:
+            from version_scanner import main
+            main()
+            
+    assert excinfo.value.code == 1
+    captured = capsys.readouterr()
+    assert "Error: Package file not found" in captured.err
+def test_format_match_for_csv():
+    from version_scanner import format_match_for_csv
+    match = {
+        "file_path": "google-cloud-python/main/packages/pkg_a/setup.py",
+        "repo_path": "packages/pkg_a/setup.py",
+        "line_number": 123,
+        "rule_name": "test_rule"
+    }
+    
+    # Test without github_repo
+    formatted = format_match_for_csv(match)
+    assert formatted["line_number"] == 123
+    
+    # Test with github_repo
+    formatted = format_match_for_csv(match, github_repo="https://github.com/user/repo", branch="main")
+    expected_url = "https://github.com/user/repo/blob/main/packages/pkg_a/setup.py#L123"
+    assert formatted["line_number"] == f'=HYPERLINK("{expected_url}", "123")'
+
+
+def test_format_match_for_csv_truncates_long_line():
+    from version_scanner import format_match_for_csv
+    
+    long_line = "a" * 1000 + "PY37" + "b" * 1000
+    match = {
+        "file_path": "test.py",
+        "line_number": 1,
+        "rule_name": "test_rule",
+        "matched_string": "PY37",
+        "context_line": long_line
+    }
+    
+    formatted = format_match_for_csv(match)
+    context = formatted["context_line"]
+    
+    assert len(context) <= 600
+    assert "PY37" in context
+    assert "..." in context
+
+
+def test_get_match_counts():
+    from version_scanner import get_match_counts
+    
+    matches = [
+        {"rule_name": "rule1", "package_name": "pkg1"},
+        {"rule_name": "rule1", "package_name": "pkg2"},
+        {"rule_name": "rule2", "package_name": "pkg1"},
+    ]
+    
+    rule_counts, package_counts = get_match_counts(matches)
+    
+    assert rule_counts == {"rule1": 2, "rule2": 1}
+    assert package_counts == {"pkg1": 2, "pkg2": 1}
+
+
+def test_scan_file_removes_newline_from_match(tmp_path):
+    test_file = tmp_path / "test.py"
+    test_file.write_text("Python 3.7\n")
+    
+    rules = [
+        {"name": "explicit_version_string", "pattern": re.compile(r"(?:['\"]|\s|^)3\.7(\.\d+)?(?:['\"]|\s|$)")}
+    ]
+    
+    from version_scanner import scan_file
+    results = scan_file(str(test_file), rules)
+    
+    assert len(results) == 1
+    assert "\n" not in results[0]["matched_string"]
+
+
+def test_write_csv_report_with_links(tmp_path):
+    output_file = tmp_path / "report.csv"
+    matches = [
+        {
+            "file_path": "google-cloud-python/main/packages/pkg_a/setup.py",
+            "repo_path": "packages/pkg_a/setup.py",
+            "line_number": 1,
+            "rule_name": "python_requires_check",
+            "matched_string": "python_requires = '>=3.7'",
+            "context_line": "python_requires = '>=3.7'"
+        }
+    ]
+    
+    from version_scanner import write_csv_report
+    write_csv_report(str(output_file), matches, github_repo="https://github.com/user/repo", branch="main")
+    
+    assert output_file.exists()
+    
+    with open(output_file, 'r', encoding='utf-8', newline='') as f:
+        reader = csv.DictReader(f)
+        rows = list(reader)
+        
+    assert len(rows) == 1
+    assert "HYPERLINK" in rows[0]["line_number"]
+def test_scan_repository_ignores_version_scanner(tmp_path):
+    vs_dir = tmp_path / "version_scanner"
+    vs_dir.mkdir()
+    f = vs_dir / "test.py"
+    f.write_text("python_requires = '>=3.7'\n")
+    
+    rules = [
+        {"name": "python_requires_check", "pattern": "python_requires\\s*=\\s*['\"]>=3\\.7['\"]"}
+    ]
+    
+    from version_scanner import scan_repository
+    results = scan_repository(str(tmp_path), rules, ignore_dirs=['version_scanner'])
+    
+    assert len(results) == 0
+
+
+def test_load_ignore_file(tmp_path):
+    from version_scanner import load_ignore_file
+    
+    ignore_file = tmp_path / ".scannerignore"
+    ignore_file.write_text("dir1\n# comment\n  \ndir2\n")
+    
+    ignore_dirs = load_ignore_file(str(ignore_file))
+    
+    assert ignore_dirs == ["dir1", "dir2"]
+
+@mock.patch('version_scanner.load_ignore_file')
+@mock.patch('version_scanner.scan_repository')
+def test_main_loads_ignore_from_script_dir(mock_scan, mock_load_ignore):
+    mock_load_ignore.return_value = []
+    mock_scan.return_value = []
+    
+    import sys
+    test_args = ["version_scanner.py", "-d", "python", "-v", "3.7"]
+    
+    with mock.patch('sys.argv', test_args):
+        from version_scanner import main
+        main()
+        
+    mock_load_ignore.assert_called_once()
+    args, kwargs = mock_load_ignore.call_args
+    path = args[0]
+    assert ".scannerignore" in path
+    assert "scripts/version_scanner" in path
+
+
+@mock.patch('googleapiclient.discovery.build')
+@mock.patch('google.auth.default')
+def test_upload_to_drive(mock_auth, mock_build):
+    from unittest import mock
+    
+    mock_creds = mock.Mock()
+    mock_creds.universe_domain = "googleapis.com"
+    mock_creds.create_scoped.return_value = mock_creds
+    
+    mock_auth_http = mock.Mock()
+    mock_auth_http.credentials = mock_creds
+    mock_creds.authorize.return_value = mock_auth_http
+    
+    mock_auth.return_value = (mock_creds, "project-id")
+    
+    mock_sheets = mock.Mock()
+    mock_build.return_value = mock_sheets
+    
+    mock_spreadsheets = mock.Mock()
+    mock_sheets.spreadsheets.return_value = mock_spreadsheets
+    
+    mock_create = mock.Mock()
+    mock_spreadsheets.create.return_value = mock_create
+    mock_create.execute.return_value = {"spreadsheetUrl": "http://example.com"}
+    
+    mock_values = mock.Mock()
+    mock_spreadsheets.values.return_value = mock_values
+    mock_update = mock.Mock()
+    mock_values.update.return_value = mock_update
+    mock_update.execute.return_value = {}
+    
+    from version_scanner import upload_to_drive
+    
+    matches = [{"rule_name": "r1", "package_name": "p1", "file_path": "f1", "line_number": 1, "matched_string": "s1", "context_line": "c1"}]
+    
+    url = upload_to_drive("test.csv", matches, github_repo="https://github.com/user/repo")
+    
+    assert url == "http://example.com"
+    mock_spreadsheets.create.assert_called_once()
+    
+    # Verify that update was called with hyperlink formula
+    mock_values.update.assert_called_once()
+    args, kwargs = mock_values.update.call_args
+    body = kwargs.get('body', {})
+    values = body.get('values', [])
+    assert len(values) > 1
+    assert "HYPERLINK" in values[1][3] # line_number is at index 3
+
+
+def test_regex_examples_from_config():
+    """Test that examples in config match at least one rule in the group."""
+    config_path = "regex_config.yaml"
+    
+    try:
+        with open(config_path, 'r') as f:
+            config = yaml.safe_load(f)
+    except FileNotFoundError:
+        pytest.fail(f"Config file not found: {config_path}")
+        
+    rules_list = config.get("rules", [])
+    
+    # Variables for interpolation (simulate Python 3.7)
+    vars = {
+        "major": "3",
+        "minor": "7",
+        "version": "3.7",
+        "minor_plus_one": "8",
+        "minor_minus_one": "6"
+    }
+    
+    for rule_group in rules_list:
+        name = rule_group.get("name")
+        examples = rule_group.get("examples", [])
+        templates = rule_group.get("rules", [])
+        
+        if not examples or not templates:
+            continue
+            
+        compiled_patterns = []
+        for template in templates:
+            try:
+                resolved = template.strip().format(**vars)
+                compiled_patterns.append(re.compile(resolved, re.IGNORECASE))
+            except KeyError:
+                continue
+                
+        for example in examples:
+            matched = False
+            for pattern in compiled_patterns:
+                if pattern.search(example):
+                    matched = True
+                    break
+            assert matched, f"Example '{example}' in group '{name}' did not match any pattern."
+
+
+def test_scan_repository_layout_agnostic(tmp_path):
+    # Create directories under different roots
+    p1 = tmp_path / "generated" / "pkg_gen"
+    p1.mkdir(parents=True)
+    (p1 / "setup.py").write_text("python_requires = '>=3.7'\n")
+    
+    p2 = tmp_path / "handwritten" / "pkg_hand"
+    p2.mkdir(parents=True)
+    (p2 / "setup.py").write_text("python_requires = '>=3.7'\n")
+    
+    rules = [
+        {"name": "python_requires_check", "pattern": "python_requires\\s*=\\s*['\"]>=3\\.7['\"]"}
+    ]
+    
+    from version_scanner import scan_repository
+    
+    # Scan only handwritten package
+    results = scan_repository(
+        str(tmp_path), 
+        rules, 
+        target_packages=["handwritten/pkg_hand"]
+    )
+    
+    assert len(results) == 1
+    assert results[0]["package_name"] == "pkg_hand"
+    assert "handwritten/pkg_hand/setup.py" in results[0]["file_path"]
+
+
+def test_scan_repository_package_name_roots(tmp_path):
+    # Create directories under various package roots
+    p1 = tmp_path / "third_party" / "pkg_third"
+    p1.mkdir(parents=True)
+    (p1 / "setup.py").write_text("python_requires = '>=3.7'\n")
+    
+    rules = [
+        {"name": "python_requires_check", "pattern": "python_requires\\s*=\\s*['\"]>=3\\.7['\"]"}
+    ]
+    
+    from version_scanner import scan_repository
+    
+    results = scan_repository(str(tmp_path), rules)
+    
+    assert len(results) == 1
+    assert results[0]["package_name"] == "pkg_third"
+    assert "third_party/pkg_third/setup.py" in results[0]["file_path"]

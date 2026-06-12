@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -113,6 +108,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1314,8 +1324,8 @@ def test_service_health_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        event_resources.ListEventsRequest,
-        dict,
+        event_resources.ListEventsRequest(),
+        {},
     ],
 )
 def test_list_events(request_type, transport: str = "grpc"):
@@ -1326,7 +1336,7 @@ def test_list_events(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_events), "__call__") as call:
@@ -1374,11 +1384,12 @@ def test_list_events_non_empty_request_with_auto_populated_field():
         client.list_events(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == event_resources.ListEventsRequest(
+        request_msg = event_resources.ListEventsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_events_use_cached_wrapped_rpc():
@@ -1459,9 +1470,14 @@ async def test_list_events_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_events_async(
-    transport: str = "grpc_asyncio", request_type=event_resources.ListEventsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        event_resources.ListEventsRequest(),
+        {},
+    ],
+)
+async def test_list_events_async(request_type, transport: str = "grpc_asyncio"):
     client = ServiceHealthAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1469,7 +1485,7 @@ async def test_list_events_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_events), "__call__") as call:
@@ -1492,11 +1508,6 @@ async def test_list_events_async(
     assert isinstance(response, pagers.ListEventsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_events_async_from_dict():
-    await test_list_events_async(request_type=dict)
 
 
 def test_list_events_field_headers():
@@ -1826,11 +1837,7 @@ async def test_list_events_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_events(request={})
-        ).pages:
+        async for page_ in (await client.list_events(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -1839,8 +1846,8 @@ async def test_list_events_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        event_resources.GetEventRequest,
-        dict,
+        event_resources.GetEventRequest(),
+        {},
     ],
 )
 def test_get_event(request_type, transport: str = "grpc"):
@@ -1851,7 +1858,7 @@ def test_get_event(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_event), "__call__") as call:
@@ -1914,9 +1921,10 @@ def test_get_event_non_empty_request_with_auto_populated_field():
         client.get_event(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == event_resources.GetEventRequest(
+        request_msg = event_resources.GetEventRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_event_use_cached_wrapped_rpc():
@@ -1995,9 +2003,14 @@ async def test_get_event_async_use_cached_wrapped_rpc(transport: str = "grpc_asy
 
 
 @pytest.mark.asyncio
-async def test_get_event_async(
-    transport: str = "grpc_asyncio", request_type=event_resources.GetEventRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        event_resources.GetEventRequest(),
+        {},
+    ],
+)
+async def test_get_event_async(request_type, transport: str = "grpc_asyncio"):
     client = ServiceHealthAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2005,7 +2018,7 @@ async def test_get_event_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_event), "__call__") as call:
@@ -2045,11 +2058,6 @@ async def test_get_event_async(
     assert response.detailed_state == event_resources.Event.DetailedState.EMERGING
     assert response.relevance == event_resources.Event.Relevance.UNKNOWN
     assert response.parent_event == "parent_event_value"
-
-
-@pytest.mark.asyncio
-async def test_get_event_async_from_dict():
-    await test_get_event_async(request_type=dict)
 
 
 def test_get_event_field_headers():
@@ -2198,8 +2206,8 @@ async def test_get_event_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        event_resources.ListOrganizationEventsRequest,
-        dict,
+        event_resources.ListOrganizationEventsRequest(),
+        {},
     ],
 )
 def test_list_organization_events(request_type, transport: str = "grpc"):
@@ -2210,7 +2218,7 @@ def test_list_organization_events(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2262,11 +2270,12 @@ def test_list_organization_events_non_empty_request_with_auto_populated_field():
         client.list_organization_events(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == event_resources.ListOrganizationEventsRequest(
+        request_msg = event_resources.ListOrganizationEventsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_organization_events_use_cached_wrapped_rpc():
@@ -2352,9 +2361,15 @@ async def test_list_organization_events_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        event_resources.ListOrganizationEventsRequest(),
+        {},
+    ],
+)
 async def test_list_organization_events_async(
-    transport: str = "grpc_asyncio",
-    request_type=event_resources.ListOrganizationEventsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ServiceHealthAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2363,7 +2378,7 @@ async def test_list_organization_events_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2388,11 +2403,6 @@ async def test_list_organization_events_async(
     assert isinstance(response, pagers.ListOrganizationEventsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_organization_events_async_from_dict():
-    await test_list_organization_events_async(request_type=dict)
 
 
 def test_list_organization_events_field_headers():
@@ -2740,11 +2750,7 @@ async def test_list_organization_events_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_organization_events(request={})
-        ).pages:
+        async for page_ in (await client.list_organization_events(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -2753,8 +2759,8 @@ async def test_list_organization_events_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        event_resources.GetOrganizationEventRequest,
-        dict,
+        event_resources.GetOrganizationEventRequest(),
+        {},
     ],
 )
 def test_get_organization_event(request_type, transport: str = "grpc"):
@@ -2765,7 +2771,7 @@ def test_get_organization_event(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2833,9 +2839,10 @@ def test_get_organization_event_non_empty_request_with_auto_populated_field():
         client.get_organization_event(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == event_resources.GetOrganizationEventRequest(
+        request_msg = event_resources.GetOrganizationEventRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_organization_event_use_cached_wrapped_rpc():
@@ -2921,9 +2928,15 @@ async def test_get_organization_event_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        event_resources.GetOrganizationEventRequest(),
+        {},
+    ],
+)
 async def test_get_organization_event_async(
-    transport: str = "grpc_asyncio",
-    request_type=event_resources.GetOrganizationEventRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ServiceHealthAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2932,7 +2945,7 @@ async def test_get_organization_event_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2975,11 +2988,6 @@ async def test_get_organization_event_async(
         == event_resources.OrganizationEvent.DetailedState.EMERGING
     )
     assert response.parent_event == "parent_event_value"
-
-
-@pytest.mark.asyncio
-async def test_get_organization_event_async_from_dict():
-    await test_get_organization_event_async(request_type=dict)
 
 
 def test_get_organization_event_field_headers():
@@ -3136,8 +3144,8 @@ async def test_get_organization_event_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        event_resources.ListOrganizationImpactsRequest,
-        dict,
+        event_resources.ListOrganizationImpactsRequest(),
+        {},
     ],
 )
 def test_list_organization_impacts(request_type, transport: str = "grpc"):
@@ -3148,7 +3156,7 @@ def test_list_organization_impacts(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3200,11 +3208,12 @@ def test_list_organization_impacts_non_empty_request_with_auto_populated_field()
         client.list_organization_impacts(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == event_resources.ListOrganizationImpactsRequest(
+        request_msg = event_resources.ListOrganizationImpactsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_organization_impacts_use_cached_wrapped_rpc():
@@ -3290,9 +3299,15 @@ async def test_list_organization_impacts_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        event_resources.ListOrganizationImpactsRequest(),
+        {},
+    ],
+)
 async def test_list_organization_impacts_async(
-    transport: str = "grpc_asyncio",
-    request_type=event_resources.ListOrganizationImpactsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ServiceHealthAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3301,7 +3316,7 @@ async def test_list_organization_impacts_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3326,11 +3341,6 @@ async def test_list_organization_impacts_async(
     assert isinstance(response, pagers.ListOrganizationImpactsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_organization_impacts_async_from_dict():
-    await test_list_organization_impacts_async(request_type=dict)
 
 
 def test_list_organization_impacts_field_headers():
@@ -3678,11 +3688,7 @@ async def test_list_organization_impacts_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_organization_impacts(request={})
-        ).pages:
+        async for page_ in (await client.list_organization_impacts(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -3691,8 +3697,8 @@ async def test_list_organization_impacts_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        event_resources.GetOrganizationImpactRequest,
-        dict,
+        event_resources.GetOrganizationImpactRequest(),
+        {},
     ],
 )
 def test_get_organization_impact(request_type, transport: str = "grpc"):
@@ -3703,7 +3709,7 @@ def test_get_organization_impact(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3753,9 +3759,10 @@ def test_get_organization_impact_non_empty_request_with_auto_populated_field():
         client.get_organization_impact(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == event_resources.GetOrganizationImpactRequest(
+        request_msg = event_resources.GetOrganizationImpactRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_organization_impact_use_cached_wrapped_rpc():
@@ -3841,9 +3848,15 @@ async def test_get_organization_impact_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        event_resources.GetOrganizationImpactRequest(),
+        {},
+    ],
+)
 async def test_get_organization_impact_async(
-    transport: str = "grpc_asyncio",
-    request_type=event_resources.GetOrganizationImpactRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ServiceHealthAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3852,7 +3865,7 @@ async def test_get_organization_impact_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3877,11 +3890,6 @@ async def test_get_organization_impact_async(
     assert isinstance(response, event_resources.OrganizationImpact)
     assert response.name == "name_value"
     assert response.events == ["events_value"]
-
-
-@pytest.mark.asyncio
-async def test_get_organization_impact_async_from_dict():
-    await test_get_organization_impact_async(request_type=dict)
 
 
 def test_get_organization_impact_field_headers():
@@ -4152,7 +4160,7 @@ def test_list_events_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_events_rest_unset_required_fields():
@@ -4400,7 +4408,7 @@ def test_get_event_rest_required_fields(request_type=event_resources.GetEventReq
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_event_rest_unset_required_fields():
@@ -4593,7 +4601,7 @@ def test_list_organization_events_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_organization_events_rest_unset_required_fields():
@@ -4849,7 +4857,7 @@ def test_get_organization_event_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_organization_event_rest_unset_required_fields():
@@ -5044,7 +5052,7 @@ def test_list_organization_impacts_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_organization_impacts_rest_unset_required_fields():
@@ -5299,7 +5307,7 @@ def test_get_organization_impact_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_organization_impact_rest_unset_required_fields():
@@ -5494,7 +5502,6 @@ def test_list_events_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = event_resources.ListEventsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5515,7 +5522,6 @@ def test_get_event_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = event_resources.GetEventRequest()
-
         assert args[0] == request_msg
 
 
@@ -5538,7 +5544,6 @@ def test_list_organization_events_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = event_resources.ListOrganizationEventsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5561,7 +5566,6 @@ def test_get_organization_event_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = event_resources.GetOrganizationEventRequest()
-
         assert args[0] == request_msg
 
 
@@ -5584,7 +5588,6 @@ def test_list_organization_impacts_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = event_resources.ListOrganizationImpactsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5607,7 +5610,6 @@ def test_get_organization_impact_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = event_resources.GetOrganizationImpactRequest()
-
         assert args[0] == request_msg
 
 
@@ -5649,7 +5651,6 @@ async def test_list_events_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = event_resources.ListEventsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5684,7 +5685,6 @@ async def test_get_event_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = event_resources.GetEventRequest()
-
         assert args[0] == request_msg
 
 
@@ -5714,7 +5714,6 @@ async def test_list_organization_events_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = event_resources.ListOrganizationEventsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5750,7 +5749,6 @@ async def test_get_organization_event_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = event_resources.GetOrganizationEventRequest()
-
         assert args[0] == request_msg
 
 
@@ -5780,7 +5778,6 @@ async def test_list_organization_impacts_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = event_resources.ListOrganizationImpactsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5810,7 +5807,6 @@ async def test_get_organization_impact_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = event_resources.GetOrganizationImpactRequest()
-
         assert args[0] == request_msg
 
 
@@ -6817,7 +6813,6 @@ def test_list_events_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = event_resources.ListEventsRequest()
-
         assert args[0] == request_msg
 
 
@@ -6837,7 +6832,6 @@ def test_get_event_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = event_resources.GetEventRequest()
-
         assert args[0] == request_msg
 
 
@@ -6859,7 +6853,6 @@ def test_list_organization_events_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = event_resources.ListOrganizationEventsRequest()
-
         assert args[0] == request_msg
 
 
@@ -6881,7 +6874,6 @@ def test_get_organization_event_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = event_resources.GetOrganizationEventRequest()
-
         assert args[0] == request_msg
 
 
@@ -6903,7 +6895,6 @@ def test_list_organization_impacts_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = event_resources.ListOrganizationImpactsRequest()
-
         assert args[0] == request_msg
 
 
@@ -6925,7 +6916,6 @@ def test_get_organization_impact_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = event_resources.GetOrganizationImpactRequest()
-
         assert args[0] == request_msg
 
 

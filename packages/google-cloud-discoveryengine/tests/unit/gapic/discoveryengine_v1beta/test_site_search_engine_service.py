@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -122,6 +117,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1393,8 +1403,8 @@ def test_site_search_engine_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        site_search_engine_service.GetSiteSearchEngineRequest,
-        dict,
+        site_search_engine_service.GetSiteSearchEngineRequest(),
+        {},
     ],
 )
 def test_get_site_search_engine(request_type, transport: str = "grpc"):
@@ -1405,7 +1415,7 @@ def test_get_site_search_engine(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1453,9 +1463,10 @@ def test_get_site_search_engine_non_empty_request_with_auto_populated_field():
         client.get_site_search_engine(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == site_search_engine_service.GetSiteSearchEngineRequest(
+        request_msg = site_search_engine_service.GetSiteSearchEngineRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_site_search_engine_use_cached_wrapped_rpc():
@@ -1541,9 +1552,15 @@ async def test_get_site_search_engine_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        site_search_engine_service.GetSiteSearchEngineRequest(),
+        {},
+    ],
+)
 async def test_get_site_search_engine_async(
-    transport: str = "grpc_asyncio",
-    request_type=site_search_engine_service.GetSiteSearchEngineRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = SiteSearchEngineServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1552,7 +1569,7 @@ async def test_get_site_search_engine_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1575,11 +1592,6 @@ async def test_get_site_search_engine_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, site_search_engine.SiteSearchEngine)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_get_site_search_engine_async_from_dict():
-    await test_get_site_search_engine_async(request_type=dict)
 
 
 def test_get_site_search_engine_field_headers():
@@ -1736,8 +1748,8 @@ async def test_get_site_search_engine_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        site_search_engine_service.CreateTargetSiteRequest,
-        dict,
+        site_search_engine_service.CreateTargetSiteRequest(),
+        {},
     ],
 )
 def test_create_target_site(request_type, transport: str = "grpc"):
@@ -1748,7 +1760,7 @@ def test_create_target_site(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1793,9 +1805,10 @@ def test_create_target_site_non_empty_request_with_auto_populated_field():
         client.create_target_site(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == site_search_engine_service.CreateTargetSiteRequest(
+        request_msg = site_search_engine_service.CreateTargetSiteRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_target_site_use_cached_wrapped_rpc():
@@ -1890,10 +1903,14 @@ async def test_create_target_site_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_target_site_async(
-    transport: str = "grpc_asyncio",
-    request_type=site_search_engine_service.CreateTargetSiteRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        site_search_engine_service.CreateTargetSiteRequest(),
+        {},
+    ],
+)
+async def test_create_target_site_async(request_type, transport: str = "grpc_asyncio"):
     client = SiteSearchEngineServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1901,7 +1918,7 @@ async def test_create_target_site_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1921,11 +1938,6 @@ async def test_create_target_site_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_target_site_async_from_dict():
-    await test_create_target_site_async(request_type=dict)
 
 
 def test_create_target_site_field_headers():
@@ -2092,8 +2104,8 @@ async def test_create_target_site_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        site_search_engine_service.BatchCreateTargetSitesRequest,
-        dict,
+        site_search_engine_service.BatchCreateTargetSitesRequest(),
+        {},
     ],
 )
 def test_batch_create_target_sites(request_type, transport: str = "grpc"):
@@ -2104,7 +2116,7 @@ def test_batch_create_target_sites(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2149,9 +2161,10 @@ def test_batch_create_target_sites_non_empty_request_with_auto_populated_field()
         client.batch_create_target_sites(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == site_search_engine_service.BatchCreateTargetSitesRequest(
+        request_msg = site_search_engine_service.BatchCreateTargetSitesRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_batch_create_target_sites_use_cached_wrapped_rpc():
@@ -2247,9 +2260,15 @@ async def test_batch_create_target_sites_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        site_search_engine_service.BatchCreateTargetSitesRequest(),
+        {},
+    ],
+)
 async def test_batch_create_target_sites_async(
-    transport: str = "grpc_asyncio",
-    request_type=site_search_engine_service.BatchCreateTargetSitesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = SiteSearchEngineServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2258,7 +2277,7 @@ async def test_batch_create_target_sites_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2278,11 +2297,6 @@ async def test_batch_create_target_sites_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_batch_create_target_sites_async_from_dict():
-    await test_batch_create_target_sites_async(request_type=dict)
 
 
 def test_batch_create_target_sites_field_headers():
@@ -2353,8 +2367,8 @@ async def test_batch_create_target_sites_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        site_search_engine_service.GetTargetSiteRequest,
-        dict,
+        site_search_engine_service.GetTargetSiteRequest(),
+        {},
     ],
 )
 def test_get_target_site(request_type, transport: str = "grpc"):
@@ -2365,7 +2379,7 @@ def test_get_target_site(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_target_site), "__call__") as call:
@@ -2423,9 +2437,10 @@ def test_get_target_site_non_empty_request_with_auto_populated_field():
         client.get_target_site(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == site_search_engine_service.GetTargetSiteRequest(
+        request_msg = site_search_engine_service.GetTargetSiteRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_target_site_use_cached_wrapped_rpc():
@@ -2506,10 +2521,14 @@ async def test_get_target_site_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_target_site_async(
-    transport: str = "grpc_asyncio",
-    request_type=site_search_engine_service.GetTargetSiteRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        site_search_engine_service.GetTargetSiteRequest(),
+        {},
+    ],
+)
+async def test_get_target_site_async(request_type, transport: str = "grpc_asyncio"):
     client = SiteSearchEngineServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2517,7 +2536,7 @@ async def test_get_target_site_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_target_site), "__call__") as call:
@@ -2552,11 +2571,6 @@ async def test_get_target_site_async(
     assert (
         response.indexing_status == site_search_engine.TargetSite.IndexingStatus.PENDING
     )
-
-
-@pytest.mark.asyncio
-async def test_get_target_site_async_from_dict():
-    await test_get_target_site_async(request_type=dict)
 
 
 def test_get_target_site_field_headers():
@@ -2705,8 +2719,8 @@ async def test_get_target_site_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        site_search_engine_service.UpdateTargetSiteRequest,
-        dict,
+        site_search_engine_service.UpdateTargetSiteRequest(),
+        {},
     ],
 )
 def test_update_target_site(request_type, transport: str = "grpc"):
@@ -2717,7 +2731,7 @@ def test_update_target_site(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2760,7 +2774,8 @@ def test_update_target_site_non_empty_request_with_auto_populated_field():
         client.update_target_site(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == site_search_engine_service.UpdateTargetSiteRequest()
+        request_msg = site_search_engine_service.UpdateTargetSiteRequest()
+        assert args[0] == request_msg
 
 
 def test_update_target_site_use_cached_wrapped_rpc():
@@ -2855,10 +2870,14 @@ async def test_update_target_site_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_target_site_async(
-    transport: str = "grpc_asyncio",
-    request_type=site_search_engine_service.UpdateTargetSiteRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        site_search_engine_service.UpdateTargetSiteRequest(),
+        {},
+    ],
+)
+async def test_update_target_site_async(request_type, transport: str = "grpc_asyncio"):
     client = SiteSearchEngineServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2866,7 +2885,7 @@ async def test_update_target_site_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2886,11 +2905,6 @@ async def test_update_target_site_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_target_site_async_from_dict():
-    await test_update_target_site_async(request_type=dict)
 
 
 def test_update_target_site_field_headers():
@@ -3047,8 +3061,8 @@ async def test_update_target_site_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        site_search_engine_service.DeleteTargetSiteRequest,
-        dict,
+        site_search_engine_service.DeleteTargetSiteRequest(),
+        {},
     ],
 )
 def test_delete_target_site(request_type, transport: str = "grpc"):
@@ -3059,7 +3073,7 @@ def test_delete_target_site(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3104,9 +3118,10 @@ def test_delete_target_site_non_empty_request_with_auto_populated_field():
         client.delete_target_site(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == site_search_engine_service.DeleteTargetSiteRequest(
+        request_msg = site_search_engine_service.DeleteTargetSiteRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_target_site_use_cached_wrapped_rpc():
@@ -3201,10 +3216,14 @@ async def test_delete_target_site_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_target_site_async(
-    transport: str = "grpc_asyncio",
-    request_type=site_search_engine_service.DeleteTargetSiteRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        site_search_engine_service.DeleteTargetSiteRequest(),
+        {},
+    ],
+)
+async def test_delete_target_site_async(request_type, transport: str = "grpc_asyncio"):
     client = SiteSearchEngineServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3212,7 +3231,7 @@ async def test_delete_target_site_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3232,11 +3251,6 @@ async def test_delete_target_site_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_target_site_async_from_dict():
-    await test_delete_target_site_async(request_type=dict)
 
 
 def test_delete_target_site_field_headers():
@@ -3393,8 +3407,8 @@ async def test_delete_target_site_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        site_search_engine_service.ListTargetSitesRequest,
-        dict,
+        site_search_engine_service.ListTargetSitesRequest(),
+        {},
     ],
 )
 def test_list_target_sites(request_type, transport: str = "grpc"):
@@ -3405,7 +3419,7 @@ def test_list_target_sites(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3456,10 +3470,11 @@ def test_list_target_sites_non_empty_request_with_auto_populated_field():
         client.list_target_sites(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == site_search_engine_service.ListTargetSitesRequest(
+        request_msg = site_search_engine_service.ListTargetSitesRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_target_sites_use_cached_wrapped_rpc():
@@ -3542,10 +3557,14 @@ async def test_list_target_sites_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_target_sites_async(
-    transport: str = "grpc_asyncio",
-    request_type=site_search_engine_service.ListTargetSitesRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        site_search_engine_service.ListTargetSitesRequest(),
+        {},
+    ],
+)
+async def test_list_target_sites_async(request_type, transport: str = "grpc_asyncio"):
     client = SiteSearchEngineServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3553,7 +3572,7 @@ async def test_list_target_sites_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3578,11 +3597,6 @@ async def test_list_target_sites_async(
     assert isinstance(response, pagers.ListTargetSitesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.total_size == 1086
-
-
-@pytest.mark.asyncio
-async def test_list_target_sites_async_from_dict():
-    await test_list_target_sites_async(request_type=dict)
 
 
 def test_list_target_sites_field_headers():
@@ -3928,11 +3942,7 @@ async def test_list_target_sites_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_target_sites(request={})
-        ).pages:
+        async for page_ in (await client.list_target_sites(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -3941,8 +3951,8 @@ async def test_list_target_sites_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        site_search_engine_service.CreateSitemapRequest,
-        dict,
+        site_search_engine_service.CreateSitemapRequest(),
+        {},
     ],
 )
 def test_create_sitemap(request_type, transport: str = "grpc"):
@@ -3953,7 +3963,7 @@ def test_create_sitemap(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_sitemap), "__call__") as call:
@@ -3994,9 +4004,10 @@ def test_create_sitemap_non_empty_request_with_auto_populated_field():
         client.create_sitemap(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == site_search_engine_service.CreateSitemapRequest(
+        request_msg = site_search_engine_service.CreateSitemapRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_sitemap_use_cached_wrapped_rpc():
@@ -4087,10 +4098,14 @@ async def test_create_sitemap_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_sitemap_async(
-    transport: str = "grpc_asyncio",
-    request_type=site_search_engine_service.CreateSitemapRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        site_search_engine_service.CreateSitemapRequest(),
+        {},
+    ],
+)
+async def test_create_sitemap_async(request_type, transport: str = "grpc_asyncio"):
     client = SiteSearchEngineServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4098,7 +4113,7 @@ async def test_create_sitemap_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_sitemap), "__call__") as call:
@@ -4116,11 +4131,6 @@ async def test_create_sitemap_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_sitemap_async_from_dict():
-    await test_create_sitemap_async(request_type=dict)
 
 
 def test_create_sitemap_field_headers():
@@ -4279,8 +4289,8 @@ async def test_create_sitemap_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        site_search_engine_service.DeleteSitemapRequest,
-        dict,
+        site_search_engine_service.DeleteSitemapRequest(),
+        {},
     ],
 )
 def test_delete_sitemap(request_type, transport: str = "grpc"):
@@ -4291,7 +4301,7 @@ def test_delete_sitemap(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_sitemap), "__call__") as call:
@@ -4332,9 +4342,10 @@ def test_delete_sitemap_non_empty_request_with_auto_populated_field():
         client.delete_sitemap(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == site_search_engine_service.DeleteSitemapRequest(
+        request_msg = site_search_engine_service.DeleteSitemapRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_sitemap_use_cached_wrapped_rpc():
@@ -4425,10 +4436,14 @@ async def test_delete_sitemap_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_sitemap_async(
-    transport: str = "grpc_asyncio",
-    request_type=site_search_engine_service.DeleteSitemapRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        site_search_engine_service.DeleteSitemapRequest(),
+        {},
+    ],
+)
+async def test_delete_sitemap_async(request_type, transport: str = "grpc_asyncio"):
     client = SiteSearchEngineServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4436,7 +4451,7 @@ async def test_delete_sitemap_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_sitemap), "__call__") as call:
@@ -4454,11 +4469,6 @@ async def test_delete_sitemap_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_sitemap_async_from_dict():
-    await test_delete_sitemap_async(request_type=dict)
 
 
 def test_delete_sitemap_field_headers():
@@ -4607,8 +4617,8 @@ async def test_delete_sitemap_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        site_search_engine_service.FetchSitemapsRequest,
-        dict,
+        site_search_engine_service.FetchSitemapsRequest(),
+        {},
     ],
 )
 def test_fetch_sitemaps(request_type, transport: str = "grpc"):
@@ -4619,7 +4629,7 @@ def test_fetch_sitemaps(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.fetch_sitemaps), "__call__") as call:
@@ -4660,9 +4670,10 @@ def test_fetch_sitemaps_non_empty_request_with_auto_populated_field():
         client.fetch_sitemaps(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == site_search_engine_service.FetchSitemapsRequest(
+        request_msg = site_search_engine_service.FetchSitemapsRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_fetch_sitemaps_use_cached_wrapped_rpc():
@@ -4743,10 +4754,14 @@ async def test_fetch_sitemaps_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_fetch_sitemaps_async(
-    transport: str = "grpc_asyncio",
-    request_type=site_search_engine_service.FetchSitemapsRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        site_search_engine_service.FetchSitemapsRequest(),
+        {},
+    ],
+)
+async def test_fetch_sitemaps_async(request_type, transport: str = "grpc_asyncio"):
     client = SiteSearchEngineServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4754,7 +4769,7 @@ async def test_fetch_sitemaps_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.fetch_sitemaps), "__call__") as call:
@@ -4772,11 +4787,6 @@ async def test_fetch_sitemaps_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, site_search_engine_service.FetchSitemapsResponse)
-
-
-@pytest.mark.asyncio
-async def test_fetch_sitemaps_async_from_dict():
-    await test_fetch_sitemaps_async(request_type=dict)
 
 
 def test_fetch_sitemaps_field_headers():
@@ -4925,8 +4935,8 @@ async def test_fetch_sitemaps_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        site_search_engine_service.EnableAdvancedSiteSearchRequest,
-        dict,
+        site_search_engine_service.EnableAdvancedSiteSearchRequest(),
+        {},
     ],
 )
 def test_enable_advanced_site_search(request_type, transport: str = "grpc"):
@@ -4937,7 +4947,7 @@ def test_enable_advanced_site_search(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4982,9 +4992,10 @@ def test_enable_advanced_site_search_non_empty_request_with_auto_populated_field
         client.enable_advanced_site_search(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == site_search_engine_service.EnableAdvancedSiteSearchRequest(
+        request_msg = site_search_engine_service.EnableAdvancedSiteSearchRequest(
             site_search_engine="site_search_engine_value",
         )
+        assert args[0] == request_msg
 
 
 def test_enable_advanced_site_search_use_cached_wrapped_rpc():
@@ -5080,9 +5091,15 @@ async def test_enable_advanced_site_search_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        site_search_engine_service.EnableAdvancedSiteSearchRequest(),
+        {},
+    ],
+)
 async def test_enable_advanced_site_search_async(
-    transport: str = "grpc_asyncio",
-    request_type=site_search_engine_service.EnableAdvancedSiteSearchRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = SiteSearchEngineServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5091,7 +5108,7 @@ async def test_enable_advanced_site_search_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5111,11 +5128,6 @@ async def test_enable_advanced_site_search_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_enable_advanced_site_search_async_from_dict():
-    await test_enable_advanced_site_search_async(request_type=dict)
 
 
 def test_enable_advanced_site_search_field_headers():
@@ -5186,8 +5198,8 @@ async def test_enable_advanced_site_search_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        site_search_engine_service.DisableAdvancedSiteSearchRequest,
-        dict,
+        site_search_engine_service.DisableAdvancedSiteSearchRequest(),
+        {},
     ],
 )
 def test_disable_advanced_site_search(request_type, transport: str = "grpc"):
@@ -5198,7 +5210,7 @@ def test_disable_advanced_site_search(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5243,9 +5255,10 @@ def test_disable_advanced_site_search_non_empty_request_with_auto_populated_fiel
         client.disable_advanced_site_search(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == site_search_engine_service.DisableAdvancedSiteSearchRequest(
+        request_msg = site_search_engine_service.DisableAdvancedSiteSearchRequest(
             site_search_engine="site_search_engine_value",
         )
+        assert args[0] == request_msg
 
 
 def test_disable_advanced_site_search_use_cached_wrapped_rpc():
@@ -5341,9 +5354,15 @@ async def test_disable_advanced_site_search_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        site_search_engine_service.DisableAdvancedSiteSearchRequest(),
+        {},
+    ],
+)
 async def test_disable_advanced_site_search_async(
-    transport: str = "grpc_asyncio",
-    request_type=site_search_engine_service.DisableAdvancedSiteSearchRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = SiteSearchEngineServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5352,7 +5371,7 @@ async def test_disable_advanced_site_search_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5372,11 +5391,6 @@ async def test_disable_advanced_site_search_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_disable_advanced_site_search_async_from_dict():
-    await test_disable_advanced_site_search_async(request_type=dict)
 
 
 def test_disable_advanced_site_search_field_headers():
@@ -5447,8 +5461,8 @@ async def test_disable_advanced_site_search_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        site_search_engine_service.RecrawlUrisRequest,
-        dict,
+        site_search_engine_service.RecrawlUrisRequest(),
+        {},
     ],
 )
 def test_recrawl_uris(request_type, transport: str = "grpc"):
@@ -5459,7 +5473,7 @@ def test_recrawl_uris(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.recrawl_uris), "__call__") as call:
@@ -5501,10 +5515,11 @@ def test_recrawl_uris_non_empty_request_with_auto_populated_field():
         client.recrawl_uris(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == site_search_engine_service.RecrawlUrisRequest(
+        request_msg = site_search_engine_service.RecrawlUrisRequest(
             site_search_engine="site_search_engine_value",
             site_credential="site_credential_value",
         )
+        assert args[0] == request_msg
 
 
 def test_recrawl_uris_use_cached_wrapped_rpc():
@@ -5595,10 +5610,14 @@ async def test_recrawl_uris_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_recrawl_uris_async(
-    transport: str = "grpc_asyncio",
-    request_type=site_search_engine_service.RecrawlUrisRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        site_search_engine_service.RecrawlUrisRequest(),
+        {},
+    ],
+)
+async def test_recrawl_uris_async(request_type, transport: str = "grpc_asyncio"):
     client = SiteSearchEngineServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5606,7 +5625,7 @@ async def test_recrawl_uris_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.recrawl_uris), "__call__") as call:
@@ -5624,11 +5643,6 @@ async def test_recrawl_uris_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_recrawl_uris_async_from_dict():
-    await test_recrawl_uris_async(request_type=dict)
 
 
 def test_recrawl_uris_field_headers():
@@ -5695,8 +5709,8 @@ async def test_recrawl_uris_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        site_search_engine_service.BatchVerifyTargetSitesRequest,
-        dict,
+        site_search_engine_service.BatchVerifyTargetSitesRequest(),
+        {},
     ],
 )
 def test_batch_verify_target_sites(request_type, transport: str = "grpc"):
@@ -5707,7 +5721,7 @@ def test_batch_verify_target_sites(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5752,9 +5766,10 @@ def test_batch_verify_target_sites_non_empty_request_with_auto_populated_field()
         client.batch_verify_target_sites(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == site_search_engine_service.BatchVerifyTargetSitesRequest(
+        request_msg = site_search_engine_service.BatchVerifyTargetSitesRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_batch_verify_target_sites_use_cached_wrapped_rpc():
@@ -5850,9 +5865,15 @@ async def test_batch_verify_target_sites_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        site_search_engine_service.BatchVerifyTargetSitesRequest(),
+        {},
+    ],
+)
 async def test_batch_verify_target_sites_async(
-    transport: str = "grpc_asyncio",
-    request_type=site_search_engine_service.BatchVerifyTargetSitesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = SiteSearchEngineServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5861,7 +5882,7 @@ async def test_batch_verify_target_sites_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5881,11 +5902,6 @@ async def test_batch_verify_target_sites_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_batch_verify_target_sites_async_from_dict():
-    await test_batch_verify_target_sites_async(request_type=dict)
 
 
 def test_batch_verify_target_sites_field_headers():
@@ -5956,8 +5972,8 @@ async def test_batch_verify_target_sites_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        site_search_engine_service.FetchDomainVerificationStatusRequest,
-        dict,
+        site_search_engine_service.FetchDomainVerificationStatusRequest(),
+        {},
     ],
 )
 def test_fetch_domain_verification_status(request_type, transport: str = "grpc"):
@@ -5968,7 +5984,7 @@ def test_fetch_domain_verification_status(request_type, transport: str = "grpc")
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6021,12 +6037,11 @@ def test_fetch_domain_verification_status_non_empty_request_with_auto_populated_
         client.fetch_domain_verification_status(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[
-            0
-        ] == site_search_engine_service.FetchDomainVerificationStatusRequest(
+        request_msg = site_search_engine_service.FetchDomainVerificationStatusRequest(
             site_search_engine="site_search_engine_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_fetch_domain_verification_status_use_cached_wrapped_rpc():
@@ -6112,9 +6127,15 @@ async def test_fetch_domain_verification_status_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        site_search_engine_service.FetchDomainVerificationStatusRequest(),
+        {},
+    ],
+)
 async def test_fetch_domain_verification_status_async(
-    transport: str = "grpc_asyncio",
-    request_type=site_search_engine_service.FetchDomainVerificationStatusRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = SiteSearchEngineServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -6123,7 +6144,7 @@ async def test_fetch_domain_verification_status_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6148,11 +6169,6 @@ async def test_fetch_domain_verification_status_async(
     assert isinstance(response, pagers.FetchDomainVerificationStatusAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.total_size == 1086
-
-
-@pytest.mark.asyncio
-async def test_fetch_domain_verification_status_async_from_dict():
-    await test_fetch_domain_verification_status_async(request_type=dict)
 
 
 def test_fetch_domain_verification_status_field_headers():
@@ -6416,9 +6432,7 @@ async def test_fetch_domain_verification_status_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
+        async for page_ in (
             await client.fetch_domain_verification_status(request={})
         ).pages:
             pages.append(page_)
@@ -6539,7 +6553,7 @@ def test_get_site_search_engine_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_site_search_engine_rest_unset_required_fields():
@@ -6725,7 +6739,7 @@ def test_create_target_site_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_target_site_rest_unset_required_fields():
@@ -6920,7 +6934,7 @@ def test_batch_create_target_sites_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_batch_create_target_sites_rest_unset_required_fields():
@@ -7048,7 +7062,7 @@ def test_get_target_site_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_target_site_rest_unset_required_fields():
@@ -7229,7 +7243,7 @@ def test_update_target_site_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_target_site_rest_unset_required_fields():
@@ -7414,7 +7428,7 @@ def test_delete_target_site_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_target_site_rest_unset_required_fields():
@@ -7603,7 +7617,7 @@ def test_list_target_sites_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_target_sites_rest_unset_required_fields():
@@ -7861,7 +7875,7 @@ def test_create_sitemap_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_sitemap_rest_unset_required_fields():
@@ -8050,7 +8064,7 @@ def test_delete_sitemap_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_sitemap_rest_unset_required_fields():
@@ -8232,7 +8246,7 @@ def test_fetch_sitemaps_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_fetch_sitemaps_rest_unset_required_fields():
@@ -8419,7 +8433,7 @@ def test_enable_advanced_site_search_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_enable_advanced_site_search_rest_unset_required_fields():
@@ -8546,7 +8560,7 @@ def test_disable_advanced_site_search_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_disable_advanced_site_search_rest_unset_required_fields():
@@ -8672,7 +8686,7 @@ def test_recrawl_uris_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_recrawl_uris_rest_unset_required_fields():
@@ -8807,7 +8821,7 @@ def test_batch_verify_target_sites_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_batch_verify_target_sites_rest_unset_required_fields():
@@ -8943,7 +8957,7 @@ def test_fetch_domain_verification_status_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_fetch_domain_verification_status_rest_unset_required_fields():
@@ -9158,7 +9172,6 @@ def test_get_site_search_engine_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = site_search_engine_service.GetSiteSearchEngineRequest()
-
         assert args[0] == request_msg
 
 
@@ -9181,7 +9194,6 @@ def test_create_target_site_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = site_search_engine_service.CreateTargetSiteRequest()
-
         assert args[0] == request_msg
 
 
@@ -9204,7 +9216,6 @@ def test_batch_create_target_sites_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = site_search_engine_service.BatchCreateTargetSitesRequest()
-
         assert args[0] == request_msg
 
 
@@ -9225,7 +9236,6 @@ def test_get_target_site_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = site_search_engine_service.GetTargetSiteRequest()
-
         assert args[0] == request_msg
 
 
@@ -9248,7 +9258,6 @@ def test_update_target_site_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = site_search_engine_service.UpdateTargetSiteRequest()
-
         assert args[0] == request_msg
 
 
@@ -9271,7 +9280,6 @@ def test_delete_target_site_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = site_search_engine_service.DeleteTargetSiteRequest()
-
         assert args[0] == request_msg
 
 
@@ -9294,7 +9302,6 @@ def test_list_target_sites_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = site_search_engine_service.ListTargetSitesRequest()
-
         assert args[0] == request_msg
 
 
@@ -9315,7 +9322,6 @@ def test_create_sitemap_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = site_search_engine_service.CreateSitemapRequest()
-
         assert args[0] == request_msg
 
 
@@ -9336,7 +9342,6 @@ def test_delete_sitemap_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = site_search_engine_service.DeleteSitemapRequest()
-
         assert args[0] == request_msg
 
 
@@ -9357,7 +9362,6 @@ def test_fetch_sitemaps_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = site_search_engine_service.FetchSitemapsRequest()
-
         assert args[0] == request_msg
 
 
@@ -9380,7 +9384,6 @@ def test_enable_advanced_site_search_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = site_search_engine_service.EnableAdvancedSiteSearchRequest()
-
         assert args[0] == request_msg
 
 
@@ -9403,7 +9406,6 @@ def test_disable_advanced_site_search_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = site_search_engine_service.DisableAdvancedSiteSearchRequest()
-
         assert args[0] == request_msg
 
 
@@ -9424,7 +9426,6 @@ def test_recrawl_uris_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = site_search_engine_service.RecrawlUrisRequest()
-
         assert args[0] == request_msg
 
 
@@ -9447,7 +9448,6 @@ def test_batch_verify_target_sites_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = site_search_engine_service.BatchVerifyTargetSitesRequest()
-
         assert args[0] == request_msg
 
 
@@ -9472,7 +9472,6 @@ def test_fetch_domain_verification_status_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = site_search_engine_service.FetchDomainVerificationStatusRequest()
-
         assert args[0] == request_msg
 
 
@@ -9515,7 +9514,6 @@ async def test_get_site_search_engine_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = site_search_engine_service.GetSiteSearchEngineRequest()
-
         assert args[0] == request_msg
 
 
@@ -9542,7 +9540,6 @@ async def test_create_target_site_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = site_search_engine_service.CreateTargetSiteRequest()
-
         assert args[0] == request_msg
 
 
@@ -9569,7 +9566,6 @@ async def test_batch_create_target_sites_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = site_search_engine_service.BatchCreateTargetSitesRequest()
-
         assert args[0] == request_msg
 
 
@@ -9602,7 +9598,6 @@ async def test_get_target_site_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = site_search_engine_service.GetTargetSiteRequest()
-
         assert args[0] == request_msg
 
 
@@ -9629,7 +9624,6 @@ async def test_update_target_site_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = site_search_engine_service.UpdateTargetSiteRequest()
-
         assert args[0] == request_msg
 
 
@@ -9656,7 +9650,6 @@ async def test_delete_target_site_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = site_search_engine_service.DeleteTargetSiteRequest()
-
         assert args[0] == request_msg
 
 
@@ -9686,7 +9679,6 @@ async def test_list_target_sites_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = site_search_engine_service.ListTargetSitesRequest()
-
         assert args[0] == request_msg
 
 
@@ -9711,7 +9703,6 @@ async def test_create_sitemap_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = site_search_engine_service.CreateSitemapRequest()
-
         assert args[0] == request_msg
 
 
@@ -9736,7 +9727,6 @@ async def test_delete_sitemap_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = site_search_engine_service.DeleteSitemapRequest()
-
         assert args[0] == request_msg
 
 
@@ -9761,7 +9751,6 @@ async def test_fetch_sitemaps_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = site_search_engine_service.FetchSitemapsRequest()
-
         assert args[0] == request_msg
 
 
@@ -9788,7 +9777,6 @@ async def test_enable_advanced_site_search_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = site_search_engine_service.EnableAdvancedSiteSearchRequest()
-
         assert args[0] == request_msg
 
 
@@ -9815,7 +9803,6 @@ async def test_disable_advanced_site_search_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = site_search_engine_service.DisableAdvancedSiteSearchRequest()
-
         assert args[0] == request_msg
 
 
@@ -9840,7 +9827,6 @@ async def test_recrawl_uris_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = site_search_engine_service.RecrawlUrisRequest()
-
         assert args[0] == request_msg
 
 
@@ -9867,7 +9853,6 @@ async def test_batch_verify_target_sites_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = site_search_engine_service.BatchVerifyTargetSitesRequest()
-
         assert args[0] == request_msg
 
 
@@ -9897,7 +9882,6 @@ async def test_fetch_domain_verification_status_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = site_search_engine_service.FetchDomainVerificationStatusRequest()
-
         assert args[0] == request_msg
 
 
@@ -12415,7 +12399,6 @@ def test_get_site_search_engine_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = site_search_engine_service.GetSiteSearchEngineRequest()
-
         assert args[0] == request_msg
 
 
@@ -12437,7 +12420,6 @@ def test_create_target_site_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = site_search_engine_service.CreateTargetSiteRequest()
-
         assert args[0] == request_msg
 
 
@@ -12459,7 +12441,6 @@ def test_batch_create_target_sites_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = site_search_engine_service.BatchCreateTargetSitesRequest()
-
         assert args[0] == request_msg
 
 
@@ -12479,7 +12460,6 @@ def test_get_target_site_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = site_search_engine_service.GetTargetSiteRequest()
-
         assert args[0] == request_msg
 
 
@@ -12501,7 +12481,6 @@ def test_update_target_site_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = site_search_engine_service.UpdateTargetSiteRequest()
-
         assert args[0] == request_msg
 
 
@@ -12523,7 +12502,6 @@ def test_delete_target_site_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = site_search_engine_service.DeleteTargetSiteRequest()
-
         assert args[0] == request_msg
 
 
@@ -12545,7 +12523,6 @@ def test_list_target_sites_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = site_search_engine_service.ListTargetSitesRequest()
-
         assert args[0] == request_msg
 
 
@@ -12565,7 +12542,6 @@ def test_create_sitemap_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = site_search_engine_service.CreateSitemapRequest()
-
         assert args[0] == request_msg
 
 
@@ -12585,7 +12561,6 @@ def test_delete_sitemap_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = site_search_engine_service.DeleteSitemapRequest()
-
         assert args[0] == request_msg
 
 
@@ -12605,7 +12580,6 @@ def test_fetch_sitemaps_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = site_search_engine_service.FetchSitemapsRequest()
-
         assert args[0] == request_msg
 
 
@@ -12627,7 +12601,6 @@ def test_enable_advanced_site_search_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = site_search_engine_service.EnableAdvancedSiteSearchRequest()
-
         assert args[0] == request_msg
 
 
@@ -12649,7 +12622,6 @@ def test_disable_advanced_site_search_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = site_search_engine_service.DisableAdvancedSiteSearchRequest()
-
         assert args[0] == request_msg
 
 
@@ -12669,7 +12641,6 @@ def test_recrawl_uris_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = site_search_engine_service.RecrawlUrisRequest()
-
         assert args[0] == request_msg
 
 
@@ -12691,7 +12662,6 @@ def test_batch_verify_target_sites_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = site_search_engine_service.BatchVerifyTargetSitesRequest()
-
         assert args[0] == request_msg
 
 
@@ -12713,7 +12683,6 @@ def test_fetch_domain_verification_status_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = site_search_engine_service.FetchDomainVerificationStatusRequest()
-
         assert args[0] == request_msg
 
 

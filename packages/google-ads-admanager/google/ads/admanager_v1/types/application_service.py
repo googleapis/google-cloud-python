@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.ads.admanager_v1.types import application_messages
@@ -27,6 +28,16 @@ __protobuf__ = proto.module(
         "GetApplicationRequest",
         "ListApplicationsRequest",
         "ListApplicationsResponse",
+        "CreateApplicationRequest",
+        "BatchCreateApplicationsRequest",
+        "BatchCreateApplicationsResponse",
+        "UpdateApplicationRequest",
+        "BatchUpdateApplicationsRequest",
+        "BatchUpdateApplicationsResponse",
+        "BatchArchiveApplicationsRequest",
+        "BatchArchiveApplicationsResponse",
+        "BatchUnarchiveApplicationsRequest",
+        "BatchUnarchiveApplicationsResponse",
     },
 )
 
@@ -71,6 +82,19 @@ class ListApplicationsRequest(proto.Message):
             Optional. Expression to filter the response.
             See syntax details at
             https://developers.google.com/ad-manager/api/beta/filters
+
+            <b>Filterable fields:</b>
+            <ul style="list-style-type:none">
+              <li><code>appStoreId</code></li>
+              <li><code>appStores</code></li>
+              <li><code>applicationCode</code></li>
+              <li><code>approvalStatus</code></li>
+              <li><code>archived</code></li>
+              <li><code>displayName</code></li>
+              <li><code>name</code></li>
+              <li><code>platform</code></li>
+              <li><code>webviewClaimingStatus</code></li>
+            </ul>
         order_by (str):
             Optional. Expression to specify sorting
             order. See syntax details at
@@ -151,6 +175,183 @@ class ListApplicationsResponse(proto.Message):
         proto.INT32,
         number=3,
     )
+
+
+class CreateApplicationRequest(proto.Message):
+    r"""Request object for ``CreateApplication`` method.
+
+    Attributes:
+        parent (str):
+            Required. The parent resource where this ``Application``
+            will be created. Format: ``networks/{network_code}``
+        application (google.ads.admanager_v1.types.Application):
+            Required. The ``Application`` to create.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    application: application_messages.Application = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=application_messages.Application,
+    )
+
+
+class BatchCreateApplicationsRequest(proto.Message):
+    r"""Request object for ``BatchCreateApplications`` method.
+
+    Attributes:
+        parent (str):
+            Required. The parent resource where ``Applications`` will be
+            created. Format: ``networks/{network_code}`` The parent
+            field in the CreateApplicationRequest must match this field.
+        requests (MutableSequence[google.ads.admanager_v1.types.CreateApplicationRequest]):
+            Required. The ``Application`` objects to create.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    requests: MutableSequence["CreateApplicationRequest"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="CreateApplicationRequest",
+    )
+
+
+class BatchCreateApplicationsResponse(proto.Message):
+    r"""Response object for ``BatchCreateApplications`` method.
+
+    Attributes:
+        applications (MutableSequence[google.ads.admanager_v1.types.Application]):
+            The ``Application`` objects created.
+    """
+
+    applications: MutableSequence[application_messages.Application] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=application_messages.Application,
+        )
+    )
+
+
+class UpdateApplicationRequest(proto.Message):
+    r"""Request object for ``UpdateApplication`` method.
+
+    Attributes:
+        application (google.ads.admanager_v1.types.Application):
+            Required. The ``Application`` to update.
+
+            The ``Application``'s ``name`` is used to identify the
+            ``Application`` to update.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Optional. The list of fields to update.
+    """
+
+    application: application_messages.Application = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=application_messages.Application,
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+
+
+class BatchUpdateApplicationsRequest(proto.Message):
+    r"""Request object for ``BatchUpdateApplications`` method.
+
+    Attributes:
+        parent (str):
+            Required. The parent resource where ``Applications`` will be
+            updated. Format: ``networks/{network_code}`` The parent
+            field in the UpdateApplicationRequest must match this field.
+        requests (MutableSequence[google.ads.admanager_v1.types.UpdateApplicationRequest]):
+            Required. The ``Application`` objects to update.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    requests: MutableSequence["UpdateApplicationRequest"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="UpdateApplicationRequest",
+    )
+
+
+class BatchUpdateApplicationsResponse(proto.Message):
+    r"""Response object for ``BatchUpdateApplications`` method.
+
+    Attributes:
+        applications (MutableSequence[google.ads.admanager_v1.types.Application]):
+            The ``Application`` objects updated.
+    """
+
+    applications: MutableSequence[application_messages.Application] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=application_messages.Application,
+        )
+    )
+
+
+class BatchArchiveApplicationsRequest(proto.Message):
+    r"""Request object for ``BatchArchiveApplications`` method.
+
+    Attributes:
+        parent (str):
+            Required. The parent resource shared by all ``Applications``
+            to archive. Format: ``networks/{network_code}``
+        names (MutableSequence[str]):
+            Required. The ``Application`` objects to archive.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    names: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+
+
+class BatchArchiveApplicationsResponse(proto.Message):
+    r"""Response object for ``BatchArchiveApplications`` method."""
+
+
+class BatchUnarchiveApplicationsRequest(proto.Message):
+    r"""Request object for ``BatchUnarchiveApplications`` method.
+
+    Attributes:
+        parent (str):
+            Required. The parent resource shared by all ``Applications``
+            to Unarchive. Format: ``networks/{network_code}``
+        names (MutableSequence[str]):
+            Required. The ``Application`` objects to unarchive.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    names: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+
+
+class BatchUnarchiveApplicationsResponse(proto.Message):
+    r"""Response object for ``BatchUnarchiveApplications`` method."""
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

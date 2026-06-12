@@ -111,7 +111,8 @@ def _construct_prompt(
         else:
             prompt.append(sge.Literal.string(elem))
 
-    return sge.Kwarg(this=param_name, expression=sge.Tuple(expressions=prompt))
+    # Need Struct rather than tuple syntax, as tuple syntax is ambiguous for single arg
+    return sge.Kwarg(this=param_name, expression=sge.Struct(expressions=prompt))
 
 
 def _construct_named_args(op: ops.ScalarOp) -> list[sge.Kwarg]:
@@ -139,19 +140,22 @@ def _construct_named_args(op: ops.ScalarOp) -> list[sge.Kwarg]:
                     expression=sge.JSON(this=sge.Literal.string(value)),
                 )
             )
-        elif field == "optimization_mode":
+        elif field == "examples":
+            example_expressions = []
+            for key, val in value:
+                if isinstance(val, (list, tuple)):
+                    val_expr: sge.Array | sge.Literal = sge.array(
+                        *[sge.Literal.string(v) for v in val]
+                    )
+                else:
+                    val_expr = sge.Literal.string(val)
+                example_expressions.append(
+                    sge.Tuple(expressions=[sge.Literal.string(key), val_expr])
+                )
             args.append(
-                sge.Kwarg(this=field, expression=sge.Literal.string(value.upper()))
-            )
-        elif field == "max_error_ratio":
-            args.append(sge.Kwarg(this=field, expression=sge.Literal.number(value)))
-        elif field == "request_type":
-            args.append(
-                sge.Kwarg(this=field, expression=sge.Literal.string(value.upper()))
+                sge.Kwarg(this=field, expression=sge.array(*example_expressions))
             )
         else:
-            args.append(
-                sge.Kwarg(this=field, expression=sge.Literal.string(str(value)))
-            )
+            args.append(sge.Kwarg(this=field, expression=sge.convert(value)))
 
     return args

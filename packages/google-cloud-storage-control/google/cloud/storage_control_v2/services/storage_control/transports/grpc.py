@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -1153,6 +1153,164 @@ class StorageControlGrpcTransport(StorageControlTransport):
                 response_deserializer=iam_policy_pb2.TestIamPermissionsResponse.FromString,
             )
         return self._stubs["test_iam_permissions"]
+
+    @property
+    def get_intelligence_finding(
+        self,
+    ) -> Callable[
+        [storage_control.GetIntelligenceFindingRequest],
+        storage_control.IntelligenceFinding,
+    ]:
+        r"""Return a callable for the get intelligence finding method over gRPC.
+
+        Gets the ``IntelligenceFinding`` for a project.
+
+        Returns:
+            Callable[[~.GetIntelligenceFindingRequest],
+                    ~.IntelligenceFinding]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_intelligence_finding" not in self._stubs:
+            self._stubs["get_intelligence_finding"] = self._logged_channel.unary_unary(
+                "/google.storage.control.v2.StorageControl/GetIntelligenceFinding",
+                request_serializer=storage_control.GetIntelligenceFindingRequest.serialize,
+                response_deserializer=storage_control.IntelligenceFinding.deserialize,
+            )
+        return self._stubs["get_intelligence_finding"]
+
+    @property
+    def list_intelligence_findings(
+        self,
+    ) -> Callable[
+        [storage_control.ListIntelligenceFindingsRequest],
+        storage_control.ListIntelligenceFindingsResponse,
+    ]:
+        r"""Return a callable for the list intelligence findings method over gRPC.
+
+        Lists the ``IntelligenceFinding`` resources for the specified
+        project.
+
+        Returns:
+            Callable[[~.ListIntelligenceFindingsRequest],
+                    ~.ListIntelligenceFindingsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_intelligence_findings" not in self._stubs:
+            self._stubs["list_intelligence_findings"] = (
+                self._logged_channel.unary_unary(
+                    "/google.storage.control.v2.StorageControl/ListIntelligenceFindings",
+                    request_serializer=storage_control.ListIntelligenceFindingsRequest.serialize,
+                    response_deserializer=storage_control.ListIntelligenceFindingsResponse.deserialize,
+                )
+            )
+        return self._stubs["list_intelligence_findings"]
+
+    @property
+    def summarize_intelligence_findings(
+        self,
+    ) -> Callable[
+        [storage_control.SummarizeIntelligenceFindingsRequest],
+        storage_control.SummarizeIntelligenceFindingsResponse,
+    ]:
+        r"""Return a callable for the summarize intelligence
+        findings method over gRPC.
+
+        Summarize the intelligence findings for the specified
+        scope(org, folder or project).
+
+        Returns:
+            Callable[[~.SummarizeIntelligenceFindingsRequest],
+                    ~.SummarizeIntelligenceFindingsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "summarize_intelligence_findings" not in self._stubs:
+            self._stubs["summarize_intelligence_findings"] = (
+                self._logged_channel.unary_unary(
+                    "/google.storage.control.v2.StorageControl/SummarizeIntelligenceFindings",
+                    request_serializer=storage_control.SummarizeIntelligenceFindingsRequest.serialize,
+                    response_deserializer=storage_control.SummarizeIntelligenceFindingsResponse.deserialize,
+                )
+            )
+        return self._stubs["summarize_intelligence_findings"]
+
+    @property
+    def get_intelligence_finding_revision(
+        self,
+    ) -> Callable[
+        [storage_control.GetIntelligenceFindingRevisionRequest],
+        storage_control.IntelligenceFindingRevision,
+    ]:
+        r"""Return a callable for the get intelligence finding
+        revision method over gRPC.
+
+        Gets the ``IntelligenceFindingRevision`` resource.
+
+        Returns:
+            Callable[[~.GetIntelligenceFindingRevisionRequest],
+                    ~.IntelligenceFindingRevision]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_intelligence_finding_revision" not in self._stubs:
+            self._stubs["get_intelligence_finding_revision"] = (
+                self._logged_channel.unary_unary(
+                    "/google.storage.control.v2.StorageControl/GetIntelligenceFindingRevision",
+                    request_serializer=storage_control.GetIntelligenceFindingRevisionRequest.serialize,
+                    response_deserializer=storage_control.IntelligenceFindingRevision.deserialize,
+                )
+            )
+        return self._stubs["get_intelligence_finding_revision"]
+
+    @property
+    def list_intelligence_finding_revisions(
+        self,
+    ) -> Callable[
+        [storage_control.ListIntelligenceFindingRevisionsRequest],
+        storage_control.ListIntelligenceFindingRevisionsResponse,
+    ]:
+        r"""Return a callable for the list intelligence finding
+        revisions method over gRPC.
+
+        Lists all the revisions of an ``IntelligenceFinding`` resource.
+
+        Returns:
+            Callable[[~.ListIntelligenceFindingRevisionsRequest],
+                    ~.ListIntelligenceFindingRevisionsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_intelligence_finding_revisions" not in self._stubs:
+            self._stubs["list_intelligence_finding_revisions"] = (
+                self._logged_channel.unary_unary(
+                    "/google.storage.control.v2.StorageControl/ListIntelligenceFindingRevisions",
+                    request_serializer=storage_control.ListIntelligenceFindingRevisionsRequest.serialize,
+                    response_deserializer=storage_control.ListIntelligenceFindingRevisionsResponse.deserialize,
+                )
+            )
+        return self._stubs["list_intelligence_finding_revisions"]
 
     def close(self):
         self._logged_channel.close()

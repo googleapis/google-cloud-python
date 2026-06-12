@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,6 +18,8 @@ from .age_range import (
 )
 from .audience import (
     AudienceMember,
+    CompositeData,
+    IpData,
     MobileData,
     PairData,
     PpidData,
@@ -26,6 +28,7 @@ from .audience import (
 from .cart_data import (
     CartData,
     Item,
+    ItemCustomVariable,
 )
 from .consent import (
     Consent,
@@ -39,6 +42,9 @@ from .destination import (
 from .device_info import (
     DeviceInfo,
 )
+from .encrypted_user_id import (
+    EncryptedUserId,
+)
 from .encryption_info import (
     AwsWrappedKeyInfo,
     EncryptionInfo,
@@ -51,6 +57,7 @@ from .event import (
     AdIdentifiers,
     CustomVariable,
     Event,
+    EventLocation,
     EventParameter,
     EventSource,
 )
@@ -178,18 +185,22 @@ from .user_properties import (
 __all__ = (
     "AgeRange",
     "AudienceMember",
+    "CompositeData",
+    "IpData",
     "MobileData",
     "PairData",
     "PpidData",
     "UserIdData",
     "CartData",
     "Item",
+    "ItemCustomVariable",
     "Consent",
     "ConsentStatus",
     "Destination",
     "ProductAccount",
     "Product",
     "DeviceInfo",
+    "EncryptedUserId",
     "AwsWrappedKeyInfo",
     "EncryptionInfo",
     "GcpWrappedKeyInfo",
@@ -197,6 +208,7 @@ __all__ = (
     "AdIdentifiers",
     "CustomVariable",
     "Event",
+    "EventLocation",
     "EventParameter",
     "EventSource",
     "ExperimentalField",

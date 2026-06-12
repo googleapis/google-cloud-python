@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -42,6 +42,7 @@ from .data_object_search_service import (
     SemanticSearch,
     TextSearch,
     VectorSearch,
+    VertexRanker,
 )
 from .data_object_service import (
     BatchCreateDataObjectsRequest,
@@ -114,6 +115,7 @@ __all__ = (
     "SemanticSearch",
     "TextSearch",
     "VectorSearch",
+    "VertexRanker",
     "AggregationMethod",
     "BatchCreateDataObjectsRequest",
     "BatchCreateDataObjectsResponse",

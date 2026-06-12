@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,13 +21,7 @@ from google.cloud.compute_v1 import gapic_version as package_version
 
 __version__ = package_version.__version__
 
-if sys.version_info >= (3, 8):  # pragma: NO COVER
-    from importlib import metadata
-else:  # pragma: NO COVER
-    # TODO(https://github.com/googleapis/python-api-core/issues/835): Remove
-    # this code path once we drop support for Python 3.7
-    import importlib_metadata as metadata
-
+from importlib import metadata
 
 from .services.accelerator_types import AcceleratorTypesClient
 from .services.addresses import AddressesClient
@@ -51,6 +45,7 @@ from .services.global_organization_operations import GlobalOrganizationOperation
 from .services.global_public_delegated_prefixes import (
     GlobalPublicDelegatedPrefixesClient,
 )
+from .services.global_vm_extension_policies import GlobalVmExtensionPoliciesClient
 from .services.health_checks import HealthChecksClient
 from .services.image_family_views import ImageFamilyViewsClient
 from .services.images import ImagesClient
@@ -133,6 +128,8 @@ from .services.reservation_slots import ReservationSlotsClient
 from .services.reservation_sub_blocks import ReservationSubBlocksClient
 from .services.reservations import ReservationsClient
 from .services.resource_policies import ResourcePoliciesClient
+from .services.rollout_plans import RolloutPlansClient
+from .services.rollouts import RolloutsClient
 from .services.routers import RoutersClient
 from .services.routes import RoutesClient
 from .services.security_policies import SecurityPoliciesClient
@@ -210,6 +207,7 @@ from .types.compute import (
     AggregatedListForwardingRulesRequest,
     AggregatedListFutureReservationsRequest,
     AggregatedListGlobalOperationsRequest,
+    AggregatedListGlobalVmExtensionPoliciesRequest,
     AggregatedListHealthChecksRequest,
     AggregatedListInstanceGroupManagersRequest,
     AggregatedListInstanceGroupsRequest,
@@ -362,6 +360,8 @@ from .types.compute import (
     CancelFutureReservationRequest,
     CancelInstanceGroupManagerResizeRequestRequest,
     CancelRegionInstanceGroupManagerResizeRequestRequest,
+    CancelRequestRemovePeeringNetworkRequest,
+    CancelRolloutRequest,
     CircuitBreakers,
     CloneRulesFirewallPolicyRequest,
     CloneRulesNetworkFirewallPolicyRequest,
@@ -417,6 +417,7 @@ from .types.compute import (
     DeleteGlobalOrganizationOperationRequest,
     DeleteGlobalOrganizationOperationResponse,
     DeleteGlobalPublicDelegatedPrefixeRequest,
+    DeleteGlobalVmExtensionPolicyRequest,
     DeleteHealthCheckRequest,
     DeleteImageRequest,
     DeleteInstanceGroupManagerRequest,
@@ -478,6 +479,8 @@ from .types.compute import (
     DeleteRegionUrlMapRequest,
     DeleteReservationRequest,
     DeleteResourcePolicyRequest,
+    DeleteRolloutPlanRequest,
+    DeleteRolloutRequest,
     DeleteRoutePolicyRouterRequest,
     DeleteRouteRequest,
     DeleteRouterRequest,
@@ -627,6 +630,7 @@ from .types.compute import (
     GetGlobalOperationRequest,
     GetGlobalOrganizationOperationRequest,
     GetGlobalPublicDelegatedPrefixeRequest,
+    GetGlobalVmExtensionPolicyRequest,
     GetGuestAttributesInstanceRequest,
     GetHealthBackendServiceRequest,
     GetHealthCheckRequest,
@@ -645,6 +649,7 @@ from .types.compute import (
     GetIamPolicyInstantSnapshotRequest,
     GetIamPolicyInterconnectAttachmentGroupRequest,
     GetIamPolicyInterconnectGroupRequest,
+    GetIamPolicyLicenseCodeRequest,
     GetIamPolicyLicenseRequest,
     GetIamPolicyMachineImageRequest,
     GetIamPolicyNetworkAttachmentRequest,
@@ -743,6 +748,8 @@ from .types.compute import (
     GetReservationSlotRequest,
     GetReservationSubBlockRequest,
     GetResourcePolicyRequest,
+    GetRolloutPlanRequest,
+    GetRolloutRequest,
     GetRoutePolicyRouterRequest,
     GetRouteRequest,
     GetRouterRequest,
@@ -793,6 +800,16 @@ from .types.compute import (
     GlobalOrganizationSetPolicyRequest,
     GlobalSetLabelsRequest,
     GlobalSetPolicyRequest,
+    GlobalVmExtensionPolicy,
+    GlobalVmExtensionPolicyExtensionPolicy,
+    GlobalVmExtensionPolicyInstanceSelector,
+    GlobalVmExtensionPolicyLabelSelector,
+    GlobalVmExtensionPolicyList,
+    GlobalVmExtensionPolicyRolloutOperation,
+    GlobalVmExtensionPolicyRolloutOperationRolloutInput,
+    GlobalVmExtensionPolicyRolloutOperationRolloutStatus,
+    GlobalVmExtensionPolicyRolloutOperationRolloutStatusRolloutMetadata,
+    GlobalVmExtensionPolicyRolloutOperationRolloutStatusRolloutMetadataLocationRolloutStatus,
     GroupMaintenanceInfo,
     GRPCHealthCheck,
     GRPCTLSHealthCheck,
@@ -862,6 +879,7 @@ from .types.compute import (
     InsertGlobalForwardingRuleRequest,
     InsertGlobalNetworkEndpointGroupRequest,
     InsertGlobalPublicDelegatedPrefixeRequest,
+    InsertGlobalVmExtensionPolicyRequest,
     InsertHealthCheckRequest,
     InsertImageRequest,
     InsertInstanceGroupManagerRequest,
@@ -916,6 +934,7 @@ from .types.compute import (
     InsertRegionUrlMapRequest,
     InsertReservationRequest,
     InsertResourcePolicyRequest,
+    InsertRolloutPlanRequest,
     InsertRouteRequest,
     InsertRouterRequest,
     InsertSecurityPolicyRequest,
@@ -1154,6 +1173,7 @@ from .types.compute import (
     ListGlobalOperationsRequest,
     ListGlobalOrganizationOperationsRequest,
     ListGlobalPublicDelegatedPrefixesRequest,
+    ListGlobalVmExtensionPoliciesRequest,
     ListHealthChecksRequest,
     ListImagesRequest,
     ListInstanceGroupManagerResizeRequestsRequest,
@@ -1236,6 +1256,8 @@ from .types.compute import (
     ListReservationsRequest,
     ListReservationSubBlocksRequest,
     ListResourcePoliciesRequest,
+    ListRolloutPlansRequest,
+    ListRolloutsRequest,
     ListRoutePoliciesRoutersRequest,
     ListRoutersRequest,
     ListRoutesRequest,
@@ -1340,6 +1362,7 @@ from .types.compute import (
     NetworkProfilesListResponse,
     NetworkRoutingConfig,
     NetworksAddPeeringRequest,
+    NetworksCancelRequestRemovePeeringRequest,
     NetworksGetEffectiveFirewallsResponse,
     NetworksGetEffectiveFirewallsResponseEffectiveFirewallPolicy,
     NetworksRemovePeeringRequest,
@@ -1625,6 +1648,23 @@ from .types.compute import (
     ResumeInstanceRequest,
     ResumeInstancesInstanceGroupManagerRequest,
     ResumeInstancesRegionInstanceGroupManagerRequest,
+    Rollout,
+    RolloutPlan,
+    RolloutPlansListResponse,
+    RolloutPlanWave,
+    RolloutPlanWaveOrchestrationOptions,
+    RolloutPlanWaveOrchestrationOptionsDelay,
+    RolloutPlanWaveSelector,
+    RolloutPlanWaveSelectorLocationSelector,
+    RolloutPlanWaveSelectorResourceHierarchySelector,
+    RolloutPlanWaveValidation,
+    RolloutPlanWaveValidationTimeBasedValidationMetadata,
+    RolloutRolloutEntity,
+    RolloutRolloutEntityOrchestratedEntity,
+    RolloutsListResponse,
+    RolloutWaveDetails,
+    RolloutWaveDetailsOrchestratedWaveDetails,
+    RolloutWaveDetailsOrchestratedWaveDetailsLocationStatus,
     Route,
     RouteAsPath,
     RouteList,
@@ -1735,6 +1775,7 @@ from .types.compute import (
     SetIamPolicyInstantSnapshotRequest,
     SetIamPolicyInterconnectAttachmentGroupRequest,
     SetIamPolicyInterconnectGroupRequest,
+    SetIamPolicyLicenseCodeRequest,
     SetIamPolicyLicenseRequest,
     SetIamPolicyMachineImageRequest,
     SetIamPolicyNetworkAttachmentRequest,
@@ -2014,6 +2055,7 @@ from .types.compute import (
     UpdateDisplayDeviceInstanceRequest,
     UpdateFirewallRequest,
     UpdateFutureReservationRequest,
+    UpdateGlobalVmExtensionPolicyRequest,
     UpdateHealthCheckRequest,
     UpdateInstanceRequest,
     UpdateKmsKeyDiskRequest,
@@ -2061,7 +2103,9 @@ from .types.compute import (
     VmEndpointNatMappingsInterfaceNatMappings,
     VmEndpointNatMappingsInterfaceNatMappingsNatRuleMappings,
     VmEndpointNatMappingsList,
+    VmExtensionPoliciesScopedList,
     VmExtensionPolicy,
+    VmExtensionPolicyAggregatedListResponse,
     VmExtensionPolicyExtensionPolicy,
     VmExtensionPolicyInstanceSelector,
     VmExtensionPolicyLabelSelector,
@@ -2123,28 +2167,17 @@ else:  # pragma: NO COVER
     # An older version of api_core is installed which does not define the
     # functions above. We do equivalent checks manually.
     try:
-        import sys
         import warnings
 
         _py_version_str = sys.version.split()[0]
         _package_label = "google.cloud.compute_v1"
-        if sys.version_info < (3, 9):
+        if sys.version_info < (3, 10):
             warnings.warn(
                 "You are using a non-supported Python version "
                 + f"({_py_version_str}).  Google will not post any further "
                 + f"updates to {_package_label} supporting this Python version. "
                 + "Please upgrade to the latest Python version, or at "
-                + f"least to Python 3.9, and then update {_package_label}.",
-                FutureWarning,
-            )
-        if sys.version_info[:2] == (3, 9):
-            warnings.warn(
-                f"You are using a Python version ({_py_version_str}) "
-                + f"which Google will stop supporting in {_package_label} in "
-                + "January 2026. Please "
-                + "upgrade to the latest Python version, or at "
-                + "least to Python 3.10, before then, and "
-                + f"then update {_package_label}.",
+                + f"least to Python 3.10, and then update {_package_label}.",
                 FutureWarning,
             )
 
@@ -2263,6 +2296,7 @@ __all__ = (
     "AggregatedListForwardingRulesRequest",
     "AggregatedListFutureReservationsRequest",
     "AggregatedListGlobalOperationsRequest",
+    "AggregatedListGlobalVmExtensionPoliciesRequest",
     "AggregatedListHealthChecksRequest",
     "AggregatedListInstanceGroupManagersRequest",
     "AggregatedListInstanceGroupsRequest",
@@ -2417,6 +2451,8 @@ __all__ = (
     "CancelFutureReservationRequest",
     "CancelInstanceGroupManagerResizeRequestRequest",
     "CancelRegionInstanceGroupManagerResizeRequestRequest",
+    "CancelRequestRemovePeeringNetworkRequest",
+    "CancelRolloutRequest",
     "CircuitBreakers",
     "CloneRulesFirewallPolicyRequest",
     "CloneRulesNetworkFirewallPolicyRequest",
@@ -2473,6 +2509,7 @@ __all__ = (
     "DeleteGlobalOrganizationOperationRequest",
     "DeleteGlobalOrganizationOperationResponse",
     "DeleteGlobalPublicDelegatedPrefixeRequest",
+    "DeleteGlobalVmExtensionPolicyRequest",
     "DeleteHealthCheckRequest",
     "DeleteImageRequest",
     "DeleteInstanceGroupManagerRequest",
@@ -2534,6 +2571,8 @@ __all__ = (
     "DeleteRegionUrlMapRequest",
     "DeleteReservationRequest",
     "DeleteResourcePolicyRequest",
+    "DeleteRolloutPlanRequest",
+    "DeleteRolloutRequest",
     "DeleteRoutePolicyRouterRequest",
     "DeleteRouteRequest",
     "DeleteRouterRequest",
@@ -2692,6 +2731,7 @@ __all__ = (
     "GetGlobalOperationRequest",
     "GetGlobalOrganizationOperationRequest",
     "GetGlobalPublicDelegatedPrefixeRequest",
+    "GetGlobalVmExtensionPolicyRequest",
     "GetGuestAttributesInstanceRequest",
     "GetHealthBackendServiceRequest",
     "GetHealthCheckRequest",
@@ -2710,6 +2750,7 @@ __all__ = (
     "GetIamPolicyInstantSnapshotRequest",
     "GetIamPolicyInterconnectAttachmentGroupRequest",
     "GetIamPolicyInterconnectGroupRequest",
+    "GetIamPolicyLicenseCodeRequest",
     "GetIamPolicyLicenseRequest",
     "GetIamPolicyMachineImageRequest",
     "GetIamPolicyNetworkAttachmentRequest",
@@ -2808,6 +2849,8 @@ __all__ = (
     "GetReservationSlotRequest",
     "GetReservationSubBlockRequest",
     "GetResourcePolicyRequest",
+    "GetRolloutPlanRequest",
+    "GetRolloutRequest",
     "GetRoutePolicyRouterRequest",
     "GetRouteRequest",
     "GetRouterRequest",
@@ -2864,6 +2907,17 @@ __all__ = (
     "GlobalPublicDelegatedPrefixesClient",
     "GlobalSetLabelsRequest",
     "GlobalSetPolicyRequest",
+    "GlobalVmExtensionPoliciesClient",
+    "GlobalVmExtensionPolicy",
+    "GlobalVmExtensionPolicyExtensionPolicy",
+    "GlobalVmExtensionPolicyInstanceSelector",
+    "GlobalVmExtensionPolicyLabelSelector",
+    "GlobalVmExtensionPolicyList",
+    "GlobalVmExtensionPolicyRolloutOperation",
+    "GlobalVmExtensionPolicyRolloutOperationRolloutInput",
+    "GlobalVmExtensionPolicyRolloutOperationRolloutStatus",
+    "GlobalVmExtensionPolicyRolloutOperationRolloutStatusRolloutMetadata",
+    "GlobalVmExtensionPolicyRolloutOperationRolloutStatusRolloutMetadataLocationRolloutStatus",
     "GroupMaintenanceInfo",
     "GuestAttributes",
     "GuestAttributesEntry",
@@ -2934,6 +2988,7 @@ __all__ = (
     "InsertGlobalForwardingRuleRequest",
     "InsertGlobalNetworkEndpointGroupRequest",
     "InsertGlobalPublicDelegatedPrefixeRequest",
+    "InsertGlobalVmExtensionPolicyRequest",
     "InsertHealthCheckRequest",
     "InsertImageRequest",
     "InsertInstanceGroupManagerRequest",
@@ -2988,6 +3043,7 @@ __all__ = (
     "InsertRegionUrlMapRequest",
     "InsertReservationRequest",
     "InsertResourcePolicyRequest",
+    "InsertRolloutPlanRequest",
     "InsertRouteRequest",
     "InsertRouterRequest",
     "InsertSecurityPolicyRequest",
@@ -3242,6 +3298,7 @@ __all__ = (
     "ListGlobalOperationsRequest",
     "ListGlobalOrganizationOperationsRequest",
     "ListGlobalPublicDelegatedPrefixesRequest",
+    "ListGlobalVmExtensionPoliciesRequest",
     "ListHealthChecksRequest",
     "ListImagesRequest",
     "ListInstanceGroupManagerResizeRequestsRequest",
@@ -3324,6 +3381,8 @@ __all__ = (
     "ListReservationSubBlocksRequest",
     "ListReservationsRequest",
     "ListResourcePoliciesRequest",
+    "ListRolloutPlansRequest",
+    "ListRolloutsRequest",
     "ListRoutePoliciesRoutersRequest",
     "ListRoutersRequest",
     "ListRoutesRequest",
@@ -3435,6 +3494,7 @@ __all__ = (
     "NetworkProfilesListResponse",
     "NetworkRoutingConfig",
     "NetworksAddPeeringRequest",
+    "NetworksCancelRequestRemovePeeringRequest",
     "NetworksClient",
     "NetworksGetEffectiveFirewallsResponse",
     "NetworksGetEffectiveFirewallsResponseEffectiveFirewallPolicy",
@@ -3768,6 +3828,25 @@ __all__ = (
     "ResumeInstanceRequest",
     "ResumeInstancesInstanceGroupManagerRequest",
     "ResumeInstancesRegionInstanceGroupManagerRequest",
+    "Rollout",
+    "RolloutPlan",
+    "RolloutPlanWave",
+    "RolloutPlanWaveOrchestrationOptions",
+    "RolloutPlanWaveOrchestrationOptionsDelay",
+    "RolloutPlanWaveSelector",
+    "RolloutPlanWaveSelectorLocationSelector",
+    "RolloutPlanWaveSelectorResourceHierarchySelector",
+    "RolloutPlanWaveValidation",
+    "RolloutPlanWaveValidationTimeBasedValidationMetadata",
+    "RolloutPlansClient",
+    "RolloutPlansListResponse",
+    "RolloutRolloutEntity",
+    "RolloutRolloutEntityOrchestratedEntity",
+    "RolloutWaveDetails",
+    "RolloutWaveDetailsOrchestratedWaveDetails",
+    "RolloutWaveDetailsOrchestratedWaveDetailsLocationStatus",
+    "RolloutsClient",
+    "RolloutsListResponse",
     "Route",
     "RouteAsPath",
     "RouteList",
@@ -3883,6 +3962,7 @@ __all__ = (
     "SetIamPolicyInstantSnapshotRequest",
     "SetIamPolicyInterconnectAttachmentGroupRequest",
     "SetIamPolicyInterconnectGroupRequest",
+    "SetIamPolicyLicenseCodeRequest",
     "SetIamPolicyLicenseRequest",
     "SetIamPolicyMachineImageRequest",
     "SetIamPolicyNetworkAttachmentRequest",
@@ -4176,6 +4256,7 @@ __all__ = (
     "UpdateDisplayDeviceInstanceRequest",
     "UpdateFirewallRequest",
     "UpdateFutureReservationRequest",
+    "UpdateGlobalVmExtensionPolicyRequest",
     "UpdateHealthCheckRequest",
     "UpdateInstanceRequest",
     "UpdateKmsKeyDiskRequest",
@@ -4224,7 +4305,9 @@ __all__ = (
     "VmEndpointNatMappingsInterfaceNatMappings",
     "VmEndpointNatMappingsInterfaceNatMappingsNatRuleMappings",
     "VmEndpointNatMappingsList",
+    "VmExtensionPoliciesScopedList",
     "VmExtensionPolicy",
+    "VmExtensionPolicyAggregatedListResponse",
     "VmExtensionPolicyExtensionPolicy",
     "VmExtensionPolicyInstanceSelector",
     "VmExtensionPolicyLabelSelector",

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -37,7 +37,7 @@ class User(proto.Message):
             Identifier. The resource name of the User. Format:
             ``networks/{network_code}/users/{user_id}``
         user_id (int):
-            Output only. ``User`` ID.
+            Output only. Deprecated: ``User`` ID.
 
             This field is a member of `oneof`_ ``_user_id``.
         display_name (str):

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -41,8 +41,8 @@ class CustomField(proto.Message):
             Format:
             ``networks/{network_code}/customFields/{custom_field}``
         custom_field_id (int):
-            Output only. Unique ID of the CustomField.
-            This attribute is assigned by Google.
+            Output only. Deprecated: Unique ID of the
+            CustomField.
 
             This field is a member of `oneof`_ ``_custom_field_id``.
         display_name (str):

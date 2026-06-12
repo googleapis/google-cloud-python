@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -113,6 +108,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1351,8 +1361,8 @@ def test_metastore_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        metastore.CreateCatalogRequest,
-        dict,
+        metastore.CreateCatalogRequest(),
+        {},
     ],
 )
 def test_create_catalog(request_type, transport: str = "grpc"):
@@ -1363,7 +1373,7 @@ def test_create_catalog(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_catalog), "__call__") as call:
@@ -1408,10 +1418,11 @@ def test_create_catalog_non_empty_request_with_auto_populated_field():
         client.create_catalog(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.CreateCatalogRequest(
+        request_msg = metastore.CreateCatalogRequest(
             parent="parent_value",
             catalog_id="catalog_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_catalog_use_cached_wrapped_rpc():
@@ -1492,9 +1503,14 @@ async def test_create_catalog_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_catalog_async(
-    transport: str = "grpc_asyncio", request_type=metastore.CreateCatalogRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metastore.CreateCatalogRequest(),
+        {},
+    ],
+)
+async def test_create_catalog_async(request_type, transport: str = "grpc_asyncio"):
     client = MetastoreServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1502,7 +1518,7 @@ async def test_create_catalog_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_catalog), "__call__") as call:
@@ -1523,11 +1539,6 @@ async def test_create_catalog_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, metastore.Catalog)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_create_catalog_async_from_dict():
-    await test_create_catalog_async(request_type=dict)
 
 
 def test_create_catalog_field_headers():
@@ -1692,8 +1703,8 @@ async def test_create_catalog_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        metastore.DeleteCatalogRequest,
-        dict,
+        metastore.DeleteCatalogRequest(),
+        {},
     ],
 )
 def test_delete_catalog(request_type, transport: str = "grpc"):
@@ -1704,7 +1715,7 @@ def test_delete_catalog(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_catalog), "__call__") as call:
@@ -1748,9 +1759,10 @@ def test_delete_catalog_non_empty_request_with_auto_populated_field():
         client.delete_catalog(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.DeleteCatalogRequest(
+        request_msg = metastore.DeleteCatalogRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_catalog_use_cached_wrapped_rpc():
@@ -1831,9 +1843,14 @@ async def test_delete_catalog_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_catalog_async(
-    transport: str = "grpc_asyncio", request_type=metastore.DeleteCatalogRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metastore.DeleteCatalogRequest(),
+        {},
+    ],
+)
+async def test_delete_catalog_async(request_type, transport: str = "grpc_asyncio"):
     client = MetastoreServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1841,7 +1858,7 @@ async def test_delete_catalog_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_catalog), "__call__") as call:
@@ -1862,11 +1879,6 @@ async def test_delete_catalog_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, metastore.Catalog)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_delete_catalog_async_from_dict():
-    await test_delete_catalog_async(request_type=dict)
 
 
 def test_delete_catalog_field_headers():
@@ -2011,8 +2023,8 @@ async def test_delete_catalog_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        metastore.GetCatalogRequest,
-        dict,
+        metastore.GetCatalogRequest(),
+        {},
     ],
 )
 def test_get_catalog(request_type, transport: str = "grpc"):
@@ -2023,7 +2035,7 @@ def test_get_catalog(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_catalog), "__call__") as call:
@@ -2067,9 +2079,10 @@ def test_get_catalog_non_empty_request_with_auto_populated_field():
         client.get_catalog(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.GetCatalogRequest(
+        request_msg = metastore.GetCatalogRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_catalog_use_cached_wrapped_rpc():
@@ -2150,9 +2163,14 @@ async def test_get_catalog_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_catalog_async(
-    transport: str = "grpc_asyncio", request_type=metastore.GetCatalogRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metastore.GetCatalogRequest(),
+        {},
+    ],
+)
+async def test_get_catalog_async(request_type, transport: str = "grpc_asyncio"):
     client = MetastoreServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2160,7 +2178,7 @@ async def test_get_catalog_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_catalog), "__call__") as call:
@@ -2181,11 +2199,6 @@ async def test_get_catalog_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, metastore.Catalog)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_get_catalog_async_from_dict():
-    await test_get_catalog_async(request_type=dict)
 
 
 def test_get_catalog_field_headers():
@@ -2330,8 +2343,8 @@ async def test_get_catalog_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        metastore.ListCatalogsRequest,
-        dict,
+        metastore.ListCatalogsRequest(),
+        {},
     ],
 )
 def test_list_catalogs(request_type, transport: str = "grpc"):
@@ -2342,7 +2355,7 @@ def test_list_catalogs(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_catalogs), "__call__") as call:
@@ -2387,10 +2400,11 @@ def test_list_catalogs_non_empty_request_with_auto_populated_field():
         client.list_catalogs(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.ListCatalogsRequest(
+        request_msg = metastore.ListCatalogsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_catalogs_use_cached_wrapped_rpc():
@@ -2471,9 +2485,14 @@ async def test_list_catalogs_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_catalogs_async(
-    transport: str = "grpc_asyncio", request_type=metastore.ListCatalogsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metastore.ListCatalogsRequest(),
+        {},
+    ],
+)
+async def test_list_catalogs_async(request_type, transport: str = "grpc_asyncio"):
     client = MetastoreServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2481,7 +2500,7 @@ async def test_list_catalogs_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_catalogs), "__call__") as call:
@@ -2502,11 +2521,6 @@ async def test_list_catalogs_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListCatalogsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_catalogs_async_from_dict():
-    await test_list_catalogs_async(request_type=dict)
 
 
 def test_list_catalogs_field_headers():
@@ -2836,11 +2850,7 @@ async def test_list_catalogs_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_catalogs(request={})
-        ).pages:
+        async for page_ in (await client.list_catalogs(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -2849,8 +2859,8 @@ async def test_list_catalogs_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        metastore.CreateDatabaseRequest,
-        dict,
+        metastore.CreateDatabaseRequest(),
+        {},
     ],
 )
 def test_create_database(request_type, transport: str = "grpc"):
@@ -2861,7 +2871,7 @@ def test_create_database(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_database), "__call__") as call:
@@ -2908,10 +2918,11 @@ def test_create_database_non_empty_request_with_auto_populated_field():
         client.create_database(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.CreateDatabaseRequest(
+        request_msg = metastore.CreateDatabaseRequest(
             parent="parent_value",
             database_id="database_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_database_use_cached_wrapped_rpc():
@@ -2992,9 +3003,14 @@ async def test_create_database_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_database_async(
-    transport: str = "grpc_asyncio", request_type=metastore.CreateDatabaseRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metastore.CreateDatabaseRequest(),
+        {},
+    ],
+)
+async def test_create_database_async(request_type, transport: str = "grpc_asyncio"):
     client = MetastoreServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3002,7 +3018,7 @@ async def test_create_database_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_database), "__call__") as call:
@@ -3025,11 +3041,6 @@ async def test_create_database_async(
     assert isinstance(response, metastore.Database)
     assert response.name == "name_value"
     assert response.type_ == metastore.Database.Type.HIVE
-
-
-@pytest.mark.asyncio
-async def test_create_database_async_from_dict():
-    await test_create_database_async(request_type=dict)
 
 
 def test_create_database_field_headers():
@@ -3218,8 +3229,8 @@ async def test_create_database_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        metastore.DeleteDatabaseRequest,
-        dict,
+        metastore.DeleteDatabaseRequest(),
+        {},
     ],
 )
 def test_delete_database(request_type, transport: str = "grpc"):
@@ -3230,7 +3241,7 @@ def test_delete_database(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_database), "__call__") as call:
@@ -3276,9 +3287,10 @@ def test_delete_database_non_empty_request_with_auto_populated_field():
         client.delete_database(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.DeleteDatabaseRequest(
+        request_msg = metastore.DeleteDatabaseRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_database_use_cached_wrapped_rpc():
@@ -3359,9 +3371,14 @@ async def test_delete_database_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_database_async(
-    transport: str = "grpc_asyncio", request_type=metastore.DeleteDatabaseRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metastore.DeleteDatabaseRequest(),
+        {},
+    ],
+)
+async def test_delete_database_async(request_type, transport: str = "grpc_asyncio"):
     client = MetastoreServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3369,7 +3386,7 @@ async def test_delete_database_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_database), "__call__") as call:
@@ -3392,11 +3409,6 @@ async def test_delete_database_async(
     assert isinstance(response, metastore.Database)
     assert response.name == "name_value"
     assert response.type_ == metastore.Database.Type.HIVE
-
-
-@pytest.mark.asyncio
-async def test_delete_database_async_from_dict():
-    await test_delete_database_async(request_type=dict)
 
 
 def test_delete_database_field_headers():
@@ -3541,8 +3553,8 @@ async def test_delete_database_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        metastore.UpdateDatabaseRequest,
-        dict,
+        metastore.UpdateDatabaseRequest(),
+        {},
     ],
 )
 def test_update_database(request_type, transport: str = "grpc"):
@@ -3553,7 +3565,7 @@ def test_update_database(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_database), "__call__") as call:
@@ -3597,7 +3609,8 @@ def test_update_database_non_empty_request_with_auto_populated_field():
         client.update_database(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.UpdateDatabaseRequest()
+        request_msg = metastore.UpdateDatabaseRequest()
+        assert args[0] == request_msg
 
 
 def test_update_database_use_cached_wrapped_rpc():
@@ -3678,9 +3691,14 @@ async def test_update_database_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_database_async(
-    transport: str = "grpc_asyncio", request_type=metastore.UpdateDatabaseRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metastore.UpdateDatabaseRequest(),
+        {},
+    ],
+)
+async def test_update_database_async(request_type, transport: str = "grpc_asyncio"):
     client = MetastoreServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3688,7 +3706,7 @@ async def test_update_database_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_database), "__call__") as call:
@@ -3711,11 +3729,6 @@ async def test_update_database_async(
     assert isinstance(response, metastore.Database)
     assert response.name == "name_value"
     assert response.type_ == metastore.Database.Type.HIVE
-
-
-@pytest.mark.asyncio
-async def test_update_database_async_from_dict():
-    await test_update_database_async(request_type=dict)
 
 
 def test_update_database_field_headers():
@@ -3894,8 +3907,8 @@ async def test_update_database_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        metastore.GetDatabaseRequest,
-        dict,
+        metastore.GetDatabaseRequest(),
+        {},
     ],
 )
 def test_get_database(request_type, transport: str = "grpc"):
@@ -3906,7 +3919,7 @@ def test_get_database(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_database), "__call__") as call:
@@ -3952,9 +3965,10 @@ def test_get_database_non_empty_request_with_auto_populated_field():
         client.get_database(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.GetDatabaseRequest(
+        request_msg = metastore.GetDatabaseRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_database_use_cached_wrapped_rpc():
@@ -4035,9 +4049,14 @@ async def test_get_database_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_database_async(
-    transport: str = "grpc_asyncio", request_type=metastore.GetDatabaseRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metastore.GetDatabaseRequest(),
+        {},
+    ],
+)
+async def test_get_database_async(request_type, transport: str = "grpc_asyncio"):
     client = MetastoreServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4045,7 +4064,7 @@ async def test_get_database_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_database), "__call__") as call:
@@ -4068,11 +4087,6 @@ async def test_get_database_async(
     assert isinstance(response, metastore.Database)
     assert response.name == "name_value"
     assert response.type_ == metastore.Database.Type.HIVE
-
-
-@pytest.mark.asyncio
-async def test_get_database_async_from_dict():
-    await test_get_database_async(request_type=dict)
 
 
 def test_get_database_field_headers():
@@ -4217,8 +4231,8 @@ async def test_get_database_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        metastore.ListDatabasesRequest,
-        dict,
+        metastore.ListDatabasesRequest(),
+        {},
     ],
 )
 def test_list_databases(request_type, transport: str = "grpc"):
@@ -4229,7 +4243,7 @@ def test_list_databases(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_databases), "__call__") as call:
@@ -4274,10 +4288,11 @@ def test_list_databases_non_empty_request_with_auto_populated_field():
         client.list_databases(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.ListDatabasesRequest(
+        request_msg = metastore.ListDatabasesRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_databases_use_cached_wrapped_rpc():
@@ -4358,9 +4373,14 @@ async def test_list_databases_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_databases_async(
-    transport: str = "grpc_asyncio", request_type=metastore.ListDatabasesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metastore.ListDatabasesRequest(),
+        {},
+    ],
+)
+async def test_list_databases_async(request_type, transport: str = "grpc_asyncio"):
     client = MetastoreServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4368,7 +4388,7 @@ async def test_list_databases_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_databases), "__call__") as call:
@@ -4389,11 +4409,6 @@ async def test_list_databases_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDatabasesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_databases_async_from_dict():
-    await test_list_databases_async(request_type=dict)
 
 
 def test_list_databases_field_headers():
@@ -4723,11 +4738,7 @@ async def test_list_databases_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_databases(request={})
-        ).pages:
+        async for page_ in (await client.list_databases(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -4736,8 +4747,8 @@ async def test_list_databases_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        metastore.CreateTableRequest,
-        dict,
+        metastore.CreateTableRequest(),
+        {},
     ],
 )
 def test_create_table(request_type, transport: str = "grpc"):
@@ -4748,7 +4759,7 @@ def test_create_table(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_table), "__call__") as call:
@@ -4797,10 +4808,11 @@ def test_create_table_non_empty_request_with_auto_populated_field():
         client.create_table(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.CreateTableRequest(
+        request_msg = metastore.CreateTableRequest(
             parent="parent_value",
             table_id="table_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_table_use_cached_wrapped_rpc():
@@ -4881,9 +4893,14 @@ async def test_create_table_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_table_async(
-    transport: str = "grpc_asyncio", request_type=metastore.CreateTableRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metastore.CreateTableRequest(),
+        {},
+    ],
+)
+async def test_create_table_async(request_type, transport: str = "grpc_asyncio"):
     client = MetastoreServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4891,7 +4908,7 @@ async def test_create_table_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_table), "__call__") as call:
@@ -4916,11 +4933,6 @@ async def test_create_table_async(
     assert response.name == "name_value"
     assert response.type_ == metastore.Table.Type.HIVE
     assert response.etag == "etag_value"
-
-
-@pytest.mark.asyncio
-async def test_create_table_async_from_dict():
-    await test_create_table_async(request_type=dict)
 
 
 def test_create_table_field_headers():
@@ -5109,8 +5121,8 @@ async def test_create_table_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        metastore.DeleteTableRequest,
-        dict,
+        metastore.DeleteTableRequest(),
+        {},
     ],
 )
 def test_delete_table(request_type, transport: str = "grpc"):
@@ -5121,7 +5133,7 @@ def test_delete_table(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_table), "__call__") as call:
@@ -5169,9 +5181,10 @@ def test_delete_table_non_empty_request_with_auto_populated_field():
         client.delete_table(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.DeleteTableRequest(
+        request_msg = metastore.DeleteTableRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_table_use_cached_wrapped_rpc():
@@ -5252,9 +5265,14 @@ async def test_delete_table_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_table_async(
-    transport: str = "grpc_asyncio", request_type=metastore.DeleteTableRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metastore.DeleteTableRequest(),
+        {},
+    ],
+)
+async def test_delete_table_async(request_type, transport: str = "grpc_asyncio"):
     client = MetastoreServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5262,7 +5280,7 @@ async def test_delete_table_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_table), "__call__") as call:
@@ -5287,11 +5305,6 @@ async def test_delete_table_async(
     assert response.name == "name_value"
     assert response.type_ == metastore.Table.Type.HIVE
     assert response.etag == "etag_value"
-
-
-@pytest.mark.asyncio
-async def test_delete_table_async_from_dict():
-    await test_delete_table_async(request_type=dict)
 
 
 def test_delete_table_field_headers():
@@ -5436,8 +5449,8 @@ async def test_delete_table_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        metastore.UpdateTableRequest,
-        dict,
+        metastore.UpdateTableRequest(),
+        {},
     ],
 )
 def test_update_table(request_type, transport: str = "grpc"):
@@ -5448,7 +5461,7 @@ def test_update_table(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_table), "__call__") as call:
@@ -5494,7 +5507,8 @@ def test_update_table_non_empty_request_with_auto_populated_field():
         client.update_table(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.UpdateTableRequest()
+        request_msg = metastore.UpdateTableRequest()
+        assert args[0] == request_msg
 
 
 def test_update_table_use_cached_wrapped_rpc():
@@ -5575,9 +5589,14 @@ async def test_update_table_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_table_async(
-    transport: str = "grpc_asyncio", request_type=metastore.UpdateTableRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metastore.UpdateTableRequest(),
+        {},
+    ],
+)
+async def test_update_table_async(request_type, transport: str = "grpc_asyncio"):
     client = MetastoreServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5585,7 +5604,7 @@ async def test_update_table_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_table), "__call__") as call:
@@ -5610,11 +5629,6 @@ async def test_update_table_async(
     assert response.name == "name_value"
     assert response.type_ == metastore.Table.Type.HIVE
     assert response.etag == "etag_value"
-
-
-@pytest.mark.asyncio
-async def test_update_table_async_from_dict():
-    await test_update_table_async(request_type=dict)
 
 
 def test_update_table_field_headers():
@@ -5793,8 +5807,8 @@ async def test_update_table_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        metastore.RenameTableRequest,
-        dict,
+        metastore.RenameTableRequest(),
+        {},
     ],
 )
 def test_rename_table(request_type, transport: str = "grpc"):
@@ -5805,7 +5819,7 @@ def test_rename_table(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.rename_table), "__call__") as call:
@@ -5854,10 +5868,11 @@ def test_rename_table_non_empty_request_with_auto_populated_field():
         client.rename_table(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.RenameTableRequest(
+        request_msg = metastore.RenameTableRequest(
             name="name_value",
             new_name="new_name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_rename_table_use_cached_wrapped_rpc():
@@ -5938,9 +5953,14 @@ async def test_rename_table_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_rename_table_async(
-    transport: str = "grpc_asyncio", request_type=metastore.RenameTableRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metastore.RenameTableRequest(),
+        {},
+    ],
+)
+async def test_rename_table_async(request_type, transport: str = "grpc_asyncio"):
     client = MetastoreServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5948,7 +5968,7 @@ async def test_rename_table_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.rename_table), "__call__") as call:
@@ -5973,11 +5993,6 @@ async def test_rename_table_async(
     assert response.name == "name_value"
     assert response.type_ == metastore.Table.Type.HIVE
     assert response.etag == "etag_value"
-
-
-@pytest.mark.asyncio
-async def test_rename_table_async_from_dict():
-    await test_rename_table_async(request_type=dict)
 
 
 def test_rename_table_field_headers():
@@ -6132,8 +6147,8 @@ async def test_rename_table_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        metastore.GetTableRequest,
-        dict,
+        metastore.GetTableRequest(),
+        {},
     ],
 )
 def test_get_table(request_type, transport: str = "grpc"):
@@ -6144,7 +6159,7 @@ def test_get_table(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_table), "__call__") as call:
@@ -6192,9 +6207,10 @@ def test_get_table_non_empty_request_with_auto_populated_field():
         client.get_table(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.GetTableRequest(
+        request_msg = metastore.GetTableRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_table_use_cached_wrapped_rpc():
@@ -6273,9 +6289,14 @@ async def test_get_table_async_use_cached_wrapped_rpc(transport: str = "grpc_asy
 
 
 @pytest.mark.asyncio
-async def test_get_table_async(
-    transport: str = "grpc_asyncio", request_type=metastore.GetTableRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metastore.GetTableRequest(),
+        {},
+    ],
+)
+async def test_get_table_async(request_type, transport: str = "grpc_asyncio"):
     client = MetastoreServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6283,7 +6304,7 @@ async def test_get_table_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_table), "__call__") as call:
@@ -6308,11 +6329,6 @@ async def test_get_table_async(
     assert response.name == "name_value"
     assert response.type_ == metastore.Table.Type.HIVE
     assert response.etag == "etag_value"
-
-
-@pytest.mark.asyncio
-async def test_get_table_async_from_dict():
-    await test_get_table_async(request_type=dict)
 
 
 def test_get_table_field_headers():
@@ -6457,8 +6473,8 @@ async def test_get_table_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        metastore.ListTablesRequest,
-        dict,
+        metastore.ListTablesRequest(),
+        {},
     ],
 )
 def test_list_tables(request_type, transport: str = "grpc"):
@@ -6469,7 +6485,7 @@ def test_list_tables(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_tables), "__call__") as call:
@@ -6514,10 +6530,11 @@ def test_list_tables_non_empty_request_with_auto_populated_field():
         client.list_tables(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore.ListTablesRequest(
+        request_msg = metastore.ListTablesRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_tables_use_cached_wrapped_rpc():
@@ -6598,9 +6615,14 @@ async def test_list_tables_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_tables_async(
-    transport: str = "grpc_asyncio", request_type=metastore.ListTablesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metastore.ListTablesRequest(),
+        {},
+    ],
+)
+async def test_list_tables_async(request_type, transport: str = "grpc_asyncio"):
     client = MetastoreServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6608,7 +6630,7 @@ async def test_list_tables_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_tables), "__call__") as call:
@@ -6629,11 +6651,6 @@ async def test_list_tables_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListTablesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_tables_async_from_dict():
-    await test_list_tables_async(request_type=dict)
 
 
 def test_list_tables_field_headers():
@@ -6963,11 +6980,7 @@ async def test_list_tables_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_tables(request={})
-        ).pages:
+        async for page_ in (await client.list_tables(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -7097,7 +7110,7 @@ def test_create_catalog_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_catalog_rest_unset_required_fields():
@@ -7287,7 +7300,7 @@ def test_delete_catalog_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_catalog_rest_unset_required_fields():
@@ -7462,7 +7475,7 @@ def test_get_catalog_rest_required_fields(request_type=metastore.GetCatalogReque
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_catalog_rest_unset_required_fields():
@@ -7644,7 +7657,7 @@ def test_list_catalogs_rest_required_fields(request_type=metastore.ListCatalogsR
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_catalogs_rest_unset_required_fields():
@@ -7906,7 +7919,7 @@ def test_create_database_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_database_rest_unset_required_fields():
@@ -8107,7 +8120,7 @@ def test_delete_database_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_database_rest_unset_required_fields():
@@ -8285,7 +8298,7 @@ def test_update_database_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_database_rest_unset_required_fields():
@@ -8475,7 +8488,7 @@ def test_get_database_rest_required_fields(request_type=metastore.GetDatabaseReq
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_database_rest_unset_required_fields():
@@ -8662,7 +8675,7 @@ def test_list_databases_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_databases_rest_unset_required_fields():
@@ -8927,7 +8940,7 @@ def test_create_table_rest_required_fields(request_type=metastore.CreateTableReq
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_table_rest_unset_required_fields():
@@ -9126,7 +9139,7 @@ def test_delete_table_rest_required_fields(request_type=metastore.DeleteTableReq
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_table_rest_unset_required_fields():
@@ -9302,7 +9315,7 @@ def test_update_table_rest_required_fields(request_type=metastore.UpdateTableReq
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_table_rest_unset_required_fields():
@@ -9497,7 +9510,7 @@ def test_rename_table_rest_required_fields(request_type=metastore.RenameTableReq
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_rename_table_rest_unset_required_fields():
@@ -9685,7 +9698,7 @@ def test_get_table_rest_required_fields(request_type=metastore.GetTableRequest):
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_table_rest_unset_required_fields():
@@ -9871,7 +9884,7 @@ def test_list_tables_rest_required_fields(request_type=metastore.ListTablesReque
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_tables_rest_unset_required_fields():
@@ -10138,7 +10151,6 @@ def test_create_catalog_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metastore.CreateCatalogRequest()
-
         assert args[0] == request_msg
 
 
@@ -10159,7 +10171,6 @@ def test_delete_catalog_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metastore.DeleteCatalogRequest()
-
         assert args[0] == request_msg
 
 
@@ -10180,7 +10191,6 @@ def test_get_catalog_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metastore.GetCatalogRequest()
-
         assert args[0] == request_msg
 
 
@@ -10201,7 +10211,6 @@ def test_list_catalogs_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metastore.ListCatalogsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10222,7 +10231,6 @@ def test_create_database_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metastore.CreateDatabaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -10243,7 +10251,6 @@ def test_delete_database_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metastore.DeleteDatabaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -10264,7 +10271,6 @@ def test_update_database_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metastore.UpdateDatabaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -10285,7 +10291,6 @@ def test_get_database_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metastore.GetDatabaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -10306,7 +10311,6 @@ def test_list_databases_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metastore.ListDatabasesRequest()
-
         assert args[0] == request_msg
 
 
@@ -10327,7 +10331,6 @@ def test_create_table_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metastore.CreateTableRequest()
-
         assert args[0] == request_msg
 
 
@@ -10348,7 +10351,6 @@ def test_delete_table_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metastore.DeleteTableRequest()
-
         assert args[0] == request_msg
 
 
@@ -10369,7 +10371,6 @@ def test_update_table_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metastore.UpdateTableRequest()
-
         assert args[0] == request_msg
 
 
@@ -10390,7 +10391,6 @@ def test_rename_table_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metastore.RenameTableRequest()
-
         assert args[0] == request_msg
 
 
@@ -10411,7 +10411,6 @@ def test_get_table_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metastore.GetTableRequest()
-
         assert args[0] == request_msg
 
 
@@ -10432,7 +10431,6 @@ def test_list_tables_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metastore.ListTablesRequest()
-
         assert args[0] == request_msg
 
 
@@ -10473,7 +10471,6 @@ async def test_create_catalog_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metastore.CreateCatalogRequest()
-
         assert args[0] == request_msg
 
 
@@ -10500,7 +10497,6 @@ async def test_delete_catalog_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metastore.DeleteCatalogRequest()
-
         assert args[0] == request_msg
 
 
@@ -10527,7 +10523,6 @@ async def test_get_catalog_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metastore.GetCatalogRequest()
-
         assert args[0] == request_msg
 
 
@@ -10554,7 +10549,6 @@ async def test_list_catalogs_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metastore.ListCatalogsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10582,7 +10576,6 @@ async def test_create_database_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metastore.CreateDatabaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -10610,7 +10603,6 @@ async def test_delete_database_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metastore.DeleteDatabaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -10638,7 +10630,6 @@ async def test_update_database_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metastore.UpdateDatabaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -10666,7 +10657,6 @@ async def test_get_database_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metastore.GetDatabaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -10693,7 +10683,6 @@ async def test_list_databases_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metastore.ListDatabasesRequest()
-
         assert args[0] == request_msg
 
 
@@ -10722,7 +10711,6 @@ async def test_create_table_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metastore.CreateTableRequest()
-
         assert args[0] == request_msg
 
 
@@ -10751,7 +10739,6 @@ async def test_delete_table_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metastore.DeleteTableRequest()
-
         assert args[0] == request_msg
 
 
@@ -10780,7 +10767,6 @@ async def test_update_table_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metastore.UpdateTableRequest()
-
         assert args[0] == request_msg
 
 
@@ -10809,7 +10795,6 @@ async def test_rename_table_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metastore.RenameTableRequest()
-
         assert args[0] == request_msg
 
 
@@ -10838,7 +10823,6 @@ async def test_get_table_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metastore.GetTableRequest()
-
         assert args[0] == request_msg
 
 
@@ -10865,7 +10849,6 @@ async def test_list_tables_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metastore.ListTablesRequest()
-
         assert args[0] == request_msg
 
 
@@ -13283,7 +13266,6 @@ def test_create_catalog_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metastore.CreateCatalogRequest()
-
         assert args[0] == request_msg
 
 
@@ -13303,7 +13285,6 @@ def test_delete_catalog_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metastore.DeleteCatalogRequest()
-
         assert args[0] == request_msg
 
 
@@ -13323,7 +13304,6 @@ def test_get_catalog_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metastore.GetCatalogRequest()
-
         assert args[0] == request_msg
 
 
@@ -13343,7 +13323,6 @@ def test_list_catalogs_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metastore.ListCatalogsRequest()
-
         assert args[0] == request_msg
 
 
@@ -13363,7 +13342,6 @@ def test_create_database_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metastore.CreateDatabaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -13383,7 +13361,6 @@ def test_delete_database_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metastore.DeleteDatabaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -13403,7 +13380,6 @@ def test_update_database_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metastore.UpdateDatabaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -13423,7 +13399,6 @@ def test_get_database_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metastore.GetDatabaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -13443,7 +13418,6 @@ def test_list_databases_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metastore.ListDatabasesRequest()
-
         assert args[0] == request_msg
 
 
@@ -13463,7 +13437,6 @@ def test_create_table_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metastore.CreateTableRequest()
-
         assert args[0] == request_msg
 
 
@@ -13483,7 +13456,6 @@ def test_delete_table_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metastore.DeleteTableRequest()
-
         assert args[0] == request_msg
 
 
@@ -13503,7 +13475,6 @@ def test_update_table_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metastore.UpdateTableRequest()
-
         assert args[0] == request_msg
 
 
@@ -13523,7 +13494,6 @@ def test_rename_table_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metastore.RenameTableRequest()
-
         assert args[0] == request_msg
 
 
@@ -13543,7 +13513,6 @@ def test_get_table_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metastore.GetTableRequest()
-
         assert args[0] == request_msg
 
 
@@ -13563,7 +13532,6 @@ def test_list_tables_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metastore.ListTablesRequest()
-
         assert args[0] == request_msg
 
 

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -112,6 +107,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1358,7 +1368,7 @@ def test_abandon_instances_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_abandon_instances_rest_unset_required_fields():
@@ -1577,7 +1587,7 @@ def test_abandon_instances_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_abandon_instances_unary_rest_unset_required_fields():
@@ -1794,7 +1804,7 @@ def test_adopt_instances_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_adopt_instances_rest_unset_required_fields():
@@ -2011,7 +2021,7 @@ def test_adopt_instances_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_adopt_instances_unary_rest_unset_required_fields():
@@ -2231,7 +2241,7 @@ def test_apply_updates_to_instances_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_apply_updates_to_instances_rest_unset_required_fields():
@@ -2451,7 +2461,7 @@ def test_apply_updates_to_instances_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_apply_updates_to_instances_unary_rest_unset_required_fields():
@@ -2670,7 +2680,7 @@ def test_create_instances_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_instances_rest_unset_required_fields():
@@ -2889,7 +2899,7 @@ def test_create_instances_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_instances_unary_rest_unset_required_fields():
@@ -3055,7 +3065,12 @@ def test_delete_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials()
     ).delete._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("request_id",))
+    assert not set(unset_fields) - set(
+        (
+            "no_graceful_shutdown",
+            "request_id",
+        )
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -3105,7 +3120,7 @@ def test_delete_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_rest_unset_required_fields():
@@ -3115,7 +3130,12 @@ def test_delete_rest_unset_required_fields():
 
     unset_fields = transport.delete._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("requestId",))
+        set(
+            (
+                "noGracefulShutdown",
+                "requestId",
+            )
+        )
         & set(
             (
                 "instanceGroupManager",
@@ -3264,7 +3284,12 @@ def test_delete_unary_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials()
     ).delete._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("request_id",))
+    assert not set(unset_fields) - set(
+        (
+            "no_graceful_shutdown",
+            "request_id",
+        )
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -3314,7 +3339,7 @@ def test_delete_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_unary_rest_unset_required_fields():
@@ -3324,7 +3349,12 @@ def test_delete_unary_rest_unset_required_fields():
 
     unset_fields = transport.delete._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("requestId",))
+        set(
+            (
+                "noGracefulShutdown",
+                "requestId",
+            )
+        )
         & set(
             (
                 "instanceGroupManager",
@@ -3475,7 +3505,12 @@ def test_delete_instances_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials()
     ).delete_instances._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("request_id",))
+    assert not set(unset_fields) - set(
+        (
+            "no_graceful_shutdown",
+            "request_id",
+        )
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -3526,7 +3561,7 @@ def test_delete_instances_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_instances_rest_unset_required_fields():
@@ -3536,7 +3571,12 @@ def test_delete_instances_rest_unset_required_fields():
 
     unset_fields = transport.delete_instances._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("requestId",))
+        set(
+            (
+                "noGracefulShutdown",
+                "requestId",
+            )
+        )
         & set(
             (
                 "instanceGroupManager",
@@ -3694,7 +3734,12 @@ def test_delete_instances_unary_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials()
     ).delete_instances._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("request_id",))
+    assert not set(unset_fields) - set(
+        (
+            "no_graceful_shutdown",
+            "request_id",
+        )
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -3745,7 +3790,7 @@ def test_delete_instances_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_instances_unary_rest_unset_required_fields():
@@ -3755,7 +3800,12 @@ def test_delete_instances_unary_rest_unset_required_fields():
 
     unset_fields = transport.delete_instances._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("requestId",))
+        set(
+            (
+                "noGracefulShutdown",
+                "requestId",
+            )
+        )
         & set(
             (
                 "instanceGroupManager",
@@ -3965,7 +4015,7 @@ def test_delete_per_instance_configs_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_per_instance_configs_rest_unset_required_fields():
@@ -4185,7 +4235,7 @@ def test_delete_per_instance_configs_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_per_instance_configs_unary_rest_unset_required_fields():
@@ -4397,7 +4447,7 @@ def test_get_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_rest_unset_required_fields():
@@ -4603,7 +4653,7 @@ def test_insert_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_insert_rest_unset_required_fields():
@@ -4817,7 +4867,7 @@ def test_insert_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_insert_unary_rest_unset_required_fields():
@@ -5034,7 +5084,7 @@ def test_list_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_rest_unset_required_fields():
@@ -5313,7 +5363,7 @@ def test_list_errors_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_errors_rest_unset_required_fields():
@@ -5611,7 +5661,7 @@ def test_list_managed_instances_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_managed_instances_rest_unset_required_fields():
@@ -5911,7 +5961,7 @@ def test_list_per_instance_configs_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_per_instance_configs_rest_unset_required_fields():
@@ -6199,7 +6249,7 @@ def test_patch_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_patch_rest_unset_required_fields():
@@ -6424,7 +6474,7 @@ def test_patch_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_patch_unary_rest_unset_required_fields():
@@ -6654,7 +6704,7 @@ def test_patch_per_instance_configs_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_patch_per_instance_configs_rest_unset_required_fields():
@@ -6880,7 +6930,7 @@ def test_patch_per_instance_configs_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_patch_per_instance_configs_unary_rest_unset_required_fields():
@@ -7054,7 +7104,12 @@ def test_recreate_instances_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials()
     ).recreate_instances._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("request_id",))
+    assert not set(unset_fields) - set(
+        (
+            "no_graceful_shutdown",
+            "request_id",
+        )
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -7105,7 +7160,7 @@ def test_recreate_instances_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_recreate_instances_rest_unset_required_fields():
@@ -7115,7 +7170,12 @@ def test_recreate_instances_rest_unset_required_fields():
 
     unset_fields = transport.recreate_instances._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("requestId",))
+        set(
+            (
+                "noGracefulShutdown",
+                "requestId",
+            )
+        )
         & set(
             (
                 "instanceGroupManager",
@@ -7275,7 +7335,12 @@ def test_recreate_instances_unary_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials()
     ).recreate_instances._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("request_id",))
+    assert not set(unset_fields) - set(
+        (
+            "no_graceful_shutdown",
+            "request_id",
+        )
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -7326,7 +7391,7 @@ def test_recreate_instances_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_recreate_instances_unary_rest_unset_required_fields():
@@ -7336,7 +7401,12 @@ def test_recreate_instances_unary_rest_unset_required_fields():
 
     unset_fields = transport.recreate_instances._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("requestId",))
+        set(
+            (
+                "noGracefulShutdown",
+                "requestId",
+            )
+        )
         & set(
             (
                 "instanceGroupManager",
@@ -7559,7 +7629,7 @@ def test_resize_rest_required_fields(
                 ),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_resize_rest_unset_required_fields():
@@ -7793,7 +7863,7 @@ def test_resize_unary_rest_required_fields(
                 ),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_resize_unary_rest_unset_required_fields():
@@ -8011,7 +8081,7 @@ def test_resize_advanced_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_resize_advanced_rest_unset_required_fields():
@@ -8228,7 +8298,7 @@ def test_resize_advanced_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_resize_advanced_unary_rest_unset_required_fields():
@@ -8447,7 +8517,7 @@ def test_resume_instances_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_resume_instances_rest_unset_required_fields():
@@ -8666,7 +8736,7 @@ def test_resume_instances_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_resume_instances_unary_rest_unset_required_fields():
@@ -8888,7 +8958,7 @@ def test_set_auto_healing_policies_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_set_auto_healing_policies_rest_unset_required_fields():
@@ -9118,7 +9188,7 @@ def test_set_auto_healing_policies_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_set_auto_healing_policies_unary_rest_unset_required_fields():
@@ -9348,7 +9418,7 @@ def test_set_instance_template_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_set_instance_template_rest_unset_required_fields():
@@ -9570,7 +9640,7 @@ def test_set_instance_template_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_set_instance_template_unary_rest_unset_required_fields():
@@ -9789,7 +9859,7 @@ def test_set_target_pools_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_set_target_pools_rest_unset_required_fields():
@@ -10008,7 +10078,7 @@ def test_set_target_pools_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_set_target_pools_unary_rest_unset_required_fields():
@@ -10225,7 +10295,7 @@ def test_start_instances_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_start_instances_rest_unset_required_fields():
@@ -10442,7 +10512,7 @@ def test_start_instances_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_start_instances_unary_rest_unset_required_fields():
@@ -10608,7 +10678,12 @@ def test_stop_instances_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials()
     ).stop_instances._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("request_id",))
+    assert not set(unset_fields) - set(
+        (
+            "no_graceful_shutdown",
+            "request_id",
+        )
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -10659,7 +10734,7 @@ def test_stop_instances_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_stop_instances_rest_unset_required_fields():
@@ -10669,7 +10744,12 @@ def test_stop_instances_rest_unset_required_fields():
 
     unset_fields = transport.stop_instances._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("requestId",))
+        set(
+            (
+                "noGracefulShutdown",
+                "requestId",
+            )
+        )
         & set(
             (
                 "instanceGroupManager",
@@ -10825,7 +10905,12 @@ def test_stop_instances_unary_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials()
     ).stop_instances._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("request_id",))
+    assert not set(unset_fields) - set(
+        (
+            "no_graceful_shutdown",
+            "request_id",
+        )
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -10876,7 +10961,7 @@ def test_stop_instances_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_stop_instances_unary_rest_unset_required_fields():
@@ -10886,7 +10971,12 @@ def test_stop_instances_unary_rest_unset_required_fields():
 
     unset_fields = transport.stop_instances._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("requestId",))
+        set(
+            (
+                "noGracefulShutdown",
+                "requestId",
+            )
+        )
         & set(
             (
                 "instanceGroupManager",
@@ -11095,7 +11185,7 @@ def test_suspend_instances_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_suspend_instances_rest_unset_required_fields():
@@ -11314,7 +11404,7 @@ def test_suspend_instances_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_suspend_instances_unary_rest_unset_required_fields():
@@ -11529,7 +11619,7 @@ def test_test_iam_permissions_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_test_iam_permissions_rest_unset_required_fields():
@@ -11746,7 +11836,7 @@ def test_update_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_rest_unset_required_fields():
@@ -11971,7 +12061,7 @@ def test_update_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_unary_rest_unset_required_fields():
@@ -12201,7 +12291,7 @@ def test_update_per_instance_configs_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_per_instance_configs_rest_unset_required_fields():
@@ -12427,7 +12517,7 @@ def test_update_per_instance_configs_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_per_instance_configs_unary_rest_unset_required_fields():
@@ -19873,7 +19963,6 @@ def test_abandon_instances_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.AbandonInstancesRegionInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -19893,7 +19982,6 @@ def test_adopt_instances_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.AdoptInstancesRegionInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -19915,7 +20003,6 @@ def test_apply_updates_to_instances_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.ApplyUpdatesToInstancesRegionInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -19935,7 +20022,6 @@ def test_create_instances_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.CreateInstancesRegionInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -19955,7 +20041,6 @@ def test_delete_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.DeleteRegionInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -19975,7 +20060,6 @@ def test_delete_instances_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.DeleteInstancesRegionInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -19999,7 +20083,6 @@ def test_delete_per_instance_configs_unary_empty_call_rest():
         request_msg = (
             compute.DeletePerInstanceConfigsRegionInstanceGroupManagerRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -20019,7 +20102,6 @@ def test_get_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.GetRegionInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -20039,7 +20121,6 @@ def test_insert_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.InsertRegionInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -20059,7 +20140,6 @@ def test_list_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.ListRegionInstanceGroupManagersRequest()
-
         assert args[0] == request_msg
 
 
@@ -20079,7 +20159,6 @@ def test_list_errors_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.ListErrorsRegionInstanceGroupManagersRequest()
-
         assert args[0] == request_msg
 
 
@@ -20101,7 +20180,6 @@ def test_list_managed_instances_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.ListManagedInstancesRegionInstanceGroupManagersRequest()
-
         assert args[0] == request_msg
 
 
@@ -20123,7 +20201,6 @@ def test_list_per_instance_configs_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.ListPerInstanceConfigsRegionInstanceGroupManagersRequest()
-
         assert args[0] == request_msg
 
 
@@ -20143,7 +20220,6 @@ def test_patch_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.PatchRegionInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -20165,7 +20241,6 @@ def test_patch_per_instance_configs_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.PatchPerInstanceConfigsRegionInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -20187,7 +20262,6 @@ def test_recreate_instances_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.RecreateInstancesRegionInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -20207,7 +20281,6 @@ def test_resize_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.ResizeRegionInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -20227,7 +20300,6 @@ def test_resize_advanced_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.ResizeAdvancedRegionInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -20247,7 +20319,6 @@ def test_resume_instances_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.ResumeInstancesRegionInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -20269,7 +20340,6 @@ def test_set_auto_healing_policies_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.SetAutoHealingPoliciesRegionInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -20291,7 +20361,6 @@ def test_set_instance_template_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.SetInstanceTemplateRegionInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -20311,7 +20380,6 @@ def test_set_target_pools_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.SetTargetPoolsRegionInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -20331,7 +20399,6 @@ def test_start_instances_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.StartInstancesRegionInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -20351,7 +20418,6 @@ def test_stop_instances_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.StopInstancesRegionInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -20373,7 +20439,6 @@ def test_suspend_instances_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.SuspendInstancesRegionInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -20395,7 +20460,6 @@ def test_test_iam_permissions_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.TestIamPermissionsRegionInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -20415,7 +20479,6 @@ def test_update_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.UpdateRegionInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -20439,7 +20502,6 @@ def test_update_per_instance_configs_unary_empty_call_rest():
         request_msg = (
             compute.UpdatePerInstanceConfigsRegionInstanceGroupManagerRequest()
         )
-
         assert args[0] == request_msg
 
 

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -234,6 +234,16 @@ class ModelArmorTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.stream_sanitize_user_prompt: gapic_v1.method.wrap_method(
+                self.stream_sanitize_user_prompt,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.stream_sanitize_model_response: gapic_v1.method.wrap_method(
+                self.stream_sanitize_model_response,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_location: gapic_v1.method.wrap_method(
                 self.get_location,
                 default_timeout=None,
@@ -332,6 +342,30 @@ class ModelArmorTransport(abc.ABC):
 
     @property
     def sanitize_model_response(
+        self,
+    ) -> Callable[
+        [service.SanitizeModelResponseRequest],
+        Union[
+            service.SanitizeModelResponseResponse,
+            Awaitable[service.SanitizeModelResponseResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def stream_sanitize_user_prompt(
+        self,
+    ) -> Callable[
+        [service.SanitizeUserPromptRequest],
+        Union[
+            service.SanitizeUserPromptResponse,
+            Awaitable[service.SanitizeUserPromptResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def stream_sanitize_model_response(
         self,
     ) -> Callable[
         [service.SanitizeModelResponseRequest],

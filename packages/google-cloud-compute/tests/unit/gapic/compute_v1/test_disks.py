@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -108,6 +103,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1225,7 +1235,7 @@ def test_add_resource_policies_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_add_resource_policies_rest_unset_required_fields():
@@ -1443,7 +1453,7 @@ def test_add_resource_policies_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_add_resource_policies_unary_rest_unset_required_fields():
@@ -1653,7 +1663,7 @@ def test_aggregated_list_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_aggregated_list_rest_unset_required_fields():
@@ -1923,7 +1933,7 @@ def test_bulk_insert_rest_required_fields(request_type=compute.BulkInsertDiskReq
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_bulk_insert_rest_unset_required_fields():
@@ -2133,7 +2143,7 @@ def test_bulk_insert_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_bulk_insert_unary_rest_unset_required_fields():
@@ -2348,7 +2358,7 @@ def test_bulk_set_labels_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_bulk_set_labels_rest_unset_required_fields():
@@ -2572,7 +2582,7 @@ def test_bulk_set_labels_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_bulk_set_labels_unary_rest_unset_required_fields():
@@ -2800,7 +2810,7 @@ def test_create_snapshot_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_snapshot_rest_unset_required_fields():
@@ -3019,7 +3029,7 @@ def test_create_snapshot_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_snapshot_unary_rest_unset_required_fields():
@@ -3230,7 +3240,7 @@ def test_delete_rest_required_fields(request_type=compute.DeleteDiskRequest):
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_rest_unset_required_fields():
@@ -3433,7 +3443,7 @@ def test_delete_unary_rest_required_fields(request_type=compute.DeleteDiskReques
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_unary_rest_unset_required_fields():
@@ -3630,7 +3640,7 @@ def test_get_rest_required_fields(request_type=compute.GetDiskRequest):
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_rest_unset_required_fields():
@@ -3831,7 +3841,7 @@ def test_get_iam_policy_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_iam_policy_rest_unset_required_fields():
@@ -4040,7 +4050,7 @@ def test_insert_rest_required_fields(request_type=compute.InsertDiskRequest):
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_insert_rest_unset_required_fields():
@@ -4250,7 +4260,7 @@ def test_insert_unary_rest_required_fields(request_type=compute.InsertDiskReques
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_insert_unary_rest_unset_required_fields():
@@ -4458,7 +4468,7 @@ def test_list_rest_required_fields(request_type=compute.ListDisksRequest):
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_rest_unset_required_fields():
@@ -4735,7 +4745,7 @@ def test_remove_resource_policies_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_remove_resource_policies_rest_unset_required_fields():
@@ -4953,7 +4963,7 @@ def test_remove_resource_policies_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_remove_resource_policies_unary_rest_unset_required_fields():
@@ -5164,7 +5174,7 @@ def test_resize_rest_required_fields(request_type=compute.ResizeDiskRequest):
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_resize_rest_unset_required_fields():
@@ -5371,7 +5381,7 @@ def test_resize_unary_rest_required_fields(request_type=compute.ResizeDiskReques
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_resize_unary_rest_unset_required_fields():
@@ -5574,7 +5584,7 @@ def test_set_iam_policy_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_set_iam_policy_rest_unset_required_fields():
@@ -5789,7 +5799,7 @@ def test_set_labels_rest_required_fields(request_type=compute.SetLabelsDiskReque
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_set_labels_rest_unset_required_fields():
@@ -6006,7 +6016,7 @@ def test_set_labels_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_set_labels_unary_rest_unset_required_fields():
@@ -6228,7 +6238,7 @@ def test_start_async_replication_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_start_async_replication_rest_unset_required_fields():
@@ -6446,7 +6456,7 @@ def test_start_async_replication_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_start_async_replication_unary_rest_unset_required_fields():
@@ -6663,7 +6673,7 @@ def test_stop_async_replication_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_stop_async_replication_rest_unset_required_fields():
@@ -6873,7 +6883,7 @@ def test_stop_async_replication_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_stop_async_replication_unary_rest_unset_required_fields():
@@ -7080,7 +7090,7 @@ def test_stop_group_async_replication_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_stop_group_async_replication_rest_unset_required_fields():
@@ -7291,7 +7301,7 @@ def test_stop_group_async_replication_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_stop_group_async_replication_unary_rest_unset_required_fields():
@@ -7501,7 +7511,7 @@ def test_test_iam_permissions_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_test_iam_permissions_rest_unset_required_fields():
@@ -7722,7 +7732,7 @@ def test_update_rest_required_fields(request_type=compute.UpdateDiskRequest):
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_rest_unset_required_fields():
@@ -7941,7 +7951,7 @@ def test_update_unary_rest_required_fields(request_type=compute.UpdateDiskReques
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_unary_rest_unset_required_fields():
@@ -8156,7 +8166,7 @@ def test_update_kms_key_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_kms_key_rest_unset_required_fields():
@@ -8369,7 +8379,7 @@ def test_update_kms_key_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_kms_key_unary_rest_unset_required_fields():
@@ -13066,7 +13076,6 @@ def test_add_resource_policies_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.AddResourcePoliciesDiskRequest()
-
         assert args[0] == request_msg
 
 
@@ -13086,7 +13095,6 @@ def test_aggregated_list_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.AggregatedListDisksRequest()
-
         assert args[0] == request_msg
 
 
@@ -13106,7 +13114,6 @@ def test_bulk_insert_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.BulkInsertDiskRequest()
-
         assert args[0] == request_msg
 
 
@@ -13126,7 +13133,6 @@ def test_bulk_set_labels_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.BulkSetLabelsDiskRequest()
-
         assert args[0] == request_msg
 
 
@@ -13146,7 +13152,6 @@ def test_create_snapshot_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.CreateSnapshotDiskRequest()
-
         assert args[0] == request_msg
 
 
@@ -13166,7 +13171,6 @@ def test_delete_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.DeleteDiskRequest()
-
         assert args[0] == request_msg
 
 
@@ -13186,7 +13190,6 @@ def test_get_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.GetDiskRequest()
-
         assert args[0] == request_msg
 
 
@@ -13206,7 +13209,6 @@ def test_get_iam_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.GetIamPolicyDiskRequest()
-
         assert args[0] == request_msg
 
 
@@ -13226,7 +13228,6 @@ def test_insert_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.InsertDiskRequest()
-
         assert args[0] == request_msg
 
 
@@ -13246,7 +13247,6 @@ def test_list_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.ListDisksRequest()
-
         assert args[0] == request_msg
 
 
@@ -13268,7 +13268,6 @@ def test_remove_resource_policies_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.RemoveResourcePoliciesDiskRequest()
-
         assert args[0] == request_msg
 
 
@@ -13288,7 +13287,6 @@ def test_resize_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.ResizeDiskRequest()
-
         assert args[0] == request_msg
 
 
@@ -13308,7 +13306,6 @@ def test_set_iam_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.SetIamPolicyDiskRequest()
-
         assert args[0] == request_msg
 
 
@@ -13328,7 +13325,6 @@ def test_set_labels_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.SetLabelsDiskRequest()
-
         assert args[0] == request_msg
 
 
@@ -13350,7 +13346,6 @@ def test_start_async_replication_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.StartAsyncReplicationDiskRequest()
-
         assert args[0] == request_msg
 
 
@@ -13372,7 +13367,6 @@ def test_stop_async_replication_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.StopAsyncReplicationDiskRequest()
-
         assert args[0] == request_msg
 
 
@@ -13394,7 +13388,6 @@ def test_stop_group_async_replication_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.StopGroupAsyncReplicationDiskRequest()
-
         assert args[0] == request_msg
 
 
@@ -13416,7 +13409,6 @@ def test_test_iam_permissions_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.TestIamPermissionsDiskRequest()
-
         assert args[0] == request_msg
 
 
@@ -13436,7 +13428,6 @@ def test_update_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.UpdateDiskRequest()
-
         assert args[0] == request_msg
 
 
@@ -13456,7 +13447,6 @@ def test_update_kms_key_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.UpdateKmsKeyDiskRequest()
-
         assert args[0] == request_msg
 
 

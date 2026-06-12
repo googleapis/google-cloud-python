@@ -639,6 +639,26 @@ class TestImpersonatedCredentials(object):
 
         assert signature == b"signature"
 
+    @mock.patch(
+        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel",
+        autospec=True,
+    )
+    def test_sign_bytes_configures_mtls(
+        self, mock_configure_mtls, mock_donor_credentials, mock_authorizedsession_sign
+    ):
+        credentials = self.make_credentials(lifetime=None)
+        # Refresh is needed to make credentials valid before signing
+        request = self.make_request(
+            data=json.dumps(
+                {"accessToken": "token", "expireTime": "2026-06-09T00:00:00Z"}
+            ),
+            status=http_client.OK,
+        )
+        credentials.refresh(request)
+
+        credentials.sign_bytes(b"signed bytes")
+        mock_configure_mtls.assert_called_once()
+
     def test_sign_bytes_failure(self):
         credentials = self.make_credentials(lifetime=None)
 
@@ -717,13 +737,31 @@ class TestImpersonatedCredentials(object):
 
         assert credentials._build_regional_access_boundary_lookup_url() is None
 
-    def test_build_regional_access_boundary_lookup_url_success(self):
+    def test_build_regional_access_boundary_lookup_url_success_standard(
+        self, monkeypatch
+    ):
+        from google.auth.transport import _mtls_helper
+
+        monkeypatch.setattr(_mtls_helper, "check_use_client_cert", lambda: False)
+
         credentials = self.make_credentials()
-        # Ensure service_account_email is properly set by default mock
+        url = credentials._build_regional_access_boundary_lookup_url()
         expected_url = "https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/{}/allowedLocations".format(
             credentials.service_account_email
         )
-        assert credentials._build_regional_access_boundary_lookup_url() == expected_url
+        assert url == expected_url
+
+    def test_build_regional_access_boundary_lookup_url_success_mtls(self, monkeypatch):
+        from google.auth.transport import _mtls_helper
+
+        monkeypatch.setattr(_mtls_helper, "check_use_client_cert", lambda: True)
+
+        credentials = self.make_credentials()
+        url = credentials._build_regional_access_boundary_lookup_url()
+        expected_url = "https://iamcredentials.mtls.googleapis.com/v1/projects/-/serviceAccounts/{}/allowedLocations".format(
+            credentials.service_account_email
+        )
+        assert url == expected_url
 
     def test_with_scopes_provide_default_scopes(self):
         credentials = self.make_credentials()
@@ -732,6 +770,29 @@ class TestImpersonatedCredentials(object):
             ["fake_scope1"], default_scopes=["fake_scope2"]
         )
         assert credentials._target_scopes == ["fake_scope1"]
+
+    @mock.patch(
+        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel",
+        autospec=True,
+    )
+    def test_id_token_refresh_configures_mtls(
+        self, mock_configure_mtls, mock_donor_credentials
+    ):
+        credentials = self.make_credentials(lifetime=None)
+        credentials.token = "token"
+        id_creds = impersonated_credentials.IDTokenCredentials(
+            credentials, target_audience="https://foo.bar"
+        )
+
+        with mock.patch(
+            "google.auth.transport.requests.AuthorizedSession.post", autospec=True
+        ) as mock_post:
+            mock_post.return_value = MockResponse(
+                {"token": ID_TOKEN_DATA}, http_client.OK
+            )
+            id_creds.refresh(None)
+
+            mock_configure_mtls.assert_called_once()
 
     def test_id_token_success(
         self, mock_donor_credentials, mock_authorizedsession_idtoken

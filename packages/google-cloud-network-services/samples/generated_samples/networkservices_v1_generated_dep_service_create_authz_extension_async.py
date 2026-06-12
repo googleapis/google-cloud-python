@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -41,8 +41,6 @@ async def sample_create_authz_extension():
     # Initialize request argument(s)
     authz_extension = network_services_v1.AuthzExtension()
     authz_extension.name = "name_value"
-    authz_extension.load_balancing_scheme = "EXTERNAL_MANAGED"
-    authz_extension.authority = "authority_value"
     authz_extension.service = "service_value"
 
     request = network_services_v1.CreateAuthzExtensionRequest(
@@ -52,11 +50,11 @@ async def sample_create_authz_extension():
     )
 
     # Make the request
-    operation = client.create_authz_extension(request=request)
+    operation = await client.create_authz_extension(request=request)
 
     print("Waiting for operation to complete...")
 
-    response = (await operation).result()
+    response = await operation.result()
 
     # Handle the response
     print(response)

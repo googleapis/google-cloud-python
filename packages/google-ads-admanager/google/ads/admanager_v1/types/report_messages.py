@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -79,20 +79,20 @@ class Report(proto.Message):
                 Reports with draft visibility will appear in
                 the Ad Manager UI only if the user has
                 configured the UI to show them.
-            SAVED (2):
-                Reports with saved visibility will appear in
-                the Ad Manager UI by default. Alias for VISIBLE
-                and will be replaced in the future.
             VISIBLE (2):
                 Reports with this visibility will appear in
                 the Ad Manager UI.
+            SAVED (2):
+                Deprecated: Use ``VISIBLE``. Reports with saved visibility
+                will appear in the Ad Manager UI by default. This is an
+                alias for ``VISIBLE`` and will be removed in the future.
         """
 
         _pb_options = {"allow_alias": True}
         HIDDEN = 0
         DRAFT = 1
-        SAVED = 2
         VISIBLE = 2
+        SAVED = 2
 
     name: str = proto.Field(
         proto.STRING,

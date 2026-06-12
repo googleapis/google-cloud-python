@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -1200,17 +1200,21 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
 
                 [field = value] AND [field [= value]] ...
 
-                where **field** is ``status.state`` or ``labels.[KEY]``,
-                and ``[KEY]`` is a label key. **value** can be ``*`` to
-                match all values. ``status.state`` can be either
-                ``ACTIVE`` or ``NON_ACTIVE``. Only the logical ``AND``
+                where **field** is ``status.state`` or ``insertTime``,
+                or ``labels.[KEY]``, and ``[KEY]`` is a label key.
+                **value** can be ``*`` to match all values.
+                ``status.state`` can be either ``ACTIVE`` or
+                ``NON_ACTIVE``. Allows ``insertTime`` to be a timestamp
+                in RFC 3339 format in double quotes, such as
+                ``2025-01-01T00:00:00Z``. Only the logical ``AND``
                 operator is supported; space-separated items are treated
                 as having an implicit ``AND`` operator.
 
                 Example filter:
 
                 status.state = ACTIVE AND labels.env = staging AND
-                labels.starred = \*
+                labels.starred = \* AND insertTime <=
+                "2025-01-01T00:00:00Z"
 
                 This corresponds to the ``filter`` field
                 on the ``request`` instance; if ``request`` is provided, this

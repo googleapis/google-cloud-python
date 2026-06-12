@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -108,6 +103,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1276,8 +1286,8 @@ def test_big_query_read_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        storage.CreateReadSessionRequest,
-        dict,
+        storage.CreateReadSessionRequest(),
+        {},
     ],
 )
 def test_create_read_session(request_type, transport: str = "grpc"):
@@ -1288,7 +1298,7 @@ def test_create_read_session(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1348,9 +1358,10 @@ def test_create_read_session_non_empty_request_with_auto_populated_field():
         client.create_read_session(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storage.CreateReadSessionRequest(
+        request_msg = storage.CreateReadSessionRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_read_session_use_cached_wrapped_rpc():
@@ -1435,9 +1446,14 @@ async def test_create_read_session_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_read_session_async(
-    transport: str = "grpc_asyncio", request_type=storage.CreateReadSessionRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage.CreateReadSessionRequest(),
+        {},
+    ],
+)
+async def test_create_read_session_async(request_type, transport: str = "grpc_asyncio"):
     client = BigQueryReadAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1445,7 +1461,7 @@ async def test_create_read_session_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1480,11 +1496,6 @@ async def test_create_read_session_async(
     assert response.estimated_total_physical_file_size == 3608
     assert response.estimated_row_count == 2047
     assert response.trace_id == "trace_id_value"
-
-
-@pytest.mark.asyncio
-async def test_create_read_session_async_from_dict():
-    await test_create_read_session_async(request_type=dict)
 
 
 def test_create_read_session_field_headers():
@@ -1657,8 +1668,8 @@ async def test_create_read_session_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        storage.ReadRowsRequest,
-        dict,
+        storage.ReadRowsRequest(),
+        {},
     ],
 )
 def test_read_rows(request_type, transport: str = "grpc"):
@@ -1669,7 +1680,7 @@ def test_read_rows(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.read_rows), "__call__") as call:
@@ -1711,9 +1722,10 @@ def test_read_rows_non_empty_request_with_auto_populated_field():
         client.read_rows(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storage.ReadRowsRequest(
+        request_msg = storage.ReadRowsRequest(
             read_stream="read_stream_value",
         )
+        assert args[0] == request_msg
 
 
 def test_read_rows_use_cached_wrapped_rpc():
@@ -1792,9 +1804,14 @@ async def test_read_rows_async_use_cached_wrapped_rpc(transport: str = "grpc_asy
 
 
 @pytest.mark.asyncio
-async def test_read_rows_async(
-    transport: str = "grpc_asyncio", request_type=storage.ReadRowsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage.ReadRowsRequest(),
+        {},
+    ],
+)
+async def test_read_rows_async(request_type, transport: str = "grpc_asyncio"):
     client = BigQueryReadAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1802,7 +1819,7 @@ async def test_read_rows_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.read_rows), "__call__") as call:
@@ -1822,11 +1839,6 @@ async def test_read_rows_async(
     # Establish that the response is the type that we expect.
     message = await response.read()
     assert isinstance(message, storage.ReadRowsResponse)
-
-
-@pytest.mark.asyncio
-async def test_read_rows_async_from_dict():
-    await test_read_rows_async(request_type=dict)
 
 
 def test_read_rows_field_headers():
@@ -1984,8 +1996,8 @@ async def test_read_rows_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        storage.SplitReadStreamRequest,
-        dict,
+        storage.SplitReadStreamRequest(),
+        {},
     ],
 )
 def test_split_read_stream(request_type, transport: str = "grpc"):
@@ -1996,7 +2008,7 @@ def test_split_read_stream(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2041,9 +2053,10 @@ def test_split_read_stream_non_empty_request_with_auto_populated_field():
         client.split_read_stream(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storage.SplitReadStreamRequest(
+        request_msg = storage.SplitReadStreamRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_split_read_stream_use_cached_wrapped_rpc():
@@ -2126,9 +2139,14 @@ async def test_split_read_stream_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_split_read_stream_async(
-    transport: str = "grpc_asyncio", request_type=storage.SplitReadStreamRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage.SplitReadStreamRequest(),
+        {},
+    ],
+)
+async def test_split_read_stream_async(request_type, transport: str = "grpc_asyncio"):
     client = BigQueryReadAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2136,7 +2154,7 @@ async def test_split_read_stream_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2156,11 +2174,6 @@ async def test_split_read_stream_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, storage.SplitReadStreamResponse)
-
-
-@pytest.mark.asyncio
-async def test_split_read_stream_async_from_dict():
-    await test_split_read_stream_async(request_type=dict)
 
 
 def test_split_read_stream_field_headers():
@@ -2352,7 +2365,6 @@ def test_create_read_session_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage.CreateReadSessionRequest()
-
         assert args[0] == request_msg
 
 
@@ -2373,7 +2385,6 @@ def test_read_rows_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage.ReadRowsRequest()
-
         assert args[0] == request_msg
 
 
@@ -2396,7 +2407,6 @@ def test_split_read_stream_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage.SplitReadStreamRequest()
-
         assert args[0] == request_msg
 
 
@@ -2445,7 +2455,6 @@ async def test_create_read_session_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage.CreateReadSessionRequest()
-
         assert args[0] == request_msg
 
 
@@ -2471,7 +2480,6 @@ async def test_read_rows_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage.ReadRowsRequest()
-
         assert args[0] == request_msg
 
 
@@ -2498,7 +2506,6 @@ async def test_split_read_stream_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage.SplitReadStreamRequest()
-
         assert args[0] == request_msg
 
 

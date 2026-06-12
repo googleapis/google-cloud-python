@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -236,7 +236,7 @@ class TechnologyTargeting(proto.Message):
 class BandwidthTargeting(proto.Message):
     r"""Bandwidth Targeting.
 
-    Reach users accessing the internet via various means of
+    Reach users accessing the internet through various means of
     connection, such as cable, DSL, or dial-up. Can be useful to
     target campaigns using low-resolution creatives or text ads for
     users with low bandwidth.
@@ -497,8 +497,8 @@ class InventoryTargeting(proto.Message):
             Excluded AUs take precedence over targeted AUs.
             In fact an AU can be excluded only if one of its
             ancestors is targeted. Subsequently child AUs of
-            an excluded AU can not be targeted (except via a
-            placement).
+            an excluded AU can not be targeted (except
+            through a Placement).
         targeted_placements (MutableSequence[str]):
             Optional. The resource names of the
             placements that should be targeted/included.

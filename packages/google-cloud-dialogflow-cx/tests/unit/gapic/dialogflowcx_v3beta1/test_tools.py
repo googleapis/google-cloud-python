@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -121,6 +116,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1254,8 +1264,8 @@ def test_tools_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcdc_tool.CreateToolRequest,
-        dict,
+        gcdc_tool.CreateToolRequest(),
+        {},
     ],
 )
 def test_create_tool(request_type, transport: str = "grpc"):
@@ -1266,7 +1276,7 @@ def test_create_tool(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_tool), "__call__") as call:
@@ -1316,9 +1326,10 @@ def test_create_tool_non_empty_request_with_auto_populated_field():
         client.create_tool(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcdc_tool.CreateToolRequest(
+        request_msg = gcdc_tool.CreateToolRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_tool_use_cached_wrapped_rpc():
@@ -1399,9 +1410,14 @@ async def test_create_tool_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_tool_async(
-    transport: str = "grpc_asyncio", request_type=gcdc_tool.CreateToolRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcdc_tool.CreateToolRequest(),
+        {},
+    ],
+)
+async def test_create_tool_async(request_type, transport: str = "grpc_asyncio"):
     client = ToolsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1409,7 +1425,7 @@ async def test_create_tool_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_tool), "__call__") as call:
@@ -1436,11 +1452,6 @@ async def test_create_tool_async(
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.tool_type == gcdc_tool.Tool.ToolType.CUSTOMIZED_TOOL
-
-
-@pytest.mark.asyncio
-async def test_create_tool_async_from_dict():
-    await test_create_tool_async(request_type=dict)
 
 
 def test_create_tool_field_headers():
@@ -1595,8 +1606,8 @@ async def test_create_tool_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        tool.ListToolsRequest,
-        dict,
+        tool.ListToolsRequest(),
+        {},
     ],
 )
 def test_list_tools(request_type, transport: str = "grpc"):
@@ -1607,7 +1618,7 @@ def test_list_tools(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_tools), "__call__") as call:
@@ -1652,10 +1663,11 @@ def test_list_tools_non_empty_request_with_auto_populated_field():
         client.list_tools(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tool.ListToolsRequest(
+        request_msg = tool.ListToolsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_tools_use_cached_wrapped_rpc():
@@ -1734,9 +1746,14 @@ async def test_list_tools_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_list_tools_async(
-    transport: str = "grpc_asyncio", request_type=tool.ListToolsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        tool.ListToolsRequest(),
+        {},
+    ],
+)
+async def test_list_tools_async(request_type, transport: str = "grpc_asyncio"):
     client = ToolsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1744,7 +1761,7 @@ async def test_list_tools_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_tools), "__call__") as call:
@@ -1765,11 +1782,6 @@ async def test_list_tools_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListToolsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_tools_async_from_dict():
-    await test_list_tools_async(request_type=dict)
 
 
 def test_list_tools_field_headers():
@@ -2099,11 +2111,7 @@ async def test_list_tools_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_tools(request={})
-        ).pages:
+        async for page_ in (await client.list_tools(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -2112,8 +2120,8 @@ async def test_list_tools_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        tool.ExportToolsRequest,
-        dict,
+        tool.ExportToolsRequest(),
+        {},
     ],
 )
 def test_export_tools(request_type, transport: str = "grpc"):
@@ -2124,7 +2132,7 @@ def test_export_tools(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.export_tools), "__call__") as call:
@@ -2166,10 +2174,11 @@ def test_export_tools_non_empty_request_with_auto_populated_field():
         client.export_tools(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tool.ExportToolsRequest(
+        request_msg = tool.ExportToolsRequest(
             parent="parent_value",
             tools_uri="tools_uri_value",
         )
+        assert args[0] == request_msg
 
 
 def test_export_tools_use_cached_wrapped_rpc():
@@ -2260,9 +2269,14 @@ async def test_export_tools_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_export_tools_async(
-    transport: str = "grpc_asyncio", request_type=tool.ExportToolsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        tool.ExportToolsRequest(),
+        {},
+    ],
+)
+async def test_export_tools_async(request_type, transport: str = "grpc_asyncio"):
     client = ToolsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2270,7 +2284,7 @@ async def test_export_tools_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.export_tools), "__call__") as call:
@@ -2288,11 +2302,6 @@ async def test_export_tools_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_export_tools_async_from_dict():
-    await test_export_tools_async(request_type=dict)
 
 
 def test_export_tools_field_headers():
@@ -2359,8 +2368,8 @@ async def test_export_tools_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        tool.GetToolRequest,
-        dict,
+        tool.GetToolRequest(),
+        {},
     ],
 )
 def test_get_tool(request_type, transport: str = "grpc"):
@@ -2371,7 +2380,7 @@ def test_get_tool(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_tool), "__call__") as call:
@@ -2421,9 +2430,10 @@ def test_get_tool_non_empty_request_with_auto_populated_field():
         client.get_tool(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tool.GetToolRequest(
+        request_msg = tool.GetToolRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_tool_use_cached_wrapped_rpc():
@@ -2502,9 +2512,14 @@ async def test_get_tool_async_use_cached_wrapped_rpc(transport: str = "grpc_asyn
 
 
 @pytest.mark.asyncio
-async def test_get_tool_async(
-    transport: str = "grpc_asyncio", request_type=tool.GetToolRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        tool.GetToolRequest(),
+        {},
+    ],
+)
+async def test_get_tool_async(request_type, transport: str = "grpc_asyncio"):
     client = ToolsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2512,7 +2527,7 @@ async def test_get_tool_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_tool), "__call__") as call:
@@ -2539,11 +2554,6 @@ async def test_get_tool_async(
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.tool_type == tool.Tool.ToolType.CUSTOMIZED_TOOL
-
-
-@pytest.mark.asyncio
-async def test_get_tool_async_from_dict():
-    await test_get_tool_async(request_type=dict)
 
 
 def test_get_tool_field_headers():
@@ -2688,8 +2698,8 @@ async def test_get_tool_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcdc_tool.UpdateToolRequest,
-        dict,
+        gcdc_tool.UpdateToolRequest(),
+        {},
     ],
 )
 def test_update_tool(request_type, transport: str = "grpc"):
@@ -2700,7 +2710,7 @@ def test_update_tool(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_tool), "__call__") as call:
@@ -2748,7 +2758,8 @@ def test_update_tool_non_empty_request_with_auto_populated_field():
         client.update_tool(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcdc_tool.UpdateToolRequest()
+        request_msg = gcdc_tool.UpdateToolRequest()
+        assert args[0] == request_msg
 
 
 def test_update_tool_use_cached_wrapped_rpc():
@@ -2829,9 +2840,14 @@ async def test_update_tool_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_tool_async(
-    transport: str = "grpc_asyncio", request_type=gcdc_tool.UpdateToolRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcdc_tool.UpdateToolRequest(),
+        {},
+    ],
+)
+async def test_update_tool_async(request_type, transport: str = "grpc_asyncio"):
     client = ToolsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2839,7 +2855,7 @@ async def test_update_tool_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_tool), "__call__") as call:
@@ -2866,11 +2882,6 @@ async def test_update_tool_async(
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.tool_type == gcdc_tool.Tool.ToolType.CUSTOMIZED_TOOL
-
-
-@pytest.mark.asyncio
-async def test_update_tool_async_from_dict():
-    await test_update_tool_async(request_type=dict)
 
 
 def test_update_tool_field_headers():
@@ -3025,8 +3036,8 @@ async def test_update_tool_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        tool.DeleteToolRequest,
-        dict,
+        tool.DeleteToolRequest(),
+        {},
     ],
 )
 def test_delete_tool(request_type, transport: str = "grpc"):
@@ -3037,7 +3048,7 @@ def test_delete_tool(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_tool), "__call__") as call:
@@ -3078,9 +3089,10 @@ def test_delete_tool_non_empty_request_with_auto_populated_field():
         client.delete_tool(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tool.DeleteToolRequest(
+        request_msg = tool.DeleteToolRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_tool_use_cached_wrapped_rpc():
@@ -3161,9 +3173,14 @@ async def test_delete_tool_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_tool_async(
-    transport: str = "grpc_asyncio", request_type=tool.DeleteToolRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        tool.DeleteToolRequest(),
+        {},
+    ],
+)
+async def test_delete_tool_async(request_type, transport: str = "grpc_asyncio"):
     client = ToolsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3171,7 +3188,7 @@ async def test_delete_tool_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_tool), "__call__") as call:
@@ -3187,11 +3204,6 @@ async def test_delete_tool_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_tool_async_from_dict():
-    await test_delete_tool_async(request_type=dict)
 
 
 def test_delete_tool_field_headers():
@@ -3336,8 +3348,8 @@ async def test_delete_tool_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        tool.ListToolVersionsRequest,
-        dict,
+        tool.ListToolVersionsRequest(),
+        {},
     ],
 )
 def test_list_tool_versions(request_type, transport: str = "grpc"):
@@ -3348,7 +3360,7 @@ def test_list_tool_versions(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3397,10 +3409,11 @@ def test_list_tool_versions_non_empty_request_with_auto_populated_field():
         client.list_tool_versions(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tool.ListToolVersionsRequest(
+        request_msg = tool.ListToolVersionsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_tool_versions_use_cached_wrapped_rpc():
@@ -3485,9 +3498,14 @@ async def test_list_tool_versions_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_tool_versions_async(
-    transport: str = "grpc_asyncio", request_type=tool.ListToolVersionsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        tool.ListToolVersionsRequest(),
+        {},
+    ],
+)
+async def test_list_tool_versions_async(request_type, transport: str = "grpc_asyncio"):
     client = ToolsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3495,7 +3513,7 @@ async def test_list_tool_versions_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3518,11 +3536,6 @@ async def test_list_tool_versions_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListToolVersionsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_tool_versions_async_from_dict():
-    await test_list_tool_versions_async(request_type=dict)
 
 
 def test_list_tool_versions_field_headers():
@@ -3868,11 +3881,7 @@ async def test_list_tool_versions_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_tool_versions(request={})
-        ).pages:
+        async for page_ in (await client.list_tool_versions(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -3881,8 +3890,8 @@ async def test_list_tool_versions_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        tool.CreateToolVersionRequest,
-        dict,
+        tool.CreateToolVersionRequest(),
+        {},
     ],
 )
 def test_create_tool_version(request_type, transport: str = "grpc"):
@@ -3893,7 +3902,7 @@ def test_create_tool_version(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3943,9 +3952,10 @@ def test_create_tool_version_non_empty_request_with_auto_populated_field():
         client.create_tool_version(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tool.CreateToolVersionRequest(
+        request_msg = tool.CreateToolVersionRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_tool_version_use_cached_wrapped_rpc():
@@ -4030,9 +4040,14 @@ async def test_create_tool_version_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_tool_version_async(
-    transport: str = "grpc_asyncio", request_type=tool.CreateToolVersionRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        tool.CreateToolVersionRequest(),
+        {},
+    ],
+)
+async def test_create_tool_version_async(request_type, transport: str = "grpc_asyncio"):
     client = ToolsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4040,7 +4055,7 @@ async def test_create_tool_version_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4065,11 +4080,6 @@ async def test_create_tool_version_async(
     assert isinstance(response, tool.ToolVersion)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
-
-
-@pytest.mark.asyncio
-async def test_create_tool_version_async_from_dict():
-    await test_create_tool_version_async(request_type=dict)
 
 
 def test_create_tool_version_field_headers():
@@ -4232,8 +4242,8 @@ async def test_create_tool_version_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        tool.GetToolVersionRequest,
-        dict,
+        tool.GetToolVersionRequest(),
+        {},
     ],
 )
 def test_get_tool_version(request_type, transport: str = "grpc"):
@@ -4244,7 +4254,7 @@ def test_get_tool_version(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_tool_version), "__call__") as call:
@@ -4290,9 +4300,10 @@ def test_get_tool_version_non_empty_request_with_auto_populated_field():
         client.get_tool_version(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tool.GetToolVersionRequest(
+        request_msg = tool.GetToolVersionRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_tool_version_use_cached_wrapped_rpc():
@@ -4375,9 +4386,14 @@ async def test_get_tool_version_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_tool_version_async(
-    transport: str = "grpc_asyncio", request_type=tool.GetToolVersionRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        tool.GetToolVersionRequest(),
+        {},
+    ],
+)
+async def test_get_tool_version_async(request_type, transport: str = "grpc_asyncio"):
     client = ToolsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4385,7 +4401,7 @@ async def test_get_tool_version_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_tool_version), "__call__") as call:
@@ -4408,11 +4424,6 @@ async def test_get_tool_version_async(
     assert isinstance(response, tool.ToolVersion)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
-
-
-@pytest.mark.asyncio
-async def test_get_tool_version_async_from_dict():
-    await test_get_tool_version_async(request_type=dict)
 
 
 def test_get_tool_version_field_headers():
@@ -4557,8 +4568,8 @@ async def test_get_tool_version_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        tool.DeleteToolVersionRequest,
-        dict,
+        tool.DeleteToolVersionRequest(),
+        {},
     ],
 )
 def test_delete_tool_version(request_type, transport: str = "grpc"):
@@ -4569,7 +4580,7 @@ def test_delete_tool_version(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4614,9 +4625,10 @@ def test_delete_tool_version_non_empty_request_with_auto_populated_field():
         client.delete_tool_version(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tool.DeleteToolVersionRequest(
+        request_msg = tool.DeleteToolVersionRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_tool_version_use_cached_wrapped_rpc():
@@ -4701,9 +4713,14 @@ async def test_delete_tool_version_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_tool_version_async(
-    transport: str = "grpc_asyncio", request_type=tool.DeleteToolVersionRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        tool.DeleteToolVersionRequest(),
+        {},
+    ],
+)
+async def test_delete_tool_version_async(request_type, transport: str = "grpc_asyncio"):
     client = ToolsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4711,7 +4728,7 @@ async def test_delete_tool_version_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4729,11 +4746,6 @@ async def test_delete_tool_version_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_tool_version_async_from_dict():
-    await test_delete_tool_version_async(request_type=dict)
 
 
 def test_delete_tool_version_field_headers():
@@ -4886,8 +4898,8 @@ async def test_delete_tool_version_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        tool.RestoreToolVersionRequest,
-        dict,
+        tool.RestoreToolVersionRequest(),
+        {},
     ],
 )
 def test_restore_tool_version(request_type, transport: str = "grpc"):
@@ -4898,7 +4910,7 @@ def test_restore_tool_version(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4943,9 +4955,10 @@ def test_restore_tool_version_non_empty_request_with_auto_populated_field():
         client.restore_tool_version(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tool.RestoreToolVersionRequest(
+        request_msg = tool.RestoreToolVersionRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_restore_tool_version_use_cached_wrapped_rpc():
@@ -5030,8 +5043,15 @@ async def test_restore_tool_version_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        tool.RestoreToolVersionRequest(),
+        {},
+    ],
+)
 async def test_restore_tool_version_async(
-    transport: str = "grpc_asyncio", request_type=tool.RestoreToolVersionRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ToolsAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5040,7 +5060,7 @@ async def test_restore_tool_version_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5060,11 +5080,6 @@ async def test_restore_tool_version_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, tool.RestoreToolVersionResponse)
-
-
-@pytest.mark.asyncio
-async def test_restore_tool_version_async_from_dict():
-    await test_restore_tool_version_async(request_type=dict)
 
 
 def test_restore_tool_version_field_headers():
@@ -5325,7 +5340,7 @@ def test_create_tool_rest_required_fields(request_type=gcdc_tool.CreateToolReque
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_tool_rest_unset_required_fields():
@@ -5518,7 +5533,7 @@ def test_list_tools_rest_required_fields(request_type=tool.ListToolsRequest):
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_tools_rest_unset_required_fields():
@@ -5769,7 +5784,7 @@ def test_export_tools_rest_required_fields(request_type=tool.ExportToolsRequest)
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_export_tools_rest_unset_required_fields():
@@ -5895,7 +5910,7 @@ def test_get_tool_rest_required_fields(request_type=tool.GetToolRequest):
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_tool_rest_unset_required_fields():
@@ -6071,7 +6086,7 @@ def test_update_tool_rest_required_fields(request_type=gcdc_tool.UpdateToolReque
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_tool_rest_unset_required_fields():
@@ -6252,7 +6267,7 @@ def test_delete_tool_rest_required_fields(request_type=tool.DeleteToolRequest):
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_tool_rest_unset_required_fields():
@@ -6441,7 +6456,7 @@ def test_list_tool_versions_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_tool_versions_rest_unset_required_fields():
@@ -6697,7 +6712,7 @@ def test_create_tool_version_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_tool_version_rest_unset_required_fields():
@@ -6887,7 +6902,7 @@ def test_get_tool_version_rest_required_fields(request_type=tool.GetToolVersionR
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_tool_version_rest_unset_required_fields():
@@ -7070,7 +7085,7 @@ def test_delete_tool_version_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_tool_version_rest_unset_required_fields():
@@ -7253,7 +7268,7 @@ def test_restore_tool_version_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_restore_tool_version_rest_unset_required_fields():
@@ -7448,7 +7463,6 @@ def test_create_tool_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcdc_tool.CreateToolRequest()
-
         assert args[0] == request_msg
 
 
@@ -7469,7 +7483,6 @@ def test_list_tools_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tool.ListToolsRequest()
-
         assert args[0] == request_msg
 
 
@@ -7490,7 +7503,6 @@ def test_export_tools_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tool.ExportToolsRequest()
-
         assert args[0] == request_msg
 
 
@@ -7511,7 +7523,6 @@ def test_get_tool_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tool.GetToolRequest()
-
         assert args[0] == request_msg
 
 
@@ -7532,7 +7543,6 @@ def test_update_tool_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcdc_tool.UpdateToolRequest()
-
         assert args[0] == request_msg
 
 
@@ -7553,7 +7563,6 @@ def test_delete_tool_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tool.DeleteToolRequest()
-
         assert args[0] == request_msg
 
 
@@ -7576,7 +7585,6 @@ def test_list_tool_versions_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tool.ListToolVersionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -7599,7 +7607,6 @@ def test_create_tool_version_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tool.CreateToolVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -7620,7 +7627,6 @@ def test_get_tool_version_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tool.GetToolVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -7643,7 +7649,6 @@ def test_delete_tool_version_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tool.DeleteToolVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -7666,7 +7671,6 @@ def test_restore_tool_version_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tool.RestoreToolVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -7710,7 +7714,6 @@ async def test_create_tool_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcdc_tool.CreateToolRequest()
-
         assert args[0] == request_msg
 
 
@@ -7737,7 +7740,6 @@ async def test_list_tools_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tool.ListToolsRequest()
-
         assert args[0] == request_msg
 
 
@@ -7762,7 +7764,6 @@ async def test_export_tools_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tool.ExportToolsRequest()
-
         assert args[0] == request_msg
 
 
@@ -7792,7 +7793,6 @@ async def test_get_tool_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tool.GetToolRequest()
-
         assert args[0] == request_msg
 
 
@@ -7822,7 +7822,6 @@ async def test_update_tool_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcdc_tool.UpdateToolRequest()
-
         assert args[0] == request_msg
 
 
@@ -7845,7 +7844,6 @@ async def test_delete_tool_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tool.DeleteToolRequest()
-
         assert args[0] == request_msg
 
 
@@ -7874,7 +7872,6 @@ async def test_list_tool_versions_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tool.ListToolVersionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -7904,7 +7901,6 @@ async def test_create_tool_version_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tool.CreateToolVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -7932,7 +7928,6 @@ async def test_get_tool_version_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tool.GetToolVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -7957,7 +7952,6 @@ async def test_delete_tool_version_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tool.DeleteToolVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -7984,7 +7978,6 @@ async def test_restore_tool_version_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tool.RestoreToolVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -10118,7 +10111,6 @@ def test_create_tool_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcdc_tool.CreateToolRequest()
-
         assert args[0] == request_msg
 
 
@@ -10138,7 +10130,6 @@ def test_list_tools_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tool.ListToolsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10158,7 +10149,6 @@ def test_export_tools_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tool.ExportToolsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10178,7 +10168,6 @@ def test_get_tool_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tool.GetToolRequest()
-
         assert args[0] == request_msg
 
 
@@ -10198,7 +10187,6 @@ def test_update_tool_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcdc_tool.UpdateToolRequest()
-
         assert args[0] == request_msg
 
 
@@ -10218,7 +10206,6 @@ def test_delete_tool_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tool.DeleteToolRequest()
-
         assert args[0] == request_msg
 
 
@@ -10240,7 +10227,6 @@ def test_list_tool_versions_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tool.ListToolVersionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10262,7 +10248,6 @@ def test_create_tool_version_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tool.CreateToolVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -10282,7 +10267,6 @@ def test_get_tool_version_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tool.GetToolVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -10304,7 +10288,6 @@ def test_delete_tool_version_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tool.DeleteToolVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -10326,7 +10309,6 @@ def test_restore_tool_version_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tool.RestoreToolVersionRequest()
-
         assert args[0] == request_msg
 
 

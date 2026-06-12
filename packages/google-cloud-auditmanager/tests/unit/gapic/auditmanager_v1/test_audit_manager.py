@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -118,6 +113,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1300,8 +1310,8 @@ def test_audit_manager_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        auditmanager.EnrollResourceRequest,
-        dict,
+        auditmanager.EnrollResourceRequest(),
+        {},
     ],
 )
 def test_enroll_resource(request_type, transport: str = "grpc"):
@@ -1312,7 +1322,7 @@ def test_enroll_resource(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.enroll_resource), "__call__") as call:
@@ -1356,9 +1366,10 @@ def test_enroll_resource_non_empty_request_with_auto_populated_field():
         client.enroll_resource(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == auditmanager.EnrollResourceRequest(
+        request_msg = auditmanager.EnrollResourceRequest(
             scope="scope_value",
         )
+        assert args[0] == request_msg
 
 
 def test_enroll_resource_use_cached_wrapped_rpc():
@@ -1439,9 +1450,14 @@ async def test_enroll_resource_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_enroll_resource_async(
-    transport: str = "grpc_asyncio", request_type=auditmanager.EnrollResourceRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        auditmanager.EnrollResourceRequest(),
+        {},
+    ],
+)
+async def test_enroll_resource_async(request_type, transport: str = "grpc_asyncio"):
     client = AuditManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1449,7 +1465,7 @@ async def test_enroll_resource_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.enroll_resource), "__call__") as call:
@@ -1470,11 +1486,6 @@ async def test_enroll_resource_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, auditmanager.Enrollment)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_enroll_resource_async_from_dict():
-    await test_enroll_resource_async(request_type=dict)
 
 
 def test_enroll_resource_field_headers():
@@ -1657,8 +1668,8 @@ async def test_enroll_resource_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        auditmanager.GenerateAuditScopeReportRequest,
-        dict,
+        auditmanager.GenerateAuditScopeReportRequest(),
+        {},
     ],
 )
 def test_generate_audit_scope_report(request_type, transport: str = "grpc"):
@@ -1669,7 +1680,7 @@ def test_generate_audit_scope_report(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1720,11 +1731,12 @@ def test_generate_audit_scope_report_non_empty_request_with_auto_populated_field
         client.generate_audit_scope_report(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == auditmanager.GenerateAuditScopeReportRequest(
+        request_msg = auditmanager.GenerateAuditScopeReportRequest(
             scope="scope_value",
             compliance_standard="compliance_standard_value",
             compliance_framework="compliance_framework_value",
         )
+        assert args[0] == request_msg
 
 
 def test_generate_audit_scope_report_use_cached_wrapped_rpc():
@@ -1810,9 +1822,15 @@ async def test_generate_audit_scope_report_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        auditmanager.GenerateAuditScopeReportRequest(),
+        {},
+    ],
+)
 async def test_generate_audit_scope_report_async(
-    transport: str = "grpc_asyncio",
-    request_type=auditmanager.GenerateAuditScopeReportRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AuditManagerAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1821,7 +1839,7 @@ async def test_generate_audit_scope_report_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1844,11 +1862,6 @@ async def test_generate_audit_scope_report_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, auditmanager.AuditScopeReport)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_generate_audit_scope_report_async_from_dict():
-    await test_generate_audit_scope_report_async(request_type=dict)
 
 
 def test_generate_audit_scope_report_field_headers():
@@ -2025,8 +2038,8 @@ async def test_generate_audit_scope_report_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        auditmanager.GenerateAuditReportRequest,
-        dict,
+        auditmanager.GenerateAuditReportRequest(),
+        {},
     ],
 )
 def test_generate_audit_report(request_type, transport: str = "grpc"):
@@ -2037,7 +2050,7 @@ def test_generate_audit_report(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2085,12 +2098,13 @@ def test_generate_audit_report_non_empty_request_with_auto_populated_field():
         client.generate_audit_report(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == auditmanager.GenerateAuditReportRequest(
+        request_msg = auditmanager.GenerateAuditReportRequest(
             gcs_uri="gcs_uri_value",
             scope="scope_value",
             compliance_standard="compliance_standard_value",
             compliance_framework="compliance_framework_value",
         )
+        assert args[0] == request_msg
 
 
 def test_generate_audit_report_use_cached_wrapped_rpc():
@@ -2186,9 +2200,15 @@ async def test_generate_audit_report_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        auditmanager.GenerateAuditReportRequest(),
+        {},
+    ],
+)
 async def test_generate_audit_report_async(
-    transport: str = "grpc_asyncio",
-    request_type=auditmanager.GenerateAuditReportRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AuditManagerAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2197,7 +2217,7 @@ async def test_generate_audit_report_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2217,11 +2237,6 @@ async def test_generate_audit_report_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_generate_audit_report_async_from_dict():
-    await test_generate_audit_report_async(request_type=dict)
 
 
 def test_generate_audit_report_field_headers():
@@ -2404,8 +2419,8 @@ async def test_generate_audit_report_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        auditmanager.ListAuditReportsRequest,
-        dict,
+        auditmanager.ListAuditReportsRequest(),
+        {},
     ],
 )
 def test_list_audit_reports(request_type, transport: str = "grpc"):
@@ -2416,7 +2431,7 @@ def test_list_audit_reports(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2465,10 +2480,11 @@ def test_list_audit_reports_non_empty_request_with_auto_populated_field():
         client.list_audit_reports(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == auditmanager.ListAuditReportsRequest(
+        request_msg = auditmanager.ListAuditReportsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_audit_reports_use_cached_wrapped_rpc():
@@ -2553,9 +2569,14 @@ async def test_list_audit_reports_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_audit_reports_async(
-    transport: str = "grpc_asyncio", request_type=auditmanager.ListAuditReportsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        auditmanager.ListAuditReportsRequest(),
+        {},
+    ],
+)
+async def test_list_audit_reports_async(request_type, transport: str = "grpc_asyncio"):
     client = AuditManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2563,7 +2584,7 @@ async def test_list_audit_reports_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2586,11 +2607,6 @@ async def test_list_audit_reports_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAuditReportsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_audit_reports_async_from_dict():
-    await test_list_audit_reports_async(request_type=dict)
 
 
 def test_list_audit_reports_field_headers():
@@ -2936,11 +2952,7 @@ async def test_list_audit_reports_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_audit_reports(request={})
-        ).pages:
+        async for page_ in (await client.list_audit_reports(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -2949,8 +2961,8 @@ async def test_list_audit_reports_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        auditmanager.GetAuditReportRequest,
-        dict,
+        auditmanager.GetAuditReportRequest(),
+        {},
     ],
 )
 def test_get_audit_report(request_type, transport: str = "grpc"):
@@ -2961,7 +2973,7 @@ def test_get_audit_report(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_audit_report), "__call__") as call:
@@ -3020,9 +3032,10 @@ def test_get_audit_report_non_empty_request_with_auto_populated_field():
         client.get_audit_report(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == auditmanager.GetAuditReportRequest(
+        request_msg = auditmanager.GetAuditReportRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_audit_report_use_cached_wrapped_rpc():
@@ -3105,9 +3118,14 @@ async def test_get_audit_report_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_audit_report_async(
-    transport: str = "grpc_asyncio", request_type=auditmanager.GetAuditReportRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        auditmanager.GetAuditReportRequest(),
+        {},
+    ],
+)
+async def test_get_audit_report_async(request_type, transport: str = "grpc_asyncio"):
     client = AuditManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3115,7 +3133,7 @@ async def test_get_audit_report_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_audit_report), "__call__") as call:
@@ -3151,11 +3169,6 @@ async def test_get_audit_report_async(
     )
     assert response.compliance_framework == "compliance_framework_value"
     assert response.scope_id == "scope_id_value"
-
-
-@pytest.mark.asyncio
-async def test_get_audit_report_async_from_dict():
-    await test_get_audit_report_async(request_type=dict)
 
 
 def test_get_audit_report_field_headers():
@@ -3304,8 +3317,8 @@ async def test_get_audit_report_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        auditmanager.GetResourceEnrollmentStatusRequest,
-        dict,
+        auditmanager.GetResourceEnrollmentStatusRequest(),
+        {},
     ],
 )
 def test_get_resource_enrollment_status(request_type, transport: str = "grpc"):
@@ -3316,7 +3329,7 @@ def test_get_resource_enrollment_status(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3373,9 +3386,10 @@ def test_get_resource_enrollment_status_non_empty_request_with_auto_populated_fi
         client.get_resource_enrollment_status(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == auditmanager.GetResourceEnrollmentStatusRequest(
+        request_msg = auditmanager.GetResourceEnrollmentStatusRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_resource_enrollment_status_use_cached_wrapped_rpc():
@@ -3461,9 +3475,15 @@ async def test_get_resource_enrollment_status_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        auditmanager.GetResourceEnrollmentStatusRequest(),
+        {},
+    ],
+)
 async def test_get_resource_enrollment_status_async(
-    transport: str = "grpc_asyncio",
-    request_type=auditmanager.GetResourceEnrollmentStatusRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AuditManagerAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3472,7 +3492,7 @@ async def test_get_resource_enrollment_status_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3504,11 +3524,6 @@ async def test_get_resource_enrollment_status_async(
         response.enrollment_state
         == auditmanager.ResourceEnrollmentStatus.ResourceEnrollmentState.NOT_ENROLLED
     )
-
-
-@pytest.mark.asyncio
-async def test_get_resource_enrollment_status_async_from_dict():
-    await test_get_resource_enrollment_status_async(request_type=dict)
 
 
 def test_get_resource_enrollment_status_field_headers():
@@ -3665,8 +3680,8 @@ async def test_get_resource_enrollment_status_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        auditmanager.ListResourceEnrollmentStatusesRequest,
-        dict,
+        auditmanager.ListResourceEnrollmentStatusesRequest(),
+        {},
     ],
 )
 def test_list_resource_enrollment_statuses(request_type, transport: str = "grpc"):
@@ -3677,7 +3692,7 @@ def test_list_resource_enrollment_statuses(request_type, transport: str = "grpc"
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3726,10 +3741,11 @@ def test_list_resource_enrollment_statuses_non_empty_request_with_auto_populated
         client.list_resource_enrollment_statuses(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == auditmanager.ListResourceEnrollmentStatusesRequest(
+        request_msg = auditmanager.ListResourceEnrollmentStatusesRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_resource_enrollment_statuses_use_cached_wrapped_rpc():
@@ -3815,9 +3831,15 @@ async def test_list_resource_enrollment_statuses_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        auditmanager.ListResourceEnrollmentStatusesRequest(),
+        {},
+    ],
+)
 async def test_list_resource_enrollment_statuses_async(
-    transport: str = "grpc_asyncio",
-    request_type=auditmanager.ListResourceEnrollmentStatusesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AuditManagerAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3826,7 +3848,7 @@ async def test_list_resource_enrollment_statuses_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3849,11 +3871,6 @@ async def test_list_resource_enrollment_statuses_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListResourceEnrollmentStatusesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_resource_enrollment_statuses_async_from_dict():
-    await test_list_resource_enrollment_statuses_async(request_type=dict)
 
 
 def test_list_resource_enrollment_statuses_field_headers():
@@ -4205,9 +4222,7 @@ async def test_list_resource_enrollment_statuses_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
+        async for page_ in (
             await client.list_resource_enrollment_statuses(request={})
         ).pages:
             pages.append(page_)
@@ -4218,8 +4233,8 @@ async def test_list_resource_enrollment_statuses_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        auditmanager.ListControlsRequest,
-        dict,
+        auditmanager.ListControlsRequest(),
+        {},
     ],
 )
 def test_list_controls(request_type, transport: str = "grpc"):
@@ -4230,7 +4245,7 @@ def test_list_controls(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_controls), "__call__") as call:
@@ -4275,10 +4290,11 @@ def test_list_controls_non_empty_request_with_auto_populated_field():
         client.list_controls(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == auditmanager.ListControlsRequest(
+        request_msg = auditmanager.ListControlsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_controls_use_cached_wrapped_rpc():
@@ -4359,9 +4375,14 @@ async def test_list_controls_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_controls_async(
-    transport: str = "grpc_asyncio", request_type=auditmanager.ListControlsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        auditmanager.ListControlsRequest(),
+        {},
+    ],
+)
+async def test_list_controls_async(request_type, transport: str = "grpc_asyncio"):
     client = AuditManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4369,7 +4390,7 @@ async def test_list_controls_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_controls), "__call__") as call:
@@ -4390,11 +4411,6 @@ async def test_list_controls_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListControlsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_controls_async_from_dict():
-    await test_list_controls_async(request_type=dict)
 
 
 def test_list_controls_field_headers():
@@ -4724,11 +4740,7 @@ async def test_list_controls_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_controls(request={})
-        ).pages:
+        async for page_ in (await client.list_controls(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -4843,7 +4855,7 @@ def test_enroll_resource_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_enroll_resource_rest_unset_required_fields():
@@ -5053,7 +5065,7 @@ def test_generate_audit_scope_report_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_generate_audit_scope_report_rest_unset_required_fields():
@@ -5260,7 +5272,7 @@ def test_generate_audit_report_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_generate_audit_report_rest_unset_required_fields():
@@ -5462,7 +5474,7 @@ def test_list_audit_reports_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_audit_reports_rest_unset_required_fields():
@@ -5713,7 +5725,7 @@ def test_get_audit_report_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_audit_report_rest_unset_required_fields():
@@ -5898,7 +5910,7 @@ def test_get_resource_enrollment_status_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_resource_enrollment_status_rest_unset_required_fields():
@@ -6094,7 +6106,7 @@ def test_list_resource_enrollment_statuses_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_resource_enrollment_statuses_rest_unset_required_fields():
@@ -6361,7 +6373,7 @@ def test_list_controls_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_controls_rest_unset_required_fields():
@@ -6627,7 +6639,6 @@ def test_enroll_resource_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = auditmanager.EnrollResourceRequest()
-
         assert args[0] == request_msg
 
 
@@ -6650,7 +6661,6 @@ def test_generate_audit_scope_report_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = auditmanager.GenerateAuditScopeReportRequest()
-
         assert args[0] == request_msg
 
 
@@ -6673,7 +6683,6 @@ def test_generate_audit_report_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = auditmanager.GenerateAuditReportRequest()
-
         assert args[0] == request_msg
 
 
@@ -6696,7 +6705,6 @@ def test_list_audit_reports_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = auditmanager.ListAuditReportsRequest()
-
         assert args[0] == request_msg
 
 
@@ -6717,7 +6725,6 @@ def test_get_audit_report_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = auditmanager.GetAuditReportRequest()
-
         assert args[0] == request_msg
 
 
@@ -6740,7 +6747,6 @@ def test_get_resource_enrollment_status_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = auditmanager.GetResourceEnrollmentStatusRequest()
-
         assert args[0] == request_msg
 
 
@@ -6763,7 +6769,6 @@ def test_list_resource_enrollment_statuses_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = auditmanager.ListResourceEnrollmentStatusesRequest()
-
         assert args[0] == request_msg
 
 
@@ -6784,7 +6789,6 @@ def test_list_controls_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = auditmanager.ListControlsRequest()
-
         assert args[0] == request_msg
 
 
@@ -6825,7 +6829,6 @@ async def test_enroll_resource_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = auditmanager.EnrollResourceRequest()
-
         assert args[0] == request_msg
 
 
@@ -6854,7 +6857,6 @@ async def test_generate_audit_scope_report_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = auditmanager.GenerateAuditScopeReportRequest()
-
         assert args[0] == request_msg
 
 
@@ -6881,7 +6883,6 @@ async def test_generate_audit_report_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = auditmanager.GenerateAuditReportRequest()
-
         assert args[0] == request_msg
 
 
@@ -6910,7 +6911,6 @@ async def test_list_audit_reports_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = auditmanager.ListAuditReportsRequest()
-
         assert args[0] == request_msg
 
 
@@ -6943,7 +6943,6 @@ async def test_get_audit_report_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = auditmanager.GetAuditReportRequest()
-
         assert args[0] == request_msg
 
 
@@ -6975,7 +6974,6 @@ async def test_get_resource_enrollment_status_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = auditmanager.GetResourceEnrollmentStatusRequest()
-
         assert args[0] == request_msg
 
 
@@ -7004,7 +7002,6 @@ async def test_list_resource_enrollment_statuses_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = auditmanager.ListResourceEnrollmentStatusesRequest()
-
         assert args[0] == request_msg
 
 
@@ -7031,7 +7028,6 @@ async def test_list_controls_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = auditmanager.ListControlsRequest()
-
         assert args[0] == request_msg
 
 
@@ -8535,7 +8531,6 @@ def test_enroll_resource_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = auditmanager.EnrollResourceRequest()
-
         assert args[0] == request_msg
 
 
@@ -8557,7 +8552,6 @@ def test_generate_audit_scope_report_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = auditmanager.GenerateAuditScopeReportRequest()
-
         assert args[0] == request_msg
 
 
@@ -8579,7 +8573,6 @@ def test_generate_audit_report_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = auditmanager.GenerateAuditReportRequest()
-
         assert args[0] == request_msg
 
 
@@ -8601,7 +8594,6 @@ def test_list_audit_reports_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = auditmanager.ListAuditReportsRequest()
-
         assert args[0] == request_msg
 
 
@@ -8621,7 +8613,6 @@ def test_get_audit_report_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = auditmanager.GetAuditReportRequest()
-
         assert args[0] == request_msg
 
 
@@ -8643,7 +8634,6 @@ def test_get_resource_enrollment_status_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = auditmanager.GetResourceEnrollmentStatusRequest()
-
         assert args[0] == request_msg
 
 
@@ -8665,7 +8655,6 @@ def test_list_resource_enrollment_statuses_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = auditmanager.ListResourceEnrollmentStatusesRequest()
-
         assert args[0] == request_msg
 
 
@@ -8685,7 +8674,6 @@ def test_list_controls_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = auditmanager.ListControlsRequest()
-
         assert args[0] == request_msg
 
 

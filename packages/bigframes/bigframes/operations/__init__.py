@@ -115,10 +115,8 @@ from bigframes.operations.geo_ops import (
     GeoStLengthOp,
     GeoStRegionStatsOp,
     GeoStSimplifyOp,
-    geo_area_op,
     geo_st_astext_op,
     geo_st_boundary_op,
-    geo_st_centroid_op,
     geo_st_convexhull_op,
     geo_st_difference_op,
     geo_st_geogfromtext_op,
@@ -128,6 +126,7 @@ from bigframes.operations.geo_ops import (
     geo_x_op,
     geo_y_op,
 )
+from bigframes.operations.googlesql import GoogleSqlScalarOp
 from bigframes.operations.json_ops import (
     JSONExtract,
     JSONExtractArray,
@@ -184,8 +183,7 @@ from bigframes.operations.numeric_ops import (
 )
 from bigframes.operations.numpy_op_maps import NUMPY_TO_BINOP, NUMPY_TO_OP
 from bigframes.operations.remote_function_ops import (
-    BinaryRemoteFunctionOp,
-    NaryRemoteFunctionOp,
+    PythonUdfOp,
     RemoteFunctionOp,
 )
 from bigframes.operations.string_ops import (
@@ -231,6 +229,7 @@ from bigframes.operations.timedelta_ops import (
     timestamp_add_op,
     timestamp_sub_op,
 )
+from bigframes.operations.to_op import func_to_op
 
 __all__ = [
     # Base ops
@@ -376,9 +375,8 @@ __all__ = [
     "StructFieldOp",
     "StructOp",
     # Remote Functions ops
-    "BinaryRemoteFunctionOp",
-    "NaryRemoteFunctionOp",
     "RemoteFunctionOp",
+    "PythonUdfOp",
     # Frequency ops
     "DatetimeToIntegerLabelOp",
     "FloorDtOp",
@@ -413,9 +411,7 @@ __all__ = [
     "euclidean_distance_op",
     "manhattan_distance_op",
     # Geo ops
-    "geo_area_op",
     "geo_st_boundary_op",
-    "geo_st_centroid_op",
     "geo_st_convexhull_op",
     "geo_st_difference_op",
     "geo_st_astext_op",
@@ -440,10 +436,14 @@ __all__ = [
     "AIIf",
     "AIScore",
     "AISimilarity",
+    # Helper functions
+    "func_to_op",
     # Numpy ops mapping
     "NUMPY_TO_BINOP",
     "NUMPY_TO_OP",
     "ToArrayOp",
     "ArrayReduceOp",
     "ArrayMapOp",
+    # GoogleSql
+    "GoogleSqlScalarOp",
 ]

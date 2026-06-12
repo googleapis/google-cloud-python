@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,7 +15,6 @@
 #
 import logging as std_logging
 import re
-import uuid
 from collections import OrderedDict
 from typing import (
     Callable,
@@ -616,11 +615,11 @@ class AMLAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_instance(request=request)
+                operation = await client.create_instance(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -768,11 +767,11 @@ class AMLAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_instance(request=request)
+                operation = await client.update_instance(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -911,11 +910,11 @@ class AMLAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_instance(request=request)
+                operation = await client.delete_instance(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1051,11 +1050,11 @@ class AMLAsyncClient:
                 )
 
                 # Make the request
-                operation = client.import_registered_parties(request=request)
+                operation = await client.import_registered_parties(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1220,11 +1219,11 @@ class AMLAsyncClient:
                 )
 
                 # Make the request
-                operation = client.export_registered_parties(request=request)
+                operation = await client.export_registered_parties(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1606,11 +1605,11 @@ class AMLAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_dataset(request=request)
+                operation = await client.create_dataset(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1751,11 +1750,11 @@ class AMLAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_dataset(request=request)
+                operation = await client.update_dataset(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1892,11 +1891,11 @@ class AMLAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_dataset(request=request)
+                operation = await client.delete_dataset(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2268,11 +2267,11 @@ class AMLAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_model(request=request)
+                operation = await client.create_model(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2417,11 +2416,11 @@ class AMLAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_model(request=request)
+                operation = await client.update_model(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2566,11 +2565,11 @@ class AMLAsyncClient:
                 )
 
                 # Make the request
-                operation = client.export_model_metadata(request=request)
+                operation = await client.export_model_metadata(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2700,11 +2699,11 @@ class AMLAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_model(request=request)
+                operation = await client.delete_model(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3079,11 +3078,11 @@ class AMLAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_engine_config(request=request)
+                operation = await client.create_engine_config(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3230,11 +3229,11 @@ class AMLAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_engine_config(request=request)
+                operation = await client.update_engine_config(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3382,11 +3381,11 @@ class AMLAsyncClient:
                 )
 
                 # Make the request
-                operation = client.export_engine_config_metadata(request=request)
+                operation = await client.export_engine_config_metadata(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3519,11 +3518,11 @@ class AMLAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_engine_config(request=request)
+                operation = await client.delete_engine_config(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4143,11 +4142,11 @@ class AMLAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_prediction_result(request=request)
+                operation = await client.create_prediction_result(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4296,11 +4295,11 @@ class AMLAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_prediction_result(request=request)
+                operation = await client.update_prediction_result(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4450,11 +4449,11 @@ class AMLAsyncClient:
                 )
 
                 # Make the request
-                operation = client.export_prediction_result_metadata(request=request)
+                operation = await client.export_prediction_result_metadata(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4593,11 +4592,11 @@ class AMLAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_prediction_result(request=request)
+                operation = await client.delete_prediction_result(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4977,11 +4976,11 @@ class AMLAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_backtest_result(request=request)
+                operation = await client.create_backtest_result(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -5130,11 +5129,11 @@ class AMLAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_backtest_result(request=request)
+                operation = await client.update_backtest_result(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -5283,11 +5282,11 @@ class AMLAsyncClient:
                 )
 
                 # Make the request
-                operation = client.export_backtest_result_metadata(request=request)
+                operation = await client.export_backtest_result_metadata(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -5424,11 +5423,11 @@ class AMLAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_backtest_result(request=request)
+                operation = await client.delete_backtest_result(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)

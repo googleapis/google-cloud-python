@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -121,6 +116,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1386,8 +1396,8 @@ def test_node_group_controller_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        node_groups.CreateNodeGroupRequest,
-        dict,
+        node_groups.CreateNodeGroupRequest(),
+        {},
     ],
 )
 def test_create_node_group(request_type, transport: str = "grpc"):
@@ -1398,7 +1408,7 @@ def test_create_node_group(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1445,11 +1455,12 @@ def test_create_node_group_non_empty_request_with_auto_populated_field():
         client.create_node_group(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == node_groups.CreateNodeGroupRequest(
+        request_msg = node_groups.CreateNodeGroupRequest(
             parent="parent_value",
             node_group_id="node_group_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_node_group_use_cached_wrapped_rpc():
@@ -1542,9 +1553,14 @@ async def test_create_node_group_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_node_group_async(
-    transport: str = "grpc_asyncio", request_type=node_groups.CreateNodeGroupRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        node_groups.CreateNodeGroupRequest(),
+        {},
+    ],
+)
+async def test_create_node_group_async(request_type, transport: str = "grpc_asyncio"):
     client = NodeGroupControllerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1552,7 +1568,7 @@ async def test_create_node_group_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1572,11 +1588,6 @@ async def test_create_node_group_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_node_group_async_from_dict():
-    await test_create_node_group_async(request_type=dict)
 
 
 def test_create_node_group_field_headers():
@@ -1753,8 +1764,8 @@ async def test_create_node_group_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        node_groups.ResizeNodeGroupRequest,
-        dict,
+        node_groups.ResizeNodeGroupRequest(),
+        {},
     ],
 )
 def test_resize_node_group(request_type, transport: str = "grpc"):
@@ -1765,7 +1776,7 @@ def test_resize_node_group(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1811,10 +1822,11 @@ def test_resize_node_group_non_empty_request_with_auto_populated_field():
         client.resize_node_group(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == node_groups.ResizeNodeGroupRequest(
+        request_msg = node_groups.ResizeNodeGroupRequest(
             name="name_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_resize_node_group_use_cached_wrapped_rpc():
@@ -1907,9 +1919,14 @@ async def test_resize_node_group_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_resize_node_group_async(
-    transport: str = "grpc_asyncio", request_type=node_groups.ResizeNodeGroupRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        node_groups.ResizeNodeGroupRequest(),
+        {},
+    ],
+)
+async def test_resize_node_group_async(request_type, transport: str = "grpc_asyncio"):
     client = NodeGroupControllerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1917,7 +1934,7 @@ async def test_resize_node_group_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1937,11 +1954,6 @@ async def test_resize_node_group_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_resize_node_group_async_from_dict():
-    await test_resize_node_group_async(request_type=dict)
 
 
 def test_resize_node_group_field_headers():
@@ -2108,8 +2120,8 @@ async def test_resize_node_group_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        node_groups.GetNodeGroupRequest,
-        dict,
+        node_groups.GetNodeGroupRequest(),
+        {},
     ],
 )
 def test_get_node_group(request_type, transport: str = "grpc"):
@@ -2120,7 +2132,7 @@ def test_get_node_group(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_node_group), "__call__") as call:
@@ -2166,9 +2178,10 @@ def test_get_node_group_non_empty_request_with_auto_populated_field():
         client.get_node_group(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == node_groups.GetNodeGroupRequest(
+        request_msg = node_groups.GetNodeGroupRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_node_group_use_cached_wrapped_rpc():
@@ -2249,9 +2262,14 @@ async def test_get_node_group_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_node_group_async(
-    transport: str = "grpc_asyncio", request_type=node_groups.GetNodeGroupRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        node_groups.GetNodeGroupRequest(),
+        {},
+    ],
+)
+async def test_get_node_group_async(request_type, transport: str = "grpc_asyncio"):
     client = NodeGroupControllerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2259,7 +2277,7 @@ async def test_get_node_group_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_node_group), "__call__") as call:
@@ -2282,11 +2300,6 @@ async def test_get_node_group_async(
     assert isinstance(response, clusters.NodeGroup)
     assert response.name == "name_value"
     assert response.roles == [clusters.NodeGroup.Role.DRIVER]
-
-
-@pytest.mark.asyncio
-async def test_get_node_group_async_from_dict():
-    await test_get_node_group_async(request_type=dict)
 
 
 def test_get_node_group_field_headers():
@@ -2547,7 +2560,7 @@ def test_create_node_group_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_node_group_rest_unset_required_fields():
@@ -2748,7 +2761,7 @@ def test_resize_node_group_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_resize_node_group_rest_unset_required_fields():
@@ -2936,7 +2949,7 @@ def test_get_node_group_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_node_group_rest_unset_required_fields():
@@ -3133,7 +3146,6 @@ def test_create_node_group_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = node_groups.CreateNodeGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -3156,7 +3168,6 @@ def test_resize_node_group_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = node_groups.ResizeNodeGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -3177,7 +3188,6 @@ def test_get_node_group_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = node_groups.GetNodeGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -3218,7 +3228,6 @@ async def test_create_node_group_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = node_groups.CreateNodeGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -3245,7 +3254,6 @@ async def test_resize_node_group_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = node_groups.ResizeNodeGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -3273,7 +3281,6 @@ async def test_get_node_group_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = node_groups.GetNodeGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -4269,7 +4276,6 @@ def test_create_node_group_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = node_groups.CreateNodeGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -4291,7 +4297,6 @@ def test_resize_node_group_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = node_groups.ResizeNodeGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -4311,7 +4316,6 @@ def test_get_node_group_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = node_groups.GetNodeGroupRequest()
-
         assert args[0] == request_msg
 
 

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,6 +18,24 @@ from google.cloud.chronicle import gapic_version as package_version
 __version__ = package_version.__version__
 
 
+from google.cloud.chronicle_v1.services.big_query_export_service.async_client import (
+    BigQueryExportServiceAsyncClient,
+)
+from google.cloud.chronicle_v1.services.big_query_export_service.client import (
+    BigQueryExportServiceClient,
+)
+from google.cloud.chronicle_v1.services.dashboard_chart_service.async_client import (
+    DashboardChartServiceAsyncClient,
+)
+from google.cloud.chronicle_v1.services.dashboard_chart_service.client import (
+    DashboardChartServiceClient,
+)
+from google.cloud.chronicle_v1.services.dashboard_query_service.async_client import (
+    DashboardQueryServiceAsyncClient,
+)
+from google.cloud.chronicle_v1.services.dashboard_query_service.client import (
+    DashboardQueryServiceClient,
+)
 from google.cloud.chronicle_v1.services.data_access_control_service.async_client import (
     DataAccessControlServiceAsyncClient,
 )
@@ -34,11 +52,23 @@ from google.cloud.chronicle_v1.services.entity_service.async_client import (
     EntityServiceAsyncClient,
 )
 from google.cloud.chronicle_v1.services.entity_service.client import EntityServiceClient
+from google.cloud.chronicle_v1.services.featured_content_native_dashboard_service.async_client import (
+    FeaturedContentNativeDashboardServiceAsyncClient,
+)
+from google.cloud.chronicle_v1.services.featured_content_native_dashboard_service.client import (
+    FeaturedContentNativeDashboardServiceClient,
+)
 from google.cloud.chronicle_v1.services.instance_service.async_client import (
     InstanceServiceAsyncClient,
 )
 from google.cloud.chronicle_v1.services.instance_service.client import (
     InstanceServiceClient,
+)
+from google.cloud.chronicle_v1.services.native_dashboard_service.async_client import (
+    NativeDashboardServiceAsyncClient,
+)
+from google.cloud.chronicle_v1.services.native_dashboard_service.client import (
+    NativeDashboardServiceClient,
 )
 from google.cloud.chronicle_v1.services.reference_list_service.async_client import (
     ReferenceListServiceAsyncClient,
@@ -50,6 +80,55 @@ from google.cloud.chronicle_v1.services.rule_service.async_client import (
     RuleServiceAsyncClient,
 )
 from google.cloud.chronicle_v1.services.rule_service.client import RuleServiceClient
+from google.cloud.chronicle_v1.types.big_query_export import (
+    BigQueryExport,
+    BigQueryExportPackage,
+    DataSourceExportSettings,
+    GetBigQueryExportRequest,
+    LatestExportJobState,
+    ProvisionBigQueryExportRequest,
+    UpdateBigQueryExportRequest,
+)
+from google.cloud.chronicle_v1.types.dashboard_chart import (
+    AxisType,
+    BatchGetDashboardChartsRequest,
+    BatchGetDashboardChartsResponse,
+    Button,
+    ButtonStyle,
+    DashboardChart,
+    GetDashboardChartRequest,
+    LegendAlign,
+    LegendOrient,
+    Markdown,
+    MetricDisplayTrend,
+    MetricFormat,
+    MetricTrendType,
+    PlotMode,
+    PointSizeType,
+    RenderType,
+    SeriesStackStrategy,
+    SeriesType,
+    TileType,
+    ToolTipTrigger,
+    VisualMapType,
+)
+from google.cloud.chronicle_v1.types.dashboard_query import (
+    AdvancedFilterConfig,
+    ColumnMetadata,
+    DashboardFilter,
+    DashboardQuery,
+    DataSource,
+    ExecuteDashboardQueryRequest,
+    ExecuteDashboardQueryResponse,
+    FilterOperator,
+    FilterOperatorAndValues,
+    GetDashboardQueryRequest,
+    InAppLink,
+    LanguageFeature,
+    QueryRuntimeError,
+    TimestampMetadata,
+    TimeUnit,
+)
 from google.cloud.chronicle_v1.types.data_access_control import (
     CreateDataAccessLabelRequest,
     CreateDataAccessScopeRequest,
@@ -107,7 +186,48 @@ from google.cloud.chronicle_v1.types.entity import (
     Watchlist,
     WatchlistUserPreferences,
 )
+from google.cloud.chronicle_v1.types.featured_content_metadata import (
+    FeaturedContentMetadata,
+)
+from google.cloud.chronicle_v1.types.featured_content_native_dashboard import (
+    FeaturedContentNativeDashboard,
+    GetFeaturedContentNativeDashboardRequest,
+    InstallFeaturedContentNativeDashboardRequest,
+    InstallFeaturedContentNativeDashboardResponse,
+    ListFeaturedContentNativeDashboardsRequest,
+    ListFeaturedContentNativeDashboardsResponse,
+)
 from google.cloud.chronicle_v1.types.instance import GetInstanceRequest, Instance
+from google.cloud.chronicle_v1.types.native_dashboard import (
+    AddChartRequest,
+    AddChartResponse,
+    CreateNativeDashboardRequest,
+    DashboardAccess,
+    DashboardDefinition,
+    DashboardType,
+    DashboardUserData,
+    DeleteNativeDashboardRequest,
+    DuplicateChartRequest,
+    DuplicateChartResponse,
+    DuplicateNativeDashboardRequest,
+    EditChartRequest,
+    EditChartResponse,
+    ExportNativeDashboardsRequest,
+    ExportNativeDashboardsResponse,
+    GetNativeDashboardRequest,
+    ImportExportStatus,
+    ImportNativeDashboardsInlineSource,
+    ImportNativeDashboardsRequest,
+    ImportNativeDashboardsResponse,
+    InlineDestination,
+    ListNativeDashboardsRequest,
+    ListNativeDashboardsResponse,
+    NativeDashboard,
+    NativeDashboardView,
+    NativeDashboardWithChartsAndQueries,
+    RemoveChartRequest,
+    UpdateNativeDashboardRequest,
+)
 from google.cloud.chronicle_v1.types.reference_list import (
     CreateReferenceListRequest,
     GetReferenceListRequest,
@@ -152,18 +272,71 @@ from google.cloud.chronicle_v1.types.rule import (
 )
 
 __all__ = (
+    "BigQueryExportServiceClient",
+    "BigQueryExportServiceAsyncClient",
+    "DashboardChartServiceClient",
+    "DashboardChartServiceAsyncClient",
+    "DashboardQueryServiceClient",
+    "DashboardQueryServiceAsyncClient",
     "DataAccessControlServiceClient",
     "DataAccessControlServiceAsyncClient",
     "DataTableServiceClient",
     "DataTableServiceAsyncClient",
     "EntityServiceClient",
     "EntityServiceAsyncClient",
+    "FeaturedContentNativeDashboardServiceClient",
+    "FeaturedContentNativeDashboardServiceAsyncClient",
     "InstanceServiceClient",
     "InstanceServiceAsyncClient",
+    "NativeDashboardServiceClient",
+    "NativeDashboardServiceAsyncClient",
     "ReferenceListServiceClient",
     "ReferenceListServiceAsyncClient",
     "RuleServiceClient",
     "RuleServiceAsyncClient",
+    "BigQueryExport",
+    "DataSourceExportSettings",
+    "GetBigQueryExportRequest",
+    "ProvisionBigQueryExportRequest",
+    "UpdateBigQueryExportRequest",
+    "BigQueryExportPackage",
+    "LatestExportJobState",
+    "BatchGetDashboardChartsRequest",
+    "BatchGetDashboardChartsResponse",
+    "Button",
+    "DashboardChart",
+    "GetDashboardChartRequest",
+    "Markdown",
+    "AxisType",
+    "ButtonStyle",
+    "LegendAlign",
+    "LegendOrient",
+    "MetricDisplayTrend",
+    "MetricFormat",
+    "MetricTrendType",
+    "PlotMode",
+    "PointSizeType",
+    "RenderType",
+    "SeriesStackStrategy",
+    "SeriesType",
+    "TileType",
+    "ToolTipTrigger",
+    "VisualMapType",
+    "AdvancedFilterConfig",
+    "ColumnMetadata",
+    "DashboardFilter",
+    "DashboardQuery",
+    "ExecuteDashboardQueryRequest",
+    "ExecuteDashboardQueryResponse",
+    "FilterOperatorAndValues",
+    "GetDashboardQueryRequest",
+    "InAppLink",
+    "QueryRuntimeError",
+    "TimestampMetadata",
+    "DataSource",
+    "FilterOperator",
+    "LanguageFeature",
+    "TimeUnit",
     "CreateDataAccessLabelRequest",
     "CreateDataAccessScopeRequest",
     "DataAccessLabel",
@@ -215,8 +388,43 @@ __all__ = (
     "UpdateWatchlistRequest",
     "Watchlist",
     "WatchlistUserPreferences",
+    "FeaturedContentMetadata",
+    "FeaturedContentNativeDashboard",
+    "GetFeaturedContentNativeDashboardRequest",
+    "InstallFeaturedContentNativeDashboardRequest",
+    "InstallFeaturedContentNativeDashboardResponse",
+    "ListFeaturedContentNativeDashboardsRequest",
+    "ListFeaturedContentNativeDashboardsResponse",
     "GetInstanceRequest",
     "Instance",
+    "AddChartRequest",
+    "AddChartResponse",
+    "CreateNativeDashboardRequest",
+    "DashboardDefinition",
+    "DashboardUserData",
+    "DeleteNativeDashboardRequest",
+    "DuplicateChartRequest",
+    "DuplicateChartResponse",
+    "DuplicateNativeDashboardRequest",
+    "EditChartRequest",
+    "EditChartResponse",
+    "ExportNativeDashboardsRequest",
+    "ExportNativeDashboardsResponse",
+    "GetNativeDashboardRequest",
+    "ImportExportStatus",
+    "ImportNativeDashboardsInlineSource",
+    "ImportNativeDashboardsRequest",
+    "ImportNativeDashboardsResponse",
+    "InlineDestination",
+    "ListNativeDashboardsRequest",
+    "ListNativeDashboardsResponse",
+    "NativeDashboard",
+    "NativeDashboardWithChartsAndQueries",
+    "RemoveChartRequest",
+    "UpdateNativeDashboardRequest",
+    "DashboardAccess",
+    "DashboardType",
+    "NativeDashboardView",
     "CreateReferenceListRequest",
     "GetReferenceListRequest",
     "ListReferenceListsRequest",

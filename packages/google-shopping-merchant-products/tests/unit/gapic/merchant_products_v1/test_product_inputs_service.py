@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -114,6 +109,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1379,8 +1389,8 @@ def test_product_inputs_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        productinputs.InsertProductInputRequest,
-        dict,
+        productinputs.InsertProductInputRequest(),
+        {},
     ],
 )
 def test_insert_product_input(request_type, transport: str = "grpc"):
@@ -1391,7 +1401,7 @@ def test_insert_product_input(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1456,10 +1466,11 @@ def test_insert_product_input_non_empty_request_with_auto_populated_field():
         client.insert_product_input(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == productinputs.InsertProductInputRequest(
+        request_msg = productinputs.InsertProductInputRequest(
             parent="parent_value",
             data_source="data_source_value",
         )
+        assert args[0] == request_msg
 
 
 def test_insert_product_input_use_cached_wrapped_rpc():
@@ -1544,9 +1555,15 @@ async def test_insert_product_input_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        productinputs.InsertProductInputRequest(),
+        {},
+    ],
+)
 async def test_insert_product_input_async(
-    transport: str = "grpc_asyncio",
-    request_type=productinputs.InsertProductInputRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ProductInputsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1555,7 +1572,7 @@ async def test_insert_product_input_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1594,11 +1611,6 @@ async def test_insert_product_input_async(
     assert response.content_language == "content_language_value"
     assert response.feed_label == "feed_label_value"
     assert response.version_number == 1518
-
-
-@pytest.mark.asyncio
-async def test_insert_product_input_async_from_dict():
-    await test_insert_product_input_async(request_type=dict)
 
 
 def test_insert_product_input_field_headers():
@@ -1669,8 +1681,8 @@ async def test_insert_product_input_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        productinputs.UpdateProductInputRequest,
-        dict,
+        productinputs.UpdateProductInputRequest(),
+        {},
     ],
 )
 def test_update_product_input(request_type, transport: str = "grpc"):
@@ -1681,7 +1693,7 @@ def test_update_product_input(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1745,9 +1757,10 @@ def test_update_product_input_non_empty_request_with_auto_populated_field():
         client.update_product_input(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == productinputs.UpdateProductInputRequest(
+        request_msg = productinputs.UpdateProductInputRequest(
             data_source="data_source_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_product_input_use_cached_wrapped_rpc():
@@ -1832,9 +1845,15 @@ async def test_update_product_input_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        productinputs.UpdateProductInputRequest(),
+        {},
+    ],
+)
 async def test_update_product_input_async(
-    transport: str = "grpc_asyncio",
-    request_type=productinputs.UpdateProductInputRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ProductInputsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1843,7 +1862,7 @@ async def test_update_product_input_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1882,11 +1901,6 @@ async def test_update_product_input_async(
     assert response.content_language == "content_language_value"
     assert response.feed_label == "feed_label_value"
     assert response.version_number == 1518
-
-
-@pytest.mark.asyncio
-async def test_update_product_input_async_from_dict():
-    await test_update_product_input_async(request_type=dict)
 
 
 def test_update_product_input_field_headers():
@@ -2053,8 +2067,8 @@ async def test_update_product_input_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        productinputs.DeleteProductInputRequest,
-        dict,
+        productinputs.DeleteProductInputRequest(),
+        {},
     ],
 )
 def test_delete_product_input(request_type, transport: str = "grpc"):
@@ -2065,7 +2079,7 @@ def test_delete_product_input(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2111,10 +2125,11 @@ def test_delete_product_input_non_empty_request_with_auto_populated_field():
         client.delete_product_input(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == productinputs.DeleteProductInputRequest(
+        request_msg = productinputs.DeleteProductInputRequest(
             name="name_value",
             data_source="data_source_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_product_input_use_cached_wrapped_rpc():
@@ -2199,9 +2214,15 @@ async def test_delete_product_input_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        productinputs.DeleteProductInputRequest(),
+        {},
+    ],
+)
 async def test_delete_product_input_async(
-    transport: str = "grpc_asyncio",
-    request_type=productinputs.DeleteProductInputRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ProductInputsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2210,7 +2231,7 @@ async def test_delete_product_input_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2228,11 +2249,6 @@ async def test_delete_product_input_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_product_input_async_from_dict():
-    await test_delete_product_input_async(request_type=dict)
 
 
 def test_delete_product_input_field_headers():
@@ -2510,7 +2526,7 @@ def test_insert_product_input_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_insert_product_input_rest_unset_required_fields():
@@ -2660,7 +2676,7 @@ def test_update_product_input_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_product_input_rest_unset_required_fields():
@@ -2871,7 +2887,7 @@ def test_delete_product_input_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_product_input_rest_unset_required_fields():
@@ -3071,7 +3087,6 @@ def test_insert_product_input_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = productinputs.InsertProductInputRequest()
-
         assert args[0] == request_msg
 
 
@@ -3094,7 +3109,6 @@ def test_update_product_input_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = productinputs.UpdateProductInputRequest()
-
         assert args[0] == request_msg
 
 
@@ -3117,7 +3131,6 @@ def test_delete_product_input_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = productinputs.DeleteProductInputRequest()
-
         assert args[0] == request_msg
 
 
@@ -3168,7 +3181,6 @@ async def test_insert_product_input_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = productinputs.InsertProductInputRequest()
-
         assert args[0] == request_msg
 
 
@@ -3205,7 +3217,6 @@ async def test_update_product_input_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = productinputs.UpdateProductInputRequest()
-
         assert args[0] == request_msg
 
 
@@ -3230,7 +3241,6 @@ async def test_delete_product_input_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = productinputs.DeleteProductInputRequest()
-
         assert args[0] == request_msg
 
 
@@ -4246,7 +4256,6 @@ def test_insert_product_input_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = productinputs.InsertProductInputRequest()
-
         assert args[0] == request_msg
 
 
@@ -4268,7 +4277,6 @@ def test_update_product_input_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = productinputs.UpdateProductInputRequest()
-
         assert args[0] == request_msg
 
 
@@ -4290,7 +4298,6 @@ def test_delete_product_input_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = productinputs.DeleteProductInputRequest()
-
         assert args[0] == request_msg
 
 

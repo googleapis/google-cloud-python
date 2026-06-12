@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -35,6 +35,8 @@ from google.cloud.dlp_v2.types.dlp import (
     AnalyzeDataSourceRiskDetails,
     AwsAccount,
     AwsAccountRegex,
+    BatchContentItem,
+    BatchContentLocation,
     BigQueryDiscoveryTarget,
     BigQueryRegex,
     BigQueryRegexes,
@@ -65,6 +67,9 @@ from google.cloud.dlp_v2.types.dlp import (
     ContentLocation,
     ContentMetadata,
     ContentOption,
+    Conversation,
+    ConversationLocation,
+    ConversationMessage,
     CreateConnectionRequest,
     CreateDeidentifyTemplateRequest,
     CreateDiscoveryConfigRequest,
@@ -277,6 +282,7 @@ from google.cloud.dlp_v2.types.dlp import (
     StoredInfoTypeState,
     StoredInfoTypeStats,
     StoredInfoTypeVersion,
+    StringValueBatch,
     Table,
     TableDataProfile,
     TableLocation,
@@ -360,6 +366,8 @@ __all__ = (
     "AnalyzeDataSourceRiskDetails",
     "AwsAccount",
     "AwsAccountRegex",
+    "BatchContentItem",
+    "BatchContentLocation",
     "BigQueryDiscoveryTarget",
     "BigQueryRegex",
     "BigQueryRegexes",
@@ -384,6 +392,9 @@ __all__ = (
     "ContentItem",
     "ContentLocation",
     "ContentMetadata",
+    "Conversation",
+    "ConversationLocation",
+    "ConversationMessage",
     "CreateConnectionRequest",
     "CreateDeidentifyTemplateRequest",
     "CreateDiscoveryConfigRequest",
@@ -585,6 +596,7 @@ __all__ = (
     "StoredInfoTypeConfig",
     "StoredInfoTypeStats",
     "StoredInfoTypeVersion",
+    "StringValueBatch",
     "Table",
     "TableDataProfile",
     "TableLocation",

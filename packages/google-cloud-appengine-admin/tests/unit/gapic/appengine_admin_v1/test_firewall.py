@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -112,6 +107,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1262,8 +1272,8 @@ def test_firewall_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        appengine.ListIngressRulesRequest,
-        dict,
+        appengine.ListIngressRulesRequest(),
+        {},
     ],
 )
 def test_list_ingress_rules(request_type, transport: str = "grpc"):
@@ -1274,7 +1284,7 @@ def test_list_ingress_rules(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1324,11 +1334,12 @@ def test_list_ingress_rules_non_empty_request_with_auto_populated_field():
         client.list_ingress_rules(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == appengine.ListIngressRulesRequest(
+        request_msg = appengine.ListIngressRulesRequest(
             parent="parent_value",
             page_token="page_token_value",
             matching_address="matching_address_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_ingress_rules_use_cached_wrapped_rpc():
@@ -1413,9 +1424,14 @@ async def test_list_ingress_rules_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_ingress_rules_async(
-    transport: str = "grpc_asyncio", request_type=appengine.ListIngressRulesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        appengine.ListIngressRulesRequest(),
+        {},
+    ],
+)
+async def test_list_ingress_rules_async(request_type, transport: str = "grpc_asyncio"):
     client = FirewallAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1423,7 +1439,7 @@ async def test_list_ingress_rules_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1446,11 +1462,6 @@ async def test_list_ingress_rules_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListIngressRulesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_ingress_rules_async_from_dict():
-    await test_list_ingress_rules_async(request_type=dict)
 
 
 def test_list_ingress_rules_field_headers():
@@ -1710,11 +1721,7 @@ async def test_list_ingress_rules_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_ingress_rules(request={})
-        ).pages:
+        async for page_ in (await client.list_ingress_rules(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -1723,8 +1730,8 @@ async def test_list_ingress_rules_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        appengine.BatchUpdateIngressRulesRequest,
-        dict,
+        appengine.BatchUpdateIngressRulesRequest(),
+        {},
     ],
 )
 def test_batch_update_ingress_rules(request_type, transport: str = "grpc"):
@@ -1735,7 +1742,7 @@ def test_batch_update_ingress_rules(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1780,9 +1787,10 @@ def test_batch_update_ingress_rules_non_empty_request_with_auto_populated_field(
         client.batch_update_ingress_rules(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == appengine.BatchUpdateIngressRulesRequest(
+        request_msg = appengine.BatchUpdateIngressRulesRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_batch_update_ingress_rules_use_cached_wrapped_rpc():
@@ -1868,9 +1876,15 @@ async def test_batch_update_ingress_rules_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        appengine.BatchUpdateIngressRulesRequest(),
+        {},
+    ],
+)
 async def test_batch_update_ingress_rules_async(
-    transport: str = "grpc_asyncio",
-    request_type=appengine.BatchUpdateIngressRulesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = FirewallAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1879,7 +1893,7 @@ async def test_batch_update_ingress_rules_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1899,11 +1913,6 @@ async def test_batch_update_ingress_rules_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, appengine.BatchUpdateIngressRulesResponse)
-
-
-@pytest.mark.asyncio
-async def test_batch_update_ingress_rules_async_from_dict():
-    await test_batch_update_ingress_rules_async(request_type=dict)
 
 
 def test_batch_update_ingress_rules_field_headers():
@@ -1974,8 +1983,8 @@ async def test_batch_update_ingress_rules_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        appengine.CreateIngressRuleRequest,
-        dict,
+        appengine.CreateIngressRuleRequest(),
+        {},
     ],
 )
 def test_create_ingress_rule(request_type, transport: str = "grpc"):
@@ -1986,7 +1995,7 @@ def test_create_ingress_rule(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2040,9 +2049,10 @@ def test_create_ingress_rule_non_empty_request_with_auto_populated_field():
         client.create_ingress_rule(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == appengine.CreateIngressRuleRequest(
+        request_msg = appengine.CreateIngressRuleRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_ingress_rule_use_cached_wrapped_rpc():
@@ -2127,9 +2137,14 @@ async def test_create_ingress_rule_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_ingress_rule_async(
-    transport: str = "grpc_asyncio", request_type=appengine.CreateIngressRuleRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        appengine.CreateIngressRuleRequest(),
+        {},
+    ],
+)
+async def test_create_ingress_rule_async(request_type, transport: str = "grpc_asyncio"):
     client = FirewallAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2137,7 +2152,7 @@ async def test_create_ingress_rule_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2166,11 +2181,6 @@ async def test_create_ingress_rule_async(
     assert response.action == firewall.FirewallRule.Action.ALLOW
     assert response.source_range == "source_range_value"
     assert response.description == "description_value"
-
-
-@pytest.mark.asyncio
-async def test_create_ingress_rule_async_from_dict():
-    await test_create_ingress_rule_async(request_type=dict)
 
 
 def test_create_ingress_rule_field_headers():
@@ -2241,8 +2251,8 @@ async def test_create_ingress_rule_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        appengine.GetIngressRuleRequest,
-        dict,
+        appengine.GetIngressRuleRequest(),
+        {},
     ],
 )
 def test_get_ingress_rule(request_type, transport: str = "grpc"):
@@ -2253,7 +2263,7 @@ def test_get_ingress_rule(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_ingress_rule), "__call__") as call:
@@ -2303,9 +2313,10 @@ def test_get_ingress_rule_non_empty_request_with_auto_populated_field():
         client.get_ingress_rule(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == appengine.GetIngressRuleRequest(
+        request_msg = appengine.GetIngressRuleRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_ingress_rule_use_cached_wrapped_rpc():
@@ -2388,9 +2399,14 @@ async def test_get_ingress_rule_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_ingress_rule_async(
-    transport: str = "grpc_asyncio", request_type=appengine.GetIngressRuleRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        appengine.GetIngressRuleRequest(),
+        {},
+    ],
+)
+async def test_get_ingress_rule_async(request_type, transport: str = "grpc_asyncio"):
     client = FirewallAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2398,7 +2414,7 @@ async def test_get_ingress_rule_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_ingress_rule), "__call__") as call:
@@ -2425,11 +2441,6 @@ async def test_get_ingress_rule_async(
     assert response.action == firewall.FirewallRule.Action.ALLOW
     assert response.source_range == "source_range_value"
     assert response.description == "description_value"
-
-
-@pytest.mark.asyncio
-async def test_get_ingress_rule_async_from_dict():
-    await test_get_ingress_rule_async(request_type=dict)
 
 
 def test_get_ingress_rule_field_headers():
@@ -2496,8 +2507,8 @@ async def test_get_ingress_rule_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        appengine.UpdateIngressRuleRequest,
-        dict,
+        appengine.UpdateIngressRuleRequest(),
+        {},
     ],
 )
 def test_update_ingress_rule(request_type, transport: str = "grpc"):
@@ -2508,7 +2519,7 @@ def test_update_ingress_rule(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2562,9 +2573,10 @@ def test_update_ingress_rule_non_empty_request_with_auto_populated_field():
         client.update_ingress_rule(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == appengine.UpdateIngressRuleRequest(
+        request_msg = appengine.UpdateIngressRuleRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_ingress_rule_use_cached_wrapped_rpc():
@@ -2649,9 +2661,14 @@ async def test_update_ingress_rule_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_ingress_rule_async(
-    transport: str = "grpc_asyncio", request_type=appengine.UpdateIngressRuleRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        appengine.UpdateIngressRuleRequest(),
+        {},
+    ],
+)
+async def test_update_ingress_rule_async(request_type, transport: str = "grpc_asyncio"):
     client = FirewallAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2659,7 +2676,7 @@ async def test_update_ingress_rule_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2688,11 +2705,6 @@ async def test_update_ingress_rule_async(
     assert response.action == firewall.FirewallRule.Action.ALLOW
     assert response.source_range == "source_range_value"
     assert response.description == "description_value"
-
-
-@pytest.mark.asyncio
-async def test_update_ingress_rule_async_from_dict():
-    await test_update_ingress_rule_async(request_type=dict)
 
 
 def test_update_ingress_rule_field_headers():
@@ -2763,8 +2775,8 @@ async def test_update_ingress_rule_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        appengine.DeleteIngressRuleRequest,
-        dict,
+        appengine.DeleteIngressRuleRequest(),
+        {},
     ],
 )
 def test_delete_ingress_rule(request_type, transport: str = "grpc"):
@@ -2775,7 +2787,7 @@ def test_delete_ingress_rule(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2820,9 +2832,10 @@ def test_delete_ingress_rule_non_empty_request_with_auto_populated_field():
         client.delete_ingress_rule(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == appengine.DeleteIngressRuleRequest(
+        request_msg = appengine.DeleteIngressRuleRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_ingress_rule_use_cached_wrapped_rpc():
@@ -2907,9 +2920,14 @@ async def test_delete_ingress_rule_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_ingress_rule_async(
-    transport: str = "grpc_asyncio", request_type=appengine.DeleteIngressRuleRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        appengine.DeleteIngressRuleRequest(),
+        {},
+    ],
+)
+async def test_delete_ingress_rule_async(request_type, transport: str = "grpc_asyncio"):
     client = FirewallAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2917,7 +2935,7 @@ async def test_delete_ingress_rule_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2935,11 +2953,6 @@ async def test_delete_ingress_rule_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_ingress_rule_async_from_dict():
-    await test_delete_ingress_rule_async(request_type=dict)
 
 
 def test_delete_ingress_rule_field_headers():
@@ -3432,7 +3445,6 @@ def test_list_ingress_rules_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = appengine.ListIngressRulesRequest()
-
         assert args[0] == request_msg
 
 
@@ -3455,7 +3467,6 @@ def test_batch_update_ingress_rules_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = appengine.BatchUpdateIngressRulesRequest()
-
         assert args[0] == request_msg
 
 
@@ -3478,7 +3489,6 @@ def test_create_ingress_rule_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = appengine.CreateIngressRuleRequest()
-
         assert args[0] == request_msg
 
 
@@ -3499,7 +3509,6 @@ def test_get_ingress_rule_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = appengine.GetIngressRuleRequest()
-
         assert args[0] == request_msg
 
 
@@ -3522,7 +3531,6 @@ def test_update_ingress_rule_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = appengine.UpdateIngressRuleRequest()
-
         assert args[0] == request_msg
 
 
@@ -3545,7 +3553,6 @@ def test_delete_ingress_rule_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = appengine.DeleteIngressRuleRequest()
-
         assert args[0] == request_msg
 
 
@@ -3588,7 +3595,6 @@ async def test_list_ingress_rules_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = appengine.ListIngressRulesRequest()
-
         assert args[0] == request_msg
 
 
@@ -3615,7 +3621,6 @@ async def test_batch_update_ingress_rules_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = appengine.BatchUpdateIngressRulesRequest()
-
         assert args[0] == request_msg
 
 
@@ -3647,7 +3652,6 @@ async def test_create_ingress_rule_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = appengine.CreateIngressRuleRequest()
-
         assert args[0] == request_msg
 
 
@@ -3677,7 +3681,6 @@ async def test_get_ingress_rule_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = appengine.GetIngressRuleRequest()
-
         assert args[0] == request_msg
 
 
@@ -3709,7 +3712,6 @@ async def test_update_ingress_rule_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = appengine.UpdateIngressRuleRequest()
-
         assert args[0] == request_msg
 
 
@@ -3734,7 +3736,6 @@ async def test_delete_ingress_rule_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = appengine.DeleteIngressRuleRequest()
-
         assert args[0] == request_msg
 
 
@@ -4687,7 +4688,6 @@ def test_list_ingress_rules_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = appengine.ListIngressRulesRequest()
-
         assert args[0] == request_msg
 
 
@@ -4709,7 +4709,6 @@ def test_batch_update_ingress_rules_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = appengine.BatchUpdateIngressRulesRequest()
-
         assert args[0] == request_msg
 
 
@@ -4731,7 +4730,6 @@ def test_create_ingress_rule_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = appengine.CreateIngressRuleRequest()
-
         assert args[0] == request_msg
 
 
@@ -4751,7 +4749,6 @@ def test_get_ingress_rule_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = appengine.GetIngressRuleRequest()
-
         assert args[0] == request_msg
 
 
@@ -4773,7 +4770,6 @@ def test_update_ingress_rule_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = appengine.UpdateIngressRuleRequest()
-
         assert args[0] == request_msg
 
 
@@ -4795,7 +4791,6 @@ def test_delete_ingress_rule_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = appengine.DeleteIngressRuleRequest()
-
         assert args[0] == request_msg
 
 

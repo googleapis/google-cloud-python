@@ -819,22 +819,25 @@ class DataFrame:
             column_count=len(self.columns),
         )
 
-    def _get_display_df_and_blob_cols(self) -> tuple[DataFrame, list[str]]:
-        """Process ObjectRef columns for display."""
+    def _get_display_df(self) -> DataFrame:
+        """Process ObjectRef and JSON/nested JSON columns for display."""
         df = self
-        blob_cols = []
-        if bigframes.options.display.blob_display:
-            blob_cols = [
-                series_name
-                for series_name, series in self.items()
-                if series.dtype == bigframes.dtypes.OBJ_REF_DTYPE
-            ]
-            if blob_cols:
-                df = self.copy()
-                for col in blob_cols:
-                    # TODO(garrettwu): Not necessary to get access urls for all the rows. Update when having a to get URLs from local data.
-                    df[col] = df[col].blob._get_runtime(mode="R", with_metadata=True)
-        return df, blob_cols
+        # Arrow/Pandas to_pandas_batches does not support raw JSON/nested JSON
+        # columns. Pre-serialize them to string format to bypass this limit.
+        # Using TO_JSON_STRING via SqlScalarOp handles complex nested STRUCT
+        # types correctly.
+        json_cols = [
+            col
+            for col in df.columns
+            if bigframes.dtypes.contains_db_dtypes_json_dtype(df[col].dtype)
+        ]
+        if json_cols:
+            op = ops.SqlScalarOp(
+                _output_type=bigframes.dtypes.STRING_DTYPE,
+                sql_template="TO_JSON_STRING({0})",
+            )
+            df = df.assign(**{col: df[col]._apply_unary_op(op) for col in json_cols})
+        return df
 
     def _repr_mimebundle_(self, include=None, exclude=None):
         """
@@ -1743,7 +1746,8 @@ class DataFrame:
         )
         if query_job:
             self._set_internal_query_job(query_job)
-        return df.set_axis(self._block.column_labels, axis=1, copy=False)
+        df.columns = self._block.column_labels
+        return df
 
     def to_pandas_batches(
         self,
@@ -1751,6 +1755,7 @@ class DataFrame:
         max_results: Optional[int] = None,
         *,
         allow_large_results: Optional[bool] = None,
+        cell_execution_count: Optional[int] = None,
     ) -> blocks.PandasBatches:
         """Stream DataFrame results to an iterable of pandas DataFrame.
 
@@ -1803,6 +1808,7 @@ class DataFrame:
             page_size=page_size,
             max_results=max_results,
             allow_large_results=allow_large_results,
+            cell_execution_count=cell_execution_count,
         )
 
     def _to_pandas_batches(
@@ -1811,11 +1817,13 @@ class DataFrame:
         max_results: Optional[int] = None,
         *,
         allow_large_results: Optional[bool] = None,
+        cell_execution_count: Optional[int] = None,
     ) -> blocks.PandasBatches:
         return self._block.to_pandas_batches(
             page_size=page_size,
             max_results=max_results,
             allow_large_results=allow_large_results,
+            cell_execution_count=cell_execution_count,
         )
 
     def _compute_dry_run(self) -> google.cloud.bigquery.job.QueryJob:
@@ -1869,7 +1877,8 @@ class DataFrame:
                 raise ValueError(
                     "Cannot peek efficiently when data has aggregates, joins or window functions applied. Use force=True to fully compute dataframe."
                 )
-        return maybe_result.set_axis(self._block.column_labels, axis=1, copy=False)
+        maybe_result.columns = self._block.column_labels
+        return maybe_result
 
     def nlargest(
         self,
@@ -2849,7 +2858,7 @@ class DataFrame:
         """Executes the possible callable condition as needed."""
         if callable(condition):
             # When it's a bigframes function.
-            if hasattr(condition, "bigframes_bigquery_function"):
+            if isinstance(condition, bigframes.functions.Udf):
                 return self.apply(condition, axis=1)
 
             # When it's a plain Python function.
@@ -4683,18 +4692,20 @@ class DataFrame:
         return array_value, id_overrides
 
     def map(self, func, na_action: Optional[str] = None) -> DataFrame:
-        if not isinstance(func, bigframes.functions.BigqueryCallableRoutine):
+        if not isinstance(func, bigframes.functions.Udf):
             raise TypeError("the first argument must be callable")
 
         if na_action not in {None, "ignore"}:
             raise ValueError(f"na_action={na_action} not supported")
 
-        # TODO(shobs): Support **kwargs
-        return self._apply_unary_op(
-            ops.RemoteFunctionOp(
-                function_def=func.udf_def, apply_on_null=(na_action is None)
+        expr = ops.func_to_op(func).as_expr(ex.free_var("input"))
+        if na_action == "ignore":
+            # True case, predicate, False case
+            expr = ops.where_op.as_expr(
+                expr, ops.notnull_op.as_expr(ex.free_var("input")), ex.const(None)
             )
-        )
+
+        return DataFrame(self._block.multi_apply_unary_op(expr))
 
     def apply(self, func, *, axis=0, args: typing.Tuple = (), **kwargs):
         # In Bigframes BigQuery function, DataFrame '.apply' method is specifically
@@ -4707,18 +4718,12 @@ class DataFrame:
             )
             warnings.warn(msg, category=bfe.FunctionAxisOnePreviewWarning)
 
-            if not isinstance(
-                func,
-                (
-                    bigframes.functions.BigqueryCallableRoutine,
-                    bigframes.functions.BigqueryCallableRowRoutine,
-                ),
-            ):
+            if not isinstance(func, bigframes.functions.Udf):
                 raise ValueError(
                     "For axis=1 a BigFrames BigQuery function must be used."
                 )
 
-            if func.is_row_processor:
+            if func.udf_def.signature.is_row_processor:
                 # Early check whether the dataframe dtypes are currently supported
                 # in the bigquery function
                 # NOTE: Keep in sync with the value converters used in the gcf code
@@ -4771,17 +4776,11 @@ class DataFrame:
                 )
 
                 # Apply the function
-                if args:
-                    result_series = rows_as_json_series._apply_nary_op(
-                        ops.NaryRemoteFunctionOp(function_def=func.udf_def),
-                        list(args),
-                    )
-                else:
-                    result_series = rows_as_json_series._apply_unary_op(
-                        ops.RemoteFunctionOp(
-                            function_def=func.udf_def, apply_on_null=True
-                        )
-                    )
+                result_series = rows_as_json_series._apply_nary_op(
+                    ops.func_to_op(func),
+                    list(args),
+                )
+
             else:
                 # This is a special case where we are providing not-pandas-like
                 # extension. If the bigquery function can take one or more
@@ -4839,7 +4838,7 @@ class DataFrame:
                 series_list = [self[col] for col in self.columns]
                 op_list = series_list[1:] + list(args)
                 result_series = series_list[0]._apply_nary_op(
-                    ops.NaryRemoteFunctionOp(function_def=func.udf_def), op_list
+                    ops.func_to_op(func), op_list
                 )
             result_series.name = None
 
@@ -4847,7 +4846,7 @@ class DataFrame:
 
         # At this point column-wise or element-wise bigquery function operation will
         # be performed (not supported).
-        if hasattr(func, "bigframes_bigquery_function"):
+        if isinstance(func, bigframes.functions.Udf):
             raise formatter.create_exception_with_feedback_link(
                 NotImplementedError,
                 "BigFrames DataFrame '.apply()' does not support BigFrames "

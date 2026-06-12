@@ -480,6 +480,9 @@ def run_showcase_unit_tests(session, fail_under=100, rest_async_io_enabled=False
         "pytest-xdist",
         "pytest-asyncio",
     )
+    # Freeze and print python environment package versions
+    session.run("python", "-m", "pip", "freeze")
+
     # Run the tests.
     session.run(
         "py.test",

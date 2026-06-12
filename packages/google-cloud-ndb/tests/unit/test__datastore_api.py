@@ -16,23 +16,17 @@ from unittest import mock
 
 import grpc
 import pytest
-
 from google.api_core import client_info
 from google.api_core import exceptions as core_exceptions
-from google.cloud.datastore import entity
-from google.cloud.datastore import helpers
+from google.cloud.datastore import entity, helpers
 from google.cloud.datastore import key as ds_key_module
 from google.cloud.datastore_v1.types import datastore as datastore_pb2
 from google.cloud.datastore_v1.types import entity as entity_pb2
-from google.cloud.ndb import _batch
-from google.cloud.ndb import _cache
-from google.cloud.ndb import context as context_module
+
+from google.cloud.ndb import __version__, _batch, _cache, _options, model, tasklets
 from google.cloud.ndb import _datastore_api as _api
+from google.cloud.ndb import context as context_module
 from google.cloud.ndb import key as key_module
-from google.cloud.ndb import model
-from google.cloud.ndb import _options
-from google.cloud.ndb import tasklets
-from google.cloud.ndb import __version__
 
 from . import utils
 

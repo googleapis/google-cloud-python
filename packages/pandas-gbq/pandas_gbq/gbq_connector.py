@@ -7,8 +7,8 @@ from __future__ import annotations
 import logging
 import time
 import typing
-from typing import Any, Dict, Optional, Union
 import warnings
+from typing import Any, Dict, Optional, Union
 
 # Only import at module-level at type checking time to avoid circular
 # dependencies in the pandas package, which has an optional dependency on
@@ -16,20 +16,21 @@ import warnings
 if typing.TYPE_CHECKING:  # pragma: NO COVER
     import pandas
 
-from pandas_gbq import dry_runs
 import pandas_gbq.constants
-from pandas_gbq.contexts import context
 import pandas_gbq.core.read
 import pandas_gbq.environment as environment
 import pandas_gbq.exceptions
+import pandas_gbq.query
+from pandas_gbq import dry_runs
+from pandas_gbq.contexts import context
 from pandas_gbq.exceptions import QueryTimeout
 from pandas_gbq.features import FEATURES
-import pandas_gbq.query
 
+tqdm: Any = None
 try:
     import tqdm  # noqa
 except ImportError:
-    tqdm = None
+    pass
 
 logger = logging.getLogger(__name__)
 
@@ -204,6 +205,8 @@ class GbqConnector:
         ].get("timeoutMs")
 
         if timeout_ms:
+            if not isinstance(timeout_ms, (str, int, float)):
+                raise TypeError(f"Expected str, int or float, got {type(timeout_ms)}")
             timeout_ms = int(timeout_ms)
             # Having too small a timeout_ms results in individual
             # API calls timing out before they can finish.
@@ -220,6 +223,7 @@ class GbqConnector:
 
         self._start_timer()
         job_config = bigquery.QueryJobConfig.from_api_repr(job_config_dict)
+        job_config = typing.cast(bigquery.QueryJobConfig, job_config)
         job_config.dry_run = dry_run
 
         if FEATURES.bigquery_has_query_and_wait:

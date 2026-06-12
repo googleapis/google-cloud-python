@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,13 +21,7 @@ from google.cloud.ces_v1beta import gapic_version as package_version
 
 __version__ = package_version.__version__
 
-if sys.version_info >= (3, 8):  # pragma: NO COVER
-    from importlib import metadata
-else:  # pragma: NO COVER
-    # TODO(https://github.com/googleapis/python-api-core/issues/835): Remove
-    # this code path once we drop support for Python 3.7
-    import importlib_metadata as metadata
-
+from importlib import metadata
 
 from .services.agent_service import AgentServiceAsyncClient, AgentServiceClient
 from .services.evaluation_service import (
@@ -38,6 +32,7 @@ from .services.session_service import SessionServiceAsyncClient, SessionServiceC
 from .services.tool_service import ToolServiceAsyncClient, ToolServiceClient
 from .services.widget_service import WidgetServiceAsyncClient, WidgetServiceClient
 from .types.agent import Agent
+from .types.agent_card import AgentCard, AgentInterface, AgentSkill, RemoteAgentTool
 from .types.agent_service import (
     BatchDeleteConversationsRequest,
     BatchDeleteConversationsResponse,
@@ -135,6 +130,7 @@ from .types.app import (
     RedactionConfig,
     SynthesizeSpeechConfig,
     TimeZoneSettings,
+    VpcScSettings,
 )
 from .types.app_version import AppSnapshot, AppVersion
 from .types.auth import (
@@ -164,7 +160,7 @@ from .types.connector_toolset import ConnectorToolset
 from .types.conversation import Conversation
 from .types.data_store import DataStore
 from .types.data_store_tool import DataStoreTool
-from .types.deployment import Deployment
+from .types.deployment import Deployment, ExperimentConfig
 from .types.evaluation import (
     AggregatedMetrics,
     Evaluation,
@@ -180,6 +176,7 @@ from .types.evaluation import (
     RunEvaluationRequest,
     ScheduledEvaluationRun,
 )
+from .types.evaluation_metrics_config import EvaluationMetricsConfig
 from .types.evaluation_service import (
     CreateEvaluationDatasetRequest,
     CreateEvaluationExpectationRequest,
@@ -192,7 +189,11 @@ from .types.evaluation_service import (
     DeleteEvaluationRunOperationMetadata,
     DeleteEvaluationRunRequest,
     DeleteScheduledEvaluationRunRequest,
+    ExportEvaluationResultsOperationMetadata,
+    ExportEvaluationResultsRequest,
     ExportEvaluationResultsResponse,
+    ExportEvaluationRunsOperationMetadata,
+    ExportEvaluationRunsRequest,
     ExportEvaluationRunsResponse,
     ExportEvaluationsRequest,
     ExportEvaluationsResponse,
@@ -222,6 +223,9 @@ from .types.evaluation_service import (
     ListScheduledEvaluationRunsResponse,
     RunEvaluationOperationMetadata,
     RunEvaluationResponse,
+    RunEvaluationResultMetricsOperationMetadata,
+    RunEvaluationResultMetricsRequest,
+    RunEvaluationResultMetricsResponse,
     TestPersonaVoiceRequest,
     TestPersonaVoiceResponse,
     UpdateEvaluationDatasetRequest,
@@ -248,7 +252,7 @@ from .types.golden_run import GoldenRunMethod
 from .types.google_search_tool import GoogleSearchTool
 from .types.guardrail import Guardrail
 from .types.mcp_tool import McpTool
-from .types.mcp_toolset import McpToolset
+from .types.mcp_toolset import McpToolDefinition, McpToolOverride, McpToolset
 from .types.mocks import MockedToolCall
 from .types.omnichannel import Omnichannel, OmnichannelIntegrationConfig
 from .types.omnichannel_service import OmnichannelOperationMetadata
@@ -303,28 +307,17 @@ else:  # pragma: NO COVER
     # An older version of api_core is installed which does not define the
     # functions above. We do equivalent checks manually.
     try:
-        import sys
         import warnings
 
         _py_version_str = sys.version.split()[0]
         _package_label = "google.cloud.ces_v1beta"
-        if sys.version_info < (3, 9):
+        if sys.version_info < (3, 10):
             warnings.warn(
                 "You are using a non-supported Python version "
                 + f"({_py_version_str}).  Google will not post any further "
                 + f"updates to {_package_label} supporting this Python version. "
                 + "Please upgrade to the latest Python version, or at "
-                + f"least to Python 3.9, and then update {_package_label}.",
-                FutureWarning,
-            )
-        if sys.version_info[:2] == (3, 9):
-            warnings.warn(
-                f"You are using a Python version ({_py_version_str}) "
-                + f"which Google will stop supporting in {_package_label} in "
-                + "January 2026. Please "
-                + "upgrade to the latest Python version, or at "
-                + "least to Python 3.10, before then, and "
-                + f"then update {_package_label}.",
+                + f"least to Python 3.10, and then update {_package_label}.",
                 FutureWarning,
             )
 
@@ -396,7 +389,10 @@ __all__ = (
     "WidgetServiceAsyncClient",
     "Action",
     "Agent",
+    "AgentCard",
+    "AgentInterface",
     "AgentServiceClient",
+    "AgentSkill",
     "AgentTool",
     "AgentTransfer",
     "AggregatedMetrics",
@@ -471,6 +467,7 @@ __all__ = (
     "EvaluationDataset",
     "EvaluationErrorInfo",
     "EvaluationExpectation",
+    "EvaluationMetricsConfig",
     "EvaluationMetricsThresholds",
     "EvaluationPersona",
     "EvaluationResult",
@@ -483,9 +480,14 @@ __all__ = (
     "ExecuteToolRequest",
     "ExecuteToolResponse",
     "ExecutionType",
+    "ExperimentConfig",
     "ExportAppRequest",
     "ExportAppResponse",
+    "ExportEvaluationResultsOperationMetadata",
+    "ExportEvaluationResultsRequest",
     "ExportEvaluationResultsResponse",
+    "ExportEvaluationRunsOperationMetadata",
+    "ExportEvaluationRunsRequest",
     "ExportEvaluationRunsResponse",
     "ExportEvaluationsRequest",
     "ExportEvaluationsResponse",
@@ -566,6 +568,8 @@ __all__ = (
     "ListToolsetsResponse",
     "LoggingSettings",
     "McpTool",
+    "McpToolDefinition",
+    "McpToolOverride",
     "McpToolset",
     "Message",
     "MetricAnalysisSettings",
@@ -587,6 +591,7 @@ __all__ = (
     "QualityReport",
     "RecognitionResult",
     "RedactionConfig",
+    "RemoteAgentTool",
     "RestoreAppVersionRequest",
     "RestoreAppVersionResponse",
     "RetrieveToolSchemaRequest",
@@ -596,6 +601,9 @@ __all__ = (
     "RunEvaluationOperationMetadata",
     "RunEvaluationRequest",
     "RunEvaluationResponse",
+    "RunEvaluationResultMetricsOperationMetadata",
+    "RunEvaluationResultMetricsRequest",
+    "RunEvaluationResultMetricsResponse",
     "RunSessionRequest",
     "RunSessionResponse",
     "ScheduledEvaluationRun",
@@ -640,6 +648,7 @@ __all__ = (
     "UpdateToolsetRequest",
     "UploadEvaluationAudioRequest",
     "UploadEvaluationAudioResponse",
+    "VpcScSettings",
     "WebSearchQuery",
     "WidgetServiceClient",
     "WidgetTool",

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -58,9 +58,10 @@ extras = {
     # experimental in this SDK. More info in b/465352227
     "grpc": [
         "google-api-core[grpc] >= 2.27.0, < 3.0.0",
-        "grpcio >= 1.33.2, < 2.0.0; python_version < '3.14'",
+        "grpcio >= 1.59.0, < 2.0.0; python_version < '3.14'",
         "grpcio >= 1.75.1, < 2.0.0; python_version >= '3.14'",
-        "grpcio-status >= 1.76.0, < 2.0.0",
+        "grpcio-status >= 1.59.0, < 2.0.0; python_version < '3.14'",
+        "grpcio-status >= 1.75.1, < 2.0.0; python_version >= '3.14'",
         "proto-plus >= 1.22.3, <2.0.0; python_version < '3.13'",
         "proto-plus >= 1.25.0, <2.0.0; python_version >= '3.13'",
         "protobuf >= 4.25.8, < 8.0.0",
@@ -116,7 +117,7 @@ setuptools.setup(
     long_description=readme,
     author="Google LLC",
     author_email="googleapis-packages@google.com",
-    license="Apache 2.0",
+    license="Apache-2.0",
     url=url,
     classifiers=[
         release_status,
@@ -124,7 +125,6 @@ setuptools.setup(
         "License :: OSI Approved :: Apache Software License",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
         "Programming Language :: Python :: 3.12",
@@ -135,7 +135,7 @@ setuptools.setup(
     ],
     platforms="Posix; MacOS X; Windows",
     packages=packages,
-    python_requires=">=3.9",
+    python_requires=">=3.10",
     install_requires=dependencies,
     extras_require=extras,
     include_package_data=True,

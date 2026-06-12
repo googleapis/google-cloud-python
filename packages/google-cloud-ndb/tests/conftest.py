@@ -19,17 +19,14 @@ modules.
 """
 
 import os
-
-from google.cloud import environment_vars
-from google.cloud.ndb import context as context_module
-from google.cloud.ndb import _eventloop
-from google.cloud.ndb import global_cache as global_cache_module
-from google.cloud.ndb import model
-from google.cloud.ndb import utils
+from unittest import mock
 
 import pytest
 
-from unittest import mock
+from google.cloud import environment_vars
+from google.cloud.ndb import _eventloop, model, utils
+from google.cloud.ndb import context as context_module
+from google.cloud.ndb import global_cache as global_cache_module
 
 utils.DEBUG = True
 
@@ -98,7 +95,7 @@ def context_factory():
             eventloop=TestingEventLoop(),
             datastore_policy=True,
             legacy_data=False,
-            **kwargs
+            **kwargs,
         )
         return context
 

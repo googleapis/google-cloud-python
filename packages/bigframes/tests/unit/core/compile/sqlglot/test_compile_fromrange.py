@@ -32,4 +32,4 @@ def test_compile_fromrange(compiler_session, snapshot):
     sql, _, _ = df.resample(rule="7s")._block.to_sql_query(
         include_index=True, enable_cache=False
     )
-    snapshot.assert_match(sql, "out.sql")
+    snapshot.assert_match(sql.strip() + "\n", "out.sql")

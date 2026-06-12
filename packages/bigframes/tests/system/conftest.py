@@ -22,9 +22,12 @@ import typing
 from datetime import datetime
 from typing import Dict, Generator, Optional
 
+import fsspec  # type: ignore[import-untyped]
+import gcsfs  # type: ignore[import-untyped]
 import google.api_core.exceptions
 import google.cloud.bigquery as bigquery
 import google.cloud.bigquery_connection_v1 as bigquery_connection_v1
+import google.cloud.bigquery_storage_v1
 import google.cloud.exceptions
 import google.cloud.functions_v2 as functions_v2
 import google.cloud.resourcemanager_v3 as resourcemanager_v3
@@ -70,6 +73,15 @@ def _hash_digest_file(hasher, filepath):
             hasher.update(chunk)
 
 
+@pytest.fixture(scope="session", autouse=True)
+def configure_gcsfs():
+    # gcsfs by default uses a cache that can be stale, causing file loads to
+    # fail if the file was uploaded indirectly (eg via bq export job) during the
+    # course of the tests. disable the cache to avoid this.
+    fsspec.config.conf["gcs"] = {"use_listings_cache": False}
+    gcsfs.GCSFileSystem.clear_instance_cache()
+
+
 @pytest.fixture(scope="session")
 def tokyo_location() -> str:
     return TOKYO_LOCATION
@@ -101,6 +113,13 @@ def gcs_folder(gcs_client: storage.Client):
 @pytest.fixture(scope="session")
 def bigquery_client(session: bigframes.Session) -> bigquery.Client:
     return session.bqclient
+
+
+@pytest.fixture(scope="session")
+def bigquery_storage_read_client(
+    session: bigframes.Session,
+) -> google.cloud.bigquery_storage_v1.BigQueryReadClient:
+    return session.bqstoragereadclient
 
 
 @pytest.fixture(scope="session")
@@ -1306,6 +1325,14 @@ def usa_names_grouped_table(
         return session.bqclient.get_table(table_id)
 
 
+@pytest.fixture(scope="session", autouse=True)
+def use_sqlglot_compiler():
+    original_setting = bigframes.options.experiments.sql_compiler
+    bigframes.options.experiments.sql_compiler = "experimental"
+    yield
+    bigframes.options.experiments.sql_compiler = original_setting
+
+
 @pytest.fixture()
 def restore_sampling_settings():
     enable_downsampling = bigframes.options.sampling.enable_downsampling
@@ -1499,16 +1526,6 @@ def images_uris() -> list[str]:
     ]
 
 
-@pytest.fixture(scope="session")
-def images_mm_df(
-    images_uris, session: bigframes.Session, bq_connection: str
-) -> bpd.DataFrame:
-    blob_series = bpd.Series(images_uris, session=session).str.to_blob(
-        connection=bq_connection
-    )
-    return blob_series.rename("blob_col").to_frame()
-
-
 @pytest.fixture()
 def reset_default_session_and_location():
     bpd.close_session()
@@ -1516,29 +1533,3 @@ def reset_default_session_and_location():
         yield
     bpd.close_session()
     bpd.options.bigquery.location = None
-
-
-@pytest.fixture(scope="session")
-def pdf_gcs_path() -> str:
-    return "gs://bigframes_blob_test/pdfs/*"
-
-
-@pytest.fixture(scope="session")
-def pdf_mm_df(
-    pdf_gcs_path, session: bigframes.Session, bq_connection: str
-) -> bpd.DataFrame:
-    return session.from_glob_path(pdf_gcs_path, name="pdf", connection=bq_connection)
-
-
-@pytest.fixture(scope="session")
-def audio_gcs_path() -> str:
-    return "gs://bigframes_blob_test/audio/*"
-
-
-@pytest.fixture(scope="session")
-def audio_mm_df(
-    audio_gcs_path, session: bigframes.Session, bq_connection: str
-) -> bpd.DataFrame:
-    return session.from_glob_path(
-        audio_gcs_path, name="audio", connection=bq_connection
-    )

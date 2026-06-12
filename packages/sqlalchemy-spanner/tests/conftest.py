@@ -14,15 +14,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import pytest
-from contextlib import contextmanager
 import importlib
-import google.cloud.spanner_v1._opentelemetry_tracing as spanner_tracing
+from contextlib import contextmanager
 from unittest.mock import MagicMock
+
+import google.cloud.spanner_v1._opentelemetry_tracing as spanner_tracing
+import pytest
 from sqlalchemy.dialects import registry
-from sqlalchemy.testing.schema import Column
-from sqlalchemy.testing.schema import Table
 from sqlalchemy.sql.elements import literal
+from sqlalchemy.testing.schema import Column, Table
 
 
 # Aggressively monkeypatch trace_call to avoid OpenTelemetry usage entirely.

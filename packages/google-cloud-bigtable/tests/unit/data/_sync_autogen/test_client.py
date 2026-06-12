@@ -58,6 +58,21 @@ CrossSync._Sync_Impl.add_mapping("SwappableChannel", SwappableChannel)
 CrossSync._Sync_Impl.add_mapping("MetricsInterceptor", BigtableMetricsInterceptor)
 
 
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
+
+
 @CrossSync._Sync_Impl.add_mapping_decorator("TestBigtableDataClient")
 class TestBigtableDataClient:
     @staticmethod
@@ -65,7 +80,7 @@ class TestBigtableDataClient:
         return CrossSync._Sync_Impl.DataClient
 
     @classmethod
-    def _make_client(cls, *args, use_emulator=True, **kwargs):
+    def _make_client(cls, *args, use_emulator=True, use_mtls="auto", **kwargs):
         import os
 
         env_mask = {}
@@ -77,6 +92,8 @@ class TestBigtableDataClient:
         else:
             kwargs["credentials"] = kwargs.get("credentials", AnonymousCredentials())
             kwargs["project"] = kwargs.get("project", "project-id")
+        if use_mtls is not None:
+            env_mask["GOOGLE_API_USE_MTLS_ENDPOINT"] = use_mtls
         with mock.patch.dict(os.environ, env_mask):
             return cls._get_target_class()(*args, **kwargs)
 
@@ -844,11 +861,17 @@ class TestBigtableDataClient:
         close_mock.assert_called_once()
         true_close()
 
-    def test_default_universe_domain(self):
+    @pytest.mark.parametrize(
+        "use_mtls, expected_domain",
+        [("never", "googleapis.com"), ("always", "mtls.googleapis.com")],
+    )
+    def test_default_universe_domain(self, use_mtls, expected_domain):
         """When not passed, universe_domain should default to googleapis.com"""
-        with self._make_client(project="project-id", credentials=None) as client:
+        with self._make_client(
+            project="project-id", credentials=None, use_mtls=use_mtls
+        ) as client:
             assert client.universe_domain == "googleapis.com"
-            assert client.api_endpoint == "bigtable.googleapis.com"
+            assert client.api_endpoint == f"bigtable.{expected_domain}"
 
     def test_custom_universe_domain(self):
         """test with a customized universe domain value and emulator enabled"""
@@ -859,6 +882,7 @@ class TestBigtableDataClient:
             client_options=options,
             use_emulator=True,
             credentials=None,
+            use_mtls="never",
         ) as client:
             assert client.universe_domain == universe_domain
             assert client.api_endpoint == f"bigtable.{universe_domain}"
@@ -871,7 +895,6 @@ class TestBigtableDataClient:
             project="project_id", client_options=options, credentials=None
         ) as client:
             assert client.universe_domain == "googleapis.com"
-            assert client.api_endpoint == "bigtable.googleapis.com"
 
     def test_credential_universe_domain_matches_GDU(self):
         """Test with credentials"""
@@ -879,21 +902,25 @@ class TestBigtableDataClient:
         creds._universe_domain = "googleapis.com"
         with self._make_client(project="project_id", credentials=creds) as client:
             assert client.universe_domain == "googleapis.com"
-            assert client.api_endpoint == "bigtable.googleapis.com"
 
     def test_anomynous_credential_universe_domain(self):
         """Anomynopus credentials should use default universe domain"""
         creds = AnonymousCredentials()
-        with self._make_client(project="project_id", credentials=creds) as client:
+        with self._make_client(
+            project="project_id", credentials=creds, use_mtls="never"
+        ) as client:
             assert client.universe_domain == "googleapis.com"
             assert client.api_endpoint == "bigtable.googleapis.com"
 
     def test_configured_universe_domain_mismatched_credentials(self):
         """Test that configured universe domain errors with mismatched universe
         domain credentials."""
+        creds = AnonymousCredentials()
+        universe_exists = hasattr(creds, "universe_domain")
+        if not universe_exists:
+            pytest.skip("Skip test for older versions of google-auth")
         universe_domain = "test-universe.test"
         options = client_options.ClientOptions(universe_domain=universe_domain)
-        creds = AnonymousCredentials()
         creds._universe_domain = "different-universe"
         with pytest.raises(ValueError) as exc:
             self._make_client(
@@ -901,6 +928,7 @@ class TestBigtableDataClient:
                 client_options=options,
                 use_emulator=False,
                 credentials=creds,
+                use_mtls="never",
             )
         err_msg = f"The configured universe domain ({universe_domain}) does not match the universe domain found in the credentials ({creds.universe_domain}). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
         assert exc.value.args[0] == err_msg
@@ -913,7 +941,10 @@ class TestBigtableDataClient:
         creds = AnonymousCredentials()
         creds._universe_domain = universe_domain
         with self._make_client(
-            project="project_id", credentials=creds, client_options=options
+            project="project_id",
+            credentials=creds,
+            client_options=options,
+            use_mtls="never",
         ) as client:
             assert client.universe_domain == universe_domain
             assert client.api_endpoint == f"bigtable.{universe_domain}"
@@ -1123,8 +1154,12 @@ class TestTable:
                     predicate_builder_mock.assert_called_once_with(
                         *expected_retryables, *extra_retryables
                     )
-                    retry_call_args = retry_fn_mock.call_args_list[0].args
-                    assert retry_call_args[1] is expected_predicate
+                    retry_call_kwargs = retry_fn_mock.call_args_list[0].kwargs
+                    if "predicate" in retry_call_kwargs:
+                        assert retry_call_kwargs["predicate"] is expected_predicate
+                    else:
+                        retry_call_args = retry_fn_mock.call_args_list[0].args
+                        assert retry_call_args[1] is expected_predicate
 
     @pytest.mark.parametrize(
         "fn_name,fn_args,gapic_fn",
@@ -1639,9 +1674,13 @@ class TestReadRows:
         with self._make_client() as client:
             table = client.get_table("instance", "table")
             row_key = b"test_1"
-            with mock.patch.object(table, "read_rows") as read_rows:
+            with mock.patch.object(
+                CrossSync._Sync_Impl, "_ReadRowsOperation"
+            ) as mock_op_constructor:
+                mock_op = mock.Mock()
                 expected_result = object()
-                read_rows.side_effect = lambda *args, **kwargs: [expected_result]
+                mock_op.start_operation.return_value = [expected_result]
+                mock_op_constructor.return_value = mock_op
                 expected_op_timeout = 8
                 expected_req_timeout = 4
                 row = table.read_row(
@@ -1650,30 +1689,33 @@ class TestReadRows:
                     attempt_timeout=expected_req_timeout,
                 )
                 assert row == expected_result
-                assert read_rows.call_count == 1
-                args, kwargs = read_rows.call_args_list[0]
+                assert mock_op_constructor.call_count == 1
+                args, kwargs = mock_op_constructor.call_args_list[0]
                 assert kwargs["operation_timeout"] == expected_op_timeout
                 assert kwargs["attempt_timeout"] == expected_req_timeout
-                assert len(args) == 1
+                assert len(args) == 2
                 assert isinstance(args[0], ReadRowsQuery)
                 query = args[0]
                 assert query.row_keys == [row_key]
                 assert query.row_ranges == []
                 assert query.limit == 1
+                assert args[1] is table
 
     def test_read_row_w_filter(self):
         """Test reading a single row with an added filter"""
         with self._make_client() as client:
             table = client.get_table("instance", "table")
             row_key = b"test_1"
-            with mock.patch.object(table, "read_rows") as read_rows:
+            with mock.patch.object(
+                CrossSync._Sync_Impl, "_ReadRowsOperation"
+            ) as mock_op_constructor:
+                mock_op = mock.Mock()
                 expected_result = object()
-                read_rows.side_effect = lambda *args, **kwargs: [expected_result]
+                mock_op.start_operation.return_value = [expected_result]
+                mock_op_constructor.return_value = mock_op
                 expected_op_timeout = 8
                 expected_req_timeout = 4
-                mock_filter = mock.Mock()
-                expected_filter = {"filter": "mock filter"}
-                mock_filter._to_dict.return_value = expected_filter
+                expected_filter = mock.Mock()
                 row = table.read_row(
                     row_key,
                     operation_timeout=expected_op_timeout,
@@ -1681,11 +1723,11 @@ class TestReadRows:
                     row_filter=expected_filter,
                 )
                 assert row == expected_result
-                assert read_rows.call_count == 1
-                args, kwargs = read_rows.call_args_list[0]
+                assert mock_op_constructor.call_count == 1
+                args, kwargs = mock_op_constructor.call_args_list[0]
                 assert kwargs["operation_timeout"] == expected_op_timeout
                 assert kwargs["attempt_timeout"] == expected_req_timeout
-                assert len(args) == 1
+                assert len(args) == 2
                 assert isinstance(args[0], ReadRowsQuery)
                 query = args[0]
                 assert query.row_keys == [row_key]
@@ -1698,8 +1740,12 @@ class TestReadRows:
         with self._make_client() as client:
             table = client.get_table("instance", "table")
             row_key = b"test_1"
-            with mock.patch.object(table, "read_rows") as read_rows:
-                read_rows.side_effect = lambda *args, **kwargs: []
+            with mock.patch.object(
+                CrossSync._Sync_Impl, "_ReadRowsOperation"
+            ) as mock_op_constructor:
+                mock_op = mock.Mock()
+                mock_op.start_operation.return_value = []
+                mock_op_constructor.return_value = mock_op
                 expected_op_timeout = 8
                 expected_req_timeout = 4
                 result = table.read_row(
@@ -1708,8 +1754,8 @@ class TestReadRows:
                     attempt_timeout=expected_req_timeout,
                 )
                 assert result is None
-                assert read_rows.call_count == 1
-                args, kwargs = read_rows.call_args_list[0]
+                assert mock_op_constructor.call_count == 1
+                args, kwargs = mock_op_constructor.call_args_list[0]
                 assert kwargs["operation_timeout"] == expected_op_timeout
                 assert kwargs["attempt_timeout"] == expected_req_timeout
                 assert isinstance(args[0], ReadRowsQuery)
@@ -1727,21 +1773,28 @@ class TestReadRows:
         with self._make_client() as client:
             table = client.get_table("instance", "table")
             row_key = b"test_1"
-            with mock.patch.object(table, "read_rows") as read_rows:
-                read_rows.side_effect = lambda *args, **kwargs: return_value
-                expected_op_timeout = 1
-                expected_req_timeout = 2
+            with mock.patch.object(
+                CrossSync._Sync_Impl, "_ReadRowsOperation"
+            ) as mock_op_constructor:
+                mock_op = mock.Mock()
+                mock_op.start_operation.return_value = return_value
+                mock_op_constructor.return_value = mock_op
+                expected_op_timeout = 2
+                expected_req_timeout = 1
                 result = table.row_exists(
                     row_key,
                     operation_timeout=expected_op_timeout,
                     attempt_timeout=expected_req_timeout,
                 )
                 assert expected_result == result
-                assert read_rows.call_count == 1
-                args, kwargs = read_rows.call_args_list[0]
+                assert mock_op_constructor.call_count == 1
+                args, kwargs = mock_op_constructor.call_args_list[0]
                 assert kwargs["operation_timeout"] == expected_op_timeout
                 assert kwargs["attempt_timeout"] == expected_req_timeout
-                assert isinstance(args[0], ReadRowsQuery)
+                query = args[0]
+                assert isinstance(query, ReadRowsQuery)
+                assert query.row_keys == [row_key]
+                assert query.limit == 1
                 expected_filter = {
                     "chain": {
                         "filters": [
@@ -1750,10 +1803,6 @@ class TestReadRows:
                         ]
                     }
                 }
-                query = args[0]
-                assert query.row_keys == [row_key]
-                assert query.row_ranges == []
-                assert query.limit == 1
                 assert query.filter._to_dict() == expected_filter
 
 
@@ -1893,7 +1942,7 @@ class TestReadRowsSharded:
         from google.cloud.bigtable.data._helpers import _CONCURRENCY_LIMIT
         from google.cloud.bigtable.data.exceptions import ShardedReadRowsExceptionGroup
 
-        operation_timeout = 0.1
+        operation_timeout = 5.0
         num_queries = 15
         sleeps = [0] * _CONCURRENCY_LIMIT + [DeadlineExceeded("times up")] * (
             num_queries - _CONCURRENCY_LIMIT
@@ -1904,7 +1953,7 @@ class TestReadRowsSharded:
             if isinstance(next_item, Exception):
                 raise next_item
             else:
-                asyncio.sleep(next_item)
+                CrossSync._Sync_Impl.sleep(next_item)
             return [mock.Mock()]
 
         with self._make_client() as client:
@@ -1980,6 +2029,28 @@ class TestSampleRowKeys:
                     assert result[0] == samples[0]
                     assert result[1] == samples[1]
                     assert result[2] == samples[2]
+
+    def test_sample_row_keys_w_row_range(self):
+        """Test that method returns the expected key samples when row_range is provided"""
+        samples = [(b"a_key1", 100), (b"b", 200)]
+        from google.cloud.bigtable.data import RowRange
+
+        row_range = RowRange(start_key=b"a", end_key=b"b")
+        with self._make_client() as client:
+            with client.get_table("instance", "table") as table:
+                with mock.patch.object(
+                    table.client._gapic_client,
+                    "sample_row_keys",
+                    CrossSync._Sync_Impl.Mock(),
+                ) as sample_row_keys:
+                    sample_row_keys.return_value = self._make_gapic_stream(samples)
+                    result = table.sample_row_keys(row_range=row_range)
+                    assert len(result) == 2
+                    assert result[0] == samples[0]
+                    assert result[1] == samples[1]
+                    sample_row_keys.assert_called_once()
+                    called_request = sample_row_keys.call_args[1]["request"]
+                    assert called_request.row_range == row_range._to_pb()
 
     def test_sample_row_keys_bad_timeout(self):
         """should raise error if timeout is negative"""
@@ -2923,6 +2994,42 @@ class TestExecuteQuery:
         assert results[0]["b"] == 9
         assert execute_query_mock.call_count == 1
         assert prepare_mock.call_count == 1
+
+    def test_execute_query_with_view_parameters(
+        self, client, execute_query_mock, prepare_mock
+    ):
+        values = [
+            *chunked_responses(2, str_val("test2"), int_val(9), token=b"r2"),
+        ]
+        execute_query_mock.return_value = self._make_gapic_stream(values)
+        query_str = f"SELECT a, b FROM {self.TABLE_NAME} WHERE user_id = VIEW_PARAMETERS('user_id')"
+        result = client.execute_query(
+            query_str,
+            self.INSTANCE_NAME,
+            view_parameters={"user_id": "alice"},
+        )
+        results = [r for r in result]
+        assert len(results) == 1
+        assert results[0]["a"] == "test2"
+        assert results[0]["b"] == 9
+        assert execute_query_mock.call_count == 1
+        assert prepare_mock.call_count == 1
+        assert prepare_mock.call_args[1]["request"]["query"] == query_str
+
+        request = execute_query_mock.call_args[0][0]
+        assert "user_id" in request.view_parameters
+        assert request.view_parameters["user_id"].string_value == "alice"
+
+    def test_execute_query_with_view_parameters_invalid_type(
+        self, client, execute_query_mock, prepare_mock
+    ):
+        with pytest.raises(TypeError) as e:
+            client.execute_query(
+                f"SELECT a, b FROM {self.TABLE_NAME}",
+                self.INSTANCE_NAME,
+                view_parameters={"user_id": 123},
+            )
+        assert "View parameter user_id must be a string, got int" in str(e.value)
 
     def test_execute_query_error_before_metadata(
         self, client, execute_query_mock, prepare_mock

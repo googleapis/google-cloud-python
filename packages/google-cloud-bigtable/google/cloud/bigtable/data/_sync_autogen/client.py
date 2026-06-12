@@ -57,7 +57,11 @@ from google.cloud.bigtable.data._helpers import (
     _validate_timeouts,
     _WarmedInstanceKey,
 )
-from google.cloud.bigtable.data._metrics import BigtableClientSideMetricsController
+from google.cloud.bigtable.data._metrics import (
+    BigtableClientSideMetricsController,
+    OperationType,
+    tracked_retry,
+)
 from google.cloud.bigtable.data._sync_autogen._swappable_channel import (
     SwappableChannel as SwappableChannelType,
 )
@@ -71,6 +75,7 @@ from google.cloud.bigtable.data.exceptions import (
 )
 from google.cloud.bigtable.data.execute_query._parameters_formatting import (
     _format_execute_query_params,
+    _format_execute_query_view_params,
     _to_param_types,
 )
 from google.cloud.bigtable.data.execute_query.metadata import (
@@ -80,7 +85,7 @@ from google.cloud.bigtable.data.execute_query.metadata import (
 from google.cloud.bigtable.data.execute_query.values import ExecuteQueryValueType
 from google.cloud.bigtable.data.mutations import Mutation, RowMutationEntry
 from google.cloud.bigtable.data.read_modify_write_rules import ReadModifyWriteRule
-from google.cloud.bigtable.data.read_rows_query import ReadRowsQuery
+from google.cloud.bigtable.data.read_rows_query import ReadRowsQuery, RowRange
 from google.cloud.bigtable.data.row import Row
 from google.cloud.bigtable.data.row_filters import (
     CellsRowLimitFilter,
@@ -180,7 +185,8 @@ class BigtableDataClient(ClientWithProject):
         )
         if (
             credentials
-            and credentials.universe_domain != self.universe_domain
+            and hasattr(credentials, "universe_domain")
+            and (credentials.universe_domain != self.universe_domain)
             and (self._emulator_host is None)
         ):
             raise ValueError(
@@ -527,6 +533,7 @@ class BigtableDataClient(ClientWithProject):
         *,
         parameters: dict[str, ExecuteQueryValueType] | None = None,
         parameter_types: dict[str, SqlType.Type] | None = None,
+        view_parameters: dict[str, str] | None = None,
         app_profile_id: str | None = None,
         operation_timeout: float = 600,
         attempt_timeout: float | None = 20,
@@ -567,6 +574,8 @@ class BigtableDataClient(ClientWithProject):
                 Required to contain entries only for parameters whose type cannot be
                 detected automatically (i.e. the value can be None, an empty list or
                 an empty dict).
+            view_parameters: Dictionary with values for all view parameters. Currently only
+                string values are supported.
             app_profile_id: The app profile to associate with requests.
                 https://cloud.google.com/bigtable/docs/app-profiles
             operation_timeout: the time budget for the entire executeQuery operation, in seconds.
@@ -687,11 +696,13 @@ class BigtableDataClient(ClientWithProject):
         prepare_metadata = _pb_metadata_to_metadata_types(prepare_result.metadata)
         retryable_excs = [_get_error_type(e) for e in retryable_errors]
         pb_params = _format_execute_query_params(parameters, parameter_types)
+        pb_view_params = _format_execute_query_view_params(view_parameters)
         request_body = {
             "instance_name": instance_name,
             "app_profile_id": app_profile_id,
             "prepared_query": prepare_result.prepared_query,
             "params": pb_params,
+            "view_parameters": pb_view_params,
         }
         operation_timeout, attempt_timeout = _align_timeouts(
             operation_timeout, attempt_timeout
@@ -902,6 +913,9 @@ class _DataApiTarget(abc.ABC):
             self,
             operation_timeout=operation_timeout,
             attempt_timeout=attempt_timeout,
+            metric=self._metrics.create_operation(
+                OperationType.READ_ROWS, is_streaming=True
+            ),
             retryable_exceptions=retryable_excs,
         )
         return row_merger.start_operation()
@@ -988,15 +1002,26 @@ class _DataApiTarget(abc.ABC):
         if row_key is None:
             raise ValueError("row_key must be string or bytes")
         query = ReadRowsQuery(row_keys=row_key, row_filter=row_filter, limit=1)
-        results = self.read_rows(
+        operation_timeout, attempt_timeout = _get_timeouts(
+            operation_timeout, attempt_timeout, self
+        )
+        retryable_excs = _get_retryable_errors(retryable_errors, self)
+        row_merger = CrossSync._Sync_Impl._ReadRowsOperation(
             query,
+            self,
             operation_timeout=operation_timeout,
             attempt_timeout=attempt_timeout,
-            retryable_errors=retryable_errors,
+            metric=self._metrics.create_operation(
+                OperationType.READ_ROWS, is_streaming=False
+            ),
+            retryable_exceptions=retryable_excs,
         )
-        if len(results) == 0:
+        results_generator = row_merger.start_operation()
+        try:
+            results = [a for a in results_generator]
+            return results[0]
+        except IndexError:
             return None
-        return results[0]
 
     def read_rows_sharded(
         self,
@@ -1044,10 +1069,12 @@ class _DataApiTarget(abc.ABC):
             operation_timeout, operation_timeout
         )
         concurrency_sem = CrossSync._Sync_Impl.Semaphore(_CONCURRENCY_LIMIT)
+        gen_lock = CrossSync._Sync_Impl.Semaphore(1)
 
         def read_rows_with_semaphore(query):
             with concurrency_sem:
-                shard_timeout = next(rpc_timeout_generator)
+                with gen_lock:
+                    shard_timeout = next(rpc_timeout_generator)
                 if shard_timeout <= 0:
                     raise DeadlineExceeded(
                         "Operation timeout exceeded before starting query"
@@ -1118,23 +1145,22 @@ class _DataApiTarget(abc.ABC):
                 will be chained with a RetryExceptionGroup containing GoogleAPIError exceptions
                 from any retries that failed
             google.api_core.exceptions.GoogleAPIError: raised if the request encounters an unrecoverable error"""
-        if row_key is None:
-            raise ValueError("row_key must be string or bytes")
         strip_filter = StripValueTransformerFilter(flag=True)
         limit_filter = CellsRowLimitFilter(1)
         chain_filter = RowFilterChain(filters=[limit_filter, strip_filter])
-        query = ReadRowsQuery(row_keys=row_key, limit=1, row_filter=chain_filter)
-        results = self.read_rows(
-            query,
+        result = self.read_row(
+            row_key=row_key,
+            row_filter=chain_filter,
             operation_timeout=operation_timeout,
             attempt_timeout=attempt_timeout,
             retryable_errors=retryable_errors,
         )
-        return len(results) > 0
+        return result is not None
 
     def sample_row_keys(
         self,
         *,
+        row_range: RowRange | None = None,
         operation_timeout: float | TABLE_DEFAULT = TABLE_DEFAULT.DEFAULT,
         attempt_timeout: float | None | TABLE_DEFAULT = TABLE_DEFAULT.DEFAULT,
         retryable_errors: Sequence[type[Exception]]
@@ -1151,6 +1177,8 @@ class _DataApiTarget(abc.ABC):
         row_keys, along with offset positions in the table
 
         Args:
+            row_range: the range of rows to sample. If not provided, samples the
+                entire table.
             operation_timeout: the time budget for the entire operation, in seconds.
                 Failed requests will be retried within the budget.i
                 Defaults to the Table's default_operation_timeout
@@ -1176,25 +1204,29 @@ class _DataApiTarget(abc.ABC):
         )
         retryable_excs = _get_retryable_errors(retryable_errors, self)
         predicate = retries.if_exception_type(*retryable_excs)
-        sleep_generator = retries.exponential_sleep_generator(0.01, 2, 60)
+        with self._metrics.create_operation(
+            OperationType.SAMPLE_ROW_KEYS
+        ) as operation_metric:
 
-        def execute_rpc():
-            results = self.client._gapic_client.sample_row_keys(
-                request=SampleRowKeysRequest(
-                    app_profile_id=self.app_profile_id, **self._request_path
-                ),
-                timeout=next(attempt_timeout_gen),
-                retry=None,
+            def execute_rpc():
+                results = self.client._gapic_client.sample_row_keys(
+                    request=SampleRowKeysRequest(
+                        app_profile_id=self.app_profile_id,
+                        row_range=row_range._to_pb() if row_range is not None else None,
+                        **self._request_path,
+                    ),
+                    timeout=next(attempt_timeout_gen),
+                    retry=None,
+                )
+                return [(s.row_key, s.offset_bytes) for s in results]
+
+            return tracked_retry(
+                retry_fn=CrossSync._Sync_Impl.retry_target,
+                operation=operation_metric,
+                target=execute_rpc,
+                predicate=predicate,
+                timeout=operation_timeout,
             )
-            return [(s.row_key, s.offset_bytes) for s in results]
-
-        return CrossSync._Sync_Impl.retry_target(
-            execute_rpc,
-            predicate,
-            sleep_generator,
-            operation_timeout,
-            exception_factory=_retry_exception_factory,
-        )
 
     def mutations_batcher(
         self,
@@ -1294,27 +1326,29 @@ class _DataApiTarget(abc.ABC):
             )
         else:
             predicate = retries.if_exception_type()
-        sleep_generator = retries.exponential_sleep_generator(0.01, 2, 60)
-        target = partial(
-            self.client._gapic_client.mutate_row,
-            request=MutateRowRequest(
-                row_key=row_key.encode("utf-8")
-                if isinstance(row_key, str)
-                else row_key,
-                mutations=[mutation._to_pb() for mutation in mutations_list],
-                app_profile_id=self.app_profile_id,
-                **self._request_path,
-            ),
-            timeout=attempt_timeout,
-            retry=None,
-        )
-        return CrossSync._Sync_Impl.retry_target(
-            target,
-            predicate,
-            sleep_generator,
-            operation_timeout,
-            exception_factory=_retry_exception_factory,
-        )
+        with self._metrics.create_operation(
+            OperationType.MUTATE_ROW
+        ) as operation_metric:
+            target = partial(
+                self.client._gapic_client.mutate_row,
+                request=MutateRowRequest(
+                    row_key=row_key.encode("utf-8")
+                    if isinstance(row_key, str)
+                    else row_key,
+                    mutations=[mutation._to_pb() for mutation in mutations_list],
+                    app_profile_id=self.app_profile_id,
+                    **self._request_path,
+                ),
+                timeout=attempt_timeout,
+                retry=None,
+            )
+            return tracked_retry(
+                retry_fn=CrossSync._Sync_Impl.retry_target,
+                operation=operation_metric,
+                target=target,
+                predicate=predicate,
+                timeout=operation_timeout,
+            )
 
     def bulk_mutate_rows(
         self,
@@ -1364,6 +1398,7 @@ class _DataApiTarget(abc.ABC):
             mutation_entries,
             operation_timeout,
             attempt_timeout,
+            metric=self._metrics.create_operation(OperationType.BULK_MUTATE_ROWS),
             retryable_exceptions=retryable_excs,
         )
         operation.start()
@@ -1418,21 +1453,24 @@ class _DataApiTarget(abc.ABC):
         ):
             false_case_mutations = [false_case_mutations]
         false_case_list = [m._to_pb() for m in false_case_mutations or []]
-        result = self.client._gapic_client.check_and_mutate_row(
-            request=CheckAndMutateRowRequest(
-                true_mutations=true_case_list,
-                false_mutations=false_case_list,
-                predicate_filter=predicate._to_pb() if predicate is not None else None,
-                row_key=row_key.encode("utf-8")
-                if isinstance(row_key, str)
-                else row_key,
-                app_profile_id=self.app_profile_id,
-                **self._request_path,
-            ),
-            timeout=operation_timeout,
-            retry=None,
-        )
-        return result.predicate_matched
+        with self._metrics.create_operation(OperationType.CHECK_AND_MUTATE):
+            result = self.client._gapic_client.check_and_mutate_row(
+                request=CheckAndMutateRowRequest(
+                    true_mutations=true_case_list,
+                    false_mutations=false_case_list,
+                    predicate_filter=predicate._to_pb()
+                    if predicate is not None
+                    else None,
+                    row_key=row_key.encode("utf-8")
+                    if isinstance(row_key, str)
+                    else row_key,
+                    app_profile_id=self.app_profile_id,
+                    **self._request_path,
+                ),
+                timeout=operation_timeout,
+                retry=None,
+            )
+            return result.predicate_matched
 
     def read_modify_write_row(
         self,
@@ -1469,19 +1507,20 @@ class _DataApiTarget(abc.ABC):
             rules = [rules]
         if not rules:
             raise ValueError("rules must contain at least one item")
-        result = self.client._gapic_client.read_modify_write_row(
-            request=ReadModifyWriteRowRequest(
-                rules=[rule._to_pb() for rule in rules],
-                row_key=row_key.encode("utf-8")
-                if isinstance(row_key, str)
-                else row_key,
-                app_profile_id=self.app_profile_id,
-                **self._request_path,
-            ),
-            timeout=operation_timeout,
-            retry=None,
-        )
-        return Row._from_pb(result.row)
+        with self._metrics.create_operation(OperationType.READ_MODIFY_WRITE):
+            result = self.client._gapic_client.read_modify_write_row(
+                request=ReadModifyWriteRowRequest(
+                    rules=[rule._to_pb() for rule in rules],
+                    row_key=row_key.encode("utf-8")
+                    if isinstance(row_key, str)
+                    else row_key,
+                    app_profile_id=self.app_profile_id,
+                    **self._request_path,
+                ),
+                timeout=operation_timeout,
+                retry=None,
+            )
+            return Row._from_pb(result.row)
 
     def close(self):
         """Called to close the Table instance and release any resources held by it."""

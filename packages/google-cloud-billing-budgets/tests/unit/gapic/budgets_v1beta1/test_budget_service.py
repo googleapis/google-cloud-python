@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -112,6 +107,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1299,8 +1309,8 @@ def test_budget_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        budget_service.CreateBudgetRequest,
-        dict,
+        budget_service.CreateBudgetRequest(),
+        {},
     ],
 )
 def test_create_budget(request_type, transport: str = "grpc"):
@@ -1311,7 +1321,7 @@ def test_create_budget(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_budget), "__call__") as call:
@@ -1359,9 +1369,10 @@ def test_create_budget_non_empty_request_with_auto_populated_field():
         client.create_budget(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == budget_service.CreateBudgetRequest(
+        request_msg = budget_service.CreateBudgetRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_budget_use_cached_wrapped_rpc():
@@ -1442,9 +1453,14 @@ async def test_create_budget_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_budget_async(
-    transport: str = "grpc_asyncio", request_type=budget_service.CreateBudgetRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        budget_service.CreateBudgetRequest(),
+        {},
+    ],
+)
+async def test_create_budget_async(request_type, transport: str = "grpc_asyncio"):
     client = BudgetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1452,7 +1468,7 @@ async def test_create_budget_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_budget), "__call__") as call:
@@ -1477,11 +1493,6 @@ async def test_create_budget_async(
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.etag == "etag_value"
-
-
-@pytest.mark.asyncio
-async def test_create_budget_async_from_dict():
-    await test_create_budget_async(request_type=dict)
 
 
 def test_create_budget_field_headers():
@@ -1546,8 +1557,8 @@ async def test_create_budget_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        budget_service.UpdateBudgetRequest,
-        dict,
+        budget_service.UpdateBudgetRequest(),
+        {},
     ],
 )
 def test_update_budget(request_type, transport: str = "grpc"):
@@ -1558,7 +1569,7 @@ def test_update_budget(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_budget), "__call__") as call:
@@ -1604,7 +1615,8 @@ def test_update_budget_non_empty_request_with_auto_populated_field():
         client.update_budget(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == budget_service.UpdateBudgetRequest()
+        request_msg = budget_service.UpdateBudgetRequest()
+        assert args[0] == request_msg
 
 
 def test_update_budget_use_cached_wrapped_rpc():
@@ -1685,9 +1697,14 @@ async def test_update_budget_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_budget_async(
-    transport: str = "grpc_asyncio", request_type=budget_service.UpdateBudgetRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        budget_service.UpdateBudgetRequest(),
+        {},
+    ],
+)
+async def test_update_budget_async(request_type, transport: str = "grpc_asyncio"):
     client = BudgetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1695,7 +1712,7 @@ async def test_update_budget_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_budget), "__call__") as call:
@@ -1720,11 +1737,6 @@ async def test_update_budget_async(
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.etag == "etag_value"
-
-
-@pytest.mark.asyncio
-async def test_update_budget_async_from_dict():
-    await test_update_budget_async(request_type=dict)
 
 
 def test_update_budget_field_headers():
@@ -1789,8 +1801,8 @@ async def test_update_budget_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        budget_service.GetBudgetRequest,
-        dict,
+        budget_service.GetBudgetRequest(),
+        {},
     ],
 )
 def test_get_budget(request_type, transport: str = "grpc"):
@@ -1801,7 +1813,7 @@ def test_get_budget(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_budget), "__call__") as call:
@@ -1849,9 +1861,10 @@ def test_get_budget_non_empty_request_with_auto_populated_field():
         client.get_budget(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == budget_service.GetBudgetRequest(
+        request_msg = budget_service.GetBudgetRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_budget_use_cached_wrapped_rpc():
@@ -1930,9 +1943,14 @@ async def test_get_budget_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_get_budget_async(
-    transport: str = "grpc_asyncio", request_type=budget_service.GetBudgetRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        budget_service.GetBudgetRequest(),
+        {},
+    ],
+)
+async def test_get_budget_async(request_type, transport: str = "grpc_asyncio"):
     client = BudgetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1940,7 +1958,7 @@ async def test_get_budget_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_budget), "__call__") as call:
@@ -1965,11 +1983,6 @@ async def test_get_budget_async(
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.etag == "etag_value"
-
-
-@pytest.mark.asyncio
-async def test_get_budget_async_from_dict():
-    await test_get_budget_async(request_type=dict)
 
 
 def test_get_budget_field_headers():
@@ -2034,8 +2047,8 @@ async def test_get_budget_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        budget_service.ListBudgetsRequest,
-        dict,
+        budget_service.ListBudgetsRequest(),
+        {},
     ],
 )
 def test_list_budgets(request_type, transport: str = "grpc"):
@@ -2046,7 +2059,7 @@ def test_list_budgets(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_budgets), "__call__") as call:
@@ -2092,11 +2105,12 @@ def test_list_budgets_non_empty_request_with_auto_populated_field():
         client.list_budgets(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == budget_service.ListBudgetsRequest(
+        request_msg = budget_service.ListBudgetsRequest(
             parent="parent_value",
             scope="scope_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_budgets_use_cached_wrapped_rpc():
@@ -2177,9 +2191,14 @@ async def test_list_budgets_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_budgets_async(
-    transport: str = "grpc_asyncio", request_type=budget_service.ListBudgetsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        budget_service.ListBudgetsRequest(),
+        {},
+    ],
+)
+async def test_list_budgets_async(request_type, transport: str = "grpc_asyncio"):
     client = BudgetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2187,7 +2206,7 @@ async def test_list_budgets_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_budgets), "__call__") as call:
@@ -2208,11 +2227,6 @@ async def test_list_budgets_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListBudgetsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_budgets_async_from_dict():
-    await test_list_budgets_async(request_type=dict)
 
 
 def test_list_budgets_field_headers():
@@ -2460,11 +2474,7 @@ async def test_list_budgets_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_budgets(request={})
-        ).pages:
+        async for page_ in (await client.list_budgets(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -2473,8 +2483,8 @@ async def test_list_budgets_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        budget_service.DeleteBudgetRequest,
-        dict,
+        budget_service.DeleteBudgetRequest(),
+        {},
     ],
 )
 def test_delete_budget(request_type, transport: str = "grpc"):
@@ -2485,7 +2495,7 @@ def test_delete_budget(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_budget), "__call__") as call:
@@ -2526,9 +2536,10 @@ def test_delete_budget_non_empty_request_with_auto_populated_field():
         client.delete_budget(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == budget_service.DeleteBudgetRequest(
+        request_msg = budget_service.DeleteBudgetRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_budget_use_cached_wrapped_rpc():
@@ -2609,9 +2620,14 @@ async def test_delete_budget_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_budget_async(
-    transport: str = "grpc_asyncio", request_type=budget_service.DeleteBudgetRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        budget_service.DeleteBudgetRequest(),
+        {},
+    ],
+)
+async def test_delete_budget_async(request_type, transport: str = "grpc_asyncio"):
     client = BudgetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2619,7 +2635,7 @@ async def test_delete_budget_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_budget), "__call__") as call:
@@ -2635,11 +2651,6 @@ async def test_delete_budget_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_budget_async_from_dict():
-    await test_delete_budget_async(request_type=dict)
 
 
 def test_delete_budget_field_headers():
@@ -2823,7 +2834,6 @@ def test_create_budget_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = budget_service.CreateBudgetRequest()
-
         assert args[0] == request_msg
 
 
@@ -2844,7 +2854,6 @@ def test_update_budget_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = budget_service.UpdateBudgetRequest()
-
         assert args[0] == request_msg
 
 
@@ -2865,7 +2874,6 @@ def test_get_budget_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = budget_service.GetBudgetRequest()
-
         assert args[0] == request_msg
 
 
@@ -2886,7 +2894,6 @@ def test_list_budgets_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = budget_service.ListBudgetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -2907,7 +2914,6 @@ def test_delete_budget_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = budget_service.DeleteBudgetRequest()
-
         assert args[0] == request_msg
 
 
@@ -2950,7 +2956,6 @@ async def test_create_budget_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = budget_service.CreateBudgetRequest()
-
         assert args[0] == request_msg
 
 
@@ -2979,7 +2984,6 @@ async def test_update_budget_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = budget_service.UpdateBudgetRequest()
-
         assert args[0] == request_msg
 
 
@@ -3008,7 +3012,6 @@ async def test_get_budget_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = budget_service.GetBudgetRequest()
-
         assert args[0] == request_msg
 
 
@@ -3035,7 +3038,6 @@ async def test_list_budgets_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = budget_service.ListBudgetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -3058,7 +3060,6 @@ async def test_delete_budget_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = budget_service.DeleteBudgetRequest()
-
         assert args[0] == request_msg
 
 

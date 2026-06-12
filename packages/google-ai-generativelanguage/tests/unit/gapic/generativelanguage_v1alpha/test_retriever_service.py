@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -114,6 +109,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1349,8 +1359,8 @@ def test_retriever_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        retriever_service.CreateCorpusRequest,
-        dict,
+        retriever_service.CreateCorpusRequest(),
+        {},
     ],
 )
 def test_create_corpus(request_type, transport: str = "grpc"):
@@ -1361,7 +1371,7 @@ def test_create_corpus(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_corpus), "__call__") as call:
@@ -1405,7 +1415,8 @@ def test_create_corpus_non_empty_request_with_auto_populated_field():
         client.create_corpus(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == retriever_service.CreateCorpusRequest()
+        request_msg = retriever_service.CreateCorpusRequest()
+        assert args[0] == request_msg
 
 
 def test_create_corpus_use_cached_wrapped_rpc():
@@ -1486,9 +1497,14 @@ async def test_create_corpus_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_corpus_async(
-    transport: str = "grpc_asyncio", request_type=retriever_service.CreateCorpusRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        retriever_service.CreateCorpusRequest(),
+        {},
+    ],
+)
+async def test_create_corpus_async(request_type, transport: str = "grpc_asyncio"):
     client = RetrieverServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1496,7 +1512,7 @@ async def test_create_corpus_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_corpus), "__call__") as call:
@@ -1519,11 +1535,6 @@ async def test_create_corpus_async(
     assert isinstance(response, retriever.Corpus)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
-
-
-@pytest.mark.asyncio
-async def test_create_corpus_async_from_dict():
-    await test_create_corpus_async(request_type=dict)
 
 
 def test_create_corpus_flattened():
@@ -1609,8 +1620,8 @@ async def test_create_corpus_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        retriever_service.GetCorpusRequest,
-        dict,
+        retriever_service.GetCorpusRequest(),
+        {},
     ],
 )
 def test_get_corpus(request_type, transport: str = "grpc"):
@@ -1621,7 +1632,7 @@ def test_get_corpus(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_corpus), "__call__") as call:
@@ -1667,9 +1678,10 @@ def test_get_corpus_non_empty_request_with_auto_populated_field():
         client.get_corpus(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == retriever_service.GetCorpusRequest(
+        request_msg = retriever_service.GetCorpusRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_corpus_use_cached_wrapped_rpc():
@@ -1748,9 +1760,14 @@ async def test_get_corpus_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_get_corpus_async(
-    transport: str = "grpc_asyncio", request_type=retriever_service.GetCorpusRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        retriever_service.GetCorpusRequest(),
+        {},
+    ],
+)
+async def test_get_corpus_async(request_type, transport: str = "grpc_asyncio"):
     client = RetrieverServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1758,7 +1775,7 @@ async def test_get_corpus_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_corpus), "__call__") as call:
@@ -1781,11 +1798,6 @@ async def test_get_corpus_async(
     assert isinstance(response, retriever.Corpus)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
-
-
-@pytest.mark.asyncio
-async def test_get_corpus_async_from_dict():
-    await test_get_corpus_async(request_type=dict)
 
 
 def test_get_corpus_field_headers():
@@ -1930,8 +1942,8 @@ async def test_get_corpus_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        retriever_service.UpdateCorpusRequest,
-        dict,
+        retriever_service.UpdateCorpusRequest(),
+        {},
     ],
 )
 def test_update_corpus(request_type, transport: str = "grpc"):
@@ -1942,7 +1954,7 @@ def test_update_corpus(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_corpus), "__call__") as call:
@@ -1986,7 +1998,8 @@ def test_update_corpus_non_empty_request_with_auto_populated_field():
         client.update_corpus(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == retriever_service.UpdateCorpusRequest()
+        request_msg = retriever_service.UpdateCorpusRequest()
+        assert args[0] == request_msg
 
 
 def test_update_corpus_use_cached_wrapped_rpc():
@@ -2067,9 +2080,14 @@ async def test_update_corpus_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_corpus_async(
-    transport: str = "grpc_asyncio", request_type=retriever_service.UpdateCorpusRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        retriever_service.UpdateCorpusRequest(),
+        {},
+    ],
+)
+async def test_update_corpus_async(request_type, transport: str = "grpc_asyncio"):
     client = RetrieverServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2077,7 +2095,7 @@ async def test_update_corpus_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_corpus), "__call__") as call:
@@ -2100,11 +2118,6 @@ async def test_update_corpus_async(
     assert isinstance(response, retriever.Corpus)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
-
-
-@pytest.mark.asyncio
-async def test_update_corpus_async_from_dict():
-    await test_update_corpus_async(request_type=dict)
 
 
 def test_update_corpus_field_headers():
@@ -2259,8 +2272,8 @@ async def test_update_corpus_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        retriever_service.DeleteCorpusRequest,
-        dict,
+        retriever_service.DeleteCorpusRequest(),
+        {},
     ],
 )
 def test_delete_corpus(request_type, transport: str = "grpc"):
@@ -2271,7 +2284,7 @@ def test_delete_corpus(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_corpus), "__call__") as call:
@@ -2312,9 +2325,10 @@ def test_delete_corpus_non_empty_request_with_auto_populated_field():
         client.delete_corpus(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == retriever_service.DeleteCorpusRequest(
+        request_msg = retriever_service.DeleteCorpusRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_corpus_use_cached_wrapped_rpc():
@@ -2395,9 +2409,14 @@ async def test_delete_corpus_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_corpus_async(
-    transport: str = "grpc_asyncio", request_type=retriever_service.DeleteCorpusRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        retriever_service.DeleteCorpusRequest(),
+        {},
+    ],
+)
+async def test_delete_corpus_async(request_type, transport: str = "grpc_asyncio"):
     client = RetrieverServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2405,7 +2424,7 @@ async def test_delete_corpus_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_corpus), "__call__") as call:
@@ -2421,11 +2440,6 @@ async def test_delete_corpus_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_corpus_async_from_dict():
-    await test_delete_corpus_async(request_type=dict)
 
 
 def test_delete_corpus_field_headers():
@@ -2570,8 +2584,8 @@ async def test_delete_corpus_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        retriever_service.ListCorporaRequest,
-        dict,
+        retriever_service.ListCorporaRequest(),
+        {},
     ],
 )
 def test_list_corpora(request_type, transport: str = "grpc"):
@@ -2582,7 +2596,7 @@ def test_list_corpora(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_corpora), "__call__") as call:
@@ -2626,9 +2640,10 @@ def test_list_corpora_non_empty_request_with_auto_populated_field():
         client.list_corpora(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == retriever_service.ListCorporaRequest(
+        request_msg = retriever_service.ListCorporaRequest(
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_corpora_use_cached_wrapped_rpc():
@@ -2709,9 +2724,14 @@ async def test_list_corpora_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_corpora_async(
-    transport: str = "grpc_asyncio", request_type=retriever_service.ListCorporaRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        retriever_service.ListCorporaRequest(),
+        {},
+    ],
+)
+async def test_list_corpora_async(request_type, transport: str = "grpc_asyncio"):
     client = RetrieverServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2719,7 +2739,7 @@ async def test_list_corpora_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_corpora), "__call__") as call:
@@ -2740,11 +2760,6 @@ async def test_list_corpora_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListCorporaAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_corpora_async_from_dict():
-    await test_list_corpora_async(request_type=dict)
 
 
 def test_list_corpora_pager(transport_name: str = "grpc"):
@@ -2928,11 +2943,7 @@ async def test_list_corpora_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_corpora(request={})
-        ).pages:
+        async for page_ in (await client.list_corpora(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -2941,8 +2952,8 @@ async def test_list_corpora_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        retriever_service.QueryCorpusRequest,
-        dict,
+        retriever_service.QueryCorpusRequest(),
+        {},
     ],
 )
 def test_query_corpus(request_type, transport: str = "grpc"):
@@ -2953,7 +2964,7 @@ def test_query_corpus(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.query_corpus), "__call__") as call:
@@ -2995,10 +3006,11 @@ def test_query_corpus_non_empty_request_with_auto_populated_field():
         client.query_corpus(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == retriever_service.QueryCorpusRequest(
+        request_msg = retriever_service.QueryCorpusRequest(
             name="name_value",
             query="query_value",
         )
+        assert args[0] == request_msg
 
 
 def test_query_corpus_use_cached_wrapped_rpc():
@@ -3079,9 +3091,14 @@ async def test_query_corpus_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_query_corpus_async(
-    transport: str = "grpc_asyncio", request_type=retriever_service.QueryCorpusRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        retriever_service.QueryCorpusRequest(),
+        {},
+    ],
+)
+async def test_query_corpus_async(request_type, transport: str = "grpc_asyncio"):
     client = RetrieverServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3089,7 +3106,7 @@ async def test_query_corpus_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.query_corpus), "__call__") as call:
@@ -3107,11 +3124,6 @@ async def test_query_corpus_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, retriever_service.QueryCorpusResponse)
-
-
-@pytest.mark.asyncio
-async def test_query_corpus_async_from_dict():
-    await test_query_corpus_async(request_type=dict)
 
 
 def test_query_corpus_field_headers():
@@ -3178,8 +3190,8 @@ async def test_query_corpus_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        retriever_service.CreateDocumentRequest,
-        dict,
+        retriever_service.CreateDocumentRequest(),
+        {},
     ],
 )
 def test_create_document(request_type, transport: str = "grpc"):
@@ -3190,7 +3202,7 @@ def test_create_document(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_document), "__call__") as call:
@@ -3236,9 +3248,10 @@ def test_create_document_non_empty_request_with_auto_populated_field():
         client.create_document(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == retriever_service.CreateDocumentRequest(
+        request_msg = retriever_service.CreateDocumentRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_document_use_cached_wrapped_rpc():
@@ -3319,10 +3332,14 @@ async def test_create_document_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_document_async(
-    transport: str = "grpc_asyncio",
-    request_type=retriever_service.CreateDocumentRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        retriever_service.CreateDocumentRequest(),
+        {},
+    ],
+)
+async def test_create_document_async(request_type, transport: str = "grpc_asyncio"):
     client = RetrieverServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3330,7 +3347,7 @@ async def test_create_document_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_document), "__call__") as call:
@@ -3353,11 +3370,6 @@ async def test_create_document_async(
     assert isinstance(response, retriever.Document)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
-
-
-@pytest.mark.asyncio
-async def test_create_document_async_from_dict():
-    await test_create_document_async(request_type=dict)
 
 
 def test_create_document_field_headers():
@@ -3512,8 +3524,8 @@ async def test_create_document_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        retriever_service.GetDocumentRequest,
-        dict,
+        retriever_service.GetDocumentRequest(),
+        {},
     ],
 )
 def test_get_document(request_type, transport: str = "grpc"):
@@ -3524,7 +3536,7 @@ def test_get_document(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_document), "__call__") as call:
@@ -3570,9 +3582,10 @@ def test_get_document_non_empty_request_with_auto_populated_field():
         client.get_document(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == retriever_service.GetDocumentRequest(
+        request_msg = retriever_service.GetDocumentRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_document_use_cached_wrapped_rpc():
@@ -3653,9 +3666,14 @@ async def test_get_document_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_document_async(
-    transport: str = "grpc_asyncio", request_type=retriever_service.GetDocumentRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        retriever_service.GetDocumentRequest(),
+        {},
+    ],
+)
+async def test_get_document_async(request_type, transport: str = "grpc_asyncio"):
     client = RetrieverServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3663,7 +3681,7 @@ async def test_get_document_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_document), "__call__") as call:
@@ -3686,11 +3704,6 @@ async def test_get_document_async(
     assert isinstance(response, retriever.Document)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
-
-
-@pytest.mark.asyncio
-async def test_get_document_async_from_dict():
-    await test_get_document_async(request_type=dict)
 
 
 def test_get_document_field_headers():
@@ -3835,8 +3848,8 @@ async def test_get_document_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        retriever_service.UpdateDocumentRequest,
-        dict,
+        retriever_service.UpdateDocumentRequest(),
+        {},
     ],
 )
 def test_update_document(request_type, transport: str = "grpc"):
@@ -3847,7 +3860,7 @@ def test_update_document(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_document), "__call__") as call:
@@ -3891,7 +3904,8 @@ def test_update_document_non_empty_request_with_auto_populated_field():
         client.update_document(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == retriever_service.UpdateDocumentRequest()
+        request_msg = retriever_service.UpdateDocumentRequest()
+        assert args[0] == request_msg
 
 
 def test_update_document_use_cached_wrapped_rpc():
@@ -3972,10 +3986,14 @@ async def test_update_document_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_document_async(
-    transport: str = "grpc_asyncio",
-    request_type=retriever_service.UpdateDocumentRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        retriever_service.UpdateDocumentRequest(),
+        {},
+    ],
+)
+async def test_update_document_async(request_type, transport: str = "grpc_asyncio"):
     client = RetrieverServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3983,7 +4001,7 @@ async def test_update_document_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_document), "__call__") as call:
@@ -4006,11 +4024,6 @@ async def test_update_document_async(
     assert isinstance(response, retriever.Document)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
-
-
-@pytest.mark.asyncio
-async def test_update_document_async_from_dict():
-    await test_update_document_async(request_type=dict)
 
 
 def test_update_document_field_headers():
@@ -4165,8 +4178,8 @@ async def test_update_document_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        retriever_service.DeleteDocumentRequest,
-        dict,
+        retriever_service.DeleteDocumentRequest(),
+        {},
     ],
 )
 def test_delete_document(request_type, transport: str = "grpc"):
@@ -4177,7 +4190,7 @@ def test_delete_document(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_document), "__call__") as call:
@@ -4218,9 +4231,10 @@ def test_delete_document_non_empty_request_with_auto_populated_field():
         client.delete_document(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == retriever_service.DeleteDocumentRequest(
+        request_msg = retriever_service.DeleteDocumentRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_document_use_cached_wrapped_rpc():
@@ -4301,10 +4315,14 @@ async def test_delete_document_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_document_async(
-    transport: str = "grpc_asyncio",
-    request_type=retriever_service.DeleteDocumentRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        retriever_service.DeleteDocumentRequest(),
+        {},
+    ],
+)
+async def test_delete_document_async(request_type, transport: str = "grpc_asyncio"):
     client = RetrieverServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4312,7 +4330,7 @@ async def test_delete_document_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_document), "__call__") as call:
@@ -4328,11 +4346,6 @@ async def test_delete_document_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_document_async_from_dict():
-    await test_delete_document_async(request_type=dict)
 
 
 def test_delete_document_field_headers():
@@ -4477,8 +4490,8 @@ async def test_delete_document_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        retriever_service.ListDocumentsRequest,
-        dict,
+        retriever_service.ListDocumentsRequest(),
+        {},
     ],
 )
 def test_list_documents(request_type, transport: str = "grpc"):
@@ -4489,7 +4502,7 @@ def test_list_documents(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_documents), "__call__") as call:
@@ -4534,10 +4547,11 @@ def test_list_documents_non_empty_request_with_auto_populated_field():
         client.list_documents(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == retriever_service.ListDocumentsRequest(
+        request_msg = retriever_service.ListDocumentsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_documents_use_cached_wrapped_rpc():
@@ -4618,9 +4632,14 @@ async def test_list_documents_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_documents_async(
-    transport: str = "grpc_asyncio", request_type=retriever_service.ListDocumentsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        retriever_service.ListDocumentsRequest(),
+        {},
+    ],
+)
+async def test_list_documents_async(request_type, transport: str = "grpc_asyncio"):
     client = RetrieverServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4628,7 +4647,7 @@ async def test_list_documents_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_documents), "__call__") as call:
@@ -4649,11 +4668,6 @@ async def test_list_documents_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDocumentsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_documents_async_from_dict():
-    await test_list_documents_async(request_type=dict)
 
 
 def test_list_documents_field_headers():
@@ -4983,11 +4997,7 @@ async def test_list_documents_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_documents(request={})
-        ).pages:
+        async for page_ in (await client.list_documents(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -4996,8 +5006,8 @@ async def test_list_documents_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        retriever_service.QueryDocumentRequest,
-        dict,
+        retriever_service.QueryDocumentRequest(),
+        {},
     ],
 )
 def test_query_document(request_type, transport: str = "grpc"):
@@ -5008,7 +5018,7 @@ def test_query_document(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.query_document), "__call__") as call:
@@ -5050,10 +5060,11 @@ def test_query_document_non_empty_request_with_auto_populated_field():
         client.query_document(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == retriever_service.QueryDocumentRequest(
+        request_msg = retriever_service.QueryDocumentRequest(
             name="name_value",
             query="query_value",
         )
+        assert args[0] == request_msg
 
 
 def test_query_document_use_cached_wrapped_rpc():
@@ -5134,9 +5145,14 @@ async def test_query_document_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_query_document_async(
-    transport: str = "grpc_asyncio", request_type=retriever_service.QueryDocumentRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        retriever_service.QueryDocumentRequest(),
+        {},
+    ],
+)
+async def test_query_document_async(request_type, transport: str = "grpc_asyncio"):
     client = RetrieverServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5144,7 +5160,7 @@ async def test_query_document_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.query_document), "__call__") as call:
@@ -5162,11 +5178,6 @@ async def test_query_document_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, retriever_service.QueryDocumentResponse)
-
-
-@pytest.mark.asyncio
-async def test_query_document_async_from_dict():
-    await test_query_document_async(request_type=dict)
 
 
 def test_query_document_field_headers():
@@ -5233,8 +5244,8 @@ async def test_query_document_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        retriever_service.CreateChunkRequest,
-        dict,
+        retriever_service.CreateChunkRequest(),
+        {},
     ],
 )
 def test_create_chunk(request_type, transport: str = "grpc"):
@@ -5245,7 +5256,7 @@ def test_create_chunk(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_chunk), "__call__") as call:
@@ -5291,9 +5302,10 @@ def test_create_chunk_non_empty_request_with_auto_populated_field():
         client.create_chunk(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == retriever_service.CreateChunkRequest(
+        request_msg = retriever_service.CreateChunkRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_chunk_use_cached_wrapped_rpc():
@@ -5374,9 +5386,14 @@ async def test_create_chunk_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_chunk_async(
-    transport: str = "grpc_asyncio", request_type=retriever_service.CreateChunkRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        retriever_service.CreateChunkRequest(),
+        {},
+    ],
+)
+async def test_create_chunk_async(request_type, transport: str = "grpc_asyncio"):
     client = RetrieverServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5384,7 +5401,7 @@ async def test_create_chunk_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_chunk), "__call__") as call:
@@ -5407,11 +5424,6 @@ async def test_create_chunk_async(
     assert isinstance(response, retriever.Chunk)
     assert response.name == "name_value"
     assert response.state == retriever.Chunk.State.STATE_PENDING_PROCESSING
-
-
-@pytest.mark.asyncio
-async def test_create_chunk_async_from_dict():
-    await test_create_chunk_async(request_type=dict)
 
 
 def test_create_chunk_field_headers():
@@ -5566,8 +5578,8 @@ async def test_create_chunk_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        retriever_service.BatchCreateChunksRequest,
-        dict,
+        retriever_service.BatchCreateChunksRequest(),
+        {},
     ],
 )
 def test_batch_create_chunks(request_type, transport: str = "grpc"):
@@ -5578,7 +5590,7 @@ def test_batch_create_chunks(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5623,9 +5635,10 @@ def test_batch_create_chunks_non_empty_request_with_auto_populated_field():
         client.batch_create_chunks(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == retriever_service.BatchCreateChunksRequest(
+        request_msg = retriever_service.BatchCreateChunksRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_batch_create_chunks_use_cached_wrapped_rpc():
@@ -5710,10 +5723,14 @@ async def test_batch_create_chunks_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_batch_create_chunks_async(
-    transport: str = "grpc_asyncio",
-    request_type=retriever_service.BatchCreateChunksRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        retriever_service.BatchCreateChunksRequest(),
+        {},
+    ],
+)
+async def test_batch_create_chunks_async(request_type, transport: str = "grpc_asyncio"):
     client = RetrieverServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5721,7 +5738,7 @@ async def test_batch_create_chunks_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5741,11 +5758,6 @@ async def test_batch_create_chunks_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, retriever_service.BatchCreateChunksResponse)
-
-
-@pytest.mark.asyncio
-async def test_batch_create_chunks_async_from_dict():
-    await test_batch_create_chunks_async(request_type=dict)
 
 
 def test_batch_create_chunks_field_headers():
@@ -5816,8 +5828,8 @@ async def test_batch_create_chunks_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        retriever_service.GetChunkRequest,
-        dict,
+        retriever_service.GetChunkRequest(),
+        {},
     ],
 )
 def test_get_chunk(request_type, transport: str = "grpc"):
@@ -5828,7 +5840,7 @@ def test_get_chunk(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_chunk), "__call__") as call:
@@ -5874,9 +5886,10 @@ def test_get_chunk_non_empty_request_with_auto_populated_field():
         client.get_chunk(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == retriever_service.GetChunkRequest(
+        request_msg = retriever_service.GetChunkRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_chunk_use_cached_wrapped_rpc():
@@ -5955,9 +5968,14 @@ async def test_get_chunk_async_use_cached_wrapped_rpc(transport: str = "grpc_asy
 
 
 @pytest.mark.asyncio
-async def test_get_chunk_async(
-    transport: str = "grpc_asyncio", request_type=retriever_service.GetChunkRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        retriever_service.GetChunkRequest(),
+        {},
+    ],
+)
+async def test_get_chunk_async(request_type, transport: str = "grpc_asyncio"):
     client = RetrieverServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5965,7 +5983,7 @@ async def test_get_chunk_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_chunk), "__call__") as call:
@@ -5988,11 +6006,6 @@ async def test_get_chunk_async(
     assert isinstance(response, retriever.Chunk)
     assert response.name == "name_value"
     assert response.state == retriever.Chunk.State.STATE_PENDING_PROCESSING
-
-
-@pytest.mark.asyncio
-async def test_get_chunk_async_from_dict():
-    await test_get_chunk_async(request_type=dict)
 
 
 def test_get_chunk_field_headers():
@@ -6137,8 +6150,8 @@ async def test_get_chunk_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        retriever_service.UpdateChunkRequest,
-        dict,
+        retriever_service.UpdateChunkRequest(),
+        {},
     ],
 )
 def test_update_chunk(request_type, transport: str = "grpc"):
@@ -6149,7 +6162,7 @@ def test_update_chunk(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_chunk), "__call__") as call:
@@ -6193,7 +6206,8 @@ def test_update_chunk_non_empty_request_with_auto_populated_field():
         client.update_chunk(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == retriever_service.UpdateChunkRequest()
+        request_msg = retriever_service.UpdateChunkRequest()
+        assert args[0] == request_msg
 
 
 def test_update_chunk_use_cached_wrapped_rpc():
@@ -6274,9 +6288,14 @@ async def test_update_chunk_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_chunk_async(
-    transport: str = "grpc_asyncio", request_type=retriever_service.UpdateChunkRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        retriever_service.UpdateChunkRequest(),
+        {},
+    ],
+)
+async def test_update_chunk_async(request_type, transport: str = "grpc_asyncio"):
     client = RetrieverServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6284,7 +6303,7 @@ async def test_update_chunk_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_chunk), "__call__") as call:
@@ -6307,11 +6326,6 @@ async def test_update_chunk_async(
     assert isinstance(response, retriever.Chunk)
     assert response.name == "name_value"
     assert response.state == retriever.Chunk.State.STATE_PENDING_PROCESSING
-
-
-@pytest.mark.asyncio
-async def test_update_chunk_async_from_dict():
-    await test_update_chunk_async(request_type=dict)
 
 
 def test_update_chunk_field_headers():
@@ -6466,8 +6480,8 @@ async def test_update_chunk_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        retriever_service.BatchUpdateChunksRequest,
-        dict,
+        retriever_service.BatchUpdateChunksRequest(),
+        {},
     ],
 )
 def test_batch_update_chunks(request_type, transport: str = "grpc"):
@@ -6478,7 +6492,7 @@ def test_batch_update_chunks(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6523,9 +6537,10 @@ def test_batch_update_chunks_non_empty_request_with_auto_populated_field():
         client.batch_update_chunks(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == retriever_service.BatchUpdateChunksRequest(
+        request_msg = retriever_service.BatchUpdateChunksRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_batch_update_chunks_use_cached_wrapped_rpc():
@@ -6610,10 +6625,14 @@ async def test_batch_update_chunks_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_batch_update_chunks_async(
-    transport: str = "grpc_asyncio",
-    request_type=retriever_service.BatchUpdateChunksRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        retriever_service.BatchUpdateChunksRequest(),
+        {},
+    ],
+)
+async def test_batch_update_chunks_async(request_type, transport: str = "grpc_asyncio"):
     client = RetrieverServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6621,7 +6640,7 @@ async def test_batch_update_chunks_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6641,11 +6660,6 @@ async def test_batch_update_chunks_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, retriever_service.BatchUpdateChunksResponse)
-
-
-@pytest.mark.asyncio
-async def test_batch_update_chunks_async_from_dict():
-    await test_batch_update_chunks_async(request_type=dict)
 
 
 def test_batch_update_chunks_field_headers():
@@ -6716,8 +6730,8 @@ async def test_batch_update_chunks_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        retriever_service.DeleteChunkRequest,
-        dict,
+        retriever_service.DeleteChunkRequest(),
+        {},
     ],
 )
 def test_delete_chunk(request_type, transport: str = "grpc"):
@@ -6728,7 +6742,7 @@ def test_delete_chunk(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_chunk), "__call__") as call:
@@ -6769,9 +6783,10 @@ def test_delete_chunk_non_empty_request_with_auto_populated_field():
         client.delete_chunk(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == retriever_service.DeleteChunkRequest(
+        request_msg = retriever_service.DeleteChunkRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_chunk_use_cached_wrapped_rpc():
@@ -6852,9 +6867,14 @@ async def test_delete_chunk_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_chunk_async(
-    transport: str = "grpc_asyncio", request_type=retriever_service.DeleteChunkRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        retriever_service.DeleteChunkRequest(),
+        {},
+    ],
+)
+async def test_delete_chunk_async(request_type, transport: str = "grpc_asyncio"):
     client = RetrieverServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6862,7 +6882,7 @@ async def test_delete_chunk_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_chunk), "__call__") as call:
@@ -6878,11 +6898,6 @@ async def test_delete_chunk_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_chunk_async_from_dict():
-    await test_delete_chunk_async(request_type=dict)
 
 
 def test_delete_chunk_field_headers():
@@ -7027,8 +7042,8 @@ async def test_delete_chunk_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        retriever_service.BatchDeleteChunksRequest,
-        dict,
+        retriever_service.BatchDeleteChunksRequest(),
+        {},
     ],
 )
 def test_batch_delete_chunks(request_type, transport: str = "grpc"):
@@ -7039,7 +7054,7 @@ def test_batch_delete_chunks(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7084,9 +7099,10 @@ def test_batch_delete_chunks_non_empty_request_with_auto_populated_field():
         client.batch_delete_chunks(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == retriever_service.BatchDeleteChunksRequest(
+        request_msg = retriever_service.BatchDeleteChunksRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_batch_delete_chunks_use_cached_wrapped_rpc():
@@ -7171,10 +7187,14 @@ async def test_batch_delete_chunks_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_batch_delete_chunks_async(
-    transport: str = "grpc_asyncio",
-    request_type=retriever_service.BatchDeleteChunksRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        retriever_service.BatchDeleteChunksRequest(),
+        {},
+    ],
+)
+async def test_batch_delete_chunks_async(request_type, transport: str = "grpc_asyncio"):
     client = RetrieverServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7182,7 +7202,7 @@ async def test_batch_delete_chunks_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7200,11 +7220,6 @@ async def test_batch_delete_chunks_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_batch_delete_chunks_async_from_dict():
-    await test_batch_delete_chunks_async(request_type=dict)
 
 
 def test_batch_delete_chunks_field_headers():
@@ -7273,8 +7288,8 @@ async def test_batch_delete_chunks_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        retriever_service.ListChunksRequest,
-        dict,
+        retriever_service.ListChunksRequest(),
+        {},
     ],
 )
 def test_list_chunks(request_type, transport: str = "grpc"):
@@ -7285,7 +7300,7 @@ def test_list_chunks(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_chunks), "__call__") as call:
@@ -7330,10 +7345,11 @@ def test_list_chunks_non_empty_request_with_auto_populated_field():
         client.list_chunks(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == retriever_service.ListChunksRequest(
+        request_msg = retriever_service.ListChunksRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_chunks_use_cached_wrapped_rpc():
@@ -7414,9 +7430,14 @@ async def test_list_chunks_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_chunks_async(
-    transport: str = "grpc_asyncio", request_type=retriever_service.ListChunksRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        retriever_service.ListChunksRequest(),
+        {},
+    ],
+)
+async def test_list_chunks_async(request_type, transport: str = "grpc_asyncio"):
     client = RetrieverServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7424,7 +7445,7 @@ async def test_list_chunks_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_chunks), "__call__") as call:
@@ -7445,11 +7466,6 @@ async def test_list_chunks_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListChunksAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_chunks_async_from_dict():
-    await test_list_chunks_async(request_type=dict)
 
 
 def test_list_chunks_field_headers():
@@ -7779,11 +7795,7 @@ async def test_list_chunks_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_chunks(request={})
-        ).pages:
+        async for page_ in (await client.list_chunks(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -7893,7 +7905,7 @@ def test_create_corpus_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_corpus_rest_unset_required_fields():
@@ -8069,7 +8081,7 @@ def test_get_corpus_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_corpus_rest_unset_required_fields():
@@ -8243,7 +8255,7 @@ def test_update_corpus_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_corpus_rest_unset_required_fields():
@@ -8428,7 +8440,7 @@ def test_delete_corpus_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_corpus_rest_unset_required_fields():
@@ -8706,7 +8718,7 @@ def test_query_corpus_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_query_corpus_rest_unset_required_fields():
@@ -8835,7 +8847,7 @@ def test_create_document_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_document_rest_unset_required_fields():
@@ -9021,7 +9033,7 @@ def test_get_document_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_document_rest_unset_required_fields():
@@ -9195,7 +9207,7 @@ def test_update_document_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_document_rest_unset_required_fields():
@@ -9381,7 +9393,7 @@ def test_delete_document_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_document_rest_unset_required_fields():
@@ -9562,7 +9574,7 @@ def test_list_documents_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_documents_rest_unset_required_fields():
@@ -9814,7 +9826,7 @@ def test_query_document_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_query_document_rest_unset_required_fields():
@@ -9943,7 +9955,7 @@ def test_create_chunk_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_chunk_rest_unset_required_fields():
@@ -10130,7 +10142,7 @@ def test_batch_create_chunks_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_batch_create_chunks_rest_unset_required_fields():
@@ -10248,7 +10260,7 @@ def test_get_chunk_rest_required_fields(request_type=retriever_service.GetChunkR
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_chunk_rest_unset_required_fields():
@@ -10423,7 +10435,7 @@ def test_update_chunk_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_chunk_rest_unset_required_fields():
@@ -10613,7 +10625,7 @@ def test_batch_update_chunks_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_batch_update_chunks_rest_unset_required_fields():
@@ -10730,7 +10742,7 @@ def test_delete_chunk_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_chunk_rest_unset_required_fields():
@@ -10902,7 +10914,7 @@ def test_batch_delete_chunks_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_batch_delete_chunks_rest_unset_required_fields():
@@ -11029,7 +11041,7 @@ def test_list_chunks_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_chunks_rest_unset_required_fields():
@@ -11292,7 +11304,6 @@ def test_create_corpus_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = retriever_service.CreateCorpusRequest()
-
         assert args[0] == request_msg
 
 
@@ -11313,7 +11324,6 @@ def test_get_corpus_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = retriever_service.GetCorpusRequest()
-
         assert args[0] == request_msg
 
 
@@ -11334,7 +11344,6 @@ def test_update_corpus_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = retriever_service.UpdateCorpusRequest()
-
         assert args[0] == request_msg
 
 
@@ -11355,7 +11364,6 @@ def test_delete_corpus_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = retriever_service.DeleteCorpusRequest()
-
         assert args[0] == request_msg
 
 
@@ -11376,7 +11384,6 @@ def test_list_corpora_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = retriever_service.ListCorporaRequest()
-
         assert args[0] == request_msg
 
 
@@ -11397,7 +11404,6 @@ def test_query_corpus_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = retriever_service.QueryCorpusRequest()
-
         assert args[0] == request_msg
 
 
@@ -11418,7 +11424,6 @@ def test_create_document_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = retriever_service.CreateDocumentRequest()
-
         assert args[0] == request_msg
 
 
@@ -11439,7 +11444,6 @@ def test_get_document_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = retriever_service.GetDocumentRequest()
-
         assert args[0] == request_msg
 
 
@@ -11460,7 +11464,6 @@ def test_update_document_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = retriever_service.UpdateDocumentRequest()
-
         assert args[0] == request_msg
 
 
@@ -11481,7 +11484,6 @@ def test_delete_document_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = retriever_service.DeleteDocumentRequest()
-
         assert args[0] == request_msg
 
 
@@ -11502,7 +11504,6 @@ def test_list_documents_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = retriever_service.ListDocumentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -11523,7 +11524,6 @@ def test_query_document_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = retriever_service.QueryDocumentRequest()
-
         assert args[0] == request_msg
 
 
@@ -11544,7 +11544,6 @@ def test_create_chunk_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = retriever_service.CreateChunkRequest()
-
         assert args[0] == request_msg
 
 
@@ -11567,7 +11566,6 @@ def test_batch_create_chunks_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = retriever_service.BatchCreateChunksRequest()
-
         assert args[0] == request_msg
 
 
@@ -11588,7 +11586,6 @@ def test_get_chunk_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = retriever_service.GetChunkRequest()
-
         assert args[0] == request_msg
 
 
@@ -11609,7 +11606,6 @@ def test_update_chunk_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = retriever_service.UpdateChunkRequest()
-
         assert args[0] == request_msg
 
 
@@ -11632,7 +11628,6 @@ def test_batch_update_chunks_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = retriever_service.BatchUpdateChunksRequest()
-
         assert args[0] == request_msg
 
 
@@ -11653,7 +11648,6 @@ def test_delete_chunk_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = retriever_service.DeleteChunkRequest()
-
         assert args[0] == request_msg
 
 
@@ -11676,7 +11670,6 @@ def test_batch_delete_chunks_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = retriever_service.BatchDeleteChunksRequest()
-
         assert args[0] == request_msg
 
 
@@ -11697,7 +11690,6 @@ def test_list_chunks_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = retriever_service.ListChunksRequest()
-
         assert args[0] == request_msg
 
 
@@ -11739,7 +11731,6 @@ async def test_create_corpus_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = retriever_service.CreateCorpusRequest()
-
         assert args[0] == request_msg
 
 
@@ -11767,7 +11758,6 @@ async def test_get_corpus_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = retriever_service.GetCorpusRequest()
-
         assert args[0] == request_msg
 
 
@@ -11795,7 +11785,6 @@ async def test_update_corpus_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = retriever_service.UpdateCorpusRequest()
-
         assert args[0] == request_msg
 
 
@@ -11818,7 +11807,6 @@ async def test_delete_corpus_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = retriever_service.DeleteCorpusRequest()
-
         assert args[0] == request_msg
 
 
@@ -11845,7 +11833,6 @@ async def test_list_corpora_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = retriever_service.ListCorporaRequest()
-
         assert args[0] == request_msg
 
 
@@ -11870,7 +11857,6 @@ async def test_query_corpus_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = retriever_service.QueryCorpusRequest()
-
         assert args[0] == request_msg
 
 
@@ -11898,7 +11884,6 @@ async def test_create_document_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = retriever_service.CreateDocumentRequest()
-
         assert args[0] == request_msg
 
 
@@ -11926,7 +11911,6 @@ async def test_get_document_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = retriever_service.GetDocumentRequest()
-
         assert args[0] == request_msg
 
 
@@ -11954,7 +11938,6 @@ async def test_update_document_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = retriever_service.UpdateDocumentRequest()
-
         assert args[0] == request_msg
 
 
@@ -11977,7 +11960,6 @@ async def test_delete_document_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = retriever_service.DeleteDocumentRequest()
-
         assert args[0] == request_msg
 
 
@@ -12004,7 +11986,6 @@ async def test_list_documents_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = retriever_service.ListDocumentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -12029,7 +12010,6 @@ async def test_query_document_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = retriever_service.QueryDocumentRequest()
-
         assert args[0] == request_msg
 
 
@@ -12057,7 +12037,6 @@ async def test_create_chunk_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = retriever_service.CreateChunkRequest()
-
         assert args[0] == request_msg
 
 
@@ -12084,7 +12063,6 @@ async def test_batch_create_chunks_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = retriever_service.BatchCreateChunksRequest()
-
         assert args[0] == request_msg
 
 
@@ -12112,7 +12090,6 @@ async def test_get_chunk_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = retriever_service.GetChunkRequest()
-
         assert args[0] == request_msg
 
 
@@ -12140,7 +12117,6 @@ async def test_update_chunk_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = retriever_service.UpdateChunkRequest()
-
         assert args[0] == request_msg
 
 
@@ -12167,7 +12143,6 @@ async def test_batch_update_chunks_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = retriever_service.BatchUpdateChunksRequest()
-
         assert args[0] == request_msg
 
 
@@ -12190,7 +12165,6 @@ async def test_delete_chunk_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = retriever_service.DeleteChunkRequest()
-
         assert args[0] == request_msg
 
 
@@ -12215,7 +12189,6 @@ async def test_batch_delete_chunks_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = retriever_service.BatchDeleteChunksRequest()
-
         assert args[0] == request_msg
 
 
@@ -12242,7 +12215,6 @@ async def test_list_chunks_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = retriever_service.ListChunksRequest()
-
         assert args[0] == request_msg
 
 
@@ -15444,7 +15416,6 @@ def test_create_corpus_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = retriever_service.CreateCorpusRequest()
-
         assert args[0] == request_msg
 
 
@@ -15464,7 +15435,6 @@ def test_get_corpus_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = retriever_service.GetCorpusRequest()
-
         assert args[0] == request_msg
 
 
@@ -15484,7 +15454,6 @@ def test_update_corpus_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = retriever_service.UpdateCorpusRequest()
-
         assert args[0] == request_msg
 
 
@@ -15504,7 +15473,6 @@ def test_delete_corpus_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = retriever_service.DeleteCorpusRequest()
-
         assert args[0] == request_msg
 
 
@@ -15524,7 +15492,6 @@ def test_list_corpora_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = retriever_service.ListCorporaRequest()
-
         assert args[0] == request_msg
 
 
@@ -15544,7 +15511,6 @@ def test_query_corpus_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = retriever_service.QueryCorpusRequest()
-
         assert args[0] == request_msg
 
 
@@ -15564,7 +15530,6 @@ def test_create_document_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = retriever_service.CreateDocumentRequest()
-
         assert args[0] == request_msg
 
 
@@ -15584,7 +15549,6 @@ def test_get_document_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = retriever_service.GetDocumentRequest()
-
         assert args[0] == request_msg
 
 
@@ -15604,7 +15568,6 @@ def test_update_document_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = retriever_service.UpdateDocumentRequest()
-
         assert args[0] == request_msg
 
 
@@ -15624,7 +15587,6 @@ def test_delete_document_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = retriever_service.DeleteDocumentRequest()
-
         assert args[0] == request_msg
 
 
@@ -15644,7 +15606,6 @@ def test_list_documents_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = retriever_service.ListDocumentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -15664,7 +15625,6 @@ def test_query_document_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = retriever_service.QueryDocumentRequest()
-
         assert args[0] == request_msg
 
 
@@ -15684,7 +15644,6 @@ def test_create_chunk_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = retriever_service.CreateChunkRequest()
-
         assert args[0] == request_msg
 
 
@@ -15706,7 +15665,6 @@ def test_batch_create_chunks_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = retriever_service.BatchCreateChunksRequest()
-
         assert args[0] == request_msg
 
 
@@ -15726,7 +15684,6 @@ def test_get_chunk_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = retriever_service.GetChunkRequest()
-
         assert args[0] == request_msg
 
 
@@ -15746,7 +15703,6 @@ def test_update_chunk_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = retriever_service.UpdateChunkRequest()
-
         assert args[0] == request_msg
 
 
@@ -15768,7 +15724,6 @@ def test_batch_update_chunks_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = retriever_service.BatchUpdateChunksRequest()
-
         assert args[0] == request_msg
 
 
@@ -15788,7 +15743,6 @@ def test_delete_chunk_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = retriever_service.DeleteChunkRequest()
-
         assert args[0] == request_msg
 
 
@@ -15810,7 +15764,6 @@ def test_batch_delete_chunks_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = retriever_service.BatchDeleteChunksRequest()
-
         assert args[0] == request_msg
 
 
@@ -15830,7 +15783,6 @@ def test_list_chunks_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = retriever_service.ListChunksRequest()
-
         assert args[0] == request_msg
 
 

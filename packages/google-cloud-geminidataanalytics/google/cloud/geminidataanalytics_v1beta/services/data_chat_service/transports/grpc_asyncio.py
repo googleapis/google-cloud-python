@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -353,8 +353,7 @@ class DataChatServiceGrpcAsyncIOTransport(DataChatServiceTransport):
         r"""Return a callable for the chat method over gRPC.
 
         Answers a data question by generating a stream of
-        [Message][google.cloud.geminidataanalytics.v1alpha.Message]
-        objects.
+        [Message][google.cloud.geminidataanalytics.v1.Message] objects.
 
         Returns:
             Callable[[~.ChatRequest],

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -40,7 +40,10 @@ if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
 class ApplicationServiceTransport(abc.ABC):
     """Abstract transport class for ApplicationService."""
 
-    AUTH_SCOPES = ("https://www.googleapis.com/auth/admanager",)
+    AUTH_SCOPES = (
+        "https://www.googleapis.com/auth/admanager",
+        "https://www.googleapis.com/auth/admanager.readonly",
+    )
 
     DEFAULT_HOST: str = "admanager.googleapis.com"
 
@@ -153,6 +156,41 @@ class ApplicationServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.create_application: gapic_v1.method.wrap_method(
+                self.create_application,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.batch_create_applications: gapic_v1.method.wrap_method(
+                self.batch_create_applications,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_application: gapic_v1.method.wrap_method(
+                self.update_application,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.batch_update_applications: gapic_v1.method.wrap_method(
+                self.batch_update_applications,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.batch_archive_applications: gapic_v1.method.wrap_method(
+                self.batch_archive_applications,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.batch_unarchive_applications: gapic_v1.method.wrap_method(
+                self.batch_unarchive_applications,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.cancel_operation: gapic_v1.method.wrap_method(
+                self.cancel_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_operation: gapic_v1.method.wrap_method(
                 self.get_operation,
                 default_timeout=None,
@@ -194,11 +232,92 @@ class ApplicationServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def create_application(
+        self,
+    ) -> Callable[
+        [application_service.CreateApplicationRequest],
+        Union[
+            application_messages.Application,
+            Awaitable[application_messages.Application],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def batch_create_applications(
+        self,
+    ) -> Callable[
+        [application_service.BatchCreateApplicationsRequest],
+        Union[
+            application_service.BatchCreateApplicationsResponse,
+            Awaitable[application_service.BatchCreateApplicationsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_application(
+        self,
+    ) -> Callable[
+        [application_service.UpdateApplicationRequest],
+        Union[
+            application_messages.Application,
+            Awaitable[application_messages.Application],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def batch_update_applications(
+        self,
+    ) -> Callable[
+        [application_service.BatchUpdateApplicationsRequest],
+        Union[
+            application_service.BatchUpdateApplicationsResponse,
+            Awaitable[application_service.BatchUpdateApplicationsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def batch_archive_applications(
+        self,
+    ) -> Callable[
+        [application_service.BatchArchiveApplicationsRequest],
+        Union[
+            application_service.BatchArchiveApplicationsResponse,
+            Awaitable[application_service.BatchArchiveApplicationsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def batch_unarchive_applications(
+        self,
+    ) -> Callable[
+        [application_service.BatchUnarchiveApplicationsRequest],
+        Union[
+            application_service.BatchUnarchiveApplicationsResponse,
+            Awaitable[application_service.BatchUnarchiveApplicationsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def get_operation(
         self,
     ) -> Callable[
         [operations_pb2.GetOperationRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def cancel_operation(
+        self,
+    ) -> Callable[
+        [operations_pb2.CancelOperationRequest],
+        None,
     ]:
         raise NotImplementedError()
 

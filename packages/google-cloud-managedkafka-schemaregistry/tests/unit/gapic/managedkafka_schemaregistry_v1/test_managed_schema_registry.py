@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -120,6 +115,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1387,8 +1397,8 @@ def test_managed_schema_registry_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        schema_registry.GetSchemaRegistryRequest,
-        dict,
+        schema_registry.GetSchemaRegistryRequest(),
+        {},
     ],
 )
 def test_get_schema_registry(request_type, transport: str = "grpc"):
@@ -1399,7 +1409,7 @@ def test_get_schema_registry(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1449,9 +1459,10 @@ def test_get_schema_registry_non_empty_request_with_auto_populated_field():
         client.get_schema_registry(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == schema_registry.GetSchemaRegistryRequest(
+        request_msg = schema_registry.GetSchemaRegistryRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_schema_registry_use_cached_wrapped_rpc():
@@ -1536,10 +1547,14 @@ async def test_get_schema_registry_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_schema_registry_async(
-    transport: str = "grpc_asyncio",
-    request_type=schema_registry.GetSchemaRegistryRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        schema_registry.GetSchemaRegistryRequest(),
+        {},
+    ],
+)
+async def test_get_schema_registry_async(request_type, transport: str = "grpc_asyncio"):
     client = ManagedSchemaRegistryAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1547,7 +1562,7 @@ async def test_get_schema_registry_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1572,11 +1587,6 @@ async def test_get_schema_registry_async(
     assert isinstance(response, schema_registry_resources.SchemaRegistry)
     assert response.name == "name_value"
     assert response.contexts == ["contexts_value"]
-
-
-@pytest.mark.asyncio
-async def test_get_schema_registry_async_from_dict():
-    await test_get_schema_registry_async(request_type=dict)
 
 
 def test_get_schema_registry_field_headers():
@@ -1733,8 +1743,8 @@ async def test_get_schema_registry_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        schema_registry.ListSchemaRegistriesRequest,
-        dict,
+        schema_registry.ListSchemaRegistriesRequest(),
+        {},
     ],
 )
 def test_list_schema_registries(request_type, transport: str = "grpc"):
@@ -1745,7 +1755,7 @@ def test_list_schema_registries(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1790,9 +1800,10 @@ def test_list_schema_registries_non_empty_request_with_auto_populated_field():
         client.list_schema_registries(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == schema_registry.ListSchemaRegistriesRequest(
+        request_msg = schema_registry.ListSchemaRegistriesRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_schema_registries_use_cached_wrapped_rpc():
@@ -1878,9 +1889,15 @@ async def test_list_schema_registries_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        schema_registry.ListSchemaRegistriesRequest(),
+        {},
+    ],
+)
 async def test_list_schema_registries_async(
-    transport: str = "grpc_asyncio",
-    request_type=schema_registry.ListSchemaRegistriesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ManagedSchemaRegistryAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1889,7 +1906,7 @@ async def test_list_schema_registries_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1909,11 +1926,6 @@ async def test_list_schema_registries_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, schema_registry.ListSchemaRegistriesResponse)
-
-
-@pytest.mark.asyncio
-async def test_list_schema_registries_async_from_dict():
-    await test_list_schema_registries_async(request_type=dict)
 
 
 def test_list_schema_registries_field_headers():
@@ -2070,8 +2082,8 @@ async def test_list_schema_registries_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcms_schema_registry.CreateSchemaRegistryRequest,
-        dict,
+        gcms_schema_registry.CreateSchemaRegistryRequest(),
+        {},
     ],
 )
 def test_create_schema_registry(request_type, transport: str = "grpc"):
@@ -2082,7 +2094,7 @@ def test_create_schema_registry(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2133,10 +2145,11 @@ def test_create_schema_registry_non_empty_request_with_auto_populated_field():
         client.create_schema_registry(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcms_schema_registry.CreateSchemaRegistryRequest(
+        request_msg = gcms_schema_registry.CreateSchemaRegistryRequest(
             parent="parent_value",
             schema_registry_id="schema_registry_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_schema_registry_use_cached_wrapped_rpc():
@@ -2222,9 +2235,15 @@ async def test_create_schema_registry_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcms_schema_registry.CreateSchemaRegistryRequest(),
+        {},
+    ],
+)
 async def test_create_schema_registry_async(
-    transport: str = "grpc_asyncio",
-    request_type=gcms_schema_registry.CreateSchemaRegistryRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ManagedSchemaRegistryAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2233,7 +2252,7 @@ async def test_create_schema_registry_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2258,11 +2277,6 @@ async def test_create_schema_registry_async(
     assert isinstance(response, schema_registry_resources.SchemaRegistry)
     assert response.name == "name_value"
     assert response.contexts == ["contexts_value"]
-
-
-@pytest.mark.asyncio
-async def test_create_schema_registry_async_from_dict():
-    await test_create_schema_registry_async(request_type=dict)
 
 
 def test_create_schema_registry_field_headers():
@@ -2429,8 +2443,8 @@ async def test_create_schema_registry_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        schema_registry.DeleteSchemaRegistryRequest,
-        dict,
+        schema_registry.DeleteSchemaRegistryRequest(),
+        {},
     ],
 )
 def test_delete_schema_registry(request_type, transport: str = "grpc"):
@@ -2441,7 +2455,7 @@ def test_delete_schema_registry(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2486,9 +2500,10 @@ def test_delete_schema_registry_non_empty_request_with_auto_populated_field():
         client.delete_schema_registry(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == schema_registry.DeleteSchemaRegistryRequest(
+        request_msg = schema_registry.DeleteSchemaRegistryRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_schema_registry_use_cached_wrapped_rpc():
@@ -2574,9 +2589,15 @@ async def test_delete_schema_registry_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        schema_registry.DeleteSchemaRegistryRequest(),
+        {},
+    ],
+)
 async def test_delete_schema_registry_async(
-    transport: str = "grpc_asyncio",
-    request_type=schema_registry.DeleteSchemaRegistryRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ManagedSchemaRegistryAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2585,7 +2606,7 @@ async def test_delete_schema_registry_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2603,11 +2624,6 @@ async def test_delete_schema_registry_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_schema_registry_async_from_dict():
-    await test_delete_schema_registry_async(request_type=dict)
 
 
 def test_delete_schema_registry_field_headers():
@@ -2760,8 +2776,8 @@ async def test_delete_schema_registry_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        schema_registry.GetContextRequest,
-        dict,
+        schema_registry.GetContextRequest(),
+        {},
     ],
 )
 def test_get_context(request_type, transport: str = "grpc"):
@@ -2772,7 +2788,7 @@ def test_get_context(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_context), "__call__") as call:
@@ -2818,9 +2834,10 @@ def test_get_context_non_empty_request_with_auto_populated_field():
         client.get_context(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == schema_registry.GetContextRequest(
+        request_msg = schema_registry.GetContextRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_context_use_cached_wrapped_rpc():
@@ -2901,9 +2918,14 @@ async def test_get_context_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_context_async(
-    transport: str = "grpc_asyncio", request_type=schema_registry.GetContextRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        schema_registry.GetContextRequest(),
+        {},
+    ],
+)
+async def test_get_context_async(request_type, transport: str = "grpc_asyncio"):
     client = ManagedSchemaRegistryAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2911,7 +2933,7 @@ async def test_get_context_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_context), "__call__") as call:
@@ -2934,11 +2956,6 @@ async def test_get_context_async(
     assert isinstance(response, schema_registry_resources.Context)
     assert response.name == "name_value"
     assert response.subjects == ["subjects_value"]
-
-
-@pytest.mark.asyncio
-async def test_get_context_async_from_dict():
-    await test_get_context_async(request_type=dict)
 
 
 def test_get_context_field_headers():
@@ -3087,8 +3104,8 @@ async def test_get_context_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        schema_registry.ListContextsRequest,
-        dict,
+        schema_registry.ListContextsRequest(),
+        {},
     ],
 )
 def test_list_contexts(request_type, transport: str = "grpc"):
@@ -3099,7 +3116,7 @@ def test_list_contexts(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_contexts), "__call__") as call:
@@ -3145,9 +3162,10 @@ def test_list_contexts_non_empty_request_with_auto_populated_field():
         client.list_contexts(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == schema_registry.ListContextsRequest(
+        request_msg = schema_registry.ListContextsRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_contexts_use_cached_wrapped_rpc():
@@ -3228,9 +3246,14 @@ async def test_list_contexts_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_contexts_async(
-    transport: str = "grpc_asyncio", request_type=schema_registry.ListContextsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        schema_registry.ListContextsRequest(),
+        {},
+    ],
+)
+async def test_list_contexts_async(request_type, transport: str = "grpc_asyncio"):
     client = ManagedSchemaRegistryAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3238,7 +3261,7 @@ async def test_list_contexts_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_contexts), "__call__") as call:
@@ -3261,11 +3284,6 @@ async def test_list_contexts_async(
     assert isinstance(response, httpbody_pb2.HttpBody)
     assert response.content_type == "content_type_value"
     assert response.data == b"data_blob"
-
-
-@pytest.mark.asyncio
-async def test_list_contexts_async_from_dict():
-    await test_list_contexts_async(request_type=dict)
 
 
 def test_list_contexts_field_headers():
@@ -3414,8 +3432,8 @@ async def test_list_contexts_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        schema_registry.GetSchemaRequest,
-        dict,
+        schema_registry.GetSchemaRequest(),
+        {},
     ],
 )
 def test_get_schema(request_type, transport: str = "grpc"):
@@ -3426,7 +3444,7 @@ def test_get_schema(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_schema), "__call__") as call:
@@ -3473,10 +3491,11 @@ def test_get_schema_non_empty_request_with_auto_populated_field():
         client.get_schema(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == schema_registry.GetSchemaRequest(
+        request_msg = schema_registry.GetSchemaRequest(
             name="name_value",
             subject="subject_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_schema_use_cached_wrapped_rpc():
@@ -3555,9 +3574,14 @@ async def test_get_schema_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_get_schema_async(
-    transport: str = "grpc_asyncio", request_type=schema_registry.GetSchemaRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        schema_registry.GetSchemaRequest(),
+        {},
+    ],
+)
+async def test_get_schema_async(request_type, transport: str = "grpc_asyncio"):
     client = ManagedSchemaRegistryAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3565,7 +3589,7 @@ async def test_get_schema_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_schema), "__call__") as call:
@@ -3588,11 +3612,6 @@ async def test_get_schema_async(
     assert isinstance(response, schema_registry_resources.Schema)
     assert response.schema_type == schema_registry_resources.Schema.SchemaType.AVRO
     assert response.schema_payload == "schema_payload_value"
-
-
-@pytest.mark.asyncio
-async def test_get_schema_async_from_dict():
-    await test_get_schema_async(request_type=dict)
 
 
 def test_get_schema_field_headers():
@@ -3741,8 +3760,8 @@ async def test_get_schema_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        schema_registry.GetSchemaRequest,
-        dict,
+        schema_registry.GetSchemaRequest(),
+        {},
     ],
 )
 def test_get_raw_schema(request_type, transport: str = "grpc"):
@@ -3753,7 +3772,7 @@ def test_get_raw_schema(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_raw_schema), "__call__") as call:
@@ -3800,10 +3819,11 @@ def test_get_raw_schema_non_empty_request_with_auto_populated_field():
         client.get_raw_schema(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == schema_registry.GetSchemaRequest(
+        request_msg = schema_registry.GetSchemaRequest(
             name="name_value",
             subject="subject_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_raw_schema_use_cached_wrapped_rpc():
@@ -3884,9 +3904,14 @@ async def test_get_raw_schema_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_raw_schema_async(
-    transport: str = "grpc_asyncio", request_type=schema_registry.GetSchemaRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        schema_registry.GetSchemaRequest(),
+        {},
+    ],
+)
+async def test_get_raw_schema_async(request_type, transport: str = "grpc_asyncio"):
     client = ManagedSchemaRegistryAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3894,7 +3919,7 @@ async def test_get_raw_schema_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_raw_schema), "__call__") as call:
@@ -3917,11 +3942,6 @@ async def test_get_raw_schema_async(
     assert isinstance(response, httpbody_pb2.HttpBody)
     assert response.content_type == "content_type_value"
     assert response.data == b"data_blob"
-
-
-@pytest.mark.asyncio
-async def test_get_raw_schema_async_from_dict():
-    await test_get_raw_schema_async(request_type=dict)
 
 
 def test_get_raw_schema_field_headers():
@@ -4070,8 +4090,8 @@ async def test_get_raw_schema_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        schema_registry.ListSchemaVersionsRequest,
-        dict,
+        schema_registry.ListSchemaVersionsRequest(),
+        {},
     ],
 )
 def test_list_schema_versions(request_type, transport: str = "grpc"):
@@ -4082,7 +4102,7 @@ def test_list_schema_versions(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4133,10 +4153,11 @@ def test_list_schema_versions_non_empty_request_with_auto_populated_field():
         client.list_schema_versions(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == schema_registry.ListSchemaVersionsRequest(
+        request_msg = schema_registry.ListSchemaVersionsRequest(
             parent="parent_value",
             subject="subject_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_schema_versions_use_cached_wrapped_rpc():
@@ -4221,9 +4242,15 @@ async def test_list_schema_versions_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        schema_registry.ListSchemaVersionsRequest(),
+        {},
+    ],
+)
 async def test_list_schema_versions_async(
-    transport: str = "grpc_asyncio",
-    request_type=schema_registry.ListSchemaVersionsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ManagedSchemaRegistryAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4232,7 +4259,7 @@ async def test_list_schema_versions_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4257,11 +4284,6 @@ async def test_list_schema_versions_async(
     assert isinstance(response, httpbody_pb2.HttpBody)
     assert response.content_type == "content_type_value"
     assert response.data == b"data_blob"
-
-
-@pytest.mark.asyncio
-async def test_list_schema_versions_async_from_dict():
-    await test_list_schema_versions_async(request_type=dict)
 
 
 def test_list_schema_versions_field_headers():
@@ -4418,8 +4440,8 @@ async def test_list_schema_versions_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        schema_registry.ListSchemaTypesRequest,
-        dict,
+        schema_registry.ListSchemaTypesRequest(),
+        {},
     ],
 )
 def test_list_schema_types(request_type, transport: str = "grpc"):
@@ -4430,7 +4452,7 @@ def test_list_schema_types(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4480,9 +4502,10 @@ def test_list_schema_types_non_empty_request_with_auto_populated_field():
         client.list_schema_types(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == schema_registry.ListSchemaTypesRequest(
+        request_msg = schema_registry.ListSchemaTypesRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_schema_types_use_cached_wrapped_rpc():
@@ -4565,9 +4588,14 @@ async def test_list_schema_types_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_schema_types_async(
-    transport: str = "grpc_asyncio", request_type=schema_registry.ListSchemaTypesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        schema_registry.ListSchemaTypesRequest(),
+        {},
+    ],
+)
+async def test_list_schema_types_async(request_type, transport: str = "grpc_asyncio"):
     client = ManagedSchemaRegistryAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4575,7 +4603,7 @@ async def test_list_schema_types_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4600,11 +4628,6 @@ async def test_list_schema_types_async(
     assert isinstance(response, httpbody_pb2.HttpBody)
     assert response.content_type == "content_type_value"
     assert response.data == b"data_blob"
-
-
-@pytest.mark.asyncio
-async def test_list_schema_types_async_from_dict():
-    await test_list_schema_types_async(request_type=dict)
 
 
 def test_list_schema_types_field_headers():
@@ -4761,8 +4784,8 @@ async def test_list_schema_types_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        schema_registry.ListSubjectsRequest,
-        dict,
+        schema_registry.ListSubjectsRequest(),
+        {},
     ],
 )
 def test_list_subjects(request_type, transport: str = "grpc"):
@@ -4773,7 +4796,7 @@ def test_list_subjects(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_subjects), "__call__") as call:
@@ -4820,10 +4843,11 @@ def test_list_subjects_non_empty_request_with_auto_populated_field():
         client.list_subjects(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == schema_registry.ListSubjectsRequest(
+        request_msg = schema_registry.ListSubjectsRequest(
             parent="parent_value",
             subject_prefix="subject_prefix_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_subjects_use_cached_wrapped_rpc():
@@ -4904,9 +4928,14 @@ async def test_list_subjects_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_subjects_async(
-    transport: str = "grpc_asyncio", request_type=schema_registry.ListSubjectsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        schema_registry.ListSubjectsRequest(),
+        {},
+    ],
+)
+async def test_list_subjects_async(request_type, transport: str = "grpc_asyncio"):
     client = ManagedSchemaRegistryAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4914,7 +4943,7 @@ async def test_list_subjects_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_subjects), "__call__") as call:
@@ -4937,11 +4966,6 @@ async def test_list_subjects_async(
     assert isinstance(response, httpbody_pb2.HttpBody)
     assert response.content_type == "content_type_value"
     assert response.data == b"data_blob"
-
-
-@pytest.mark.asyncio
-async def test_list_subjects_async_from_dict():
-    await test_list_subjects_async(request_type=dict)
 
 
 def test_list_subjects_field_headers():
@@ -5110,8 +5134,8 @@ async def test_list_subjects_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        schema_registry.ListSubjectsBySchemaIdRequest,
-        dict,
+        schema_registry.ListSubjectsBySchemaIdRequest(),
+        {},
     ],
 )
 def test_list_subjects_by_schema_id(request_type, transport: str = "grpc"):
@@ -5122,7 +5146,7 @@ def test_list_subjects_by_schema_id(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5173,10 +5197,11 @@ def test_list_subjects_by_schema_id_non_empty_request_with_auto_populated_field(
         client.list_subjects_by_schema_id(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == schema_registry.ListSubjectsBySchemaIdRequest(
+        request_msg = schema_registry.ListSubjectsBySchemaIdRequest(
             parent="parent_value",
             subject="subject_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_subjects_by_schema_id_use_cached_wrapped_rpc():
@@ -5262,9 +5287,15 @@ async def test_list_subjects_by_schema_id_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        schema_registry.ListSubjectsBySchemaIdRequest(),
+        {},
+    ],
+)
 async def test_list_subjects_by_schema_id_async(
-    transport: str = "grpc_asyncio",
-    request_type=schema_registry.ListSubjectsBySchemaIdRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ManagedSchemaRegistryAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5273,7 +5304,7 @@ async def test_list_subjects_by_schema_id_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5298,11 +5329,6 @@ async def test_list_subjects_by_schema_id_async(
     assert isinstance(response, httpbody_pb2.HttpBody)
     assert response.content_type == "content_type_value"
     assert response.data == b"data_blob"
-
-
-@pytest.mark.asyncio
-async def test_list_subjects_by_schema_id_async_from_dict():
-    await test_list_subjects_by_schema_id_async(request_type=dict)
 
 
 def test_list_subjects_by_schema_id_field_headers():
@@ -5479,8 +5505,8 @@ async def test_list_subjects_by_schema_id_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        schema_registry.DeleteSubjectRequest,
-        dict,
+        schema_registry.DeleteSubjectRequest(),
+        {},
     ],
 )
 def test_delete_subject(request_type, transport: str = "grpc"):
@@ -5491,7 +5517,7 @@ def test_delete_subject(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_subject), "__call__") as call:
@@ -5537,9 +5563,10 @@ def test_delete_subject_non_empty_request_with_auto_populated_field():
         client.delete_subject(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == schema_registry.DeleteSubjectRequest(
+        request_msg = schema_registry.DeleteSubjectRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_subject_use_cached_wrapped_rpc():
@@ -5620,9 +5647,14 @@ async def test_delete_subject_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_subject_async(
-    transport: str = "grpc_asyncio", request_type=schema_registry.DeleteSubjectRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        schema_registry.DeleteSubjectRequest(),
+        {},
+    ],
+)
+async def test_delete_subject_async(request_type, transport: str = "grpc_asyncio"):
     client = ManagedSchemaRegistryAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5630,7 +5662,7 @@ async def test_delete_subject_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_subject), "__call__") as call:
@@ -5653,11 +5685,6 @@ async def test_delete_subject_async(
     assert isinstance(response, httpbody_pb2.HttpBody)
     assert response.content_type == "content_type_value"
     assert response.data == b"data_blob"
-
-
-@pytest.mark.asyncio
-async def test_delete_subject_async_from_dict():
-    await test_delete_subject_async(request_type=dict)
 
 
 def test_delete_subject_field_headers():
@@ -5806,8 +5833,8 @@ async def test_delete_subject_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        schema_registry.LookupVersionRequest,
-        dict,
+        schema_registry.LookupVersionRequest(),
+        {},
     ],
 )
 def test_lookup_version(request_type, transport: str = "grpc"):
@@ -5818,7 +5845,7 @@ def test_lookup_version(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.lookup_version), "__call__") as call:
@@ -5871,10 +5898,11 @@ def test_lookup_version_non_empty_request_with_auto_populated_field():
         client.lookup_version(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == schema_registry.LookupVersionRequest(
+        request_msg = schema_registry.LookupVersionRequest(
             parent="parent_value",
             schema="schema_value",
         )
+        assert args[0] == request_msg
 
 
 def test_lookup_version_use_cached_wrapped_rpc():
@@ -5955,9 +5983,14 @@ async def test_lookup_version_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_lookup_version_async(
-    transport: str = "grpc_asyncio", request_type=schema_registry.LookupVersionRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        schema_registry.LookupVersionRequest(),
+        {},
+    ],
+)
+async def test_lookup_version_async(request_type, transport: str = "grpc_asyncio"):
     client = ManagedSchemaRegistryAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5965,7 +5998,7 @@ async def test_lookup_version_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.lookup_version), "__call__") as call:
@@ -5994,11 +6027,6 @@ async def test_lookup_version_async(
     assert response.schema_id == 925
     assert response.schema_type == schema_registry_resources.Schema.SchemaType.AVRO
     assert response.schema_payload == "schema_payload_value"
-
-
-@pytest.mark.asyncio
-async def test_lookup_version_async_from_dict():
-    await test_lookup_version_async(request_type=dict)
 
 
 def test_lookup_version_field_headers():
@@ -6157,8 +6185,8 @@ async def test_lookup_version_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        schema_registry.GetVersionRequest,
-        dict,
+        schema_registry.GetVersionRequest(),
+        {},
     ],
 )
 def test_get_version(request_type, transport: str = "grpc"):
@@ -6169,7 +6197,7 @@ def test_get_version(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_version), "__call__") as call:
@@ -6221,9 +6249,10 @@ def test_get_version_non_empty_request_with_auto_populated_field():
         client.get_version(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == schema_registry.GetVersionRequest(
+        request_msg = schema_registry.GetVersionRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_version_use_cached_wrapped_rpc():
@@ -6304,9 +6333,14 @@ async def test_get_version_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_version_async(
-    transport: str = "grpc_asyncio", request_type=schema_registry.GetVersionRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        schema_registry.GetVersionRequest(),
+        {},
+    ],
+)
+async def test_get_version_async(request_type, transport: str = "grpc_asyncio"):
     client = ManagedSchemaRegistryAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6314,7 +6348,7 @@ async def test_get_version_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_version), "__call__") as call:
@@ -6343,11 +6377,6 @@ async def test_get_version_async(
     assert response.schema_id == 925
     assert response.schema_type == schema_registry_resources.Schema.SchemaType.AVRO
     assert response.schema_payload == "schema_payload_value"
-
-
-@pytest.mark.asyncio
-async def test_get_version_async_from_dict():
-    await test_get_version_async(request_type=dict)
 
 
 def test_get_version_field_headers():
@@ -6496,8 +6525,8 @@ async def test_get_version_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        schema_registry.GetVersionRequest,
-        dict,
+        schema_registry.GetVersionRequest(),
+        {},
     ],
 )
 def test_get_raw_schema_version(request_type, transport: str = "grpc"):
@@ -6508,7 +6537,7 @@ def test_get_raw_schema_version(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6558,9 +6587,10 @@ def test_get_raw_schema_version_non_empty_request_with_auto_populated_field():
         client.get_raw_schema_version(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == schema_registry.GetVersionRequest(
+        request_msg = schema_registry.GetVersionRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_raw_schema_version_use_cached_wrapped_rpc():
@@ -6646,8 +6676,15 @@ async def test_get_raw_schema_version_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        schema_registry.GetVersionRequest(),
+        {},
+    ],
+)
 async def test_get_raw_schema_version_async(
-    transport: str = "grpc_asyncio", request_type=schema_registry.GetVersionRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ManagedSchemaRegistryAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -6656,7 +6693,7 @@ async def test_get_raw_schema_version_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6681,11 +6718,6 @@ async def test_get_raw_schema_version_async(
     assert isinstance(response, httpbody_pb2.HttpBody)
     assert response.content_type == "content_type_value"
     assert response.data == b"data_blob"
-
-
-@pytest.mark.asyncio
-async def test_get_raw_schema_version_async_from_dict():
-    await test_get_raw_schema_version_async(request_type=dict)
 
 
 def test_get_raw_schema_version_field_headers():
@@ -6842,8 +6874,8 @@ async def test_get_raw_schema_version_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        schema_registry.ListVersionsRequest,
-        dict,
+        schema_registry.ListVersionsRequest(),
+        {},
     ],
 )
 def test_list_versions(request_type, transport: str = "grpc"):
@@ -6854,7 +6886,7 @@ def test_list_versions(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_versions), "__call__") as call:
@@ -6900,9 +6932,10 @@ def test_list_versions_non_empty_request_with_auto_populated_field():
         client.list_versions(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == schema_registry.ListVersionsRequest(
+        request_msg = schema_registry.ListVersionsRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_versions_use_cached_wrapped_rpc():
@@ -6983,9 +7016,14 @@ async def test_list_versions_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_versions_async(
-    transport: str = "grpc_asyncio", request_type=schema_registry.ListVersionsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        schema_registry.ListVersionsRequest(),
+        {},
+    ],
+)
+async def test_list_versions_async(request_type, transport: str = "grpc_asyncio"):
     client = ManagedSchemaRegistryAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6993,7 +7031,7 @@ async def test_list_versions_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_versions), "__call__") as call:
@@ -7016,11 +7054,6 @@ async def test_list_versions_async(
     assert isinstance(response, httpbody_pb2.HttpBody)
     assert response.content_type == "content_type_value"
     assert response.data == b"data_blob"
-
-
-@pytest.mark.asyncio
-async def test_list_versions_async_from_dict():
-    await test_list_versions_async(request_type=dict)
 
 
 def test_list_versions_field_headers():
@@ -7169,8 +7202,8 @@ async def test_list_versions_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        schema_registry.CreateVersionRequest,
-        dict,
+        schema_registry.CreateVersionRequest(),
+        {},
     ],
 )
 def test_create_version(request_type, transport: str = "grpc"):
@@ -7181,7 +7214,7 @@ def test_create_version(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_version), "__call__") as call:
@@ -7226,10 +7259,11 @@ def test_create_version_non_empty_request_with_auto_populated_field():
         client.create_version(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == schema_registry.CreateVersionRequest(
+        request_msg = schema_registry.CreateVersionRequest(
             parent="parent_value",
             schema="schema_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_version_use_cached_wrapped_rpc():
@@ -7310,9 +7344,14 @@ async def test_create_version_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_version_async(
-    transport: str = "grpc_asyncio", request_type=schema_registry.CreateVersionRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        schema_registry.CreateVersionRequest(),
+        {},
+    ],
+)
+async def test_create_version_async(request_type, transport: str = "grpc_asyncio"):
     client = ManagedSchemaRegistryAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7320,7 +7359,7 @@ async def test_create_version_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_version), "__call__") as call:
@@ -7341,11 +7380,6 @@ async def test_create_version_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, schema_registry.CreateVersionResponse)
     assert response.id == 205
-
-
-@pytest.mark.asyncio
-async def test_create_version_async_from_dict():
-    await test_create_version_async(request_type=dict)
 
 
 def test_create_version_field_headers():
@@ -7562,8 +7596,8 @@ async def test_create_version_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        schema_registry.DeleteVersionRequest,
-        dict,
+        schema_registry.DeleteVersionRequest(),
+        {},
     ],
 )
 def test_delete_version(request_type, transport: str = "grpc"):
@@ -7574,7 +7608,7 @@ def test_delete_version(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_version), "__call__") as call:
@@ -7620,9 +7654,10 @@ def test_delete_version_non_empty_request_with_auto_populated_field():
         client.delete_version(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == schema_registry.DeleteVersionRequest(
+        request_msg = schema_registry.DeleteVersionRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_version_use_cached_wrapped_rpc():
@@ -7703,9 +7738,14 @@ async def test_delete_version_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_version_async(
-    transport: str = "grpc_asyncio", request_type=schema_registry.DeleteVersionRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        schema_registry.DeleteVersionRequest(),
+        {},
+    ],
+)
+async def test_delete_version_async(request_type, transport: str = "grpc_asyncio"):
     client = ManagedSchemaRegistryAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7713,7 +7753,7 @@ async def test_delete_version_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_version), "__call__") as call:
@@ -7736,11 +7776,6 @@ async def test_delete_version_async(
     assert isinstance(response, httpbody_pb2.HttpBody)
     assert response.content_type == "content_type_value"
     assert response.data == b"data_blob"
-
-
-@pytest.mark.asyncio
-async def test_delete_version_async_from_dict():
-    await test_delete_version_async(request_type=dict)
 
 
 def test_delete_version_field_headers():
@@ -7889,8 +7924,8 @@ async def test_delete_version_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        schema_registry.ListReferencedSchemasRequest,
-        dict,
+        schema_registry.ListReferencedSchemasRequest(),
+        {},
     ],
 )
 def test_list_referenced_schemas(request_type, transport: str = "grpc"):
@@ -7901,7 +7936,7 @@ def test_list_referenced_schemas(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7951,9 +7986,10 @@ def test_list_referenced_schemas_non_empty_request_with_auto_populated_field():
         client.list_referenced_schemas(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == schema_registry.ListReferencedSchemasRequest(
+        request_msg = schema_registry.ListReferencedSchemasRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_referenced_schemas_use_cached_wrapped_rpc():
@@ -8039,9 +8075,15 @@ async def test_list_referenced_schemas_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        schema_registry.ListReferencedSchemasRequest(),
+        {},
+    ],
+)
 async def test_list_referenced_schemas_async(
-    transport: str = "grpc_asyncio",
-    request_type=schema_registry.ListReferencedSchemasRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ManagedSchemaRegistryAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -8050,7 +8092,7 @@ async def test_list_referenced_schemas_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8075,11 +8117,6 @@ async def test_list_referenced_schemas_async(
     assert isinstance(response, httpbody_pb2.HttpBody)
     assert response.content_type == "content_type_value"
     assert response.data == b"data_blob"
-
-
-@pytest.mark.asyncio
-async def test_list_referenced_schemas_async_from_dict():
-    await test_list_referenced_schemas_async(request_type=dict)
 
 
 def test_list_referenced_schemas_field_headers():
@@ -8236,8 +8273,8 @@ async def test_list_referenced_schemas_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        schema_registry.CheckCompatibilityRequest,
-        dict,
+        schema_registry.CheckCompatibilityRequest(),
+        {},
     ],
 )
 def test_check_compatibility(request_type, transport: str = "grpc"):
@@ -8248,7 +8285,7 @@ def test_check_compatibility(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8299,10 +8336,11 @@ def test_check_compatibility_non_empty_request_with_auto_populated_field():
         client.check_compatibility(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == schema_registry.CheckCompatibilityRequest(
+        request_msg = schema_registry.CheckCompatibilityRequest(
             name="name_value",
             schema="schema_value",
         )
+        assert args[0] == request_msg
 
 
 def test_check_compatibility_use_cached_wrapped_rpc():
@@ -8387,10 +8425,14 @@ async def test_check_compatibility_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_check_compatibility_async(
-    transport: str = "grpc_asyncio",
-    request_type=schema_registry.CheckCompatibilityRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        schema_registry.CheckCompatibilityRequest(),
+        {},
+    ],
+)
+async def test_check_compatibility_async(request_type, transport: str = "grpc_asyncio"):
     client = ManagedSchemaRegistryAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -8398,7 +8440,7 @@ async def test_check_compatibility_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8423,11 +8465,6 @@ async def test_check_compatibility_async(
     assert isinstance(response, schema_registry.CheckCompatibilityResponse)
     assert response.is_compatible is True
     assert response.messages == ["messages_value"]
-
-
-@pytest.mark.asyncio
-async def test_check_compatibility_async_from_dict():
-    await test_check_compatibility_async(request_type=dict)
 
 
 def test_check_compatibility_field_headers():
@@ -8594,8 +8631,8 @@ async def test_check_compatibility_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        schema_registry.GetSchemaConfigRequest,
-        dict,
+        schema_registry.GetSchemaConfigRequest(),
+        {},
     ],
 )
 def test_get_schema_config(request_type, transport: str = "grpc"):
@@ -8606,7 +8643,7 @@ def test_get_schema_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8661,9 +8698,10 @@ def test_get_schema_config_non_empty_request_with_auto_populated_field():
         client.get_schema_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == schema_registry.GetSchemaConfigRequest(
+        request_msg = schema_registry.GetSchemaConfigRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_schema_config_use_cached_wrapped_rpc():
@@ -8746,9 +8784,14 @@ async def test_get_schema_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_schema_config_async(
-    transport: str = "grpc_asyncio", request_type=schema_registry.GetSchemaConfigRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        schema_registry.GetSchemaConfigRequest(),
+        {},
+    ],
+)
+async def test_get_schema_config_async(request_type, transport: str = "grpc_asyncio"):
     client = ManagedSchemaRegistryAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -8756,7 +8799,7 @@ async def test_get_schema_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8786,11 +8829,6 @@ async def test_get_schema_config_async(
     )
     assert response.normalize is True
     assert response.alias == "alias_value"
-
-
-@pytest.mark.asyncio
-async def test_get_schema_config_async_from_dict():
-    await test_get_schema_config_async(request_type=dict)
 
 
 def test_get_schema_config_field_headers():
@@ -8947,8 +8985,8 @@ async def test_get_schema_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        schema_registry.UpdateSchemaConfigRequest,
-        dict,
+        schema_registry.UpdateSchemaConfigRequest(),
+        {},
     ],
 )
 def test_update_schema_config(request_type, transport: str = "grpc"):
@@ -8959,7 +8997,7 @@ def test_update_schema_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9014,9 +9052,10 @@ def test_update_schema_config_non_empty_request_with_auto_populated_field():
         client.update_schema_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == schema_registry.UpdateSchemaConfigRequest(
+        request_msg = schema_registry.UpdateSchemaConfigRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_schema_config_use_cached_wrapped_rpc():
@@ -9101,9 +9140,15 @@ async def test_update_schema_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        schema_registry.UpdateSchemaConfigRequest(),
+        {},
+    ],
+)
 async def test_update_schema_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=schema_registry.UpdateSchemaConfigRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ManagedSchemaRegistryAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -9112,7 +9157,7 @@ async def test_update_schema_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9142,11 +9187,6 @@ async def test_update_schema_config_async(
     )
     assert response.normalize is True
     assert response.alias == "alias_value"
-
-
-@pytest.mark.asyncio
-async def test_update_schema_config_async_from_dict():
-    await test_update_schema_config_async(request_type=dict)
 
 
 def test_update_schema_config_field_headers():
@@ -9313,8 +9353,8 @@ async def test_update_schema_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        schema_registry.DeleteSchemaConfigRequest,
-        dict,
+        schema_registry.DeleteSchemaConfigRequest(),
+        {},
     ],
 )
 def test_delete_schema_config(request_type, transport: str = "grpc"):
@@ -9325,7 +9365,7 @@ def test_delete_schema_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9380,9 +9420,10 @@ def test_delete_schema_config_non_empty_request_with_auto_populated_field():
         client.delete_schema_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == schema_registry.DeleteSchemaConfigRequest(
+        request_msg = schema_registry.DeleteSchemaConfigRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_schema_config_use_cached_wrapped_rpc():
@@ -9467,9 +9508,15 @@ async def test_delete_schema_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        schema_registry.DeleteSchemaConfigRequest(),
+        {},
+    ],
+)
 async def test_delete_schema_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=schema_registry.DeleteSchemaConfigRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ManagedSchemaRegistryAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -9478,7 +9525,7 @@ async def test_delete_schema_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9508,11 +9555,6 @@ async def test_delete_schema_config_async(
     )
     assert response.normalize is True
     assert response.alias == "alias_value"
-
-
-@pytest.mark.asyncio
-async def test_delete_schema_config_async_from_dict():
-    await test_delete_schema_config_async(request_type=dict)
 
 
 def test_delete_schema_config_field_headers():
@@ -9669,8 +9711,8 @@ async def test_delete_schema_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        schema_registry.GetSchemaModeRequest,
-        dict,
+        schema_registry.GetSchemaModeRequest(),
+        {},
     ],
 )
 def test_get_schema_mode(request_type, transport: str = "grpc"):
@@ -9681,7 +9723,7 @@ def test_get_schema_mode(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_schema_mode), "__call__") as call:
@@ -9725,9 +9767,10 @@ def test_get_schema_mode_non_empty_request_with_auto_populated_field():
         client.get_schema_mode(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == schema_registry.GetSchemaModeRequest(
+        request_msg = schema_registry.GetSchemaModeRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_schema_mode_use_cached_wrapped_rpc():
@@ -9808,9 +9851,14 @@ async def test_get_schema_mode_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_schema_mode_async(
-    transport: str = "grpc_asyncio", request_type=schema_registry.GetSchemaModeRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        schema_registry.GetSchemaModeRequest(),
+        {},
+    ],
+)
+async def test_get_schema_mode_async(request_type, transport: str = "grpc_asyncio"):
     client = ManagedSchemaRegistryAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -9818,7 +9866,7 @@ async def test_get_schema_mode_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_schema_mode), "__call__") as call:
@@ -9839,11 +9887,6 @@ async def test_get_schema_mode_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, schema_registry_resources.SchemaMode)
     assert response.mode == schema_registry_resources.SchemaMode.ModeType.READONLY
-
-
-@pytest.mark.asyncio
-async def test_get_schema_mode_async_from_dict():
-    await test_get_schema_mode_async(request_type=dict)
 
 
 def test_get_schema_mode_field_headers():
@@ -9992,8 +10035,8 @@ async def test_get_schema_mode_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        schema_registry.UpdateSchemaModeRequest,
-        dict,
+        schema_registry.UpdateSchemaModeRequest(),
+        {},
     ],
 )
 def test_update_schema_mode(request_type, transport: str = "grpc"):
@@ -10004,7 +10047,7 @@ def test_update_schema_mode(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10052,9 +10095,10 @@ def test_update_schema_mode_non_empty_request_with_auto_populated_field():
         client.update_schema_mode(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == schema_registry.UpdateSchemaModeRequest(
+        request_msg = schema_registry.UpdateSchemaModeRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_schema_mode_use_cached_wrapped_rpc():
@@ -10139,10 +10183,14 @@ async def test_update_schema_mode_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_schema_mode_async(
-    transport: str = "grpc_asyncio",
-    request_type=schema_registry.UpdateSchemaModeRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        schema_registry.UpdateSchemaModeRequest(),
+        {},
+    ],
+)
+async def test_update_schema_mode_async(request_type, transport: str = "grpc_asyncio"):
     client = ManagedSchemaRegistryAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -10150,7 +10198,7 @@ async def test_update_schema_mode_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10173,11 +10221,6 @@ async def test_update_schema_mode_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, schema_registry_resources.SchemaMode)
     assert response.mode == schema_registry_resources.SchemaMode.ModeType.READONLY
-
-
-@pytest.mark.asyncio
-async def test_update_schema_mode_async_from_dict():
-    await test_update_schema_mode_async(request_type=dict)
 
 
 def test_update_schema_mode_field_headers():
@@ -10344,8 +10387,8 @@ async def test_update_schema_mode_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        schema_registry.DeleteSchemaModeRequest,
-        dict,
+        schema_registry.DeleteSchemaModeRequest(),
+        {},
     ],
 )
 def test_delete_schema_mode(request_type, transport: str = "grpc"):
@@ -10356,7 +10399,7 @@ def test_delete_schema_mode(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10404,9 +10447,10 @@ def test_delete_schema_mode_non_empty_request_with_auto_populated_field():
         client.delete_schema_mode(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == schema_registry.DeleteSchemaModeRequest(
+        request_msg = schema_registry.DeleteSchemaModeRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_schema_mode_use_cached_wrapped_rpc():
@@ -10491,10 +10535,14 @@ async def test_delete_schema_mode_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_schema_mode_async(
-    transport: str = "grpc_asyncio",
-    request_type=schema_registry.DeleteSchemaModeRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        schema_registry.DeleteSchemaModeRequest(),
+        {},
+    ],
+)
+async def test_delete_schema_mode_async(request_type, transport: str = "grpc_asyncio"):
     client = ManagedSchemaRegistryAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -10502,7 +10550,7 @@ async def test_delete_schema_mode_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10525,11 +10573,6 @@ async def test_delete_schema_mode_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, schema_registry_resources.SchemaMode)
     assert response.mode == schema_registry_resources.SchemaMode.ModeType.READONLY
-
-
-@pytest.mark.asyncio
-async def test_delete_schema_mode_async_from_dict():
-    await test_delete_schema_mode_async(request_type=dict)
 
 
 def test_delete_schema_mode_field_headers():
@@ -10795,7 +10838,7 @@ def test_get_schema_registry_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_schema_registry_rest_unset_required_fields():
@@ -10980,7 +11023,7 @@ def test_list_schema_registries_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_schema_registries_rest_unset_required_fields():
@@ -11168,7 +11211,7 @@ def test_create_schema_registry_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_schema_registry_rest_unset_required_fields():
@@ -11359,7 +11402,7 @@ def test_delete_schema_registry_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_schema_registry_rest_unset_required_fields():
@@ -11537,7 +11580,7 @@ def test_get_context_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_context_rest_unset_required_fields():
@@ -11715,7 +11758,7 @@ def test_list_contexts_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_contexts_rest_unset_required_fields():
@@ -11893,7 +11936,7 @@ def test_get_schema_rest_required_fields(request_type=schema_registry.GetSchemaR
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_schema_rest_unset_required_fields():
@@ -12073,7 +12116,7 @@ def test_get_raw_schema_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_raw_schema_rest_unset_required_fields():
@@ -12260,7 +12303,7 @@ def test_list_schema_versions_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_schema_versions_rest_unset_required_fields():
@@ -12446,7 +12489,7 @@ def test_list_schema_types_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_schema_types_rest_unset_required_fields():
@@ -12629,7 +12672,7 @@ def test_list_subjects_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_subjects_rest_unset_required_fields():
@@ -12829,7 +12872,7 @@ def test_list_subjects_by_schema_id_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_subjects_by_schema_id_rest_unset_required_fields():
@@ -13019,7 +13062,7 @@ def test_delete_subject_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_subject_rest_unset_required_fields():
@@ -13202,7 +13245,7 @@ def test_lookup_version_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_lookup_version_rest_unset_required_fields():
@@ -13394,7 +13437,7 @@ def test_get_version_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_version_rest_unset_required_fields():
@@ -13579,7 +13622,7 @@ def test_get_raw_schema_version_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_raw_schema_version_rest_unset_required_fields():
@@ -13757,7 +13800,7 @@ def test_list_versions_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_versions_rest_unset_required_fields():
@@ -13940,7 +13983,7 @@ def test_create_version_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_version_rest_unset_required_fields():
@@ -14144,7 +14187,7 @@ def test_delete_version_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_version_rest_unset_required_fields():
@@ -14325,7 +14368,7 @@ def test_list_referenced_schemas_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_referenced_schemas_rest_unset_required_fields():
@@ -14512,7 +14555,7 @@ def test_check_compatibility_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_check_compatibility_rest_unset_required_fields():
@@ -14706,7 +14749,7 @@ def test_get_schema_config_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_schema_config_rest_unset_required_fields():
@@ -14891,7 +14934,7 @@ def test_update_schema_config_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_schema_config_rest_unset_required_fields():
@@ -15085,7 +15128,7 @@ def test_delete_schema_config_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_schema_config_rest_unset_required_fields():
@@ -15265,7 +15308,7 @@ def test_get_schema_mode_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_schema_mode_rest_unset_required_fields():
@@ -15450,7 +15493,7 @@ def test_update_schema_mode_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_schema_mode_rest_unset_required_fields():
@@ -15644,7 +15687,7 @@ def test_delete_schema_mode_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_schema_mode_rest_unset_required_fields():
@@ -15841,7 +15884,6 @@ def test_get_schema_registry_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = schema_registry.GetSchemaRegistryRequest()
-
         assert args[0] == request_msg
 
 
@@ -15864,7 +15906,6 @@ def test_list_schema_registries_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = schema_registry.ListSchemaRegistriesRequest()
-
         assert args[0] == request_msg
 
 
@@ -15887,7 +15928,6 @@ def test_create_schema_registry_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcms_schema_registry.CreateSchemaRegistryRequest()
-
         assert args[0] == request_msg
 
 
@@ -15910,7 +15950,6 @@ def test_delete_schema_registry_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = schema_registry.DeleteSchemaRegistryRequest()
-
         assert args[0] == request_msg
 
 
@@ -15931,7 +15970,6 @@ def test_get_context_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = schema_registry.GetContextRequest()
-
         assert args[0] == request_msg
 
 
@@ -15952,7 +15990,6 @@ def test_list_contexts_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = schema_registry.ListContextsRequest()
-
         assert args[0] == request_msg
 
 
@@ -15973,7 +16010,6 @@ def test_get_schema_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = schema_registry.GetSchemaRequest()
-
         assert args[0] == request_msg
 
 
@@ -15994,7 +16030,6 @@ def test_get_raw_schema_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = schema_registry.GetSchemaRequest()
-
         assert args[0] == request_msg
 
 
@@ -16017,7 +16052,6 @@ def test_list_schema_versions_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = schema_registry.ListSchemaVersionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -16040,7 +16074,6 @@ def test_list_schema_types_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = schema_registry.ListSchemaTypesRequest()
-
         assert args[0] == request_msg
 
 
@@ -16061,7 +16094,6 @@ def test_list_subjects_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = schema_registry.ListSubjectsRequest()
-
         assert args[0] == request_msg
 
 
@@ -16084,7 +16116,6 @@ def test_list_subjects_by_schema_id_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = schema_registry.ListSubjectsBySchemaIdRequest()
-
         assert args[0] == request_msg
 
 
@@ -16105,7 +16136,6 @@ def test_delete_subject_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = schema_registry.DeleteSubjectRequest()
-
         assert args[0] == request_msg
 
 
@@ -16126,7 +16156,6 @@ def test_lookup_version_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = schema_registry.LookupVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -16147,7 +16176,6 @@ def test_get_version_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = schema_registry.GetVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -16170,7 +16198,6 @@ def test_get_raw_schema_version_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = schema_registry.GetVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -16191,7 +16218,6 @@ def test_list_versions_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = schema_registry.ListVersionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -16212,7 +16238,6 @@ def test_create_version_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = schema_registry.CreateVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -16233,7 +16258,6 @@ def test_delete_version_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = schema_registry.DeleteVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -16256,7 +16280,6 @@ def test_list_referenced_schemas_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = schema_registry.ListReferencedSchemasRequest()
-
         assert args[0] == request_msg
 
 
@@ -16279,7 +16302,6 @@ def test_check_compatibility_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = schema_registry.CheckCompatibilityRequest()
-
         assert args[0] == request_msg
 
 
@@ -16302,7 +16324,6 @@ def test_get_schema_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = schema_registry.GetSchemaConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -16325,7 +16346,6 @@ def test_update_schema_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = schema_registry.UpdateSchemaConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -16348,7 +16368,6 @@ def test_delete_schema_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = schema_registry.DeleteSchemaConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -16369,7 +16388,6 @@ def test_get_schema_mode_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = schema_registry.GetSchemaModeRequest()
-
         assert args[0] == request_msg
 
 
@@ -16392,7 +16410,6 @@ def test_update_schema_mode_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = schema_registry.UpdateSchemaModeRequest()
-
         assert args[0] == request_msg
 
 
@@ -16415,7 +16432,6 @@ def test_delete_schema_mode_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = schema_registry.DeleteSchemaModeRequest()
-
         assert args[0] == request_msg
 
 
@@ -16459,7 +16475,6 @@ async def test_get_schema_registry_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = schema_registry.GetSchemaRegistryRequest()
-
         assert args[0] == request_msg
 
 
@@ -16486,7 +16501,6 @@ async def test_list_schema_registries_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = schema_registry.ListSchemaRegistriesRequest()
-
         assert args[0] == request_msg
 
 
@@ -16516,7 +16530,6 @@ async def test_create_schema_registry_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcms_schema_registry.CreateSchemaRegistryRequest()
-
         assert args[0] == request_msg
 
 
@@ -16541,7 +16554,6 @@ async def test_delete_schema_registry_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = schema_registry.DeleteSchemaRegistryRequest()
-
         assert args[0] == request_msg
 
 
@@ -16569,7 +16581,6 @@ async def test_get_context_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = schema_registry.GetContextRequest()
-
         assert args[0] == request_msg
 
 
@@ -16597,7 +16608,6 @@ async def test_list_contexts_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = schema_registry.ListContextsRequest()
-
         assert args[0] == request_msg
 
 
@@ -16625,7 +16635,6 @@ async def test_get_schema_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = schema_registry.GetSchemaRequest()
-
         assert args[0] == request_msg
 
 
@@ -16653,7 +16662,6 @@ async def test_get_raw_schema_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = schema_registry.GetSchemaRequest()
-
         assert args[0] == request_msg
 
 
@@ -16683,7 +16691,6 @@ async def test_list_schema_versions_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = schema_registry.ListSchemaVersionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -16713,7 +16720,6 @@ async def test_list_schema_types_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = schema_registry.ListSchemaTypesRequest()
-
         assert args[0] == request_msg
 
 
@@ -16741,7 +16747,6 @@ async def test_list_subjects_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = schema_registry.ListSubjectsRequest()
-
         assert args[0] == request_msg
 
 
@@ -16771,7 +16776,6 @@ async def test_list_subjects_by_schema_id_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = schema_registry.ListSubjectsBySchemaIdRequest()
-
         assert args[0] == request_msg
 
 
@@ -16799,7 +16803,6 @@ async def test_delete_subject_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = schema_registry.DeleteSubjectRequest()
-
         assert args[0] == request_msg
 
 
@@ -16830,7 +16833,6 @@ async def test_lookup_version_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = schema_registry.LookupVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -16861,7 +16863,6 @@ async def test_get_version_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = schema_registry.GetVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -16891,7 +16892,6 @@ async def test_get_raw_schema_version_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = schema_registry.GetVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -16919,7 +16919,6 @@ async def test_list_versions_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = schema_registry.ListVersionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -16946,7 +16945,6 @@ async def test_create_version_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = schema_registry.CreateVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -16974,7 +16972,6 @@ async def test_delete_version_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = schema_registry.DeleteVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -17004,7 +17001,6 @@ async def test_list_referenced_schemas_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = schema_registry.ListReferencedSchemasRequest()
-
         assert args[0] == request_msg
 
 
@@ -17034,7 +17030,6 @@ async def test_check_compatibility_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = schema_registry.CheckCompatibilityRequest()
-
         assert args[0] == request_msg
 
 
@@ -17065,7 +17060,6 @@ async def test_get_schema_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = schema_registry.GetSchemaConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -17096,7 +17090,6 @@ async def test_update_schema_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = schema_registry.UpdateSchemaConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -17127,7 +17120,6 @@ async def test_delete_schema_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = schema_registry.DeleteSchemaConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -17154,7 +17146,6 @@ async def test_get_schema_mode_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = schema_registry.GetSchemaModeRequest()
-
         assert args[0] == request_msg
 
 
@@ -17183,7 +17174,6 @@ async def test_update_schema_mode_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = schema_registry.UpdateSchemaModeRequest()
-
         assert args[0] == request_msg
 
 
@@ -17212,7 +17202,6 @@ async def test_delete_schema_mode_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = schema_registry.DeleteSchemaModeRequest()
-
         assert args[0] == request_msg
 
 
@@ -21343,7 +21332,6 @@ def test_get_schema_registry_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = schema_registry.GetSchemaRegistryRequest()
-
         assert args[0] == request_msg
 
 
@@ -21365,7 +21353,6 @@ def test_list_schema_registries_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = schema_registry.ListSchemaRegistriesRequest()
-
         assert args[0] == request_msg
 
 
@@ -21387,7 +21374,6 @@ def test_create_schema_registry_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcms_schema_registry.CreateSchemaRegistryRequest()
-
         assert args[0] == request_msg
 
 
@@ -21409,7 +21395,6 @@ def test_delete_schema_registry_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = schema_registry.DeleteSchemaRegistryRequest()
-
         assert args[0] == request_msg
 
 
@@ -21429,7 +21414,6 @@ def test_get_context_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = schema_registry.GetContextRequest()
-
         assert args[0] == request_msg
 
 
@@ -21449,7 +21433,6 @@ def test_list_contexts_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = schema_registry.ListContextsRequest()
-
         assert args[0] == request_msg
 
 
@@ -21469,7 +21452,6 @@ def test_get_schema_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = schema_registry.GetSchemaRequest()
-
         assert args[0] == request_msg
 
 
@@ -21489,7 +21471,6 @@ def test_get_raw_schema_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = schema_registry.GetSchemaRequest()
-
         assert args[0] == request_msg
 
 
@@ -21511,7 +21492,6 @@ def test_list_schema_versions_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = schema_registry.ListSchemaVersionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -21533,7 +21513,6 @@ def test_list_schema_types_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = schema_registry.ListSchemaTypesRequest()
-
         assert args[0] == request_msg
 
 
@@ -21553,7 +21532,6 @@ def test_list_subjects_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = schema_registry.ListSubjectsRequest()
-
         assert args[0] == request_msg
 
 
@@ -21575,7 +21553,6 @@ def test_list_subjects_by_schema_id_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = schema_registry.ListSubjectsBySchemaIdRequest()
-
         assert args[0] == request_msg
 
 
@@ -21595,7 +21572,6 @@ def test_delete_subject_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = schema_registry.DeleteSubjectRequest()
-
         assert args[0] == request_msg
 
 
@@ -21615,7 +21591,6 @@ def test_lookup_version_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = schema_registry.LookupVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -21635,7 +21610,6 @@ def test_get_version_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = schema_registry.GetVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -21657,7 +21631,6 @@ def test_get_raw_schema_version_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = schema_registry.GetVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -21677,7 +21650,6 @@ def test_list_versions_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = schema_registry.ListVersionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -21697,7 +21669,6 @@ def test_create_version_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = schema_registry.CreateVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -21717,7 +21688,6 @@ def test_delete_version_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = schema_registry.DeleteVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -21739,7 +21709,6 @@ def test_list_referenced_schemas_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = schema_registry.ListReferencedSchemasRequest()
-
         assert args[0] == request_msg
 
 
@@ -21761,7 +21730,6 @@ def test_check_compatibility_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = schema_registry.CheckCompatibilityRequest()
-
         assert args[0] == request_msg
 
 
@@ -21783,7 +21751,6 @@ def test_get_schema_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = schema_registry.GetSchemaConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -21805,7 +21772,6 @@ def test_update_schema_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = schema_registry.UpdateSchemaConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -21827,7 +21793,6 @@ def test_delete_schema_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = schema_registry.DeleteSchemaConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -21847,7 +21812,6 @@ def test_get_schema_mode_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = schema_registry.GetSchemaModeRequest()
-
         assert args[0] == request_msg
 
 
@@ -21869,7 +21833,6 @@ def test_update_schema_mode_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = schema_registry.UpdateSchemaModeRequest()
-
         assert args[0] == request_msg
 
 
@@ -21891,7 +21854,6 @@ def test_delete_schema_mode_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = schema_registry.DeleteSchemaModeRequest()
-
         assert args[0] == request_msg
 
 

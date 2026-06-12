@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -115,6 +110,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1323,8 +1333,8 @@ def test_knowledge_bases_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        knowledge_base.ListKnowledgeBasesRequest,
-        dict,
+        knowledge_base.ListKnowledgeBasesRequest(),
+        {},
     ],
 )
 def test_list_knowledge_bases(request_type, transport: str = "grpc"):
@@ -1335,7 +1345,7 @@ def test_list_knowledge_bases(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1385,11 +1395,12 @@ def test_list_knowledge_bases_non_empty_request_with_auto_populated_field():
         client.list_knowledge_bases(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == knowledge_base.ListKnowledgeBasesRequest(
+        request_msg = knowledge_base.ListKnowledgeBasesRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_knowledge_bases_use_cached_wrapped_rpc():
@@ -1474,9 +1485,15 @@ async def test_list_knowledge_bases_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        knowledge_base.ListKnowledgeBasesRequest(),
+        {},
+    ],
+)
 async def test_list_knowledge_bases_async(
-    transport: str = "grpc_asyncio",
-    request_type=knowledge_base.ListKnowledgeBasesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = KnowledgeBasesAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1485,7 +1502,7 @@ async def test_list_knowledge_bases_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1508,11 +1525,6 @@ async def test_list_knowledge_bases_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListKnowledgeBasesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_knowledge_bases_async_from_dict():
-    await test_list_knowledge_bases_async(request_type=dict)
 
 
 def test_list_knowledge_bases_field_headers():
@@ -1858,11 +1870,7 @@ async def test_list_knowledge_bases_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_knowledge_bases(request={})
-        ).pages:
+        async for page_ in (await client.list_knowledge_bases(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -1871,8 +1879,8 @@ async def test_list_knowledge_bases_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        knowledge_base.GetKnowledgeBaseRequest,
-        dict,
+        knowledge_base.GetKnowledgeBaseRequest(),
+        {},
     ],
 )
 def test_get_knowledge_base(request_type, transport: str = "grpc"):
@@ -1883,7 +1891,7 @@ def test_get_knowledge_base(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1935,9 +1943,10 @@ def test_get_knowledge_base_non_empty_request_with_auto_populated_field():
         client.get_knowledge_base(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == knowledge_base.GetKnowledgeBaseRequest(
+        request_msg = knowledge_base.GetKnowledgeBaseRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_knowledge_base_use_cached_wrapped_rpc():
@@ -2022,9 +2031,14 @@ async def test_get_knowledge_base_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_knowledge_base_async(
-    transport: str = "grpc_asyncio", request_type=knowledge_base.GetKnowledgeBaseRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        knowledge_base.GetKnowledgeBaseRequest(),
+        {},
+    ],
+)
+async def test_get_knowledge_base_async(request_type, transport: str = "grpc_asyncio"):
     client = KnowledgeBasesAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2032,7 +2046,7 @@ async def test_get_knowledge_base_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2059,11 +2073,6 @@ async def test_get_knowledge_base_async(
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.language_code == "language_code_value"
-
-
-@pytest.mark.asyncio
-async def test_get_knowledge_base_async_from_dict():
-    await test_get_knowledge_base_async(request_type=dict)
 
 
 def test_get_knowledge_base_field_headers():
@@ -2220,8 +2229,8 @@ async def test_get_knowledge_base_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcd_knowledge_base.CreateKnowledgeBaseRequest,
-        dict,
+        gcd_knowledge_base.CreateKnowledgeBaseRequest(),
+        {},
     ],
 )
 def test_create_knowledge_base(request_type, transport: str = "grpc"):
@@ -2232,7 +2241,7 @@ def test_create_knowledge_base(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2284,9 +2293,10 @@ def test_create_knowledge_base_non_empty_request_with_auto_populated_field():
         client.create_knowledge_base(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcd_knowledge_base.CreateKnowledgeBaseRequest(
+        request_msg = gcd_knowledge_base.CreateKnowledgeBaseRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_knowledge_base_use_cached_wrapped_rpc():
@@ -2372,9 +2382,15 @@ async def test_create_knowledge_base_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcd_knowledge_base.CreateKnowledgeBaseRequest(),
+        {},
+    ],
+)
 async def test_create_knowledge_base_async(
-    transport: str = "grpc_asyncio",
-    request_type=gcd_knowledge_base.CreateKnowledgeBaseRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = KnowledgeBasesAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2383,7 +2399,7 @@ async def test_create_knowledge_base_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2410,11 +2426,6 @@ async def test_create_knowledge_base_async(
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.language_code == "language_code_value"
-
-
-@pytest.mark.asyncio
-async def test_create_knowledge_base_async_from_dict():
-    await test_create_knowledge_base_async(request_type=dict)
 
 
 def test_create_knowledge_base_field_headers():
@@ -2581,8 +2592,8 @@ async def test_create_knowledge_base_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        knowledge_base.DeleteKnowledgeBaseRequest,
-        dict,
+        knowledge_base.DeleteKnowledgeBaseRequest(),
+        {},
     ],
 )
 def test_delete_knowledge_base(request_type, transport: str = "grpc"):
@@ -2593,7 +2604,7 @@ def test_delete_knowledge_base(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2638,9 +2649,10 @@ def test_delete_knowledge_base_non_empty_request_with_auto_populated_field():
         client.delete_knowledge_base(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == knowledge_base.DeleteKnowledgeBaseRequest(
+        request_msg = knowledge_base.DeleteKnowledgeBaseRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_knowledge_base_use_cached_wrapped_rpc():
@@ -2726,9 +2738,15 @@ async def test_delete_knowledge_base_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        knowledge_base.DeleteKnowledgeBaseRequest(),
+        {},
+    ],
+)
 async def test_delete_knowledge_base_async(
-    transport: str = "grpc_asyncio",
-    request_type=knowledge_base.DeleteKnowledgeBaseRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = KnowledgeBasesAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2737,7 +2755,7 @@ async def test_delete_knowledge_base_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2755,11 +2773,6 @@ async def test_delete_knowledge_base_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_knowledge_base_async_from_dict():
-    await test_delete_knowledge_base_async(request_type=dict)
 
 
 def test_delete_knowledge_base_field_headers():
@@ -2912,8 +2925,8 @@ async def test_delete_knowledge_base_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcd_knowledge_base.UpdateKnowledgeBaseRequest,
-        dict,
+        gcd_knowledge_base.UpdateKnowledgeBaseRequest(),
+        {},
     ],
 )
 def test_update_knowledge_base(request_type, transport: str = "grpc"):
@@ -2924,7 +2937,7 @@ def test_update_knowledge_base(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2974,7 +2987,8 @@ def test_update_knowledge_base_non_empty_request_with_auto_populated_field():
         client.update_knowledge_base(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcd_knowledge_base.UpdateKnowledgeBaseRequest()
+        request_msg = gcd_knowledge_base.UpdateKnowledgeBaseRequest()
+        assert args[0] == request_msg
 
 
 def test_update_knowledge_base_use_cached_wrapped_rpc():
@@ -3060,9 +3074,15 @@ async def test_update_knowledge_base_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcd_knowledge_base.UpdateKnowledgeBaseRequest(),
+        {},
+    ],
+)
 async def test_update_knowledge_base_async(
-    transport: str = "grpc_asyncio",
-    request_type=gcd_knowledge_base.UpdateKnowledgeBaseRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = KnowledgeBasesAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3071,7 +3091,7 @@ async def test_update_knowledge_base_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3098,11 +3118,6 @@ async def test_update_knowledge_base_async(
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.language_code == "language_code_value"
-
-
-@pytest.mark.asyncio
-async def test_update_knowledge_base_async_from_dict():
-    await test_update_knowledge_base_async(request_type=dict)
 
 
 def test_update_knowledge_base_field_headers():
@@ -3386,7 +3401,7 @@ def test_list_knowledge_bases_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_knowledge_bases_rest_unset_required_fields():
@@ -3638,7 +3653,7 @@ def test_get_knowledge_base_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_knowledge_base_rest_unset_required_fields():
@@ -3820,7 +3835,7 @@ def test_create_knowledge_base_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_knowledge_base_rest_unset_required_fields():
@@ -4010,7 +4025,7 @@ def test_delete_knowledge_base_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_knowledge_base_rest_unset_required_fields():
@@ -4187,7 +4202,7 @@ def test_update_knowledge_base_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_knowledge_base_rest_unset_required_fields():
@@ -4386,7 +4401,6 @@ def test_list_knowledge_bases_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = knowledge_base.ListKnowledgeBasesRequest()
-
         assert args[0] == request_msg
 
 
@@ -4409,7 +4423,6 @@ def test_get_knowledge_base_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = knowledge_base.GetKnowledgeBaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -4432,7 +4445,6 @@ def test_create_knowledge_base_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcd_knowledge_base.CreateKnowledgeBaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -4455,7 +4467,6 @@ def test_delete_knowledge_base_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = knowledge_base.DeleteKnowledgeBaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -4478,7 +4489,6 @@ def test_update_knowledge_base_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcd_knowledge_base.UpdateKnowledgeBaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -4521,7 +4531,6 @@ async def test_list_knowledge_bases_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = knowledge_base.ListKnowledgeBasesRequest()
-
         assert args[0] == request_msg
 
 
@@ -4552,7 +4561,6 @@ async def test_get_knowledge_base_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = knowledge_base.GetKnowledgeBaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -4583,7 +4591,6 @@ async def test_create_knowledge_base_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcd_knowledge_base.CreateKnowledgeBaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -4608,7 +4615,6 @@ async def test_delete_knowledge_base_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = knowledge_base.DeleteKnowledgeBaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -4639,7 +4645,6 @@ async def test_update_knowledge_base_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcd_knowledge_base.UpdateKnowledgeBaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -5793,7 +5798,6 @@ def test_list_knowledge_bases_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = knowledge_base.ListKnowledgeBasesRequest()
-
         assert args[0] == request_msg
 
 
@@ -5815,7 +5819,6 @@ def test_get_knowledge_base_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = knowledge_base.GetKnowledgeBaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -5837,7 +5840,6 @@ def test_create_knowledge_base_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcd_knowledge_base.CreateKnowledgeBaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -5859,7 +5861,6 @@ def test_delete_knowledge_base_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = knowledge_base.DeleteKnowledgeBaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -5881,7 +5882,6 @@ def test_update_knowledge_base_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcd_knowledge_base.UpdateKnowledgeBaseRequest()
-
         assert args[0] == request_msg
 
 

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -114,6 +109,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1281,8 +1291,8 @@ def test_case_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        case_service.GetCaseRequest,
-        dict,
+        case_service.GetCaseRequest(),
+        {},
     ],
 )
 def test_get_case(request_type, transport: str = "grpc"):
@@ -1293,7 +1303,7 @@ def test_get_case(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_case), "__call__") as call:
@@ -1357,9 +1367,10 @@ def test_get_case_non_empty_request_with_auto_populated_field():
         client.get_case(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == case_service.GetCaseRequest(
+        request_msg = case_service.GetCaseRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_case_use_cached_wrapped_rpc():
@@ -1438,9 +1449,14 @@ async def test_get_case_async_use_cached_wrapped_rpc(transport: str = "grpc_asyn
 
 
 @pytest.mark.asyncio
-async def test_get_case_async(
-    transport: str = "grpc_asyncio", request_type=case_service.GetCaseRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        case_service.GetCaseRequest(),
+        {},
+    ],
+)
+async def test_get_case_async(request_type, transport: str = "grpc_asyncio"):
     client = CaseServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1448,7 +1464,7 @@ async def test_get_case_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_case), "__call__") as call:
@@ -1489,11 +1505,6 @@ async def test_get_case_async(
     assert response.test_case is True
     assert response.language_code == "language_code_value"
     assert response.priority == case.Case.Priority.P0
-
-
-@pytest.mark.asyncio
-async def test_get_case_async_from_dict():
-    await test_get_case_async(request_type=dict)
 
 
 def test_get_case_field_headers():
@@ -1638,8 +1649,8 @@ async def test_get_case_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        case_service.ListCasesRequest,
-        dict,
+        case_service.ListCasesRequest(),
+        {},
     ],
 )
 def test_list_cases(request_type, transport: str = "grpc"):
@@ -1650,7 +1661,7 @@ def test_list_cases(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_cases), "__call__") as call:
@@ -1696,11 +1707,12 @@ def test_list_cases_non_empty_request_with_auto_populated_field():
         client.list_cases(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == case_service.ListCasesRequest(
+        request_msg = case_service.ListCasesRequest(
             parent="parent_value",
             filter="filter_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_cases_use_cached_wrapped_rpc():
@@ -1779,9 +1791,14 @@ async def test_list_cases_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_list_cases_async(
-    transport: str = "grpc_asyncio", request_type=case_service.ListCasesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        case_service.ListCasesRequest(),
+        {},
+    ],
+)
+async def test_list_cases_async(request_type, transport: str = "grpc_asyncio"):
     client = CaseServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1789,7 +1806,7 @@ async def test_list_cases_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_cases), "__call__") as call:
@@ -1810,11 +1827,6 @@ async def test_list_cases_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListCasesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_cases_async_from_dict():
-    await test_list_cases_async(request_type=dict)
 
 
 def test_list_cases_field_headers():
@@ -2144,11 +2156,7 @@ async def test_list_cases_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_cases(request={})
-        ).pages:
+        async for page_ in (await client.list_cases(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -2157,8 +2165,8 @@ async def test_list_cases_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        case_service.SearchCasesRequest,
-        dict,
+        case_service.SearchCasesRequest(),
+        {},
     ],
 )
 def test_search_cases(request_type, transport: str = "grpc"):
@@ -2169,7 +2177,7 @@ def test_search_cases(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.search_cases), "__call__") as call:
@@ -2215,11 +2223,12 @@ def test_search_cases_non_empty_request_with_auto_populated_field():
         client.search_cases(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == case_service.SearchCasesRequest(
+        request_msg = case_service.SearchCasesRequest(
             parent="parent_value",
             query="query_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_search_cases_use_cached_wrapped_rpc():
@@ -2300,9 +2309,14 @@ async def test_search_cases_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_search_cases_async(
-    transport: str = "grpc_asyncio", request_type=case_service.SearchCasesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        case_service.SearchCasesRequest(),
+        {},
+    ],
+)
+async def test_search_cases_async(request_type, transport: str = "grpc_asyncio"):
     client = CaseServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2310,7 +2324,7 @@ async def test_search_cases_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.search_cases), "__call__") as call:
@@ -2331,11 +2345,6 @@ async def test_search_cases_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.SearchCasesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_search_cases_async_from_dict():
-    await test_search_cases_async(request_type=dict)
 
 
 def test_search_cases_field_headers():
@@ -2583,11 +2592,7 @@ async def test_search_cases_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.search_cases(request={})
-        ).pages:
+        async for page_ in (await client.search_cases(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -2596,8 +2601,8 @@ async def test_search_cases_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        case_service.CreateCaseRequest,
-        dict,
+        case_service.CreateCaseRequest(),
+        {},
     ],
 )
 def test_create_case(request_type, transport: str = "grpc"):
@@ -2608,7 +2613,7 @@ def test_create_case(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_case), "__call__") as call:
@@ -2672,9 +2677,10 @@ def test_create_case_non_empty_request_with_auto_populated_field():
         client.create_case(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == case_service.CreateCaseRequest(
+        request_msg = case_service.CreateCaseRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_case_use_cached_wrapped_rpc():
@@ -2755,9 +2761,14 @@ async def test_create_case_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_case_async(
-    transport: str = "grpc_asyncio", request_type=case_service.CreateCaseRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        case_service.CreateCaseRequest(),
+        {},
+    ],
+)
+async def test_create_case_async(request_type, transport: str = "grpc_asyncio"):
     client = CaseServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2765,7 +2776,7 @@ async def test_create_case_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_case), "__call__") as call:
@@ -2806,11 +2817,6 @@ async def test_create_case_async(
     assert response.test_case is True
     assert response.language_code == "language_code_value"
     assert response.priority == gcs_case.Case.Priority.P0
-
-
-@pytest.mark.asyncio
-async def test_create_case_async_from_dict():
-    await test_create_case_async(request_type=dict)
 
 
 def test_create_case_field_headers():
@@ -2965,8 +2971,8 @@ async def test_create_case_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        case_service.UpdateCaseRequest,
-        dict,
+        case_service.UpdateCaseRequest(),
+        {},
     ],
 )
 def test_update_case(request_type, transport: str = "grpc"):
@@ -2977,7 +2983,7 @@ def test_update_case(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_case), "__call__") as call:
@@ -3039,7 +3045,8 @@ def test_update_case_non_empty_request_with_auto_populated_field():
         client.update_case(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == case_service.UpdateCaseRequest()
+        request_msg = case_service.UpdateCaseRequest()
+        assert args[0] == request_msg
 
 
 def test_update_case_use_cached_wrapped_rpc():
@@ -3120,9 +3127,14 @@ async def test_update_case_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_case_async(
-    transport: str = "grpc_asyncio", request_type=case_service.UpdateCaseRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        case_service.UpdateCaseRequest(),
+        {},
+    ],
+)
+async def test_update_case_async(request_type, transport: str = "grpc_asyncio"):
     client = CaseServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3130,7 +3142,7 @@ async def test_update_case_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_case), "__call__") as call:
@@ -3171,11 +3183,6 @@ async def test_update_case_async(
     assert response.test_case is True
     assert response.language_code == "language_code_value"
     assert response.priority == gcs_case.Case.Priority.P0
-
-
-@pytest.mark.asyncio
-async def test_update_case_async_from_dict():
-    await test_update_case_async(request_type=dict)
 
 
 def test_update_case_field_headers():
@@ -3330,8 +3337,8 @@ async def test_update_case_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        case_service.EscalateCaseRequest,
-        dict,
+        case_service.EscalateCaseRequest(),
+        {},
     ],
 )
 def test_escalate_case(request_type, transport: str = "grpc"):
@@ -3342,7 +3349,7 @@ def test_escalate_case(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.escalate_case), "__call__") as call:
@@ -3406,9 +3413,10 @@ def test_escalate_case_non_empty_request_with_auto_populated_field():
         client.escalate_case(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == case_service.EscalateCaseRequest(
+        request_msg = case_service.EscalateCaseRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_escalate_case_use_cached_wrapped_rpc():
@@ -3489,9 +3497,14 @@ async def test_escalate_case_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_escalate_case_async(
-    transport: str = "grpc_asyncio", request_type=case_service.EscalateCaseRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        case_service.EscalateCaseRequest(),
+        {},
+    ],
+)
+async def test_escalate_case_async(request_type, transport: str = "grpc_asyncio"):
     client = CaseServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3499,7 +3512,7 @@ async def test_escalate_case_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.escalate_case), "__call__") as call:
@@ -3540,11 +3553,6 @@ async def test_escalate_case_async(
     assert response.test_case is True
     assert response.language_code == "language_code_value"
     assert response.priority == case.Case.Priority.P0
-
-
-@pytest.mark.asyncio
-async def test_escalate_case_async_from_dict():
-    await test_escalate_case_async(request_type=dict)
 
 
 def test_escalate_case_field_headers():
@@ -3609,8 +3617,8 @@ async def test_escalate_case_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        case_service.CloseCaseRequest,
-        dict,
+        case_service.CloseCaseRequest(),
+        {},
     ],
 )
 def test_close_case(request_type, transport: str = "grpc"):
@@ -3621,7 +3629,7 @@ def test_close_case(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.close_case), "__call__") as call:
@@ -3685,9 +3693,10 @@ def test_close_case_non_empty_request_with_auto_populated_field():
         client.close_case(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == case_service.CloseCaseRequest(
+        request_msg = case_service.CloseCaseRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_close_case_use_cached_wrapped_rpc():
@@ -3766,9 +3775,14 @@ async def test_close_case_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_close_case_async(
-    transport: str = "grpc_asyncio", request_type=case_service.CloseCaseRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        case_service.CloseCaseRequest(),
+        {},
+    ],
+)
+async def test_close_case_async(request_type, transport: str = "grpc_asyncio"):
     client = CaseServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3776,7 +3790,7 @@ async def test_close_case_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.close_case), "__call__") as call:
@@ -3817,11 +3831,6 @@ async def test_close_case_async(
     assert response.test_case is True
     assert response.language_code == "language_code_value"
     assert response.priority == case.Case.Priority.P0
-
-
-@pytest.mark.asyncio
-async def test_close_case_async_from_dict():
-    await test_close_case_async(request_type=dict)
 
 
 def test_close_case_field_headers():
@@ -3886,8 +3895,8 @@ async def test_close_case_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        case_service.SearchCaseClassificationsRequest,
-        dict,
+        case_service.SearchCaseClassificationsRequest(),
+        {},
     ],
 )
 def test_search_case_classifications(request_type, transport: str = "grpc"):
@@ -3898,7 +3907,7 @@ def test_search_case_classifications(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3947,10 +3956,11 @@ def test_search_case_classifications_non_empty_request_with_auto_populated_field
         client.search_case_classifications(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == case_service.SearchCaseClassificationsRequest(
+        request_msg = case_service.SearchCaseClassificationsRequest(
             query="query_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_search_case_classifications_use_cached_wrapped_rpc():
@@ -4036,9 +4046,15 @@ async def test_search_case_classifications_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        case_service.SearchCaseClassificationsRequest(),
+        {},
+    ],
+)
 async def test_search_case_classifications_async(
-    transport: str = "grpc_asyncio",
-    request_type=case_service.SearchCaseClassificationsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = CaseServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4047,7 +4063,7 @@ async def test_search_case_classifications_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4070,11 +4086,6 @@ async def test_search_case_classifications_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.SearchCaseClassificationsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_search_case_classifications_async_from_dict():
-    await test_search_case_classifications_async(request_type=dict)
 
 
 def test_search_case_classifications_pager(transport_name: str = "grpc"):
@@ -4268,11 +4279,7 @@ async def test_search_case_classifications_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.search_case_classifications(request={})
-        ).pages:
+        async for page_ in (await client.search_case_classifications(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -4384,7 +4391,7 @@ def test_get_case_rest_required_fields(request_type=case_service.GetCaseRequest)
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_case_rest_unset_required_fields():
@@ -4567,7 +4574,7 @@ def test_list_cases_rest_required_fields(request_type=case_service.ListCasesRequ
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_cases_rest_unset_required_fields():
@@ -4910,7 +4917,7 @@ def test_create_case_rest_required_fields(request_type=case_service.CreateCaseRe
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_case_rest_unset_required_fields():
@@ -5092,7 +5099,7 @@ def test_update_case_rest_required_fields(request_type=case_service.UpdateCaseRe
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_case_rest_unset_required_fields():
@@ -5271,7 +5278,7 @@ def test_escalate_case_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_escalate_case_rest_unset_required_fields():
@@ -5390,7 +5397,7 @@ def test_close_case_rest_required_fields(request_type=case_service.CloseCaseRequ
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_close_case_rest_unset_required_fields():
@@ -5629,7 +5636,6 @@ def test_get_case_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = case_service.GetCaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -5650,7 +5656,6 @@ def test_list_cases_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = case_service.ListCasesRequest()
-
         assert args[0] == request_msg
 
 
@@ -5671,7 +5676,6 @@ def test_search_cases_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = case_service.SearchCasesRequest()
-
         assert args[0] == request_msg
 
 
@@ -5692,7 +5696,6 @@ def test_create_case_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = case_service.CreateCaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -5713,7 +5716,6 @@ def test_update_case_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = case_service.UpdateCaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -5734,7 +5736,6 @@ def test_escalate_case_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = case_service.EscalateCaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -5755,7 +5756,6 @@ def test_close_case_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = case_service.CloseCaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -5778,7 +5778,6 @@ def test_search_case_classifications_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = case_service.SearchCaseClassificationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5829,7 +5828,6 @@ async def test_get_case_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = case_service.GetCaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -5856,7 +5854,6 @@ async def test_list_cases_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = case_service.ListCasesRequest()
-
         assert args[0] == request_msg
 
 
@@ -5883,7 +5880,6 @@ async def test_search_cases_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = case_service.SearchCasesRequest()
-
         assert args[0] == request_msg
 
 
@@ -5920,7 +5916,6 @@ async def test_create_case_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = case_service.CreateCaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -5957,7 +5952,6 @@ async def test_update_case_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = case_service.UpdateCaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -5994,7 +5988,6 @@ async def test_escalate_case_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = case_service.EscalateCaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -6031,7 +6024,6 @@ async def test_close_case_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = case_service.CloseCaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -6060,7 +6052,6 @@ async def test_search_case_classifications_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = case_service.SearchCaseClassificationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -7410,7 +7401,6 @@ def test_get_case_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = case_service.GetCaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -7430,7 +7420,6 @@ def test_list_cases_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = case_service.ListCasesRequest()
-
         assert args[0] == request_msg
 
 
@@ -7450,7 +7439,6 @@ def test_search_cases_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = case_service.SearchCasesRequest()
-
         assert args[0] == request_msg
 
 
@@ -7470,7 +7458,6 @@ def test_create_case_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = case_service.CreateCaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -7490,7 +7477,6 @@ def test_update_case_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = case_service.UpdateCaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -7510,7 +7496,6 @@ def test_escalate_case_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = case_service.EscalateCaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -7530,7 +7515,6 @@ def test_close_case_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = case_service.CloseCaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -7552,7 +7536,6 @@ def test_search_case_classifications_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = case_service.SearchCaseClassificationsRequest()
-
         assert args[0] == request_msg
 
 

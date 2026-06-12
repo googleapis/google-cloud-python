@@ -1221,6 +1221,7 @@ class Test_Bucket(unittest.TestCase):
         expected_include_folders_as_prefixes = None
         soft_deleted = None
         page_size = None
+        filter_ = None
         client.list_blobs.assert_called_once_with(
             bucket,
             max_results=expected_max_results,
@@ -1239,6 +1240,7 @@ class Test_Bucket(unittest.TestCase):
             include_folders_as_prefixes=expected_include_folders_as_prefixes,
             soft_deleted=soft_deleted,
             page_size=page_size,
+            filter_=filter_,
         )
 
     def test_list_blobs_w_explicit(self):
@@ -1299,6 +1301,7 @@ class Test_Bucket(unittest.TestCase):
         expected_include_folders_as_prefixes = include_folders_as_prefixes
         expected_soft_deleted = soft_deleted
         expected_page_size = page_size
+        expected_filter = None
         other_client.list_blobs.assert_called_once_with(
             bucket,
             max_results=expected_max_results,
@@ -1317,6 +1320,54 @@ class Test_Bucket(unittest.TestCase):
             include_folders_as_prefixes=expected_include_folders_as_prefixes,
             soft_deleted=expected_soft_deleted,
             page_size=expected_page_size,
+            filter_=expected_filter,
+        )
+
+    def test_list_blobs_w_filter(self):
+        name = "name"
+        filter_ = 'contexts."foo"="bar"'
+        bucket = self._make_one(client=None, name=name)
+        other_client = self._make_client()
+        other_client.list_blobs = mock.Mock(spec=[])
+
+        iterator = bucket.list_blobs(filter_=filter_, client=other_client)
+
+        self.assertIs(iterator, other_client.list_blobs.return_value)
+
+        expected_page_token = None
+        expected_max_results = None
+        expected_prefix = None
+        expected_delimiter = None
+        expected_match_glob = None
+        expected_start_offset = None
+        expected_end_offset = None
+        expected_include_trailing_delimiter = None
+        expected_versions = None
+        expected_projection = "noAcl"
+        expected_fields = None
+        expected_include_folders_as_prefixes = None
+        expected_soft_deleted = None
+        expected_page_size = None
+        expected_filter = filter_
+        other_client.list_blobs.assert_called_once_with(
+            bucket,
+            max_results=expected_max_results,
+            page_token=expected_page_token,
+            prefix=expected_prefix,
+            delimiter=expected_delimiter,
+            start_offset=expected_start_offset,
+            end_offset=expected_end_offset,
+            include_trailing_delimiter=expected_include_trailing_delimiter,
+            versions=expected_versions,
+            projection=expected_projection,
+            fields=expected_fields,
+            timeout=self._get_default_timeout(),
+            retry=DEFAULT_RETRY,
+            match_glob=expected_match_glob,
+            include_folders_as_prefixes=expected_include_folders_as_prefixes,
+            soft_deleted=expected_soft_deleted,
+            page_size=expected_page_size,
+            filter_=expected_filter,
         )
 
     def test_list_notifications_w_defaults(self):
@@ -1482,6 +1533,27 @@ class Test_Bucket(unittest.TestCase):
         client._delete_resource.assert_called_once_with(
             bucket.path,
             query_params=expected_query_params,
+            timeout=self._get_default_timeout(),
+            retry=DEFAULT_RETRY,
+            _target_object=None,
+        )
+
+    def test_delete_hit_evicts_from_cache(self):
+        name = "bucket-to-delete"
+        client = mock.Mock(spec=["_delete_resource", "_bucket_metadata_cache"])
+        cache = mock.Mock()
+        client._bucket_metadata_cache = cache
+        client._delete_resource.return_value = None
+        bucket = self._make_one(client=client, name=name)
+
+        result = bucket.delete()
+
+        self.assertIsNone(result)
+        cache.evict.assert_called_once_with(name)
+
+        client._delete_resource.assert_called_once_with(
+            bucket.path,
+            query_params={},
             timeout=self._get_default_timeout(),
             retry=DEFAULT_RETRY,
             _target_object=None,
@@ -2005,6 +2077,30 @@ class Test_Bucket(unittest.TestCase):
             _target_object=bucket,
         )
 
+    def test_reload_forbidden_sync_cache_fallback(self):
+        from google.api_core.exceptions import Forbidden
+
+        from google.cloud.storage._bucket_metadata_cache import BucketMetadataCache
+
+        name = "forbidden-bucket"
+        client = mock.Mock(spec=["_get_resource", "_bucket_metadata_cache"])
+        client._bucket_metadata_cache = BucketMetadataCache(client)
+        client._get_resource.side_effect = Forbidden("forbidden")
+        bucket = self._make_one(client, name=name)
+
+        # Ensure cache is clear
+        client._bucket_metadata_cache.clear()
+
+        with self.assertRaises(Forbidden):
+            bucket.reload()
+
+        # Assert cache was synchronously populated with fallback
+        cached = client._bucket_metadata_cache.get(name)
+        self.assertIsNotNone(cached)
+        dest_id, loc = cached
+        self.assertEqual(dest_id, f"projects/_/buckets/{name}")
+        self.assertEqual(loc, "global")
+
     def test_reload_w_metageneration_match(self):
         name = "name"
         metageneration_number = 9
@@ -2287,6 +2383,51 @@ class Test_Bucket(unittest.TestCase):
         )
         expected_data = None
         expected_query_params = {"userProject": user_project}
+        client._post_resource.assert_called_once_with(
+            expected_path,
+            expected_data,
+            query_params=expected_query_params,
+            timeout=self._get_default_timeout(),
+            retry=DEFAULT_RETRY_IF_GENERATION_SPECIFIED,
+            _target_object=new_blob,
+        )
+
+    def test_copy_blob_w_destination_contexts(self):
+        from google.cloud.storage.blob import (
+            ObjectContexts,
+            ObjectCustomContextPayload,
+        )
+
+        source_name = "source"
+        dest_name = "dest"
+        blob_name = "blob-name"
+        new_name = "new_name"
+        api_response = {"contexts": {"custom": {"foo": {"value": "bar"}}}}
+        client = mock.Mock(spec=["_post_resource"])
+        client._post_resource.return_value = api_response
+        source = self._make_one(client=client, name=source_name)
+        dest = self._make_one(client=client, name=dest_name)
+        blob = self._make_blob(source_name, blob_name)
+
+        payload = ObjectCustomContextPayload(value="bar")
+        contexts = ObjectContexts(None, custom={"foo": payload})
+
+        new_blob = source.copy_blob(
+            blob,
+            dest,
+            new_name,
+            destination_contexts=contexts,
+        )
+
+        self.assertIs(new_blob.bucket, dest)
+        self.assertEqual(new_blob.name, new_name)
+        self.assertEqual(new_blob.contexts.custom["foo"].value, "bar")
+
+        expected_path = "/b/{}/o/{}/copyTo/b/{}/o/{}".format(
+            source_name, blob_name, dest_name, new_name
+        )
+        expected_data = {"contexts": {"custom": {"foo": {"value": "bar"}}}}
+        expected_query_params = {}
         client._post_resource.assert_called_once_with(
             expected_path,
             expected_data,

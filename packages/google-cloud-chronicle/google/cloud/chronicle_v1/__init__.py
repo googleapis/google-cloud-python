@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,14 +21,20 @@ from google.cloud.chronicle_v1 import gapic_version as package_version
 
 __version__ = package_version.__version__
 
-if sys.version_info >= (3, 8):  # pragma: NO COVER
-    from importlib import metadata
-else:  # pragma: NO COVER
-    # TODO(https://github.com/googleapis/python-api-core/issues/835): Remove
-    # this code path once we drop support for Python 3.7
-    import importlib_metadata as metadata
+from importlib import metadata
 
-
+from .services.big_query_export_service import (
+    BigQueryExportServiceAsyncClient,
+    BigQueryExportServiceClient,
+)
+from .services.dashboard_chart_service import (
+    DashboardChartServiceAsyncClient,
+    DashboardChartServiceClient,
+)
+from .services.dashboard_query_service import (
+    DashboardQueryServiceAsyncClient,
+    DashboardQueryServiceClient,
+)
 from .services.data_access_control_service import (
     DataAccessControlServiceAsyncClient,
     DataAccessControlServiceClient,
@@ -38,12 +44,69 @@ from .services.data_table_service import (
     DataTableServiceClient,
 )
 from .services.entity_service import EntityServiceAsyncClient, EntityServiceClient
+from .services.featured_content_native_dashboard_service import (
+    FeaturedContentNativeDashboardServiceAsyncClient,
+    FeaturedContentNativeDashboardServiceClient,
+)
 from .services.instance_service import InstanceServiceAsyncClient, InstanceServiceClient
+from .services.native_dashboard_service import (
+    NativeDashboardServiceAsyncClient,
+    NativeDashboardServiceClient,
+)
 from .services.reference_list_service import (
     ReferenceListServiceAsyncClient,
     ReferenceListServiceClient,
 )
 from .services.rule_service import RuleServiceAsyncClient, RuleServiceClient
+from .types.big_query_export import (
+    BigQueryExport,
+    BigQueryExportPackage,
+    DataSourceExportSettings,
+    GetBigQueryExportRequest,
+    LatestExportJobState,
+    ProvisionBigQueryExportRequest,
+    UpdateBigQueryExportRequest,
+)
+from .types.dashboard_chart import (
+    AxisType,
+    BatchGetDashboardChartsRequest,
+    BatchGetDashboardChartsResponse,
+    Button,
+    ButtonStyle,
+    DashboardChart,
+    GetDashboardChartRequest,
+    LegendAlign,
+    LegendOrient,
+    Markdown,
+    MetricDisplayTrend,
+    MetricFormat,
+    MetricTrendType,
+    PlotMode,
+    PointSizeType,
+    RenderType,
+    SeriesStackStrategy,
+    SeriesType,
+    TileType,
+    ToolTipTrigger,
+    VisualMapType,
+)
+from .types.dashboard_query import (
+    AdvancedFilterConfig,
+    ColumnMetadata,
+    DashboardFilter,
+    DashboardQuery,
+    DataSource,
+    ExecuteDashboardQueryRequest,
+    ExecuteDashboardQueryResponse,
+    FilterOperator,
+    FilterOperatorAndValues,
+    GetDashboardQueryRequest,
+    InAppLink,
+    LanguageFeature,
+    QueryRuntimeError,
+    TimestampMetadata,
+    TimeUnit,
+)
 from .types.data_access_control import (
     CreateDataAccessLabelRequest,
     CreateDataAccessScopeRequest,
@@ -101,7 +164,46 @@ from .types.entity import (
     Watchlist,
     WatchlistUserPreferences,
 )
+from .types.featured_content_metadata import FeaturedContentMetadata
+from .types.featured_content_native_dashboard import (
+    FeaturedContentNativeDashboard,
+    GetFeaturedContentNativeDashboardRequest,
+    InstallFeaturedContentNativeDashboardRequest,
+    InstallFeaturedContentNativeDashboardResponse,
+    ListFeaturedContentNativeDashboardsRequest,
+    ListFeaturedContentNativeDashboardsResponse,
+)
 from .types.instance import GetInstanceRequest, Instance
+from .types.native_dashboard import (
+    AddChartRequest,
+    AddChartResponse,
+    CreateNativeDashboardRequest,
+    DashboardAccess,
+    DashboardDefinition,
+    DashboardType,
+    DashboardUserData,
+    DeleteNativeDashboardRequest,
+    DuplicateChartRequest,
+    DuplicateChartResponse,
+    DuplicateNativeDashboardRequest,
+    EditChartRequest,
+    EditChartResponse,
+    ExportNativeDashboardsRequest,
+    ExportNativeDashboardsResponse,
+    GetNativeDashboardRequest,
+    ImportExportStatus,
+    ImportNativeDashboardsInlineSource,
+    ImportNativeDashboardsRequest,
+    ImportNativeDashboardsResponse,
+    InlineDestination,
+    ListNativeDashboardsRequest,
+    ListNativeDashboardsResponse,
+    NativeDashboard,
+    NativeDashboardView,
+    NativeDashboardWithChartsAndQueries,
+    RemoveChartRequest,
+    UpdateNativeDashboardRequest,
+)
 from .types.reference_list import (
     CreateReferenceListRequest,
     GetReferenceListRequest,
@@ -154,28 +256,17 @@ else:  # pragma: NO COVER
     # An older version of api_core is installed which does not define the
     # functions above. We do equivalent checks manually.
     try:
-        import sys
         import warnings
 
         _py_version_str = sys.version.split()[0]
         _package_label = "google.cloud.chronicle_v1"
-        if sys.version_info < (3, 9):
+        if sys.version_info < (3, 10):
             warnings.warn(
                 "You are using a non-supported Python version "
                 + f"({_py_version_str}).  Google will not post any further "
                 + f"updates to {_package_label} supporting this Python version. "
                 + "Please upgrade to the latest Python version, or at "
-                + f"least to Python 3.9, and then update {_package_label}.",
-                FutureWarning,
-            )
-        if sys.version_info[:2] == (3, 9):
-            warnings.warn(
-                f"You are using a Python version ({_py_version_str}) "
-                + f"which Google will stop supporting in {_package_label} in "
-                + "January 2026. Please "
-                + "upgrade to the latest Python version, or at "
-                + "least to Python 3.10, before then, and "
-                + f"then update {_package_label}.",
+                + f"least to Python 3.10, and then update {_package_label}.",
                 FutureWarning,
             )
 
@@ -240,12 +331,26 @@ else:  # pragma: NO COVER
         )
 
 __all__ = (
+    "BigQueryExportServiceAsyncClient",
+    "DashboardChartServiceAsyncClient",
+    "DashboardQueryServiceAsyncClient",
     "DataAccessControlServiceAsyncClient",
     "DataTableServiceAsyncClient",
     "EntityServiceAsyncClient",
+    "FeaturedContentNativeDashboardServiceAsyncClient",
     "InstanceServiceAsyncClient",
+    "NativeDashboardServiceAsyncClient",
     "ReferenceListServiceAsyncClient",
     "RuleServiceAsyncClient",
+    "AddChartRequest",
+    "AddChartResponse",
+    "AdvancedFilterConfig",
+    "AxisType",
+    "BatchGetDashboardChartsRequest",
+    "BatchGetDashboardChartsResponse",
+    "BigQueryExport",
+    "BigQueryExportPackage",
+    "BigQueryExportServiceClient",
     "BulkCreateDataTableRowsRequest",
     "BulkCreateDataTableRowsResponse",
     "BulkGetDataTableRowsRequest",
@@ -254,20 +359,35 @@ __all__ = (
     "BulkReplaceDataTableRowsResponse",
     "BulkUpdateDataTableRowsRequest",
     "BulkUpdateDataTableRowsResponse",
+    "Button",
+    "ButtonStyle",
+    "ColumnMetadata",
     "CompilationDiagnostic",
     "CompilationPosition",
     "CreateDataAccessLabelRequest",
     "CreateDataAccessScopeRequest",
     "CreateDataTableRequest",
     "CreateDataTableRowRequest",
+    "CreateNativeDashboardRequest",
     "CreateReferenceListRequest",
     "CreateRetrohuntRequest",
     "CreateRuleRequest",
     "CreateWatchlistRequest",
+    "DashboardAccess",
+    "DashboardChart",
+    "DashboardChartServiceClient",
+    "DashboardDefinition",
+    "DashboardFilter",
+    "DashboardQuery",
+    "DashboardQueryServiceClient",
+    "DashboardType",
+    "DashboardUserData",
     "DataAccessControlServiceClient",
     "DataAccessLabel",
     "DataAccessLabelReference",
     "DataAccessScope",
+    "DataSource",
+    "DataSourceExportSettings",
     "DataTable",
     "DataTableColumnInfo",
     "DataTableOperationErrors",
@@ -279,24 +399,56 @@ __all__ = (
     "DeleteDataAccessScopeRequest",
     "DeleteDataTableRequest",
     "DeleteDataTableRowRequest",
+    "DeleteNativeDashboardRequest",
     "DeleteRuleRequest",
     "DeleteWatchlistRequest",
+    "DuplicateChartRequest",
+    "DuplicateChartResponse",
+    "DuplicateNativeDashboardRequest",
+    "EditChartRequest",
+    "EditChartResponse",
     "EntityServiceClient",
+    "ExecuteDashboardQueryRequest",
+    "ExecuteDashboardQueryResponse",
+    "ExportNativeDashboardsRequest",
+    "ExportNativeDashboardsResponse",
+    "FeaturedContentMetadata",
+    "FeaturedContentNativeDashboard",
+    "FeaturedContentNativeDashboardServiceClient",
+    "FilterOperator",
+    "FilterOperatorAndValues",
+    "GetBigQueryExportRequest",
+    "GetDashboardChartRequest",
+    "GetDashboardQueryRequest",
     "GetDataAccessLabelRequest",
     "GetDataAccessScopeRequest",
     "GetDataTableOperationErrorsRequest",
     "GetDataTableRequest",
     "GetDataTableRowRequest",
+    "GetFeaturedContentNativeDashboardRequest",
     "GetInstanceRequest",
+    "GetNativeDashboardRequest",
     "GetReferenceListRequest",
     "GetRetrohuntRequest",
     "GetRuleDeploymentRequest",
     "GetRuleRequest",
     "GetWatchlistRequest",
+    "ImportExportStatus",
+    "ImportNativeDashboardsInlineSource",
+    "ImportNativeDashboardsRequest",
+    "ImportNativeDashboardsResponse",
+    "InAppLink",
     "IngestionLabel",
+    "InlineDestination",
     "InputsUsed",
+    "InstallFeaturedContentNativeDashboardRequest",
+    "InstallFeaturedContentNativeDashboardResponse",
     "Instance",
     "InstanceServiceClient",
+    "LanguageFeature",
+    "LatestExportJobState",
+    "LegendAlign",
+    "LegendOrient",
     "ListDataAccessLabelsRequest",
     "ListDataAccessLabelsResponse",
     "ListDataAccessScopesRequest",
@@ -305,6 +457,10 @@ __all__ = (
     "ListDataTableRowsResponse",
     "ListDataTablesRequest",
     "ListDataTablesResponse",
+    "ListFeaturedContentNativeDashboardsRequest",
+    "ListFeaturedContentNativeDashboardsResponse",
+    "ListNativeDashboardsRequest",
+    "ListNativeDashboardsResponse",
     "ListReferenceListsRequest",
     "ListReferenceListsResponse",
     "ListRetrohuntsRequest",
@@ -317,12 +473,26 @@ __all__ = (
     "ListRulesResponse",
     "ListWatchlistsRequest",
     "ListWatchlistsResponse",
+    "Markdown",
+    "MetricDisplayTrend",
+    "MetricFormat",
+    "MetricTrendType",
+    "NativeDashboard",
+    "NativeDashboardServiceClient",
+    "NativeDashboardView",
+    "NativeDashboardWithChartsAndQueries",
+    "PlotMode",
+    "PointSizeType",
+    "ProvisionBigQueryExportRequest",
+    "QueryRuntimeError",
     "ReferenceList",
     "ReferenceListEntry",
     "ReferenceListScope",
     "ReferenceListServiceClient",
     "ReferenceListSyntaxType",
     "ReferenceListView",
+    "RemoveChartRequest",
+    "RenderType",
     "Retrohunt",
     "RetrohuntMetadata",
     "Rule",
@@ -332,15 +502,24 @@ __all__ = (
     "RuleView",
     "RunFrequency",
     "ScopeInfo",
+    "SeriesStackStrategy",
+    "SeriesType",
     "Severity",
+    "TileType",
+    "TimeUnit",
+    "TimestampMetadata",
+    "ToolTipTrigger",
+    "UpdateBigQueryExportRequest",
     "UpdateDataAccessLabelRequest",
     "UpdateDataAccessScopeRequest",
     "UpdateDataTableRequest",
     "UpdateDataTableRowRequest",
+    "UpdateNativeDashboardRequest",
     "UpdateReferenceListRequest",
     "UpdateRuleDeploymentRequest",
     "UpdateRuleRequest",
     "UpdateWatchlistRequest",
+    "VisualMapType",
     "Watchlist",
     "WatchlistUserPreferences",
 )

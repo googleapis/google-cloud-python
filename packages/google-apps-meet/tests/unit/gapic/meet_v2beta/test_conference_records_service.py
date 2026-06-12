@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -112,6 +107,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1392,8 +1402,8 @@ def test_conference_records_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.GetConferenceRecordRequest,
-        dict,
+        service.GetConferenceRecordRequest(),
+        {},
     ],
 )
 def test_get_conference_record(request_type, transport: str = "grpc"):
@@ -1404,7 +1414,7 @@ def test_get_conference_record(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1454,9 +1464,10 @@ def test_get_conference_record_non_empty_request_with_auto_populated_field():
         client.get_conference_record(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetConferenceRecordRequest(
+        request_msg = service.GetConferenceRecordRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_conference_record_use_cached_wrapped_rpc():
@@ -1542,8 +1553,15 @@ async def test_get_conference_record_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetConferenceRecordRequest(),
+        {},
+    ],
+)
 async def test_get_conference_record_async(
-    transport: str = "grpc_asyncio", request_type=service.GetConferenceRecordRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ConferenceRecordsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1552,7 +1570,7 @@ async def test_get_conference_record_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1577,11 +1595,6 @@ async def test_get_conference_record_async(
     assert isinstance(response, resource.ConferenceRecord)
     assert response.name == "name_value"
     assert response.space == "space_value"
-
-
-@pytest.mark.asyncio
-async def test_get_conference_record_async_from_dict():
-    await test_get_conference_record_async(request_type=dict)
 
 
 def test_get_conference_record_field_headers():
@@ -1738,8 +1751,8 @@ async def test_get_conference_record_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.ListConferenceRecordsRequest,
-        dict,
+        service.ListConferenceRecordsRequest(),
+        {},
     ],
 )
 def test_list_conference_records(request_type, transport: str = "grpc"):
@@ -1750,7 +1763,7 @@ def test_list_conference_records(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1799,10 +1812,11 @@ def test_list_conference_records_non_empty_request_with_auto_populated_field():
         client.list_conference_records(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListConferenceRecordsRequest(
+        request_msg = service.ListConferenceRecordsRequest(
             page_token="page_token_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_conference_records_use_cached_wrapped_rpc():
@@ -1888,8 +1902,15 @@ async def test_list_conference_records_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListConferenceRecordsRequest(),
+        {},
+    ],
+)
 async def test_list_conference_records_async(
-    transport: str = "grpc_asyncio", request_type=service.ListConferenceRecordsRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ConferenceRecordsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1898,7 +1919,7 @@ async def test_list_conference_records_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1921,11 +1942,6 @@ async def test_list_conference_records_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListConferenceRecordsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_conference_records_async_from_dict():
-    await test_list_conference_records_async(request_type=dict)
 
 
 def test_list_conference_records_pager(transport_name: str = "grpc"):
@@ -2117,11 +2133,7 @@ async def test_list_conference_records_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_conference_records(request={})
-        ).pages:
+        async for page_ in (await client.list_conference_records(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -2130,8 +2142,8 @@ async def test_list_conference_records_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.GetParticipantRequest,
-        dict,
+        service.GetParticipantRequest(),
+        {},
     ],
 )
 def test_get_participant(request_type, transport: str = "grpc"):
@@ -2142,7 +2154,7 @@ def test_get_participant(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_participant), "__call__") as call:
@@ -2186,9 +2198,10 @@ def test_get_participant_non_empty_request_with_auto_populated_field():
         client.get_participant(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetParticipantRequest(
+        request_msg = service.GetParticipantRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_participant_use_cached_wrapped_rpc():
@@ -2269,9 +2282,14 @@ async def test_get_participant_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_participant_async(
-    transport: str = "grpc_asyncio", request_type=service.GetParticipantRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetParticipantRequest(),
+        {},
+    ],
+)
+async def test_get_participant_async(request_type, transport: str = "grpc_asyncio"):
     client = ConferenceRecordsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2279,7 +2297,7 @@ async def test_get_participant_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_participant), "__call__") as call:
@@ -2300,11 +2318,6 @@ async def test_get_participant_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, resource.Participant)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_get_participant_async_from_dict():
-    await test_get_participant_async(request_type=dict)
 
 
 def test_get_participant_field_headers():
@@ -2453,8 +2466,8 @@ async def test_get_participant_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.ListParticipantsRequest,
-        dict,
+        service.ListParticipantsRequest(),
+        {},
     ],
 )
 def test_list_participants(request_type, transport: str = "grpc"):
@@ -2465,7 +2478,7 @@ def test_list_participants(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2517,11 +2530,12 @@ def test_list_participants_non_empty_request_with_auto_populated_field():
         client.list_participants(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListParticipantsRequest(
+        request_msg = service.ListParticipantsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_participants_use_cached_wrapped_rpc():
@@ -2604,9 +2618,14 @@ async def test_list_participants_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_participants_async(
-    transport: str = "grpc_asyncio", request_type=service.ListParticipantsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListParticipantsRequest(),
+        {},
+    ],
+)
+async def test_list_participants_async(request_type, transport: str = "grpc_asyncio"):
     client = ConferenceRecordsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2614,7 +2633,7 @@ async def test_list_participants_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2639,11 +2658,6 @@ async def test_list_participants_async(
     assert isinstance(response, pagers.ListParticipantsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.total_size == 1086
-
-
-@pytest.mark.asyncio
-async def test_list_participants_async_from_dict():
-    await test_list_participants_async(request_type=dict)
 
 
 def test_list_participants_field_headers():
@@ -2989,11 +3003,7 @@ async def test_list_participants_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_participants(request={})
-        ).pages:
+        async for page_ in (await client.list_participants(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -3002,8 +3012,8 @@ async def test_list_participants_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.GetParticipantSessionRequest,
-        dict,
+        service.GetParticipantSessionRequest(),
+        {},
     ],
 )
 def test_get_participant_session(request_type, transport: str = "grpc"):
@@ -3014,7 +3024,7 @@ def test_get_participant_session(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3062,9 +3072,10 @@ def test_get_participant_session_non_empty_request_with_auto_populated_field():
         client.get_participant_session(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetParticipantSessionRequest(
+        request_msg = service.GetParticipantSessionRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_participant_session_use_cached_wrapped_rpc():
@@ -3150,8 +3161,15 @@ async def test_get_participant_session_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetParticipantSessionRequest(),
+        {},
+    ],
+)
 async def test_get_participant_session_async(
-    transport: str = "grpc_asyncio", request_type=service.GetParticipantSessionRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ConferenceRecordsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3160,7 +3178,7 @@ async def test_get_participant_session_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3183,11 +3201,6 @@ async def test_get_participant_session_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, resource.ParticipantSession)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_get_participant_session_async_from_dict():
-    await test_get_participant_session_async(request_type=dict)
 
 
 def test_get_participant_session_field_headers():
@@ -3344,8 +3357,8 @@ async def test_get_participant_session_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.ListParticipantSessionsRequest,
-        dict,
+        service.ListParticipantSessionsRequest(),
+        {},
     ],
 )
 def test_list_participant_sessions(request_type, transport: str = "grpc"):
@@ -3356,7 +3369,7 @@ def test_list_participant_sessions(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3406,11 +3419,12 @@ def test_list_participant_sessions_non_empty_request_with_auto_populated_field()
         client.list_participant_sessions(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListParticipantSessionsRequest(
+        request_msg = service.ListParticipantSessionsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_participant_sessions_use_cached_wrapped_rpc():
@@ -3496,8 +3510,15 @@ async def test_list_participant_sessions_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListParticipantSessionsRequest(),
+        {},
+    ],
+)
 async def test_list_participant_sessions_async(
-    transport: str = "grpc_asyncio", request_type=service.ListParticipantSessionsRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ConferenceRecordsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3506,7 +3527,7 @@ async def test_list_participant_sessions_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3529,11 +3550,6 @@ async def test_list_participant_sessions_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListParticipantSessionsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_participant_sessions_async_from_dict():
-    await test_list_participant_sessions_async(request_type=dict)
 
 
 def test_list_participant_sessions_field_headers():
@@ -3881,11 +3897,7 @@ async def test_list_participant_sessions_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_participant_sessions(request={})
-        ).pages:
+        async for page_ in (await client.list_participant_sessions(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -3894,8 +3906,8 @@ async def test_list_participant_sessions_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.GetRecordingRequest,
-        dict,
+        service.GetRecordingRequest(),
+        {},
     ],
 )
 def test_get_recording(request_type, transport: str = "grpc"):
@@ -3906,7 +3918,7 @@ def test_get_recording(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_recording), "__call__") as call:
@@ -3952,9 +3964,10 @@ def test_get_recording_non_empty_request_with_auto_populated_field():
         client.get_recording(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetRecordingRequest(
+        request_msg = service.GetRecordingRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_recording_use_cached_wrapped_rpc():
@@ -4035,9 +4048,14 @@ async def test_get_recording_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_recording_async(
-    transport: str = "grpc_asyncio", request_type=service.GetRecordingRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetRecordingRequest(),
+        {},
+    ],
+)
+async def test_get_recording_async(request_type, transport: str = "grpc_asyncio"):
     client = ConferenceRecordsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4045,7 +4063,7 @@ async def test_get_recording_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_recording), "__call__") as call:
@@ -4068,11 +4086,6 @@ async def test_get_recording_async(
     assert isinstance(response, resource.Recording)
     assert response.name == "name_value"
     assert response.state == resource.Recording.State.STARTED
-
-
-@pytest.mark.asyncio
-async def test_get_recording_async_from_dict():
-    await test_get_recording_async(request_type=dict)
 
 
 def test_get_recording_field_headers():
@@ -4217,8 +4230,8 @@ async def test_get_recording_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.ListRecordingsRequest,
-        dict,
+        service.ListRecordingsRequest(),
+        {},
     ],
 )
 def test_list_recordings(request_type, transport: str = "grpc"):
@@ -4229,7 +4242,7 @@ def test_list_recordings(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_recordings), "__call__") as call:
@@ -4274,10 +4287,11 @@ def test_list_recordings_non_empty_request_with_auto_populated_field():
         client.list_recordings(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListRecordingsRequest(
+        request_msg = service.ListRecordingsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_recordings_use_cached_wrapped_rpc():
@@ -4358,9 +4372,14 @@ async def test_list_recordings_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_recordings_async(
-    transport: str = "grpc_asyncio", request_type=service.ListRecordingsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListRecordingsRequest(),
+        {},
+    ],
+)
+async def test_list_recordings_async(request_type, transport: str = "grpc_asyncio"):
     client = ConferenceRecordsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4368,7 +4387,7 @@ async def test_list_recordings_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_recordings), "__call__") as call:
@@ -4389,11 +4408,6 @@ async def test_list_recordings_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListRecordingsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_recordings_async_from_dict():
-    await test_list_recordings_async(request_type=dict)
 
 
 def test_list_recordings_field_headers():
@@ -4723,11 +4737,7 @@ async def test_list_recordings_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_recordings(request={})
-        ).pages:
+        async for page_ in (await client.list_recordings(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -4736,8 +4746,8 @@ async def test_list_recordings_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.GetTranscriptRequest,
-        dict,
+        service.GetTranscriptRequest(),
+        {},
     ],
 )
 def test_get_transcript(request_type, transport: str = "grpc"):
@@ -4748,7 +4758,7 @@ def test_get_transcript(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_transcript), "__call__") as call:
@@ -4794,9 +4804,10 @@ def test_get_transcript_non_empty_request_with_auto_populated_field():
         client.get_transcript(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetTranscriptRequest(
+        request_msg = service.GetTranscriptRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_transcript_use_cached_wrapped_rpc():
@@ -4877,9 +4888,14 @@ async def test_get_transcript_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_transcript_async(
-    transport: str = "grpc_asyncio", request_type=service.GetTranscriptRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetTranscriptRequest(),
+        {},
+    ],
+)
+async def test_get_transcript_async(request_type, transport: str = "grpc_asyncio"):
     client = ConferenceRecordsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4887,7 +4903,7 @@ async def test_get_transcript_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_transcript), "__call__") as call:
@@ -4910,11 +4926,6 @@ async def test_get_transcript_async(
     assert isinstance(response, resource.Transcript)
     assert response.name == "name_value"
     assert response.state == resource.Transcript.State.STARTED
-
-
-@pytest.mark.asyncio
-async def test_get_transcript_async_from_dict():
-    await test_get_transcript_async(request_type=dict)
 
 
 def test_get_transcript_field_headers():
@@ -5059,8 +5070,8 @@ async def test_get_transcript_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.ListTranscriptsRequest,
-        dict,
+        service.ListTranscriptsRequest(),
+        {},
     ],
 )
 def test_list_transcripts(request_type, transport: str = "grpc"):
@@ -5071,7 +5082,7 @@ def test_list_transcripts(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_transcripts), "__call__") as call:
@@ -5116,10 +5127,11 @@ def test_list_transcripts_non_empty_request_with_auto_populated_field():
         client.list_transcripts(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListTranscriptsRequest(
+        request_msg = service.ListTranscriptsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_transcripts_use_cached_wrapped_rpc():
@@ -5202,9 +5214,14 @@ async def test_list_transcripts_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_transcripts_async(
-    transport: str = "grpc_asyncio", request_type=service.ListTranscriptsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListTranscriptsRequest(),
+        {},
+    ],
+)
+async def test_list_transcripts_async(request_type, transport: str = "grpc_asyncio"):
     client = ConferenceRecordsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5212,7 +5229,7 @@ async def test_list_transcripts_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_transcripts), "__call__") as call:
@@ -5233,11 +5250,6 @@ async def test_list_transcripts_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListTranscriptsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_transcripts_async_from_dict():
-    await test_list_transcripts_async(request_type=dict)
 
 
 def test_list_transcripts_field_headers():
@@ -5567,11 +5579,7 @@ async def test_list_transcripts_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_transcripts(request={})
-        ).pages:
+        async for page_ in (await client.list_transcripts(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -5580,8 +5588,8 @@ async def test_list_transcripts_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.GetTranscriptEntryRequest,
-        dict,
+        service.GetTranscriptEntryRequest(),
+        {},
     ],
 )
 def test_get_transcript_entry(request_type, transport: str = "grpc"):
@@ -5592,7 +5600,7 @@ def test_get_transcript_entry(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5646,9 +5654,10 @@ def test_get_transcript_entry_non_empty_request_with_auto_populated_field():
         client.get_transcript_entry(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetTranscriptEntryRequest(
+        request_msg = service.GetTranscriptEntryRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_transcript_entry_use_cached_wrapped_rpc():
@@ -5733,8 +5742,15 @@ async def test_get_transcript_entry_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetTranscriptEntryRequest(),
+        {},
+    ],
+)
 async def test_get_transcript_entry_async(
-    transport: str = "grpc_asyncio", request_type=service.GetTranscriptEntryRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ConferenceRecordsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5743,7 +5759,7 @@ async def test_get_transcript_entry_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5772,11 +5788,6 @@ async def test_get_transcript_entry_async(
     assert response.participant == "participant_value"
     assert response.text == "text_value"
     assert response.language_code == "language_code_value"
-
-
-@pytest.mark.asyncio
-async def test_get_transcript_entry_async_from_dict():
-    await test_get_transcript_entry_async(request_type=dict)
 
 
 def test_get_transcript_entry_field_headers():
@@ -5933,8 +5944,8 @@ async def test_get_transcript_entry_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.ListTranscriptEntriesRequest,
-        dict,
+        service.ListTranscriptEntriesRequest(),
+        {},
     ],
 )
 def test_list_transcript_entries(request_type, transport: str = "grpc"):
@@ -5945,7 +5956,7 @@ def test_list_transcript_entries(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5994,10 +6005,11 @@ def test_list_transcript_entries_non_empty_request_with_auto_populated_field():
         client.list_transcript_entries(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListTranscriptEntriesRequest(
+        request_msg = service.ListTranscriptEntriesRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_transcript_entries_use_cached_wrapped_rpc():
@@ -6083,8 +6095,15 @@ async def test_list_transcript_entries_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListTranscriptEntriesRequest(),
+        {},
+    ],
+)
 async def test_list_transcript_entries_async(
-    transport: str = "grpc_asyncio", request_type=service.ListTranscriptEntriesRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ConferenceRecordsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -6093,7 +6112,7 @@ async def test_list_transcript_entries_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6116,11 +6135,6 @@ async def test_list_transcript_entries_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListTranscriptEntriesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_transcript_entries_async_from_dict():
-    await test_list_transcript_entries_async(request_type=dict)
 
 
 def test_list_transcript_entries_field_headers():
@@ -6466,11 +6480,7 @@ async def test_list_transcript_entries_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_transcript_entries(request={})
-        ).pages:
+        async for page_ in (await client.list_transcript_entries(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -6589,7 +6599,7 @@ def test_get_conference_record_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_conference_record_rest_unset_required_fields():
@@ -6869,7 +6879,7 @@ def test_get_participant_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_participant_rest_unset_required_fields():
@@ -7057,7 +7067,7 @@ def test_list_participants_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_participants_rest_unset_required_fields():
@@ -7310,7 +7320,7 @@ def test_get_participant_session_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_participant_session_rest_unset_required_fields():
@@ -7503,7 +7513,7 @@ def test_list_participant_sessions_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_participant_sessions_rest_unset_required_fields():
@@ -7751,7 +7761,7 @@ def test_get_recording_rest_required_fields(request_type=service.GetRecordingReq
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_recording_rest_unset_required_fields():
@@ -7936,7 +7946,7 @@ def test_list_recordings_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_recordings_rest_unset_required_fields():
@@ -8181,7 +8191,7 @@ def test_get_transcript_rest_required_fields(request_type=service.GetTranscriptR
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_transcript_rest_unset_required_fields():
@@ -8368,7 +8378,7 @@ def test_list_transcripts_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_transcripts_rest_unset_required_fields():
@@ -8619,7 +8629,7 @@ def test_get_transcript_entry_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_transcript_entry_rest_unset_required_fields():
@@ -8811,7 +8821,7 @@ def test_list_transcript_entries_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_transcript_entries_rest_unset_required_fields():
@@ -9077,7 +9087,6 @@ def test_get_conference_record_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetConferenceRecordRequest()
-
         assert args[0] == request_msg
 
 
@@ -9100,7 +9109,6 @@ def test_list_conference_records_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListConferenceRecordsRequest()
-
         assert args[0] == request_msg
 
 
@@ -9121,7 +9129,6 @@ def test_get_participant_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetParticipantRequest()
-
         assert args[0] == request_msg
 
 
@@ -9144,7 +9151,6 @@ def test_list_participants_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListParticipantsRequest()
-
         assert args[0] == request_msg
 
 
@@ -9167,7 +9173,6 @@ def test_get_participant_session_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetParticipantSessionRequest()
-
         assert args[0] == request_msg
 
 
@@ -9190,7 +9195,6 @@ def test_list_participant_sessions_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListParticipantSessionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -9211,7 +9215,6 @@ def test_get_recording_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetRecordingRequest()
-
         assert args[0] == request_msg
 
 
@@ -9232,7 +9235,6 @@ def test_list_recordings_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListRecordingsRequest()
-
         assert args[0] == request_msg
 
 
@@ -9253,7 +9255,6 @@ def test_get_transcript_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetTranscriptRequest()
-
         assert args[0] == request_msg
 
 
@@ -9274,7 +9275,6 @@ def test_list_transcripts_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListTranscriptsRequest()
-
         assert args[0] == request_msg
 
 
@@ -9297,7 +9297,6 @@ def test_get_transcript_entry_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetTranscriptEntryRequest()
-
         assert args[0] == request_msg
 
 
@@ -9320,7 +9319,6 @@ def test_list_transcript_entries_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListTranscriptEntriesRequest()
-
         assert args[0] == request_msg
 
 
@@ -9364,7 +9362,6 @@ async def test_get_conference_record_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetConferenceRecordRequest()
-
         assert args[0] == request_msg
 
 
@@ -9393,7 +9390,6 @@ async def test_list_conference_records_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListConferenceRecordsRequest()
-
         assert args[0] == request_msg
 
 
@@ -9420,7 +9416,6 @@ async def test_get_participant_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetParticipantRequest()
-
         assert args[0] == request_msg
 
 
@@ -9450,7 +9445,6 @@ async def test_list_participants_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListParticipantsRequest()
-
         assert args[0] == request_msg
 
 
@@ -9479,7 +9473,6 @@ async def test_get_participant_session_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetParticipantSessionRequest()
-
         assert args[0] == request_msg
 
 
@@ -9508,7 +9501,6 @@ async def test_list_participant_sessions_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListParticipantSessionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -9536,7 +9528,6 @@ async def test_get_recording_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetRecordingRequest()
-
         assert args[0] == request_msg
 
 
@@ -9563,7 +9554,6 @@ async def test_list_recordings_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListRecordingsRequest()
-
         assert args[0] == request_msg
 
 
@@ -9591,7 +9581,6 @@ async def test_get_transcript_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetTranscriptRequest()
-
         assert args[0] == request_msg
 
 
@@ -9618,7 +9607,6 @@ async def test_list_transcripts_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListTranscriptsRequest()
-
         assert args[0] == request_msg
 
 
@@ -9650,7 +9638,6 @@ async def test_get_transcript_entry_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetTranscriptEntryRequest()
-
         assert args[0] == request_msg
 
 
@@ -9679,7 +9666,6 @@ async def test_list_transcript_entries_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListTranscriptEntriesRequest()
-
         assert args[0] == request_msg
 
 
@@ -11324,7 +11310,6 @@ def test_get_conference_record_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetConferenceRecordRequest()
-
         assert args[0] == request_msg
 
 
@@ -11346,7 +11331,6 @@ def test_list_conference_records_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListConferenceRecordsRequest()
-
         assert args[0] == request_msg
 
 
@@ -11366,7 +11350,6 @@ def test_get_participant_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetParticipantRequest()
-
         assert args[0] == request_msg
 
 
@@ -11388,7 +11371,6 @@ def test_list_participants_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListParticipantsRequest()
-
         assert args[0] == request_msg
 
 
@@ -11410,7 +11392,6 @@ def test_get_participant_session_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetParticipantSessionRequest()
-
         assert args[0] == request_msg
 
 
@@ -11432,7 +11413,6 @@ def test_list_participant_sessions_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListParticipantSessionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -11452,7 +11432,6 @@ def test_get_recording_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetRecordingRequest()
-
         assert args[0] == request_msg
 
 
@@ -11472,7 +11451,6 @@ def test_list_recordings_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListRecordingsRequest()
-
         assert args[0] == request_msg
 
 
@@ -11492,7 +11470,6 @@ def test_get_transcript_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetTranscriptRequest()
-
         assert args[0] == request_msg
 
 
@@ -11512,7 +11489,6 @@ def test_list_transcripts_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListTranscriptsRequest()
-
         assert args[0] == request_msg
 
 
@@ -11534,7 +11510,6 @@ def test_get_transcript_entry_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetTranscriptEntryRequest()
-
         assert args[0] == request_msg
 
 
@@ -11556,7 +11531,6 @@ def test_list_transcript_entries_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListTranscriptEntriesRequest()
-
         assert args[0] == request_msg
 
 

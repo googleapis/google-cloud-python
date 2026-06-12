@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -119,6 +114,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1389,7 +1399,11 @@ def test_session_template_controller_client_create_channel_credentials_file(
             credentials=file_creds,
             credentials_file=None,
             quota_project_id=None,
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/dataproc",
+                "https://www.googleapis.com/auth/dataproc.read-only",
+            ),
             scopes=None,
             default_host="dataproc.googleapis.com",
             ssl_credentials=None,
@@ -1403,8 +1417,8 @@ def test_session_template_controller_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        session_templates.CreateSessionTemplateRequest,
-        dict,
+        session_templates.CreateSessionTemplateRequest(),
+        {},
     ],
 )
 def test_create_session_template(request_type, transport: str = "grpc"):
@@ -1415,7 +1429,7 @@ def test_create_session_template(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1469,9 +1483,10 @@ def test_create_session_template_non_empty_request_with_auto_populated_field():
         client.create_session_template(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == session_templates.CreateSessionTemplateRequest(
+        request_msg = session_templates.CreateSessionTemplateRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_session_template_use_cached_wrapped_rpc():
@@ -1557,9 +1572,15 @@ async def test_create_session_template_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        session_templates.CreateSessionTemplateRequest(),
+        {},
+    ],
+)
 async def test_create_session_template_async(
-    transport: str = "grpc_asyncio",
-    request_type=session_templates.CreateSessionTemplateRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = SessionTemplateControllerAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1568,7 +1589,7 @@ async def test_create_session_template_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1597,11 +1618,6 @@ async def test_create_session_template_async(
     assert response.description == "description_value"
     assert response.creator == "creator_value"
     assert response.uuid == "uuid_value"
-
-
-@pytest.mark.asyncio
-async def test_create_session_template_async_from_dict():
-    await test_create_session_template_async(request_type=dict)
 
 
 def test_create_session_template_field_headers():
@@ -1768,8 +1784,8 @@ async def test_create_session_template_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        session_templates.UpdateSessionTemplateRequest,
-        dict,
+        session_templates.UpdateSessionTemplateRequest(),
+        {},
     ],
 )
 def test_update_session_template(request_type, transport: str = "grpc"):
@@ -1780,7 +1796,7 @@ def test_update_session_template(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1832,7 +1848,8 @@ def test_update_session_template_non_empty_request_with_auto_populated_field():
         client.update_session_template(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == session_templates.UpdateSessionTemplateRequest()
+        request_msg = session_templates.UpdateSessionTemplateRequest()
+        assert args[0] == request_msg
 
 
 def test_update_session_template_use_cached_wrapped_rpc():
@@ -1918,9 +1935,15 @@ async def test_update_session_template_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        session_templates.UpdateSessionTemplateRequest(),
+        {},
+    ],
+)
 async def test_update_session_template_async(
-    transport: str = "grpc_asyncio",
-    request_type=session_templates.UpdateSessionTemplateRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = SessionTemplateControllerAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1929,7 +1952,7 @@ async def test_update_session_template_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1958,11 +1981,6 @@ async def test_update_session_template_async(
     assert response.description == "description_value"
     assert response.creator == "creator_value"
     assert response.uuid == "uuid_value"
-
-
-@pytest.mark.asyncio
-async def test_update_session_template_async_from_dict():
-    await test_update_session_template_async(request_type=dict)
 
 
 def test_update_session_template_field_headers():
@@ -2119,8 +2137,8 @@ async def test_update_session_template_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        session_templates.GetSessionTemplateRequest,
-        dict,
+        session_templates.GetSessionTemplateRequest(),
+        {},
     ],
 )
 def test_get_session_template(request_type, transport: str = "grpc"):
@@ -2131,7 +2149,7 @@ def test_get_session_template(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2185,9 +2203,10 @@ def test_get_session_template_non_empty_request_with_auto_populated_field():
         client.get_session_template(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == session_templates.GetSessionTemplateRequest(
+        request_msg = session_templates.GetSessionTemplateRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_session_template_use_cached_wrapped_rpc():
@@ -2272,9 +2291,15 @@ async def test_get_session_template_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        session_templates.GetSessionTemplateRequest(),
+        {},
+    ],
+)
 async def test_get_session_template_async(
-    transport: str = "grpc_asyncio",
-    request_type=session_templates.GetSessionTemplateRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = SessionTemplateControllerAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2283,7 +2308,7 @@ async def test_get_session_template_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2312,11 +2337,6 @@ async def test_get_session_template_async(
     assert response.description == "description_value"
     assert response.creator == "creator_value"
     assert response.uuid == "uuid_value"
-
-
-@pytest.mark.asyncio
-async def test_get_session_template_async_from_dict():
-    await test_get_session_template_async(request_type=dict)
 
 
 def test_get_session_template_field_headers():
@@ -2473,8 +2493,8 @@ async def test_get_session_template_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        session_templates.ListSessionTemplatesRequest,
-        dict,
+        session_templates.ListSessionTemplatesRequest(),
+        {},
     ],
 )
 def test_list_session_templates(request_type, transport: str = "grpc"):
@@ -2485,7 +2505,7 @@ def test_list_session_templates(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2535,11 +2555,12 @@ def test_list_session_templates_non_empty_request_with_auto_populated_field():
         client.list_session_templates(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == session_templates.ListSessionTemplatesRequest(
+        request_msg = session_templates.ListSessionTemplatesRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_session_templates_use_cached_wrapped_rpc():
@@ -2625,9 +2646,15 @@ async def test_list_session_templates_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        session_templates.ListSessionTemplatesRequest(),
+        {},
+    ],
+)
 async def test_list_session_templates_async(
-    transport: str = "grpc_asyncio",
-    request_type=session_templates.ListSessionTemplatesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = SessionTemplateControllerAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2636,7 +2663,7 @@ async def test_list_session_templates_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2659,11 +2686,6 @@ async def test_list_session_templates_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListSessionTemplatesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_session_templates_async_from_dict():
-    await test_list_session_templates_async(request_type=dict)
 
 
 def test_list_session_templates_field_headers():
@@ -3009,11 +3031,7 @@ async def test_list_session_templates_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_session_templates(request={})
-        ).pages:
+        async for page_ in (await client.list_session_templates(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -3022,8 +3040,8 @@ async def test_list_session_templates_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        session_templates.DeleteSessionTemplateRequest,
-        dict,
+        session_templates.DeleteSessionTemplateRequest(),
+        {},
     ],
 )
 def test_delete_session_template(request_type, transport: str = "grpc"):
@@ -3034,7 +3052,7 @@ def test_delete_session_template(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3079,9 +3097,10 @@ def test_delete_session_template_non_empty_request_with_auto_populated_field():
         client.delete_session_template(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == session_templates.DeleteSessionTemplateRequest(
+        request_msg = session_templates.DeleteSessionTemplateRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_session_template_use_cached_wrapped_rpc():
@@ -3167,9 +3186,15 @@ async def test_delete_session_template_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        session_templates.DeleteSessionTemplateRequest(),
+        {},
+    ],
+)
 async def test_delete_session_template_async(
-    transport: str = "grpc_asyncio",
-    request_type=session_templates.DeleteSessionTemplateRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = SessionTemplateControllerAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3178,7 +3203,7 @@ async def test_delete_session_template_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3196,11 +3221,6 @@ async def test_delete_session_template_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_session_template_async_from_dict():
-    await test_delete_session_template_async(request_type=dict)
 
 
 def test_delete_session_template_field_headers():
@@ -3464,7 +3484,7 @@ def test_create_session_template_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_session_template_rest_unset_required_fields():
@@ -3653,7 +3673,7 @@ def test_update_session_template_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_session_template_rest_unset_required_fields():
@@ -3839,7 +3859,7 @@ def test_get_session_template_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_session_template_rest_unset_required_fields():
@@ -4034,7 +4054,7 @@ def test_list_session_templates_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_session_templates_rest_unset_required_fields():
@@ -4286,7 +4306,7 @@ def test_delete_session_template_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_session_template_rest_unset_required_fields():
@@ -4481,7 +4501,6 @@ def test_create_session_template_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = session_templates.CreateSessionTemplateRequest()
-
         assert args[0] == request_msg
 
 
@@ -4504,7 +4523,6 @@ def test_update_session_template_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = session_templates.UpdateSessionTemplateRequest()
-
         assert args[0] == request_msg
 
 
@@ -4527,7 +4545,6 @@ def test_get_session_template_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = session_templates.GetSessionTemplateRequest()
-
         assert args[0] == request_msg
 
 
@@ -4550,7 +4567,6 @@ def test_list_session_templates_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = session_templates.ListSessionTemplatesRequest()
-
         assert args[0] == request_msg
 
 
@@ -4573,7 +4589,6 @@ def test_delete_session_template_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = session_templates.DeleteSessionTemplateRequest()
-
         assert args[0] == request_msg
 
 
@@ -4619,7 +4634,6 @@ async def test_create_session_template_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = session_templates.CreateSessionTemplateRequest()
-
         assert args[0] == request_msg
 
 
@@ -4651,7 +4665,6 @@ async def test_update_session_template_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = session_templates.UpdateSessionTemplateRequest()
-
         assert args[0] == request_msg
 
 
@@ -4683,7 +4696,6 @@ async def test_get_session_template_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = session_templates.GetSessionTemplateRequest()
-
         assert args[0] == request_msg
 
 
@@ -4712,7 +4724,6 @@ async def test_list_session_templates_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = session_templates.ListSessionTemplatesRequest()
-
         assert args[0] == request_msg
 
 
@@ -4737,7 +4748,6 @@ async def test_delete_session_template_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = session_templates.DeleteSessionTemplateRequest()
-
         assert args[0] == request_msg
 
 
@@ -4817,6 +4827,7 @@ def test_create_session_template_rest_call_success(request_type):
                 "ttl": {},
                 "staging_bucket": "staging_bucket_value",
                 "authentication_config": {"user_workload_authentication_type": 1},
+                "resource_manager_tags": {},
             },
             "peripherals_config": {
                 "metastore_service": "metastore_service_value",
@@ -5075,6 +5086,7 @@ def test_update_session_template_rest_call_success(request_type):
                 "ttl": {},
                 "staging_bucket": "staging_bucket_value",
                 "authentication_config": {"user_workload_authentication_type": 1},
+                "resource_manager_tags": {},
             },
             "peripherals_config": {
                 "metastore_service": "metastore_service_value",
@@ -6120,7 +6132,6 @@ def test_create_session_template_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = session_templates.CreateSessionTemplateRequest()
-
         assert args[0] == request_msg
 
 
@@ -6142,7 +6153,6 @@ def test_update_session_template_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = session_templates.UpdateSessionTemplateRequest()
-
         assert args[0] == request_msg
 
 
@@ -6164,7 +6174,6 @@ def test_get_session_template_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = session_templates.GetSessionTemplateRequest()
-
         assert args[0] == request_msg
 
 
@@ -6186,7 +6195,6 @@ def test_list_session_templates_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = session_templates.ListSessionTemplatesRequest()
-
         assert args[0] == request_msg
 
 
@@ -6208,7 +6216,6 @@ def test_delete_session_template_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = session_templates.DeleteSessionTemplateRequest()
-
         assert args[0] == request_msg
 
 
@@ -6293,7 +6300,11 @@ def test_session_template_controller_base_transport_with_credentials_file():
         load_creds.assert_called_once_with(
             "credentials.json",
             scopes=None,
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/dataproc",
+                "https://www.googleapis.com/auth/dataproc.read-only",
+            ),
             quota_project_id="octopus",
         )
 
@@ -6319,7 +6330,11 @@ def test_session_template_controller_auth_adc():
         SessionTemplateControllerClient()
         adc.assert_called_once_with(
             scopes=None,
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/dataproc",
+                "https://www.googleapis.com/auth/dataproc.read-only",
+            ),
             quota_project_id=None,
         )
 
@@ -6339,7 +6354,11 @@ def test_session_template_controller_transport_auth_adc(transport_class):
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
         adc.assert_called_once_with(
             scopes=["1", "2"],
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/dataproc",
+                "https://www.googleapis.com/auth/dataproc.read-only",
+            ),
             quota_project_id="octopus",
         )
 
@@ -6394,7 +6413,11 @@ def test_session_template_controller_transport_create_channel(
             credentials=creds,
             credentials_file=None,
             quota_project_id="octopus",
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/dataproc",
+                "https://www.googleapis.com/auth/dataproc.read-only",
+            ),
             scopes=["1", "2"],
             default_host="dataproc.googleapis.com",
             ssl_credentials=None,
@@ -6670,10 +6693,41 @@ def test_session_template_controller_transport_channel_mtls_with_adc(transport_c
             assert transport.grpc_channel == mock_grpc_channel
 
 
-def test_service_path():
+def test_crypto_key_path():
     project = "squid"
     location = "clam"
-    service = "whelk"
+    key_ring = "whelk"
+    crypto_key = "octopus"
+    expected = "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}".format(
+        project=project,
+        location=location,
+        key_ring=key_ring,
+        crypto_key=crypto_key,
+    )
+    actual = SessionTemplateControllerClient.crypto_key_path(
+        project, location, key_ring, crypto_key
+    )
+    assert expected == actual
+
+
+def test_parse_crypto_key_path():
+    expected = {
+        "project": "oyster",
+        "location": "nudibranch",
+        "key_ring": "cuttlefish",
+        "crypto_key": "mussel",
+    }
+    path = SessionTemplateControllerClient.crypto_key_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = SessionTemplateControllerClient.parse_crypto_key_path(path)
+    assert expected == actual
+
+
+def test_service_path():
+    project = "winkle"
+    location = "nautilus"
+    service = "scallop"
     expected = "projects/{project}/locations/{location}/services/{service}".format(
         project=project,
         location=location,
@@ -6685,9 +6739,9 @@ def test_service_path():
 
 def test_parse_service_path():
     expected = {
-        "project": "octopus",
-        "location": "oyster",
-        "service": "nudibranch",
+        "project": "abalone",
+        "location": "squid",
+        "service": "clam",
     }
     path = SessionTemplateControllerClient.service_path(**expected)
 
@@ -6697,9 +6751,9 @@ def test_parse_service_path():
 
 
 def test_session_template_path():
-    project = "cuttlefish"
-    location = "mussel"
-    template = "winkle"
+    project = "whelk"
+    location = "octopus"
+    template = "oyster"
     expected = (
         "projects/{project}/locations/{location}/sessionTemplates/{template}".format(
             project=project,
@@ -6715,9 +6769,9 @@ def test_session_template_path():
 
 def test_parse_session_template_path():
     expected = {
-        "project": "nautilus",
-        "location": "scallop",
-        "template": "abalone",
+        "project": "nudibranch",
+        "location": "cuttlefish",
+        "template": "mussel",
     }
     path = SessionTemplateControllerClient.session_template_path(**expected)
 
@@ -6727,7 +6781,7 @@ def test_parse_session_template_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "squid"
+    billing_account = "winkle"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -6739,7 +6793,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "clam",
+        "billing_account": "nautilus",
     }
     path = SessionTemplateControllerClient.common_billing_account_path(**expected)
 
@@ -6749,7 +6803,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "whelk"
+    folder = "scallop"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -6759,7 +6813,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "octopus",
+        "folder": "abalone",
     }
     path = SessionTemplateControllerClient.common_folder_path(**expected)
 
@@ -6769,7 +6823,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "oyster"
+    organization = "squid"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -6779,7 +6833,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nudibranch",
+        "organization": "clam",
     }
     path = SessionTemplateControllerClient.common_organization_path(**expected)
 
@@ -6789,7 +6843,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "cuttlefish"
+    project = "whelk"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -6799,7 +6853,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "mussel",
+        "project": "octopus",
     }
     path = SessionTemplateControllerClient.common_project_path(**expected)
 
@@ -6809,8 +6863,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "winkle"
-    location = "nautilus"
+    project = "oyster"
+    location = "nudibranch"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -6821,8 +6875,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "scallop",
-        "location": "abalone",
+        "project": "cuttlefish",
+        "location": "mussel",
     }
     path = SessionTemplateControllerClient.common_location_path(**expected)
 

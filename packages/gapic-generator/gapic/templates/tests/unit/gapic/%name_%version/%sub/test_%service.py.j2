@@ -7,7 +7,8 @@
 {% import "%namespace/%name_%version/%sub/services/%service/_shared_macros.j2" as shared_macros %}
 
 import os
-{% if api.all_method_settings.values()|map(attribute="auto_populated_fields", default=[])|list %}
+import asyncio
+{% if api.all_method_settings.values()|map(attribute="auto_populated_fields", default=[])|select|list %}
 import re
 {% endif %}
 from unittest import mock
@@ -106,6 +107,9 @@ CRED_INFO_JSON = {
     "principal": "service-account@example.com",
 }
 CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+{% if api.all_method_settings.values()|map(attribute="auto_populated_fields", default=[])|select|list %}
+_UUID4_RE = re.compile(r"{{ uuid4_re }}")
+{% endif %}
 
 
 async def mock_async_gen(data, chunk_size=1):
@@ -135,6 +139,21 @@ def modify_default_endpoint(client):
 # mtls endpoint for endpoint testing purposes.
 def modify_default_endpoint_template(client):
     return "test.{UNIVERSE_DOMAIN}" if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE) else client._DEFAULT_ENDPOINT_TEMPLATE
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -415,6 +434,84 @@ def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
     client._add_cred_info_for_auth_errors(error)
     assert error.details == []
 
+{% if api.all_method_settings.values()|map(attribute="auto_populated_fields", default=[])|select|list %}
+def test__setup_request_id():
+    class MockRequest:
+        def __init__(self, **kwargs):
+            for k, v in kwargs.items():
+                setattr(self, k, v)
+        def __contains__(self, key):
+            return hasattr(self, key)
+
+    class MockProtoRequest:
+        def __init__(self, **kwargs):
+            for k, v in kwargs.items():
+                setattr(self, k, v)
+        def HasField(self, key):
+            return hasattr(self, key)
+
+    # Test with proto3 optional field not in request
+    request = MockRequest()
+    {{ service.client_name }}._setup_request_id(request, "request_id", True)
+    assert re.match(r"{{ test_macros.get_uuid4_re() }}", request.request_id)
+
+    # Test with proto3 optional field already in request
+    request = MockRequest(request_id="already_set")
+    {{ service.client_name }}._setup_request_id(request, "request_id", True)
+    assert request.request_id == "already_set"
+
+    # Test with non-proto3 optional field empty
+    request = MockRequest(request_id="")
+    {{ service.client_name }}._setup_request_id(request, "request_id", False)
+    assert re.match(r"{{ test_macros.get_uuid4_re() }}", request.request_id)
+
+    # Test with non-proto3 optional field already set
+    request = MockRequest(request_id="already_set")
+    {{ service.client_name }}._setup_request_id(request, "request_id", False)
+    assert request.request_id == "already_set"
+
+    # Test with proto3 optional field not in request (MockProtoRequest)
+    request = MockProtoRequest()
+    {{ service.client_name }}._setup_request_id(request, "request_id", True)
+    assert re.match(r"{{ test_macros.get_uuid4_re() }}", request.request_id)
+
+    # Test with proto3 optional field already in request (MockProtoRequest)
+    request = MockProtoRequest(request_id="already_set")
+    {{ service.client_name }}._setup_request_id(request, "request_id", True)
+    assert request.request_id == "already_set"
+
+    # Test with ValueError
+    class MockValueErrorRequest:
+        def HasField(self, key):
+            raise ValueError("Mismatched field")
+        def __contains__(self, key):
+            return hasattr(self, key)
+
+    request = MockValueErrorRequest()
+    {{ service.client_name }}._setup_request_id(request, "request_id", True)
+    assert re.match(r"{{ test_macros.get_uuid4_re() }}", request.request_id)
+
+    # Test with dict and proto3 optional field not in request
+    request = {}
+    {{ service.client_name }}._setup_request_id(request, "request_id", True)
+    assert re.match(r"{{ test_macros.get_uuid4_re() }}", request["request_id"])
+
+    # Test with dict and proto3 optional field already in request
+    request = {"request_id": "already_set"}
+    {{ service.client_name }}._setup_request_id(request, "request_id", True)
+    assert request["request_id"] == "already_set"
+
+    # Test with dict and non-proto3 optional field empty
+    request = {"request_id": ""}
+    {{ service.client_name }}._setup_request_id(request, "request_id", False)
+    assert re.match(r"{{ test_macros.get_uuid4_re() }}", request["request_id"])
+
+    # Test with dict and non-proto3 optional field already set
+    request = {"request_id": "already_set"}
+    {{ service.client_name }}._setup_request_id(request, "request_id", False)
+    assert request["request_id"] == "already_set"
+
+{% endif %}
 @pytest.mark.parametrize("client_class,transport_name", [
     {% if 'grpc' in opts.transport %}
     ({{ service.client_name }}, "grpc"),
@@ -1114,10 +1211,10 @@ def test_{{ service.client_name|snake_case }}_create_channel_credentials_file(cl
 
 {% for method in service.methods.values() if 'rest' in opts.transport %}
 {% if method.extended_lro %}
-{{ test_macros.rest_required_tests(method, service, numeric_enums=opts.rest_numeric_enums, full_extended_lro=True) }}
+{{ test_macros.rest_required_tests(api, method, service, numeric_enums=opts.rest_numeric_enums, full_extended_lro=True) }}
 
 {% endif %}
-{{ test_macros.rest_required_tests(method, service, numeric_enums=opts.rest_numeric_enums) }}
+{{ test_macros.rest_required_tests(api, method, service, numeric_enums=opts.rest_numeric_enums) }}
 
 {% endfor -%} {#- method in methods for rest #}
 

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -123,6 +118,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1324,8 +1334,8 @@ def test_azure_clusters_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        azure_service.CreateAzureClientRequest,
-        dict,
+        azure_service.CreateAzureClientRequest(),
+        {},
     ],
 )
 def test_create_azure_client(request_type, transport: str = "grpc"):
@@ -1336,7 +1346,7 @@ def test_create_azure_client(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1382,10 +1392,11 @@ def test_create_azure_client_non_empty_request_with_auto_populated_field():
         client.create_azure_client(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == azure_service.CreateAzureClientRequest(
+        request_msg = azure_service.CreateAzureClientRequest(
             parent="parent_value",
             azure_client_id="azure_client_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_azure_client_use_cached_wrapped_rpc():
@@ -1480,9 +1491,14 @@ async def test_create_azure_client_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_azure_client_async(
-    transport: str = "grpc_asyncio", request_type=azure_service.CreateAzureClientRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        azure_service.CreateAzureClientRequest(),
+        {},
+    ],
+)
+async def test_create_azure_client_async(request_type, transport: str = "grpc_asyncio"):
     client = AzureClustersAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1490,7 +1506,7 @@ async def test_create_azure_client_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1510,11 +1526,6 @@ async def test_create_azure_client_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_azure_client_async_from_dict():
-    await test_create_azure_client_async(request_type=dict)
 
 
 def test_create_azure_client_field_headers():
@@ -1691,8 +1702,8 @@ async def test_create_azure_client_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        azure_service.GetAzureClientRequest,
-        dict,
+        azure_service.GetAzureClientRequest(),
+        {},
     ],
 )
 def test_get_azure_client(request_type, transport: str = "grpc"):
@@ -1703,7 +1714,7 @@ def test_get_azure_client(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_azure_client), "__call__") as call:
@@ -1757,9 +1768,10 @@ def test_get_azure_client_non_empty_request_with_auto_populated_field():
         client.get_azure_client(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == azure_service.GetAzureClientRequest(
+        request_msg = azure_service.GetAzureClientRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_azure_client_use_cached_wrapped_rpc():
@@ -1842,9 +1854,14 @@ async def test_get_azure_client_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_azure_client_async(
-    transport: str = "grpc_asyncio", request_type=azure_service.GetAzureClientRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        azure_service.GetAzureClientRequest(),
+        {},
+    ],
+)
+async def test_get_azure_client_async(request_type, transport: str = "grpc_asyncio"):
     client = AzureClustersAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1852,7 +1869,7 @@ async def test_get_azure_client_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_azure_client), "__call__") as call:
@@ -1883,11 +1900,6 @@ async def test_get_azure_client_async(
     assert response.reconciling is True
     assert response.pem_certificate == "pem_certificate_value"
     assert response.uid == "uid_value"
-
-
-@pytest.mark.asyncio
-async def test_get_azure_client_async_from_dict():
-    await test_get_azure_client_async(request_type=dict)
 
 
 def test_get_azure_client_field_headers():
@@ -2036,8 +2048,8 @@ async def test_get_azure_client_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        azure_service.ListAzureClientsRequest,
-        dict,
+        azure_service.ListAzureClientsRequest(),
+        {},
     ],
 )
 def test_list_azure_clients(request_type, transport: str = "grpc"):
@@ -2048,7 +2060,7 @@ def test_list_azure_clients(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2097,10 +2109,11 @@ def test_list_azure_clients_non_empty_request_with_auto_populated_field():
         client.list_azure_clients(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == azure_service.ListAzureClientsRequest(
+        request_msg = azure_service.ListAzureClientsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_azure_clients_use_cached_wrapped_rpc():
@@ -2185,9 +2198,14 @@ async def test_list_azure_clients_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_azure_clients_async(
-    transport: str = "grpc_asyncio", request_type=azure_service.ListAzureClientsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        azure_service.ListAzureClientsRequest(),
+        {},
+    ],
+)
+async def test_list_azure_clients_async(request_type, transport: str = "grpc_asyncio"):
     client = AzureClustersAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2195,7 +2213,7 @@ async def test_list_azure_clients_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2218,11 +2236,6 @@ async def test_list_azure_clients_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAzureClientsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_azure_clients_async_from_dict():
-    await test_list_azure_clients_async(request_type=dict)
 
 
 def test_list_azure_clients_field_headers():
@@ -2568,11 +2581,7 @@ async def test_list_azure_clients_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_azure_clients(request={})
-        ).pages:
+        async for page_ in (await client.list_azure_clients(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -2581,8 +2590,8 @@ async def test_list_azure_clients_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        azure_service.DeleteAzureClientRequest,
-        dict,
+        azure_service.DeleteAzureClientRequest(),
+        {},
     ],
 )
 def test_delete_azure_client(request_type, transport: str = "grpc"):
@@ -2593,7 +2602,7 @@ def test_delete_azure_client(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2638,9 +2647,10 @@ def test_delete_azure_client_non_empty_request_with_auto_populated_field():
         client.delete_azure_client(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == azure_service.DeleteAzureClientRequest(
+        request_msg = azure_service.DeleteAzureClientRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_azure_client_use_cached_wrapped_rpc():
@@ -2735,9 +2745,14 @@ async def test_delete_azure_client_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_azure_client_async(
-    transport: str = "grpc_asyncio", request_type=azure_service.DeleteAzureClientRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        azure_service.DeleteAzureClientRequest(),
+        {},
+    ],
+)
+async def test_delete_azure_client_async(request_type, transport: str = "grpc_asyncio"):
     client = AzureClustersAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2745,7 +2760,7 @@ async def test_delete_azure_client_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2765,11 +2780,6 @@ async def test_delete_azure_client_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_azure_client_async_from_dict():
-    await test_delete_azure_client_async(request_type=dict)
 
 
 def test_delete_azure_client_field_headers():
@@ -2926,8 +2936,8 @@ async def test_delete_azure_client_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        azure_service.CreateAzureClusterRequest,
-        dict,
+        azure_service.CreateAzureClusterRequest(),
+        {},
     ],
 )
 def test_create_azure_cluster(request_type, transport: str = "grpc"):
@@ -2938,7 +2948,7 @@ def test_create_azure_cluster(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2984,10 +2994,11 @@ def test_create_azure_cluster_non_empty_request_with_auto_populated_field():
         client.create_azure_cluster(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == azure_service.CreateAzureClusterRequest(
+        request_msg = azure_service.CreateAzureClusterRequest(
             parent="parent_value",
             azure_cluster_id="azure_cluster_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_azure_cluster_use_cached_wrapped_rpc():
@@ -3082,9 +3093,15 @@ async def test_create_azure_cluster_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        azure_service.CreateAzureClusterRequest(),
+        {},
+    ],
+)
 async def test_create_azure_cluster_async(
-    transport: str = "grpc_asyncio",
-    request_type=azure_service.CreateAzureClusterRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AzureClustersAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3093,7 +3110,7 @@ async def test_create_azure_cluster_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3113,11 +3130,6 @@ async def test_create_azure_cluster_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_azure_cluster_async_from_dict():
-    await test_create_azure_cluster_async(request_type=dict)
 
 
 def test_create_azure_cluster_field_headers():
@@ -3294,8 +3306,8 @@ async def test_create_azure_cluster_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        azure_service.UpdateAzureClusterRequest,
-        dict,
+        azure_service.UpdateAzureClusterRequest(),
+        {},
     ],
 )
 def test_update_azure_cluster(request_type, transport: str = "grpc"):
@@ -3306,7 +3318,7 @@ def test_update_azure_cluster(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3349,7 +3361,8 @@ def test_update_azure_cluster_non_empty_request_with_auto_populated_field():
         client.update_azure_cluster(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == azure_service.UpdateAzureClusterRequest()
+        request_msg = azure_service.UpdateAzureClusterRequest()
+        assert args[0] == request_msg
 
 
 def test_update_azure_cluster_use_cached_wrapped_rpc():
@@ -3444,9 +3457,15 @@ async def test_update_azure_cluster_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        azure_service.UpdateAzureClusterRequest(),
+        {},
+    ],
+)
 async def test_update_azure_cluster_async(
-    transport: str = "grpc_asyncio",
-    request_type=azure_service.UpdateAzureClusterRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AzureClustersAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3455,7 +3474,7 @@ async def test_update_azure_cluster_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3475,11 +3494,6 @@ async def test_update_azure_cluster_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_azure_cluster_async_from_dict():
-    await test_update_azure_cluster_async(request_type=dict)
 
 
 def test_update_azure_cluster_field_headers():
@@ -3646,8 +3660,8 @@ async def test_update_azure_cluster_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        azure_service.GetAzureClusterRequest,
-        dict,
+        azure_service.GetAzureClusterRequest(),
+        {},
     ],
 )
 def test_get_azure_cluster(request_type, transport: str = "grpc"):
@@ -3658,7 +3672,7 @@ def test_get_azure_cluster(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3726,9 +3740,10 @@ def test_get_azure_cluster_non_empty_request_with_auto_populated_field():
         client.get_azure_cluster(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == azure_service.GetAzureClusterRequest(
+        request_msg = azure_service.GetAzureClusterRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_azure_cluster_use_cached_wrapped_rpc():
@@ -3811,9 +3826,14 @@ async def test_get_azure_cluster_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_azure_cluster_async(
-    transport: str = "grpc_asyncio", request_type=azure_service.GetAzureClusterRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        azure_service.GetAzureClusterRequest(),
+        {},
+    ],
+)
+async def test_get_azure_cluster_async(request_type, transport: str = "grpc_asyncio"):
     client = AzureClustersAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3821,7 +3841,7 @@ async def test_get_azure_cluster_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3864,11 +3884,6 @@ async def test_get_azure_cluster_async(
     assert response.reconciling is True
     assert response.etag == "etag_value"
     assert response.cluster_ca_certificate == "cluster_ca_certificate_value"
-
-
-@pytest.mark.asyncio
-async def test_get_azure_cluster_async_from_dict():
-    await test_get_azure_cluster_async(request_type=dict)
 
 
 def test_get_azure_cluster_field_headers():
@@ -4025,8 +4040,8 @@ async def test_get_azure_cluster_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        azure_service.ListAzureClustersRequest,
-        dict,
+        azure_service.ListAzureClustersRequest(),
+        {},
     ],
 )
 def test_list_azure_clusters(request_type, transport: str = "grpc"):
@@ -4037,7 +4052,7 @@ def test_list_azure_clusters(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4086,10 +4101,11 @@ def test_list_azure_clusters_non_empty_request_with_auto_populated_field():
         client.list_azure_clusters(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == azure_service.ListAzureClustersRequest(
+        request_msg = azure_service.ListAzureClustersRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_azure_clusters_use_cached_wrapped_rpc():
@@ -4174,9 +4190,14 @@ async def test_list_azure_clusters_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_azure_clusters_async(
-    transport: str = "grpc_asyncio", request_type=azure_service.ListAzureClustersRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        azure_service.ListAzureClustersRequest(),
+        {},
+    ],
+)
+async def test_list_azure_clusters_async(request_type, transport: str = "grpc_asyncio"):
     client = AzureClustersAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4184,7 +4205,7 @@ async def test_list_azure_clusters_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4207,11 +4228,6 @@ async def test_list_azure_clusters_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAzureClustersAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_azure_clusters_async_from_dict():
-    await test_list_azure_clusters_async(request_type=dict)
 
 
 def test_list_azure_clusters_field_headers():
@@ -4557,11 +4573,7 @@ async def test_list_azure_clusters_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_azure_clusters(request={})
-        ).pages:
+        async for page_ in (await client.list_azure_clusters(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -4570,8 +4582,8 @@ async def test_list_azure_clusters_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        azure_service.DeleteAzureClusterRequest,
-        dict,
+        azure_service.DeleteAzureClusterRequest(),
+        {},
     ],
 )
 def test_delete_azure_cluster(request_type, transport: str = "grpc"):
@@ -4582,7 +4594,7 @@ def test_delete_azure_cluster(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4628,10 +4640,11 @@ def test_delete_azure_cluster_non_empty_request_with_auto_populated_field():
         client.delete_azure_cluster(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == azure_service.DeleteAzureClusterRequest(
+        request_msg = azure_service.DeleteAzureClusterRequest(
             name="name_value",
             etag="etag_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_azure_cluster_use_cached_wrapped_rpc():
@@ -4726,9 +4739,15 @@ async def test_delete_azure_cluster_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        azure_service.DeleteAzureClusterRequest(),
+        {},
+    ],
+)
 async def test_delete_azure_cluster_async(
-    transport: str = "grpc_asyncio",
-    request_type=azure_service.DeleteAzureClusterRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AzureClustersAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4737,7 +4756,7 @@ async def test_delete_azure_cluster_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4757,11 +4776,6 @@ async def test_delete_azure_cluster_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_azure_cluster_async_from_dict():
-    await test_delete_azure_cluster_async(request_type=dict)
 
 
 def test_delete_azure_cluster_field_headers():
@@ -4918,8 +4932,8 @@ async def test_delete_azure_cluster_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        azure_service.GenerateAzureClusterAgentTokenRequest,
-        dict,
+        azure_service.GenerateAzureClusterAgentTokenRequest(),
+        {},
     ],
 )
 def test_generate_azure_cluster_agent_token(request_type, transport: str = "grpc"):
@@ -4930,7 +4944,7 @@ def test_generate_azure_cluster_agent_token(request_type, transport: str = "grpc
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4991,7 +5005,7 @@ def test_generate_azure_cluster_agent_token_non_empty_request_with_auto_populate
         client.generate_azure_cluster_agent_token(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == azure_service.GenerateAzureClusterAgentTokenRequest(
+        request_msg = azure_service.GenerateAzureClusterAgentTokenRequest(
             azure_cluster="azure_cluster_value",
             subject_token="subject_token_value",
             subject_token_type="subject_token_type_value",
@@ -5003,6 +5017,7 @@ def test_generate_azure_cluster_agent_token_non_empty_request_with_auto_populate
             requested_token_type="requested_token_type_value",
             options="options_value",
         )
+        assert args[0] == request_msg
 
 
 def test_generate_azure_cluster_agent_token_use_cached_wrapped_rpc():
@@ -5088,9 +5103,15 @@ async def test_generate_azure_cluster_agent_token_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        azure_service.GenerateAzureClusterAgentTokenRequest(),
+        {},
+    ],
+)
 async def test_generate_azure_cluster_agent_token_async(
-    transport: str = "grpc_asyncio",
-    request_type=azure_service.GenerateAzureClusterAgentTokenRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AzureClustersAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5099,7 +5120,7 @@ async def test_generate_azure_cluster_agent_token_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5126,11 +5147,6 @@ async def test_generate_azure_cluster_agent_token_async(
     assert response.access_token == "access_token_value"
     assert response.expires_in == 1078
     assert response.token_type == "token_type_value"
-
-
-@pytest.mark.asyncio
-async def test_generate_azure_cluster_agent_token_async_from_dict():
-    await test_generate_azure_cluster_agent_token_async(request_type=dict)
 
 
 def test_generate_azure_cluster_agent_token_field_headers():
@@ -5201,8 +5217,8 @@ async def test_generate_azure_cluster_agent_token_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        azure_service.GenerateAzureAccessTokenRequest,
-        dict,
+        azure_service.GenerateAzureAccessTokenRequest(),
+        {},
     ],
 )
 def test_generate_azure_access_token(request_type, transport: str = "grpc"):
@@ -5213,7 +5229,7 @@ def test_generate_azure_access_token(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5261,9 +5277,10 @@ def test_generate_azure_access_token_non_empty_request_with_auto_populated_field
         client.generate_azure_access_token(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == azure_service.GenerateAzureAccessTokenRequest(
+        request_msg = azure_service.GenerateAzureAccessTokenRequest(
             azure_cluster="azure_cluster_value",
         )
+        assert args[0] == request_msg
 
 
 def test_generate_azure_access_token_use_cached_wrapped_rpc():
@@ -5349,9 +5366,15 @@ async def test_generate_azure_access_token_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        azure_service.GenerateAzureAccessTokenRequest(),
+        {},
+    ],
+)
 async def test_generate_azure_access_token_async(
-    transport: str = "grpc_asyncio",
-    request_type=azure_service.GenerateAzureAccessTokenRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AzureClustersAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5360,7 +5383,7 @@ async def test_generate_azure_access_token_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5383,11 +5406,6 @@ async def test_generate_azure_access_token_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, azure_service.GenerateAzureAccessTokenResponse)
     assert response.access_token == "access_token_value"
-
-
-@pytest.mark.asyncio
-async def test_generate_azure_access_token_async_from_dict():
-    await test_generate_azure_access_token_async(request_type=dict)
 
 
 def test_generate_azure_access_token_field_headers():
@@ -5458,8 +5476,8 @@ async def test_generate_azure_access_token_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        azure_service.CreateAzureNodePoolRequest,
-        dict,
+        azure_service.CreateAzureNodePoolRequest(),
+        {},
     ],
 )
 def test_create_azure_node_pool(request_type, transport: str = "grpc"):
@@ -5470,7 +5488,7 @@ def test_create_azure_node_pool(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5516,10 +5534,11 @@ def test_create_azure_node_pool_non_empty_request_with_auto_populated_field():
         client.create_azure_node_pool(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == azure_service.CreateAzureNodePoolRequest(
+        request_msg = azure_service.CreateAzureNodePoolRequest(
             parent="parent_value",
             azure_node_pool_id="azure_node_pool_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_azure_node_pool_use_cached_wrapped_rpc():
@@ -5615,9 +5634,15 @@ async def test_create_azure_node_pool_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        azure_service.CreateAzureNodePoolRequest(),
+        {},
+    ],
+)
 async def test_create_azure_node_pool_async(
-    transport: str = "grpc_asyncio",
-    request_type=azure_service.CreateAzureNodePoolRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AzureClustersAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5626,7 +5651,7 @@ async def test_create_azure_node_pool_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5646,11 +5671,6 @@ async def test_create_azure_node_pool_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_azure_node_pool_async_from_dict():
-    await test_create_azure_node_pool_async(request_type=dict)
 
 
 def test_create_azure_node_pool_field_headers():
@@ -5827,8 +5847,8 @@ async def test_create_azure_node_pool_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        azure_service.UpdateAzureNodePoolRequest,
-        dict,
+        azure_service.UpdateAzureNodePoolRequest(),
+        {},
     ],
 )
 def test_update_azure_node_pool(request_type, transport: str = "grpc"):
@@ -5839,7 +5859,7 @@ def test_update_azure_node_pool(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5882,7 +5902,8 @@ def test_update_azure_node_pool_non_empty_request_with_auto_populated_field():
         client.update_azure_node_pool(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == azure_service.UpdateAzureNodePoolRequest()
+        request_msg = azure_service.UpdateAzureNodePoolRequest()
+        assert args[0] == request_msg
 
 
 def test_update_azure_node_pool_use_cached_wrapped_rpc():
@@ -5978,9 +5999,15 @@ async def test_update_azure_node_pool_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        azure_service.UpdateAzureNodePoolRequest(),
+        {},
+    ],
+)
 async def test_update_azure_node_pool_async(
-    transport: str = "grpc_asyncio",
-    request_type=azure_service.UpdateAzureNodePoolRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AzureClustersAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5989,7 +6016,7 @@ async def test_update_azure_node_pool_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6009,11 +6036,6 @@ async def test_update_azure_node_pool_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_azure_node_pool_async_from_dict():
-    await test_update_azure_node_pool_async(request_type=dict)
 
 
 def test_update_azure_node_pool_field_headers():
@@ -6180,8 +6202,8 @@ async def test_update_azure_node_pool_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        azure_service.GetAzureNodePoolRequest,
-        dict,
+        azure_service.GetAzureNodePoolRequest(),
+        {},
     ],
 )
 def test_get_azure_node_pool(request_type, transport: str = "grpc"):
@@ -6192,7 +6214,7 @@ def test_get_azure_node_pool(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6254,9 +6276,10 @@ def test_get_azure_node_pool_non_empty_request_with_auto_populated_field():
         client.get_azure_node_pool(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == azure_service.GetAzureNodePoolRequest(
+        request_msg = azure_service.GetAzureNodePoolRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_azure_node_pool_use_cached_wrapped_rpc():
@@ -6341,9 +6364,14 @@ async def test_get_azure_node_pool_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_azure_node_pool_async(
-    transport: str = "grpc_asyncio", request_type=azure_service.GetAzureNodePoolRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        azure_service.GetAzureNodePoolRequest(),
+        {},
+    ],
+)
+async def test_get_azure_node_pool_async(request_type, transport: str = "grpc_asyncio"):
     client = AzureClustersAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6351,7 +6379,7 @@ async def test_get_azure_node_pool_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6388,11 +6416,6 @@ async def test_get_azure_node_pool_async(
     assert response.reconciling is True
     assert response.etag == "etag_value"
     assert response.azure_availability_zone == "azure_availability_zone_value"
-
-
-@pytest.mark.asyncio
-async def test_get_azure_node_pool_async_from_dict():
-    await test_get_azure_node_pool_async(request_type=dict)
 
 
 def test_get_azure_node_pool_field_headers():
@@ -6549,8 +6572,8 @@ async def test_get_azure_node_pool_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        azure_service.ListAzureNodePoolsRequest,
-        dict,
+        azure_service.ListAzureNodePoolsRequest(),
+        {},
     ],
 )
 def test_list_azure_node_pools(request_type, transport: str = "grpc"):
@@ -6561,7 +6584,7 @@ def test_list_azure_node_pools(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6610,10 +6633,11 @@ def test_list_azure_node_pools_non_empty_request_with_auto_populated_field():
         client.list_azure_node_pools(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == azure_service.ListAzureNodePoolsRequest(
+        request_msg = azure_service.ListAzureNodePoolsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_azure_node_pools_use_cached_wrapped_rpc():
@@ -6699,9 +6723,15 @@ async def test_list_azure_node_pools_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        azure_service.ListAzureNodePoolsRequest(),
+        {},
+    ],
+)
 async def test_list_azure_node_pools_async(
-    transport: str = "grpc_asyncio",
-    request_type=azure_service.ListAzureNodePoolsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AzureClustersAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -6710,7 +6740,7 @@ async def test_list_azure_node_pools_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6733,11 +6763,6 @@ async def test_list_azure_node_pools_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAzureNodePoolsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_azure_node_pools_async_from_dict():
-    await test_list_azure_node_pools_async(request_type=dict)
 
 
 def test_list_azure_node_pools_field_headers():
@@ -7083,11 +7108,7 @@ async def test_list_azure_node_pools_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_azure_node_pools(request={})
-        ).pages:
+        async for page_ in (await client.list_azure_node_pools(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -7096,8 +7117,8 @@ async def test_list_azure_node_pools_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        azure_service.DeleteAzureNodePoolRequest,
-        dict,
+        azure_service.DeleteAzureNodePoolRequest(),
+        {},
     ],
 )
 def test_delete_azure_node_pool(request_type, transport: str = "grpc"):
@@ -7108,7 +7129,7 @@ def test_delete_azure_node_pool(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7154,10 +7175,11 @@ def test_delete_azure_node_pool_non_empty_request_with_auto_populated_field():
         client.delete_azure_node_pool(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == azure_service.DeleteAzureNodePoolRequest(
+        request_msg = azure_service.DeleteAzureNodePoolRequest(
             name="name_value",
             etag="etag_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_azure_node_pool_use_cached_wrapped_rpc():
@@ -7253,9 +7275,15 @@ async def test_delete_azure_node_pool_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        azure_service.DeleteAzureNodePoolRequest(),
+        {},
+    ],
+)
 async def test_delete_azure_node_pool_async(
-    transport: str = "grpc_asyncio",
-    request_type=azure_service.DeleteAzureNodePoolRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AzureClustersAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -7264,7 +7292,7 @@ async def test_delete_azure_node_pool_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7284,11 +7312,6 @@ async def test_delete_azure_node_pool_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_azure_node_pool_async_from_dict():
-    await test_delete_azure_node_pool_async(request_type=dict)
 
 
 def test_delete_azure_node_pool_field_headers():
@@ -7445,8 +7468,8 @@ async def test_delete_azure_node_pool_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        azure_service.GetAzureOpenIdConfigRequest,
-        dict,
+        azure_service.GetAzureOpenIdConfigRequest(),
+        {},
     ],
 )
 def test_get_azure_open_id_config(request_type, transport: str = "grpc"):
@@ -7457,7 +7480,7 @@ def test_get_azure_open_id_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7521,9 +7544,10 @@ def test_get_azure_open_id_config_non_empty_request_with_auto_populated_field():
         client.get_azure_open_id_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == azure_service.GetAzureOpenIdConfigRequest(
+        request_msg = azure_service.GetAzureOpenIdConfigRequest(
             azure_cluster="azure_cluster_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_azure_open_id_config_use_cached_wrapped_rpc():
@@ -7609,9 +7633,15 @@ async def test_get_azure_open_id_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        azure_service.GetAzureOpenIdConfigRequest(),
+        {},
+    ],
+)
 async def test_get_azure_open_id_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=azure_service.GetAzureOpenIdConfigRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AzureClustersAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -7620,7 +7650,7 @@ async def test_get_azure_open_id_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7659,11 +7689,6 @@ async def test_get_azure_open_id_config_async(
     ]
     assert response.claims_supported == ["claims_supported_value"]
     assert response.grant_types == ["grant_types_value"]
-
-
-@pytest.mark.asyncio
-async def test_get_azure_open_id_config_async_from_dict():
-    await test_get_azure_open_id_config_async(request_type=dict)
 
 
 def test_get_azure_open_id_config_field_headers():
@@ -7820,8 +7845,8 @@ async def test_get_azure_open_id_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        azure_service.GetAzureJsonWebKeysRequest,
-        dict,
+        azure_service.GetAzureJsonWebKeysRequest(),
+        {},
     ],
 )
 def test_get_azure_json_web_keys(request_type, transport: str = "grpc"):
@@ -7832,7 +7857,7 @@ def test_get_azure_json_web_keys(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7877,9 +7902,10 @@ def test_get_azure_json_web_keys_non_empty_request_with_auto_populated_field():
         client.get_azure_json_web_keys(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == azure_service.GetAzureJsonWebKeysRequest(
+        request_msg = azure_service.GetAzureJsonWebKeysRequest(
             azure_cluster="azure_cluster_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_azure_json_web_keys_use_cached_wrapped_rpc():
@@ -7965,9 +7991,15 @@ async def test_get_azure_json_web_keys_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        azure_service.GetAzureJsonWebKeysRequest(),
+        {},
+    ],
+)
 async def test_get_azure_json_web_keys_async(
-    transport: str = "grpc_asyncio",
-    request_type=azure_service.GetAzureJsonWebKeysRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AzureClustersAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -7976,7 +8008,7 @@ async def test_get_azure_json_web_keys_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7996,11 +8028,6 @@ async def test_get_azure_json_web_keys_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, azure_resources.AzureJsonWebKeys)
-
-
-@pytest.mark.asyncio
-async def test_get_azure_json_web_keys_async_from_dict():
-    await test_get_azure_json_web_keys_async(request_type=dict)
 
 
 def test_get_azure_json_web_keys_field_headers():
@@ -8157,8 +8184,8 @@ async def test_get_azure_json_web_keys_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        azure_service.GetAzureServerConfigRequest,
-        dict,
+        azure_service.GetAzureServerConfigRequest(),
+        {},
     ],
 )
 def test_get_azure_server_config(request_type, transport: str = "grpc"):
@@ -8169,7 +8196,7 @@ def test_get_azure_server_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8219,9 +8246,10 @@ def test_get_azure_server_config_non_empty_request_with_auto_populated_field():
         client.get_azure_server_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == azure_service.GetAzureServerConfigRequest(
+        request_msg = azure_service.GetAzureServerConfigRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_azure_server_config_use_cached_wrapped_rpc():
@@ -8307,9 +8335,15 @@ async def test_get_azure_server_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        azure_service.GetAzureServerConfigRequest(),
+        {},
+    ],
+)
 async def test_get_azure_server_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=azure_service.GetAzureServerConfigRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AzureClustersAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -8318,7 +8352,7 @@ async def test_get_azure_server_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8343,11 +8377,6 @@ async def test_get_azure_server_config_async(
     assert isinstance(response, azure_resources.AzureServerConfig)
     assert response.name == "name_value"
     assert response.supported_azure_regions == ["supported_azure_regions_value"]
-
-
-@pytest.mark.asyncio
-async def test_get_azure_server_config_async_from_dict():
-    await test_get_azure_server_config_async(request_type=dict)
 
 
 def test_get_azure_server_config_field_headers():
@@ -8634,7 +8663,7 @@ def test_create_azure_client_rest_required_fields(
                 ),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_azure_client_rest_unset_required_fields():
@@ -8830,7 +8859,7 @@ def test_get_azure_client_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_azure_client_rest_unset_required_fields():
@@ -9021,7 +9050,7 @@ def test_list_azure_clients_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_azure_clients_rest_unset_required_fields():
@@ -9282,7 +9311,7 @@ def test_delete_azure_client_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_azure_client_rest_unset_required_fields():
@@ -9493,7 +9522,7 @@ def test_create_azure_cluster_rest_required_fields(
                 ),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_azure_cluster_rest_unset_required_fields():
@@ -9695,7 +9724,7 @@ def test_update_azure_cluster_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_azure_cluster_rest_unset_required_fields():
@@ -9892,7 +9921,7 @@ def test_get_azure_cluster_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_azure_cluster_rest_unset_required_fields():
@@ -10083,7 +10112,7 @@ def test_list_azure_clusters_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_azure_clusters_rest_unset_required_fields():
@@ -10346,7 +10375,7 @@ def test_delete_azure_cluster_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_azure_cluster_rest_unset_required_fields():
@@ -10554,7 +10583,7 @@ def test_generate_azure_cluster_agent_token_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_generate_azure_cluster_agent_token_rest_unset_required_fields():
@@ -10693,7 +10722,7 @@ def test_generate_azure_access_token_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_generate_azure_access_token_rest_unset_required_fields():
@@ -10839,7 +10868,7 @@ def test_create_azure_node_pool_rest_required_fields(
                 ),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_azure_node_pool_rest_unset_required_fields():
@@ -11044,7 +11073,7 @@ def test_update_azure_node_pool_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_azure_node_pool_rest_unset_required_fields():
@@ -11243,7 +11272,7 @@ def test_get_azure_node_pool_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_azure_node_pool_rest_unset_required_fields():
@@ -11435,7 +11464,7 @@ def test_list_azure_node_pools_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_azure_node_pools_rest_unset_required_fields():
@@ -11703,7 +11732,7 @@ def test_delete_azure_node_pool_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_azure_node_pool_rest_unset_required_fields():
@@ -11896,7 +11925,7 @@ def test_get_azure_open_id_config_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_azure_open_id_config_rest_unset_required_fields():
@@ -12081,7 +12110,7 @@ def test_get_azure_json_web_keys_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_azure_json_web_keys_rest_unset_required_fields():
@@ -12266,7 +12295,7 @@ def test_get_azure_server_config_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_azure_server_config_rest_unset_required_fields():
@@ -12463,7 +12492,6 @@ def test_create_azure_client_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = azure_service.CreateAzureClientRequest()
-
         assert args[0] == request_msg
 
 
@@ -12484,7 +12512,6 @@ def test_get_azure_client_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = azure_service.GetAzureClientRequest()
-
         assert args[0] == request_msg
 
 
@@ -12507,7 +12534,6 @@ def test_list_azure_clients_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = azure_service.ListAzureClientsRequest()
-
         assert args[0] == request_msg
 
 
@@ -12530,7 +12556,6 @@ def test_delete_azure_client_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = azure_service.DeleteAzureClientRequest()
-
         assert args[0] == request_msg
 
 
@@ -12553,7 +12578,6 @@ def test_create_azure_cluster_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = azure_service.CreateAzureClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -12576,7 +12600,6 @@ def test_update_azure_cluster_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = azure_service.UpdateAzureClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -12599,7 +12622,6 @@ def test_get_azure_cluster_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = azure_service.GetAzureClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -12622,7 +12644,6 @@ def test_list_azure_clusters_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = azure_service.ListAzureClustersRequest()
-
         assert args[0] == request_msg
 
 
@@ -12645,7 +12666,6 @@ def test_delete_azure_cluster_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = azure_service.DeleteAzureClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -12668,7 +12688,6 @@ def test_generate_azure_cluster_agent_token_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = azure_service.GenerateAzureClusterAgentTokenRequest()
-
         assert args[0] == request_msg
 
 
@@ -12691,7 +12710,6 @@ def test_generate_azure_access_token_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = azure_service.GenerateAzureAccessTokenRequest()
-
         assert args[0] == request_msg
 
 
@@ -12714,7 +12732,6 @@ def test_create_azure_node_pool_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = azure_service.CreateAzureNodePoolRequest()
-
         assert args[0] == request_msg
 
 
@@ -12737,7 +12754,6 @@ def test_update_azure_node_pool_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = azure_service.UpdateAzureNodePoolRequest()
-
         assert args[0] == request_msg
 
 
@@ -12760,7 +12776,6 @@ def test_get_azure_node_pool_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = azure_service.GetAzureNodePoolRequest()
-
         assert args[0] == request_msg
 
 
@@ -12783,7 +12798,6 @@ def test_list_azure_node_pools_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = azure_service.ListAzureNodePoolsRequest()
-
         assert args[0] == request_msg
 
 
@@ -12806,7 +12820,6 @@ def test_delete_azure_node_pool_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = azure_service.DeleteAzureNodePoolRequest()
-
         assert args[0] == request_msg
 
 
@@ -12829,7 +12842,6 @@ def test_get_azure_open_id_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = azure_service.GetAzureOpenIdConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -12852,7 +12864,6 @@ def test_get_azure_json_web_keys_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = azure_service.GetAzureJsonWebKeysRequest()
-
         assert args[0] == request_msg
 
 
@@ -12875,7 +12886,6 @@ def test_get_azure_server_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = azure_service.GetAzureServerConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -12916,7 +12926,6 @@ async def test_create_azure_client_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = azure_service.CreateAzureClientRequest()
-
         assert args[0] == request_msg
 
 
@@ -12948,7 +12957,6 @@ async def test_get_azure_client_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = azure_service.GetAzureClientRequest()
-
         assert args[0] == request_msg
 
 
@@ -12977,7 +12985,6 @@ async def test_list_azure_clients_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = azure_service.ListAzureClientsRequest()
-
         assert args[0] == request_msg
 
 
@@ -13004,7 +13011,6 @@ async def test_delete_azure_client_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = azure_service.DeleteAzureClientRequest()
-
         assert args[0] == request_msg
 
 
@@ -13031,7 +13037,6 @@ async def test_create_azure_cluster_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = azure_service.CreateAzureClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -13058,7 +13063,6 @@ async def test_update_azure_cluster_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = azure_service.UpdateAzureClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -13097,7 +13101,6 @@ async def test_get_azure_cluster_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = azure_service.GetAzureClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -13126,7 +13129,6 @@ async def test_list_azure_clusters_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = azure_service.ListAzureClustersRequest()
-
         assert args[0] == request_msg
 
 
@@ -13153,7 +13155,6 @@ async def test_delete_azure_cluster_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = azure_service.DeleteAzureClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -13184,7 +13185,6 @@ async def test_generate_azure_cluster_agent_token_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = azure_service.GenerateAzureClusterAgentTokenRequest()
-
         assert args[0] == request_msg
 
 
@@ -13213,7 +13213,6 @@ async def test_generate_azure_access_token_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = azure_service.GenerateAzureAccessTokenRequest()
-
         assert args[0] == request_msg
 
 
@@ -13240,7 +13239,6 @@ async def test_create_azure_node_pool_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = azure_service.CreateAzureNodePoolRequest()
-
         assert args[0] == request_msg
 
 
@@ -13267,7 +13265,6 @@ async def test_update_azure_node_pool_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = azure_service.UpdateAzureNodePoolRequest()
-
         assert args[0] == request_msg
 
 
@@ -13303,7 +13300,6 @@ async def test_get_azure_node_pool_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = azure_service.GetAzureNodePoolRequest()
-
         assert args[0] == request_msg
 
 
@@ -13332,7 +13328,6 @@ async def test_list_azure_node_pools_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = azure_service.ListAzureNodePoolsRequest()
-
         assert args[0] == request_msg
 
 
@@ -13359,7 +13354,6 @@ async def test_delete_azure_node_pool_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = azure_service.DeleteAzureNodePoolRequest()
-
         assert args[0] == request_msg
 
 
@@ -13396,7 +13390,6 @@ async def test_get_azure_open_id_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = azure_service.GetAzureOpenIdConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -13423,7 +13416,6 @@ async def test_get_azure_json_web_keys_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = azure_service.GetAzureJsonWebKeysRequest()
-
         assert args[0] == request_msg
 
 
@@ -13453,7 +13445,6 @@ async def test_get_azure_server_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = azure_service.GetAzureServerConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -16910,7 +16901,6 @@ def test_create_azure_client_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = azure_service.CreateAzureClientRequest()
-
         assert args[0] == request_msg
 
 
@@ -16930,7 +16920,6 @@ def test_get_azure_client_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = azure_service.GetAzureClientRequest()
-
         assert args[0] == request_msg
 
 
@@ -16952,7 +16941,6 @@ def test_list_azure_clients_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = azure_service.ListAzureClientsRequest()
-
         assert args[0] == request_msg
 
 
@@ -16974,7 +16962,6 @@ def test_delete_azure_client_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = azure_service.DeleteAzureClientRequest()
-
         assert args[0] == request_msg
 
 
@@ -16996,7 +16983,6 @@ def test_create_azure_cluster_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = azure_service.CreateAzureClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -17018,7 +17004,6 @@ def test_update_azure_cluster_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = azure_service.UpdateAzureClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -17040,7 +17025,6 @@ def test_get_azure_cluster_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = azure_service.GetAzureClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -17062,7 +17046,6 @@ def test_list_azure_clusters_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = azure_service.ListAzureClustersRequest()
-
         assert args[0] == request_msg
 
 
@@ -17084,7 +17067,6 @@ def test_delete_azure_cluster_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = azure_service.DeleteAzureClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -17106,7 +17088,6 @@ def test_generate_azure_cluster_agent_token_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = azure_service.GenerateAzureClusterAgentTokenRequest()
-
         assert args[0] == request_msg
 
 
@@ -17128,7 +17109,6 @@ def test_generate_azure_access_token_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = azure_service.GenerateAzureAccessTokenRequest()
-
         assert args[0] == request_msg
 
 
@@ -17150,7 +17130,6 @@ def test_create_azure_node_pool_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = azure_service.CreateAzureNodePoolRequest()
-
         assert args[0] == request_msg
 
 
@@ -17172,7 +17151,6 @@ def test_update_azure_node_pool_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = azure_service.UpdateAzureNodePoolRequest()
-
         assert args[0] == request_msg
 
 
@@ -17194,7 +17172,6 @@ def test_get_azure_node_pool_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = azure_service.GetAzureNodePoolRequest()
-
         assert args[0] == request_msg
 
 
@@ -17216,7 +17193,6 @@ def test_list_azure_node_pools_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = azure_service.ListAzureNodePoolsRequest()
-
         assert args[0] == request_msg
 
 
@@ -17238,7 +17214,6 @@ def test_delete_azure_node_pool_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = azure_service.DeleteAzureNodePoolRequest()
-
         assert args[0] == request_msg
 
 
@@ -17260,7 +17235,6 @@ def test_get_azure_open_id_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = azure_service.GetAzureOpenIdConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -17282,7 +17256,6 @@ def test_get_azure_json_web_keys_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = azure_service.GetAzureJsonWebKeysRequest()
-
         assert args[0] == request_msg
 
 
@@ -17304,7 +17277,6 @@ def test_get_azure_server_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = azure_service.GetAzureServerConfigRequest()
-
         assert args[0] == request_msg
 
 

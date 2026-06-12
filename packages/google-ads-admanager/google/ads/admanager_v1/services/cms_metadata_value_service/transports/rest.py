@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -76,6 +76,22 @@ class CmsMetadataValueServiceRestInterceptor:
 
     .. code-block:: python
         class MyCustomCmsMetadataValueServiceInterceptor(CmsMetadataValueServiceRestInterceptor):
+            def pre_batch_activate_cms_metadata_values(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_batch_activate_cms_metadata_values(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_batch_deactivate_cms_metadata_values(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_batch_deactivate_cms_metadata_values(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_get_cms_metadata_value(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -97,6 +113,112 @@ class CmsMetadataValueServiceRestInterceptor:
 
 
     """
+
+    def pre_batch_activate_cms_metadata_values(
+        self,
+        request: cms_metadata_value_service.BatchActivateCmsMetadataValuesRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cms_metadata_value_service.BatchActivateCmsMetadataValuesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for batch_activate_cms_metadata_values
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CmsMetadataValueService server.
+        """
+        return request, metadata
+
+    def post_batch_activate_cms_metadata_values(
+        self,
+        response: cms_metadata_value_service.BatchActivateCmsMetadataValuesResponse,
+    ) -> cms_metadata_value_service.BatchActivateCmsMetadataValuesResponse:
+        """Post-rpc interceptor for batch_activate_cms_metadata_values
+
+        DEPRECATED. Please use the `post_batch_activate_cms_metadata_values_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the CmsMetadataValueService server but before
+        it is returned to user code. This `post_batch_activate_cms_metadata_values` interceptor runs
+        before the `post_batch_activate_cms_metadata_values_with_metadata` interceptor.
+        """
+        return response
+
+    def post_batch_activate_cms_metadata_values_with_metadata(
+        self,
+        response: cms_metadata_value_service.BatchActivateCmsMetadataValuesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cms_metadata_value_service.BatchActivateCmsMetadataValuesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for batch_activate_cms_metadata_values
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CmsMetadataValueService server but before it is returned to user code.
+
+        We recommend only using this `post_batch_activate_cms_metadata_values_with_metadata`
+        interceptor in new development instead of the `post_batch_activate_cms_metadata_values` interceptor.
+        When both interceptors are used, this `post_batch_activate_cms_metadata_values_with_metadata` interceptor runs after the
+        `post_batch_activate_cms_metadata_values` interceptor. The (possibly modified) response returned by
+        `post_batch_activate_cms_metadata_values` will be passed to
+        `post_batch_activate_cms_metadata_values_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_batch_deactivate_cms_metadata_values(
+        self,
+        request: cms_metadata_value_service.BatchDeactivateCmsMetadataValuesRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cms_metadata_value_service.BatchDeactivateCmsMetadataValuesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for batch_deactivate_cms_metadata_values
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CmsMetadataValueService server.
+        """
+        return request, metadata
+
+    def post_batch_deactivate_cms_metadata_values(
+        self,
+        response: cms_metadata_value_service.BatchDeactivateCmsMetadataValuesResponse,
+    ) -> cms_metadata_value_service.BatchDeactivateCmsMetadataValuesResponse:
+        """Post-rpc interceptor for batch_deactivate_cms_metadata_values
+
+        DEPRECATED. Please use the `post_batch_deactivate_cms_metadata_values_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the CmsMetadataValueService server but before
+        it is returned to user code. This `post_batch_deactivate_cms_metadata_values` interceptor runs
+        before the `post_batch_deactivate_cms_metadata_values_with_metadata` interceptor.
+        """
+        return response
+
+    def post_batch_deactivate_cms_metadata_values_with_metadata(
+        self,
+        response: cms_metadata_value_service.BatchDeactivateCmsMetadataValuesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cms_metadata_value_service.BatchDeactivateCmsMetadataValuesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for batch_deactivate_cms_metadata_values
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CmsMetadataValueService server but before it is returned to user code.
+
+        We recommend only using this `post_batch_deactivate_cms_metadata_values_with_metadata`
+        interceptor in new development instead of the `post_batch_deactivate_cms_metadata_values` interceptor.
+        When both interceptors are used, this `post_batch_deactivate_cms_metadata_values_with_metadata` interceptor runs after the
+        `post_batch_deactivate_cms_metadata_values` interceptor. The (possibly modified) response returned by
+        `post_batch_deactivate_cms_metadata_values` will be passed to
+        `post_batch_deactivate_cms_metadata_values_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_cms_metadata_value(
         self,
@@ -201,6 +323,29 @@ class CmsMetadataValueServiceRestInterceptor:
         `post_list_cms_metadata_values_with_metadata`.
         """
         return response, metadata
+
+    def pre_cancel_operation(
+        self,
+        request: operations_pb2.CancelOperationRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for cancel_operation
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CmsMetadataValueService server.
+        """
+        return request, metadata
+
+    def post_cancel_operation(self, response: None) -> None:
+        """Post-rpc interceptor for cancel_operation
+
+        Override in a subclass to manipulate the response
+        after it is returned by the CmsMetadataValueService server but before
+        it is returned to user code.
+        """
+        return response
 
     def pre_get_operation(
         self,
@@ -320,6 +465,340 @@ class CmsMetadataValueServiceRestTransport(_BaseCmsMetadataValueServiceRestTrans
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or CmsMetadataValueServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
+
+    class _BatchActivateCmsMetadataValues(
+        _BaseCmsMetadataValueServiceRestTransport._BaseBatchActivateCmsMetadataValues,
+        CmsMetadataValueServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash(
+                "CmsMetadataValueServiceRestTransport.BatchActivateCmsMetadataValues"
+            )
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: cms_metadata_value_service.BatchActivateCmsMetadataValuesRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> cms_metadata_value_service.BatchActivateCmsMetadataValuesResponse:
+            r"""Call the batch activate cms
+            metadata values method over HTTP.
+
+                Args:
+                    request (~.cms_metadata_value_service.BatchActivateCmsMetadataValuesRequest):
+                        The request object. Request object for ``BatchActivateCmsMetadataValues``
+                    method.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
+
+                Returns:
+                    ~.cms_metadata_value_service.BatchActivateCmsMetadataValuesResponse:
+                        Response object for ``BatchActivateCmsMetadataValues``
+                    method.
+
+            """
+
+            http_options = _BaseCmsMetadataValueServiceRestTransport._BaseBatchActivateCmsMetadataValues._get_http_options()
+
+            request, metadata = (
+                self._interceptor.pre_batch_activate_cms_metadata_values(
+                    request, metadata
+                )
+            )
+            transcoded_request = _BaseCmsMetadataValueServiceRestTransport._BaseBatchActivateCmsMetadataValues._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseCmsMetadataValueServiceRestTransport._BaseBatchActivateCmsMetadataValues._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseCmsMetadataValueServiceRestTransport._BaseBatchActivateCmsMetadataValues._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.ads.admanager_v1.CmsMetadataValueServiceClient.BatchActivateCmsMetadataValues",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.CmsMetadataValueService",
+                        "rpcName": "BatchActivateCmsMetadataValues",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = CmsMetadataValueServiceRestTransport._BatchActivateCmsMetadataValues._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = cms_metadata_value_service.BatchActivateCmsMetadataValuesResponse()
+            pb_resp = (
+                cms_metadata_value_service.BatchActivateCmsMetadataValuesResponse.pb(
+                    resp
+                )
+            )
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_batch_activate_cms_metadata_values(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = (
+                self._interceptor.post_batch_activate_cms_metadata_values_with_metadata(
+                    resp, response_metadata
+                )
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cms_metadata_value_service.BatchActivateCmsMetadataValuesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.ads.admanager_v1.CmsMetadataValueServiceClient.batch_activate_cms_metadata_values",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.CmsMetadataValueService",
+                        "rpcName": "BatchActivateCmsMetadataValues",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _BatchDeactivateCmsMetadataValues(
+        _BaseCmsMetadataValueServiceRestTransport._BaseBatchDeactivateCmsMetadataValues,
+        CmsMetadataValueServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash(
+                "CmsMetadataValueServiceRestTransport.BatchDeactivateCmsMetadataValues"
+            )
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: cms_metadata_value_service.BatchDeactivateCmsMetadataValuesRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> cms_metadata_value_service.BatchDeactivateCmsMetadataValuesResponse:
+            r"""Call the batch deactivate cms
+            metadata values method over HTTP.
+
+                Args:
+                    request (~.cms_metadata_value_service.BatchDeactivateCmsMetadataValuesRequest):
+                        The request object. Request object for ``BatchDeactivateCmsMetadataValues``
+                    method.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
+
+                Returns:
+                    ~.cms_metadata_value_service.BatchDeactivateCmsMetadataValuesResponse:
+                        Response object for ``BatchDeactivateCmsMetadataValues``
+                    method.
+
+            """
+
+            http_options = _BaseCmsMetadataValueServiceRestTransport._BaseBatchDeactivateCmsMetadataValues._get_http_options()
+
+            request, metadata = (
+                self._interceptor.pre_batch_deactivate_cms_metadata_values(
+                    request, metadata
+                )
+            )
+            transcoded_request = _BaseCmsMetadataValueServiceRestTransport._BaseBatchDeactivateCmsMetadataValues._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseCmsMetadataValueServiceRestTransport._BaseBatchDeactivateCmsMetadataValues._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseCmsMetadataValueServiceRestTransport._BaseBatchDeactivateCmsMetadataValues._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.ads.admanager_v1.CmsMetadataValueServiceClient.BatchDeactivateCmsMetadataValues",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.CmsMetadataValueService",
+                        "rpcName": "BatchDeactivateCmsMetadataValues",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = CmsMetadataValueServiceRestTransport._BatchDeactivateCmsMetadataValues._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = cms_metadata_value_service.BatchDeactivateCmsMetadataValuesResponse()
+            pb_resp = (
+                cms_metadata_value_service.BatchDeactivateCmsMetadataValuesResponse.pb(
+                    resp
+                )
+            )
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_batch_deactivate_cms_metadata_values(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = (
+                self._interceptor.post_batch_deactivate_cms_metadata_values_with_metadata(
+                    resp, response_metadata
+                )
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cms_metadata_value_service.BatchDeactivateCmsMetadataValuesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.ads.admanager_v1.CmsMetadataValueServiceClient.batch_deactivate_cms_metadata_values",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.CmsMetadataValueService",
+                        "rpcName": "BatchDeactivateCmsMetadataValues",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
 
     class _GetCmsMetadataValue(
         _BaseCmsMetadataValueServiceRestTransport._BaseGetCmsMetadataValue,
@@ -622,6 +1101,32 @@ class CmsMetadataValueServiceRestTransport(_BaseCmsMetadataValueServiceRestTrans
             return resp
 
     @property
+    def batch_activate_cms_metadata_values(
+        self,
+    ) -> Callable[
+        [cms_metadata_value_service.BatchActivateCmsMetadataValuesRequest],
+        cms_metadata_value_service.BatchActivateCmsMetadataValuesResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._BatchActivateCmsMetadataValues(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
+
+    @property
+    def batch_deactivate_cms_metadata_values(
+        self,
+    ) -> Callable[
+        [cms_metadata_value_service.BatchDeactivateCmsMetadataValuesRequest],
+        cms_metadata_value_service.BatchDeactivateCmsMetadataValuesResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._BatchDeactivateCmsMetadataValues(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
+
+    @property
     def get_cms_metadata_value(
         self,
     ) -> Callable[
@@ -642,6 +1147,121 @@ class CmsMetadataValueServiceRestTransport(_BaseCmsMetadataValueServiceRestTrans
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListCmsMetadataValues(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def cancel_operation(self):
+        return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
+
+    class _CancelOperation(
+        _BaseCmsMetadataValueServiceRestTransport._BaseCancelOperation,
+        CmsMetadataValueServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("CmsMetadataValueServiceRestTransport.CancelOperation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: operations_pb2.CancelOperationRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> None:
+            r"""Call the cancel operation method over HTTP.
+
+            Args:
+                request (operations_pb2.CancelOperationRequest):
+                    The request object for CancelOperation method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+            """
+
+            http_options = _BaseCmsMetadataValueServiceRestTransport._BaseCancelOperation._get_http_options()
+
+            request, metadata = self._interceptor.pre_cancel_operation(
+                request, metadata
+            )
+            transcoded_request = _BaseCmsMetadataValueServiceRestTransport._BaseCancelOperation._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseCmsMetadataValueServiceRestTransport._BaseCancelOperation._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.ads.admanager_v1.CmsMetadataValueServiceClient.CancelOperation",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.CmsMetadataValueService",
+                        "rpcName": "CancelOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = (
+                CmsMetadataValueServiceRestTransport._CancelOperation._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            return self._interceptor.post_cancel_operation(None)
 
     @property
     def get_operation(self):

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -126,6 +121,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1391,8 +1401,8 @@ def test_vector_search_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        vectorsearch_service.ListCollectionsRequest,
-        dict,
+        vectorsearch_service.ListCollectionsRequest(),
+        {},
     ],
 )
 def test_list_collections(request_type, transport: str = "grpc"):
@@ -1403,7 +1413,7 @@ def test_list_collections(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_collections), "__call__") as call:
@@ -1452,12 +1462,13 @@ def test_list_collections_non_empty_request_with_auto_populated_field():
         client.list_collections(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vectorsearch_service.ListCollectionsRequest(
+        request_msg = vectorsearch_service.ListCollectionsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_collections_use_cached_wrapped_rpc():
@@ -1540,10 +1551,14 @@ async def test_list_collections_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_collections_async(
-    transport: str = "grpc_asyncio",
-    request_type=vectorsearch_service.ListCollectionsRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vectorsearch_service.ListCollectionsRequest(),
+        {},
+    ],
+)
+async def test_list_collections_async(request_type, transport: str = "grpc_asyncio"):
     client = VectorSearchServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1551,7 +1566,7 @@ async def test_list_collections_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_collections), "__call__") as call:
@@ -1574,11 +1589,6 @@ async def test_list_collections_async(
     assert isinstance(response, pagers.ListCollectionsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_collections_async_from_dict():
-    await test_list_collections_async(request_type=dict)
 
 
 def test_list_collections_field_headers():
@@ -1908,11 +1918,7 @@ async def test_list_collections_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_collections(request={})
-        ).pages:
+        async for page_ in (await client.list_collections(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -1921,8 +1927,8 @@ async def test_list_collections_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vectorsearch_service.GetCollectionRequest,
-        dict,
+        vectorsearch_service.GetCollectionRequest(),
+        {},
     ],
 )
 def test_get_collection(request_type, transport: str = "grpc"):
@@ -1933,7 +1939,7 @@ def test_get_collection(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_collection), "__call__") as call:
@@ -1981,9 +1987,10 @@ def test_get_collection_non_empty_request_with_auto_populated_field():
         client.get_collection(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vectorsearch_service.GetCollectionRequest(
+        request_msg = vectorsearch_service.GetCollectionRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_collection_use_cached_wrapped_rpc():
@@ -2064,10 +2071,14 @@ async def test_get_collection_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_collection_async(
-    transport: str = "grpc_asyncio",
-    request_type=vectorsearch_service.GetCollectionRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vectorsearch_service.GetCollectionRequest(),
+        {},
+    ],
+)
+async def test_get_collection_async(request_type, transport: str = "grpc_asyncio"):
     client = VectorSearchServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2075,7 +2086,7 @@ async def test_get_collection_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_collection), "__call__") as call:
@@ -2100,11 +2111,6 @@ async def test_get_collection_async(
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
-
-
-@pytest.mark.asyncio
-async def test_get_collection_async_from_dict():
-    await test_get_collection_async(request_type=dict)
 
 
 def test_get_collection_field_headers():
@@ -2253,8 +2259,8 @@ async def test_get_collection_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vectorsearch_service.CreateCollectionRequest,
-        dict,
+        vectorsearch_service.CreateCollectionRequest(),
+        {},
     ],
 )
 def test_create_collection(request_type, transport: str = "grpc"):
@@ -2265,7 +2271,7 @@ def test_create_collection(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2311,10 +2317,11 @@ def test_create_collection_non_empty_request_with_auto_populated_field():
         client.create_collection(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vectorsearch_service.CreateCollectionRequest(
+        request_msg = vectorsearch_service.CreateCollectionRequest(
             parent="parent_value",
             collection_id="collection_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_collection_use_cached_wrapped_rpc():
@@ -2407,10 +2414,14 @@ async def test_create_collection_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_collection_async(
-    transport: str = "grpc_asyncio",
-    request_type=vectorsearch_service.CreateCollectionRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vectorsearch_service.CreateCollectionRequest(),
+        {},
+    ],
+)
+async def test_create_collection_async(request_type, transport: str = "grpc_asyncio"):
     client = VectorSearchServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2418,7 +2429,7 @@ async def test_create_collection_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2438,11 +2449,6 @@ async def test_create_collection_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_collection_async_from_dict():
-    await test_create_collection_async(request_type=dict)
 
 
 def test_create_collection_field_headers():
@@ -2619,8 +2625,8 @@ async def test_create_collection_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vectorsearch_service.UpdateCollectionRequest,
-        dict,
+        vectorsearch_service.UpdateCollectionRequest(),
+        {},
     ],
 )
 def test_update_collection(request_type, transport: str = "grpc"):
@@ -2631,7 +2637,7 @@ def test_update_collection(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2674,7 +2680,8 @@ def test_update_collection_non_empty_request_with_auto_populated_field():
         client.update_collection(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vectorsearch_service.UpdateCollectionRequest()
+        request_msg = vectorsearch_service.UpdateCollectionRequest()
+        assert args[0] == request_msg
 
 
 def test_update_collection_use_cached_wrapped_rpc():
@@ -2767,10 +2774,14 @@ async def test_update_collection_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_collection_async(
-    transport: str = "grpc_asyncio",
-    request_type=vectorsearch_service.UpdateCollectionRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vectorsearch_service.UpdateCollectionRequest(),
+        {},
+    ],
+)
+async def test_update_collection_async(request_type, transport: str = "grpc_asyncio"):
     client = VectorSearchServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2778,7 +2789,7 @@ async def test_update_collection_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2798,11 +2809,6 @@ async def test_update_collection_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_collection_async_from_dict():
-    await test_update_collection_async(request_type=dict)
 
 
 def test_update_collection_field_headers():
@@ -2969,8 +2975,8 @@ async def test_update_collection_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vectorsearch_service.DeleteCollectionRequest,
-        dict,
+        vectorsearch_service.DeleteCollectionRequest(),
+        {},
     ],
 )
 def test_delete_collection(request_type, transport: str = "grpc"):
@@ -2981,7 +2987,7 @@ def test_delete_collection(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3026,9 +3032,10 @@ def test_delete_collection_non_empty_request_with_auto_populated_field():
         client.delete_collection(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vectorsearch_service.DeleteCollectionRequest(
+        request_msg = vectorsearch_service.DeleteCollectionRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_collection_use_cached_wrapped_rpc():
@@ -3121,10 +3128,14 @@ async def test_delete_collection_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_collection_async(
-    transport: str = "grpc_asyncio",
-    request_type=vectorsearch_service.DeleteCollectionRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vectorsearch_service.DeleteCollectionRequest(),
+        {},
+    ],
+)
+async def test_delete_collection_async(request_type, transport: str = "grpc_asyncio"):
     client = VectorSearchServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3132,7 +3143,7 @@ async def test_delete_collection_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3152,11 +3163,6 @@ async def test_delete_collection_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_collection_async_from_dict():
-    await test_delete_collection_async(request_type=dict)
 
 
 def test_delete_collection_field_headers():
@@ -3313,8 +3319,8 @@ async def test_delete_collection_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vectorsearch_service.ListIndexesRequest,
-        dict,
+        vectorsearch_service.ListIndexesRequest(),
+        {},
     ],
 )
 def test_list_indexes(request_type, transport: str = "grpc"):
@@ -3325,7 +3331,7 @@ def test_list_indexes(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_indexes), "__call__") as call:
@@ -3372,12 +3378,13 @@ def test_list_indexes_non_empty_request_with_auto_populated_field():
         client.list_indexes(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vectorsearch_service.ListIndexesRequest(
+        request_msg = vectorsearch_service.ListIndexesRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_indexes_use_cached_wrapped_rpc():
@@ -3458,10 +3465,14 @@ async def test_list_indexes_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_indexes_async(
-    transport: str = "grpc_asyncio",
-    request_type=vectorsearch_service.ListIndexesRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vectorsearch_service.ListIndexesRequest(),
+        {},
+    ],
+)
+async def test_list_indexes_async(request_type, transport: str = "grpc_asyncio"):
     client = VectorSearchServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3469,7 +3480,7 @@ async def test_list_indexes_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_indexes), "__call__") as call:
@@ -3490,11 +3501,6 @@ async def test_list_indexes_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListIndexesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_indexes_async_from_dict():
-    await test_list_indexes_async(request_type=dict)
 
 
 def test_list_indexes_field_headers():
@@ -3824,11 +3830,7 @@ async def test_list_indexes_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_indexes(request={})
-        ).pages:
+        async for page_ in (await client.list_indexes(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -3837,8 +3839,8 @@ async def test_list_indexes_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vectorsearch_service.GetIndexRequest,
-        dict,
+        vectorsearch_service.GetIndexRequest(),
+        {},
     ],
 )
 def test_get_index(request_type, transport: str = "grpc"):
@@ -3849,7 +3851,7 @@ def test_get_index(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_index), "__call__") as call:
@@ -3905,9 +3907,10 @@ def test_get_index_non_empty_request_with_auto_populated_field():
         client.get_index(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vectorsearch_service.GetIndexRequest(
+        request_msg = vectorsearch_service.GetIndexRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_index_use_cached_wrapped_rpc():
@@ -3986,9 +3989,14 @@ async def test_get_index_async_use_cached_wrapped_rpc(transport: str = "grpc_asy
 
 
 @pytest.mark.asyncio
-async def test_get_index_async(
-    transport: str = "grpc_asyncio", request_type=vectorsearch_service.GetIndexRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vectorsearch_service.GetIndexRequest(),
+        {},
+    ],
+)
+async def test_get_index_async(request_type, transport: str = "grpc_asyncio"):
     client = VectorSearchServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3996,7 +4004,7 @@ async def test_get_index_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_index), "__call__") as call:
@@ -4029,11 +4037,6 @@ async def test_get_index_async(
     assert response.index_field == "index_field_value"
     assert response.filter_fields == ["filter_fields_value"]
     assert response.store_fields == ["store_fields_value"]
-
-
-@pytest.mark.asyncio
-async def test_get_index_async_from_dict():
-    await test_get_index_async(request_type=dict)
 
 
 def test_get_index_field_headers():
@@ -4182,8 +4185,8 @@ async def test_get_index_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vectorsearch_service.CreateIndexRequest,
-        dict,
+        vectorsearch_service.CreateIndexRequest(),
+        {},
     ],
 )
 def test_create_index(request_type, transport: str = "grpc"):
@@ -4194,7 +4197,7 @@ def test_create_index(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_index), "__call__") as call:
@@ -4236,10 +4239,11 @@ def test_create_index_non_empty_request_with_auto_populated_field():
         client.create_index(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vectorsearch_service.CreateIndexRequest(
+        request_msg = vectorsearch_service.CreateIndexRequest(
             parent="parent_value",
             index_id="index_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_index_use_cached_wrapped_rpc():
@@ -4330,10 +4334,14 @@ async def test_create_index_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_index_async(
-    transport: str = "grpc_asyncio",
-    request_type=vectorsearch_service.CreateIndexRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vectorsearch_service.CreateIndexRequest(),
+        {},
+    ],
+)
+async def test_create_index_async(request_type, transport: str = "grpc_asyncio"):
     client = VectorSearchServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4341,7 +4349,7 @@ async def test_create_index_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_index), "__call__") as call:
@@ -4359,11 +4367,6 @@ async def test_create_index_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_index_async_from_dict():
-    await test_create_index_async(request_type=dict)
 
 
 def test_create_index_field_headers():
@@ -4556,8 +4559,8 @@ async def test_create_index_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vectorsearch_service.UpdateIndexRequest,
-        dict,
+        vectorsearch_service.UpdateIndexRequest(),
+        {},
     ],
 )
 def test_update_index(request_type, transport: str = "grpc"):
@@ -4568,7 +4571,7 @@ def test_update_index(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_index), "__call__") as call:
@@ -4607,7 +4610,8 @@ def test_update_index_non_empty_request_with_auto_populated_field():
         client.update_index(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vectorsearch_service.UpdateIndexRequest()
+        request_msg = vectorsearch_service.UpdateIndexRequest()
+        assert args[0] == request_msg
 
 
 def test_update_index_use_cached_wrapped_rpc():
@@ -4698,10 +4702,14 @@ async def test_update_index_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_index_async(
-    transport: str = "grpc_asyncio",
-    request_type=vectorsearch_service.UpdateIndexRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vectorsearch_service.UpdateIndexRequest(),
+        {},
+    ],
+)
+async def test_update_index_async(request_type, transport: str = "grpc_asyncio"):
     client = VectorSearchServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4709,7 +4717,7 @@ async def test_update_index_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_index), "__call__") as call:
@@ -4727,11 +4735,6 @@ async def test_update_index_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_index_async_from_dict():
-    await test_update_index_async(request_type=dict)
 
 
 def test_update_index_field_headers():
@@ -4914,8 +4917,8 @@ async def test_update_index_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vectorsearch_service.DeleteIndexRequest,
-        dict,
+        vectorsearch_service.DeleteIndexRequest(),
+        {},
     ],
 )
 def test_delete_index(request_type, transport: str = "grpc"):
@@ -4926,7 +4929,7 @@ def test_delete_index(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_index), "__call__") as call:
@@ -4967,9 +4970,10 @@ def test_delete_index_non_empty_request_with_auto_populated_field():
         client.delete_index(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vectorsearch_service.DeleteIndexRequest(
+        request_msg = vectorsearch_service.DeleteIndexRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_index_use_cached_wrapped_rpc():
@@ -5060,10 +5064,14 @@ async def test_delete_index_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_index_async(
-    transport: str = "grpc_asyncio",
-    request_type=vectorsearch_service.DeleteIndexRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vectorsearch_service.DeleteIndexRequest(),
+        {},
+    ],
+)
+async def test_delete_index_async(request_type, transport: str = "grpc_asyncio"):
     client = VectorSearchServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5071,7 +5079,7 @@ async def test_delete_index_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_index), "__call__") as call:
@@ -5089,11 +5097,6 @@ async def test_delete_index_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_index_async_from_dict():
-    await test_delete_index_async(request_type=dict)
 
 
 def test_delete_index_field_headers():
@@ -5242,8 +5245,8 @@ async def test_delete_index_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vectorsearch_service.ImportDataObjectsRequest,
-        dict,
+        vectorsearch_service.ImportDataObjectsRequest(),
+        {},
     ],
 )
 def test_import_data_objects(request_type, transport: str = "grpc"):
@@ -5254,7 +5257,7 @@ def test_import_data_objects(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5299,9 +5302,10 @@ def test_import_data_objects_non_empty_request_with_auto_populated_field():
         client.import_data_objects(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vectorsearch_service.ImportDataObjectsRequest(
+        request_msg = vectorsearch_service.ImportDataObjectsRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_import_data_objects_use_cached_wrapped_rpc():
@@ -5396,10 +5400,14 @@ async def test_import_data_objects_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_import_data_objects_async(
-    transport: str = "grpc_asyncio",
-    request_type=vectorsearch_service.ImportDataObjectsRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vectorsearch_service.ImportDataObjectsRequest(),
+        {},
+    ],
+)
+async def test_import_data_objects_async(request_type, transport: str = "grpc_asyncio"):
     client = VectorSearchServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5407,7 +5415,7 @@ async def test_import_data_objects_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5427,11 +5435,6 @@ async def test_import_data_objects_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_import_data_objects_async_from_dict():
-    await test_import_data_objects_async(request_type=dict)
 
 
 def test_import_data_objects_field_headers():
@@ -5502,8 +5505,8 @@ async def test_import_data_objects_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vectorsearch_service.ExportDataObjectsRequest,
-        dict,
+        vectorsearch_service.ExportDataObjectsRequest(),
+        {},
     ],
 )
 def test_export_data_objects(request_type, transport: str = "grpc"):
@@ -5514,7 +5517,7 @@ def test_export_data_objects(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5559,9 +5562,10 @@ def test_export_data_objects_non_empty_request_with_auto_populated_field():
         client.export_data_objects(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vectorsearch_service.ExportDataObjectsRequest(
+        request_msg = vectorsearch_service.ExportDataObjectsRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_export_data_objects_use_cached_wrapped_rpc():
@@ -5656,10 +5660,14 @@ async def test_export_data_objects_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_export_data_objects_async(
-    transport: str = "grpc_asyncio",
-    request_type=vectorsearch_service.ExportDataObjectsRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vectorsearch_service.ExportDataObjectsRequest(),
+        {},
+    ],
+)
+async def test_export_data_objects_async(request_type, transport: str = "grpc_asyncio"):
     client = VectorSearchServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5667,7 +5675,7 @@ async def test_export_data_objects_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5687,11 +5695,6 @@ async def test_export_data_objects_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_export_data_objects_async_from_dict():
-    await test_export_data_objects_async(request_type=dict)
 
 
 def test_export_data_objects_field_headers():
@@ -5878,7 +5881,7 @@ def test_list_collections_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_collections_rest_unset_required_fields():
@@ -6129,7 +6132,7 @@ def test_get_collection_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_collection_rest_unset_required_fields():
@@ -6333,7 +6336,7 @@ def test_create_collection_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_collection_rest_unset_required_fields():
@@ -6533,7 +6536,7 @@ def test_update_collection_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_collection_rest_unset_required_fields():
@@ -6728,7 +6731,7 @@ def test_delete_collection_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_collection_rest_unset_required_fields():
@@ -6915,7 +6918,7 @@ def test_list_indexes_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_indexes_rest_unset_required_fields():
@@ -7170,7 +7173,7 @@ def test_get_index_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_index_rest_unset_required_fields():
@@ -7372,7 +7375,7 @@ def test_create_index_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_index_rest_unset_required_fields():
@@ -7580,7 +7583,7 @@ def test_update_index_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_index_rest_unset_required_fields():
@@ -7781,7 +7784,7 @@ def test_delete_index_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_index_rest_unset_required_fields():
@@ -7965,7 +7968,7 @@ def test_import_data_objects_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_import_data_objects_rest_unset_required_fields():
@@ -8091,7 +8094,7 @@ def test_export_data_objects_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_export_data_objects_rest_unset_required_fields():
@@ -8226,7 +8229,6 @@ def test_list_collections_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vectorsearch_service.ListCollectionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -8247,7 +8249,6 @@ def test_get_collection_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vectorsearch_service.GetCollectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -8270,7 +8271,6 @@ def test_create_collection_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vectorsearch_service.CreateCollectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -8293,7 +8293,6 @@ def test_update_collection_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vectorsearch_service.UpdateCollectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -8316,7 +8315,6 @@ def test_delete_collection_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vectorsearch_service.DeleteCollectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -8337,7 +8335,6 @@ def test_list_indexes_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vectorsearch_service.ListIndexesRequest()
-
         assert args[0] == request_msg
 
 
@@ -8358,7 +8355,6 @@ def test_get_index_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vectorsearch_service.GetIndexRequest()
-
         assert args[0] == request_msg
 
 
@@ -8379,7 +8375,6 @@ def test_create_index_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vectorsearch_service.CreateIndexRequest()
-
         assert args[0] == request_msg
 
 
@@ -8400,7 +8395,6 @@ def test_update_index_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vectorsearch_service.UpdateIndexRequest()
-
         assert args[0] == request_msg
 
 
@@ -8421,7 +8415,6 @@ def test_delete_index_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vectorsearch_service.DeleteIndexRequest()
-
         assert args[0] == request_msg
 
 
@@ -8444,7 +8437,6 @@ def test_import_data_objects_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vectorsearch_service.ImportDataObjectsRequest()
-
         assert args[0] == request_msg
 
 
@@ -8467,7 +8459,6 @@ def test_export_data_objects_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vectorsearch_service.ExportDataObjectsRequest()
-
         assert args[0] == request_msg
 
 
@@ -8509,7 +8500,6 @@ async def test_list_collections_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vectorsearch_service.ListCollectionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -8538,7 +8528,6 @@ async def test_get_collection_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vectorsearch_service.GetCollectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -8565,7 +8554,6 @@ async def test_create_collection_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vectorsearch_service.CreateCollectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -8592,7 +8580,6 @@ async def test_update_collection_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vectorsearch_service.UpdateCollectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -8619,7 +8606,6 @@ async def test_delete_collection_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vectorsearch_service.DeleteCollectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -8646,7 +8632,6 @@ async def test_list_indexes_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vectorsearch_service.ListIndexesRequest()
-
         assert args[0] == request_msg
 
 
@@ -8679,7 +8664,6 @@ async def test_get_index_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vectorsearch_service.GetIndexRequest()
-
         assert args[0] == request_msg
 
 
@@ -8704,7 +8688,6 @@ async def test_create_index_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vectorsearch_service.CreateIndexRequest()
-
         assert args[0] == request_msg
 
 
@@ -8729,7 +8712,6 @@ async def test_update_index_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vectorsearch_service.UpdateIndexRequest()
-
         assert args[0] == request_msg
 
 
@@ -8754,7 +8736,6 @@ async def test_delete_index_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vectorsearch_service.DeleteIndexRequest()
-
         assert args[0] == request_msg
 
 
@@ -8781,7 +8762,6 @@ async def test_import_data_objects_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vectorsearch_service.ImportDataObjectsRequest()
-
         assert args[0] == request_msg
 
 
@@ -8808,7 +8788,6 @@ async def test_export_data_objects_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vectorsearch_service.ExportDataObjectsRequest()
-
         assert args[0] == request_msg
 
 
@@ -11120,7 +11099,6 @@ def test_list_collections_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vectorsearch_service.ListCollectionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -11140,7 +11118,6 @@ def test_get_collection_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vectorsearch_service.GetCollectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -11162,7 +11139,6 @@ def test_create_collection_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vectorsearch_service.CreateCollectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -11184,7 +11160,6 @@ def test_update_collection_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vectorsearch_service.UpdateCollectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -11206,7 +11181,6 @@ def test_delete_collection_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vectorsearch_service.DeleteCollectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -11226,7 +11200,6 @@ def test_list_indexes_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vectorsearch_service.ListIndexesRequest()
-
         assert args[0] == request_msg
 
 
@@ -11246,7 +11219,6 @@ def test_get_index_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vectorsearch_service.GetIndexRequest()
-
         assert args[0] == request_msg
 
 
@@ -11266,7 +11238,6 @@ def test_create_index_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vectorsearch_service.CreateIndexRequest()
-
         assert args[0] == request_msg
 
 
@@ -11286,7 +11257,6 @@ def test_update_index_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vectorsearch_service.UpdateIndexRequest()
-
         assert args[0] == request_msg
 
 
@@ -11306,7 +11276,6 @@ def test_delete_index_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vectorsearch_service.DeleteIndexRequest()
-
         assert args[0] == request_msg
 
 
@@ -11328,7 +11297,6 @@ def test_import_data_objects_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vectorsearch_service.ImportDataObjectsRequest()
-
         assert args[0] == request_msg
 
 
@@ -11350,7 +11318,6 @@ def test_export_data_objects_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vectorsearch_service.ExportDataObjectsRequest()
-
         assert args[0] == request_msg
 
 

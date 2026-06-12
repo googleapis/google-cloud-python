@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -129,6 +124,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1288,8 +1298,8 @@ def test_warehouse_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        warehouse.CreateAssetRequest,
-        dict,
+        warehouse.CreateAssetRequest(),
+        {},
     ],
 )
 def test_create_asset(request_type, transport: str = "grpc"):
@@ -1300,7 +1310,7 @@ def test_create_asset(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_asset), "__call__") as call:
@@ -1345,10 +1355,11 @@ def test_create_asset_non_empty_request_with_auto_populated_field():
         client.create_asset(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.CreateAssetRequest(
+        request_msg = warehouse.CreateAssetRequest(
             parent="parent_value",
             asset_id="asset_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_asset_use_cached_wrapped_rpc():
@@ -1429,9 +1440,14 @@ async def test_create_asset_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_asset_async(
-    transport: str = "grpc_asyncio", request_type=warehouse.CreateAssetRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        warehouse.CreateAssetRequest(),
+        {},
+    ],
+)
+async def test_create_asset_async(request_type, transport: str = "grpc_asyncio"):
     client = WarehouseAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1439,7 +1455,7 @@ async def test_create_asset_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_asset), "__call__") as call:
@@ -1460,11 +1476,6 @@ async def test_create_asset_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, warehouse.Asset)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_create_asset_async_from_dict():
-    await test_create_asset_async(request_type=dict)
 
 
 def test_create_asset_field_headers():
@@ -1629,8 +1640,8 @@ async def test_create_asset_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        warehouse.UpdateAssetRequest,
-        dict,
+        warehouse.UpdateAssetRequest(),
+        {},
     ],
 )
 def test_update_asset(request_type, transport: str = "grpc"):
@@ -1641,7 +1652,7 @@ def test_update_asset(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_asset), "__call__") as call:
@@ -1683,7 +1694,8 @@ def test_update_asset_non_empty_request_with_auto_populated_field():
         client.update_asset(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.UpdateAssetRequest()
+        request_msg = warehouse.UpdateAssetRequest()
+        assert args[0] == request_msg
 
 
 def test_update_asset_use_cached_wrapped_rpc():
@@ -1764,9 +1776,14 @@ async def test_update_asset_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_asset_async(
-    transport: str = "grpc_asyncio", request_type=warehouse.UpdateAssetRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        warehouse.UpdateAssetRequest(),
+        {},
+    ],
+)
+async def test_update_asset_async(request_type, transport: str = "grpc_asyncio"):
     client = WarehouseAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1774,7 +1791,7 @@ async def test_update_asset_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_asset), "__call__") as call:
@@ -1795,11 +1812,6 @@ async def test_update_asset_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, warehouse.Asset)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_update_asset_async_from_dict():
-    await test_update_asset_async(request_type=dict)
 
 
 def test_update_asset_field_headers():
@@ -1954,8 +1966,8 @@ async def test_update_asset_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        warehouse.GetAssetRequest,
-        dict,
+        warehouse.GetAssetRequest(),
+        {},
     ],
 )
 def test_get_asset(request_type, transport: str = "grpc"):
@@ -1966,7 +1978,7 @@ def test_get_asset(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_asset), "__call__") as call:
@@ -2010,9 +2022,10 @@ def test_get_asset_non_empty_request_with_auto_populated_field():
         client.get_asset(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.GetAssetRequest(
+        request_msg = warehouse.GetAssetRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_asset_use_cached_wrapped_rpc():
@@ -2091,9 +2104,14 @@ async def test_get_asset_async_use_cached_wrapped_rpc(transport: str = "grpc_asy
 
 
 @pytest.mark.asyncio
-async def test_get_asset_async(
-    transport: str = "grpc_asyncio", request_type=warehouse.GetAssetRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        warehouse.GetAssetRequest(),
+        {},
+    ],
+)
+async def test_get_asset_async(request_type, transport: str = "grpc_asyncio"):
     client = WarehouseAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2101,7 +2119,7 @@ async def test_get_asset_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_asset), "__call__") as call:
@@ -2122,11 +2140,6 @@ async def test_get_asset_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, warehouse.Asset)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_get_asset_async_from_dict():
-    await test_get_asset_async(request_type=dict)
 
 
 def test_get_asset_field_headers():
@@ -2271,8 +2284,8 @@ async def test_get_asset_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        warehouse.ListAssetsRequest,
-        dict,
+        warehouse.ListAssetsRequest(),
+        {},
     ],
 )
 def test_list_assets(request_type, transport: str = "grpc"):
@@ -2283,7 +2296,7 @@ def test_list_assets(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_assets), "__call__") as call:
@@ -2328,10 +2341,11 @@ def test_list_assets_non_empty_request_with_auto_populated_field():
         client.list_assets(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.ListAssetsRequest(
+        request_msg = warehouse.ListAssetsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_assets_use_cached_wrapped_rpc():
@@ -2412,9 +2426,14 @@ async def test_list_assets_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_assets_async(
-    transport: str = "grpc_asyncio", request_type=warehouse.ListAssetsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        warehouse.ListAssetsRequest(),
+        {},
+    ],
+)
+async def test_list_assets_async(request_type, transport: str = "grpc_asyncio"):
     client = WarehouseAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2422,7 +2441,7 @@ async def test_list_assets_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_assets), "__call__") as call:
@@ -2443,11 +2462,6 @@ async def test_list_assets_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAssetsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_assets_async_from_dict():
-    await test_list_assets_async(request_type=dict)
 
 
 def test_list_assets_field_headers():
@@ -2777,11 +2791,7 @@ async def test_list_assets_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_assets(request={})
-        ).pages:
+        async for page_ in (await client.list_assets(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -2790,8 +2800,8 @@ async def test_list_assets_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        warehouse.DeleteAssetRequest,
-        dict,
+        warehouse.DeleteAssetRequest(),
+        {},
     ],
 )
 def test_delete_asset(request_type, transport: str = "grpc"):
@@ -2802,7 +2812,7 @@ def test_delete_asset(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_asset), "__call__") as call:
@@ -2843,9 +2853,10 @@ def test_delete_asset_non_empty_request_with_auto_populated_field():
         client.delete_asset(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.DeleteAssetRequest(
+        request_msg = warehouse.DeleteAssetRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_asset_use_cached_wrapped_rpc():
@@ -2936,9 +2947,14 @@ async def test_delete_asset_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_asset_async(
-    transport: str = "grpc_asyncio", request_type=warehouse.DeleteAssetRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        warehouse.DeleteAssetRequest(),
+        {},
+    ],
+)
+async def test_delete_asset_async(request_type, transport: str = "grpc_asyncio"):
     client = WarehouseAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2946,7 +2962,7 @@ async def test_delete_asset_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_asset), "__call__") as call:
@@ -2964,11 +2980,6 @@ async def test_delete_asset_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_asset_async_from_dict():
-    await test_delete_asset_async(request_type=dict)
 
 
 def test_delete_asset_field_headers():
@@ -3117,8 +3128,8 @@ async def test_delete_asset_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        warehouse.CreateCorpusRequest,
-        dict,
+        warehouse.CreateCorpusRequest(),
+        {},
     ],
 )
 def test_create_corpus(request_type, transport: str = "grpc"):
@@ -3129,7 +3140,7 @@ def test_create_corpus(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_corpus), "__call__") as call:
@@ -3170,9 +3181,10 @@ def test_create_corpus_non_empty_request_with_auto_populated_field():
         client.create_corpus(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.CreateCorpusRequest(
+        request_msg = warehouse.CreateCorpusRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_corpus_use_cached_wrapped_rpc():
@@ -3263,9 +3275,14 @@ async def test_create_corpus_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_corpus_async(
-    transport: str = "grpc_asyncio", request_type=warehouse.CreateCorpusRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        warehouse.CreateCorpusRequest(),
+        {},
+    ],
+)
+async def test_create_corpus_async(request_type, transport: str = "grpc_asyncio"):
     client = WarehouseAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3273,7 +3290,7 @@ async def test_create_corpus_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_corpus), "__call__") as call:
@@ -3291,11 +3308,6 @@ async def test_create_corpus_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_corpus_async_from_dict():
-    await test_create_corpus_async(request_type=dict)
 
 
 def test_create_corpus_field_headers():
@@ -3454,8 +3466,8 @@ async def test_create_corpus_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        warehouse.GetCorpusRequest,
-        dict,
+        warehouse.GetCorpusRequest(),
+        {},
     ],
 )
 def test_get_corpus(request_type, transport: str = "grpc"):
@@ -3466,7 +3478,7 @@ def test_get_corpus(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_corpus), "__call__") as call:
@@ -3514,9 +3526,10 @@ def test_get_corpus_non_empty_request_with_auto_populated_field():
         client.get_corpus(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.GetCorpusRequest(
+        request_msg = warehouse.GetCorpusRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_corpus_use_cached_wrapped_rpc():
@@ -3595,9 +3608,14 @@ async def test_get_corpus_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_get_corpus_async(
-    transport: str = "grpc_asyncio", request_type=warehouse.GetCorpusRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        warehouse.GetCorpusRequest(),
+        {},
+    ],
+)
+async def test_get_corpus_async(request_type, transport: str = "grpc_asyncio"):
     client = WarehouseAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3605,7 +3623,7 @@ async def test_get_corpus_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_corpus), "__call__") as call:
@@ -3630,11 +3648,6 @@ async def test_get_corpus_async(
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
-
-
-@pytest.mark.asyncio
-async def test_get_corpus_async_from_dict():
-    await test_get_corpus_async(request_type=dict)
 
 
 def test_get_corpus_field_headers():
@@ -3779,8 +3792,8 @@ async def test_get_corpus_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        warehouse.UpdateCorpusRequest,
-        dict,
+        warehouse.UpdateCorpusRequest(),
+        {},
     ],
 )
 def test_update_corpus(request_type, transport: str = "grpc"):
@@ -3791,7 +3804,7 @@ def test_update_corpus(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_corpus), "__call__") as call:
@@ -3837,7 +3850,8 @@ def test_update_corpus_non_empty_request_with_auto_populated_field():
         client.update_corpus(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.UpdateCorpusRequest()
+        request_msg = warehouse.UpdateCorpusRequest()
+        assert args[0] == request_msg
 
 
 def test_update_corpus_use_cached_wrapped_rpc():
@@ -3918,9 +3932,14 @@ async def test_update_corpus_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_corpus_async(
-    transport: str = "grpc_asyncio", request_type=warehouse.UpdateCorpusRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        warehouse.UpdateCorpusRequest(),
+        {},
+    ],
+)
+async def test_update_corpus_async(request_type, transport: str = "grpc_asyncio"):
     client = WarehouseAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3928,7 +3947,7 @@ async def test_update_corpus_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_corpus), "__call__") as call:
@@ -3953,11 +3972,6 @@ async def test_update_corpus_async(
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
-
-
-@pytest.mark.asyncio
-async def test_update_corpus_async_from_dict():
-    await test_update_corpus_async(request_type=dict)
 
 
 def test_update_corpus_field_headers():
@@ -4112,8 +4126,8 @@ async def test_update_corpus_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        warehouse.ListCorporaRequest,
-        dict,
+        warehouse.ListCorporaRequest(),
+        {},
     ],
 )
 def test_list_corpora(request_type, transport: str = "grpc"):
@@ -4124,7 +4138,7 @@ def test_list_corpora(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_corpora), "__call__") as call:
@@ -4169,10 +4183,11 @@ def test_list_corpora_non_empty_request_with_auto_populated_field():
         client.list_corpora(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.ListCorporaRequest(
+        request_msg = warehouse.ListCorporaRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_corpora_use_cached_wrapped_rpc():
@@ -4253,9 +4268,14 @@ async def test_list_corpora_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_corpora_async(
-    transport: str = "grpc_asyncio", request_type=warehouse.ListCorporaRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        warehouse.ListCorporaRequest(),
+        {},
+    ],
+)
+async def test_list_corpora_async(request_type, transport: str = "grpc_asyncio"):
     client = WarehouseAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4263,7 +4283,7 @@ async def test_list_corpora_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_corpora), "__call__") as call:
@@ -4284,11 +4304,6 @@ async def test_list_corpora_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListCorporaAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_corpora_async_from_dict():
-    await test_list_corpora_async(request_type=dict)
 
 
 def test_list_corpora_field_headers():
@@ -4618,11 +4633,7 @@ async def test_list_corpora_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_corpora(request={})
-        ).pages:
+        async for page_ in (await client.list_corpora(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -4631,8 +4642,8 @@ async def test_list_corpora_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        warehouse.DeleteCorpusRequest,
-        dict,
+        warehouse.DeleteCorpusRequest(),
+        {},
     ],
 )
 def test_delete_corpus(request_type, transport: str = "grpc"):
@@ -4643,7 +4654,7 @@ def test_delete_corpus(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_corpus), "__call__") as call:
@@ -4684,9 +4695,10 @@ def test_delete_corpus_non_empty_request_with_auto_populated_field():
         client.delete_corpus(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.DeleteCorpusRequest(
+        request_msg = warehouse.DeleteCorpusRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_corpus_use_cached_wrapped_rpc():
@@ -4767,9 +4779,14 @@ async def test_delete_corpus_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_corpus_async(
-    transport: str = "grpc_asyncio", request_type=warehouse.DeleteCorpusRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        warehouse.DeleteCorpusRequest(),
+        {},
+    ],
+)
+async def test_delete_corpus_async(request_type, transport: str = "grpc_asyncio"):
     client = WarehouseAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4777,7 +4794,7 @@ async def test_delete_corpus_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_corpus), "__call__") as call:
@@ -4793,11 +4810,6 @@ async def test_delete_corpus_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_corpus_async_from_dict():
-    await test_delete_corpus_async(request_type=dict)
 
 
 def test_delete_corpus_field_headers():
@@ -4942,8 +4954,8 @@ async def test_delete_corpus_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        warehouse.CreateDataSchemaRequest,
-        dict,
+        warehouse.CreateDataSchemaRequest(),
+        {},
     ],
 )
 def test_create_data_schema(request_type, transport: str = "grpc"):
@@ -4954,7 +4966,7 @@ def test_create_data_schema(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5004,9 +5016,10 @@ def test_create_data_schema_non_empty_request_with_auto_populated_field():
         client.create_data_schema(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.CreateDataSchemaRequest(
+        request_msg = warehouse.CreateDataSchemaRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_data_schema_use_cached_wrapped_rpc():
@@ -5091,9 +5104,14 @@ async def test_create_data_schema_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_data_schema_async(
-    transport: str = "grpc_asyncio", request_type=warehouse.CreateDataSchemaRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        warehouse.CreateDataSchemaRequest(),
+        {},
+    ],
+)
+async def test_create_data_schema_async(request_type, transport: str = "grpc_asyncio"):
     client = WarehouseAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5101,7 +5119,7 @@ async def test_create_data_schema_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5126,11 +5144,6 @@ async def test_create_data_schema_async(
     assert isinstance(response, warehouse.DataSchema)
     assert response.name == "name_value"
     assert response.key == "key_value"
-
-
-@pytest.mark.asyncio
-async def test_create_data_schema_async_from_dict():
-    await test_create_data_schema_async(request_type=dict)
 
 
 def test_create_data_schema_field_headers():
@@ -5297,8 +5310,8 @@ async def test_create_data_schema_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        warehouse.UpdateDataSchemaRequest,
-        dict,
+        warehouse.UpdateDataSchemaRequest(),
+        {},
     ],
 )
 def test_update_data_schema(request_type, transport: str = "grpc"):
@@ -5309,7 +5322,7 @@ def test_update_data_schema(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5357,7 +5370,8 @@ def test_update_data_schema_non_empty_request_with_auto_populated_field():
         client.update_data_schema(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.UpdateDataSchemaRequest()
+        request_msg = warehouse.UpdateDataSchemaRequest()
+        assert args[0] == request_msg
 
 
 def test_update_data_schema_use_cached_wrapped_rpc():
@@ -5442,9 +5456,14 @@ async def test_update_data_schema_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_data_schema_async(
-    transport: str = "grpc_asyncio", request_type=warehouse.UpdateDataSchemaRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        warehouse.UpdateDataSchemaRequest(),
+        {},
+    ],
+)
+async def test_update_data_schema_async(request_type, transport: str = "grpc_asyncio"):
     client = WarehouseAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5452,7 +5471,7 @@ async def test_update_data_schema_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5477,11 +5496,6 @@ async def test_update_data_schema_async(
     assert isinstance(response, warehouse.DataSchema)
     assert response.name == "name_value"
     assert response.key == "key_value"
-
-
-@pytest.mark.asyncio
-async def test_update_data_schema_async_from_dict():
-    await test_update_data_schema_async(request_type=dict)
 
 
 def test_update_data_schema_field_headers():
@@ -5648,8 +5662,8 @@ async def test_update_data_schema_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        warehouse.GetDataSchemaRequest,
-        dict,
+        warehouse.GetDataSchemaRequest(),
+        {},
     ],
 )
 def test_get_data_schema(request_type, transport: str = "grpc"):
@@ -5660,7 +5674,7 @@ def test_get_data_schema(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_data_schema), "__call__") as call:
@@ -5706,9 +5720,10 @@ def test_get_data_schema_non_empty_request_with_auto_populated_field():
         client.get_data_schema(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.GetDataSchemaRequest(
+        request_msg = warehouse.GetDataSchemaRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_data_schema_use_cached_wrapped_rpc():
@@ -5789,9 +5804,14 @@ async def test_get_data_schema_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_data_schema_async(
-    transport: str = "grpc_asyncio", request_type=warehouse.GetDataSchemaRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        warehouse.GetDataSchemaRequest(),
+        {},
+    ],
+)
+async def test_get_data_schema_async(request_type, transport: str = "grpc_asyncio"):
     client = WarehouseAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5799,7 +5819,7 @@ async def test_get_data_schema_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_data_schema), "__call__") as call:
@@ -5822,11 +5842,6 @@ async def test_get_data_schema_async(
     assert isinstance(response, warehouse.DataSchema)
     assert response.name == "name_value"
     assert response.key == "key_value"
-
-
-@pytest.mark.asyncio
-async def test_get_data_schema_async_from_dict():
-    await test_get_data_schema_async(request_type=dict)
 
 
 def test_get_data_schema_field_headers():
@@ -5975,8 +5990,8 @@ async def test_get_data_schema_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        warehouse.DeleteDataSchemaRequest,
-        dict,
+        warehouse.DeleteDataSchemaRequest(),
+        {},
     ],
 )
 def test_delete_data_schema(request_type, transport: str = "grpc"):
@@ -5987,7 +6002,7 @@ def test_delete_data_schema(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6032,9 +6047,10 @@ def test_delete_data_schema_non_empty_request_with_auto_populated_field():
         client.delete_data_schema(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.DeleteDataSchemaRequest(
+        request_msg = warehouse.DeleteDataSchemaRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_data_schema_use_cached_wrapped_rpc():
@@ -6119,9 +6135,14 @@ async def test_delete_data_schema_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_data_schema_async(
-    transport: str = "grpc_asyncio", request_type=warehouse.DeleteDataSchemaRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        warehouse.DeleteDataSchemaRequest(),
+        {},
+    ],
+)
+async def test_delete_data_schema_async(request_type, transport: str = "grpc_asyncio"):
     client = WarehouseAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6129,7 +6150,7 @@ async def test_delete_data_schema_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6147,11 +6168,6 @@ async def test_delete_data_schema_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_data_schema_async_from_dict():
-    await test_delete_data_schema_async(request_type=dict)
 
 
 def test_delete_data_schema_field_headers():
@@ -6304,8 +6320,8 @@ async def test_delete_data_schema_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        warehouse.ListDataSchemasRequest,
-        dict,
+        warehouse.ListDataSchemasRequest(),
+        {},
     ],
 )
 def test_list_data_schemas(request_type, transport: str = "grpc"):
@@ -6316,7 +6332,7 @@ def test_list_data_schemas(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6365,10 +6381,11 @@ def test_list_data_schemas_non_empty_request_with_auto_populated_field():
         client.list_data_schemas(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.ListDataSchemasRequest(
+        request_msg = warehouse.ListDataSchemasRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_data_schemas_use_cached_wrapped_rpc():
@@ -6451,9 +6468,14 @@ async def test_list_data_schemas_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_data_schemas_async(
-    transport: str = "grpc_asyncio", request_type=warehouse.ListDataSchemasRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        warehouse.ListDataSchemasRequest(),
+        {},
+    ],
+)
+async def test_list_data_schemas_async(request_type, transport: str = "grpc_asyncio"):
     client = WarehouseAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6461,7 +6483,7 @@ async def test_list_data_schemas_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6484,11 +6506,6 @@ async def test_list_data_schemas_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDataSchemasAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_data_schemas_async_from_dict():
-    await test_list_data_schemas_async(request_type=dict)
 
 
 def test_list_data_schemas_field_headers():
@@ -6834,11 +6851,7 @@ async def test_list_data_schemas_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_data_schemas(request={})
-        ).pages:
+        async for page_ in (await client.list_data_schemas(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -6847,8 +6860,8 @@ async def test_list_data_schemas_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        warehouse.CreateAnnotationRequest,
-        dict,
+        warehouse.CreateAnnotationRequest(),
+        {},
     ],
 )
 def test_create_annotation(request_type, transport: str = "grpc"):
@@ -6859,7 +6872,7 @@ def test_create_annotation(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6908,10 +6921,11 @@ def test_create_annotation_non_empty_request_with_auto_populated_field():
         client.create_annotation(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.CreateAnnotationRequest(
+        request_msg = warehouse.CreateAnnotationRequest(
             parent="parent_value",
             annotation_id="annotation_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_annotation_use_cached_wrapped_rpc():
@@ -6994,9 +7008,14 @@ async def test_create_annotation_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_annotation_async(
-    transport: str = "grpc_asyncio", request_type=warehouse.CreateAnnotationRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        warehouse.CreateAnnotationRequest(),
+        {},
+    ],
+)
+async def test_create_annotation_async(request_type, transport: str = "grpc_asyncio"):
     client = WarehouseAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7004,7 +7023,7 @@ async def test_create_annotation_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7027,11 +7046,6 @@ async def test_create_annotation_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, warehouse.Annotation)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_create_annotation_async_from_dict():
-    await test_create_annotation_async(request_type=dict)
 
 
 def test_create_annotation_field_headers():
@@ -7208,8 +7222,8 @@ async def test_create_annotation_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        warehouse.GetAnnotationRequest,
-        dict,
+        warehouse.GetAnnotationRequest(),
+        {},
     ],
 )
 def test_get_annotation(request_type, transport: str = "grpc"):
@@ -7220,7 +7234,7 @@ def test_get_annotation(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_annotation), "__call__") as call:
@@ -7264,9 +7278,10 @@ def test_get_annotation_non_empty_request_with_auto_populated_field():
         client.get_annotation(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.GetAnnotationRequest(
+        request_msg = warehouse.GetAnnotationRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_annotation_use_cached_wrapped_rpc():
@@ -7347,9 +7362,14 @@ async def test_get_annotation_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_annotation_async(
-    transport: str = "grpc_asyncio", request_type=warehouse.GetAnnotationRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        warehouse.GetAnnotationRequest(),
+        {},
+    ],
+)
+async def test_get_annotation_async(request_type, transport: str = "grpc_asyncio"):
     client = WarehouseAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7357,7 +7377,7 @@ async def test_get_annotation_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_annotation), "__call__") as call:
@@ -7378,11 +7398,6 @@ async def test_get_annotation_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, warehouse.Annotation)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_get_annotation_async_from_dict():
-    await test_get_annotation_async(request_type=dict)
 
 
 def test_get_annotation_field_headers():
@@ -7531,8 +7546,8 @@ async def test_get_annotation_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        warehouse.ListAnnotationsRequest,
-        dict,
+        warehouse.ListAnnotationsRequest(),
+        {},
     ],
 )
 def test_list_annotations(request_type, transport: str = "grpc"):
@@ -7543,7 +7558,7 @@ def test_list_annotations(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_annotations), "__call__") as call:
@@ -7589,11 +7604,12 @@ def test_list_annotations_non_empty_request_with_auto_populated_field():
         client.list_annotations(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.ListAnnotationsRequest(
+        request_msg = warehouse.ListAnnotationsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_annotations_use_cached_wrapped_rpc():
@@ -7676,9 +7692,14 @@ async def test_list_annotations_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_annotations_async(
-    transport: str = "grpc_asyncio", request_type=warehouse.ListAnnotationsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        warehouse.ListAnnotationsRequest(),
+        {},
+    ],
+)
+async def test_list_annotations_async(request_type, transport: str = "grpc_asyncio"):
     client = WarehouseAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7686,7 +7707,7 @@ async def test_list_annotations_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_annotations), "__call__") as call:
@@ -7707,11 +7728,6 @@ async def test_list_annotations_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAnnotationsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_annotations_async_from_dict():
-    await test_list_annotations_async(request_type=dict)
 
 
 def test_list_annotations_field_headers():
@@ -8041,11 +8057,7 @@ async def test_list_annotations_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_annotations(request={})
-        ).pages:
+        async for page_ in (await client.list_annotations(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -8054,8 +8066,8 @@ async def test_list_annotations_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        warehouse.UpdateAnnotationRequest,
-        dict,
+        warehouse.UpdateAnnotationRequest(),
+        {},
     ],
 )
 def test_update_annotation(request_type, transport: str = "grpc"):
@@ -8066,7 +8078,7 @@ def test_update_annotation(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8112,7 +8124,8 @@ def test_update_annotation_non_empty_request_with_auto_populated_field():
         client.update_annotation(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.UpdateAnnotationRequest()
+        request_msg = warehouse.UpdateAnnotationRequest()
+        assert args[0] == request_msg
 
 
 def test_update_annotation_use_cached_wrapped_rpc():
@@ -8195,9 +8208,14 @@ async def test_update_annotation_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_annotation_async(
-    transport: str = "grpc_asyncio", request_type=warehouse.UpdateAnnotationRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        warehouse.UpdateAnnotationRequest(),
+        {},
+    ],
+)
+async def test_update_annotation_async(request_type, transport: str = "grpc_asyncio"):
     client = WarehouseAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -8205,7 +8223,7 @@ async def test_update_annotation_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8228,11 +8246,6 @@ async def test_update_annotation_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, warehouse.Annotation)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_update_annotation_async_from_dict():
-    await test_update_annotation_async(request_type=dict)
 
 
 def test_update_annotation_field_headers():
@@ -8399,8 +8412,8 @@ async def test_update_annotation_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        warehouse.DeleteAnnotationRequest,
-        dict,
+        warehouse.DeleteAnnotationRequest(),
+        {},
     ],
 )
 def test_delete_annotation(request_type, transport: str = "grpc"):
@@ -8411,7 +8424,7 @@ def test_delete_annotation(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8456,9 +8469,10 @@ def test_delete_annotation_non_empty_request_with_auto_populated_field():
         client.delete_annotation(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.DeleteAnnotationRequest(
+        request_msg = warehouse.DeleteAnnotationRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_annotation_use_cached_wrapped_rpc():
@@ -8541,9 +8555,14 @@ async def test_delete_annotation_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_annotation_async(
-    transport: str = "grpc_asyncio", request_type=warehouse.DeleteAnnotationRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        warehouse.DeleteAnnotationRequest(),
+        {},
+    ],
+)
+async def test_delete_annotation_async(request_type, transport: str = "grpc_asyncio"):
     client = WarehouseAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -8551,7 +8570,7 @@ async def test_delete_annotation_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8569,11 +8588,6 @@ async def test_delete_annotation_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_annotation_async_from_dict():
-    await test_delete_annotation_async(request_type=dict)
 
 
 def test_delete_annotation_field_headers():
@@ -8726,8 +8740,8 @@ async def test_delete_annotation_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        warehouse.IngestAssetRequest,
-        dict,
+        warehouse.IngestAssetRequest(),
+        {},
     ],
 )
 def test_ingest_asset(request_type, transport: str = "grpc"):
@@ -8738,7 +8752,7 @@ def test_ingest_asset(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
     requests = [request]
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8835,9 +8849,14 @@ async def test_ingest_asset_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_ingest_asset_async(
-    transport: str = "grpc_asyncio", request_type=warehouse.IngestAssetRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        warehouse.IngestAssetRequest(),
+        {},
+    ],
+)
+async def test_ingest_asset_async(request_type, transport: str = "grpc_asyncio"):
     client = WarehouseAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -8845,7 +8864,7 @@ async def test_ingest_asset_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
     requests = [request]
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8867,16 +8886,11 @@ async def test_ingest_asset_async(
     assert isinstance(message, warehouse.IngestAssetResponse)
 
 
-@pytest.mark.asyncio
-async def test_ingest_asset_async_from_dict():
-    await test_ingest_asset_async(request_type=dict)
-
-
 @pytest.mark.parametrize(
     "request_type",
     [
-        warehouse.ClipAssetRequest,
-        dict,
+        warehouse.ClipAssetRequest(),
+        {},
     ],
 )
 def test_clip_asset(request_type, transport: str = "grpc"):
@@ -8887,7 +8901,7 @@ def test_clip_asset(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.clip_asset), "__call__") as call:
@@ -8928,9 +8942,10 @@ def test_clip_asset_non_empty_request_with_auto_populated_field():
         client.clip_asset(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.ClipAssetRequest(
+        request_msg = warehouse.ClipAssetRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_clip_asset_use_cached_wrapped_rpc():
@@ -9009,9 +9024,14 @@ async def test_clip_asset_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_clip_asset_async(
-    transport: str = "grpc_asyncio", request_type=warehouse.ClipAssetRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        warehouse.ClipAssetRequest(),
+        {},
+    ],
+)
+async def test_clip_asset_async(request_type, transport: str = "grpc_asyncio"):
     client = WarehouseAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -9019,7 +9039,7 @@ async def test_clip_asset_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.clip_asset), "__call__") as call:
@@ -9037,11 +9057,6 @@ async def test_clip_asset_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, warehouse.ClipAssetResponse)
-
-
-@pytest.mark.asyncio
-async def test_clip_asset_async_from_dict():
-    await test_clip_asset_async(request_type=dict)
 
 
 def test_clip_asset_field_headers():
@@ -9108,8 +9123,8 @@ async def test_clip_asset_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        warehouse.GenerateHlsUriRequest,
-        dict,
+        warehouse.GenerateHlsUriRequest(),
+        {},
     ],
 )
 def test_generate_hls_uri(request_type, transport: str = "grpc"):
@@ -9120,7 +9135,7 @@ def test_generate_hls_uri(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.generate_hls_uri), "__call__") as call:
@@ -9164,9 +9179,10 @@ def test_generate_hls_uri_non_empty_request_with_auto_populated_field():
         client.generate_hls_uri(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.GenerateHlsUriRequest(
+        request_msg = warehouse.GenerateHlsUriRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_generate_hls_uri_use_cached_wrapped_rpc():
@@ -9249,9 +9265,14 @@ async def test_generate_hls_uri_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_generate_hls_uri_async(
-    transport: str = "grpc_asyncio", request_type=warehouse.GenerateHlsUriRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        warehouse.GenerateHlsUriRequest(),
+        {},
+    ],
+)
+async def test_generate_hls_uri_async(request_type, transport: str = "grpc_asyncio"):
     client = WarehouseAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -9259,7 +9280,7 @@ async def test_generate_hls_uri_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.generate_hls_uri), "__call__") as call:
@@ -9280,11 +9301,6 @@ async def test_generate_hls_uri_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, warehouse.GenerateHlsUriResponse)
     assert response.uri == "uri_value"
-
-
-@pytest.mark.asyncio
-async def test_generate_hls_uri_async_from_dict():
-    await test_generate_hls_uri_async(request_type=dict)
 
 
 def test_generate_hls_uri_field_headers():
@@ -9351,8 +9367,8 @@ async def test_generate_hls_uri_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        warehouse.CreateSearchConfigRequest,
-        dict,
+        warehouse.CreateSearchConfigRequest(),
+        {},
     ],
 )
 def test_create_search_config(request_type, transport: str = "grpc"):
@@ -9363,7 +9379,7 @@ def test_create_search_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9412,10 +9428,11 @@ def test_create_search_config_non_empty_request_with_auto_populated_field():
         client.create_search_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.CreateSearchConfigRequest(
+        request_msg = warehouse.CreateSearchConfigRequest(
             parent="parent_value",
             search_config_id="search_config_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_search_config_use_cached_wrapped_rpc():
@@ -9500,8 +9517,15 @@ async def test_create_search_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        warehouse.CreateSearchConfigRequest(),
+        {},
+    ],
+)
 async def test_create_search_config_async(
-    transport: str = "grpc_asyncio", request_type=warehouse.CreateSearchConfigRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = WarehouseAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -9510,7 +9534,7 @@ async def test_create_search_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9533,11 +9557,6 @@ async def test_create_search_config_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, warehouse.SearchConfig)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_create_search_config_async_from_dict():
-    await test_create_search_config_async(request_type=dict)
 
 
 def test_create_search_config_field_headers():
@@ -9714,8 +9733,8 @@ async def test_create_search_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        warehouse.UpdateSearchConfigRequest,
-        dict,
+        warehouse.UpdateSearchConfigRequest(),
+        {},
     ],
 )
 def test_update_search_config(request_type, transport: str = "grpc"):
@@ -9726,7 +9745,7 @@ def test_update_search_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9772,7 +9791,8 @@ def test_update_search_config_non_empty_request_with_auto_populated_field():
         client.update_search_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.UpdateSearchConfigRequest()
+        request_msg = warehouse.UpdateSearchConfigRequest()
+        assert args[0] == request_msg
 
 
 def test_update_search_config_use_cached_wrapped_rpc():
@@ -9857,8 +9877,15 @@ async def test_update_search_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        warehouse.UpdateSearchConfigRequest(),
+        {},
+    ],
+)
 async def test_update_search_config_async(
-    transport: str = "grpc_asyncio", request_type=warehouse.UpdateSearchConfigRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = WarehouseAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -9867,7 +9894,7 @@ async def test_update_search_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9890,11 +9917,6 @@ async def test_update_search_config_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, warehouse.SearchConfig)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_update_search_config_async_from_dict():
-    await test_update_search_config_async(request_type=dict)
 
 
 def test_update_search_config_field_headers():
@@ -10061,8 +10083,8 @@ async def test_update_search_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        warehouse.GetSearchConfigRequest,
-        dict,
+        warehouse.GetSearchConfigRequest(),
+        {},
     ],
 )
 def test_get_search_config(request_type, transport: str = "grpc"):
@@ -10073,7 +10095,7 @@ def test_get_search_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10121,9 +10143,10 @@ def test_get_search_config_non_empty_request_with_auto_populated_field():
         client.get_search_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.GetSearchConfigRequest(
+        request_msg = warehouse.GetSearchConfigRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_search_config_use_cached_wrapped_rpc():
@@ -10206,9 +10229,14 @@ async def test_get_search_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_search_config_async(
-    transport: str = "grpc_asyncio", request_type=warehouse.GetSearchConfigRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        warehouse.GetSearchConfigRequest(),
+        {},
+    ],
+)
+async def test_get_search_config_async(request_type, transport: str = "grpc_asyncio"):
     client = WarehouseAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -10216,7 +10244,7 @@ async def test_get_search_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10239,11 +10267,6 @@ async def test_get_search_config_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, warehouse.SearchConfig)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_get_search_config_async_from_dict():
-    await test_get_search_config_async(request_type=dict)
 
 
 def test_get_search_config_field_headers():
@@ -10400,8 +10423,8 @@ async def test_get_search_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        warehouse.DeleteSearchConfigRequest,
-        dict,
+        warehouse.DeleteSearchConfigRequest(),
+        {},
     ],
 )
 def test_delete_search_config(request_type, transport: str = "grpc"):
@@ -10412,7 +10435,7 @@ def test_delete_search_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10457,9 +10480,10 @@ def test_delete_search_config_non_empty_request_with_auto_populated_field():
         client.delete_search_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.DeleteSearchConfigRequest(
+        request_msg = warehouse.DeleteSearchConfigRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_search_config_use_cached_wrapped_rpc():
@@ -10544,8 +10568,15 @@ async def test_delete_search_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        warehouse.DeleteSearchConfigRequest(),
+        {},
+    ],
+)
 async def test_delete_search_config_async(
-    transport: str = "grpc_asyncio", request_type=warehouse.DeleteSearchConfigRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = WarehouseAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -10554,7 +10585,7 @@ async def test_delete_search_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10572,11 +10603,6 @@ async def test_delete_search_config_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_search_config_async_from_dict():
-    await test_delete_search_config_async(request_type=dict)
 
 
 def test_delete_search_config_field_headers():
@@ -10729,8 +10755,8 @@ async def test_delete_search_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        warehouse.ListSearchConfigsRequest,
-        dict,
+        warehouse.ListSearchConfigsRequest(),
+        {},
     ],
 )
 def test_list_search_configs(request_type, transport: str = "grpc"):
@@ -10741,7 +10767,7 @@ def test_list_search_configs(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10790,10 +10816,11 @@ def test_list_search_configs_non_empty_request_with_auto_populated_field():
         client.list_search_configs(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.ListSearchConfigsRequest(
+        request_msg = warehouse.ListSearchConfigsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_search_configs_use_cached_wrapped_rpc():
@@ -10878,9 +10905,14 @@ async def test_list_search_configs_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_search_configs_async(
-    transport: str = "grpc_asyncio", request_type=warehouse.ListSearchConfigsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        warehouse.ListSearchConfigsRequest(),
+        {},
+    ],
+)
+async def test_list_search_configs_async(request_type, transport: str = "grpc_asyncio"):
     client = WarehouseAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -10888,7 +10920,7 @@ async def test_list_search_configs_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10911,11 +10943,6 @@ async def test_list_search_configs_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListSearchConfigsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_search_configs_async_from_dict():
-    await test_list_search_configs_async(request_type=dict)
 
 
 def test_list_search_configs_field_headers():
@@ -11261,11 +11288,7 @@ async def test_list_search_configs_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_search_configs(request={})
-        ).pages:
+        async for page_ in (await client.list_search_configs(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -11274,8 +11297,8 @@ async def test_list_search_configs_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        warehouse.SearchAssetsRequest,
-        dict,
+        warehouse.SearchAssetsRequest(),
+        {},
     ],
 )
 def test_search_assets(request_type, transport: str = "grpc"):
@@ -11286,7 +11309,7 @@ def test_search_assets(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.search_assets), "__call__") as call:
@@ -11331,10 +11354,11 @@ def test_search_assets_non_empty_request_with_auto_populated_field():
         client.search_assets(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.SearchAssetsRequest(
+        request_msg = warehouse.SearchAssetsRequest(
             corpus="corpus_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_search_assets_use_cached_wrapped_rpc():
@@ -11415,9 +11439,14 @@ async def test_search_assets_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_search_assets_async(
-    transport: str = "grpc_asyncio", request_type=warehouse.SearchAssetsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        warehouse.SearchAssetsRequest(),
+        {},
+    ],
+)
+async def test_search_assets_async(request_type, transport: str = "grpc_asyncio"):
     client = WarehouseAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -11425,7 +11454,7 @@ async def test_search_assets_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.search_assets), "__call__") as call:
@@ -11446,11 +11475,6 @@ async def test_search_assets_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.SearchAssetsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_search_assets_async_from_dict():
-    await test_search_assets_async(request_type=dict)
 
 
 def test_search_assets_field_headers():
@@ -11698,11 +11722,7 @@ async def test_search_assets_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.search_assets(request={})
-        ).pages:
+        async for page_ in (await client.search_assets(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -11817,7 +11837,7 @@ def test_create_asset_rest_required_fields(request_type=warehouse.CreateAssetReq
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_asset_rest_unset_required_fields():
@@ -12005,7 +12025,7 @@ def test_update_asset_rest_required_fields(request_type=warehouse.UpdateAssetReq
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_asset_rest_unset_required_fields():
@@ -12187,7 +12207,7 @@ def test_get_asset_rest_required_fields(request_type=warehouse.GetAssetRequest):
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_asset_rest_unset_required_fields():
@@ -12372,7 +12392,7 @@ def test_list_assets_rest_required_fields(request_type=warehouse.ListAssetsReque
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_assets_rest_unset_required_fields():
@@ -12622,7 +12642,7 @@ def test_delete_asset_rest_required_fields(request_type=warehouse.DeleteAssetReq
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_asset_rest_unset_required_fields():
@@ -12800,7 +12820,7 @@ def test_create_corpus_rest_required_fields(request_type=warehouse.CreateCorpusR
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_corpus_rest_unset_required_fields():
@@ -12984,7 +13004,7 @@ def test_get_corpus_rest_required_fields(request_type=warehouse.GetCorpusRequest
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_corpus_rest_unset_required_fields():
@@ -13158,7 +13178,7 @@ def test_update_corpus_rest_required_fields(request_type=warehouse.UpdateCorpusR
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_corpus_rest_unset_required_fields():
@@ -13345,7 +13365,7 @@ def test_list_corpora_rest_required_fields(request_type=warehouse.ListCorporaReq
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_corpora_rest_unset_required_fields():
@@ -13587,7 +13607,7 @@ def test_delete_corpus_rest_required_fields(request_type=warehouse.DeleteCorpusR
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_corpus_rest_unset_required_fields():
@@ -13768,7 +13788,7 @@ def test_create_data_schema_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_data_schema_rest_unset_required_fields():
@@ -13960,7 +13980,7 @@ def test_update_data_schema_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_data_schema_rest_unset_required_fields():
@@ -14144,7 +14164,7 @@ def test_get_data_schema_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_data_schema_rest_unset_required_fields():
@@ -14325,7 +14345,7 @@ def test_delete_data_schema_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_data_schema_rest_unset_required_fields():
@@ -14512,7 +14532,7 @@ def test_list_data_schemas_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_data_schemas_rest_unset_required_fields():
@@ -14768,7 +14788,7 @@ def test_create_annotation_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_annotation_rest_unset_required_fields():
@@ -14960,7 +14980,7 @@ def test_get_annotation_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_annotation_rest_unset_required_fields():
@@ -15301,7 +15321,7 @@ def test_update_annotation_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_annotation_rest_unset_required_fields():
@@ -15484,7 +15504,7 @@ def test_delete_annotation_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_annotation_rest_unset_required_fields():
@@ -15672,7 +15692,7 @@ def test_clip_asset_rest_required_fields(request_type=warehouse.ClipAssetRequest
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_clip_asset_rest_unset_required_fields():
@@ -15803,7 +15823,7 @@ def test_generate_hls_uri_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_generate_hls_uri_rest_unset_required_fields():
@@ -15951,7 +15971,7 @@ def test_create_search_config_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_search_config_rest_unset_required_fields():
@@ -16146,7 +16166,7 @@ def test_update_search_config_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_search_config_rest_unset_required_fields():
@@ -16332,7 +16352,7 @@ def test_get_search_config_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_search_config_rest_unset_required_fields():
@@ -16513,7 +16533,7 @@ def test_delete_search_config_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_search_config_rest_unset_required_fields():
@@ -16702,7 +16722,7 @@ def test_list_search_configs_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_search_configs_rest_unset_required_fields():
@@ -16954,7 +16974,7 @@ def test_search_assets_rest_required_fields(request_type=warehouse.SearchAssetsR
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_search_assets_rest_unset_required_fields():
@@ -17165,7 +17185,6 @@ def test_create_asset_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.CreateAssetRequest()
-
         assert args[0] == request_msg
 
 
@@ -17186,7 +17205,6 @@ def test_update_asset_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.UpdateAssetRequest()
-
         assert args[0] == request_msg
 
 
@@ -17207,7 +17225,6 @@ def test_get_asset_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.GetAssetRequest()
-
         assert args[0] == request_msg
 
 
@@ -17228,7 +17245,6 @@ def test_list_assets_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.ListAssetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -17249,7 +17265,6 @@ def test_delete_asset_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.DeleteAssetRequest()
-
         assert args[0] == request_msg
 
 
@@ -17270,7 +17285,6 @@ def test_create_corpus_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.CreateCorpusRequest()
-
         assert args[0] == request_msg
 
 
@@ -17291,7 +17305,6 @@ def test_get_corpus_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.GetCorpusRequest()
-
         assert args[0] == request_msg
 
 
@@ -17312,7 +17325,6 @@ def test_update_corpus_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.UpdateCorpusRequest()
-
         assert args[0] == request_msg
 
 
@@ -17333,7 +17345,6 @@ def test_list_corpora_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.ListCorporaRequest()
-
         assert args[0] == request_msg
 
 
@@ -17354,7 +17365,6 @@ def test_delete_corpus_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.DeleteCorpusRequest()
-
         assert args[0] == request_msg
 
 
@@ -17377,7 +17387,6 @@ def test_create_data_schema_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.CreateDataSchemaRequest()
-
         assert args[0] == request_msg
 
 
@@ -17400,7 +17409,6 @@ def test_update_data_schema_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.UpdateDataSchemaRequest()
-
         assert args[0] == request_msg
 
 
@@ -17421,7 +17429,6 @@ def test_get_data_schema_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.GetDataSchemaRequest()
-
         assert args[0] == request_msg
 
 
@@ -17444,7 +17451,6 @@ def test_delete_data_schema_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.DeleteDataSchemaRequest()
-
         assert args[0] == request_msg
 
 
@@ -17467,7 +17473,6 @@ def test_list_data_schemas_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.ListDataSchemasRequest()
-
         assert args[0] == request_msg
 
 
@@ -17490,7 +17495,6 @@ def test_create_annotation_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.CreateAnnotationRequest()
-
         assert args[0] == request_msg
 
 
@@ -17511,7 +17515,6 @@ def test_get_annotation_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.GetAnnotationRequest()
-
         assert args[0] == request_msg
 
 
@@ -17532,7 +17535,6 @@ def test_list_annotations_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.ListAnnotationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -17555,7 +17557,6 @@ def test_update_annotation_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.UpdateAnnotationRequest()
-
         assert args[0] == request_msg
 
 
@@ -17578,7 +17579,6 @@ def test_delete_annotation_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.DeleteAnnotationRequest()
-
         assert args[0] == request_msg
 
 
@@ -17599,7 +17599,6 @@ def test_clip_asset_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.ClipAssetRequest()
-
         assert args[0] == request_msg
 
 
@@ -17620,7 +17619,6 @@ def test_generate_hls_uri_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.GenerateHlsUriRequest()
-
         assert args[0] == request_msg
 
 
@@ -17643,7 +17641,6 @@ def test_create_search_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.CreateSearchConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -17666,7 +17663,6 @@ def test_update_search_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.UpdateSearchConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -17689,7 +17685,6 @@ def test_get_search_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.GetSearchConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -17712,7 +17707,6 @@ def test_delete_search_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.DeleteSearchConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -17735,7 +17729,6 @@ def test_list_search_configs_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.ListSearchConfigsRequest()
-
         assert args[0] == request_msg
 
 
@@ -17756,7 +17749,6 @@ def test_search_assets_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.SearchAssetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -17797,7 +17789,6 @@ async def test_create_asset_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.CreateAssetRequest()
-
         assert args[0] == request_msg
 
 
@@ -17824,7 +17815,6 @@ async def test_update_asset_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.UpdateAssetRequest()
-
         assert args[0] == request_msg
 
 
@@ -17851,7 +17841,6 @@ async def test_get_asset_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.GetAssetRequest()
-
         assert args[0] == request_msg
 
 
@@ -17878,7 +17867,6 @@ async def test_list_assets_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.ListAssetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -17903,7 +17891,6 @@ async def test_delete_asset_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.DeleteAssetRequest()
-
         assert args[0] == request_msg
 
 
@@ -17928,7 +17915,6 @@ async def test_create_corpus_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.CreateCorpusRequest()
-
         assert args[0] == request_msg
 
 
@@ -17957,7 +17943,6 @@ async def test_get_corpus_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.GetCorpusRequest()
-
         assert args[0] == request_msg
 
 
@@ -17986,7 +17971,6 @@ async def test_update_corpus_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.UpdateCorpusRequest()
-
         assert args[0] == request_msg
 
 
@@ -18013,7 +17997,6 @@ async def test_list_corpora_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.ListCorporaRequest()
-
         assert args[0] == request_msg
 
 
@@ -18036,7 +18019,6 @@ async def test_delete_corpus_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.DeleteCorpusRequest()
-
         assert args[0] == request_msg
 
 
@@ -18066,7 +18048,6 @@ async def test_create_data_schema_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.CreateDataSchemaRequest()
-
         assert args[0] == request_msg
 
 
@@ -18096,7 +18077,6 @@ async def test_update_data_schema_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.UpdateDataSchemaRequest()
-
         assert args[0] == request_msg
 
 
@@ -18124,7 +18104,6 @@ async def test_get_data_schema_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.GetDataSchemaRequest()
-
         assert args[0] == request_msg
 
 
@@ -18149,7 +18128,6 @@ async def test_delete_data_schema_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.DeleteDataSchemaRequest()
-
         assert args[0] == request_msg
 
 
@@ -18178,7 +18156,6 @@ async def test_list_data_schemas_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.ListDataSchemasRequest()
-
         assert args[0] == request_msg
 
 
@@ -18207,7 +18184,6 @@ async def test_create_annotation_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.CreateAnnotationRequest()
-
         assert args[0] == request_msg
 
 
@@ -18234,7 +18210,6 @@ async def test_get_annotation_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.GetAnnotationRequest()
-
         assert args[0] == request_msg
 
 
@@ -18261,7 +18236,6 @@ async def test_list_annotations_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.ListAnnotationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -18290,7 +18264,6 @@ async def test_update_annotation_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.UpdateAnnotationRequest()
-
         assert args[0] == request_msg
 
 
@@ -18315,7 +18288,6 @@ async def test_delete_annotation_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.DeleteAnnotationRequest()
-
         assert args[0] == request_msg
 
 
@@ -18340,7 +18312,6 @@ async def test_clip_asset_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.ClipAssetRequest()
-
         assert args[0] == request_msg
 
 
@@ -18367,7 +18338,6 @@ async def test_generate_hls_uri_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.GenerateHlsUriRequest()
-
         assert args[0] == request_msg
 
 
@@ -18396,7 +18366,6 @@ async def test_create_search_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.CreateSearchConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -18425,7 +18394,6 @@ async def test_update_search_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.UpdateSearchConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -18454,7 +18422,6 @@ async def test_get_search_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.GetSearchConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -18479,7 +18446,6 @@ async def test_delete_search_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.DeleteSearchConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -18508,7 +18474,6 @@ async def test_list_search_configs_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.ListSearchConfigsRequest()
-
         assert args[0] == request_msg
 
 
@@ -18535,7 +18500,6 @@ async def test_search_assets_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.SearchAssetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -23531,7 +23495,6 @@ def test_create_asset_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.CreateAssetRequest()
-
         assert args[0] == request_msg
 
 
@@ -23551,7 +23514,6 @@ def test_update_asset_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.UpdateAssetRequest()
-
         assert args[0] == request_msg
 
 
@@ -23571,7 +23533,6 @@ def test_get_asset_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.GetAssetRequest()
-
         assert args[0] == request_msg
 
 
@@ -23591,7 +23552,6 @@ def test_list_assets_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.ListAssetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -23611,7 +23571,6 @@ def test_delete_asset_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.DeleteAssetRequest()
-
         assert args[0] == request_msg
 
 
@@ -23631,7 +23590,6 @@ def test_create_corpus_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.CreateCorpusRequest()
-
         assert args[0] == request_msg
 
 
@@ -23651,7 +23609,6 @@ def test_get_corpus_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.GetCorpusRequest()
-
         assert args[0] == request_msg
 
 
@@ -23671,7 +23628,6 @@ def test_update_corpus_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.UpdateCorpusRequest()
-
         assert args[0] == request_msg
 
 
@@ -23691,7 +23647,6 @@ def test_list_corpora_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.ListCorporaRequest()
-
         assert args[0] == request_msg
 
 
@@ -23711,7 +23666,6 @@ def test_delete_corpus_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.DeleteCorpusRequest()
-
         assert args[0] == request_msg
 
 
@@ -23733,7 +23687,6 @@ def test_create_data_schema_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.CreateDataSchemaRequest()
-
         assert args[0] == request_msg
 
 
@@ -23755,7 +23708,6 @@ def test_update_data_schema_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.UpdateDataSchemaRequest()
-
         assert args[0] == request_msg
 
 
@@ -23775,7 +23727,6 @@ def test_get_data_schema_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.GetDataSchemaRequest()
-
         assert args[0] == request_msg
 
 
@@ -23797,7 +23748,6 @@ def test_delete_data_schema_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.DeleteDataSchemaRequest()
-
         assert args[0] == request_msg
 
 
@@ -23819,7 +23769,6 @@ def test_list_data_schemas_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.ListDataSchemasRequest()
-
         assert args[0] == request_msg
 
 
@@ -23841,7 +23790,6 @@ def test_create_annotation_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.CreateAnnotationRequest()
-
         assert args[0] == request_msg
 
 
@@ -23861,7 +23809,6 @@ def test_get_annotation_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.GetAnnotationRequest()
-
         assert args[0] == request_msg
 
 
@@ -23881,7 +23828,6 @@ def test_list_annotations_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.ListAnnotationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -23903,7 +23849,6 @@ def test_update_annotation_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.UpdateAnnotationRequest()
-
         assert args[0] == request_msg
 
 
@@ -23925,7 +23870,6 @@ def test_delete_annotation_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.DeleteAnnotationRequest()
-
         assert args[0] == request_msg
 
 
@@ -23945,7 +23889,6 @@ def test_clip_asset_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.ClipAssetRequest()
-
         assert args[0] == request_msg
 
 
@@ -23965,7 +23908,6 @@ def test_generate_hls_uri_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.GenerateHlsUriRequest()
-
         assert args[0] == request_msg
 
 
@@ -23987,7 +23929,6 @@ def test_create_search_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.CreateSearchConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -24009,7 +23950,6 @@ def test_update_search_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.UpdateSearchConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -24031,7 +23971,6 @@ def test_get_search_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.GetSearchConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -24053,7 +23992,6 @@ def test_delete_search_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.DeleteSearchConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -24075,7 +24013,6 @@ def test_list_search_configs_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.ListSearchConfigsRequest()
-
         assert args[0] == request_msg
 
 
@@ -24095,7 +24032,6 @@ def test_search_assets_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = warehouse.SearchAssetsRequest()
-
         assert args[0] == request_msg
 
 

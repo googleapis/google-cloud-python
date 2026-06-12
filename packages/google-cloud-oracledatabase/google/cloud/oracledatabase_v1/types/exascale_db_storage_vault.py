@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -346,6 +346,10 @@ class ListExascaleDbStorageVaultsResponse(proto.Message):
             token can be provided to a subsequent
             ListExascaleDbStorageVaults call to list the
             next page. If empty, there are no more pages.
+        unreachable (MutableSequence[str]):
+            Unreachable locations when listing resources
+            across all locations using wildcard location
+            '-'.
     """
 
     @property
@@ -362,6 +366,10 @@ class ListExascaleDbStorageVaultsResponse(proto.Message):
     next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
     )
 
 

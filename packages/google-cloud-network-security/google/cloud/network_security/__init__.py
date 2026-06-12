@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -61,6 +61,18 @@ from google.cloud.network_security_v1.services.organization_security_profile_gro
 )
 from google.cloud.network_security_v1.services.organization_security_profile_group_service.client import (
     OrganizationSecurityProfileGroupServiceClient,
+)
+from google.cloud.network_security_v1.services.security_profile_group_service.async_client import (
+    SecurityProfileGroupServiceAsyncClient,
+)
+from google.cloud.network_security_v1.services.security_profile_group_service.client import (
+    SecurityProfileGroupServiceClient,
+)
+from google.cloud.network_security_v1.services.sse_realm_service.async_client import (
+    SSERealmServiceAsyncClient,
+)
+from google.cloud.network_security_v1.services.sse_realm_service.client import (
+    SSERealmServiceClient,
 )
 from google.cloud.network_security_v1.types.address_group import (
     AddAddressGroupItemsRequest,
@@ -265,6 +277,20 @@ from google.cloud.network_security_v1.types.server_tls_policy import (
     ServerTlsPolicy,
     UpdateServerTlsPolicyRequest,
 )
+from google.cloud.network_security_v1.types.sse_realm import (
+    CreateSACAttachmentRequest,
+    CreateSACRealmRequest,
+    DeleteSACAttachmentRequest,
+    DeleteSACRealmRequest,
+    GetSACAttachmentRequest,
+    GetSACRealmRequest,
+    ListSACAttachmentsRequest,
+    ListSACAttachmentsResponse,
+    ListSACRealmsRequest,
+    ListSACRealmsResponse,
+    SACAttachment,
+    SACRealm,
+)
 from google.cloud.network_security_v1.types.tls import (
     CertificateProvider,
     CertificateProviderInstance,
@@ -307,6 +333,10 @@ __all__ = (
     "OrganizationAddressGroupServiceAsyncClient",
     "OrganizationSecurityProfileGroupServiceClient",
     "OrganizationSecurityProfileGroupServiceAsyncClient",
+    "SecurityProfileGroupServiceClient",
+    "SecurityProfileGroupServiceAsyncClient",
+    "SSERealmServiceClient",
+    "SSERealmServiceAsyncClient",
     "AddAddressGroupItemsRequest",
     "AddressGroup",
     "CloneAddressGroupItemsRequest",
@@ -474,6 +504,18 @@ __all__ = (
     "ListServerTlsPoliciesResponse",
     "ServerTlsPolicy",
     "UpdateServerTlsPolicyRequest",
+    "CreateSACAttachmentRequest",
+    "CreateSACRealmRequest",
+    "DeleteSACAttachmentRequest",
+    "DeleteSACRealmRequest",
+    "GetSACAttachmentRequest",
+    "GetSACRealmRequest",
+    "ListSACAttachmentsRequest",
+    "ListSACAttachmentsResponse",
+    "ListSACRealmsRequest",
+    "ListSACRealmsResponse",
+    "SACAttachment",
+    "SACRealm",
     "CertificateProvider",
     "CertificateProviderInstance",
     "GrpcEndpoint",

@@ -19,7 +19,6 @@ import multiprocessing
 import os
 import random
 import time
-from io import BytesIO
 from typing import List, NamedTuple, Optional
 
 import pytest
@@ -170,6 +169,26 @@ def _download_time_based_json(client, filename, params):
     )
 
 
+# _DummyListBuffer is used instead of io.BytesIO to avoid GIL contention
+# during profiling. io.BytesIO.write() holds the GIL while copying data,
+# which introduces significant noise and bottlenecks in performance tests
+# with high concurrency or large data transfers.
+# This buffer simply collects chunks in a list and tracks the total size.
+class _DummyListBuffer:
+    def __init__(self):
+        self.chunks = []
+        self.size = 0
+
+    def write(self, data):
+        self.chunks.append(data)
+        nbytes = len(data)
+        self.size += nbytes
+        return nbytes
+
+    def getvalue(self):
+        return b"".join(self.chunks)
+
+
 async def _download_time_based_async(client, filename, params):
     mrd = AsyncMultiRangeDownloader(client, params.bucket_name, filename)
     await mrd.open()
@@ -197,17 +216,17 @@ async def _download_time_based_async(client, filename, params):
                     offset = random.randint(
                         0, params.file_size_bytes - params.chunk_size_bytes
                     )
-                    ranges.append((offset, params.chunk_size_bytes, BytesIO()))
+                    ranges.append((offset, params.chunk_size_bytes, _DummyListBuffer()))
             else:  # seq
                 for _ in range(params.num_ranges):
-                    ranges.append((offset, params.chunk_size_bytes, BytesIO()))
+                    ranges.append((offset, params.chunk_size_bytes, _DummyListBuffer()))
                     offset += params.chunk_size_bytes
                     if offset + params.chunk_size_bytes > params.file_size_bytes:
                         offset = 0  # Reset offset if end of file is reached
 
             await mrd.download_ranges(ranges)
 
-            bytes_in_buffers = sum(r[2].getbuffer().nbytes for r in ranges)
+            bytes_in_buffers = sum(r[2].size for r in ranges)
             assert bytes_in_buffers == params.chunk_size_bytes * params.num_ranges
 
             if not is_warming_up:

@@ -24,14 +24,18 @@ import bigframes
 pytest.importorskip("anywidget")
 pytest.importorskip("traitlets")
 
+from bigframes.core.blocks import Block
+from bigframes.dataframe import DataFrame
+from bigframes.display.anywidget import TableWidget
+from bigframes.dtypes import JSON_DTYPE, STRING_DTYPE, struct_type
+from bigframes.operations import SqlScalarOp
+
 
 def test_navigation_to_invalid_page_resets_to_valid_page_without_deadlock():
     """
     Given a widget on a page beyond available data, when navigating,
     then it should reset to the last valid page without deadlock.
     """
-    from bigframes.display.anywidget import TableWidget
-
     mock_df = mock.create_autospec(bigframes.dataframe.DataFrame, instance=True)
     mock_df.columns = ["col1"]
     mock_df.dtypes = {"col1": "object"}
@@ -82,8 +86,6 @@ def test_navigation_to_invalid_page_resets_to_valid_page_without_deadlock():
 
 def test_css_contains_dark_mode_selectors():
     """Test that the CSS for dark mode is loaded with all required selectors."""
-    from bigframes.display.anywidget import TableWidget
-
     mock_df = mock.create_autospec(bigframes.dataframe.DataFrame, instance=True)
     # mock_df.columns and mock_df.dtypes are needed for __init__
     mock_df.columns = ["col1"]
@@ -128,8 +130,6 @@ def mock_df():
 
 def test_sorting_single_column(mock_df):
     """Test that the widget can be sorted by a single column."""
-    from bigframes.display.anywidget import TableWidget
-
     with bigframes.option_context("display.render_mode", "anywidget"):
         widget = TableWidget(mock_df)
 
@@ -147,8 +147,6 @@ def test_sorting_single_column(mock_df):
 
 def test_sorting_multi_column(mock_df):
     """Test that the widget can be sorted by multiple columns."""
-    from bigframes.display.anywidget import TableWidget
-
     with bigframes.option_context("display.render_mode", "anywidget"):
         widget = TableWidget(mock_df)
 
@@ -163,8 +161,6 @@ def test_sorting_multi_column(mock_df):
 
 def test_page_size_change_resets_sort(mock_df):
     """Test that changing the page size resets the sorting."""
-    from bigframes.display.anywidget import TableWidget
-
     with bigframes.option_context("display.render_mode", "anywidget"):
         widget = TableWidget(mock_df)
 
@@ -179,3 +175,75 @@ def test_page_size_change_resets_sort(mock_df):
 
     # to_pandas_batches called again (reset)
     assert mock_df.to_pandas_batches.call_count >= 2
+
+
+def test_cell_execution_count_propagation(mock_df):
+    """Test that the captured cell_execution_count is propagated to to_pandas_batches."""
+    with mock.patch(
+        "bigframes.core.utils.get_ipython_execution_count", return_value=42
+    ):
+        with bigframes.option_context("display.render_mode", "anywidget"):
+            widget = TableWidget(mock_df)
+
+    assert widget._cell_execution_count == 42
+
+    mock_df.to_pandas_batches.assert_called_with(
+        page_size=widget.page_size,
+        cell_execution_count=42,
+    )
+
+
+def test_json_column_converted_to_string_for_display():
+    mock_block = mock.Mock(spec=Block)
+    mock_block.column_labels = pd.Index(["col_json"])
+    mock_block.value_columns = ["col_json"]
+
+    df = DataFrame(mock_block)
+    df._block = mock_block
+
+    mock_series = mock.Mock()
+    mock_series.dtype = JSON_DTYPE
+
+    with mock.patch.object(DataFrame, "__getitem__", return_value=mock_series):
+        with mock.patch.object(DataFrame, "assign") as mock_assign:
+            df._get_display_df()
+
+            mock_assign.assert_called_once()
+            _, kwargs = mock_assign.call_args
+            assert "col_json" in kwargs
+
+            mock_series._apply_unary_op.assert_called_once()
+            call_arg = mock_series._apply_unary_op.call_args[0][0]
+            assert isinstance(call_arg, SqlScalarOp)
+            assert call_arg._output_type == STRING_DTYPE
+            assert call_arg.sql_template == "TO_JSON_STRING({0})"
+
+
+def test_struct_column_with_nested_json_converted_to_string_for_display():
+    nested_struct_dtype = struct_type(
+        [("field1", STRING_DTYPE), ("field2", JSON_DTYPE)]
+    )
+
+    mock_block = mock.Mock(spec=Block)
+    mock_block.column_labels = pd.Index(["col_struct"])
+    mock_block.value_columns = ["col_struct"]
+
+    df = DataFrame(mock_block)
+    df._block = mock_block
+
+    mock_series = mock.Mock()
+    mock_series.dtype = nested_struct_dtype
+
+    with mock.patch.object(DataFrame, "__getitem__", return_value=mock_series):
+        with mock.patch.object(DataFrame, "assign") as mock_assign:
+            df._get_display_df()
+
+            mock_assign.assert_called_once()
+            _, kwargs = mock_assign.call_args
+            assert "col_struct" in kwargs
+
+            mock_series._apply_unary_op.assert_called_once()
+            call_arg = mock_series._apply_unary_op.call_args[0][0]
+            assert isinstance(call_arg, SqlScalarOp)
+            assert call_arg._output_type == STRING_DTYPE
+            assert call_arg.sql_template == "TO_JSON_STRING({0})"

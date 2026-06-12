@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -114,6 +109,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1318,8 +1328,8 @@ def test_tenant_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        tenant_service.CreateTenantRequest,
-        dict,
+        tenant_service.CreateTenantRequest(),
+        {},
     ],
 )
 def test_create_tenant(request_type, transport: str = "grpc"):
@@ -1330,7 +1340,7 @@ def test_create_tenant(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_tenant), "__call__") as call:
@@ -1376,9 +1386,10 @@ def test_create_tenant_non_empty_request_with_auto_populated_field():
         client.create_tenant(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tenant_service.CreateTenantRequest(
+        request_msg = tenant_service.CreateTenantRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_tenant_use_cached_wrapped_rpc():
@@ -1459,9 +1470,14 @@ async def test_create_tenant_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_tenant_async(
-    transport: str = "grpc_asyncio", request_type=tenant_service.CreateTenantRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        tenant_service.CreateTenantRequest(),
+        {},
+    ],
+)
+async def test_create_tenant_async(request_type, transport: str = "grpc_asyncio"):
     client = TenantServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1469,7 +1485,7 @@ async def test_create_tenant_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_tenant), "__call__") as call:
@@ -1492,11 +1508,6 @@ async def test_create_tenant_async(
     assert isinstance(response, gct_tenant.Tenant)
     assert response.name == "name_value"
     assert response.external_id == "external_id_value"
-
-
-@pytest.mark.asyncio
-async def test_create_tenant_async_from_dict():
-    await test_create_tenant_async(request_type=dict)
 
 
 def test_create_tenant_field_headers():
@@ -1651,8 +1662,8 @@ async def test_create_tenant_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        tenant_service.GetTenantRequest,
-        dict,
+        tenant_service.GetTenantRequest(),
+        {},
     ],
 )
 def test_get_tenant(request_type, transport: str = "grpc"):
@@ -1663,7 +1674,7 @@ def test_get_tenant(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_tenant), "__call__") as call:
@@ -1709,9 +1720,10 @@ def test_get_tenant_non_empty_request_with_auto_populated_field():
         client.get_tenant(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tenant_service.GetTenantRequest(
+        request_msg = tenant_service.GetTenantRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_tenant_use_cached_wrapped_rpc():
@@ -1790,9 +1802,14 @@ async def test_get_tenant_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_get_tenant_async(
-    transport: str = "grpc_asyncio", request_type=tenant_service.GetTenantRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        tenant_service.GetTenantRequest(),
+        {},
+    ],
+)
+async def test_get_tenant_async(request_type, transport: str = "grpc_asyncio"):
     client = TenantServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1800,7 +1817,7 @@ async def test_get_tenant_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_tenant), "__call__") as call:
@@ -1823,11 +1840,6 @@ async def test_get_tenant_async(
     assert isinstance(response, tenant.Tenant)
     assert response.name == "name_value"
     assert response.external_id == "external_id_value"
-
-
-@pytest.mark.asyncio
-async def test_get_tenant_async_from_dict():
-    await test_get_tenant_async(request_type=dict)
 
 
 def test_get_tenant_field_headers():
@@ -1972,8 +1984,8 @@ async def test_get_tenant_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        tenant_service.UpdateTenantRequest,
-        dict,
+        tenant_service.UpdateTenantRequest(),
+        {},
     ],
 )
 def test_update_tenant(request_type, transport: str = "grpc"):
@@ -1984,7 +1996,7 @@ def test_update_tenant(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_tenant), "__call__") as call:
@@ -2028,7 +2040,8 @@ def test_update_tenant_non_empty_request_with_auto_populated_field():
         client.update_tenant(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tenant_service.UpdateTenantRequest()
+        request_msg = tenant_service.UpdateTenantRequest()
+        assert args[0] == request_msg
 
 
 def test_update_tenant_use_cached_wrapped_rpc():
@@ -2109,9 +2122,14 @@ async def test_update_tenant_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_tenant_async(
-    transport: str = "grpc_asyncio", request_type=tenant_service.UpdateTenantRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        tenant_service.UpdateTenantRequest(),
+        {},
+    ],
+)
+async def test_update_tenant_async(request_type, transport: str = "grpc_asyncio"):
     client = TenantServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2119,7 +2137,7 @@ async def test_update_tenant_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_tenant), "__call__") as call:
@@ -2142,11 +2160,6 @@ async def test_update_tenant_async(
     assert isinstance(response, gct_tenant.Tenant)
     assert response.name == "name_value"
     assert response.external_id == "external_id_value"
-
-
-@pytest.mark.asyncio
-async def test_update_tenant_async_from_dict():
-    await test_update_tenant_async(request_type=dict)
 
 
 def test_update_tenant_field_headers():
@@ -2301,8 +2314,8 @@ async def test_update_tenant_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        tenant_service.DeleteTenantRequest,
-        dict,
+        tenant_service.DeleteTenantRequest(),
+        {},
     ],
 )
 def test_delete_tenant(request_type, transport: str = "grpc"):
@@ -2313,7 +2326,7 @@ def test_delete_tenant(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_tenant), "__call__") as call:
@@ -2354,9 +2367,10 @@ def test_delete_tenant_non_empty_request_with_auto_populated_field():
         client.delete_tenant(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tenant_service.DeleteTenantRequest(
+        request_msg = tenant_service.DeleteTenantRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_tenant_use_cached_wrapped_rpc():
@@ -2437,9 +2451,14 @@ async def test_delete_tenant_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_tenant_async(
-    transport: str = "grpc_asyncio", request_type=tenant_service.DeleteTenantRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        tenant_service.DeleteTenantRequest(),
+        {},
+    ],
+)
+async def test_delete_tenant_async(request_type, transport: str = "grpc_asyncio"):
     client = TenantServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2447,7 +2466,7 @@ async def test_delete_tenant_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_tenant), "__call__") as call:
@@ -2463,11 +2482,6 @@ async def test_delete_tenant_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_tenant_async_from_dict():
-    await test_delete_tenant_async(request_type=dict)
 
 
 def test_delete_tenant_field_headers():
@@ -2612,8 +2626,8 @@ async def test_delete_tenant_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        tenant_service.ListTenantsRequest,
-        dict,
+        tenant_service.ListTenantsRequest(),
+        {},
     ],
 )
 def test_list_tenants(request_type, transport: str = "grpc"):
@@ -2624,7 +2638,7 @@ def test_list_tenants(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_tenants), "__call__") as call:
@@ -2669,10 +2683,11 @@ def test_list_tenants_non_empty_request_with_auto_populated_field():
         client.list_tenants(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tenant_service.ListTenantsRequest(
+        request_msg = tenant_service.ListTenantsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_tenants_use_cached_wrapped_rpc():
@@ -2753,9 +2768,14 @@ async def test_list_tenants_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_tenants_async(
-    transport: str = "grpc_asyncio", request_type=tenant_service.ListTenantsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        tenant_service.ListTenantsRequest(),
+        {},
+    ],
+)
+async def test_list_tenants_async(request_type, transport: str = "grpc_asyncio"):
     client = TenantServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2763,7 +2783,7 @@ async def test_list_tenants_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_tenants), "__call__") as call:
@@ -2784,11 +2804,6 @@ async def test_list_tenants_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListTenantsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_tenants_async_from_dict():
-    await test_list_tenants_async(request_type=dict)
 
 
 def test_list_tenants_field_headers():
@@ -3118,11 +3133,7 @@ async def test_list_tenants_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_tenants(request={})
-        ).pages:
+        async for page_ in (await client.list_tenants(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -3237,7 +3248,7 @@ def test_create_tenant_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_tenant_rest_unset_required_fields():
@@ -3421,7 +3432,7 @@ def test_get_tenant_rest_required_fields(request_type=tenant_service.GetTenantRe
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_tenant_rest_unset_required_fields():
@@ -3595,7 +3606,7 @@ def test_update_tenant_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_tenant_rest_unset_required_fields():
@@ -3770,7 +3781,7 @@ def test_delete_tenant_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_tenant_rest_unset_required_fields():
@@ -3951,7 +3962,7 @@ def test_list_tenants_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_tenants_rest_unset_required_fields():
@@ -4213,7 +4224,6 @@ def test_create_tenant_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tenant_service.CreateTenantRequest()
-
         assert args[0] == request_msg
 
 
@@ -4234,7 +4244,6 @@ def test_get_tenant_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tenant_service.GetTenantRequest()
-
         assert args[0] == request_msg
 
 
@@ -4255,7 +4264,6 @@ def test_update_tenant_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tenant_service.UpdateTenantRequest()
-
         assert args[0] == request_msg
 
 
@@ -4276,7 +4284,6 @@ def test_delete_tenant_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tenant_service.DeleteTenantRequest()
-
         assert args[0] == request_msg
 
 
@@ -4297,7 +4304,6 @@ def test_list_tenants_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tenant_service.ListTenantsRequest()
-
         assert args[0] == request_msg
 
 
@@ -4339,7 +4345,6 @@ async def test_create_tenant_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tenant_service.CreateTenantRequest()
-
         assert args[0] == request_msg
 
 
@@ -4367,7 +4372,6 @@ async def test_get_tenant_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tenant_service.GetTenantRequest()
-
         assert args[0] == request_msg
 
 
@@ -4395,7 +4399,6 @@ async def test_update_tenant_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tenant_service.UpdateTenantRequest()
-
         assert args[0] == request_msg
 
 
@@ -4418,7 +4421,6 @@ async def test_delete_tenant_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tenant_service.DeleteTenantRequest()
-
         assert args[0] == request_msg
 
 
@@ -4445,7 +4447,6 @@ async def test_list_tenants_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tenant_service.ListTenantsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5315,7 +5316,6 @@ def test_create_tenant_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tenant_service.CreateTenantRequest()
-
         assert args[0] == request_msg
 
 
@@ -5335,7 +5335,6 @@ def test_get_tenant_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tenant_service.GetTenantRequest()
-
         assert args[0] == request_msg
 
 
@@ -5355,7 +5354,6 @@ def test_update_tenant_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tenant_service.UpdateTenantRequest()
-
         assert args[0] == request_msg
 
 
@@ -5375,7 +5373,6 @@ def test_delete_tenant_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tenant_service.DeleteTenantRequest()
-
         assert args[0] == request_msg
 
 
@@ -5395,7 +5392,6 @@ def test_list_tenants_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tenant_service.ListTenantsRequest()
-
         assert args[0] == request_msg
 
 

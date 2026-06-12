@@ -40,9 +40,9 @@ from typing import Optional, TYPE_CHECKING
 
 
 from google.auth import _helpers
+from google.auth import _regional_access_boundary_utils
 from google.auth import credentials
 from google.auth import exceptions
-from google.auth import iam
 from google.auth import impersonated_credentials
 from google.auth import metrics
 from google.oauth2 import sts
@@ -60,7 +60,7 @@ _STS_GRANT_TYPE = "urn:ietf:params:oauth:grant-type:token-exchange"
 # The token exchange requested_token_type. This is always an access_token.
 _STS_REQUESTED_TOKEN_TYPE = "urn:ietf:params:oauth:token-type:access_token"
 # Cloud resource manager URL used to retrieve project information.
-_CLOUD_RESOURCE_MANAGER = "https://cloudresourcemanager.googleapis.com/v1/projects/"
+_CLOUD_RESOURCE_MANAGER = "https://cloudresourcemanager.{universe_domain}/v1/projects/"
 # Default Google sts token url.
 _DEFAULT_TOKEN_URL = "https://sts.{universe_domain}/v1/token"
 
@@ -172,6 +172,9 @@ class Credentials(
             self._token_url = self._token_url.replace(
                 "{universe_domain}", self._universe_domain
             )
+        self._cloud_resource_manager_url = _CLOUD_RESOURCE_MANAGER.replace(
+            "{universe_domain}", self._universe_domain
+        )
         self._token_info_url = token_info_url
         self._credential_source = credential_source
         self._service_account_impersonation_url = service_account_impersonation_url
@@ -404,7 +407,7 @@ class Credentials(
         project_number = self.project_number or self._workforce_pool_user_project
         if project_number and scopes:
             headers = {}
-            url = _CLOUD_RESOURCE_MANAGER + project_number
+            url = "{}{}".format(self._cloud_resource_manager_url, project_number)
             self.before_request(request, "GET", url, headers)
             response = request(url=url, method="GET", headers=headers)
 
@@ -523,9 +526,10 @@ class Credentials(
         )
         if workload_match:
             project_number, pool_id = workload_match.groups()
-            url = iam._WORKLOAD_IDENTITY_POOL_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENDPOINT.format(
-                project_number=project_number,
-                pool_id=pool_id,
+            url = (
+                _regional_access_boundary_utils.get_workload_identity_pool_rab_endpoint(
+                    project_number, pool_id
+                )
             )
         else:
             # If that fails, try to parse as a workforce pool.
@@ -535,10 +539,8 @@ class Credentials(
             )
             if workforce_match:
                 pool_id = workforce_match.groups()[0]
-                url = (
-                    iam._WORKFORCE_POOL_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENDPOINT.format(
-                        pool_id=pool_id
-                    )
+                url = _regional_access_boundary_utils.get_workforce_pool_rab_endpoint(
+                    pool_id
                 )
 
         if url:
@@ -617,7 +619,7 @@ class Credentials(
 
         scopes = self._scopes if self._scopes is not None else self._default_scopes
         # Initialize and return impersonated credentials.
-        return impersonated_credentials.Credentials(
+        impersonated_creds = impersonated_credentials.Credentials(
             source_credentials=source_credentials,
             target_principal=target_principal,
             target_scopes=scopes,
@@ -628,6 +630,9 @@ class Credentials(
             ),
             trust_boundary=self._trust_boundary,
         )
+        if self._rab_manager._use_blocking_regional_access_boundary_lookup:
+            impersonated_creds._set_blocking_regional_access_boundary_lookup()
+        return impersonated_creds
 
     def _create_default_metrics_options(self):
         metrics_options = {}

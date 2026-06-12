@@ -12,13 +12,13 @@ For more information, see the README.md under /python-spanner-sqlalchemy.
 
 from sqlalchemy import (
     Column,
-    create_engine,
     Index,
     Integer,
-    inspect,
     MetaData,
     String,
     Table,
+    create_engine,
+    inspect,
 )
 
 

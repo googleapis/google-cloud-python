@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -120,6 +115,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1279,8 +1289,8 @@ def test_workflows_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        workflows.ListWorkflowsRequest,
-        dict,
+        workflows.ListWorkflowsRequest(),
+        {},
     ],
 )
 def test_list_workflows(request_type, transport: str = "grpc"):
@@ -1291,7 +1301,7 @@ def test_list_workflows(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_workflows), "__call__") as call:
@@ -1340,12 +1350,13 @@ def test_list_workflows_non_empty_request_with_auto_populated_field():
         client.list_workflows(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == workflows.ListWorkflowsRequest(
+        request_msg = workflows.ListWorkflowsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_workflows_use_cached_wrapped_rpc():
@@ -1426,9 +1437,14 @@ async def test_list_workflows_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_workflows_async(
-    transport: str = "grpc_asyncio", request_type=workflows.ListWorkflowsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        workflows.ListWorkflowsRequest(),
+        {},
+    ],
+)
+async def test_list_workflows_async(request_type, transport: str = "grpc_asyncio"):
     client = WorkflowsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1436,7 +1452,7 @@ async def test_list_workflows_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_workflows), "__call__") as call:
@@ -1459,11 +1475,6 @@ async def test_list_workflows_async(
     assert isinstance(response, pagers.ListWorkflowsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_workflows_async_from_dict():
-    await test_list_workflows_async(request_type=dict)
 
 
 def test_list_workflows_field_headers():
@@ -1793,11 +1804,7 @@ async def test_list_workflows_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_workflows(request={})
-        ).pages:
+        async for page_ in (await client.list_workflows(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -1806,8 +1813,8 @@ async def test_list_workflows_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        workflows.GetWorkflowRequest,
-        dict,
+        workflows.GetWorkflowRequest(),
+        {},
     ],
 )
 def test_get_workflow(request_type, transport: str = "grpc"):
@@ -1818,7 +1825,7 @@ def test_get_workflow(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_workflow), "__call__") as call:
@@ -1871,9 +1878,10 @@ def test_get_workflow_non_empty_request_with_auto_populated_field():
         client.get_workflow(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == workflows.GetWorkflowRequest(
+        request_msg = workflows.GetWorkflowRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_workflow_use_cached_wrapped_rpc():
@@ -1954,9 +1962,14 @@ async def test_get_workflow_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_workflow_async(
-    transport: str = "grpc_asyncio", request_type=workflows.GetWorkflowRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        workflows.GetWorkflowRequest(),
+        {},
+    ],
+)
+async def test_get_workflow_async(request_type, transport: str = "grpc_asyncio"):
     client = WorkflowsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1964,7 +1977,7 @@ async def test_get_workflow_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_workflow), "__call__") as call:
@@ -1993,11 +2006,6 @@ async def test_get_workflow_async(
     assert response.state == workflows.Workflow.State.ACTIVE
     assert response.revision_id == "revision_id_value"
     assert response.service_account == "service_account_value"
-
-
-@pytest.mark.asyncio
-async def test_get_workflow_async_from_dict():
-    await test_get_workflow_async(request_type=dict)
 
 
 def test_get_workflow_field_headers():
@@ -2142,8 +2150,8 @@ async def test_get_workflow_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        workflows.CreateWorkflowRequest,
-        dict,
+        workflows.CreateWorkflowRequest(),
+        {},
     ],
 )
 def test_create_workflow(request_type, transport: str = "grpc"):
@@ -2154,7 +2162,7 @@ def test_create_workflow(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_workflow), "__call__") as call:
@@ -2196,10 +2204,11 @@ def test_create_workflow_non_empty_request_with_auto_populated_field():
         client.create_workflow(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == workflows.CreateWorkflowRequest(
+        request_msg = workflows.CreateWorkflowRequest(
             parent="parent_value",
             workflow_id="workflow_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_workflow_use_cached_wrapped_rpc():
@@ -2290,9 +2299,14 @@ async def test_create_workflow_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_workflow_async(
-    transport: str = "grpc_asyncio", request_type=workflows.CreateWorkflowRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        workflows.CreateWorkflowRequest(),
+        {},
+    ],
+)
+async def test_create_workflow_async(request_type, transport: str = "grpc_asyncio"):
     client = WorkflowsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2300,7 +2314,7 @@ async def test_create_workflow_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_workflow), "__call__") as call:
@@ -2318,11 +2332,6 @@ async def test_create_workflow_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_workflow_async_from_dict():
-    await test_create_workflow_async(request_type=dict)
 
 
 def test_create_workflow_field_headers():
@@ -2491,8 +2500,8 @@ async def test_create_workflow_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        workflows.DeleteWorkflowRequest,
-        dict,
+        workflows.DeleteWorkflowRequest(),
+        {},
     ],
 )
 def test_delete_workflow(request_type, transport: str = "grpc"):
@@ -2503,7 +2512,7 @@ def test_delete_workflow(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_workflow), "__call__") as call:
@@ -2544,9 +2553,10 @@ def test_delete_workflow_non_empty_request_with_auto_populated_field():
         client.delete_workflow(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == workflows.DeleteWorkflowRequest(
+        request_msg = workflows.DeleteWorkflowRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_workflow_use_cached_wrapped_rpc():
@@ -2637,9 +2647,14 @@ async def test_delete_workflow_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_workflow_async(
-    transport: str = "grpc_asyncio", request_type=workflows.DeleteWorkflowRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        workflows.DeleteWorkflowRequest(),
+        {},
+    ],
+)
+async def test_delete_workflow_async(request_type, transport: str = "grpc_asyncio"):
     client = WorkflowsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2647,7 +2662,7 @@ async def test_delete_workflow_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_workflow), "__call__") as call:
@@ -2665,11 +2680,6 @@ async def test_delete_workflow_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_workflow_async_from_dict():
-    await test_delete_workflow_async(request_type=dict)
 
 
 def test_delete_workflow_field_headers():
@@ -2818,8 +2828,8 @@ async def test_delete_workflow_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        workflows.UpdateWorkflowRequest,
-        dict,
+        workflows.UpdateWorkflowRequest(),
+        {},
     ],
 )
 def test_update_workflow(request_type, transport: str = "grpc"):
@@ -2830,7 +2840,7 @@ def test_update_workflow(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_workflow), "__call__") as call:
@@ -2869,7 +2879,8 @@ def test_update_workflow_non_empty_request_with_auto_populated_field():
         client.update_workflow(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == workflows.UpdateWorkflowRequest()
+        request_msg = workflows.UpdateWorkflowRequest()
+        assert args[0] == request_msg
 
 
 def test_update_workflow_use_cached_wrapped_rpc():
@@ -2960,9 +2971,14 @@ async def test_update_workflow_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_workflow_async(
-    transport: str = "grpc_asyncio", request_type=workflows.UpdateWorkflowRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        workflows.UpdateWorkflowRequest(),
+        {},
+    ],
+)
+async def test_update_workflow_async(request_type, transport: str = "grpc_asyncio"):
     client = WorkflowsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2970,7 +2986,7 @@ async def test_update_workflow_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_workflow), "__call__") as call:
@@ -2988,11 +3004,6 @@ async def test_update_workflow_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_workflow_async_from_dict():
-    await test_update_workflow_async(request_type=dict)
 
 
 def test_update_workflow_field_headers():
@@ -3265,7 +3276,7 @@ def test_list_workflows_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_workflows_rest_unset_required_fields():
@@ -3512,7 +3523,7 @@ def test_get_workflow_rest_required_fields(request_type=workflows.GetWorkflowReq
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_workflow_rest_unset_required_fields():
@@ -3709,7 +3720,7 @@ def test_create_workflow_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_workflow_rest_unset_required_fields():
@@ -3899,7 +3910,7 @@ def test_delete_workflow_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_workflow_rest_unset_required_fields():
@@ -4076,7 +4087,7 @@ def test_update_workflow_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_workflow_rest_unset_required_fields():
@@ -4271,7 +4282,6 @@ def test_list_workflows_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = workflows.ListWorkflowsRequest()
-
         assert args[0] == request_msg
 
 
@@ -4292,7 +4302,6 @@ def test_get_workflow_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = workflows.GetWorkflowRequest()
-
         assert args[0] == request_msg
 
 
@@ -4313,7 +4322,6 @@ def test_create_workflow_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = workflows.CreateWorkflowRequest()
-
         assert args[0] == request_msg
 
 
@@ -4334,7 +4342,6 @@ def test_delete_workflow_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = workflows.DeleteWorkflowRequest()
-
         assert args[0] == request_msg
 
 
@@ -4355,7 +4362,6 @@ def test_update_workflow_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = workflows.UpdateWorkflowRequest()
-
         assert args[0] == request_msg
 
 
@@ -4397,7 +4403,6 @@ async def test_list_workflows_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = workflows.ListWorkflowsRequest()
-
         assert args[0] == request_msg
 
 
@@ -4428,7 +4433,6 @@ async def test_get_workflow_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = workflows.GetWorkflowRequest()
-
         assert args[0] == request_msg
 
 
@@ -4453,7 +4457,6 @@ async def test_create_workflow_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = workflows.CreateWorkflowRequest()
-
         assert args[0] == request_msg
 
 
@@ -4478,7 +4481,6 @@ async def test_delete_workflow_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = workflows.DeleteWorkflowRequest()
-
         assert args[0] == request_msg
 
 
@@ -4503,7 +4505,6 @@ async def test_update_workflow_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = workflows.UpdateWorkflowRequest()
-
         assert args[0] == request_msg
 
 
@@ -5634,7 +5635,6 @@ def test_list_workflows_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = workflows.ListWorkflowsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5654,7 +5654,6 @@ def test_get_workflow_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = workflows.GetWorkflowRequest()
-
         assert args[0] == request_msg
 
 
@@ -5674,7 +5673,6 @@ def test_create_workflow_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = workflows.CreateWorkflowRequest()
-
         assert args[0] == request_msg
 
 
@@ -5694,7 +5692,6 @@ def test_delete_workflow_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = workflows.DeleteWorkflowRequest()
-
         assert args[0] == request_msg
 
 
@@ -5714,7 +5711,6 @@ def test_update_workflow_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = workflows.UpdateWorkflowRequest()
-
         assert args[0] == request_msg
 
 

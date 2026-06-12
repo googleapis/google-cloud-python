@@ -154,8 +154,10 @@ def test_default_client_encrypted_cert_source(
     # Test good callback.
     get_client_ssl_credentials.return_value = (True, b"cert", b"key", b"passphrase")
     callback = mtls.default_client_encrypted_cert_source("cert_path", "key_path")
-    with mock.patch("{}.open".format(__name__), return_value=mock.MagicMock()):
+    with mock.patch("google.auth.transport.mtls.open", mock.mock_open()) as mock_file:
         assert callback() == ("cert_path", "key_path", b"passphrase")
+        mock_file.assert_any_call("cert_path", "wb")
+        mock_file.assert_any_call("key_path", "wb")
 
     # Test bad callback which throws exception.
     get_client_ssl_credentials.side_effect = exceptions.ClientCertError()

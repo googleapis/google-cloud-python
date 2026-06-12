@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -120,6 +115,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1355,8 +1365,8 @@ def test_developer_connect_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        developer_connect.ListConnectionsRequest,
-        dict,
+        developer_connect.ListConnectionsRequest(),
+        {},
     ],
 )
 def test_list_connections(request_type, transport: str = "grpc"):
@@ -1367,7 +1377,7 @@ def test_list_connections(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_connections), "__call__") as call:
@@ -1416,12 +1426,13 @@ def test_list_connections_non_empty_request_with_auto_populated_field():
         client.list_connections(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == developer_connect.ListConnectionsRequest(
+        request_msg = developer_connect.ListConnectionsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_connections_use_cached_wrapped_rpc():
@@ -1504,10 +1515,14 @@ async def test_list_connections_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_connections_async(
-    transport: str = "grpc_asyncio",
-    request_type=developer_connect.ListConnectionsRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        developer_connect.ListConnectionsRequest(),
+        {},
+    ],
+)
+async def test_list_connections_async(request_type, transport: str = "grpc_asyncio"):
     client = DeveloperConnectAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1515,7 +1530,7 @@ async def test_list_connections_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_connections), "__call__") as call:
@@ -1538,11 +1553,6 @@ async def test_list_connections_async(
     assert isinstance(response, pagers.ListConnectionsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_connections_async_from_dict():
-    await test_list_connections_async(request_type=dict)
 
 
 def test_list_connections_field_headers():
@@ -1872,11 +1882,7 @@ async def test_list_connections_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_connections(request={})
-        ).pages:
+        async for page_ in (await client.list_connections(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -1885,8 +1891,8 @@ async def test_list_connections_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        developer_connect.GetConnectionRequest,
-        dict,
+        developer_connect.GetConnectionRequest(),
+        {},
     ],
 )
 def test_get_connection(request_type, transport: str = "grpc"):
@@ -1897,7 +1903,7 @@ def test_get_connection(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_connection), "__call__") as call:
@@ -1949,9 +1955,10 @@ def test_get_connection_non_empty_request_with_auto_populated_field():
         client.get_connection(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == developer_connect.GetConnectionRequest(
+        request_msg = developer_connect.GetConnectionRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_connection_use_cached_wrapped_rpc():
@@ -2032,9 +2039,14 @@ async def test_get_connection_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_connection_async(
-    transport: str = "grpc_asyncio", request_type=developer_connect.GetConnectionRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        developer_connect.GetConnectionRequest(),
+        {},
+    ],
+)
+async def test_get_connection_async(request_type, transport: str = "grpc_asyncio"):
     client = DeveloperConnectAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2042,7 +2054,7 @@ async def test_get_connection_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_connection), "__call__") as call:
@@ -2071,11 +2083,6 @@ async def test_get_connection_async(
     assert response.reconciling is True
     assert response.etag == "etag_value"
     assert response.uid == "uid_value"
-
-
-@pytest.mark.asyncio
-async def test_get_connection_async_from_dict():
-    await test_get_connection_async(request_type=dict)
 
 
 def test_get_connection_field_headers():
@@ -2224,8 +2231,8 @@ async def test_get_connection_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        developer_connect.CreateConnectionRequest,
-        dict,
+        developer_connect.CreateConnectionRequest(),
+        {},
     ],
 )
 def test_create_connection(request_type, transport: str = "grpc"):
@@ -2236,7 +2243,7 @@ def test_create_connection(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2282,10 +2289,11 @@ def test_create_connection_non_empty_request_with_auto_populated_field():
         client.create_connection(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == developer_connect.CreateConnectionRequest(
+        request_msg = developer_connect.CreateConnectionRequest(
             parent="parent_value",
             connection_id="connection_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_connection_use_cached_wrapped_rpc():
@@ -2378,10 +2386,14 @@ async def test_create_connection_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_connection_async(
-    transport: str = "grpc_asyncio",
-    request_type=developer_connect.CreateConnectionRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        developer_connect.CreateConnectionRequest(),
+        {},
+    ],
+)
+async def test_create_connection_async(request_type, transport: str = "grpc_asyncio"):
     client = DeveloperConnectAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2389,7 +2401,7 @@ async def test_create_connection_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2409,11 +2421,6 @@ async def test_create_connection_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_connection_async_from_dict():
-    await test_create_connection_async(request_type=dict)
 
 
 def test_create_connection_field_headers():
@@ -2614,8 +2621,8 @@ async def test_create_connection_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        developer_connect.UpdateConnectionRequest,
-        dict,
+        developer_connect.UpdateConnectionRequest(),
+        {},
     ],
 )
 def test_update_connection(request_type, transport: str = "grpc"):
@@ -2626,7 +2633,7 @@ def test_update_connection(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2669,7 +2676,8 @@ def test_update_connection_non_empty_request_with_auto_populated_field():
         client.update_connection(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == developer_connect.UpdateConnectionRequest()
+        request_msg = developer_connect.UpdateConnectionRequest()
+        assert args[0] == request_msg
 
 
 def test_update_connection_use_cached_wrapped_rpc():
@@ -2762,10 +2770,14 @@ async def test_update_connection_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_connection_async(
-    transport: str = "grpc_asyncio",
-    request_type=developer_connect.UpdateConnectionRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        developer_connect.UpdateConnectionRequest(),
+        {},
+    ],
+)
+async def test_update_connection_async(request_type, transport: str = "grpc_asyncio"):
     client = DeveloperConnectAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2773,7 +2785,7 @@ async def test_update_connection_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2793,11 +2805,6 @@ async def test_update_connection_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_connection_async_from_dict():
-    await test_update_connection_async(request_type=dict)
 
 
 def test_update_connection_field_headers():
@@ -2988,8 +2995,8 @@ async def test_update_connection_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        developer_connect.DeleteConnectionRequest,
-        dict,
+        developer_connect.DeleteConnectionRequest(),
+        {},
     ],
 )
 def test_delete_connection(request_type, transport: str = "grpc"):
@@ -3000,7 +3007,7 @@ def test_delete_connection(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3046,10 +3053,11 @@ def test_delete_connection_non_empty_request_with_auto_populated_field():
         client.delete_connection(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == developer_connect.DeleteConnectionRequest(
+        request_msg = developer_connect.DeleteConnectionRequest(
             name="name_value",
             etag="etag_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_connection_use_cached_wrapped_rpc():
@@ -3142,10 +3150,14 @@ async def test_delete_connection_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_connection_async(
-    transport: str = "grpc_asyncio",
-    request_type=developer_connect.DeleteConnectionRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        developer_connect.DeleteConnectionRequest(),
+        {},
+    ],
+)
+async def test_delete_connection_async(request_type, transport: str = "grpc_asyncio"):
     client = DeveloperConnectAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3153,7 +3165,7 @@ async def test_delete_connection_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3173,11 +3185,6 @@ async def test_delete_connection_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_connection_async_from_dict():
-    await test_delete_connection_async(request_type=dict)
 
 
 def test_delete_connection_field_headers():
@@ -3334,8 +3341,8 @@ async def test_delete_connection_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        developer_connect.CreateGitRepositoryLinkRequest,
-        dict,
+        developer_connect.CreateGitRepositoryLinkRequest(),
+        {},
     ],
 )
 def test_create_git_repository_link(request_type, transport: str = "grpc"):
@@ -3346,7 +3353,7 @@ def test_create_git_repository_link(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3392,10 +3399,11 @@ def test_create_git_repository_link_non_empty_request_with_auto_populated_field(
         client.create_git_repository_link(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == developer_connect.CreateGitRepositoryLinkRequest(
+        request_msg = developer_connect.CreateGitRepositoryLinkRequest(
             parent="parent_value",
             git_repository_link_id="git_repository_link_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_git_repository_link_use_cached_wrapped_rpc():
@@ -3491,9 +3499,15 @@ async def test_create_git_repository_link_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        developer_connect.CreateGitRepositoryLinkRequest(),
+        {},
+    ],
+)
 async def test_create_git_repository_link_async(
-    transport: str = "grpc_asyncio",
-    request_type=developer_connect.CreateGitRepositoryLinkRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DeveloperConnectAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3502,7 +3516,7 @@ async def test_create_git_repository_link_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3522,11 +3536,6 @@ async def test_create_git_repository_link_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_git_repository_link_async_from_dict():
-    await test_create_git_repository_link_async(request_type=dict)
 
 
 def test_create_git_repository_link_field_headers():
@@ -3703,8 +3712,8 @@ async def test_create_git_repository_link_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        developer_connect.DeleteGitRepositoryLinkRequest,
-        dict,
+        developer_connect.DeleteGitRepositoryLinkRequest(),
+        {},
     ],
 )
 def test_delete_git_repository_link(request_type, transport: str = "grpc"):
@@ -3715,7 +3724,7 @@ def test_delete_git_repository_link(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3761,10 +3770,11 @@ def test_delete_git_repository_link_non_empty_request_with_auto_populated_field(
         client.delete_git_repository_link(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == developer_connect.DeleteGitRepositoryLinkRequest(
+        request_msg = developer_connect.DeleteGitRepositoryLinkRequest(
             name="name_value",
             etag="etag_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_git_repository_link_use_cached_wrapped_rpc():
@@ -3860,9 +3870,15 @@ async def test_delete_git_repository_link_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        developer_connect.DeleteGitRepositoryLinkRequest(),
+        {},
+    ],
+)
 async def test_delete_git_repository_link_async(
-    transport: str = "grpc_asyncio",
-    request_type=developer_connect.DeleteGitRepositoryLinkRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DeveloperConnectAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3871,7 +3887,7 @@ async def test_delete_git_repository_link_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3891,11 +3907,6 @@ async def test_delete_git_repository_link_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_git_repository_link_async_from_dict():
-    await test_delete_git_repository_link_async(request_type=dict)
 
 
 def test_delete_git_repository_link_field_headers():
@@ -4052,8 +4063,8 @@ async def test_delete_git_repository_link_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        developer_connect.ListGitRepositoryLinksRequest,
-        dict,
+        developer_connect.ListGitRepositoryLinksRequest(),
+        {},
     ],
 )
 def test_list_git_repository_links(request_type, transport: str = "grpc"):
@@ -4064,7 +4075,7 @@ def test_list_git_repository_links(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4117,12 +4128,13 @@ def test_list_git_repository_links_non_empty_request_with_auto_populated_field()
         client.list_git_repository_links(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == developer_connect.ListGitRepositoryLinksRequest(
+        request_msg = developer_connect.ListGitRepositoryLinksRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_git_repository_links_use_cached_wrapped_rpc():
@@ -4208,9 +4220,15 @@ async def test_list_git_repository_links_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        developer_connect.ListGitRepositoryLinksRequest(),
+        {},
+    ],
+)
 async def test_list_git_repository_links_async(
-    transport: str = "grpc_asyncio",
-    request_type=developer_connect.ListGitRepositoryLinksRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DeveloperConnectAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4219,7 +4237,7 @@ async def test_list_git_repository_links_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4244,11 +4262,6 @@ async def test_list_git_repository_links_async(
     assert isinstance(response, pagers.ListGitRepositoryLinksAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_git_repository_links_async_from_dict():
-    await test_list_git_repository_links_async(request_type=dict)
 
 
 def test_list_git_repository_links_field_headers():
@@ -4598,11 +4611,7 @@ async def test_list_git_repository_links_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_git_repository_links(request={})
-        ).pages:
+        async for page_ in (await client.list_git_repository_links(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -4611,8 +4620,8 @@ async def test_list_git_repository_links_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        developer_connect.GetGitRepositoryLinkRequest,
-        dict,
+        developer_connect.GetGitRepositoryLinkRequest(),
+        {},
     ],
 )
 def test_get_git_repository_link(request_type, transport: str = "grpc"):
@@ -4623,7 +4632,7 @@ def test_get_git_repository_link(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4683,9 +4692,10 @@ def test_get_git_repository_link_non_empty_request_with_auto_populated_field():
         client.get_git_repository_link(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == developer_connect.GetGitRepositoryLinkRequest(
+        request_msg = developer_connect.GetGitRepositoryLinkRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_git_repository_link_use_cached_wrapped_rpc():
@@ -4771,9 +4781,15 @@ async def test_get_git_repository_link_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        developer_connect.GetGitRepositoryLinkRequest(),
+        {},
+    ],
+)
 async def test_get_git_repository_link_async(
-    transport: str = "grpc_asyncio",
-    request_type=developer_connect.GetGitRepositoryLinkRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DeveloperConnectAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4782,7 +4798,7 @@ async def test_get_git_repository_link_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4817,11 +4833,6 @@ async def test_get_git_repository_link_async(
     assert response.uid == "uid_value"
     assert response.webhook_id == "webhook_id_value"
     assert response.git_proxy_uri == "git_proxy_uri_value"
-
-
-@pytest.mark.asyncio
-async def test_get_git_repository_link_async_from_dict():
-    await test_get_git_repository_link_async(request_type=dict)
 
 
 def test_get_git_repository_link_field_headers():
@@ -4978,8 +4989,8 @@ async def test_get_git_repository_link_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        developer_connect.FetchReadWriteTokenRequest,
-        dict,
+        developer_connect.FetchReadWriteTokenRequest(),
+        {},
     ],
 )
 def test_fetch_read_write_token(request_type, transport: str = "grpc"):
@@ -4990,7 +5001,7 @@ def test_fetch_read_write_token(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5040,9 +5051,10 @@ def test_fetch_read_write_token_non_empty_request_with_auto_populated_field():
         client.fetch_read_write_token(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == developer_connect.FetchReadWriteTokenRequest(
+        request_msg = developer_connect.FetchReadWriteTokenRequest(
             git_repository_link="git_repository_link_value",
         )
+        assert args[0] == request_msg
 
 
 def test_fetch_read_write_token_use_cached_wrapped_rpc():
@@ -5128,9 +5140,15 @@ async def test_fetch_read_write_token_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        developer_connect.FetchReadWriteTokenRequest(),
+        {},
+    ],
+)
 async def test_fetch_read_write_token_async(
-    transport: str = "grpc_asyncio",
-    request_type=developer_connect.FetchReadWriteTokenRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DeveloperConnectAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5139,7 +5157,7 @@ async def test_fetch_read_write_token_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5164,11 +5182,6 @@ async def test_fetch_read_write_token_async(
     assert isinstance(response, developer_connect.FetchReadWriteTokenResponse)
     assert response.token == "token_value"
     assert response.git_username == "git_username_value"
-
-
-@pytest.mark.asyncio
-async def test_fetch_read_write_token_async_from_dict():
-    await test_fetch_read_write_token_async(request_type=dict)
 
 
 def test_fetch_read_write_token_field_headers():
@@ -5325,8 +5338,8 @@ async def test_fetch_read_write_token_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        developer_connect.FetchReadTokenRequest,
-        dict,
+        developer_connect.FetchReadTokenRequest(),
+        {},
     ],
 )
 def test_fetch_read_token(request_type, transport: str = "grpc"):
@@ -5337,7 +5350,7 @@ def test_fetch_read_token(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.fetch_read_token), "__call__") as call:
@@ -5383,9 +5396,10 @@ def test_fetch_read_token_non_empty_request_with_auto_populated_field():
         client.fetch_read_token(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == developer_connect.FetchReadTokenRequest(
+        request_msg = developer_connect.FetchReadTokenRequest(
             git_repository_link="git_repository_link_value",
         )
+        assert args[0] == request_msg
 
 
 def test_fetch_read_token_use_cached_wrapped_rpc():
@@ -5468,10 +5482,14 @@ async def test_fetch_read_token_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_fetch_read_token_async(
-    transport: str = "grpc_asyncio",
-    request_type=developer_connect.FetchReadTokenRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        developer_connect.FetchReadTokenRequest(),
+        {},
+    ],
+)
+async def test_fetch_read_token_async(request_type, transport: str = "grpc_asyncio"):
     client = DeveloperConnectAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5479,7 +5497,7 @@ async def test_fetch_read_token_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.fetch_read_token), "__call__") as call:
@@ -5502,11 +5520,6 @@ async def test_fetch_read_token_async(
     assert isinstance(response, developer_connect.FetchReadTokenResponse)
     assert response.token == "token_value"
     assert response.git_username == "git_username_value"
-
-
-@pytest.mark.asyncio
-async def test_fetch_read_token_async_from_dict():
-    await test_fetch_read_token_async(request_type=dict)
 
 
 def test_fetch_read_token_field_headers():
@@ -5655,8 +5668,8 @@ async def test_fetch_read_token_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        developer_connect.FetchLinkableGitRepositoriesRequest,
-        dict,
+        developer_connect.FetchLinkableGitRepositoriesRequest(),
+        {},
     ],
 )
 def test_fetch_linkable_git_repositories(request_type, transport: str = "grpc"):
@@ -5667,7 +5680,7 @@ def test_fetch_linkable_git_repositories(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5716,10 +5729,11 @@ def test_fetch_linkable_git_repositories_non_empty_request_with_auto_populated_f
         client.fetch_linkable_git_repositories(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == developer_connect.FetchLinkableGitRepositoriesRequest(
+        request_msg = developer_connect.FetchLinkableGitRepositoriesRequest(
             connection="connection_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_fetch_linkable_git_repositories_use_cached_wrapped_rpc():
@@ -5805,9 +5819,15 @@ async def test_fetch_linkable_git_repositories_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        developer_connect.FetchLinkableGitRepositoriesRequest(),
+        {},
+    ],
+)
 async def test_fetch_linkable_git_repositories_async(
-    transport: str = "grpc_asyncio",
-    request_type=developer_connect.FetchLinkableGitRepositoriesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DeveloperConnectAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5816,7 +5836,7 @@ async def test_fetch_linkable_git_repositories_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5839,11 +5859,6 @@ async def test_fetch_linkable_git_repositories_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.FetchLinkableGitRepositoriesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_fetch_linkable_git_repositories_async_from_dict():
-    await test_fetch_linkable_git_repositories_async(request_type=dict)
 
 
 def test_fetch_linkable_git_repositories_field_headers():
@@ -6195,9 +6210,7 @@ async def test_fetch_linkable_git_repositories_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
+        async for page_ in (
             await client.fetch_linkable_git_repositories(request={})
         ).pages:
             pages.append(page_)
@@ -6208,8 +6221,8 @@ async def test_fetch_linkable_git_repositories_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        developer_connect.FetchGitHubInstallationsRequest,
-        dict,
+        developer_connect.FetchGitHubInstallationsRequest(),
+        {},
     ],
 )
 def test_fetch_git_hub_installations(request_type, transport: str = "grpc"):
@@ -6220,7 +6233,7 @@ def test_fetch_git_hub_installations(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6265,9 +6278,10 @@ def test_fetch_git_hub_installations_non_empty_request_with_auto_populated_field
         client.fetch_git_hub_installations(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == developer_connect.FetchGitHubInstallationsRequest(
+        request_msg = developer_connect.FetchGitHubInstallationsRequest(
             connection="connection_value",
         )
+        assert args[0] == request_msg
 
 
 def test_fetch_git_hub_installations_use_cached_wrapped_rpc():
@@ -6353,9 +6367,15 @@ async def test_fetch_git_hub_installations_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        developer_connect.FetchGitHubInstallationsRequest(),
+        {},
+    ],
+)
 async def test_fetch_git_hub_installations_async(
-    transport: str = "grpc_asyncio",
-    request_type=developer_connect.FetchGitHubInstallationsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DeveloperConnectAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -6364,7 +6384,7 @@ async def test_fetch_git_hub_installations_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6384,11 +6404,6 @@ async def test_fetch_git_hub_installations_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, developer_connect.FetchGitHubInstallationsResponse)
-
-
-@pytest.mark.asyncio
-async def test_fetch_git_hub_installations_async_from_dict():
-    await test_fetch_git_hub_installations_async(request_type=dict)
 
 
 def test_fetch_git_hub_installations_field_headers():
@@ -6545,8 +6560,8 @@ async def test_fetch_git_hub_installations_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        developer_connect.FetchGitRefsRequest,
-        dict,
+        developer_connect.FetchGitRefsRequest(),
+        {},
     ],
 )
 def test_fetch_git_refs(request_type, transport: str = "grpc"):
@@ -6557,7 +6572,7 @@ def test_fetch_git_refs(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.fetch_git_refs), "__call__") as call:
@@ -6604,10 +6619,11 @@ def test_fetch_git_refs_non_empty_request_with_auto_populated_field():
         client.fetch_git_refs(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == developer_connect.FetchGitRefsRequest(
+        request_msg = developer_connect.FetchGitRefsRequest(
             git_repository_link="git_repository_link_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_fetch_git_refs_use_cached_wrapped_rpc():
@@ -6688,9 +6704,14 @@ async def test_fetch_git_refs_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_fetch_git_refs_async(
-    transport: str = "grpc_asyncio", request_type=developer_connect.FetchGitRefsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        developer_connect.FetchGitRefsRequest(),
+        {},
+    ],
+)
+async def test_fetch_git_refs_async(request_type, transport: str = "grpc_asyncio"):
     client = DeveloperConnectAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6698,7 +6719,7 @@ async def test_fetch_git_refs_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.fetch_git_refs), "__call__") as call:
@@ -6721,11 +6742,6 @@ async def test_fetch_git_refs_async(
     assert isinstance(response, pagers.FetchGitRefsAsyncPager)
     assert response.ref_names == ["ref_names_value"]
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_fetch_git_refs_async_from_dict():
-    await test_fetch_git_refs_async(request_type=dict)
 
 
 def test_fetch_git_refs_field_headers():
@@ -7065,11 +7081,7 @@ async def test_fetch_git_refs_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.fetch_git_refs(request={})
-        ).pages:
+        async for page_ in (await client.fetch_git_refs(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -7078,8 +7090,8 @@ async def test_fetch_git_refs_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        developer_connect.ListAccountConnectorsRequest,
-        dict,
+        developer_connect.ListAccountConnectorsRequest(),
+        {},
     ],
 )
 def test_list_account_connectors(request_type, transport: str = "grpc"):
@@ -7090,7 +7102,7 @@ def test_list_account_connectors(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7143,12 +7155,13 @@ def test_list_account_connectors_non_empty_request_with_auto_populated_field():
         client.list_account_connectors(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == developer_connect.ListAccountConnectorsRequest(
+        request_msg = developer_connect.ListAccountConnectorsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_account_connectors_use_cached_wrapped_rpc():
@@ -7234,9 +7247,15 @@ async def test_list_account_connectors_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        developer_connect.ListAccountConnectorsRequest(),
+        {},
+    ],
+)
 async def test_list_account_connectors_async(
-    transport: str = "grpc_asyncio",
-    request_type=developer_connect.ListAccountConnectorsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DeveloperConnectAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -7245,7 +7264,7 @@ async def test_list_account_connectors_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7270,11 +7289,6 @@ async def test_list_account_connectors_async(
     assert isinstance(response, pagers.ListAccountConnectorsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_account_connectors_async_from_dict():
-    await test_list_account_connectors_async(request_type=dict)
 
 
 def test_list_account_connectors_field_headers():
@@ -7620,11 +7634,7 @@ async def test_list_account_connectors_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_account_connectors(request={})
-        ).pages:
+        async for page_ in (await client.list_account_connectors(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -7633,8 +7643,8 @@ async def test_list_account_connectors_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        developer_connect.GetAccountConnectorRequest,
-        dict,
+        developer_connect.GetAccountConnectorRequest(),
+        {},
     ],
 )
 def test_get_account_connector(request_type, transport: str = "grpc"):
@@ -7645,7 +7655,7 @@ def test_get_account_connector(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7697,9 +7707,10 @@ def test_get_account_connector_non_empty_request_with_auto_populated_field():
         client.get_account_connector(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == developer_connect.GetAccountConnectorRequest(
+        request_msg = developer_connect.GetAccountConnectorRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_account_connector_use_cached_wrapped_rpc():
@@ -7785,9 +7796,15 @@ async def test_get_account_connector_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        developer_connect.GetAccountConnectorRequest(),
+        {},
+    ],
+)
 async def test_get_account_connector_async(
-    transport: str = "grpc_asyncio",
-    request_type=developer_connect.GetAccountConnectorRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DeveloperConnectAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -7796,7 +7813,7 @@ async def test_get_account_connector_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7823,11 +7840,6 @@ async def test_get_account_connector_async(
     assert response.name == "name_value"
     assert response.etag == "etag_value"
     assert response.oauth_start_uri == "oauth_start_uri_value"
-
-
-@pytest.mark.asyncio
-async def test_get_account_connector_async_from_dict():
-    await test_get_account_connector_async(request_type=dict)
 
 
 def test_get_account_connector_field_headers():
@@ -7984,8 +7996,8 @@ async def test_get_account_connector_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        developer_connect.CreateAccountConnectorRequest,
-        dict,
+        developer_connect.CreateAccountConnectorRequest(),
+        {},
     ],
 )
 def test_create_account_connector(request_type, transport: str = "grpc"):
@@ -7996,7 +8008,7 @@ def test_create_account_connector(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8042,10 +8054,11 @@ def test_create_account_connector_non_empty_request_with_auto_populated_field():
         client.create_account_connector(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == developer_connect.CreateAccountConnectorRequest(
+        request_msg = developer_connect.CreateAccountConnectorRequest(
             parent="parent_value",
             account_connector_id="account_connector_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_account_connector_use_cached_wrapped_rpc():
@@ -8141,9 +8154,15 @@ async def test_create_account_connector_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        developer_connect.CreateAccountConnectorRequest(),
+        {},
+    ],
+)
 async def test_create_account_connector_async(
-    transport: str = "grpc_asyncio",
-    request_type=developer_connect.CreateAccountConnectorRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DeveloperConnectAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -8152,7 +8171,7 @@ async def test_create_account_connector_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8172,11 +8191,6 @@ async def test_create_account_connector_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_account_connector_async_from_dict():
-    await test_create_account_connector_async(request_type=dict)
 
 
 def test_create_account_connector_field_headers():
@@ -8377,8 +8391,8 @@ async def test_create_account_connector_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        developer_connect.UpdateAccountConnectorRequest,
-        dict,
+        developer_connect.UpdateAccountConnectorRequest(),
+        {},
     ],
 )
 def test_update_account_connector(request_type, transport: str = "grpc"):
@@ -8389,7 +8403,7 @@ def test_update_account_connector(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8432,7 +8446,8 @@ def test_update_account_connector_non_empty_request_with_auto_populated_field():
         client.update_account_connector(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == developer_connect.UpdateAccountConnectorRequest()
+        request_msg = developer_connect.UpdateAccountConnectorRequest()
+        assert args[0] == request_msg
 
 
 def test_update_account_connector_use_cached_wrapped_rpc():
@@ -8528,9 +8543,15 @@ async def test_update_account_connector_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        developer_connect.UpdateAccountConnectorRequest(),
+        {},
+    ],
+)
 async def test_update_account_connector_async(
-    transport: str = "grpc_asyncio",
-    request_type=developer_connect.UpdateAccountConnectorRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DeveloperConnectAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -8539,7 +8560,7 @@ async def test_update_account_connector_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8559,11 +8580,6 @@ async def test_update_account_connector_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_account_connector_async_from_dict():
-    await test_update_account_connector_async(request_type=dict)
 
 
 def test_update_account_connector_field_headers():
@@ -8754,8 +8770,8 @@ async def test_update_account_connector_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        developer_connect.DeleteAccountConnectorRequest,
-        dict,
+        developer_connect.DeleteAccountConnectorRequest(),
+        {},
     ],
 )
 def test_delete_account_connector(request_type, transport: str = "grpc"):
@@ -8766,7 +8782,7 @@ def test_delete_account_connector(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8812,10 +8828,11 @@ def test_delete_account_connector_non_empty_request_with_auto_populated_field():
         client.delete_account_connector(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == developer_connect.DeleteAccountConnectorRequest(
+        request_msg = developer_connect.DeleteAccountConnectorRequest(
             name="name_value",
             etag="etag_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_account_connector_use_cached_wrapped_rpc():
@@ -8911,9 +8928,15 @@ async def test_delete_account_connector_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        developer_connect.DeleteAccountConnectorRequest(),
+        {},
+    ],
+)
 async def test_delete_account_connector_async(
-    transport: str = "grpc_asyncio",
-    request_type=developer_connect.DeleteAccountConnectorRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DeveloperConnectAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -8922,7 +8945,7 @@ async def test_delete_account_connector_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8942,11 +8965,6 @@ async def test_delete_account_connector_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_account_connector_async_from_dict():
-    await test_delete_account_connector_async(request_type=dict)
 
 
 def test_delete_account_connector_field_headers():
@@ -9103,8 +9121,8 @@ async def test_delete_account_connector_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        developer_connect.FetchAccessTokenRequest,
-        dict,
+        developer_connect.FetchAccessTokenRequest(),
+        {},
     ],
 )
 def test_fetch_access_token(request_type, transport: str = "grpc"):
@@ -9115,7 +9133,7 @@ def test_fetch_access_token(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9165,9 +9183,10 @@ def test_fetch_access_token_non_empty_request_with_auto_populated_field():
         client.fetch_access_token(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == developer_connect.FetchAccessTokenRequest(
+        request_msg = developer_connect.FetchAccessTokenRequest(
             account_connector="account_connector_value",
         )
+        assert args[0] == request_msg
 
 
 def test_fetch_access_token_use_cached_wrapped_rpc():
@@ -9252,10 +9271,14 @@ async def test_fetch_access_token_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_fetch_access_token_async(
-    transport: str = "grpc_asyncio",
-    request_type=developer_connect.FetchAccessTokenRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        developer_connect.FetchAccessTokenRequest(),
+        {},
+    ],
+)
+async def test_fetch_access_token_async(request_type, transport: str = "grpc_asyncio"):
     client = DeveloperConnectAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -9263,7 +9286,7 @@ async def test_fetch_access_token_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9288,11 +9311,6 @@ async def test_fetch_access_token_async(
     assert isinstance(response, developer_connect.FetchAccessTokenResponse)
     assert response.token == "token_value"
     assert response.scopes == ["scopes_value"]
-
-
-@pytest.mark.asyncio
-async def test_fetch_access_token_async_from_dict():
-    await test_fetch_access_token_async(request_type=dict)
 
 
 def test_fetch_access_token_field_headers():
@@ -9449,8 +9467,8 @@ async def test_fetch_access_token_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        developer_connect.ListUsersRequest,
-        dict,
+        developer_connect.ListUsersRequest(),
+        {},
     ],
 )
 def test_list_users(request_type, transport: str = "grpc"):
@@ -9461,7 +9479,7 @@ def test_list_users(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_users), "__call__") as call:
@@ -9510,12 +9528,13 @@ def test_list_users_non_empty_request_with_auto_populated_field():
         client.list_users(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == developer_connect.ListUsersRequest(
+        request_msg = developer_connect.ListUsersRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_users_use_cached_wrapped_rpc():
@@ -9594,9 +9613,14 @@ async def test_list_users_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_list_users_async(
-    transport: str = "grpc_asyncio", request_type=developer_connect.ListUsersRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        developer_connect.ListUsersRequest(),
+        {},
+    ],
+)
+async def test_list_users_async(request_type, transport: str = "grpc_asyncio"):
     client = DeveloperConnectAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -9604,7 +9628,7 @@ async def test_list_users_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_users), "__call__") as call:
@@ -9627,11 +9651,6 @@ async def test_list_users_async(
     assert isinstance(response, pagers.ListUsersAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_users_async_from_dict():
-    await test_list_users_async(request_type=dict)
 
 
 def test_list_users_field_headers():
@@ -9961,11 +9980,7 @@ async def test_list_users_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_users(request={})
-        ).pages:
+        async for page_ in (await client.list_users(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -9974,8 +9989,8 @@ async def test_list_users_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        developer_connect.DeleteUserRequest,
-        dict,
+        developer_connect.DeleteUserRequest(),
+        {},
     ],
 )
 def test_delete_user(request_type, transport: str = "grpc"):
@@ -9986,7 +10001,7 @@ def test_delete_user(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_user), "__call__") as call:
@@ -10028,10 +10043,11 @@ def test_delete_user_non_empty_request_with_auto_populated_field():
         client.delete_user(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == developer_connect.DeleteUserRequest(
+        request_msg = developer_connect.DeleteUserRequest(
             name="name_value",
             etag="etag_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_user_use_cached_wrapped_rpc():
@@ -10122,9 +10138,14 @@ async def test_delete_user_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_user_async(
-    transport: str = "grpc_asyncio", request_type=developer_connect.DeleteUserRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        developer_connect.DeleteUserRequest(),
+        {},
+    ],
+)
+async def test_delete_user_async(request_type, transport: str = "grpc_asyncio"):
     client = DeveloperConnectAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -10132,7 +10153,7 @@ async def test_delete_user_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_user), "__call__") as call:
@@ -10150,11 +10171,6 @@ async def test_delete_user_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_user_async_from_dict():
-    await test_delete_user_async(request_type=dict)
 
 
 def test_delete_user_field_headers():
@@ -10303,8 +10319,8 @@ async def test_delete_user_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        developer_connect.FetchSelfRequest,
-        dict,
+        developer_connect.FetchSelfRequest(),
+        {},
     ],
 )
 def test_fetch_self(request_type, transport: str = "grpc"):
@@ -10315,7 +10331,7 @@ def test_fetch_self(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.fetch_self), "__call__") as call:
@@ -10361,9 +10377,10 @@ def test_fetch_self_non_empty_request_with_auto_populated_field():
         client.fetch_self(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == developer_connect.FetchSelfRequest(
+        request_msg = developer_connect.FetchSelfRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_fetch_self_use_cached_wrapped_rpc():
@@ -10442,9 +10459,14 @@ async def test_fetch_self_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_fetch_self_async(
-    transport: str = "grpc_asyncio", request_type=developer_connect.FetchSelfRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        developer_connect.FetchSelfRequest(),
+        {},
+    ],
+)
+async def test_fetch_self_async(request_type, transport: str = "grpc_asyncio"):
     client = DeveloperConnectAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -10452,7 +10474,7 @@ async def test_fetch_self_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.fetch_self), "__call__") as call:
@@ -10475,11 +10497,6 @@ async def test_fetch_self_async(
     assert isinstance(response, developer_connect.User)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
-
-
-@pytest.mark.asyncio
-async def test_fetch_self_async_from_dict():
-    await test_fetch_self_async(request_type=dict)
 
 
 def test_fetch_self_field_headers():
@@ -10628,8 +10645,8 @@ async def test_fetch_self_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        developer_connect.DeleteSelfRequest,
-        dict,
+        developer_connect.DeleteSelfRequest(),
+        {},
     ],
 )
 def test_delete_self(request_type, transport: str = "grpc"):
@@ -10640,7 +10657,7 @@ def test_delete_self(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_self), "__call__") as call:
@@ -10681,9 +10698,10 @@ def test_delete_self_non_empty_request_with_auto_populated_field():
         client.delete_self(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == developer_connect.DeleteSelfRequest(
+        request_msg = developer_connect.DeleteSelfRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_self_use_cached_wrapped_rpc():
@@ -10774,9 +10792,14 @@ async def test_delete_self_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_self_async(
-    transport: str = "grpc_asyncio", request_type=developer_connect.DeleteSelfRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        developer_connect.DeleteSelfRequest(),
+        {},
+    ],
+)
+async def test_delete_self_async(request_type, transport: str = "grpc_asyncio"):
     client = DeveloperConnectAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -10784,7 +10807,7 @@ async def test_delete_self_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_self), "__call__") as call:
@@ -10802,11 +10825,6 @@ async def test_delete_self_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_self_async_from_dict():
-    await test_delete_self_async(request_type=dict)
 
 
 def test_delete_self_field_headers():
@@ -10955,8 +10973,8 @@ async def test_delete_self_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        developer_connect.StartOAuthRequest,
-        dict,
+        developer_connect.StartOAuthRequest(),
+        {},
     ],
 )
 def test_start_o_auth(request_type, transport: str = "grpc"):
@@ -10967,7 +10985,7 @@ def test_start_o_auth(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.start_o_auth), "__call__") as call:
@@ -11022,9 +11040,10 @@ def test_start_o_auth_non_empty_request_with_auto_populated_field():
         client.start_o_auth(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == developer_connect.StartOAuthRequest(
+        request_msg = developer_connect.StartOAuthRequest(
             account_connector="account_connector_value",
         )
+        assert args[0] == request_msg
 
 
 def test_start_o_auth_use_cached_wrapped_rpc():
@@ -11105,9 +11124,14 @@ async def test_start_o_auth_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_start_o_auth_async(
-    transport: str = "grpc_asyncio", request_type=developer_connect.StartOAuthRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        developer_connect.StartOAuthRequest(),
+        {},
+    ],
+)
+async def test_start_o_auth_async(request_type, transport: str = "grpc_asyncio"):
     client = DeveloperConnectAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -11115,7 +11139,7 @@ async def test_start_o_auth_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.start_o_auth), "__call__") as call:
@@ -11146,11 +11170,6 @@ async def test_start_o_auth_async(
     assert response.client_id == "client_id_value"
     assert response.scopes == ["scopes_value"]
     assert response.auth_uri == "auth_uri_value"
-
-
-@pytest.mark.asyncio
-async def test_start_o_auth_async_from_dict():
-    await test_start_o_auth_async(request_type=dict)
 
 
 def test_start_o_auth_field_headers():
@@ -11299,8 +11318,8 @@ async def test_start_o_auth_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        developer_connect.FinishOAuthRequest,
-        dict,
+        developer_connect.FinishOAuthRequest(),
+        {},
     ],
 )
 def test_finish_o_auth(request_type, transport: str = "grpc"):
@@ -11311,7 +11330,7 @@ def test_finish_o_auth(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.finish_o_auth), "__call__") as call:
@@ -11352,9 +11371,10 @@ def test_finish_o_auth_non_empty_request_with_auto_populated_field():
         client.finish_o_auth(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == developer_connect.FinishOAuthRequest(
+        request_msg = developer_connect.FinishOAuthRequest(
             account_connector="account_connector_value",
         )
+        assert args[0] == request_msg
 
 
 def test_finish_o_auth_use_cached_wrapped_rpc():
@@ -11435,9 +11455,14 @@ async def test_finish_o_auth_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_finish_o_auth_async(
-    transport: str = "grpc_asyncio", request_type=developer_connect.FinishOAuthRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        developer_connect.FinishOAuthRequest(),
+        {},
+    ],
+)
+async def test_finish_o_auth_async(request_type, transport: str = "grpc_asyncio"):
     client = DeveloperConnectAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -11445,7 +11470,7 @@ async def test_finish_o_auth_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.finish_o_auth), "__call__") as call:
@@ -11463,11 +11488,6 @@ async def test_finish_o_auth_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, developer_connect.FinishOAuthResponse)
-
-
-@pytest.mark.asyncio
-async def test_finish_o_auth_async_from_dict():
-    await test_finish_o_auth_async(request_type=dict)
 
 
 def test_finish_o_auth_field_headers():
@@ -11732,7 +11752,7 @@ def test_list_connections_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_connections_rest_unset_required_fields():
@@ -11983,7 +12003,7 @@ def test_get_connection_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_connection_rest_unset_required_fields():
@@ -12188,7 +12208,7 @@ def test_create_connection_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_connection_rest_unset_required_fields():
@@ -12399,7 +12419,7 @@ def test_update_connection_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_connection_rest_unset_required_fields():
@@ -12615,7 +12635,7 @@ def test_delete_connection_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_connection_rest_unset_required_fields():
@@ -12833,7 +12853,7 @@ def test_create_git_repository_link_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_git_repository_link_rest_unset_required_fields():
@@ -13044,7 +13064,7 @@ def test_delete_git_repository_link_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_git_repository_link_rest_unset_required_fields():
@@ -13247,7 +13267,7 @@ def test_list_git_repository_links_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_git_repository_links_rest_unset_required_fields():
@@ -13508,7 +13528,7 @@ def test_get_git_repository_link_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_git_repository_link_rest_unset_required_fields():
@@ -13696,7 +13716,7 @@ def test_fetch_read_write_token_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_fetch_read_write_token_rest_unset_required_fields():
@@ -13879,7 +13899,7 @@ def test_fetch_read_token_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_fetch_read_token_rest_unset_required_fields():
@@ -14073,7 +14093,7 @@ def test_fetch_linkable_git_repositories_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_fetch_linkable_git_repositories_rest_unset_required_fields():
@@ -14342,7 +14362,7 @@ def test_fetch_git_hub_installations_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_fetch_git_hub_installations_rest_unset_required_fields():
@@ -14532,7 +14552,7 @@ def test_fetch_git_refs_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_fetch_git_refs_rest_unset_required_fields():
@@ -14809,7 +14829,7 @@ def test_list_account_connectors_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_account_connectors_rest_unset_required_fields():
@@ -15065,7 +15085,7 @@ def test_get_account_connector_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_account_connector_rest_unset_required_fields():
@@ -15275,7 +15295,7 @@ def test_create_account_connector_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_account_connector_rest_unset_required_fields():
@@ -15489,7 +15509,7 @@ def test_update_account_connector_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_account_connector_rest_unset_required_fields():
@@ -15704,7 +15724,7 @@ def test_delete_account_connector_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_account_connector_rest_unset_required_fields():
@@ -15897,7 +15917,7 @@ def test_fetch_access_token_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_fetch_access_token_rest_unset_required_fields():
@@ -16086,7 +16106,7 @@ def test_list_users_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_users_rest_unset_required_fields():
@@ -16350,7 +16370,7 @@ def test_delete_user_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_user_rest_unset_required_fields():
@@ -16537,7 +16557,7 @@ def test_fetch_self_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_fetch_self_rest_unset_required_fields():
@@ -16718,7 +16738,7 @@ def test_delete_self_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_self_rest_unset_required_fields():
@@ -16896,7 +16916,7 @@ def test_start_o_auth_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_start_o_auth_rest_unset_required_fields():
@@ -17083,7 +17103,7 @@ def test_finish_o_auth_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_finish_o_auth_rest_unset_required_fields():
@@ -17286,7 +17306,6 @@ def test_list_connections_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developer_connect.ListConnectionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -17307,7 +17326,6 @@ def test_get_connection_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developer_connect.GetConnectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -17330,7 +17348,6 @@ def test_create_connection_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developer_connect.CreateConnectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -17353,7 +17370,6 @@ def test_update_connection_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developer_connect.UpdateConnectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -17376,7 +17392,6 @@ def test_delete_connection_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developer_connect.DeleteConnectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -17399,7 +17414,6 @@ def test_create_git_repository_link_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developer_connect.CreateGitRepositoryLinkRequest()
-
         assert args[0] == request_msg
 
 
@@ -17422,7 +17436,6 @@ def test_delete_git_repository_link_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developer_connect.DeleteGitRepositoryLinkRequest()
-
         assert args[0] == request_msg
 
 
@@ -17445,7 +17458,6 @@ def test_list_git_repository_links_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developer_connect.ListGitRepositoryLinksRequest()
-
         assert args[0] == request_msg
 
 
@@ -17468,7 +17480,6 @@ def test_get_git_repository_link_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developer_connect.GetGitRepositoryLinkRequest()
-
         assert args[0] == request_msg
 
 
@@ -17491,7 +17502,6 @@ def test_fetch_read_write_token_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developer_connect.FetchReadWriteTokenRequest()
-
         assert args[0] == request_msg
 
 
@@ -17512,7 +17522,6 @@ def test_fetch_read_token_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developer_connect.FetchReadTokenRequest()
-
         assert args[0] == request_msg
 
 
@@ -17535,7 +17544,6 @@ def test_fetch_linkable_git_repositories_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developer_connect.FetchLinkableGitRepositoriesRequest()
-
         assert args[0] == request_msg
 
 
@@ -17558,7 +17566,6 @@ def test_fetch_git_hub_installations_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developer_connect.FetchGitHubInstallationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -17579,7 +17586,6 @@ def test_fetch_git_refs_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developer_connect.FetchGitRefsRequest()
-
         assert args[0] == request_msg
 
 
@@ -17602,7 +17608,6 @@ def test_list_account_connectors_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developer_connect.ListAccountConnectorsRequest()
-
         assert args[0] == request_msg
 
 
@@ -17625,7 +17630,6 @@ def test_get_account_connector_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developer_connect.GetAccountConnectorRequest()
-
         assert args[0] == request_msg
 
 
@@ -17648,7 +17652,6 @@ def test_create_account_connector_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developer_connect.CreateAccountConnectorRequest()
-
         assert args[0] == request_msg
 
 
@@ -17671,7 +17674,6 @@ def test_update_account_connector_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developer_connect.UpdateAccountConnectorRequest()
-
         assert args[0] == request_msg
 
 
@@ -17694,7 +17696,6 @@ def test_delete_account_connector_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developer_connect.DeleteAccountConnectorRequest()
-
         assert args[0] == request_msg
 
 
@@ -17717,7 +17718,6 @@ def test_fetch_access_token_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developer_connect.FetchAccessTokenRequest()
-
         assert args[0] == request_msg
 
 
@@ -17738,7 +17738,6 @@ def test_list_users_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developer_connect.ListUsersRequest()
-
         assert args[0] == request_msg
 
 
@@ -17759,7 +17758,6 @@ def test_delete_user_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developer_connect.DeleteUserRequest()
-
         assert args[0] == request_msg
 
 
@@ -17780,7 +17778,6 @@ def test_fetch_self_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developer_connect.FetchSelfRequest()
-
         assert args[0] == request_msg
 
 
@@ -17801,7 +17798,6 @@ def test_delete_self_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developer_connect.DeleteSelfRequest()
-
         assert args[0] == request_msg
 
 
@@ -17822,7 +17818,6 @@ def test_start_o_auth_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developer_connect.StartOAuthRequest()
-
         assert args[0] == request_msg
 
 
@@ -17843,7 +17838,6 @@ def test_finish_o_auth_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developer_connect.FinishOAuthRequest()
-
         assert args[0] == request_msg
 
 
@@ -17885,7 +17879,6 @@ async def test_list_connections_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developer_connect.ListConnectionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -17916,7 +17909,6 @@ async def test_get_connection_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developer_connect.GetConnectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -17943,7 +17935,6 @@ async def test_create_connection_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developer_connect.CreateConnectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -17970,7 +17961,6 @@ async def test_update_connection_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developer_connect.UpdateConnectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -17997,7 +17987,6 @@ async def test_delete_connection_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developer_connect.DeleteConnectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -18024,7 +18013,6 @@ async def test_create_git_repository_link_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developer_connect.CreateGitRepositoryLinkRequest()
-
         assert args[0] == request_msg
 
 
@@ -18051,7 +18039,6 @@ async def test_delete_git_repository_link_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developer_connect.DeleteGitRepositoryLinkRequest()
-
         assert args[0] == request_msg
 
 
@@ -18081,7 +18068,6 @@ async def test_list_git_repository_links_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developer_connect.ListGitRepositoryLinksRequest()
-
         assert args[0] == request_msg
 
 
@@ -18116,7 +18102,6 @@ async def test_get_git_repository_link_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developer_connect.GetGitRepositoryLinkRequest()
-
         assert args[0] == request_msg
 
 
@@ -18146,7 +18131,6 @@ async def test_fetch_read_write_token_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developer_connect.FetchReadWriteTokenRequest()
-
         assert args[0] == request_msg
 
 
@@ -18174,7 +18158,6 @@ async def test_fetch_read_token_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developer_connect.FetchReadTokenRequest()
-
         assert args[0] == request_msg
 
 
@@ -18203,7 +18186,6 @@ async def test_fetch_linkable_git_repositories_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developer_connect.FetchLinkableGitRepositoriesRequest()
-
         assert args[0] == request_msg
 
 
@@ -18230,7 +18212,6 @@ async def test_fetch_git_hub_installations_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developer_connect.FetchGitHubInstallationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -18258,7 +18239,6 @@ async def test_fetch_git_refs_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developer_connect.FetchGitRefsRequest()
-
         assert args[0] == request_msg
 
 
@@ -18288,7 +18268,6 @@ async def test_list_account_connectors_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developer_connect.ListAccountConnectorsRequest()
-
         assert args[0] == request_msg
 
 
@@ -18319,7 +18298,6 @@ async def test_get_account_connector_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developer_connect.GetAccountConnectorRequest()
-
         assert args[0] == request_msg
 
 
@@ -18346,7 +18324,6 @@ async def test_create_account_connector_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developer_connect.CreateAccountConnectorRequest()
-
         assert args[0] == request_msg
 
 
@@ -18373,7 +18350,6 @@ async def test_update_account_connector_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developer_connect.UpdateAccountConnectorRequest()
-
         assert args[0] == request_msg
 
 
@@ -18400,7 +18376,6 @@ async def test_delete_account_connector_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developer_connect.DeleteAccountConnectorRequest()
-
         assert args[0] == request_msg
 
 
@@ -18430,7 +18405,6 @@ async def test_fetch_access_token_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developer_connect.FetchAccessTokenRequest()
-
         assert args[0] == request_msg
 
 
@@ -18458,7 +18432,6 @@ async def test_list_users_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developer_connect.ListUsersRequest()
-
         assert args[0] == request_msg
 
 
@@ -18483,7 +18456,6 @@ async def test_delete_user_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developer_connect.DeleteUserRequest()
-
         assert args[0] == request_msg
 
 
@@ -18511,7 +18483,6 @@ async def test_fetch_self_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developer_connect.FetchSelfRequest()
-
         assert args[0] == request_msg
 
 
@@ -18536,7 +18507,6 @@ async def test_delete_self_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developer_connect.DeleteSelfRequest()
-
         assert args[0] == request_msg
 
 
@@ -18568,7 +18538,6 @@ async def test_start_o_auth_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developer_connect.StartOAuthRequest()
-
         assert args[0] == request_msg
 
 
@@ -18593,7 +18562,6 @@ async def test_finish_o_auth_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developer_connect.FinishOAuthRequest()
-
         assert args[0] == request_msg
 
 
@@ -23106,7 +23074,6 @@ def test_list_connections_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developer_connect.ListConnectionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -23126,7 +23093,6 @@ def test_get_connection_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developer_connect.GetConnectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -23148,7 +23114,6 @@ def test_create_connection_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developer_connect.CreateConnectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -23170,7 +23135,6 @@ def test_update_connection_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developer_connect.UpdateConnectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -23192,7 +23156,6 @@ def test_delete_connection_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developer_connect.DeleteConnectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -23214,7 +23177,6 @@ def test_create_git_repository_link_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developer_connect.CreateGitRepositoryLinkRequest()
-
         assert args[0] == request_msg
 
 
@@ -23236,7 +23198,6 @@ def test_delete_git_repository_link_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developer_connect.DeleteGitRepositoryLinkRequest()
-
         assert args[0] == request_msg
 
 
@@ -23258,7 +23219,6 @@ def test_list_git_repository_links_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developer_connect.ListGitRepositoryLinksRequest()
-
         assert args[0] == request_msg
 
 
@@ -23280,7 +23240,6 @@ def test_get_git_repository_link_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developer_connect.GetGitRepositoryLinkRequest()
-
         assert args[0] == request_msg
 
 
@@ -23302,7 +23261,6 @@ def test_fetch_read_write_token_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developer_connect.FetchReadWriteTokenRequest()
-
         assert args[0] == request_msg
 
 
@@ -23322,7 +23280,6 @@ def test_fetch_read_token_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developer_connect.FetchReadTokenRequest()
-
         assert args[0] == request_msg
 
 
@@ -23344,7 +23301,6 @@ def test_fetch_linkable_git_repositories_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developer_connect.FetchLinkableGitRepositoriesRequest()
-
         assert args[0] == request_msg
 
 
@@ -23366,7 +23322,6 @@ def test_fetch_git_hub_installations_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developer_connect.FetchGitHubInstallationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -23386,7 +23341,6 @@ def test_fetch_git_refs_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developer_connect.FetchGitRefsRequest()
-
         assert args[0] == request_msg
 
 
@@ -23408,7 +23362,6 @@ def test_list_account_connectors_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developer_connect.ListAccountConnectorsRequest()
-
         assert args[0] == request_msg
 
 
@@ -23430,7 +23383,6 @@ def test_get_account_connector_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developer_connect.GetAccountConnectorRequest()
-
         assert args[0] == request_msg
 
 
@@ -23452,7 +23404,6 @@ def test_create_account_connector_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developer_connect.CreateAccountConnectorRequest()
-
         assert args[0] == request_msg
 
 
@@ -23474,7 +23425,6 @@ def test_update_account_connector_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developer_connect.UpdateAccountConnectorRequest()
-
         assert args[0] == request_msg
 
 
@@ -23496,7 +23446,6 @@ def test_delete_account_connector_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developer_connect.DeleteAccountConnectorRequest()
-
         assert args[0] == request_msg
 
 
@@ -23518,7 +23467,6 @@ def test_fetch_access_token_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developer_connect.FetchAccessTokenRequest()
-
         assert args[0] == request_msg
 
 
@@ -23538,7 +23486,6 @@ def test_list_users_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developer_connect.ListUsersRequest()
-
         assert args[0] == request_msg
 
 
@@ -23558,7 +23505,6 @@ def test_delete_user_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developer_connect.DeleteUserRequest()
-
         assert args[0] == request_msg
 
 
@@ -23578,7 +23524,6 @@ def test_fetch_self_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developer_connect.FetchSelfRequest()
-
         assert args[0] == request_msg
 
 
@@ -23598,7 +23543,6 @@ def test_delete_self_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developer_connect.DeleteSelfRequest()
-
         assert args[0] == request_msg
 
 
@@ -23618,7 +23562,6 @@ def test_start_o_auth_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developer_connect.StartOAuthRequest()
-
         assert args[0] == request_msg
 
 
@@ -23638,7 +23581,6 @@ def test_finish_o_auth_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developer_connect.FinishOAuthRequest()
-
         assert args[0] == request_msg
 
 

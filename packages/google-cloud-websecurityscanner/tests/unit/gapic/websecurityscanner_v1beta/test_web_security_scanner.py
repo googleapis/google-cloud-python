@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -125,6 +120,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1372,8 +1382,8 @@ def test_web_security_scanner_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        web_security_scanner.CreateScanConfigRequest,
-        dict,
+        web_security_scanner.CreateScanConfigRequest(),
+        {},
     ],
 )
 def test_create_scan_config(request_type, transport: str = "grpc"):
@@ -1384,7 +1394,7 @@ def test_create_scan_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1453,9 +1463,10 @@ def test_create_scan_config_non_empty_request_with_auto_populated_field():
         client.create_scan_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == web_security_scanner.CreateScanConfigRequest(
+        request_msg = web_security_scanner.CreateScanConfigRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_scan_config_use_cached_wrapped_rpc():
@@ -1540,10 +1551,14 @@ async def test_create_scan_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_scan_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=web_security_scanner.CreateScanConfigRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        web_security_scanner.CreateScanConfigRequest(),
+        {},
+    ],
+)
+async def test_create_scan_config_async(request_type, transport: str = "grpc_asyncio"):
     client = WebSecurityScannerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1551,7 +1566,7 @@ async def test_create_scan_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1595,11 +1610,6 @@ async def test_create_scan_config_async(
         == gcw_scan_config.ScanConfig.ExportToSecurityCommandCenter.ENABLED
     )
     assert response.risk_level == gcw_scan_config.ScanConfig.RiskLevel.NORMAL
-
-
-@pytest.mark.asyncio
-async def test_create_scan_config_async_from_dict():
-    await test_create_scan_config_async(request_type=dict)
 
 
 def test_create_scan_config_field_headers():
@@ -1766,8 +1776,8 @@ async def test_create_scan_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        web_security_scanner.DeleteScanConfigRequest,
-        dict,
+        web_security_scanner.DeleteScanConfigRequest(),
+        {},
     ],
 )
 def test_delete_scan_config(request_type, transport: str = "grpc"):
@@ -1778,7 +1788,7 @@ def test_delete_scan_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1823,9 +1833,10 @@ def test_delete_scan_config_non_empty_request_with_auto_populated_field():
         client.delete_scan_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == web_security_scanner.DeleteScanConfigRequest(
+        request_msg = web_security_scanner.DeleteScanConfigRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_scan_config_use_cached_wrapped_rpc():
@@ -1910,10 +1921,14 @@ async def test_delete_scan_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_scan_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=web_security_scanner.DeleteScanConfigRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        web_security_scanner.DeleteScanConfigRequest(),
+        {},
+    ],
+)
+async def test_delete_scan_config_async(request_type, transport: str = "grpc_asyncio"):
     client = WebSecurityScannerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1921,7 +1936,7 @@ async def test_delete_scan_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1939,11 +1954,6 @@ async def test_delete_scan_config_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_scan_config_async_from_dict():
-    await test_delete_scan_config_async(request_type=dict)
 
 
 def test_delete_scan_config_field_headers():
@@ -2096,8 +2106,8 @@ async def test_delete_scan_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        web_security_scanner.GetScanConfigRequest,
-        dict,
+        web_security_scanner.GetScanConfigRequest(),
+        {},
     ],
 )
 def test_get_scan_config(request_type, transport: str = "grpc"):
@@ -2108,7 +2118,7 @@ def test_get_scan_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_scan_config), "__call__") as call:
@@ -2173,9 +2183,10 @@ def test_get_scan_config_non_empty_request_with_auto_populated_field():
         client.get_scan_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == web_security_scanner.GetScanConfigRequest(
+        request_msg = web_security_scanner.GetScanConfigRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_scan_config_use_cached_wrapped_rpc():
@@ -2256,10 +2267,14 @@ async def test_get_scan_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_scan_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=web_security_scanner.GetScanConfigRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        web_security_scanner.GetScanConfigRequest(),
+        {},
+    ],
+)
+async def test_get_scan_config_async(request_type, transport: str = "grpc_asyncio"):
     client = WebSecurityScannerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2267,7 +2282,7 @@ async def test_get_scan_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_scan_config), "__call__") as call:
@@ -2309,11 +2324,6 @@ async def test_get_scan_config_async(
         == scan_config.ScanConfig.ExportToSecurityCommandCenter.ENABLED
     )
     assert response.risk_level == scan_config.ScanConfig.RiskLevel.NORMAL
-
-
-@pytest.mark.asyncio
-async def test_get_scan_config_async_from_dict():
-    await test_get_scan_config_async(request_type=dict)
 
 
 def test_get_scan_config_field_headers():
@@ -2462,8 +2472,8 @@ async def test_get_scan_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        web_security_scanner.ListScanConfigsRequest,
-        dict,
+        web_security_scanner.ListScanConfigsRequest(),
+        {},
     ],
 )
 def test_list_scan_configs(request_type, transport: str = "grpc"):
@@ -2474,7 +2484,7 @@ def test_list_scan_configs(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2523,10 +2533,11 @@ def test_list_scan_configs_non_empty_request_with_auto_populated_field():
         client.list_scan_configs(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == web_security_scanner.ListScanConfigsRequest(
+        request_msg = web_security_scanner.ListScanConfigsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_scan_configs_use_cached_wrapped_rpc():
@@ -2609,10 +2620,14 @@ async def test_list_scan_configs_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_scan_configs_async(
-    transport: str = "grpc_asyncio",
-    request_type=web_security_scanner.ListScanConfigsRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        web_security_scanner.ListScanConfigsRequest(),
+        {},
+    ],
+)
+async def test_list_scan_configs_async(request_type, transport: str = "grpc_asyncio"):
     client = WebSecurityScannerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2620,7 +2635,7 @@ async def test_list_scan_configs_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2643,11 +2658,6 @@ async def test_list_scan_configs_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListScanConfigsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_scan_configs_async_from_dict():
-    await test_list_scan_configs_async(request_type=dict)
 
 
 def test_list_scan_configs_field_headers():
@@ -2993,11 +3003,7 @@ async def test_list_scan_configs_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_scan_configs(request={})
-        ).pages:
+        async for page_ in (await client.list_scan_configs(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -3006,8 +3012,8 @@ async def test_list_scan_configs_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        web_security_scanner.UpdateScanConfigRequest,
-        dict,
+        web_security_scanner.UpdateScanConfigRequest(),
+        {},
     ],
 )
 def test_update_scan_config(request_type, transport: str = "grpc"):
@@ -3018,7 +3024,7 @@ def test_update_scan_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3085,7 +3091,8 @@ def test_update_scan_config_non_empty_request_with_auto_populated_field():
         client.update_scan_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == web_security_scanner.UpdateScanConfigRequest()
+        request_msg = web_security_scanner.UpdateScanConfigRequest()
+        assert args[0] == request_msg
 
 
 def test_update_scan_config_use_cached_wrapped_rpc():
@@ -3170,10 +3177,14 @@ async def test_update_scan_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_scan_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=web_security_scanner.UpdateScanConfigRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        web_security_scanner.UpdateScanConfigRequest(),
+        {},
+    ],
+)
+async def test_update_scan_config_async(request_type, transport: str = "grpc_asyncio"):
     client = WebSecurityScannerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3181,7 +3192,7 @@ async def test_update_scan_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3225,11 +3236,6 @@ async def test_update_scan_config_async(
         == gcw_scan_config.ScanConfig.ExportToSecurityCommandCenter.ENABLED
     )
     assert response.risk_level == gcw_scan_config.ScanConfig.RiskLevel.NORMAL
-
-
-@pytest.mark.asyncio
-async def test_update_scan_config_async_from_dict():
-    await test_update_scan_config_async(request_type=dict)
 
 
 def test_update_scan_config_field_headers():
@@ -3396,8 +3402,8 @@ async def test_update_scan_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        web_security_scanner.StartScanRunRequest,
-        dict,
+        web_security_scanner.StartScanRunRequest(),
+        {},
     ],
 )
 def test_start_scan_run(request_type, transport: str = "grpc"):
@@ -3408,7 +3414,7 @@ def test_start_scan_run(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.start_scan_run), "__call__") as call:
@@ -3464,9 +3470,10 @@ def test_start_scan_run_non_empty_request_with_auto_populated_field():
         client.start_scan_run(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == web_security_scanner.StartScanRunRequest(
+        request_msg = web_security_scanner.StartScanRunRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_start_scan_run_use_cached_wrapped_rpc():
@@ -3547,10 +3554,14 @@ async def test_start_scan_run_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_start_scan_run_async(
-    transport: str = "grpc_asyncio",
-    request_type=web_security_scanner.StartScanRunRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        web_security_scanner.StartScanRunRequest(),
+        {},
+    ],
+)
+async def test_start_scan_run_async(request_type, transport: str = "grpc_asyncio"):
     client = WebSecurityScannerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3558,7 +3569,7 @@ async def test_start_scan_run_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.start_scan_run), "__call__") as call:
@@ -3591,11 +3602,6 @@ async def test_start_scan_run_async(
     assert response.urls_tested_count == 1846
     assert response.has_vulnerabilities is True
     assert response.progress_percent == 1733
-
-
-@pytest.mark.asyncio
-async def test_start_scan_run_async_from_dict():
-    await test_start_scan_run_async(request_type=dict)
 
 
 def test_start_scan_run_field_headers():
@@ -3740,8 +3746,8 @@ async def test_start_scan_run_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        web_security_scanner.GetScanRunRequest,
-        dict,
+        web_security_scanner.GetScanRunRequest(),
+        {},
     ],
 )
 def test_get_scan_run(request_type, transport: str = "grpc"):
@@ -3752,7 +3758,7 @@ def test_get_scan_run(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_scan_run), "__call__") as call:
@@ -3808,9 +3814,10 @@ def test_get_scan_run_non_empty_request_with_auto_populated_field():
         client.get_scan_run(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == web_security_scanner.GetScanRunRequest(
+        request_msg = web_security_scanner.GetScanRunRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_scan_run_use_cached_wrapped_rpc():
@@ -3891,9 +3898,14 @@ async def test_get_scan_run_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_scan_run_async(
-    transport: str = "grpc_asyncio", request_type=web_security_scanner.GetScanRunRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        web_security_scanner.GetScanRunRequest(),
+        {},
+    ],
+)
+async def test_get_scan_run_async(request_type, transport: str = "grpc_asyncio"):
     client = WebSecurityScannerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3901,7 +3913,7 @@ async def test_get_scan_run_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_scan_run), "__call__") as call:
@@ -3934,11 +3946,6 @@ async def test_get_scan_run_async(
     assert response.urls_tested_count == 1846
     assert response.has_vulnerabilities is True
     assert response.progress_percent == 1733
-
-
-@pytest.mark.asyncio
-async def test_get_scan_run_async_from_dict():
-    await test_get_scan_run_async(request_type=dict)
 
 
 def test_get_scan_run_field_headers():
@@ -4083,8 +4090,8 @@ async def test_get_scan_run_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        web_security_scanner.ListScanRunsRequest,
-        dict,
+        web_security_scanner.ListScanRunsRequest(),
+        {},
     ],
 )
 def test_list_scan_runs(request_type, transport: str = "grpc"):
@@ -4095,7 +4102,7 @@ def test_list_scan_runs(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_scan_runs), "__call__") as call:
@@ -4140,10 +4147,11 @@ def test_list_scan_runs_non_empty_request_with_auto_populated_field():
         client.list_scan_runs(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == web_security_scanner.ListScanRunsRequest(
+        request_msg = web_security_scanner.ListScanRunsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_scan_runs_use_cached_wrapped_rpc():
@@ -4224,10 +4232,14 @@ async def test_list_scan_runs_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_scan_runs_async(
-    transport: str = "grpc_asyncio",
-    request_type=web_security_scanner.ListScanRunsRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        web_security_scanner.ListScanRunsRequest(),
+        {},
+    ],
+)
+async def test_list_scan_runs_async(request_type, transport: str = "grpc_asyncio"):
     client = WebSecurityScannerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4235,7 +4247,7 @@ async def test_list_scan_runs_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_scan_runs), "__call__") as call:
@@ -4256,11 +4268,6 @@ async def test_list_scan_runs_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListScanRunsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_scan_runs_async_from_dict():
-    await test_list_scan_runs_async(request_type=dict)
 
 
 def test_list_scan_runs_field_headers():
@@ -4590,11 +4597,7 @@ async def test_list_scan_runs_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_scan_runs(request={})
-        ).pages:
+        async for page_ in (await client.list_scan_runs(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -4603,8 +4606,8 @@ async def test_list_scan_runs_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        web_security_scanner.StopScanRunRequest,
-        dict,
+        web_security_scanner.StopScanRunRequest(),
+        {},
     ],
 )
 def test_stop_scan_run(request_type, transport: str = "grpc"):
@@ -4615,7 +4618,7 @@ def test_stop_scan_run(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.stop_scan_run), "__call__") as call:
@@ -4671,9 +4674,10 @@ def test_stop_scan_run_non_empty_request_with_auto_populated_field():
         client.stop_scan_run(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == web_security_scanner.StopScanRunRequest(
+        request_msg = web_security_scanner.StopScanRunRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_stop_scan_run_use_cached_wrapped_rpc():
@@ -4754,10 +4758,14 @@ async def test_stop_scan_run_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_stop_scan_run_async(
-    transport: str = "grpc_asyncio",
-    request_type=web_security_scanner.StopScanRunRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        web_security_scanner.StopScanRunRequest(),
+        {},
+    ],
+)
+async def test_stop_scan_run_async(request_type, transport: str = "grpc_asyncio"):
     client = WebSecurityScannerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4765,7 +4773,7 @@ async def test_stop_scan_run_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.stop_scan_run), "__call__") as call:
@@ -4798,11 +4806,6 @@ async def test_stop_scan_run_async(
     assert response.urls_tested_count == 1846
     assert response.has_vulnerabilities is True
     assert response.progress_percent == 1733
-
-
-@pytest.mark.asyncio
-async def test_stop_scan_run_async_from_dict():
-    await test_stop_scan_run_async(request_type=dict)
 
 
 def test_stop_scan_run_field_headers():
@@ -4947,8 +4950,8 @@ async def test_stop_scan_run_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        web_security_scanner.ListCrawledUrlsRequest,
-        dict,
+        web_security_scanner.ListCrawledUrlsRequest(),
+        {},
     ],
 )
 def test_list_crawled_urls(request_type, transport: str = "grpc"):
@@ -4959,7 +4962,7 @@ def test_list_crawled_urls(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5008,10 +5011,11 @@ def test_list_crawled_urls_non_empty_request_with_auto_populated_field():
         client.list_crawled_urls(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == web_security_scanner.ListCrawledUrlsRequest(
+        request_msg = web_security_scanner.ListCrawledUrlsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_crawled_urls_use_cached_wrapped_rpc():
@@ -5094,10 +5098,14 @@ async def test_list_crawled_urls_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_crawled_urls_async(
-    transport: str = "grpc_asyncio",
-    request_type=web_security_scanner.ListCrawledUrlsRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        web_security_scanner.ListCrawledUrlsRequest(),
+        {},
+    ],
+)
+async def test_list_crawled_urls_async(request_type, transport: str = "grpc_asyncio"):
     client = WebSecurityScannerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5105,7 +5113,7 @@ async def test_list_crawled_urls_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5128,11 +5136,6 @@ async def test_list_crawled_urls_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListCrawledUrlsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_crawled_urls_async_from_dict():
-    await test_list_crawled_urls_async(request_type=dict)
 
 
 def test_list_crawled_urls_field_headers():
@@ -5478,11 +5481,7 @@ async def test_list_crawled_urls_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_crawled_urls(request={})
-        ).pages:
+        async for page_ in (await client.list_crawled_urls(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -5491,8 +5490,8 @@ async def test_list_crawled_urls_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        web_security_scanner.GetFindingRequest,
-        dict,
+        web_security_scanner.GetFindingRequest(),
+        {},
     ],
 )
 def test_get_finding(request_type, transport: str = "grpc"):
@@ -5503,7 +5502,7 @@ def test_get_finding(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_finding), "__call__") as call:
@@ -5565,9 +5564,10 @@ def test_get_finding_non_empty_request_with_auto_populated_field():
         client.get_finding(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == web_security_scanner.GetFindingRequest(
+        request_msg = web_security_scanner.GetFindingRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_finding_use_cached_wrapped_rpc():
@@ -5648,9 +5648,14 @@ async def test_get_finding_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_finding_async(
-    transport: str = "grpc_asyncio", request_type=web_security_scanner.GetFindingRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        web_security_scanner.GetFindingRequest(),
+        {},
+    ],
+)
+async def test_get_finding_async(request_type, transport: str = "grpc_asyncio"):
     client = WebSecurityScannerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5658,7 +5663,7 @@ async def test_get_finding_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_finding), "__call__") as call:
@@ -5697,11 +5702,6 @@ async def test_get_finding_async(
     assert response.frame_url == "frame_url_value"
     assert response.final_url == "final_url_value"
     assert response.tracking_id == "tracking_id_value"
-
-
-@pytest.mark.asyncio
-async def test_get_finding_async_from_dict():
-    await test_get_finding_async(request_type=dict)
 
 
 def test_get_finding_field_headers():
@@ -5846,8 +5846,8 @@ async def test_get_finding_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        web_security_scanner.ListFindingsRequest,
-        dict,
+        web_security_scanner.ListFindingsRequest(),
+        {},
     ],
 )
 def test_list_findings(request_type, transport: str = "grpc"):
@@ -5858,7 +5858,7 @@ def test_list_findings(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_findings), "__call__") as call:
@@ -5904,11 +5904,12 @@ def test_list_findings_non_empty_request_with_auto_populated_field():
         client.list_findings(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == web_security_scanner.ListFindingsRequest(
+        request_msg = web_security_scanner.ListFindingsRequest(
             parent="parent_value",
             filter="filter_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_findings_use_cached_wrapped_rpc():
@@ -5989,10 +5990,14 @@ async def test_list_findings_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_findings_async(
-    transport: str = "grpc_asyncio",
-    request_type=web_security_scanner.ListFindingsRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        web_security_scanner.ListFindingsRequest(),
+        {},
+    ],
+)
+async def test_list_findings_async(request_type, transport: str = "grpc_asyncio"):
     client = WebSecurityScannerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6000,7 +6005,7 @@ async def test_list_findings_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_findings), "__call__") as call:
@@ -6021,11 +6026,6 @@ async def test_list_findings_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListFindingsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_findings_async_from_dict():
-    await test_list_findings_async(request_type=dict)
 
 
 def test_list_findings_field_headers():
@@ -6365,11 +6365,7 @@ async def test_list_findings_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_findings(request={})
-        ).pages:
+        async for page_ in (await client.list_findings(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -6378,8 +6374,8 @@ async def test_list_findings_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        web_security_scanner.ListFindingTypeStatsRequest,
-        dict,
+        web_security_scanner.ListFindingTypeStatsRequest(),
+        {},
     ],
 )
 def test_list_finding_type_stats(request_type, transport: str = "grpc"):
@@ -6390,7 +6386,7 @@ def test_list_finding_type_stats(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6435,9 +6431,10 @@ def test_list_finding_type_stats_non_empty_request_with_auto_populated_field():
         client.list_finding_type_stats(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == web_security_scanner.ListFindingTypeStatsRequest(
+        request_msg = web_security_scanner.ListFindingTypeStatsRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_finding_type_stats_use_cached_wrapped_rpc():
@@ -6523,9 +6520,15 @@ async def test_list_finding_type_stats_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        web_security_scanner.ListFindingTypeStatsRequest(),
+        {},
+    ],
+)
 async def test_list_finding_type_stats_async(
-    transport: str = "grpc_asyncio",
-    request_type=web_security_scanner.ListFindingTypeStatsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = WebSecurityScannerAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -6534,7 +6537,7 @@ async def test_list_finding_type_stats_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6554,11 +6557,6 @@ async def test_list_finding_type_stats_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, web_security_scanner.ListFindingTypeStatsResponse)
-
-
-@pytest.mark.asyncio
-async def test_list_finding_type_stats_async_from_dict():
-    await test_list_finding_type_stats_async(request_type=dict)
 
 
 def test_list_finding_type_stats_field_headers():
@@ -6825,7 +6823,7 @@ def test_create_scan_config_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_scan_config_rest_unset_required_fields():
@@ -7013,7 +7011,7 @@ def test_delete_scan_config_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_scan_config_rest_unset_required_fields():
@@ -7188,7 +7186,7 @@ def test_get_scan_config_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_scan_config_rest_unset_required_fields():
@@ -7374,7 +7372,7 @@ def test_list_scan_configs_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_scan_configs_rest_unset_required_fields():
@@ -7624,7 +7622,7 @@ def test_update_scan_config_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_scan_config_rest_unset_required_fields():
@@ -7815,7 +7813,7 @@ def test_start_scan_run_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_start_scan_run_rest_unset_required_fields():
@@ -7992,7 +7990,7 @@ def test_get_scan_run_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_scan_run_rest_unset_required_fields():
@@ -8179,7 +8177,7 @@ def test_list_scan_runs_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_scan_runs_rest_unset_required_fields():
@@ -8429,7 +8427,7 @@ def test_stop_scan_run_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_stop_scan_run_rest_unset_required_fields():
@@ -8618,7 +8616,7 @@ def test_list_crawled_urls_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_crawled_urls_rest_unset_required_fields():
@@ -8871,7 +8869,7 @@ def test_get_finding_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_finding_rest_unset_required_fields():
@@ -9072,7 +9070,7 @@ def test_list_findings_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_findings_rest_unset_required_fields():
@@ -9340,7 +9338,7 @@ def test_list_finding_type_stats_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_finding_type_stats_rest_unset_required_fields():
@@ -9539,7 +9537,6 @@ def test_create_scan_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = web_security_scanner.CreateScanConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -9562,7 +9559,6 @@ def test_delete_scan_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = web_security_scanner.DeleteScanConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -9583,7 +9579,6 @@ def test_get_scan_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = web_security_scanner.GetScanConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -9606,7 +9601,6 @@ def test_list_scan_configs_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = web_security_scanner.ListScanConfigsRequest()
-
         assert args[0] == request_msg
 
 
@@ -9629,7 +9623,6 @@ def test_update_scan_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = web_security_scanner.UpdateScanConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -9650,7 +9643,6 @@ def test_start_scan_run_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = web_security_scanner.StartScanRunRequest()
-
         assert args[0] == request_msg
 
 
@@ -9671,7 +9663,6 @@ def test_get_scan_run_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = web_security_scanner.GetScanRunRequest()
-
         assert args[0] == request_msg
 
 
@@ -9692,7 +9683,6 @@ def test_list_scan_runs_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = web_security_scanner.ListScanRunsRequest()
-
         assert args[0] == request_msg
 
 
@@ -9713,7 +9703,6 @@ def test_stop_scan_run_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = web_security_scanner.StopScanRunRequest()
-
         assert args[0] == request_msg
 
 
@@ -9736,7 +9725,6 @@ def test_list_crawled_urls_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = web_security_scanner.ListCrawledUrlsRequest()
-
         assert args[0] == request_msg
 
 
@@ -9757,7 +9745,6 @@ def test_get_finding_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = web_security_scanner.GetFindingRequest()
-
         assert args[0] == request_msg
 
 
@@ -9778,7 +9765,6 @@ def test_list_findings_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = web_security_scanner.ListFindingsRequest()
-
         assert args[0] == request_msg
 
 
@@ -9801,7 +9787,6 @@ def test_list_finding_type_stats_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = web_security_scanner.ListFindingTypeStatsRequest()
-
         assert args[0] == request_msg
 
 
@@ -9852,7 +9837,6 @@ async def test_create_scan_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = web_security_scanner.CreateScanConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -9877,7 +9861,6 @@ async def test_delete_scan_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = web_security_scanner.DeleteScanConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -9912,7 +9895,6 @@ async def test_get_scan_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = web_security_scanner.GetScanConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -9941,7 +9923,6 @@ async def test_list_scan_configs_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = web_security_scanner.ListScanConfigsRequest()
-
         assert args[0] == request_msg
 
 
@@ -9978,7 +9959,6 @@ async def test_update_scan_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = web_security_scanner.UpdateScanConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -10011,7 +9991,6 @@ async def test_start_scan_run_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = web_security_scanner.StartScanRunRequest()
-
         assert args[0] == request_msg
 
 
@@ -10044,7 +10023,6 @@ async def test_get_scan_run_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = web_security_scanner.GetScanRunRequest()
-
         assert args[0] == request_msg
 
 
@@ -10071,7 +10049,6 @@ async def test_list_scan_runs_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = web_security_scanner.ListScanRunsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10104,7 +10081,6 @@ async def test_stop_scan_run_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = web_security_scanner.StopScanRunRequest()
-
         assert args[0] == request_msg
 
 
@@ -10133,7 +10109,6 @@ async def test_list_crawled_urls_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = web_security_scanner.ListCrawledUrlsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10169,7 +10144,6 @@ async def test_get_finding_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = web_security_scanner.GetFindingRequest()
-
         assert args[0] == request_msg
 
 
@@ -10196,7 +10170,6 @@ async def test_list_findings_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = web_security_scanner.ListFindingsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10223,7 +10196,6 @@ async def test_list_finding_type_stats_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = web_security_scanner.ListFindingTypeStatsRequest()
-
         assert args[0] == request_msg
 
 
@@ -12312,7 +12284,6 @@ def test_create_scan_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = web_security_scanner.CreateScanConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -12334,7 +12305,6 @@ def test_delete_scan_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = web_security_scanner.DeleteScanConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -12354,7 +12324,6 @@ def test_get_scan_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = web_security_scanner.GetScanConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -12376,7 +12345,6 @@ def test_list_scan_configs_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = web_security_scanner.ListScanConfigsRequest()
-
         assert args[0] == request_msg
 
 
@@ -12398,7 +12366,6 @@ def test_update_scan_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = web_security_scanner.UpdateScanConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -12418,7 +12385,6 @@ def test_start_scan_run_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = web_security_scanner.StartScanRunRequest()
-
         assert args[0] == request_msg
 
 
@@ -12438,7 +12404,6 @@ def test_get_scan_run_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = web_security_scanner.GetScanRunRequest()
-
         assert args[0] == request_msg
 
 
@@ -12458,7 +12423,6 @@ def test_list_scan_runs_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = web_security_scanner.ListScanRunsRequest()
-
         assert args[0] == request_msg
 
 
@@ -12478,7 +12442,6 @@ def test_stop_scan_run_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = web_security_scanner.StopScanRunRequest()
-
         assert args[0] == request_msg
 
 
@@ -12500,7 +12463,6 @@ def test_list_crawled_urls_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = web_security_scanner.ListCrawledUrlsRequest()
-
         assert args[0] == request_msg
 
 
@@ -12520,7 +12482,6 @@ def test_get_finding_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = web_security_scanner.GetFindingRequest()
-
         assert args[0] == request_msg
 
 
@@ -12540,7 +12501,6 @@ def test_list_findings_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = web_security_scanner.ListFindingsRequest()
-
         assert args[0] == request_msg
 
 
@@ -12562,7 +12522,6 @@ def test_list_finding_type_stats_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = web_security_scanner.ListFindingTypeStatsRequest()
-
         assert args[0] == request_msg
 
 

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,13 +21,7 @@ from google.cloud.oracledatabase_v1 import gapic_version as package_version
 
 __version__ = package_version.__version__
 
-if sys.version_info >= (3, 8):  # pragma: NO COVER
-    from importlib import metadata
-else:  # pragma: NO COVER
-    # TODO(https://github.com/googleapis/python-api-core/issues/835): Remove
-    # this code path once we drop support for Python 3.7
-    import importlib_metadata as metadata
-
+from importlib import metadata
 
 from .services.oracle_database import OracleDatabaseAsyncClient, OracleDatabaseClient
 from .types.autonomous_database import (
@@ -123,6 +117,112 @@ from .types.exascale_db_storage_vault import (
     ListExascaleDbStorageVaultsResponse,
 )
 from .types.gi_version import GiVersion
+from .types.goldengate_connection import (
+    AmazonS3IcebergStorage,
+    AzureDataLakeStorageIcebergStorage,
+    CreateGoldengateConnectionRequest,
+    DeleteGoldengateConnectionRequest,
+    GetGoldengateConnectionRequest,
+    GlueIcebergCatalog,
+    GoldengateAmazonKinesisConnectionProperties,
+    GoldengateAmazonRedshiftConnectionProperties,
+    GoldengateAmazonS3ConnectionProperties,
+    GoldengateAzureDataLakeStorageConnectionProperties,
+    GoldengateAzureSynapseAnalyticsConnectionProperties,
+    GoldengateConnection,
+    GoldengateConnectionProperties,
+    GoldengateDatabricksConnectionProperties,
+    GoldengateDb2ConnectionProperties,
+    GoldengateElasticsearchConnectionProperties,
+    GoldengateGenericConnectionProperties,
+    GoldengateGoldengateConnectionProperties,
+    GoldengateGoogleBigQueryConnectionProperties,
+    GoldengateGoogleCloudStorageConnectionProperties,
+    GoldengateGooglePubsubConnectionProperties,
+    GoldengateHdfsConnectionProperties,
+    GoldengateIcebergConnectionProperties,
+    GoldengateJavaMessageServiceConnectionProperties,
+    GoldengateKafkaConnectionProperties,
+    GoldengateKafkaSchemaRegistryConnectionProperties,
+    GoldengateMicrosoftFabricConnectionProperties,
+    GoldengateMicrosoftSqlserverConnectionProperties,
+    GoldengateMongodbConnectionProperties,
+    GoldengateMysqlConnectionProperties,
+    GoldengateOciObjectStorageConnectionProperties,
+    GoldengateOracleAIDataPlatformConnectionProperties,
+    GoldengateOracleConnectionProperties,
+    GoldengateOracleNosqlConnectionProperties,
+    GoldengatePostgresqlConnectionProperties,
+    GoldengateRedisConnectionProperties,
+    GoldengateSnowflakeConnectionProperties,
+    GoogleCloudStorageIcebergStorage,
+    IcebergCatalog,
+    IcebergStorage,
+    KafkaBootstrapServer,
+    ListGoldengateConnectionsRequest,
+    ListGoldengateConnectionsResponse,
+    NameValuePair,
+    NessieIcebergCatalog,
+    PolarisIcebergCatalog,
+    RestIcebergCatalog,
+)
+from .types.goldengate_connection_assignment import (
+    CreateGoldengateConnectionAssignmentRequest,
+    DeleteGoldengateConnectionAssignmentRequest,
+    GetGoldengateConnectionAssignmentRequest,
+    GoldengateConnectionAssignment,
+    GoldengateConnectionAssignmentProperties,
+    ListGoldengateConnectionAssignmentsRequest,
+    ListGoldengateConnectionAssignmentsResponse,
+    TestConnectionAssignmentError,
+    TestGoldengateConnectionAssignmentRequest,
+    TestGoldengateConnectionAssignmentResponse,
+)
+from .types.goldengate_connection_type import (
+    GetGoldengateConnectionTypeRequest,
+    GoldengateConnectionType,
+    ListGoldengateConnectionTypesRequest,
+    ListGoldengateConnectionTypesResponse,
+)
+from .types.goldengate_deployment import (
+    CreateGoldengateDeploymentRequest,
+    DeleteGoldengateDeploymentRequest,
+    DeploymentDiagnosticData,
+    GetGoldengateDeploymentRequest,
+    GoldengateBackupSchedule,
+    GoldengateDeployment,
+    GoldengateDeploymentLock,
+    GoldengateDeploymentProperties,
+    GoldengateGroupToRolesMapping,
+    GoldengateMaintenanceConfig,
+    GoldengateMaintenanceWindow,
+    GoldengateOggDeployment,
+    GoldengatePlacement,
+    IngressIp,
+    ListGoldengateDeploymentsRequest,
+    ListGoldengateDeploymentsResponse,
+    StartGoldengateDeploymentRequest,
+    StopGoldengateDeploymentRequest,
+)
+from .types.goldengate_deployment_environment import (
+    GetGoldengateDeploymentEnvironmentRequest,
+    GoldengateDeploymentEnvironment,
+    ListGoldengateDeploymentEnvironmentsRequest,
+    ListGoldengateDeploymentEnvironmentsResponse,
+)
+from .types.goldengate_deployment_type import (
+    GetGoldengateDeploymentTypeRequest,
+    GoldengateDeploymentType,
+    ListGoldengateDeploymentTypesRequest,
+    ListGoldengateDeploymentTypesResponse,
+)
+from .types.goldengate_deployment_version import (
+    GetGoldengateDeploymentVersionRequest,
+    GoldengateDeploymentVersion,
+    GoldengateDeploymentVersionProperties,
+    ListGoldengateDeploymentVersionsRequest,
+    ListGoldengateDeploymentVersionsResponse,
+)
 from .types.location_metadata import LocationMetadata
 from .types.minor_version import (
     ListMinorVersionsRequest,
@@ -220,28 +320,17 @@ else:  # pragma: NO COVER
     # An older version of api_core is installed which does not define the
     # functions above. We do equivalent checks manually.
     try:
-        import sys
         import warnings
 
         _py_version_str = sys.version.split()[0]
         _package_label = "google.cloud.oracledatabase_v1"
-        if sys.version_info < (3, 9):
+        if sys.version_info < (3, 10):
             warnings.warn(
                 "You are using a non-supported Python version "
                 + f"({_py_version_str}).  Google will not post any further "
                 + f"updates to {_package_label} supporting this Python version. "
                 + "Please upgrade to the latest Python version, or at "
-                + f"least to Python 3.9, and then update {_package_label}.",
-                FutureWarning,
-            )
-        if sys.version_info[:2] == (3, 9):
-            warnings.warn(
-                f"You are using a Python version ({_py_version_str}) "
-                + f"which Google will stop supporting in {_package_label} in "
-                + "January 2026. Please "
-                + "upgrade to the latest Python version, or at "
-                + "least to Python 3.10, before then, and "
-                + f"then update {_package_label}.",
+                + f"least to Python 3.10, and then update {_package_label}.",
                 FutureWarning,
             )
 
@@ -308,6 +397,7 @@ else:  # pragma: NO COVER
 __all__ = (
     "OracleDatabaseAsyncClient",
     "AllConnectionStrings",
+    "AmazonS3IcebergStorage",
     "AutonomousDatabase",
     "AutonomousDatabaseApex",
     "AutonomousDatabaseBackup",
@@ -318,6 +408,7 @@ __all__ = (
     "AutonomousDatabaseProperties",
     "AutonomousDatabaseStandbySummary",
     "AutonomousDbVersion",
+    "AzureDataLakeStorageIcebergStorage",
     "CloudAccountDetails",
     "CloudExadataInfrastructure",
     "CloudExadataInfrastructureProperties",
@@ -330,6 +421,9 @@ __all__ = (
     "CreateDbSystemRequest",
     "CreateExadbVmClusterRequest",
     "CreateExascaleDbStorageVaultRequest",
+    "CreateGoldengateConnectionAssignmentRequest",
+    "CreateGoldengateConnectionRequest",
+    "CreateGoldengateDeploymentRequest",
     "CreateOdbNetworkRequest",
     "CreateOdbSubnetRequest",
     "CustomerContact",
@@ -362,8 +456,12 @@ __all__ = (
     "DeleteDbSystemRequest",
     "DeleteExadbVmClusterRequest",
     "DeleteExascaleDbStorageVaultRequest",
+    "DeleteGoldengateConnectionAssignmentRequest",
+    "DeleteGoldengateConnectionRequest",
+    "DeleteGoldengateDeploymentRequest",
     "DeleteOdbNetworkRequest",
     "DeleteOdbSubnetRequest",
+    "DeploymentDiagnosticData",
     "EncryptionKey",
     "EncryptionKeyHistoryEntry",
     "Entitlement",
@@ -384,11 +482,71 @@ __all__ = (
     "GetDbSystemRequest",
     "GetExadbVmClusterRequest",
     "GetExascaleDbStorageVaultRequest",
+    "GetGoldengateConnectionAssignmentRequest",
+    "GetGoldengateConnectionRequest",
+    "GetGoldengateConnectionTypeRequest",
+    "GetGoldengateDeploymentEnvironmentRequest",
+    "GetGoldengateDeploymentRequest",
+    "GetGoldengateDeploymentTypeRequest",
+    "GetGoldengateDeploymentVersionRequest",
     "GetOdbNetworkRequest",
     "GetOdbSubnetRequest",
     "GetPluggableDatabaseRequest",
     "GiVersion",
+    "GlueIcebergCatalog",
+    "GoldengateAmazonKinesisConnectionProperties",
+    "GoldengateAmazonRedshiftConnectionProperties",
+    "GoldengateAmazonS3ConnectionProperties",
+    "GoldengateAzureDataLakeStorageConnectionProperties",
+    "GoldengateAzureSynapseAnalyticsConnectionProperties",
+    "GoldengateBackupSchedule",
+    "GoldengateConnection",
+    "GoldengateConnectionAssignment",
+    "GoldengateConnectionAssignmentProperties",
+    "GoldengateConnectionProperties",
+    "GoldengateConnectionType",
+    "GoldengateDatabricksConnectionProperties",
+    "GoldengateDb2ConnectionProperties",
+    "GoldengateDeployment",
+    "GoldengateDeploymentEnvironment",
+    "GoldengateDeploymentLock",
+    "GoldengateDeploymentProperties",
+    "GoldengateDeploymentType",
+    "GoldengateDeploymentVersion",
+    "GoldengateDeploymentVersionProperties",
+    "GoldengateElasticsearchConnectionProperties",
+    "GoldengateGenericConnectionProperties",
+    "GoldengateGoldengateConnectionProperties",
+    "GoldengateGoogleBigQueryConnectionProperties",
+    "GoldengateGoogleCloudStorageConnectionProperties",
+    "GoldengateGooglePubsubConnectionProperties",
+    "GoldengateGroupToRolesMapping",
+    "GoldengateHdfsConnectionProperties",
+    "GoldengateIcebergConnectionProperties",
+    "GoldengateJavaMessageServiceConnectionProperties",
+    "GoldengateKafkaConnectionProperties",
+    "GoldengateKafkaSchemaRegistryConnectionProperties",
+    "GoldengateMaintenanceConfig",
+    "GoldengateMaintenanceWindow",
+    "GoldengateMicrosoftFabricConnectionProperties",
+    "GoldengateMicrosoftSqlserverConnectionProperties",
+    "GoldengateMongodbConnectionProperties",
+    "GoldengateMysqlConnectionProperties",
+    "GoldengateOciObjectStorageConnectionProperties",
+    "GoldengateOggDeployment",
+    "GoldengateOracleAIDataPlatformConnectionProperties",
+    "GoldengateOracleConnectionProperties",
+    "GoldengateOracleNosqlConnectionProperties",
+    "GoldengatePlacement",
+    "GoldengatePostgresqlConnectionProperties",
+    "GoldengateRedisConnectionProperties",
+    "GoldengateSnowflakeConnectionProperties",
+    "GoogleCloudStorageIcebergStorage",
+    "IcebergCatalog",
+    "IcebergStorage",
     "IdentityConnector",
+    "IngressIp",
+    "KafkaBootstrapServer",
     "ListAutonomousDatabaseBackupsRequest",
     "ListAutonomousDatabaseBackupsResponse",
     "ListAutonomousDatabaseCharacterSetsRequest",
@@ -425,6 +583,20 @@ __all__ = (
     "ListExascaleDbStorageVaultsResponse",
     "ListGiVersionsRequest",
     "ListGiVersionsResponse",
+    "ListGoldengateConnectionAssignmentsRequest",
+    "ListGoldengateConnectionAssignmentsResponse",
+    "ListGoldengateConnectionTypesRequest",
+    "ListGoldengateConnectionTypesResponse",
+    "ListGoldengateConnectionsRequest",
+    "ListGoldengateConnectionsResponse",
+    "ListGoldengateDeploymentEnvironmentsRequest",
+    "ListGoldengateDeploymentEnvironmentsResponse",
+    "ListGoldengateDeploymentTypesRequest",
+    "ListGoldengateDeploymentTypesResponse",
+    "ListGoldengateDeploymentVersionsRequest",
+    "ListGoldengateDeploymentVersionsResponse",
+    "ListGoldengateDeploymentsRequest",
+    "ListGoldengateDeploymentsResponse",
     "ListMinorVersionsRequest",
     "ListMinorVersionsResponse",
     "ListOdbNetworksRequest",
@@ -436,6 +608,8 @@ __all__ = (
     "LocationMetadata",
     "MaintenanceWindow",
     "MinorVersion",
+    "NameValuePair",
+    "NessieIcebergCatalog",
     "OdbNetwork",
     "OdbSubnet",
     "OperationMetadata",
@@ -445,16 +619,23 @@ __all__ = (
     "PluggableDatabaseConnectionStrings",
     "PluggableDatabaseNodeLevelDetails",
     "PluggableDatabaseProperties",
+    "PolarisIcebergCatalog",
     "RemoveVirtualMachineExadbVmClusterRequest",
+    "RestIcebergCatalog",
     "RestartAutonomousDatabaseRequest",
     "RestoreAutonomousDatabaseRequest",
     "ScheduledOperationDetails",
     "SourceConfig",
     "StartAutonomousDatabaseRequest",
+    "StartGoldengateDeploymentRequest",
     "State",
     "StopAutonomousDatabaseRequest",
+    "StopGoldengateDeploymentRequest",
     "StorageSizeDetails",
     "SwitchoverAutonomousDatabaseRequest",
+    "TestConnectionAssignmentError",
+    "TestGoldengateConnectionAssignmentRequest",
+    "TestGoldengateConnectionAssignmentResponse",
     "UpdateAutonomousDatabaseRequest",
     "UpdateExadbVmClusterRequest",
 )

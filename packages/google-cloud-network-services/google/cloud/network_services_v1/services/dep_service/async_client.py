@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -592,7 +592,6 @@ class DepServiceAsyncClient:
                 lb_traffic_extension.name = "name_value"
                 lb_traffic_extension.extension_chains.name = "name_value"
                 lb_traffic_extension.extension_chains.match_condition.cel_expression = "cel_expression_value"
-                lb_traffic_extension.extension_chains.extensions.name = "name_value"
                 lb_traffic_extension.extension_chains.extensions.service = "service_value"
                 lb_traffic_extension.load_balancing_scheme = "EXTERNAL_MANAGED"
 
@@ -603,11 +602,11 @@ class DepServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_lb_traffic_extension(request=request)
+                operation = await client.create_lb_traffic_extension(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -748,7 +747,6 @@ class DepServiceAsyncClient:
                 lb_traffic_extension.name = "name_value"
                 lb_traffic_extension.extension_chains.name = "name_value"
                 lb_traffic_extension.extension_chains.match_condition.cel_expression = "cel_expression_value"
-                lb_traffic_extension.extension_chains.extensions.name = "name_value"
                 lb_traffic_extension.extension_chains.extensions.service = "service_value"
                 lb_traffic_extension.load_balancing_scheme = "EXTERNAL_MANAGED"
 
@@ -757,11 +755,11 @@ class DepServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_lb_traffic_extension(request=request)
+                operation = await client.update_lb_traffic_extension(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -897,11 +895,11 @@ class DepServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_lb_traffic_extension(request=request)
+                operation = await client.delete_lb_traffic_extension(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1273,7 +1271,6 @@ class DepServiceAsyncClient:
                 lb_route_extension.forwarding_rules = ['forwarding_rules_value1', 'forwarding_rules_value2']
                 lb_route_extension.extension_chains.name = "name_value"
                 lb_route_extension.extension_chains.match_condition.cel_expression = "cel_expression_value"
-                lb_route_extension.extension_chains.extensions.name = "name_value"
                 lb_route_extension.extension_chains.extensions.service = "service_value"
                 lb_route_extension.load_balancing_scheme = "EXTERNAL_MANAGED"
 
@@ -1284,11 +1281,11 @@ class DepServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_lb_route_extension(request=request)
+                operation = await client.create_lb_route_extension(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1427,7 +1424,6 @@ class DepServiceAsyncClient:
                 lb_route_extension.forwarding_rules = ['forwarding_rules_value1', 'forwarding_rules_value2']
                 lb_route_extension.extension_chains.name = "name_value"
                 lb_route_extension.extension_chains.match_condition.cel_expression = "cel_expression_value"
-                lb_route_extension.extension_chains.extensions.name = "name_value"
                 lb_route_extension.extension_chains.extensions.service = "service_value"
                 lb_route_extension.load_balancing_scheme = "EXTERNAL_MANAGED"
 
@@ -1436,11 +1432,11 @@ class DepServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_lb_route_extension(request=request)
+                operation = await client.update_lb_route_extension(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1573,11 +1569,11 @@ class DepServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_lb_route_extension(request=request)
+                operation = await client.delete_lb_route_extension(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1950,7 +1946,6 @@ class DepServiceAsyncClient:
                 lb_edge_extension.forwarding_rules = ['forwarding_rules_value1', 'forwarding_rules_value2']
                 lb_edge_extension.extension_chains.name = "name_value"
                 lb_edge_extension.extension_chains.match_condition.cel_expression = "cel_expression_value"
-                lb_edge_extension.extension_chains.extensions.name = "name_value"
                 lb_edge_extension.extension_chains.extensions.service = "service_value"
                 lb_edge_extension.load_balancing_scheme = "EXTERNAL_MANAGED"
 
@@ -1961,11 +1956,11 @@ class DepServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_lb_edge_extension(request=request)
+                operation = await client.create_lb_edge_extension(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2105,7 +2100,6 @@ class DepServiceAsyncClient:
                 lb_edge_extension.forwarding_rules = ['forwarding_rules_value1', 'forwarding_rules_value2']
                 lb_edge_extension.extension_chains.name = "name_value"
                 lb_edge_extension.extension_chains.match_condition.cel_expression = "cel_expression_value"
-                lb_edge_extension.extension_chains.extensions.name = "name_value"
                 lb_edge_extension.extension_chains.extensions.service = "service_value"
                 lb_edge_extension.load_balancing_scheme = "EXTERNAL_MANAGED"
 
@@ -2114,11 +2108,11 @@ class DepServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_lb_edge_extension(request=request)
+                operation = await client.update_lb_edge_extension(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2252,11 +2246,11 @@ class DepServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_lb_edge_extension(request=request)
+                operation = await client.delete_lb_edge_extension(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2626,8 +2620,6 @@ class DepServiceAsyncClient:
                 # Initialize request argument(s)
                 authz_extension = network_services_v1.AuthzExtension()
                 authz_extension.name = "name_value"
-                authz_extension.load_balancing_scheme = "EXTERNAL_MANAGED"
-                authz_extension.authority = "authority_value"
                 authz_extension.service = "service_value"
 
                 request = network_services_v1.CreateAuthzExtensionRequest(
@@ -2637,11 +2629,11 @@ class DepServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_authz_extension(request=request)
+                operation = await client.create_authz_extension(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2778,8 +2770,6 @@ class DepServiceAsyncClient:
                 # Initialize request argument(s)
                 authz_extension = network_services_v1.AuthzExtension()
                 authz_extension.name = "name_value"
-                authz_extension.load_balancing_scheme = "EXTERNAL_MANAGED"
-                authz_extension.authority = "authority_value"
                 authz_extension.service = "service_value"
 
                 request = network_services_v1.UpdateAuthzExtensionRequest(
@@ -2787,11 +2777,11 @@ class DepServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_authz_extension(request=request)
+                operation = await client.update_authz_extension(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2925,11 +2915,11 @@ class DepServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_authz_extension(request=request)
+                operation = await client.delete_authz_extension(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,16 +21,19 @@ from google.cloud.network_services_v1 import gapic_version as package_version
 
 __version__ = package_version.__version__
 
-if sys.version_info >= (3, 8):  # pragma: NO COVER
-    from importlib import metadata
-else:  # pragma: NO COVER
-    # TODO(https://github.com/googleapis/python-api-core/issues/835): Remove
-    # this code path once we drop support for Python 3.7
-    import importlib_metadata as metadata
-
+from importlib import metadata
 
 from .services.dep_service import DepServiceAsyncClient, DepServiceClient
 from .services.network_services import NetworkServicesAsyncClient, NetworkServicesClient
+from .types.agent_gateway import (
+    AgentGateway,
+    CreateAgentGatewayRequest,
+    DeleteAgentGatewayRequest,
+    GetAgentGatewayRequest,
+    ListAgentGatewaysRequest,
+    ListAgentGatewaysResponse,
+    UpdateAgentGatewayRequest,
+)
 from .types.common import (
     EndpointMatcher,
     EnvoyHeaders,
@@ -39,6 +42,7 @@ from .types.common import (
 )
 from .types.dep import (
     AuthzExtension,
+    BodySendMode,
     CreateAuthzExtensionRequest,
     CreateLbEdgeExtensionRequest,
     CreateLbRouteExtensionRequest,
@@ -188,28 +192,17 @@ else:  # pragma: NO COVER
     # An older version of api_core is installed which does not define the
     # functions above. We do equivalent checks manually.
     try:
-        import sys
         import warnings
 
         _py_version_str = sys.version.split()[0]
         _package_label = "google.cloud.network_services_v1"
-        if sys.version_info < (3, 9):
+        if sys.version_info < (3, 10):
             warnings.warn(
                 "You are using a non-supported Python version "
                 + f"({_py_version_str}).  Google will not post any further "
                 + f"updates to {_package_label} supporting this Python version. "
                 + "Please upgrade to the latest Python version, or at "
-                + f"least to Python 3.9, and then update {_package_label}.",
-                FutureWarning,
-            )
-        if sys.version_info[:2] == (3, 9):
-            warnings.warn(
-                f"You are using a Python version ({_py_version_str}) "
-                + f"which Google will stop supporting in {_package_label} in "
-                + "January 2026. Please "
-                + "upgrade to the latest Python version, or at "
-                + "least to Python 3.10, before then, and "
-                + f"then update {_package_label}.",
+                + f"least to Python 3.10, and then update {_package_label}.",
                 FutureWarning,
             )
 
@@ -276,7 +269,10 @@ else:  # pragma: NO COVER
 __all__ = (
     "DepServiceAsyncClient",
     "NetworkServicesAsyncClient",
+    "AgentGateway",
     "AuthzExtension",
+    "BodySendMode",
+    "CreateAgentGatewayRequest",
     "CreateAuthzExtensionRequest",
     "CreateEndpointPolicyRequest",
     "CreateGatewayRequest",
@@ -292,6 +288,7 @@ __all__ = (
     "CreateTlsRouteRequest",
     "CreateWasmPluginRequest",
     "CreateWasmPluginVersionRequest",
+    "DeleteAgentGatewayRequest",
     "DeleteAuthzExtensionRequest",
     "DeleteEndpointPolicyRequest",
     "DeleteGatewayRequest",
@@ -315,6 +312,7 @@ __all__ = (
     "ExtensionChain",
     "Gateway",
     "GatewayRouteView",
+    "GetAgentGatewayRequest",
     "GetAuthzExtensionRequest",
     "GetEndpointPolicyRequest",
     "GetGatewayRequest",
@@ -337,6 +335,8 @@ __all__ = (
     "LbEdgeExtension",
     "LbRouteExtension",
     "LbTrafficExtension",
+    "ListAgentGatewaysRequest",
+    "ListAgentGatewaysResponse",
     "ListAuthzExtensionsRequest",
     "ListAuthzExtensionsResponse",
     "ListEndpointPoliciesRequest",
@@ -381,6 +381,7 @@ __all__ = (
     "TcpRoute",
     "TlsRoute",
     "TrafficPortSelector",
+    "UpdateAgentGatewayRequest",
     "UpdateAuthzExtensionRequest",
     "UpdateEndpointPolicyRequest",
     "UpdateGatewayRequest",

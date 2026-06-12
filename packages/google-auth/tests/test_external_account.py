@@ -403,29 +403,22 @@ class TestCredentials(object):
             service_account_impersonation_options={"token_lifetime_seconds": 2800},
         )
 
-        with mock.patch.object(
-            external_account.Credentials, "__init__", return_value=None
-        ) as mock_init:
-            credentials.with_scopes(["email"], ["default2"])
+        cloned = credentials.with_scopes(["email"], ["default2"])
 
-        # Confirm with_scopes initialized the credential with the expected
-        # parameters and scopes.
-        mock_init.assert_called_once_with(
-            audience=self.AUDIENCE,
-            subject_token_type=self.SUBJECT_TOKEN_TYPE,
-            token_url=self.TOKEN_URL,
-            token_info_url=self.TOKEN_INFO_URL,
-            credential_source=self.CREDENTIAL_SOURCE,
-            service_account_impersonation_url=self.SERVICE_ACCOUNT_IMPERSONATION_URL,
-            service_account_impersonation_options={"token_lifetime_seconds": 2800},
-            client_id=CLIENT_ID,
-            client_secret=CLIENT_SECRET,
-            quota_project_id=self.QUOTA_PROJECT_ID,
-            scopes=["email"],
-            default_scopes=["default2"],
-            universe_domain=DEFAULT_UNIVERSE_DOMAIN,
-            trust_boundary=None,
+        assert cloned.scopes == ["email"]
+        assert cloned.default_scopes == ["default2"]
+        assert cloned.quota_project_id == self.QUOTA_PROJECT_ID
+        assert cloned._client_id == CLIENT_ID
+        assert cloned._client_secret == CLIENT_SECRET
+        assert cloned._token_info_url == self.TOKEN_INFO_URL
+        assert (
+            cloned._service_account_impersonation_url
+            == self.SERVICE_ACCOUNT_IMPERSONATION_URL
         )
+        assert cloned._service_account_impersonation_options == {
+            "token_lifetime_seconds": 2800
+        }
+        assert cloned.universe_domain == DEFAULT_UNIVERSE_DOMAIN
 
     def test_with_token_uri(self):
         credentials = self.make_credentials()
@@ -492,33 +485,21 @@ class TestCredentials(object):
             service_account_impersonation_options={"token_lifetime_seconds": 2800},
         )
 
-        with mock.patch.object(
-            external_account.Credentials, "__init__", return_value=None
-        ) as mock_init:
-            new_cred = credentials.with_quota_project("project-foo")
+        new_cred = credentials.with_quota_project("project-foo")
 
-            # Confirm with_quota_project initialized the credential with the
-            # expected parameters.
-            mock_init.assert_called_once_with(
-                audience=self.AUDIENCE,
-                subject_token_type=self.SUBJECT_TOKEN_TYPE,
-                token_url=self.TOKEN_URL,
-                token_info_url=self.TOKEN_INFO_URL,
-                credential_source=self.CREDENTIAL_SOURCE,
-                service_account_impersonation_url=self.SERVICE_ACCOUNT_IMPERSONATION_URL,
-                service_account_impersonation_options={"token_lifetime_seconds": 2800},
-                client_id=CLIENT_ID,
-                client_secret=CLIENT_SECRET,
-                quota_project_id=self.QUOTA_PROJECT_ID,
-                scopes=self.SCOPES,
-                default_scopes=["default1"],
-                universe_domain=DEFAULT_UNIVERSE_DOMAIN,
-                trust_boundary=None,
-            )
-
-            # Confirm with_quota_project sets the correct quota project after
-            # initialization.
-            assert new_cred.quota_project_id == "project-foo"
+        assert new_cred.quota_project_id == "project-foo"
+        assert new_cred.scopes == self.SCOPES
+        assert new_cred.default_scopes == ["default1"]
+        assert new_cred._client_id == CLIENT_ID
+        assert new_cred._client_secret == CLIENT_SECRET
+        assert new_cred._token_info_url == self.TOKEN_INFO_URL
+        assert (
+            new_cred._service_account_impersonation_url
+            == self.SERVICE_ACCOUNT_IMPERSONATION_URL
+        )
+        assert new_cred._service_account_impersonation_options == {
+            "token_lifetime_seconds": 2800
+        }
 
     def test_info(self):
         credentials = self.make_credentials(universe_domain="dummy_universe.com")
@@ -543,6 +524,23 @@ class TestCredentials(object):
         credentials = self.make_credentials()
         new_credentials = credentials.with_universe_domain("dummy_universe.com")
         assert new_credentials.universe_domain == "dummy_universe.com"
+
+    def test_copy_regional_access_boundary_manager_state_and_config(self):
+        credentials = self.make_credentials()
+        credentials._rab_manager._data = mock.sentinel.rab_data
+        credentials._rab_manager._use_blocking_regional_access_boundary_lookup = True
+
+        new_credentials = credentials.with_universe_domain("dummy_universe.com")
+
+        # Verify references to boundary data are shared
+        assert new_credentials._rab_manager._data == mock.sentinel.rab_data
+        # Verify blocking config flag is preserved
+        assert (
+            new_credentials._rab_manager._use_blocking_regional_access_boundary_lookup
+            is True
+        )
+        # Verify target manager object is not replaced
+        assert new_credentials._rab_manager is not credentials._rab_manager
 
     def test_info_workforce_pool(self):
         credentials = self.make_workforce_pool_credentials(
@@ -978,6 +976,57 @@ class TestCredentials(object):
         assert credentials.expiry == expected_expiry
         assert not credentials.expired
         assert credentials.token == impersonation_response["accessToken"]
+
+    @mock.patch(
+        "google.auth.metrics.token_request_access_token_impersonate",
+        return_value=IMPERSONATE_ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE,
+    )
+    @mock.patch(
+        "google.auth.metrics.python_and_auth_lib_version",
+        return_value=LANG_LIBRARY_METRICS_HEADER_VALUE,
+    )
+    def test_refresh_impersonation_propagates_rab_config(
+        self, mock_metrics_header_value, mock_auth_lib_value
+    ):
+        expire_time = (
+            _helpers.utcnow().replace(microsecond=0) + datetime.timedelta(seconds=2800)
+        ).isoformat("T") + "Z"
+        token_response = self.SUCCESS_RESPONSE.copy()
+        impersonation_response = {
+            "accessToken": "SA_ACCESS_TOKEN",
+            "expireTime": expire_time,
+        }
+        request = self.make_mock_request(
+            status=http_client.OK,
+            data=token_response,
+            impersonation_status=http_client.OK,
+            impersonation_data=impersonation_response,
+        )
+        credentials = self.make_credentials(
+            service_account_impersonation_url=self.SERVICE_ACCOUNT_IMPERSONATION_URL,
+            scopes=self.SCOPES,
+        )
+        credentials._set_blocking_regional_access_boundary_lookup()
+        assert (
+            credentials._rab_manager._use_blocking_regional_access_boundary_lookup
+            is True
+        )
+
+        credentials.refresh(request)
+
+        assert credentials._impersonated_credentials is not None
+        assert (
+            credentials._impersonated_credentials._rab_manager._use_blocking_regional_access_boundary_lookup
+            is True
+        )
+        assert (
+            credentials._rab_manager._use_blocking_regional_access_boundary_lookup
+            is True
+        )
+        assert (
+            credentials._rab_manager
+            is credentials._impersonated_credentials._rab_manager
+        )
 
     @mock.patch(
         "google.auth.metrics.token_request_access_token_impersonate",
@@ -1727,15 +1776,51 @@ class TestCredentials(object):
             "authorization": "Bearer {}".format(self.SUCCESS_RESPONSE["access_token"])
         }
 
-    def test_build_regional_access_boundary_lookup_url_workload(self):
-        credentials = self.make_credentials()
-        expected_url = "https://iamcredentials.googleapis.com/v1/projects/123456/locations/global/workloadIdentityPools/POOL_ID/allowedLocations"
-        assert credentials._build_regional_access_boundary_lookup_url() == expected_url
+    def test_build_regional_access_boundary_lookup_url_workload_standard(
+        self, monkeypatch
+    ):
+        from google.auth.transport import _mtls_helper
 
-    def test_build_regional_access_boundary_lookup_url_workforce(self):
+        monkeypatch.setattr(_mtls_helper, "check_use_client_cert", lambda: False)
+
+        credentials = self.make_credentials()
+        url = credentials._build_regional_access_boundary_lookup_url()
+        expected_url = "https://iamcredentials.googleapis.com/v1/projects/123456/locations/global/workloadIdentityPools/POOL_ID/allowedLocations"
+        assert url == expected_url
+
+    def test_build_regional_access_boundary_lookup_url_workload_mtls(self, monkeypatch):
+        from google.auth.transport import _mtls_helper
+
+        monkeypatch.setattr(_mtls_helper, "check_use_client_cert", lambda: True)
+
+        credentials = self.make_credentials()
+        url = credentials._build_regional_access_boundary_lookup_url()
+        expected_url = "https://iamcredentials.mtls.googleapis.com/v1/projects/123456/locations/global/workloadIdentityPools/POOL_ID/allowedLocations"
+        assert url == expected_url
+
+    def test_build_regional_access_boundary_lookup_url_workforce_standard(
+        self, monkeypatch
+    ):
+        from google.auth.transport import _mtls_helper
+
+        monkeypatch.setattr(_mtls_helper, "check_use_client_cert", lambda: False)
+
         credentials = self.make_workforce_pool_credentials()
+        url = credentials._build_regional_access_boundary_lookup_url()
         expected_url = "https://iamcredentials.googleapis.com/v1/locations/global/workforcePools/POOL_ID/allowedLocations"
-        assert credentials._build_regional_access_boundary_lookup_url() == expected_url
+        assert url == expected_url
+
+    def test_build_regional_access_boundary_lookup_url_workforce_mtls(
+        self, monkeypatch
+    ):
+        from google.auth.transport import _mtls_helper
+
+        monkeypatch.setattr(_mtls_helper, "check_use_client_cert", lambda: True)
+
+        credentials = self.make_workforce_pool_credentials()
+        url = credentials._build_regional_access_boundary_lookup_url()
+        expected_url = "https://iamcredentials.mtls.googleapis.com/v1/locations/global/workforcePools/POOL_ID/allowedLocations"
+        assert url == expected_url
 
     @pytest.mark.parametrize(
         "audience",
@@ -2134,6 +2219,42 @@ class TestCredentials(object):
         assert project_id is None
         # Only 2 requests to STS and cloud resource manager should be sent.
         assert len(request.call_args_list) == 2
+
+    def test_cloud_resource_manager_url_with_default_universe_domain(self):
+        credentials = self.make_credentials()
+        assert credentials._cloud_resource_manager_url == (
+            "https://cloudresourcemanager.googleapis.com/v1/projects/"
+        )
+
+    def test_cloud_resource_manager_url_with_custom_universe_domain(self):
+        credentials = self.make_credentials(universe_domain="example.com")
+        assert credentials._cloud_resource_manager_url == (
+            "https://cloudresourcemanager.example.com/v1/projects/"
+        )
+
+    def test_get_project_id_cloud_resource_manager_custom_universe_domain(self):
+        custom_universe_domain = "example.com"
+        request = self.make_mock_request(
+            status=http_client.OK,
+            data=self.SUCCESS_RESPONSE.copy(),
+            cloud_resource_manager_status=http_client.OK,
+            cloud_resource_manager_data=self.CLOUD_RESOURCE_MANAGER_SUCCESS_RESPONSE,
+        )
+        credentials = self.make_credentials(
+            scopes=self.SCOPES,
+            universe_domain=custom_universe_domain,
+        )
+
+        project_id = credentials.get_project_id(request)
+
+        assert project_id == self.PROJECT_ID
+        # Verify that the cloud resource manager request used the custom universe domain URL.
+        assert len(request.call_args_list) == 2
+        crm_request_kwargs = request.call_args_list[1][1]
+        expected_url = "https://cloudresourcemanager.{}/v1/projects/{}".format(
+            custom_universe_domain, self.PROJECT_NUMBER
+        )
+        assert crm_request_kwargs["url"] == expected_url
 
     def test_refresh_with_existing_impersonated_credentials(self):
         credentials = self.make_credentials(

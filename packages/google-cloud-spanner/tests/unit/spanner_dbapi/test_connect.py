@@ -58,6 +58,7 @@ class Test_connect(unittest.TestCase):
             ca_certificate=None,
             client_certificate=None,
             client_key=None,
+            instance_type=None,
         )
 
         self.assertIs(connection.database, database)
@@ -103,6 +104,7 @@ class Test_connect(unittest.TestCase):
             ca_certificate=None,
             client_certificate=None,
             client_key=None,
+            instance_type=None,
         )
         client_info = mock_client.call_args_list[0][1]["client_info"]
         self.assertEqual(client_info.user_agent, USER_AGENT)

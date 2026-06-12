@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -57,7 +57,7 @@ from google.iam.v1 import (
 from google.longrunning import operations_pb2  # type: ignore
 
 from google.cloud.dataplex_v1.services.data_product_service import pagers
-from google.cloud.dataplex_v1.types import data_products, service
+from google.cloud.dataplex_v1.types import approval_workflow, data_products, service
 
 from .client import DataProductServiceClient
 from .transports.base import DEFAULT_CLIENT_INFO, DataProductServiceTransport
@@ -87,11 +87,35 @@ class DataProductServiceAsyncClient:
     _DEFAULT_ENDPOINT_TEMPLATE = DataProductServiceClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = DataProductServiceClient._DEFAULT_UNIVERSE
 
+    change_request_path = staticmethod(DataProductServiceClient.change_request_path)
+    parse_change_request_path = staticmethod(
+        DataProductServiceClient.parse_change_request_path
+    )
     data_asset_path = staticmethod(DataProductServiceClient.data_asset_path)
     parse_data_asset_path = staticmethod(DataProductServiceClient.parse_data_asset_path)
     data_product_path = staticmethod(DataProductServiceClient.data_product_path)
     parse_data_product_path = staticmethod(
         DataProductServiceClient.parse_data_product_path
+    )
+    entry_path = staticmethod(DataProductServiceClient.entry_path)
+    parse_entry_path = staticmethod(DataProductServiceClient.parse_entry_path)
+    entry_group_path = staticmethod(DataProductServiceClient.entry_group_path)
+    parse_entry_group_path = staticmethod(
+        DataProductServiceClient.parse_entry_group_path
+    )
+    entry_link_path = staticmethod(DataProductServiceClient.entry_link_path)
+    parse_entry_link_path = staticmethod(DataProductServiceClient.parse_entry_link_path)
+    glossary_path = staticmethod(DataProductServiceClient.glossary_path)
+    parse_glossary_path = staticmethod(DataProductServiceClient.parse_glossary_path)
+    glossary_category_path = staticmethod(
+        DataProductServiceClient.glossary_category_path
+    )
+    parse_glossary_category_path = staticmethod(
+        DataProductServiceClient.parse_glossary_category_path
+    )
+    glossary_term_path = staticmethod(DataProductServiceClient.glossary_term_path)
+    parse_glossary_term_path = staticmethod(
+        DataProductServiceClient.parse_glossary_term_path
     )
     common_billing_account_path = staticmethod(
         DataProductServiceClient.common_billing_account_path
@@ -356,11 +380,11 @@ class DataProductServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_data_product(request=request)
+                operation = await client.create_data_product(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -508,11 +532,11 @@ class DataProductServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_data_product(request=request)
+                operation = await client.delete_data_product(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -895,11 +919,11 @@ class DataProductServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_data_product(request=request)
+                operation = await client.update_data_product(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1002,6 +1026,138 @@ class DataProductServiceAsyncClient:
         # Done; return the response.
         return response
 
+    async def request_data_product_access(
+        self,
+        request: Optional[
+            Union[data_products.RequestDataProductAccessRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        change_request: Optional[approval_workflow.ChangeRequest] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> data_products.RequestDataProductAccessResponse:
+        r"""Requests access to a data product. This will trigger
+        an access approval workflow, and the requester will need
+        to wait for the approval to be granted before they will
+        be able to access the data product assets.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dataplex_v1
+
+            async def sample_request_data_product_access():
+                # Create a client
+                client = dataplex_v1.DataProductServiceAsyncClient()
+
+                # Initialize request argument(s)
+                change_request = dataplex_v1.ChangeRequest()
+                change_request.create_entry.parent = "parent_value"
+                change_request.create_entry.entry_id = "entry_id_value"
+                change_request.create_entry.entry.entry_type = "entry_type_value"
+
+                request = dataplex_v1.RequestDataProductAccessRequest(
+                    parent="parent_value",
+                    change_request=change_request,
+                )
+
+                # Make the request
+                response = await client.request_data_product_access(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.dataplex_v1.types.RequestDataProductAccessRequest, dict]]):
+                The request object. Message for requesting access to a
+                Data Product.
+            parent (:class:`str`):
+                Required. The resource name of the data product. Format:
+                projects/{project_number}/locations/{location_id}/dataProducts/{data_product_id}
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            change_request (:class:`google.cloud.dataplex_v1.types.ChangeRequest`):
+                Required. The change request for the
+                data product access request.
+
+                This corresponds to the ``change_request`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.dataplex_v1.types.RequestDataProductAccessResponse:
+                Response message for requesting
+                access to a Data Product.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent, change_request]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, data_products.RequestDataProductAccessRequest):
+            request = data_products.RequestDataProductAccessRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if change_request is not None:
+            request.change_request = change_request
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.request_data_product_access
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
     async def create_data_asset(
         self,
         request: Optional[Union[data_products.CreateDataAssetRequest, dict]] = None,
@@ -1040,11 +1196,11 @@ class DataProductServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_data_asset(request=request)
+                operation = await client.create_data_asset(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1193,11 +1349,11 @@ class DataProductServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_data_asset(request=request)
+                operation = await client.update_data_asset(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1331,11 +1487,11 @@ class DataProductServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_data_asset(request=request)
+                operation = await client.delete_data_asset(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)

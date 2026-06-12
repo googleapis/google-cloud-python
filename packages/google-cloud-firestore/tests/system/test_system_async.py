@@ -1243,7 +1243,7 @@ async def test_list_collections_with_read_time(client, cleanup, database):
     }
 
 
-@pytest_asyncio.fixture
+@pytest_asyncio.fixture(scope="module")
 async def query_docs(client):
     collection_id = "qs" + UNIQUE_RESOURCE_ID
     sub_collection = "child" + UNIQUE_RESOURCE_ID
@@ -1272,13 +1272,13 @@ async def query_docs(client):
         await operation()
 
 
-@pytest_asyncio.fixture
+@pytest_asyncio.fixture(scope="module")
 async def collection(query_docs):
     collection, _, _ = query_docs
     yield collection
 
 
-@pytest_asyncio.fixture
+@pytest_asyncio.fixture(scope="module")
 async def async_query(collection):
     return collection.where(filter=FieldFilter("a", "==", 1))
 
@@ -1593,11 +1593,12 @@ async def test_query_stream_or_get_w_explain_options_analyze_false(
 @pytest.mark.parametrize("method", ["execute", "stream"])
 @pytest.mark.parametrize("database", [FIRESTORE_ENTERPRISE_DB], indirect=True)
 async def test_pipeline_explain_options_explain_mode(database, method, query_docs):
-    """Explain currently not supported by backend. Expect error"""
-    from google.api_core.exceptions import InvalidArgument
-
     from google.cloud.firestore_v1.query_profile import (
+        ExplainStats,
         PipelineExplainOptions,
+    )
+    from google.cloud.firestore_v1.types.explain_stats import (
+        ExplainStats as ExplainStats_pb,
     )
 
     collection, _, _ = query_docs
@@ -1608,14 +1609,19 @@ async def test_pipeline_explain_options_explain_mode(database, method, query_doc
     method_under_test = getattr(pipeline, method)
     explain_options = PipelineExplainOptions(mode="explain")
 
-    with pytest.raises(InvalidArgument) as e:
-        if method == "stream":
-            results = method_under_test(explain_options=explain_options)
-            _ = [i async for i in results]
-        else:
-            await method_under_test(explain_options=explain_options)
+    if method == "execute":
+        results = await method_under_test(explain_options=explain_options)
+        results_list = list(results)
+    else:
+        results = method_under_test(explain_options=explain_options)
+        results_list = [item async for item in results]
 
-    assert "Explain execution mode is not supported" in str(e.value)
+    assert len(results_list) == 0
+
+    # Verify explain_stats.
+    explain_stats = results.explain_stats
+    assert isinstance(explain_stats, ExplainStats)
+    assert isinstance(explain_stats.get_raw(), ExplainStats_pb)
 
 
 @pytest.mark.skipif(

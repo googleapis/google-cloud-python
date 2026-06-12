@@ -4,6 +4,8 @@
 
 [1]: https://pypi.org/project/google-cloud-network-management/#history
 
+## [1.35.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-management-v1.34.0...google-cloud-network-management-v1.35.0) (2026-05-06)
+
 ## [1.34.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-management-v1.33.0...google-cloud-network-management-v1.34.0) (2026-03-26)
 
 

@@ -40,7 +40,6 @@ from bigframes.core.field import Field
 from bigframes.core.ordering import OrderingExpression, RowOrdering
 
 if typing.TYPE_CHECKING:
-    import bigframes.core.ordering as orderings
     import bigframes.session
 
 
@@ -846,10 +845,10 @@ class ReadTableNode(LeafNode):
     ) -> ReadTableNode:
         return self
 
-    def with_order_cols(self):
+    def pull_out_order(self):
         # Maybe the ordering should be required to always be in the scan list, and then we won't need this?
         if self.source.ordering is None:
-            return self, orderings.RowOrdering()
+            return self, RowOrdering()
 
         order_cols = {col.sql for col in self.source.ordering.referenced_columns}
         scan_cols = {col.source_id for col in self.scan_list.items}
@@ -863,10 +862,18 @@ class ReadTableNode(LeafNode):
         ]
         new_scan_list = ScanList(items=(*self.scan_list.items, *new_scan_cols))
         new_order = self.source.ordering.remap_column_refs(
-            {identifiers.ColumnId(item.source_id): item.id for item in new_scan_cols},
+            {
+                identifiers.ColumnId(item.source_id): item.id
+                for item in new_scan_list.items
+            },
             allow_partial_bindings=True,
         )
-        return dataclasses.replace(self, scan_list=new_scan_list), new_order
+        new_node = dataclasses.replace(
+            self,
+            scan_list=new_scan_list,
+            source=self.source.with_ordering(RowOrdering()),
+        )
+        return new_node, new_order
 
 
 @dataclasses.dataclass(frozen=True, eq=False)

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -40,7 +40,10 @@ if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
 class PartnerLinkServiceTransport(abc.ABC):
     """Abstract transport class for PartnerLinkService."""
 
-    AUTH_SCOPES = ("https://www.googleapis.com/auth/datamanager",)
+    AUTH_SCOPES = (
+        "https://www.googleapis.com/auth/datamanager",
+        "https://www.googleapis.com/auth/datamanager.partnerlink",
+    )
 
     DEFAULT_HOST: str = "datamanager.googleapis.com"
 

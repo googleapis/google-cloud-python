@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -49,6 +49,8 @@ class PrivateMarketplaceDealStatusEnum(proto.Message):
                 The deal is paused by the seller.
             BUYER_PAUSED (5):
                 The deal is paused by the buyer.
+            COMPLETED (6):
+                The deal is past its end date.
         """
 
         PRIVATE_MARKETPLACE_DEAL_STATUS_UNSPECIFIED = 0
@@ -57,6 +59,7 @@ class PrivateMarketplaceDealStatusEnum(proto.Message):
         CANCELED = 3
         SELLER_PAUSED = 4
         BUYER_PAUSED = 5
+        COMPLETED = 6
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

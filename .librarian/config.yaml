@@ -15,10 +15,6 @@ global_files_allowlist:
 libraries:
   # libraries have "release_blocked: true" so that releases are
   # explicitly initiated.
-  # TODO(https://github.com/googleapis/google-cloud-python/issues/16487):
-  # Allow releases for google-cloud-storage once this bug is fixed.
-  - id: "google-cloud-storage"
-    release_blocked: true
   # TODO(https://github.com/googleapis/google-cloud-python/issues/16489):
   # Allow releases for bigframes once the bug above is fixed.
   - id: "bigframes"
@@ -27,13 +23,23 @@ libraries:
   # Allow release for google-crc32c once this bug is fixed.
   - id: "google-crc32c"
     release_blocked: true
-  # TODO(https://github.com/googleapis/google-cloud-python/issues/16780):
-  # Allow release for google-cloud-compute (and beta) after we've checked that
-  # the gRPC service config is okay.
-  - id: "google-cloud-compute"
+  # TODO(https://github.com/googleapis/google-cloud-python/issues/16962):
+  # Disable automatic releases until tests stabilize.
+  - id: "pandas-gbq"
     release_blocked: true
-  - id: "google-cloud-compute-v1beta"
+  # TODO(https://github.com/googleapis/google-cloud-python/issues/16970):
+  # Disable automatic releases until system tests are sped up or reorganized.
+  - id: "google-cloud-firestore"
     release_blocked: true
-  # TODO(b/501132869): Disabling automatic releases until resolved.
+  # TODO(https://github.com/googleapis/google-cloud-python/issues/17287):
+  # Allow releases for sqlalchemy-bigquery once the bug above is fixed.
+  - id: "sqlalchemy-bigquery"
+    release_blocked: true
+  # TODO(https://github.com/googleapis/google-cloud-python/issues/17327)
+  - id: "google-cloud-bigquery"
+    release_blocked: true
+  # TODO(https://github.com/googleapis/google-cloud-python/issues/17327)
   - id: "google-cloud-bigtable"
     release_blocked: true
+
+

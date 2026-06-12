@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -88,6 +88,8 @@ class DataAgentServiceAsyncClient:
     _DEFAULT_ENDPOINT_TEMPLATE = DataAgentServiceClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = DataAgentServiceClient._DEFAULT_UNIVERSE
 
+    crypto_key_path = staticmethod(DataAgentServiceClient.crypto_key_path)
+    parse_crypto_key_path = staticmethod(DataAgentServiceClient.parse_crypto_key_path)
     data_agent_path = staticmethod(DataAgentServiceClient.data_agent_path)
     parse_data_agent_path = staticmethod(DataAgentServiceClient.parse_data_agent_path)
     common_billing_account_path = staticmethod(
@@ -710,11 +712,11 @@ class DataAgentServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_data_agent(request=request)
+                operation = await client.create_data_agent(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -984,11 +986,11 @@ class DataAgentServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_data_agent(request=request)
+                operation = await client.update_data_agent(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1256,11 +1258,11 @@ class DataAgentServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_data_agent(request=request)
+                operation = await client.delete_data_agent(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)

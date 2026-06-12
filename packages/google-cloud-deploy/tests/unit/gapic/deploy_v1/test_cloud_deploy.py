@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -129,6 +124,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1296,8 +1306,8 @@ def test_cloud_deploy_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_deploy.ListDeliveryPipelinesRequest,
-        dict,
+        cloud_deploy.ListDeliveryPipelinesRequest(),
+        {},
     ],
 )
 def test_list_delivery_pipelines(request_type, transport: str = "grpc"):
@@ -1308,7 +1318,7 @@ def test_list_delivery_pipelines(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1361,12 +1371,13 @@ def test_list_delivery_pipelines_non_empty_request_with_auto_populated_field():
         client.list_delivery_pipelines(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_deploy.ListDeliveryPipelinesRequest(
+        request_msg = cloud_deploy.ListDeliveryPipelinesRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_delivery_pipelines_use_cached_wrapped_rpc():
@@ -1452,9 +1463,15 @@ async def test_list_delivery_pipelines_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.ListDeliveryPipelinesRequest(),
+        {},
+    ],
+)
 async def test_list_delivery_pipelines_async(
-    transport: str = "grpc_asyncio",
-    request_type=cloud_deploy.ListDeliveryPipelinesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = CloudDeployAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1463,7 +1480,7 @@ async def test_list_delivery_pipelines_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1488,11 +1505,6 @@ async def test_list_delivery_pipelines_async(
     assert isinstance(response, pagers.ListDeliveryPipelinesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_delivery_pipelines_async_from_dict():
-    await test_list_delivery_pipelines_async(request_type=dict)
 
 
 def test_list_delivery_pipelines_field_headers():
@@ -1838,11 +1850,7 @@ async def test_list_delivery_pipelines_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_delivery_pipelines(request={})
-        ).pages:
+        async for page_ in (await client.list_delivery_pipelines(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -1851,8 +1859,8 @@ async def test_list_delivery_pipelines_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_deploy.GetDeliveryPipelineRequest,
-        dict,
+        cloud_deploy.GetDeliveryPipelineRequest(),
+        {},
     ],
 )
 def test_get_delivery_pipeline(request_type, transport: str = "grpc"):
@@ -1863,7 +1871,7 @@ def test_get_delivery_pipeline(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1919,9 +1927,10 @@ def test_get_delivery_pipeline_non_empty_request_with_auto_populated_field():
         client.get_delivery_pipeline(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_deploy.GetDeliveryPipelineRequest(
+        request_msg = cloud_deploy.GetDeliveryPipelineRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_delivery_pipeline_use_cached_wrapped_rpc():
@@ -2007,9 +2016,15 @@ async def test_get_delivery_pipeline_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.GetDeliveryPipelineRequest(),
+        {},
+    ],
+)
 async def test_get_delivery_pipeline_async(
-    transport: str = "grpc_asyncio",
-    request_type=cloud_deploy.GetDeliveryPipelineRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = CloudDeployAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2018,7 +2033,7 @@ async def test_get_delivery_pipeline_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2049,11 +2064,6 @@ async def test_get_delivery_pipeline_async(
     assert response.description == "description_value"
     assert response.etag == "etag_value"
     assert response.suspended is True
-
-
-@pytest.mark.asyncio
-async def test_get_delivery_pipeline_async_from_dict():
-    await test_get_delivery_pipeline_async(request_type=dict)
 
 
 def test_get_delivery_pipeline_field_headers():
@@ -2210,8 +2220,8 @@ async def test_get_delivery_pipeline_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_deploy.CreateDeliveryPipelineRequest,
-        dict,
+        cloud_deploy.CreateDeliveryPipelineRequest(),
+        {},
     ],
 )
 def test_create_delivery_pipeline(request_type, transport: str = "grpc"):
@@ -2222,7 +2232,7 @@ def test_create_delivery_pipeline(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2269,11 +2279,12 @@ def test_create_delivery_pipeline_non_empty_request_with_auto_populated_field():
         client.create_delivery_pipeline(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_deploy.CreateDeliveryPipelineRequest(
+        request_msg = cloud_deploy.CreateDeliveryPipelineRequest(
             parent="parent_value",
             delivery_pipeline_id="delivery_pipeline_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_delivery_pipeline_use_cached_wrapped_rpc():
@@ -2369,9 +2380,15 @@ async def test_create_delivery_pipeline_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.CreateDeliveryPipelineRequest(),
+        {},
+    ],
+)
 async def test_create_delivery_pipeline_async(
-    transport: str = "grpc_asyncio",
-    request_type=cloud_deploy.CreateDeliveryPipelineRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = CloudDeployAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2380,7 +2397,7 @@ async def test_create_delivery_pipeline_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2400,11 +2417,6 @@ async def test_create_delivery_pipeline_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_delivery_pipeline_async_from_dict():
-    await test_create_delivery_pipeline_async(request_type=dict)
 
 
 def test_create_delivery_pipeline_field_headers():
@@ -2581,8 +2593,8 @@ async def test_create_delivery_pipeline_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_deploy.UpdateDeliveryPipelineRequest,
-        dict,
+        cloud_deploy.UpdateDeliveryPipelineRequest(),
+        {},
     ],
 )
 def test_update_delivery_pipeline(request_type, transport: str = "grpc"):
@@ -2593,7 +2605,7 @@ def test_update_delivery_pipeline(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2638,9 +2650,10 @@ def test_update_delivery_pipeline_non_empty_request_with_auto_populated_field():
         client.update_delivery_pipeline(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_deploy.UpdateDeliveryPipelineRequest(
+        request_msg = cloud_deploy.UpdateDeliveryPipelineRequest(
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_delivery_pipeline_use_cached_wrapped_rpc():
@@ -2736,9 +2749,15 @@ async def test_update_delivery_pipeline_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.UpdateDeliveryPipelineRequest(),
+        {},
+    ],
+)
 async def test_update_delivery_pipeline_async(
-    transport: str = "grpc_asyncio",
-    request_type=cloud_deploy.UpdateDeliveryPipelineRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = CloudDeployAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2747,7 +2766,7 @@ async def test_update_delivery_pipeline_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2767,11 +2786,6 @@ async def test_update_delivery_pipeline_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_delivery_pipeline_async_from_dict():
-    await test_update_delivery_pipeline_async(request_type=dict)
 
 
 def test_update_delivery_pipeline_field_headers():
@@ -2938,8 +2952,8 @@ async def test_update_delivery_pipeline_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_deploy.DeleteDeliveryPipelineRequest,
-        dict,
+        cloud_deploy.DeleteDeliveryPipelineRequest(),
+        {},
     ],
 )
 def test_delete_delivery_pipeline(request_type, transport: str = "grpc"):
@@ -2950,7 +2964,7 @@ def test_delete_delivery_pipeline(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2997,11 +3011,12 @@ def test_delete_delivery_pipeline_non_empty_request_with_auto_populated_field():
         client.delete_delivery_pipeline(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_deploy.DeleteDeliveryPipelineRequest(
+        request_msg = cloud_deploy.DeleteDeliveryPipelineRequest(
             name="name_value",
             request_id="request_id_value",
             etag="etag_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_delivery_pipeline_use_cached_wrapped_rpc():
@@ -3097,9 +3112,15 @@ async def test_delete_delivery_pipeline_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.DeleteDeliveryPipelineRequest(),
+        {},
+    ],
+)
 async def test_delete_delivery_pipeline_async(
-    transport: str = "grpc_asyncio",
-    request_type=cloud_deploy.DeleteDeliveryPipelineRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = CloudDeployAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3108,7 +3129,7 @@ async def test_delete_delivery_pipeline_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3128,11 +3149,6 @@ async def test_delete_delivery_pipeline_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_delivery_pipeline_async_from_dict():
-    await test_delete_delivery_pipeline_async(request_type=dict)
 
 
 def test_delete_delivery_pipeline_field_headers():
@@ -3289,8 +3305,8 @@ async def test_delete_delivery_pipeline_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_deploy.ListTargetsRequest,
-        dict,
+        cloud_deploy.ListTargetsRequest(),
+        {},
     ],
 )
 def test_list_targets(request_type, transport: str = "grpc"):
@@ -3301,7 +3317,7 @@ def test_list_targets(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_targets), "__call__") as call:
@@ -3350,12 +3366,13 @@ def test_list_targets_non_empty_request_with_auto_populated_field():
         client.list_targets(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_deploy.ListTargetsRequest(
+        request_msg = cloud_deploy.ListTargetsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_targets_use_cached_wrapped_rpc():
@@ -3436,9 +3453,14 @@ async def test_list_targets_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_targets_async(
-    transport: str = "grpc_asyncio", request_type=cloud_deploy.ListTargetsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.ListTargetsRequest(),
+        {},
+    ],
+)
+async def test_list_targets_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudDeployAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3446,7 +3468,7 @@ async def test_list_targets_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_targets), "__call__") as call:
@@ -3469,11 +3491,6 @@ async def test_list_targets_async(
     assert isinstance(response, pagers.ListTargetsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_targets_async_from_dict():
-    await test_list_targets_async(request_type=dict)
 
 
 def test_list_targets_field_headers():
@@ -3803,11 +3820,7 @@ async def test_list_targets_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_targets(request={})
-        ).pages:
+        async for page_ in (await client.list_targets(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -3816,8 +3829,8 @@ async def test_list_targets_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_deploy.RollbackTargetRequest,
-        dict,
+        cloud_deploy.RollbackTargetRequest(),
+        {},
     ],
 )
 def test_rollback_target(request_type, transport: str = "grpc"):
@@ -3828,7 +3841,7 @@ def test_rollback_target(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.rollback_target), "__call__") as call:
@@ -3873,13 +3886,14 @@ def test_rollback_target_non_empty_request_with_auto_populated_field():
         client.rollback_target(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_deploy.RollbackTargetRequest(
+        request_msg = cloud_deploy.RollbackTargetRequest(
             name="name_value",
             target_id="target_id_value",
             rollout_id="rollout_id_value",
             release_id="release_id_value",
             rollout_to_roll_back="rollout_to_roll_back_value",
         )
+        assert args[0] == request_msg
 
 
 def test_rollback_target_use_cached_wrapped_rpc():
@@ -3960,9 +3974,14 @@ async def test_rollback_target_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_rollback_target_async(
-    transport: str = "grpc_asyncio", request_type=cloud_deploy.RollbackTargetRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.RollbackTargetRequest(),
+        {},
+    ],
+)
+async def test_rollback_target_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudDeployAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3970,7 +3989,7 @@ async def test_rollback_target_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.rollback_target), "__call__") as call:
@@ -3988,11 +4007,6 @@ async def test_rollback_target_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cloud_deploy.RollbackTargetResponse)
-
-
-@pytest.mark.asyncio
-async def test_rollback_target_async_from_dict():
-    await test_rollback_target_async(request_type=dict)
 
 
 def test_rollback_target_field_headers():
@@ -4161,8 +4175,8 @@ async def test_rollback_target_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_deploy.GetTargetRequest,
-        dict,
+        cloud_deploy.GetTargetRequest(),
+        {},
     ],
 )
 def test_get_target(request_type, transport: str = "grpc"):
@@ -4173,7 +4187,7 @@ def test_get_target(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_target), "__call__") as call:
@@ -4227,9 +4241,10 @@ def test_get_target_non_empty_request_with_auto_populated_field():
         client.get_target(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_deploy.GetTargetRequest(
+        request_msg = cloud_deploy.GetTargetRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_target_use_cached_wrapped_rpc():
@@ -4308,9 +4323,14 @@ async def test_get_target_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_get_target_async(
-    transport: str = "grpc_asyncio", request_type=cloud_deploy.GetTargetRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.GetTargetRequest(),
+        {},
+    ],
+)
+async def test_get_target_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudDeployAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4318,7 +4338,7 @@ async def test_get_target_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_target), "__call__") as call:
@@ -4349,11 +4369,6 @@ async def test_get_target_async(
     assert response.description == "description_value"
     assert response.require_approval is True
     assert response.etag == "etag_value"
-
-
-@pytest.mark.asyncio
-async def test_get_target_async_from_dict():
-    await test_get_target_async(request_type=dict)
 
 
 def test_get_target_field_headers():
@@ -4498,8 +4513,8 @@ async def test_get_target_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_deploy.CreateTargetRequest,
-        dict,
+        cloud_deploy.CreateTargetRequest(),
+        {},
     ],
 )
 def test_create_target(request_type, transport: str = "grpc"):
@@ -4510,7 +4525,7 @@ def test_create_target(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_target), "__call__") as call:
@@ -4553,11 +4568,12 @@ def test_create_target_non_empty_request_with_auto_populated_field():
         client.create_target(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_deploy.CreateTargetRequest(
+        request_msg = cloud_deploy.CreateTargetRequest(
             parent="parent_value",
             target_id="target_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_target_use_cached_wrapped_rpc():
@@ -4648,9 +4664,14 @@ async def test_create_target_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_target_async(
-    transport: str = "grpc_asyncio", request_type=cloud_deploy.CreateTargetRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.CreateTargetRequest(),
+        {},
+    ],
+)
+async def test_create_target_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudDeployAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4658,7 +4679,7 @@ async def test_create_target_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_target), "__call__") as call:
@@ -4676,11 +4697,6 @@ async def test_create_target_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_target_async_from_dict():
-    await test_create_target_async(request_type=dict)
 
 
 def test_create_target_field_headers():
@@ -4849,8 +4865,8 @@ async def test_create_target_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_deploy.UpdateTargetRequest,
-        dict,
+        cloud_deploy.UpdateTargetRequest(),
+        {},
     ],
 )
 def test_update_target(request_type, transport: str = "grpc"):
@@ -4861,7 +4877,7 @@ def test_update_target(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_target), "__call__") as call:
@@ -4902,9 +4918,10 @@ def test_update_target_non_empty_request_with_auto_populated_field():
         client.update_target(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_deploy.UpdateTargetRequest(
+        request_msg = cloud_deploy.UpdateTargetRequest(
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_target_use_cached_wrapped_rpc():
@@ -4995,9 +5012,14 @@ async def test_update_target_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_target_async(
-    transport: str = "grpc_asyncio", request_type=cloud_deploy.UpdateTargetRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.UpdateTargetRequest(),
+        {},
+    ],
+)
+async def test_update_target_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudDeployAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5005,7 +5027,7 @@ async def test_update_target_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_target), "__call__") as call:
@@ -5023,11 +5045,6 @@ async def test_update_target_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_target_async_from_dict():
-    await test_update_target_async(request_type=dict)
 
 
 def test_update_target_field_headers():
@@ -5186,8 +5203,8 @@ async def test_update_target_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_deploy.DeleteTargetRequest,
-        dict,
+        cloud_deploy.DeleteTargetRequest(),
+        {},
     ],
 )
 def test_delete_target(request_type, transport: str = "grpc"):
@@ -5198,7 +5215,7 @@ def test_delete_target(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_target), "__call__") as call:
@@ -5241,11 +5258,12 @@ def test_delete_target_non_empty_request_with_auto_populated_field():
         client.delete_target(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_deploy.DeleteTargetRequest(
+        request_msg = cloud_deploy.DeleteTargetRequest(
             name="name_value",
             request_id="request_id_value",
             etag="etag_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_target_use_cached_wrapped_rpc():
@@ -5336,9 +5354,14 @@ async def test_delete_target_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_target_async(
-    transport: str = "grpc_asyncio", request_type=cloud_deploy.DeleteTargetRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.DeleteTargetRequest(),
+        {},
+    ],
+)
+async def test_delete_target_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudDeployAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5346,7 +5369,7 @@ async def test_delete_target_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_target), "__call__") as call:
@@ -5364,11 +5387,6 @@ async def test_delete_target_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_target_async_from_dict():
-    await test_delete_target_async(request_type=dict)
 
 
 def test_delete_target_field_headers():
@@ -5517,8 +5535,8 @@ async def test_delete_target_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_deploy.ListCustomTargetTypesRequest,
-        dict,
+        cloud_deploy.ListCustomTargetTypesRequest(),
+        {},
     ],
 )
 def test_list_custom_target_types(request_type, transport: str = "grpc"):
@@ -5529,7 +5547,7 @@ def test_list_custom_target_types(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5582,12 +5600,13 @@ def test_list_custom_target_types_non_empty_request_with_auto_populated_field():
         client.list_custom_target_types(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_deploy.ListCustomTargetTypesRequest(
+        request_msg = cloud_deploy.ListCustomTargetTypesRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_custom_target_types_use_cached_wrapped_rpc():
@@ -5673,9 +5692,15 @@ async def test_list_custom_target_types_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.ListCustomTargetTypesRequest(),
+        {},
+    ],
+)
 async def test_list_custom_target_types_async(
-    transport: str = "grpc_asyncio",
-    request_type=cloud_deploy.ListCustomTargetTypesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = CloudDeployAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5684,7 +5709,7 @@ async def test_list_custom_target_types_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5709,11 +5734,6 @@ async def test_list_custom_target_types_async(
     assert isinstance(response, pagers.ListCustomTargetTypesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_custom_target_types_async_from_dict():
-    await test_list_custom_target_types_async(request_type=dict)
 
 
 def test_list_custom_target_types_field_headers():
@@ -6061,11 +6081,7 @@ async def test_list_custom_target_types_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_custom_target_types(request={})
-        ).pages:
+        async for page_ in (await client.list_custom_target_types(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -6074,8 +6090,8 @@ async def test_list_custom_target_types_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_deploy.GetCustomTargetTypeRequest,
-        dict,
+        cloud_deploy.GetCustomTargetTypeRequest(),
+        {},
     ],
 )
 def test_get_custom_target_type(request_type, transport: str = "grpc"):
@@ -6086,7 +6102,7 @@ def test_get_custom_target_type(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6142,9 +6158,10 @@ def test_get_custom_target_type_non_empty_request_with_auto_populated_field():
         client.get_custom_target_type(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_deploy.GetCustomTargetTypeRequest(
+        request_msg = cloud_deploy.GetCustomTargetTypeRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_custom_target_type_use_cached_wrapped_rpc():
@@ -6230,9 +6247,15 @@ async def test_get_custom_target_type_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.GetCustomTargetTypeRequest(),
+        {},
+    ],
+)
 async def test_get_custom_target_type_async(
-    transport: str = "grpc_asyncio",
-    request_type=cloud_deploy.GetCustomTargetTypeRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = CloudDeployAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -6241,7 +6264,7 @@ async def test_get_custom_target_type_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6272,11 +6295,6 @@ async def test_get_custom_target_type_async(
     assert response.uid == "uid_value"
     assert response.description == "description_value"
     assert response.etag == "etag_value"
-
-
-@pytest.mark.asyncio
-async def test_get_custom_target_type_async_from_dict():
-    await test_get_custom_target_type_async(request_type=dict)
 
 
 def test_get_custom_target_type_field_headers():
@@ -6433,8 +6451,8 @@ async def test_get_custom_target_type_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_deploy.CreateCustomTargetTypeRequest,
-        dict,
+        cloud_deploy.CreateCustomTargetTypeRequest(),
+        {},
     ],
 )
 def test_create_custom_target_type(request_type, transport: str = "grpc"):
@@ -6445,7 +6463,7 @@ def test_create_custom_target_type(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6492,11 +6510,12 @@ def test_create_custom_target_type_non_empty_request_with_auto_populated_field()
         client.create_custom_target_type(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_deploy.CreateCustomTargetTypeRequest(
+        request_msg = cloud_deploy.CreateCustomTargetTypeRequest(
             parent="parent_value",
             custom_target_type_id="custom_target_type_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_custom_target_type_use_cached_wrapped_rpc():
@@ -6592,9 +6611,15 @@ async def test_create_custom_target_type_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.CreateCustomTargetTypeRequest(),
+        {},
+    ],
+)
 async def test_create_custom_target_type_async(
-    transport: str = "grpc_asyncio",
-    request_type=cloud_deploy.CreateCustomTargetTypeRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = CloudDeployAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -6603,7 +6628,7 @@ async def test_create_custom_target_type_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6623,11 +6648,6 @@ async def test_create_custom_target_type_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_custom_target_type_async_from_dict():
-    await test_create_custom_target_type_async(request_type=dict)
 
 
 def test_create_custom_target_type_field_headers():
@@ -6804,8 +6824,8 @@ async def test_create_custom_target_type_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_deploy.UpdateCustomTargetTypeRequest,
-        dict,
+        cloud_deploy.UpdateCustomTargetTypeRequest(),
+        {},
     ],
 )
 def test_update_custom_target_type(request_type, transport: str = "grpc"):
@@ -6816,7 +6836,7 @@ def test_update_custom_target_type(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6861,9 +6881,10 @@ def test_update_custom_target_type_non_empty_request_with_auto_populated_field()
         client.update_custom_target_type(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_deploy.UpdateCustomTargetTypeRequest(
+        request_msg = cloud_deploy.UpdateCustomTargetTypeRequest(
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_custom_target_type_use_cached_wrapped_rpc():
@@ -6959,9 +6980,15 @@ async def test_update_custom_target_type_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.UpdateCustomTargetTypeRequest(),
+        {},
+    ],
+)
 async def test_update_custom_target_type_async(
-    transport: str = "grpc_asyncio",
-    request_type=cloud_deploy.UpdateCustomTargetTypeRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = CloudDeployAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -6970,7 +6997,7 @@ async def test_update_custom_target_type_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6990,11 +7017,6 @@ async def test_update_custom_target_type_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_custom_target_type_async_from_dict():
-    await test_update_custom_target_type_async(request_type=dict)
 
 
 def test_update_custom_target_type_field_headers():
@@ -7161,8 +7183,8 @@ async def test_update_custom_target_type_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_deploy.DeleteCustomTargetTypeRequest,
-        dict,
+        cloud_deploy.DeleteCustomTargetTypeRequest(),
+        {},
     ],
 )
 def test_delete_custom_target_type(request_type, transport: str = "grpc"):
@@ -7173,7 +7195,7 @@ def test_delete_custom_target_type(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7220,11 +7242,12 @@ def test_delete_custom_target_type_non_empty_request_with_auto_populated_field()
         client.delete_custom_target_type(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_deploy.DeleteCustomTargetTypeRequest(
+        request_msg = cloud_deploy.DeleteCustomTargetTypeRequest(
             name="name_value",
             request_id="request_id_value",
             etag="etag_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_custom_target_type_use_cached_wrapped_rpc():
@@ -7320,9 +7343,15 @@ async def test_delete_custom_target_type_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.DeleteCustomTargetTypeRequest(),
+        {},
+    ],
+)
 async def test_delete_custom_target_type_async(
-    transport: str = "grpc_asyncio",
-    request_type=cloud_deploy.DeleteCustomTargetTypeRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = CloudDeployAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -7331,7 +7360,7 @@ async def test_delete_custom_target_type_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7351,11 +7380,6 @@ async def test_delete_custom_target_type_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_custom_target_type_async_from_dict():
-    await test_delete_custom_target_type_async(request_type=dict)
 
 
 def test_delete_custom_target_type_field_headers():
@@ -7512,8 +7536,8 @@ async def test_delete_custom_target_type_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_deploy.ListReleasesRequest,
-        dict,
+        cloud_deploy.ListReleasesRequest(),
+        {},
     ],
 )
 def test_list_releases(request_type, transport: str = "grpc"):
@@ -7524,7 +7548,7 @@ def test_list_releases(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_releases), "__call__") as call:
@@ -7573,12 +7597,13 @@ def test_list_releases_non_empty_request_with_auto_populated_field():
         client.list_releases(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_deploy.ListReleasesRequest(
+        request_msg = cloud_deploy.ListReleasesRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_releases_use_cached_wrapped_rpc():
@@ -7659,9 +7684,14 @@ async def test_list_releases_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_releases_async(
-    transport: str = "grpc_asyncio", request_type=cloud_deploy.ListReleasesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.ListReleasesRequest(),
+        {},
+    ],
+)
+async def test_list_releases_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudDeployAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7669,7 +7699,7 @@ async def test_list_releases_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_releases), "__call__") as call:
@@ -7692,11 +7722,6 @@ async def test_list_releases_async(
     assert isinstance(response, pagers.ListReleasesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_releases_async_from_dict():
-    await test_list_releases_async(request_type=dict)
 
 
 def test_list_releases_field_headers():
@@ -8026,11 +8051,7 @@ async def test_list_releases_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_releases(request={})
-        ).pages:
+        async for page_ in (await client.list_releases(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -8039,8 +8060,8 @@ async def test_list_releases_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_deploy.GetReleaseRequest,
-        dict,
+        cloud_deploy.GetReleaseRequest(),
+        {},
     ],
 )
 def test_get_release(request_type, transport: str = "grpc"):
@@ -8051,7 +8072,7 @@ def test_get_release(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_release), "__call__") as call:
@@ -8111,9 +8132,10 @@ def test_get_release_non_empty_request_with_auto_populated_field():
         client.get_release(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_deploy.GetReleaseRequest(
+        request_msg = cloud_deploy.GetReleaseRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_release_use_cached_wrapped_rpc():
@@ -8194,9 +8216,14 @@ async def test_get_release_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_release_async(
-    transport: str = "grpc_asyncio", request_type=cloud_deploy.GetReleaseRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.GetReleaseRequest(),
+        {},
+    ],
+)
+async def test_get_release_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudDeployAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -8204,7 +8231,7 @@ async def test_get_release_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_release), "__call__") as call:
@@ -8241,11 +8268,6 @@ async def test_get_release_async(
     assert response.render_state == cloud_deploy.Release.RenderState.SUCCEEDED
     assert response.etag == "etag_value"
     assert response.skaffold_version == "skaffold_version_value"
-
-
-@pytest.mark.asyncio
-async def test_get_release_async_from_dict():
-    await test_get_release_async(request_type=dict)
 
 
 def test_get_release_field_headers():
@@ -8394,8 +8416,8 @@ async def test_get_release_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_deploy.CreateReleaseRequest,
-        dict,
+        cloud_deploy.CreateReleaseRequest(),
+        {},
     ],
 )
 def test_create_release(request_type, transport: str = "grpc"):
@@ -8406,7 +8428,7 @@ def test_create_release(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_release), "__call__") as call:
@@ -8449,11 +8471,12 @@ def test_create_release_non_empty_request_with_auto_populated_field():
         client.create_release(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_deploy.CreateReleaseRequest(
+        request_msg = cloud_deploy.CreateReleaseRequest(
             parent="parent_value",
             release_id="release_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_release_use_cached_wrapped_rpc():
@@ -8544,9 +8567,14 @@ async def test_create_release_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_release_async(
-    transport: str = "grpc_asyncio", request_type=cloud_deploy.CreateReleaseRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.CreateReleaseRequest(),
+        {},
+    ],
+)
+async def test_create_release_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudDeployAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -8554,7 +8582,7 @@ async def test_create_release_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_release), "__call__") as call:
@@ -8572,11 +8600,6 @@ async def test_create_release_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_release_async_from_dict():
-    await test_create_release_async(request_type=dict)
 
 
 def test_create_release_field_headers():
@@ -8745,8 +8768,8 @@ async def test_create_release_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_deploy.AbandonReleaseRequest,
-        dict,
+        cloud_deploy.AbandonReleaseRequest(),
+        {},
     ],
 )
 def test_abandon_release(request_type, transport: str = "grpc"):
@@ -8757,7 +8780,7 @@ def test_abandon_release(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.abandon_release), "__call__") as call:
@@ -8798,9 +8821,10 @@ def test_abandon_release_non_empty_request_with_auto_populated_field():
         client.abandon_release(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_deploy.AbandonReleaseRequest(
+        request_msg = cloud_deploy.AbandonReleaseRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_abandon_release_use_cached_wrapped_rpc():
@@ -8881,9 +8905,14 @@ async def test_abandon_release_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_abandon_release_async(
-    transport: str = "grpc_asyncio", request_type=cloud_deploy.AbandonReleaseRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.AbandonReleaseRequest(),
+        {},
+    ],
+)
+async def test_abandon_release_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudDeployAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -8891,7 +8920,7 @@ async def test_abandon_release_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.abandon_release), "__call__") as call:
@@ -8909,11 +8938,6 @@ async def test_abandon_release_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cloud_deploy.AbandonReleaseResponse)
-
-
-@pytest.mark.asyncio
-async def test_abandon_release_async_from_dict():
-    await test_abandon_release_async(request_type=dict)
 
 
 def test_abandon_release_field_headers():
@@ -9062,8 +9086,8 @@ async def test_abandon_release_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_deploy.CreateDeployPolicyRequest,
-        dict,
+        cloud_deploy.CreateDeployPolicyRequest(),
+        {},
     ],
 )
 def test_create_deploy_policy(request_type, transport: str = "grpc"):
@@ -9074,7 +9098,7 @@ def test_create_deploy_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9121,11 +9145,12 @@ def test_create_deploy_policy_non_empty_request_with_auto_populated_field():
         client.create_deploy_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_deploy.CreateDeployPolicyRequest(
+        request_msg = cloud_deploy.CreateDeployPolicyRequest(
             parent="parent_value",
             deploy_policy_id="deploy_policy_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_deploy_policy_use_cached_wrapped_rpc():
@@ -9220,8 +9245,15 @@ async def test_create_deploy_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.CreateDeployPolicyRequest(),
+        {},
+    ],
+)
 async def test_create_deploy_policy_async(
-    transport: str = "grpc_asyncio", request_type=cloud_deploy.CreateDeployPolicyRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = CloudDeployAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -9230,7 +9262,7 @@ async def test_create_deploy_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9250,11 +9282,6 @@ async def test_create_deploy_policy_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_deploy_policy_async_from_dict():
-    await test_create_deploy_policy_async(request_type=dict)
 
 
 def test_create_deploy_policy_field_headers():
@@ -9431,8 +9458,8 @@ async def test_create_deploy_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_deploy.UpdateDeployPolicyRequest,
-        dict,
+        cloud_deploy.UpdateDeployPolicyRequest(),
+        {},
     ],
 )
 def test_update_deploy_policy(request_type, transport: str = "grpc"):
@@ -9443,7 +9470,7 @@ def test_update_deploy_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9488,9 +9515,10 @@ def test_update_deploy_policy_non_empty_request_with_auto_populated_field():
         client.update_deploy_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_deploy.UpdateDeployPolicyRequest(
+        request_msg = cloud_deploy.UpdateDeployPolicyRequest(
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_deploy_policy_use_cached_wrapped_rpc():
@@ -9585,8 +9613,15 @@ async def test_update_deploy_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.UpdateDeployPolicyRequest(),
+        {},
+    ],
+)
 async def test_update_deploy_policy_async(
-    transport: str = "grpc_asyncio", request_type=cloud_deploy.UpdateDeployPolicyRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = CloudDeployAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -9595,7 +9630,7 @@ async def test_update_deploy_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9615,11 +9650,6 @@ async def test_update_deploy_policy_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_deploy_policy_async_from_dict():
-    await test_update_deploy_policy_async(request_type=dict)
 
 
 def test_update_deploy_policy_field_headers():
@@ -9786,8 +9816,8 @@ async def test_update_deploy_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_deploy.DeleteDeployPolicyRequest,
-        dict,
+        cloud_deploy.DeleteDeployPolicyRequest(),
+        {},
     ],
 )
 def test_delete_deploy_policy(request_type, transport: str = "grpc"):
@@ -9798,7 +9828,7 @@ def test_delete_deploy_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9845,11 +9875,12 @@ def test_delete_deploy_policy_non_empty_request_with_auto_populated_field():
         client.delete_deploy_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_deploy.DeleteDeployPolicyRequest(
+        request_msg = cloud_deploy.DeleteDeployPolicyRequest(
             name="name_value",
             request_id="request_id_value",
             etag="etag_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_deploy_policy_use_cached_wrapped_rpc():
@@ -9944,8 +9975,15 @@ async def test_delete_deploy_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.DeleteDeployPolicyRequest(),
+        {},
+    ],
+)
 async def test_delete_deploy_policy_async(
-    transport: str = "grpc_asyncio", request_type=cloud_deploy.DeleteDeployPolicyRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = CloudDeployAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -9954,7 +9992,7 @@ async def test_delete_deploy_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9974,11 +10012,6 @@ async def test_delete_deploy_policy_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_deploy_policy_async_from_dict():
-    await test_delete_deploy_policy_async(request_type=dict)
 
 
 def test_delete_deploy_policy_field_headers():
@@ -10135,8 +10168,8 @@ async def test_delete_deploy_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_deploy.ListDeployPoliciesRequest,
-        dict,
+        cloud_deploy.ListDeployPoliciesRequest(),
+        {},
     ],
 )
 def test_list_deploy_policies(request_type, transport: str = "grpc"):
@@ -10147,7 +10180,7 @@ def test_list_deploy_policies(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10200,12 +10233,13 @@ def test_list_deploy_policies_non_empty_request_with_auto_populated_field():
         client.list_deploy_policies(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_deploy.ListDeployPoliciesRequest(
+        request_msg = cloud_deploy.ListDeployPoliciesRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_deploy_policies_use_cached_wrapped_rpc():
@@ -10290,8 +10324,15 @@ async def test_list_deploy_policies_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.ListDeployPoliciesRequest(),
+        {},
+    ],
+)
 async def test_list_deploy_policies_async(
-    transport: str = "grpc_asyncio", request_type=cloud_deploy.ListDeployPoliciesRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = CloudDeployAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -10300,7 +10341,7 @@ async def test_list_deploy_policies_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10325,11 +10366,6 @@ async def test_list_deploy_policies_async(
     assert isinstance(response, pagers.ListDeployPoliciesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_deploy_policies_async_from_dict():
-    await test_list_deploy_policies_async(request_type=dict)
 
 
 def test_list_deploy_policies_field_headers():
@@ -10675,11 +10711,7 @@ async def test_list_deploy_policies_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_deploy_policies(request={})
-        ).pages:
+        async for page_ in (await client.list_deploy_policies(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -10688,8 +10720,8 @@ async def test_list_deploy_policies_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_deploy.GetDeployPolicyRequest,
-        dict,
+        cloud_deploy.GetDeployPolicyRequest(),
+        {},
     ],
 )
 def test_get_deploy_policy(request_type, transport: str = "grpc"):
@@ -10700,7 +10732,7 @@ def test_get_deploy_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10756,9 +10788,10 @@ def test_get_deploy_policy_non_empty_request_with_auto_populated_field():
         client.get_deploy_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_deploy.GetDeployPolicyRequest(
+        request_msg = cloud_deploy.GetDeployPolicyRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_deploy_policy_use_cached_wrapped_rpc():
@@ -10841,9 +10874,14 @@ async def test_get_deploy_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_deploy_policy_async(
-    transport: str = "grpc_asyncio", request_type=cloud_deploy.GetDeployPolicyRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.GetDeployPolicyRequest(),
+        {},
+    ],
+)
+async def test_get_deploy_policy_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudDeployAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -10851,7 +10889,7 @@ async def test_get_deploy_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10882,11 +10920,6 @@ async def test_get_deploy_policy_async(
     assert response.description == "description_value"
     assert response.suspended is True
     assert response.etag == "etag_value"
-
-
-@pytest.mark.asyncio
-async def test_get_deploy_policy_async_from_dict():
-    await test_get_deploy_policy_async(request_type=dict)
 
 
 def test_get_deploy_policy_field_headers():
@@ -11043,8 +11076,8 @@ async def test_get_deploy_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_deploy.ApproveRolloutRequest,
-        dict,
+        cloud_deploy.ApproveRolloutRequest(),
+        {},
     ],
 )
 def test_approve_rollout(request_type, transport: str = "grpc"):
@@ -11055,7 +11088,7 @@ def test_approve_rollout(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.approve_rollout), "__call__") as call:
@@ -11096,9 +11129,10 @@ def test_approve_rollout_non_empty_request_with_auto_populated_field():
         client.approve_rollout(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_deploy.ApproveRolloutRequest(
+        request_msg = cloud_deploy.ApproveRolloutRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_approve_rollout_use_cached_wrapped_rpc():
@@ -11179,9 +11213,14 @@ async def test_approve_rollout_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_approve_rollout_async(
-    transport: str = "grpc_asyncio", request_type=cloud_deploy.ApproveRolloutRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.ApproveRolloutRequest(),
+        {},
+    ],
+)
+async def test_approve_rollout_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudDeployAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -11189,7 +11228,7 @@ async def test_approve_rollout_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.approve_rollout), "__call__") as call:
@@ -11207,11 +11246,6 @@ async def test_approve_rollout_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cloud_deploy.ApproveRolloutResponse)
-
-
-@pytest.mark.asyncio
-async def test_approve_rollout_async_from_dict():
-    await test_approve_rollout_async(request_type=dict)
 
 
 def test_approve_rollout_field_headers():
@@ -11360,8 +11394,8 @@ async def test_approve_rollout_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_deploy.AdvanceRolloutRequest,
-        dict,
+        cloud_deploy.AdvanceRolloutRequest(),
+        {},
     ],
 )
 def test_advance_rollout(request_type, transport: str = "grpc"):
@@ -11372,7 +11406,7 @@ def test_advance_rollout(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.advance_rollout), "__call__") as call:
@@ -11414,10 +11448,11 @@ def test_advance_rollout_non_empty_request_with_auto_populated_field():
         client.advance_rollout(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_deploy.AdvanceRolloutRequest(
+        request_msg = cloud_deploy.AdvanceRolloutRequest(
             name="name_value",
             phase_id="phase_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_advance_rollout_use_cached_wrapped_rpc():
@@ -11498,9 +11533,14 @@ async def test_advance_rollout_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_advance_rollout_async(
-    transport: str = "grpc_asyncio", request_type=cloud_deploy.AdvanceRolloutRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.AdvanceRolloutRequest(),
+        {},
+    ],
+)
+async def test_advance_rollout_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudDeployAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -11508,7 +11548,7 @@ async def test_advance_rollout_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.advance_rollout), "__call__") as call:
@@ -11526,11 +11566,6 @@ async def test_advance_rollout_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cloud_deploy.AdvanceRolloutResponse)
-
-
-@pytest.mark.asyncio
-async def test_advance_rollout_async_from_dict():
-    await test_advance_rollout_async(request_type=dict)
 
 
 def test_advance_rollout_field_headers():
@@ -11689,8 +11724,8 @@ async def test_advance_rollout_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_deploy.CancelRolloutRequest,
-        dict,
+        cloud_deploy.CancelRolloutRequest(),
+        {},
     ],
 )
 def test_cancel_rollout(request_type, transport: str = "grpc"):
@@ -11701,7 +11736,7 @@ def test_cancel_rollout(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.cancel_rollout), "__call__") as call:
@@ -11742,9 +11777,10 @@ def test_cancel_rollout_non_empty_request_with_auto_populated_field():
         client.cancel_rollout(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_deploy.CancelRolloutRequest(
+        request_msg = cloud_deploy.CancelRolloutRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_cancel_rollout_use_cached_wrapped_rpc():
@@ -11825,9 +11861,14 @@ async def test_cancel_rollout_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_cancel_rollout_async(
-    transport: str = "grpc_asyncio", request_type=cloud_deploy.CancelRolloutRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.CancelRolloutRequest(),
+        {},
+    ],
+)
+async def test_cancel_rollout_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudDeployAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -11835,7 +11876,7 @@ async def test_cancel_rollout_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.cancel_rollout), "__call__") as call:
@@ -11853,11 +11894,6 @@ async def test_cancel_rollout_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cloud_deploy.CancelRolloutResponse)
-
-
-@pytest.mark.asyncio
-async def test_cancel_rollout_async_from_dict():
-    await test_cancel_rollout_async(request_type=dict)
 
 
 def test_cancel_rollout_field_headers():
@@ -12006,8 +12042,8 @@ async def test_cancel_rollout_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_deploy.ListRolloutsRequest,
-        dict,
+        cloud_deploy.ListRolloutsRequest(),
+        {},
     ],
 )
 def test_list_rollouts(request_type, transport: str = "grpc"):
@@ -12018,7 +12054,7 @@ def test_list_rollouts(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_rollouts), "__call__") as call:
@@ -12067,12 +12103,13 @@ def test_list_rollouts_non_empty_request_with_auto_populated_field():
         client.list_rollouts(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_deploy.ListRolloutsRequest(
+        request_msg = cloud_deploy.ListRolloutsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_rollouts_use_cached_wrapped_rpc():
@@ -12153,9 +12190,14 @@ async def test_list_rollouts_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_rollouts_async(
-    transport: str = "grpc_asyncio", request_type=cloud_deploy.ListRolloutsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.ListRolloutsRequest(),
+        {},
+    ],
+)
+async def test_list_rollouts_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudDeployAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -12163,7 +12205,7 @@ async def test_list_rollouts_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_rollouts), "__call__") as call:
@@ -12186,11 +12228,6 @@ async def test_list_rollouts_async(
     assert isinstance(response, pagers.ListRolloutsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_rollouts_async_from_dict():
-    await test_list_rollouts_async(request_type=dict)
 
 
 def test_list_rollouts_field_headers():
@@ -12520,11 +12557,7 @@ async def test_list_rollouts_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_rollouts(request={})
-        ).pages:
+        async for page_ in (await client.list_rollouts(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -12533,8 +12566,8 @@ async def test_list_rollouts_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_deploy.GetRolloutRequest,
-        dict,
+        cloud_deploy.GetRolloutRequest(),
+        {},
     ],
 )
 def test_get_rollout(request_type, transport: str = "grpc"):
@@ -12545,7 +12578,7 @@ def test_get_rollout(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_rollout), "__call__") as call:
@@ -12618,9 +12651,10 @@ def test_get_rollout_non_empty_request_with_auto_populated_field():
         client.get_rollout(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_deploy.GetRolloutRequest(
+        request_msg = cloud_deploy.GetRolloutRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_rollout_use_cached_wrapped_rpc():
@@ -12701,9 +12735,14 @@ async def test_get_rollout_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_rollout_async(
-    transport: str = "grpc_asyncio", request_type=cloud_deploy.GetRolloutRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.GetRolloutRequest(),
+        {},
+    ],
+)
+async def test_get_rollout_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudDeployAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -12711,7 +12750,7 @@ async def test_get_rollout_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_rollout), "__call__") as call:
@@ -12761,11 +12800,6 @@ async def test_get_rollout_async(
     assert response.rollback_of_rollout == "rollback_of_rollout_value"
     assert response.rolled_back_by_rollouts == ["rolled_back_by_rollouts_value"]
     assert response.active_repair_automation_run == "active_repair_automation_run_value"
-
-
-@pytest.mark.asyncio
-async def test_get_rollout_async_from_dict():
-    await test_get_rollout_async(request_type=dict)
 
 
 def test_get_rollout_field_headers():
@@ -12914,8 +12948,8 @@ async def test_get_rollout_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_deploy.CreateRolloutRequest,
-        dict,
+        cloud_deploy.CreateRolloutRequest(),
+        {},
     ],
 )
 def test_create_rollout(request_type, transport: str = "grpc"):
@@ -12926,7 +12960,7 @@ def test_create_rollout(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_rollout), "__call__") as call:
@@ -12970,12 +13004,13 @@ def test_create_rollout_non_empty_request_with_auto_populated_field():
         client.create_rollout(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_deploy.CreateRolloutRequest(
+        request_msg = cloud_deploy.CreateRolloutRequest(
             parent="parent_value",
             rollout_id="rollout_id_value",
             request_id="request_id_value",
             starting_phase_id="starting_phase_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_rollout_use_cached_wrapped_rpc():
@@ -13066,9 +13101,14 @@ async def test_create_rollout_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_rollout_async(
-    transport: str = "grpc_asyncio", request_type=cloud_deploy.CreateRolloutRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.CreateRolloutRequest(),
+        {},
+    ],
+)
+async def test_create_rollout_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudDeployAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -13076,7 +13116,7 @@ async def test_create_rollout_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_rollout), "__call__") as call:
@@ -13094,11 +13134,6 @@ async def test_create_rollout_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_rollout_async_from_dict():
-    await test_create_rollout_async(request_type=dict)
 
 
 def test_create_rollout_field_headers():
@@ -13267,8 +13302,8 @@ async def test_create_rollout_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_deploy.IgnoreJobRequest,
-        dict,
+        cloud_deploy.IgnoreJobRequest(),
+        {},
     ],
 )
 def test_ignore_job(request_type, transport: str = "grpc"):
@@ -13279,7 +13314,7 @@ def test_ignore_job(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.ignore_job), "__call__") as call:
@@ -13322,11 +13357,12 @@ def test_ignore_job_non_empty_request_with_auto_populated_field():
         client.ignore_job(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_deploy.IgnoreJobRequest(
+        request_msg = cloud_deploy.IgnoreJobRequest(
             rollout="rollout_value",
             phase_id="phase_id_value",
             job_id="job_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_ignore_job_use_cached_wrapped_rpc():
@@ -13405,9 +13441,14 @@ async def test_ignore_job_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_ignore_job_async(
-    transport: str = "grpc_asyncio", request_type=cloud_deploy.IgnoreJobRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.IgnoreJobRequest(),
+        {},
+    ],
+)
+async def test_ignore_job_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudDeployAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -13415,7 +13456,7 @@ async def test_ignore_job_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.ignore_job), "__call__") as call:
@@ -13433,11 +13474,6 @@ async def test_ignore_job_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cloud_deploy.IgnoreJobResponse)
-
-
-@pytest.mark.asyncio
-async def test_ignore_job_async_from_dict():
-    await test_ignore_job_async(request_type=dict)
 
 
 def test_ignore_job_field_headers():
@@ -13606,8 +13642,8 @@ async def test_ignore_job_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_deploy.RetryJobRequest,
-        dict,
+        cloud_deploy.RetryJobRequest(),
+        {},
     ],
 )
 def test_retry_job(request_type, transport: str = "grpc"):
@@ -13618,7 +13654,7 @@ def test_retry_job(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.retry_job), "__call__") as call:
@@ -13661,11 +13697,12 @@ def test_retry_job_non_empty_request_with_auto_populated_field():
         client.retry_job(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_deploy.RetryJobRequest(
+        request_msg = cloud_deploy.RetryJobRequest(
             rollout="rollout_value",
             phase_id="phase_id_value",
             job_id="job_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_retry_job_use_cached_wrapped_rpc():
@@ -13744,9 +13781,14 @@ async def test_retry_job_async_use_cached_wrapped_rpc(transport: str = "grpc_asy
 
 
 @pytest.mark.asyncio
-async def test_retry_job_async(
-    transport: str = "grpc_asyncio", request_type=cloud_deploy.RetryJobRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.RetryJobRequest(),
+        {},
+    ],
+)
+async def test_retry_job_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudDeployAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -13754,7 +13796,7 @@ async def test_retry_job_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.retry_job), "__call__") as call:
@@ -13772,11 +13814,6 @@ async def test_retry_job_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cloud_deploy.RetryJobResponse)
-
-
-@pytest.mark.asyncio
-async def test_retry_job_async_from_dict():
-    await test_retry_job_async(request_type=dict)
 
 
 def test_retry_job_field_headers():
@@ -13945,8 +13982,8 @@ async def test_retry_job_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_deploy.ListJobRunsRequest,
-        dict,
+        cloud_deploy.ListJobRunsRequest(),
+        {},
     ],
 )
 def test_list_job_runs(request_type, transport: str = "grpc"):
@@ -13957,7 +13994,7 @@ def test_list_job_runs(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_job_runs), "__call__") as call:
@@ -14006,12 +14043,13 @@ def test_list_job_runs_non_empty_request_with_auto_populated_field():
         client.list_job_runs(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_deploy.ListJobRunsRequest(
+        request_msg = cloud_deploy.ListJobRunsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_job_runs_use_cached_wrapped_rpc():
@@ -14092,9 +14130,14 @@ async def test_list_job_runs_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_job_runs_async(
-    transport: str = "grpc_asyncio", request_type=cloud_deploy.ListJobRunsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.ListJobRunsRequest(),
+        {},
+    ],
+)
+async def test_list_job_runs_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudDeployAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -14102,7 +14145,7 @@ async def test_list_job_runs_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_job_runs), "__call__") as call:
@@ -14125,11 +14168,6 @@ async def test_list_job_runs_async(
     assert isinstance(response, pagers.ListJobRunsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_job_runs_async_from_dict():
-    await test_list_job_runs_async(request_type=dict)
 
 
 def test_list_job_runs_field_headers():
@@ -14459,11 +14497,7 @@ async def test_list_job_runs_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_job_runs(request={})
-        ).pages:
+        async for page_ in (await client.list_job_runs(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -14472,8 +14506,8 @@ async def test_list_job_runs_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_deploy.GetJobRunRequest,
-        dict,
+        cloud_deploy.GetJobRunRequest(),
+        {},
     ],
 )
 def test_get_job_run(request_type, transport: str = "grpc"):
@@ -14484,7 +14518,7 @@ def test_get_job_run(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_job_run), "__call__") as call:
@@ -14538,9 +14572,10 @@ def test_get_job_run_non_empty_request_with_auto_populated_field():
         client.get_job_run(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_deploy.GetJobRunRequest(
+        request_msg = cloud_deploy.GetJobRunRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_job_run_use_cached_wrapped_rpc():
@@ -14621,9 +14656,14 @@ async def test_get_job_run_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_job_run_async(
-    transport: str = "grpc_asyncio", request_type=cloud_deploy.GetJobRunRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.GetJobRunRequest(),
+        {},
+    ],
+)
+async def test_get_job_run_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudDeployAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -14631,7 +14671,7 @@ async def test_get_job_run_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_job_run), "__call__") as call:
@@ -14662,11 +14702,6 @@ async def test_get_job_run_async(
     assert response.job_id == "job_id_value"
     assert response.state == cloud_deploy.JobRun.State.IN_PROGRESS
     assert response.etag == "etag_value"
-
-
-@pytest.mark.asyncio
-async def test_get_job_run_async_from_dict():
-    await test_get_job_run_async(request_type=dict)
 
 
 def test_get_job_run_field_headers():
@@ -14811,8 +14846,8 @@ async def test_get_job_run_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_deploy.TerminateJobRunRequest,
-        dict,
+        cloud_deploy.TerminateJobRunRequest(),
+        {},
     ],
 )
 def test_terminate_job_run(request_type, transport: str = "grpc"):
@@ -14823,7 +14858,7 @@ def test_terminate_job_run(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -14868,9 +14903,10 @@ def test_terminate_job_run_non_empty_request_with_auto_populated_field():
         client.terminate_job_run(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_deploy.TerminateJobRunRequest(
+        request_msg = cloud_deploy.TerminateJobRunRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_terminate_job_run_use_cached_wrapped_rpc():
@@ -14953,9 +14989,14 @@ async def test_terminate_job_run_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_terminate_job_run_async(
-    transport: str = "grpc_asyncio", request_type=cloud_deploy.TerminateJobRunRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.TerminateJobRunRequest(),
+        {},
+    ],
+)
+async def test_terminate_job_run_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudDeployAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -14963,7 +15004,7 @@ async def test_terminate_job_run_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -14983,11 +15024,6 @@ async def test_terminate_job_run_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cloud_deploy.TerminateJobRunResponse)
-
-
-@pytest.mark.asyncio
-async def test_terminate_job_run_async_from_dict():
-    await test_terminate_job_run_async(request_type=dict)
 
 
 def test_terminate_job_run_field_headers():
@@ -15144,8 +15180,8 @@ async def test_terminate_job_run_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_deploy.GetConfigRequest,
-        dict,
+        cloud_deploy.GetConfigRequest(),
+        {},
     ],
 )
 def test_get_config(request_type, transport: str = "grpc"):
@@ -15156,7 +15192,7 @@ def test_get_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_config), "__call__") as call:
@@ -15202,9 +15238,10 @@ def test_get_config_non_empty_request_with_auto_populated_field():
         client.get_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_deploy.GetConfigRequest(
+        request_msg = cloud_deploy.GetConfigRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_config_use_cached_wrapped_rpc():
@@ -15283,9 +15320,14 @@ async def test_get_config_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_get_config_async(
-    transport: str = "grpc_asyncio", request_type=cloud_deploy.GetConfigRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.GetConfigRequest(),
+        {},
+    ],
+)
+async def test_get_config_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudDeployAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -15293,7 +15335,7 @@ async def test_get_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_config), "__call__") as call:
@@ -15316,11 +15358,6 @@ async def test_get_config_async(
     assert isinstance(response, cloud_deploy.Config)
     assert response.name == "name_value"
     assert response.default_skaffold_version == "default_skaffold_version_value"
-
-
-@pytest.mark.asyncio
-async def test_get_config_async_from_dict():
-    await test_get_config_async(request_type=dict)
 
 
 def test_get_config_field_headers():
@@ -15465,8 +15502,8 @@ async def test_get_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_deploy.CreateAutomationRequest,
-        dict,
+        cloud_deploy.CreateAutomationRequest(),
+        {},
     ],
 )
 def test_create_automation(request_type, transport: str = "grpc"):
@@ -15477,7 +15514,7 @@ def test_create_automation(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -15524,11 +15561,12 @@ def test_create_automation_non_empty_request_with_auto_populated_field():
         client.create_automation(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_deploy.CreateAutomationRequest(
+        request_msg = cloud_deploy.CreateAutomationRequest(
             parent="parent_value",
             automation_id="automation_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_automation_use_cached_wrapped_rpc():
@@ -15621,9 +15659,14 @@ async def test_create_automation_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_automation_async(
-    transport: str = "grpc_asyncio", request_type=cloud_deploy.CreateAutomationRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.CreateAutomationRequest(),
+        {},
+    ],
+)
+async def test_create_automation_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudDeployAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -15631,7 +15674,7 @@ async def test_create_automation_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -15651,11 +15694,6 @@ async def test_create_automation_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_automation_async_from_dict():
-    await test_create_automation_async(request_type=dict)
 
 
 def test_create_automation_field_headers():
@@ -15832,8 +15870,8 @@ async def test_create_automation_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_deploy.UpdateAutomationRequest,
-        dict,
+        cloud_deploy.UpdateAutomationRequest(),
+        {},
     ],
 )
 def test_update_automation(request_type, transport: str = "grpc"):
@@ -15844,7 +15882,7 @@ def test_update_automation(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -15889,9 +15927,10 @@ def test_update_automation_non_empty_request_with_auto_populated_field():
         client.update_automation(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_deploy.UpdateAutomationRequest(
+        request_msg = cloud_deploy.UpdateAutomationRequest(
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_automation_use_cached_wrapped_rpc():
@@ -15984,9 +16023,14 @@ async def test_update_automation_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_automation_async(
-    transport: str = "grpc_asyncio", request_type=cloud_deploy.UpdateAutomationRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.UpdateAutomationRequest(),
+        {},
+    ],
+)
+async def test_update_automation_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudDeployAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -15994,7 +16038,7 @@ async def test_update_automation_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -16014,11 +16058,6 @@ async def test_update_automation_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_automation_async_from_dict():
-    await test_update_automation_async(request_type=dict)
 
 
 def test_update_automation_field_headers():
@@ -16185,8 +16224,8 @@ async def test_update_automation_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_deploy.DeleteAutomationRequest,
-        dict,
+        cloud_deploy.DeleteAutomationRequest(),
+        {},
     ],
 )
 def test_delete_automation(request_type, transport: str = "grpc"):
@@ -16197,7 +16236,7 @@ def test_delete_automation(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -16244,11 +16283,12 @@ def test_delete_automation_non_empty_request_with_auto_populated_field():
         client.delete_automation(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_deploy.DeleteAutomationRequest(
+        request_msg = cloud_deploy.DeleteAutomationRequest(
             name="name_value",
             request_id="request_id_value",
             etag="etag_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_automation_use_cached_wrapped_rpc():
@@ -16341,9 +16381,14 @@ async def test_delete_automation_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_automation_async(
-    transport: str = "grpc_asyncio", request_type=cloud_deploy.DeleteAutomationRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.DeleteAutomationRequest(),
+        {},
+    ],
+)
+async def test_delete_automation_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudDeployAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -16351,7 +16396,7 @@ async def test_delete_automation_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -16371,11 +16416,6 @@ async def test_delete_automation_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_automation_async_from_dict():
-    await test_delete_automation_async(request_type=dict)
 
 
 def test_delete_automation_field_headers():
@@ -16532,8 +16572,8 @@ async def test_delete_automation_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_deploy.GetAutomationRequest,
-        dict,
+        cloud_deploy.GetAutomationRequest(),
+        {},
     ],
 )
 def test_get_automation(request_type, transport: str = "grpc"):
@@ -16544,7 +16584,7 @@ def test_get_automation(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_automation), "__call__") as call:
@@ -16598,9 +16638,10 @@ def test_get_automation_non_empty_request_with_auto_populated_field():
         client.get_automation(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_deploy.GetAutomationRequest(
+        request_msg = cloud_deploy.GetAutomationRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_automation_use_cached_wrapped_rpc():
@@ -16681,9 +16722,14 @@ async def test_get_automation_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_automation_async(
-    transport: str = "grpc_asyncio", request_type=cloud_deploy.GetAutomationRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.GetAutomationRequest(),
+        {},
+    ],
+)
+async def test_get_automation_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudDeployAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -16691,7 +16737,7 @@ async def test_get_automation_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_automation), "__call__") as call:
@@ -16722,11 +16768,6 @@ async def test_get_automation_async(
     assert response.etag == "etag_value"
     assert response.suspended is True
     assert response.service_account == "service_account_value"
-
-
-@pytest.mark.asyncio
-async def test_get_automation_async_from_dict():
-    await test_get_automation_async(request_type=dict)
 
 
 def test_get_automation_field_headers():
@@ -16875,8 +16916,8 @@ async def test_get_automation_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_deploy.ListAutomationsRequest,
-        dict,
+        cloud_deploy.ListAutomationsRequest(),
+        {},
     ],
 )
 def test_list_automations(request_type, transport: str = "grpc"):
@@ -16887,7 +16928,7 @@ def test_list_automations(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_automations), "__call__") as call:
@@ -16936,12 +16977,13 @@ def test_list_automations_non_empty_request_with_auto_populated_field():
         client.list_automations(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_deploy.ListAutomationsRequest(
+        request_msg = cloud_deploy.ListAutomationsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_automations_use_cached_wrapped_rpc():
@@ -17024,9 +17066,14 @@ async def test_list_automations_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_automations_async(
-    transport: str = "grpc_asyncio", request_type=cloud_deploy.ListAutomationsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.ListAutomationsRequest(),
+        {},
+    ],
+)
+async def test_list_automations_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudDeployAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -17034,7 +17081,7 @@ async def test_list_automations_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_automations), "__call__") as call:
@@ -17057,11 +17104,6 @@ async def test_list_automations_async(
     assert isinstance(response, pagers.ListAutomationsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_automations_async_from_dict():
-    await test_list_automations_async(request_type=dict)
 
 
 def test_list_automations_field_headers():
@@ -17391,11 +17433,7 @@ async def test_list_automations_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_automations(request={})
-        ).pages:
+        async for page_ in (await client.list_automations(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -17404,8 +17442,8 @@ async def test_list_automations_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_deploy.GetAutomationRunRequest,
-        dict,
+        cloud_deploy.GetAutomationRunRequest(),
+        {},
     ],
 )
 def test_get_automation_run(request_type, transport: str = "grpc"):
@@ -17416,7 +17454,7 @@ def test_get_automation_run(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -17478,9 +17516,10 @@ def test_get_automation_run_non_empty_request_with_auto_populated_field():
         client.get_automation_run(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_deploy.GetAutomationRunRequest(
+        request_msg = cloud_deploy.GetAutomationRunRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_automation_run_use_cached_wrapped_rpc():
@@ -17565,9 +17604,14 @@ async def test_get_automation_run_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_automation_run_async(
-    transport: str = "grpc_asyncio", request_type=cloud_deploy.GetAutomationRunRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.GetAutomationRunRequest(),
+        {},
+    ],
+)
+async def test_get_automation_run_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudDeployAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -17575,7 +17619,7 @@ async def test_get_automation_run_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -17612,11 +17656,6 @@ async def test_get_automation_run_async(
     assert response.state_description == "state_description_value"
     assert response.rule_id == "rule_id_value"
     assert response.automation_id == "automation_id_value"
-
-
-@pytest.mark.asyncio
-async def test_get_automation_run_async_from_dict():
-    await test_get_automation_run_async(request_type=dict)
 
 
 def test_get_automation_run_field_headers():
@@ -17773,8 +17812,8 @@ async def test_get_automation_run_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_deploy.ListAutomationRunsRequest,
-        dict,
+        cloud_deploy.ListAutomationRunsRequest(),
+        {},
     ],
 )
 def test_list_automation_runs(request_type, transport: str = "grpc"):
@@ -17785,7 +17824,7 @@ def test_list_automation_runs(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -17838,12 +17877,13 @@ def test_list_automation_runs_non_empty_request_with_auto_populated_field():
         client.list_automation_runs(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_deploy.ListAutomationRunsRequest(
+        request_msg = cloud_deploy.ListAutomationRunsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_automation_runs_use_cached_wrapped_rpc():
@@ -17928,8 +17968,15 @@ async def test_list_automation_runs_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.ListAutomationRunsRequest(),
+        {},
+    ],
+)
 async def test_list_automation_runs_async(
-    transport: str = "grpc_asyncio", request_type=cloud_deploy.ListAutomationRunsRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = CloudDeployAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -17938,7 +17985,7 @@ async def test_list_automation_runs_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -17963,11 +18010,6 @@ async def test_list_automation_runs_async(
     assert isinstance(response, pagers.ListAutomationRunsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_automation_runs_async_from_dict():
-    await test_list_automation_runs_async(request_type=dict)
 
 
 def test_list_automation_runs_field_headers():
@@ -18313,11 +18355,7 @@ async def test_list_automation_runs_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_automation_runs(request={})
-        ).pages:
+        async for page_ in (await client.list_automation_runs(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -18326,8 +18364,8 @@ async def test_list_automation_runs_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_deploy.CancelAutomationRunRequest,
-        dict,
+        cloud_deploy.CancelAutomationRunRequest(),
+        {},
     ],
 )
 def test_cancel_automation_run(request_type, transport: str = "grpc"):
@@ -18338,7 +18376,7 @@ def test_cancel_automation_run(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -18383,9 +18421,10 @@ def test_cancel_automation_run_non_empty_request_with_auto_populated_field():
         client.cancel_automation_run(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_deploy.CancelAutomationRunRequest(
+        request_msg = cloud_deploy.CancelAutomationRunRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_cancel_automation_run_use_cached_wrapped_rpc():
@@ -18471,9 +18510,15 @@ async def test_cancel_automation_run_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.CancelAutomationRunRequest(),
+        {},
+    ],
+)
 async def test_cancel_automation_run_async(
-    transport: str = "grpc_asyncio",
-    request_type=cloud_deploy.CancelAutomationRunRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = CloudDeployAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -18482,7 +18527,7 @@ async def test_cancel_automation_run_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -18502,11 +18547,6 @@ async def test_cancel_automation_run_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cloud_deploy.CancelAutomationRunResponse)
-
-
-@pytest.mark.asyncio
-async def test_cancel_automation_run_async_from_dict():
-    await test_cancel_automation_run_async(request_type=dict)
 
 
 def test_cancel_automation_run_field_headers():
@@ -18782,7 +18822,7 @@ def test_list_delivery_pipelines_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_delivery_pipelines_rest_unset_required_fields():
@@ -19038,7 +19078,7 @@ def test_get_delivery_pipeline_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_delivery_pipeline_rest_unset_required_fields():
@@ -19248,7 +19288,7 @@ def test_create_delivery_pipeline_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_delivery_pipeline_rest_unset_required_fields():
@@ -19454,7 +19494,7 @@ def test_update_delivery_pipeline_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_delivery_pipeline_rest_unset_required_fields():
@@ -19667,7 +19707,7 @@ def test_delete_delivery_pipeline_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_delivery_pipeline_rest_unset_required_fields():
@@ -19865,7 +19905,7 @@ def test_list_targets_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_targets_rest_unset_required_fields():
@@ -20122,7 +20162,7 @@ def test_rollback_target_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_rollback_target_rest_unset_required_fields():
@@ -20313,7 +20353,7 @@ def test_get_target_rest_required_fields(request_type=cloud_deploy.GetTargetRequ
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_target_rest_unset_required_fields():
@@ -20513,7 +20553,7 @@ def test_create_target_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_target_rest_unset_required_fields():
@@ -20713,7 +20753,7 @@ def test_update_target_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_target_rest_unset_required_fields():
@@ -20918,7 +20958,7 @@ def test_delete_target_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_target_rest_unset_required_fields():
@@ -21117,7 +21157,7 @@ def test_list_custom_target_types_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_custom_target_types_rest_unset_required_fields():
@@ -21373,7 +21413,7 @@ def test_get_custom_target_type_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_custom_target_type_rest_unset_required_fields():
@@ -21583,7 +21623,7 @@ def test_create_custom_target_type_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_custom_target_type_rest_unset_required_fields():
@@ -21789,7 +21829,7 @@ def test_update_custom_target_type_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_custom_target_type_rest_unset_required_fields():
@@ -22001,7 +22041,7 @@ def test_delete_custom_target_type_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_custom_target_type_rest_unset_required_fields():
@@ -22198,7 +22238,7 @@ def test_list_releases_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_releases_rest_unset_required_fields():
@@ -22449,7 +22489,7 @@ def test_get_release_rest_required_fields(request_type=cloud_deploy.GetReleaseRe
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_release_rest_unset_required_fields():
@@ -22653,7 +22693,7 @@ def test_create_release_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_release_rest_unset_required_fields():
@@ -22852,7 +22892,7 @@ def test_abandon_release_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_abandon_release_rest_unset_required_fields():
@@ -23059,7 +23099,7 @@ def test_create_deploy_policy_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_deploy_policy_rest_unset_required_fields():
@@ -23264,7 +23304,7 @@ def test_update_deploy_policy_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_deploy_policy_rest_unset_required_fields():
@@ -23475,7 +23515,7 @@ def test_delete_deploy_policy_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_deploy_policy_rest_unset_required_fields():
@@ -23676,7 +23716,7 @@ def test_list_deploy_policies_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_deploy_policies_rest_unset_required_fields():
@@ -23929,7 +23969,7 @@ def test_get_deploy_policy_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_deploy_policy_rest_unset_required_fields():
@@ -24114,7 +24154,7 @@ def test_approve_rollout_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_approve_rollout_rest_unset_required_fields():
@@ -24307,7 +24347,7 @@ def test_advance_rollout_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_advance_rollout_rest_unset_required_fields():
@@ -24498,7 +24538,7 @@ def test_cancel_rollout_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_cancel_rollout_rest_unset_required_fields():
@@ -24687,7 +24727,7 @@ def test_list_rollouts_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_rollouts_rest_unset_required_fields():
@@ -24938,7 +24978,7 @@ def test_get_rollout_rest_required_fields(request_type=cloud_deploy.GetRolloutRe
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_rollout_rest_unset_required_fields():
@@ -25143,7 +25183,7 @@ def test_create_rollout_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_rollout_rest_unset_required_fields():
@@ -25349,7 +25389,7 @@ def test_ignore_job_rest_required_fields(request_type=cloud_deploy.IgnoreJobRequ
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_ignore_job_rest_unset_required_fields():
@@ -25549,7 +25589,7 @@ def test_retry_job_rest_required_fields(request_type=cloud_deploy.RetryJobReques
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_retry_job_rest_unset_required_fields():
@@ -25751,7 +25791,7 @@ def test_list_job_runs_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_job_runs_rest_unset_required_fields():
@@ -26002,7 +26042,7 @@ def test_get_job_run_rest_required_fields(request_type=cloud_deploy.GetJobRunReq
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_job_run_rest_unset_required_fields():
@@ -26185,7 +26225,7 @@ def test_terminate_job_run_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_terminate_job_run_rest_unset_required_fields():
@@ -26363,7 +26403,7 @@ def test_get_config_rest_required_fields(request_type=cloud_deploy.GetConfigRequ
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_config_rest_unset_required_fields():
@@ -26565,7 +26605,7 @@ def test_create_automation_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_automation_rest_unset_required_fields():
@@ -26770,7 +26810,7 @@ def test_update_automation_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_automation_rest_unset_required_fields():
@@ -26979,7 +27019,7 @@ def test_delete_automation_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_automation_rest_unset_required_fields():
@@ -27167,7 +27207,7 @@ def test_get_automation_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_automation_rest_unset_required_fields():
@@ -27358,7 +27398,7 @@ def test_list_automations_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_automations_rest_unset_required_fields():
@@ -27617,7 +27657,7 @@ def test_get_automation_run_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_automation_run_rest_unset_required_fields():
@@ -27810,7 +27850,7 @@ def test_list_automation_runs_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_automation_runs_rest_unset_required_fields():
@@ -28071,7 +28111,7 @@ def test_cancel_automation_run_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_cancel_automation_run_rest_unset_required_fields():
@@ -28268,7 +28308,6 @@ def test_list_delivery_pipelines_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.ListDeliveryPipelinesRequest()
-
         assert args[0] == request_msg
 
 
@@ -28291,7 +28330,6 @@ def test_get_delivery_pipeline_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.GetDeliveryPipelineRequest()
-
         assert args[0] == request_msg
 
 
@@ -28314,7 +28352,6 @@ def test_create_delivery_pipeline_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.CreateDeliveryPipelineRequest()
-
         assert args[0] == request_msg
 
 
@@ -28337,7 +28374,6 @@ def test_update_delivery_pipeline_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.UpdateDeliveryPipelineRequest()
-
         assert args[0] == request_msg
 
 
@@ -28360,7 +28396,6 @@ def test_delete_delivery_pipeline_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.DeleteDeliveryPipelineRequest()
-
         assert args[0] == request_msg
 
 
@@ -28381,7 +28416,6 @@ def test_list_targets_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.ListTargetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -28402,7 +28436,6 @@ def test_rollback_target_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.RollbackTargetRequest()
-
         assert args[0] == request_msg
 
 
@@ -28423,7 +28456,6 @@ def test_get_target_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.GetTargetRequest()
-
         assert args[0] == request_msg
 
 
@@ -28444,7 +28476,6 @@ def test_create_target_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.CreateTargetRequest()
-
         assert args[0] == request_msg
 
 
@@ -28465,7 +28496,6 @@ def test_update_target_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.UpdateTargetRequest()
-
         assert args[0] == request_msg
 
 
@@ -28486,7 +28516,6 @@ def test_delete_target_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.DeleteTargetRequest()
-
         assert args[0] == request_msg
 
 
@@ -28509,7 +28538,6 @@ def test_list_custom_target_types_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.ListCustomTargetTypesRequest()
-
         assert args[0] == request_msg
 
 
@@ -28532,7 +28560,6 @@ def test_get_custom_target_type_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.GetCustomTargetTypeRequest()
-
         assert args[0] == request_msg
 
 
@@ -28555,7 +28582,6 @@ def test_create_custom_target_type_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.CreateCustomTargetTypeRequest()
-
         assert args[0] == request_msg
 
 
@@ -28578,7 +28604,6 @@ def test_update_custom_target_type_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.UpdateCustomTargetTypeRequest()
-
         assert args[0] == request_msg
 
 
@@ -28601,7 +28626,6 @@ def test_delete_custom_target_type_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.DeleteCustomTargetTypeRequest()
-
         assert args[0] == request_msg
 
 
@@ -28622,7 +28646,6 @@ def test_list_releases_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.ListReleasesRequest()
-
         assert args[0] == request_msg
 
 
@@ -28643,7 +28666,6 @@ def test_get_release_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.GetReleaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -28664,7 +28686,6 @@ def test_create_release_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.CreateReleaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -28685,7 +28706,6 @@ def test_abandon_release_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.AbandonReleaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -28708,7 +28728,6 @@ def test_create_deploy_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.CreateDeployPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -28731,7 +28750,6 @@ def test_update_deploy_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.UpdateDeployPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -28754,7 +28772,6 @@ def test_delete_deploy_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.DeleteDeployPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -28777,7 +28794,6 @@ def test_list_deploy_policies_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.ListDeployPoliciesRequest()
-
         assert args[0] == request_msg
 
 
@@ -28800,7 +28816,6 @@ def test_get_deploy_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.GetDeployPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -28821,7 +28836,6 @@ def test_approve_rollout_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.ApproveRolloutRequest()
-
         assert args[0] == request_msg
 
 
@@ -28842,7 +28856,6 @@ def test_advance_rollout_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.AdvanceRolloutRequest()
-
         assert args[0] == request_msg
 
 
@@ -28863,7 +28876,6 @@ def test_cancel_rollout_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.CancelRolloutRequest()
-
         assert args[0] == request_msg
 
 
@@ -28884,7 +28896,6 @@ def test_list_rollouts_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.ListRolloutsRequest()
-
         assert args[0] == request_msg
 
 
@@ -28905,7 +28916,6 @@ def test_get_rollout_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.GetRolloutRequest()
-
         assert args[0] == request_msg
 
 
@@ -28926,7 +28936,6 @@ def test_create_rollout_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.CreateRolloutRequest()
-
         assert args[0] == request_msg
 
 
@@ -28947,7 +28956,6 @@ def test_ignore_job_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.IgnoreJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -28968,7 +28976,6 @@ def test_retry_job_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.RetryJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -28989,7 +28996,6 @@ def test_list_job_runs_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.ListJobRunsRequest()
-
         assert args[0] == request_msg
 
 
@@ -29010,7 +29016,6 @@ def test_get_job_run_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.GetJobRunRequest()
-
         assert args[0] == request_msg
 
 
@@ -29033,7 +29038,6 @@ def test_terminate_job_run_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.TerminateJobRunRequest()
-
         assert args[0] == request_msg
 
 
@@ -29054,7 +29058,6 @@ def test_get_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.GetConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -29077,7 +29080,6 @@ def test_create_automation_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.CreateAutomationRequest()
-
         assert args[0] == request_msg
 
 
@@ -29100,7 +29102,6 @@ def test_update_automation_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.UpdateAutomationRequest()
-
         assert args[0] == request_msg
 
 
@@ -29123,7 +29124,6 @@ def test_delete_automation_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.DeleteAutomationRequest()
-
         assert args[0] == request_msg
 
 
@@ -29144,7 +29144,6 @@ def test_get_automation_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.GetAutomationRequest()
-
         assert args[0] == request_msg
 
 
@@ -29165,7 +29164,6 @@ def test_list_automations_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.ListAutomationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -29188,7 +29186,6 @@ def test_get_automation_run_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.GetAutomationRunRequest()
-
         assert args[0] == request_msg
 
 
@@ -29211,7 +29208,6 @@ def test_list_automation_runs_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.ListAutomationRunsRequest()
-
         assert args[0] == request_msg
 
 
@@ -29234,7 +29230,6 @@ def test_cancel_automation_run_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.CancelAutomationRunRequest()
-
         assert args[0] == request_msg
 
 
@@ -29278,7 +29273,6 @@ async def test_list_delivery_pipelines_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.ListDeliveryPipelinesRequest()
-
         assert args[0] == request_msg
 
 
@@ -29311,7 +29305,6 @@ async def test_get_delivery_pipeline_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.GetDeliveryPipelineRequest()
-
         assert args[0] == request_msg
 
 
@@ -29338,7 +29331,6 @@ async def test_create_delivery_pipeline_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.CreateDeliveryPipelineRequest()
-
         assert args[0] == request_msg
 
 
@@ -29365,7 +29357,6 @@ async def test_update_delivery_pipeline_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.UpdateDeliveryPipelineRequest()
-
         assert args[0] == request_msg
 
 
@@ -29392,7 +29383,6 @@ async def test_delete_delivery_pipeline_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.DeleteDeliveryPipelineRequest()
-
         assert args[0] == request_msg
 
 
@@ -29420,7 +29410,6 @@ async def test_list_targets_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.ListTargetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -29445,7 +29434,6 @@ async def test_rollback_target_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.RollbackTargetRequest()
-
         assert args[0] == request_msg
 
 
@@ -29477,7 +29465,6 @@ async def test_get_target_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.GetTargetRequest()
-
         assert args[0] == request_msg
 
 
@@ -29502,7 +29489,6 @@ async def test_create_target_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.CreateTargetRequest()
-
         assert args[0] == request_msg
 
 
@@ -29527,7 +29513,6 @@ async def test_update_target_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.UpdateTargetRequest()
-
         assert args[0] == request_msg
 
 
@@ -29552,7 +29537,6 @@ async def test_delete_target_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.DeleteTargetRequest()
-
         assert args[0] == request_msg
 
 
@@ -29582,7 +29566,6 @@ async def test_list_custom_target_types_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.ListCustomTargetTypesRequest()
-
         assert args[0] == request_msg
 
 
@@ -29615,7 +29598,6 @@ async def test_get_custom_target_type_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.GetCustomTargetTypeRequest()
-
         assert args[0] == request_msg
 
 
@@ -29642,7 +29624,6 @@ async def test_create_custom_target_type_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.CreateCustomTargetTypeRequest()
-
         assert args[0] == request_msg
 
 
@@ -29669,7 +29650,6 @@ async def test_update_custom_target_type_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.UpdateCustomTargetTypeRequest()
-
         assert args[0] == request_msg
 
 
@@ -29696,7 +29676,6 @@ async def test_delete_custom_target_type_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.DeleteCustomTargetTypeRequest()
-
         assert args[0] == request_msg
 
 
@@ -29724,7 +29703,6 @@ async def test_list_releases_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.ListReleasesRequest()
-
         assert args[0] == request_msg
 
 
@@ -29759,7 +29737,6 @@ async def test_get_release_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.GetReleaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -29784,7 +29761,6 @@ async def test_create_release_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.CreateReleaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -29809,7 +29785,6 @@ async def test_abandon_release_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.AbandonReleaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -29836,7 +29811,6 @@ async def test_create_deploy_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.CreateDeployPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -29863,7 +29837,6 @@ async def test_update_deploy_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.UpdateDeployPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -29890,7 +29863,6 @@ async def test_delete_deploy_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.DeleteDeployPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -29920,7 +29892,6 @@ async def test_list_deploy_policies_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.ListDeployPoliciesRequest()
-
         assert args[0] == request_msg
 
 
@@ -29953,7 +29924,6 @@ async def test_get_deploy_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.GetDeployPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -29978,7 +29948,6 @@ async def test_approve_rollout_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.ApproveRolloutRequest()
-
         assert args[0] == request_msg
 
 
@@ -30003,7 +29972,6 @@ async def test_advance_rollout_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.AdvanceRolloutRequest()
-
         assert args[0] == request_msg
 
 
@@ -30028,7 +29996,6 @@ async def test_cancel_rollout_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.CancelRolloutRequest()
-
         assert args[0] == request_msg
 
 
@@ -30056,7 +30023,6 @@ async def test_list_rollouts_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.ListRolloutsRequest()
-
         assert args[0] == request_msg
 
 
@@ -30096,7 +30062,6 @@ async def test_get_rollout_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.GetRolloutRequest()
-
         assert args[0] == request_msg
 
 
@@ -30121,7 +30086,6 @@ async def test_create_rollout_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.CreateRolloutRequest()
-
         assert args[0] == request_msg
 
 
@@ -30146,7 +30110,6 @@ async def test_ignore_job_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.IgnoreJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -30171,7 +30134,6 @@ async def test_retry_job_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.RetryJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -30199,7 +30161,6 @@ async def test_list_job_runs_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.ListJobRunsRequest()
-
         assert args[0] == request_msg
 
 
@@ -30231,7 +30192,6 @@ async def test_get_job_run_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.GetJobRunRequest()
-
         assert args[0] == request_msg
 
 
@@ -30258,7 +30218,6 @@ async def test_terminate_job_run_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.TerminateJobRunRequest()
-
         assert args[0] == request_msg
 
 
@@ -30286,7 +30245,6 @@ async def test_get_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.GetConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -30313,7 +30271,6 @@ async def test_create_automation_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.CreateAutomationRequest()
-
         assert args[0] == request_msg
 
 
@@ -30340,7 +30297,6 @@ async def test_update_automation_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.UpdateAutomationRequest()
-
         assert args[0] == request_msg
 
 
@@ -30367,7 +30323,6 @@ async def test_delete_automation_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.DeleteAutomationRequest()
-
         assert args[0] == request_msg
 
 
@@ -30399,7 +30354,6 @@ async def test_get_automation_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.GetAutomationRequest()
-
         assert args[0] == request_msg
 
 
@@ -30427,7 +30381,6 @@ async def test_list_automations_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.ListAutomationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -30463,7 +30416,6 @@ async def test_get_automation_run_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.GetAutomationRunRequest()
-
         assert args[0] == request_msg
 
 
@@ -30493,7 +30445,6 @@ async def test_list_automation_runs_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.ListAutomationRunsRequest()
-
         assert args[0] == request_msg
 
 
@@ -30520,7 +30471,6 @@ async def test_cancel_automation_run_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.CancelAutomationRunRequest()
-
         assert args[0] == request_msg
 
 
@@ -38916,7 +38866,6 @@ def test_list_delivery_pipelines_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.ListDeliveryPipelinesRequest()
-
         assert args[0] == request_msg
 
 
@@ -38938,7 +38887,6 @@ def test_get_delivery_pipeline_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.GetDeliveryPipelineRequest()
-
         assert args[0] == request_msg
 
 
@@ -38960,7 +38908,6 @@ def test_create_delivery_pipeline_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.CreateDeliveryPipelineRequest()
-
         assert args[0] == request_msg
 
 
@@ -38982,7 +38929,6 @@ def test_update_delivery_pipeline_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.UpdateDeliveryPipelineRequest()
-
         assert args[0] == request_msg
 
 
@@ -39004,7 +38950,6 @@ def test_delete_delivery_pipeline_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.DeleteDeliveryPipelineRequest()
-
         assert args[0] == request_msg
 
 
@@ -39024,7 +38969,6 @@ def test_list_targets_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.ListTargetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -39044,7 +38988,6 @@ def test_rollback_target_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.RollbackTargetRequest()
-
         assert args[0] == request_msg
 
 
@@ -39064,7 +39007,6 @@ def test_get_target_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.GetTargetRequest()
-
         assert args[0] == request_msg
 
 
@@ -39084,7 +39026,6 @@ def test_create_target_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.CreateTargetRequest()
-
         assert args[0] == request_msg
 
 
@@ -39104,7 +39045,6 @@ def test_update_target_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.UpdateTargetRequest()
-
         assert args[0] == request_msg
 
 
@@ -39124,7 +39064,6 @@ def test_delete_target_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.DeleteTargetRequest()
-
         assert args[0] == request_msg
 
 
@@ -39146,7 +39085,6 @@ def test_list_custom_target_types_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.ListCustomTargetTypesRequest()
-
         assert args[0] == request_msg
 
 
@@ -39168,7 +39106,6 @@ def test_get_custom_target_type_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.GetCustomTargetTypeRequest()
-
         assert args[0] == request_msg
 
 
@@ -39190,7 +39127,6 @@ def test_create_custom_target_type_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.CreateCustomTargetTypeRequest()
-
         assert args[0] == request_msg
 
 
@@ -39212,7 +39148,6 @@ def test_update_custom_target_type_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.UpdateCustomTargetTypeRequest()
-
         assert args[0] == request_msg
 
 
@@ -39234,7 +39169,6 @@ def test_delete_custom_target_type_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.DeleteCustomTargetTypeRequest()
-
         assert args[0] == request_msg
 
 
@@ -39254,7 +39188,6 @@ def test_list_releases_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.ListReleasesRequest()
-
         assert args[0] == request_msg
 
 
@@ -39274,7 +39207,6 @@ def test_get_release_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.GetReleaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -39294,7 +39226,6 @@ def test_create_release_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.CreateReleaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -39314,7 +39245,6 @@ def test_abandon_release_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.AbandonReleaseRequest()
-
         assert args[0] == request_msg
 
 
@@ -39336,7 +39266,6 @@ def test_create_deploy_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.CreateDeployPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -39358,7 +39287,6 @@ def test_update_deploy_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.UpdateDeployPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -39380,7 +39308,6 @@ def test_delete_deploy_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.DeleteDeployPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -39402,7 +39329,6 @@ def test_list_deploy_policies_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.ListDeployPoliciesRequest()
-
         assert args[0] == request_msg
 
 
@@ -39424,7 +39350,6 @@ def test_get_deploy_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.GetDeployPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -39444,7 +39369,6 @@ def test_approve_rollout_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.ApproveRolloutRequest()
-
         assert args[0] == request_msg
 
 
@@ -39464,7 +39388,6 @@ def test_advance_rollout_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.AdvanceRolloutRequest()
-
         assert args[0] == request_msg
 
 
@@ -39484,7 +39407,6 @@ def test_cancel_rollout_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.CancelRolloutRequest()
-
         assert args[0] == request_msg
 
 
@@ -39504,7 +39426,6 @@ def test_list_rollouts_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.ListRolloutsRequest()
-
         assert args[0] == request_msg
 
 
@@ -39524,7 +39445,6 @@ def test_get_rollout_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.GetRolloutRequest()
-
         assert args[0] == request_msg
 
 
@@ -39544,7 +39464,6 @@ def test_create_rollout_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.CreateRolloutRequest()
-
         assert args[0] == request_msg
 
 
@@ -39564,7 +39483,6 @@ def test_ignore_job_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.IgnoreJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -39584,7 +39502,6 @@ def test_retry_job_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.RetryJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -39604,7 +39521,6 @@ def test_list_job_runs_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.ListJobRunsRequest()
-
         assert args[0] == request_msg
 
 
@@ -39624,7 +39540,6 @@ def test_get_job_run_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.GetJobRunRequest()
-
         assert args[0] == request_msg
 
 
@@ -39646,7 +39561,6 @@ def test_terminate_job_run_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.TerminateJobRunRequest()
-
         assert args[0] == request_msg
 
 
@@ -39666,7 +39580,6 @@ def test_get_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.GetConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -39688,7 +39601,6 @@ def test_create_automation_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.CreateAutomationRequest()
-
         assert args[0] == request_msg
 
 
@@ -39710,7 +39622,6 @@ def test_update_automation_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.UpdateAutomationRequest()
-
         assert args[0] == request_msg
 
 
@@ -39732,7 +39643,6 @@ def test_delete_automation_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.DeleteAutomationRequest()
-
         assert args[0] == request_msg
 
 
@@ -39752,7 +39662,6 @@ def test_get_automation_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.GetAutomationRequest()
-
         assert args[0] == request_msg
 
 
@@ -39772,7 +39681,6 @@ def test_list_automations_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.ListAutomationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -39794,7 +39702,6 @@ def test_get_automation_run_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.GetAutomationRunRequest()
-
         assert args[0] == request_msg
 
 
@@ -39816,7 +39723,6 @@ def test_list_automation_runs_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.ListAutomationRunsRequest()
-
         assert args[0] == request_msg
 
 
@@ -39838,7 +39744,6 @@ def test_cancel_automation_run_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_deploy.CancelAutomationRunRequest()
-
         assert args[0] == request_msg
 
 

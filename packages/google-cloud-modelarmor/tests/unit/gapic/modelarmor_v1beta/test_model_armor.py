@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -114,6 +109,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1277,8 +1287,8 @@ def test_model_armor_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.ListTemplatesRequest,
-        dict,
+        service.ListTemplatesRequest(),
+        {},
     ],
 )
 def test_list_templates(request_type, transport: str = "grpc"):
@@ -1289,7 +1299,7 @@ def test_list_templates(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_templates), "__call__") as call:
@@ -1338,12 +1348,13 @@ def test_list_templates_non_empty_request_with_auto_populated_field():
         client.list_templates(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListTemplatesRequest(
+        request_msg = service.ListTemplatesRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_templates_use_cached_wrapped_rpc():
@@ -1424,9 +1435,14 @@ async def test_list_templates_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_templates_async(
-    transport: str = "grpc_asyncio", request_type=service.ListTemplatesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListTemplatesRequest(),
+        {},
+    ],
+)
+async def test_list_templates_async(request_type, transport: str = "grpc_asyncio"):
     client = ModelArmorAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1434,7 +1450,7 @@ async def test_list_templates_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_templates), "__call__") as call:
@@ -1457,11 +1473,6 @@ async def test_list_templates_async(
     assert isinstance(response, pagers.ListTemplatesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_templates_async_from_dict():
-    await test_list_templates_async(request_type=dict)
 
 
 def test_list_templates_field_headers():
@@ -1791,11 +1802,7 @@ async def test_list_templates_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_templates(request={})
-        ).pages:
+        async for page_ in (await client.list_templates(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -1804,8 +1811,8 @@ async def test_list_templates_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.GetTemplateRequest,
-        dict,
+        service.GetTemplateRequest(),
+        {},
     ],
 )
 def test_get_template(request_type, transport: str = "grpc"):
@@ -1816,7 +1823,7 @@ def test_get_template(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_template), "__call__") as call:
@@ -1860,9 +1867,10 @@ def test_get_template_non_empty_request_with_auto_populated_field():
         client.get_template(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetTemplateRequest(
+        request_msg = service.GetTemplateRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_template_use_cached_wrapped_rpc():
@@ -1943,9 +1951,14 @@ async def test_get_template_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_template_async(
-    transport: str = "grpc_asyncio", request_type=service.GetTemplateRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetTemplateRequest(),
+        {},
+    ],
+)
+async def test_get_template_async(request_type, transport: str = "grpc_asyncio"):
     client = ModelArmorAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1953,7 +1966,7 @@ async def test_get_template_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_template), "__call__") as call:
@@ -1974,11 +1987,6 @@ async def test_get_template_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.Template)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_get_template_async_from_dict():
-    await test_get_template_async(request_type=dict)
 
 
 def test_get_template_field_headers():
@@ -2123,8 +2131,8 @@ async def test_get_template_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.CreateTemplateRequest,
-        dict,
+        service.CreateTemplateRequest(),
+        {},
     ],
 )
 def test_create_template(request_type, transport: str = "grpc"):
@@ -2135,7 +2143,7 @@ def test_create_template(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_template), "__call__") as call:
@@ -2180,10 +2188,11 @@ def test_create_template_non_empty_request_with_auto_populated_field():
         client.create_template(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CreateTemplateRequest(
+        request_msg = service.CreateTemplateRequest(
             parent="parent_value",
             template_id="template_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_template_use_cached_wrapped_rpc():
@@ -2264,9 +2273,14 @@ async def test_create_template_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_template_async(
-    transport: str = "grpc_asyncio", request_type=service.CreateTemplateRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.CreateTemplateRequest(),
+        {},
+    ],
+)
+async def test_create_template_async(request_type, transport: str = "grpc_asyncio"):
     client = ModelArmorAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2274,7 +2288,7 @@ async def test_create_template_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_template), "__call__") as call:
@@ -2295,11 +2309,6 @@ async def test_create_template_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.Template)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_create_template_async_from_dict():
-    await test_create_template_async(request_type=dict)
 
 
 def test_create_template_field_headers():
@@ -2464,8 +2473,8 @@ async def test_create_template_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.UpdateTemplateRequest,
-        dict,
+        service.UpdateTemplateRequest(),
+        {},
     ],
 )
 def test_update_template(request_type, transport: str = "grpc"):
@@ -2476,7 +2485,7 @@ def test_update_template(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_template), "__call__") as call:
@@ -2518,7 +2527,8 @@ def test_update_template_non_empty_request_with_auto_populated_field():
         client.update_template(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.UpdateTemplateRequest()
+        request_msg = service.UpdateTemplateRequest()
+        assert args[0] == request_msg
 
 
 def test_update_template_use_cached_wrapped_rpc():
@@ -2599,9 +2609,14 @@ async def test_update_template_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_template_async(
-    transport: str = "grpc_asyncio", request_type=service.UpdateTemplateRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.UpdateTemplateRequest(),
+        {},
+    ],
+)
+async def test_update_template_async(request_type, transport: str = "grpc_asyncio"):
     client = ModelArmorAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2609,7 +2624,7 @@ async def test_update_template_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_template), "__call__") as call:
@@ -2630,11 +2645,6 @@ async def test_update_template_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.Template)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_update_template_async_from_dict():
-    await test_update_template_async(request_type=dict)
 
 
 def test_update_template_field_headers():
@@ -2789,8 +2799,8 @@ async def test_update_template_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.DeleteTemplateRequest,
-        dict,
+        service.DeleteTemplateRequest(),
+        {},
     ],
 )
 def test_delete_template(request_type, transport: str = "grpc"):
@@ -2801,7 +2811,7 @@ def test_delete_template(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_template), "__call__") as call:
@@ -2842,9 +2852,10 @@ def test_delete_template_non_empty_request_with_auto_populated_field():
         client.delete_template(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.DeleteTemplateRequest(
+        request_msg = service.DeleteTemplateRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_template_use_cached_wrapped_rpc():
@@ -2925,9 +2936,14 @@ async def test_delete_template_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_template_async(
-    transport: str = "grpc_asyncio", request_type=service.DeleteTemplateRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.DeleteTemplateRequest(),
+        {},
+    ],
+)
+async def test_delete_template_async(request_type, transport: str = "grpc_asyncio"):
     client = ModelArmorAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2935,7 +2951,7 @@ async def test_delete_template_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_template), "__call__") as call:
@@ -2951,11 +2967,6 @@ async def test_delete_template_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_template_async_from_dict():
-    await test_delete_template_async(request_type=dict)
 
 
 def test_delete_template_field_headers():
@@ -3100,8 +3111,8 @@ async def test_delete_template_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.GetFloorSettingRequest,
-        dict,
+        service.GetFloorSettingRequest(),
+        {},
     ],
 )
 def test_get_floor_setting(request_type, transport: str = "grpc"):
@@ -3112,7 +3123,7 @@ def test_get_floor_setting(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3166,9 +3177,10 @@ def test_get_floor_setting_non_empty_request_with_auto_populated_field():
         client.get_floor_setting(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetFloorSettingRequest(
+        request_msg = service.GetFloorSettingRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_floor_setting_use_cached_wrapped_rpc():
@@ -3251,9 +3263,14 @@ async def test_get_floor_setting_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_floor_setting_async(
-    transport: str = "grpc_asyncio", request_type=service.GetFloorSettingRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetFloorSettingRequest(),
+        {},
+    ],
+)
+async def test_get_floor_setting_async(request_type, transport: str = "grpc_asyncio"):
     client = ModelArmorAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3261,7 +3278,7 @@ async def test_get_floor_setting_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3292,11 +3309,6 @@ async def test_get_floor_setting_async(
     assert response.integrated_services == [
         service.FloorSetting.IntegratedService.AI_PLATFORM
     ]
-
-
-@pytest.mark.asyncio
-async def test_get_floor_setting_async_from_dict():
-    await test_get_floor_setting_async(request_type=dict)
 
 
 def test_get_floor_setting_field_headers():
@@ -3453,8 +3465,8 @@ async def test_get_floor_setting_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.UpdateFloorSettingRequest,
-        dict,
+        service.UpdateFloorSettingRequest(),
+        {},
     ],
 )
 def test_update_floor_setting(request_type, transport: str = "grpc"):
@@ -3465,7 +3477,7 @@ def test_update_floor_setting(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3517,7 +3529,8 @@ def test_update_floor_setting_non_empty_request_with_auto_populated_field():
         client.update_floor_setting(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.UpdateFloorSettingRequest()
+        request_msg = service.UpdateFloorSettingRequest()
+        assert args[0] == request_msg
 
 
 def test_update_floor_setting_use_cached_wrapped_rpc():
@@ -3602,8 +3615,15 @@ async def test_update_floor_setting_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.UpdateFloorSettingRequest(),
+        {},
+    ],
+)
 async def test_update_floor_setting_async(
-    transport: str = "grpc_asyncio", request_type=service.UpdateFloorSettingRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ModelArmorAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3612,7 +3632,7 @@ async def test_update_floor_setting_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3643,11 +3663,6 @@ async def test_update_floor_setting_async(
     assert response.integrated_services == [
         service.FloorSetting.IntegratedService.AI_PLATFORM
     ]
-
-
-@pytest.mark.asyncio
-async def test_update_floor_setting_async_from_dict():
-    await test_update_floor_setting_async(request_type=dict)
 
 
 def test_update_floor_setting_field_headers():
@@ -3814,8 +3829,8 @@ async def test_update_floor_setting_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.SanitizeUserPromptRequest,
-        dict,
+        service.SanitizeUserPromptRequest(),
+        {},
     ],
 )
 def test_sanitize_user_prompt(request_type, transport: str = "grpc"):
@@ -3826,7 +3841,7 @@ def test_sanitize_user_prompt(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3871,9 +3886,10 @@ def test_sanitize_user_prompt_non_empty_request_with_auto_populated_field():
         client.sanitize_user_prompt(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.SanitizeUserPromptRequest(
+        request_msg = service.SanitizeUserPromptRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_sanitize_user_prompt_use_cached_wrapped_rpc():
@@ -3958,8 +3974,15 @@ async def test_sanitize_user_prompt_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.SanitizeUserPromptRequest(),
+        {},
+    ],
+)
 async def test_sanitize_user_prompt_async(
-    transport: str = "grpc_asyncio", request_type=service.SanitizeUserPromptRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ModelArmorAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3968,7 +3991,7 @@ async def test_sanitize_user_prompt_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3988,11 +4011,6 @@ async def test_sanitize_user_prompt_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.SanitizeUserPromptResponse)
-
-
-@pytest.mark.asyncio
-async def test_sanitize_user_prompt_async_from_dict():
-    await test_sanitize_user_prompt_async(request_type=dict)
 
 
 def test_sanitize_user_prompt_field_headers():
@@ -4063,8 +4081,8 @@ async def test_sanitize_user_prompt_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.SanitizeModelResponseRequest,
-        dict,
+        service.SanitizeModelResponseRequest(),
+        {},
     ],
 )
 def test_sanitize_model_response(request_type, transport: str = "grpc"):
@@ -4075,7 +4093,7 @@ def test_sanitize_model_response(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4121,10 +4139,11 @@ def test_sanitize_model_response_non_empty_request_with_auto_populated_field():
         client.sanitize_model_response(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.SanitizeModelResponseRequest(
+        request_msg = service.SanitizeModelResponseRequest(
             name="name_value",
             user_prompt="user_prompt_value",
         )
+        assert args[0] == request_msg
 
 
 def test_sanitize_model_response_use_cached_wrapped_rpc():
@@ -4210,8 +4229,15 @@ async def test_sanitize_model_response_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.SanitizeModelResponseRequest(),
+        {},
+    ],
+)
 async def test_sanitize_model_response_async(
-    transport: str = "grpc_asyncio", request_type=service.SanitizeModelResponseRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ModelArmorAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4220,7 +4246,7 @@ async def test_sanitize_model_response_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4240,11 +4266,6 @@ async def test_sanitize_model_response_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.SanitizeModelResponseResponse)
-
-
-@pytest.mark.asyncio
-async def test_sanitize_model_response_async_from_dict():
-    await test_sanitize_model_response_async(request_type=dict)
 
 
 def test_sanitize_model_response_field_headers():
@@ -4315,8 +4336,8 @@ async def test_sanitize_model_response_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.SanitizeUserPromptRequest,
-        dict,
+        service.SanitizeUserPromptRequest(),
+        {},
     ],
 )
 def test_stream_sanitize_user_prompt(request_type, transport: str = "grpc"):
@@ -4327,7 +4348,7 @@ def test_stream_sanitize_user_prompt(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
     requests = [request]
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4431,8 +4452,15 @@ async def test_stream_sanitize_user_prompt_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.SanitizeUserPromptRequest(),
+        {},
+    ],
+)
 async def test_stream_sanitize_user_prompt_async(
-    transport: str = "grpc_asyncio", request_type=service.SanitizeUserPromptRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ModelArmorAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4441,7 +4469,7 @@ async def test_stream_sanitize_user_prompt_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
     requests = [request]
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4465,16 +4493,11 @@ async def test_stream_sanitize_user_prompt_async(
     assert isinstance(message, service.SanitizeUserPromptResponse)
 
 
-@pytest.mark.asyncio
-async def test_stream_sanitize_user_prompt_async_from_dict():
-    await test_stream_sanitize_user_prompt_async(request_type=dict)
-
-
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.SanitizeModelResponseRequest,
-        dict,
+        service.SanitizeModelResponseRequest(),
+        {},
     ],
 )
 def test_stream_sanitize_model_response(request_type, transport: str = "grpc"):
@@ -4485,7 +4508,7 @@ def test_stream_sanitize_model_response(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
     requests = [request]
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4589,8 +4612,15 @@ async def test_stream_sanitize_model_response_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.SanitizeModelResponseRequest(),
+        {},
+    ],
+)
 async def test_stream_sanitize_model_response_async(
-    transport: str = "grpc_asyncio", request_type=service.SanitizeModelResponseRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ModelArmorAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4599,7 +4629,7 @@ async def test_stream_sanitize_model_response_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
     requests = [request]
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4621,11 +4651,6 @@ async def test_stream_sanitize_model_response_async(
     # Establish that the response is the type that we expect.
     message = await response.read()
     assert isinstance(message, service.SanitizeModelResponseResponse)
-
-
-@pytest.mark.asyncio
-async def test_stream_sanitize_model_response_async_from_dict():
-    await test_stream_sanitize_model_response_async(request_type=dict)
 
 
 def test_list_templates_rest_use_cached_wrapped_rpc():
@@ -4743,7 +4768,7 @@ def test_list_templates_rest_required_fields(request_type=service.ListTemplatesR
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_templates_rest_unset_required_fields():
@@ -4990,7 +5015,7 @@ def test_get_template_rest_required_fields(request_type=service.GetTemplateReque
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_template_rest_unset_required_fields():
@@ -5191,7 +5216,7 @@ def test_create_template_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_template_rest_unset_required_fields():
@@ -5390,7 +5415,7 @@ def test_update_template_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_template_rest_unset_required_fields():
@@ -5584,7 +5609,7 @@ def test_delete_template_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_template_rest_unset_required_fields():
@@ -5764,7 +5789,7 @@ def test_get_floor_setting_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_floor_setting_rest_unset_required_fields():
@@ -5944,7 +5969,7 @@ def test_update_floor_setting_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_floor_setting_rest_unset_required_fields():
@@ -6131,7 +6156,7 @@ def test_sanitize_user_prompt_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_sanitize_user_prompt_rest_unset_required_fields():
@@ -6265,7 +6290,7 @@ def test_sanitize_model_response_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_sanitize_model_response_rest_unset_required_fields():
@@ -6458,7 +6483,6 @@ def test_list_templates_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListTemplatesRequest()
-
         assert args[0] == request_msg
 
 
@@ -6479,7 +6503,6 @@ def test_get_template_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetTemplateRequest()
-
         assert args[0] == request_msg
 
 
@@ -6500,7 +6523,6 @@ def test_create_template_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateTemplateRequest()
-
         assert args[0] == request_msg
 
 
@@ -6521,7 +6543,6 @@ def test_update_template_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateTemplateRequest()
-
         assert args[0] == request_msg
 
 
@@ -6542,7 +6563,6 @@ def test_delete_template_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteTemplateRequest()
-
         assert args[0] == request_msg
 
 
@@ -6565,7 +6585,6 @@ def test_get_floor_setting_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetFloorSettingRequest()
-
         assert args[0] == request_msg
 
 
@@ -6588,7 +6607,6 @@ def test_update_floor_setting_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateFloorSettingRequest()
-
         assert args[0] == request_msg
 
 
@@ -6611,7 +6629,6 @@ def test_sanitize_user_prompt_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.SanitizeUserPromptRequest()
-
         assert args[0] == request_msg
 
 
@@ -6634,7 +6651,6 @@ def test_sanitize_model_response_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.SanitizeModelResponseRequest()
-
         assert args[0] == request_msg
 
 
@@ -6676,7 +6692,6 @@ async def test_list_templates_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListTemplatesRequest()
-
         assert args[0] == request_msg
 
 
@@ -6703,7 +6718,6 @@ async def test_get_template_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetTemplateRequest()
-
         assert args[0] == request_msg
 
 
@@ -6730,7 +6744,6 @@ async def test_create_template_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateTemplateRequest()
-
         assert args[0] == request_msg
 
 
@@ -6757,7 +6770,6 @@ async def test_update_template_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateTemplateRequest()
-
         assert args[0] == request_msg
 
 
@@ -6780,7 +6792,6 @@ async def test_delete_template_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteTemplateRequest()
-
         assert args[0] == request_msg
 
 
@@ -6813,7 +6824,6 @@ async def test_get_floor_setting_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetFloorSettingRequest()
-
         assert args[0] == request_msg
 
 
@@ -6846,7 +6856,6 @@ async def test_update_floor_setting_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateFloorSettingRequest()
-
         assert args[0] == request_msg
 
 
@@ -6873,7 +6882,6 @@ async def test_sanitize_user_prompt_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.SanitizeUserPromptRequest()
-
         assert args[0] == request_msg
 
 
@@ -6900,7 +6908,6 @@ async def test_sanitize_model_response_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.SanitizeModelResponseRequest()
-
         assert args[0] == request_msg
 
 
@@ -8545,7 +8552,6 @@ def test_list_templates_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListTemplatesRequest()
-
         assert args[0] == request_msg
 
 
@@ -8565,7 +8571,6 @@ def test_get_template_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetTemplateRequest()
-
         assert args[0] == request_msg
 
 
@@ -8585,7 +8590,6 @@ def test_create_template_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateTemplateRequest()
-
         assert args[0] == request_msg
 
 
@@ -8605,7 +8609,6 @@ def test_update_template_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateTemplateRequest()
-
         assert args[0] == request_msg
 
 
@@ -8625,7 +8628,6 @@ def test_delete_template_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteTemplateRequest()
-
         assert args[0] == request_msg
 
 
@@ -8647,7 +8649,6 @@ def test_get_floor_setting_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetFloorSettingRequest()
-
         assert args[0] == request_msg
 
 
@@ -8669,7 +8670,6 @@ def test_update_floor_setting_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateFloorSettingRequest()
-
         assert args[0] == request_msg
 
 
@@ -8691,7 +8691,6 @@ def test_sanitize_user_prompt_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.SanitizeUserPromptRequest()
-
         assert args[0] == request_msg
 
 
@@ -8713,7 +8712,6 @@ def test_sanitize_model_response_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.SanitizeModelResponseRequest()
-
         assert args[0] == request_msg
 
 

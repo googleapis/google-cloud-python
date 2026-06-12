@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -120,6 +115,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1308,8 +1318,8 @@ def test_vehicle_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        vehicle_api.CreateVehicleRequest,
-        dict,
+        vehicle_api.CreateVehicleRequest(),
+        {},
     ],
 )
 def test_create_vehicle(request_type, transport: str = "grpc"):
@@ -1320,7 +1330,7 @@ def test_create_vehicle(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_vehicle), "__call__") as call:
@@ -1379,10 +1389,11 @@ def test_create_vehicle_non_empty_request_with_auto_populated_field():
         client.create_vehicle(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vehicle_api.CreateVehicleRequest(
+        request_msg = vehicle_api.CreateVehicleRequest(
             parent="parent_value",
             vehicle_id="vehicle_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_vehicle_use_cached_wrapped_rpc():
@@ -1463,9 +1474,14 @@ async def test_create_vehicle_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_vehicle_async(
-    transport: str = "grpc_asyncio", request_type=vehicle_api.CreateVehicleRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vehicle_api.CreateVehicleRequest(),
+        {},
+    ],
+)
+async def test_create_vehicle_async(request_type, transport: str = "grpc_asyncio"):
     client = VehicleServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1473,7 +1489,7 @@ async def test_create_vehicle_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_vehicle), "__call__") as call:
@@ -1510,16 +1526,11 @@ async def test_create_vehicle_async(
     assert response.navigation_status == fleetengine.NavigationStatus.NO_GUIDANCE
 
 
-@pytest.mark.asyncio
-async def test_create_vehicle_async_from_dict():
-    await test_create_vehicle_async(request_type=dict)
-
-
 @pytest.mark.parametrize(
     "request_type",
     [
-        vehicle_api.GetVehicleRequest,
-        dict,
+        vehicle_api.GetVehicleRequest(),
+        {},
     ],
 )
 def test_get_vehicle(request_type, transport: str = "grpc"):
@@ -1530,7 +1541,7 @@ def test_get_vehicle(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_vehicle), "__call__") as call:
@@ -1588,9 +1599,10 @@ def test_get_vehicle_non_empty_request_with_auto_populated_field():
         client.get_vehicle(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vehicle_api.GetVehicleRequest(
+        request_msg = vehicle_api.GetVehicleRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_vehicle_use_cached_wrapped_rpc():
@@ -1671,9 +1683,14 @@ async def test_get_vehicle_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_vehicle_async(
-    transport: str = "grpc_asyncio", request_type=vehicle_api.GetVehicleRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vehicle_api.GetVehicleRequest(),
+        {},
+    ],
+)
+async def test_get_vehicle_async(request_type, transport: str = "grpc_asyncio"):
     client = VehicleServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1681,7 +1698,7 @@ async def test_get_vehicle_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_vehicle), "__call__") as call:
@@ -1718,16 +1735,11 @@ async def test_get_vehicle_async(
     assert response.navigation_status == fleetengine.NavigationStatus.NO_GUIDANCE
 
 
-@pytest.mark.asyncio
-async def test_get_vehicle_async_from_dict():
-    await test_get_vehicle_async(request_type=dict)
-
-
 @pytest.mark.parametrize(
     "request_type",
     [
-        vehicle_api.DeleteVehicleRequest,
-        dict,
+        vehicle_api.DeleteVehicleRequest(),
+        {},
     ],
 )
 def test_delete_vehicle(request_type, transport: str = "grpc"):
@@ -1738,7 +1750,7 @@ def test_delete_vehicle(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_vehicle), "__call__") as call:
@@ -1779,9 +1791,10 @@ def test_delete_vehicle_non_empty_request_with_auto_populated_field():
         client.delete_vehicle(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vehicle_api.DeleteVehicleRequest(
+        request_msg = vehicle_api.DeleteVehicleRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_vehicle_use_cached_wrapped_rpc():
@@ -1862,9 +1875,14 @@ async def test_delete_vehicle_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_vehicle_async(
-    transport: str = "grpc_asyncio", request_type=vehicle_api.DeleteVehicleRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vehicle_api.DeleteVehicleRequest(),
+        {},
+    ],
+)
+async def test_delete_vehicle_async(request_type, transport: str = "grpc_asyncio"):
     client = VehicleServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1872,7 +1890,7 @@ async def test_delete_vehicle_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_vehicle), "__call__") as call:
@@ -1888,11 +1906,6 @@ async def test_delete_vehicle_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_vehicle_async_from_dict():
-    await test_delete_vehicle_async(request_type=dict)
 
 
 def test_delete_vehicle_flattened():
@@ -1978,8 +1991,8 @@ async def test_delete_vehicle_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vehicle_api.UpdateVehicleRequest,
-        dict,
+        vehicle_api.UpdateVehicleRequest(),
+        {},
     ],
 )
 def test_update_vehicle(request_type, transport: str = "grpc"):
@@ -1990,7 +2003,7 @@ def test_update_vehicle(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_vehicle), "__call__") as call:
@@ -2048,9 +2061,10 @@ def test_update_vehicle_non_empty_request_with_auto_populated_field():
         client.update_vehicle(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vehicle_api.UpdateVehicleRequest(
+        request_msg = vehicle_api.UpdateVehicleRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_vehicle_use_cached_wrapped_rpc():
@@ -2131,9 +2145,14 @@ async def test_update_vehicle_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_vehicle_async(
-    transport: str = "grpc_asyncio", request_type=vehicle_api.UpdateVehicleRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vehicle_api.UpdateVehicleRequest(),
+        {},
+    ],
+)
+async def test_update_vehicle_async(request_type, transport: str = "grpc_asyncio"):
     client = VehicleServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2141,7 +2160,7 @@ async def test_update_vehicle_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_vehicle), "__call__") as call:
@@ -2178,16 +2197,11 @@ async def test_update_vehicle_async(
     assert response.navigation_status == fleetengine.NavigationStatus.NO_GUIDANCE
 
 
-@pytest.mark.asyncio
-async def test_update_vehicle_async_from_dict():
-    await test_update_vehicle_async(request_type=dict)
-
-
 @pytest.mark.parametrize(
     "request_type",
     [
-        vehicle_api.UpdateVehicleAttributesRequest,
-        dict,
+        vehicle_api.UpdateVehicleAttributesRequest(),
+        {},
     ],
 )
 def test_update_vehicle_attributes(request_type, transport: str = "grpc"):
@@ -2198,7 +2212,7 @@ def test_update_vehicle_attributes(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2243,9 +2257,10 @@ def test_update_vehicle_attributes_non_empty_request_with_auto_populated_field()
         client.update_vehicle_attributes(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vehicle_api.UpdateVehicleAttributesRequest(
+        request_msg = vehicle_api.UpdateVehicleAttributesRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_vehicle_attributes_use_cached_wrapped_rpc():
@@ -2331,9 +2346,15 @@ async def test_update_vehicle_attributes_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vehicle_api.UpdateVehicleAttributesRequest(),
+        {},
+    ],
+)
 async def test_update_vehicle_attributes_async(
-    transport: str = "grpc_asyncio",
-    request_type=vehicle_api.UpdateVehicleAttributesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VehicleServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2342,7 +2363,7 @@ async def test_update_vehicle_attributes_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2364,16 +2385,11 @@ async def test_update_vehicle_attributes_async(
     assert isinstance(response, vehicle_api.UpdateVehicleAttributesResponse)
 
 
-@pytest.mark.asyncio
-async def test_update_vehicle_attributes_async_from_dict():
-    await test_update_vehicle_attributes_async(request_type=dict)
-
-
 @pytest.mark.parametrize(
     "request_type",
     [
-        vehicle_api.ListVehiclesRequest,
-        dict,
+        vehicle_api.ListVehiclesRequest(),
+        {},
     ],
 )
 def test_list_vehicles(request_type, transport: str = "grpc"):
@@ -2384,7 +2400,7 @@ def test_list_vehicles(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_vehicles), "__call__") as call:
@@ -2432,11 +2448,12 @@ def test_list_vehicles_non_empty_request_with_auto_populated_field():
         client.list_vehicles(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vehicle_api.ListVehiclesRequest(
+        request_msg = vehicle_api.ListVehiclesRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_vehicles_use_cached_wrapped_rpc():
@@ -2517,9 +2534,14 @@ async def test_list_vehicles_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_vehicles_async(
-    transport: str = "grpc_asyncio", request_type=vehicle_api.ListVehiclesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vehicle_api.ListVehiclesRequest(),
+        {},
+    ],
+)
+async def test_list_vehicles_async(request_type, transport: str = "grpc_asyncio"):
     client = VehicleServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2527,7 +2549,7 @@ async def test_list_vehicles_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_vehicles), "__call__") as call:
@@ -2550,11 +2572,6 @@ async def test_list_vehicles_async(
     assert isinstance(response, pagers.ListVehiclesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.total_size == 1086
-
-
-@pytest.mark.asyncio
-async def test_list_vehicles_async_from_dict():
-    await test_list_vehicles_async(request_type=dict)
 
 
 def test_list_vehicles_pager(transport_name: str = "grpc"):
@@ -2738,11 +2755,7 @@ async def test_list_vehicles_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_vehicles(request={})
-        ).pages:
+        async for page_ in (await client.list_vehicles(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -2751,8 +2764,8 @@ async def test_list_vehicles_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vehicle_api.SearchVehiclesRequest,
-        dict,
+        vehicle_api.SearchVehiclesRequest(),
+        {},
     ],
 )
 def test_search_vehicles(request_type, transport: str = "grpc"):
@@ -2763,7 +2776,7 @@ def test_search_vehicles(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.search_vehicles), "__call__") as call:
@@ -2806,11 +2819,12 @@ def test_search_vehicles_non_empty_request_with_auto_populated_field():
         client.search_vehicles(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vehicle_api.SearchVehiclesRequest(
+        request_msg = vehicle_api.SearchVehiclesRequest(
             parent="parent_value",
             trip_id="trip_id_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_search_vehicles_use_cached_wrapped_rpc():
@@ -2891,9 +2905,14 @@ async def test_search_vehicles_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_search_vehicles_async(
-    transport: str = "grpc_asyncio", request_type=vehicle_api.SearchVehiclesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vehicle_api.SearchVehiclesRequest(),
+        {},
+    ],
+)
+async def test_search_vehicles_async(request_type, transport: str = "grpc_asyncio"):
     client = VehicleServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2901,7 +2920,7 @@ async def test_search_vehicles_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.search_vehicles), "__call__") as call:
@@ -2919,11 +2938,6 @@ async def test_search_vehicles_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, vehicle_api.SearchVehiclesResponse)
-
-
-@pytest.mark.asyncio
-async def test_search_vehicles_async_from_dict():
-    await test_search_vehicles_async(request_type=dict)
 
 
 def test_credentials_transport_error():
@@ -3048,7 +3062,6 @@ def test_create_vehicle_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vehicle_api.CreateVehicleRequest()
-
         assert args[0] == request_msg
 
 
@@ -3069,7 +3082,6 @@ def test_get_vehicle_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vehicle_api.GetVehicleRequest()
-
         assert args[0] == request_msg
 
 
@@ -3090,7 +3102,6 @@ def test_delete_vehicle_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vehicle_api.DeleteVehicleRequest()
-
         assert args[0] == request_msg
 
 
@@ -3111,7 +3122,6 @@ def test_update_vehicle_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vehicle_api.UpdateVehicleRequest()
-
         assert args[0] == request_msg
 
 
@@ -3134,7 +3144,6 @@ def test_update_vehicle_attributes_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vehicle_api.UpdateVehicleAttributesRequest()
-
         assert args[0] == request_msg
 
 
@@ -3155,7 +3164,6 @@ def test_list_vehicles_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vehicle_api.ListVehiclesRequest()
-
         assert args[0] == request_msg
 
 
@@ -3176,7 +3184,6 @@ def test_search_vehicles_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vehicle_api.SearchVehiclesRequest()
-
         assert args[0] == request_msg
 
 
@@ -3197,7 +3204,6 @@ def test_create_vehicle_routing_parameters_request_1_grpc():
         request_msg = vehicle_api.CreateVehicleRequest(
             **{"parent": "providers/sample1"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"provider_id": "providers/sample1"}
@@ -3221,7 +3227,6 @@ def test_get_vehicle_routing_parameters_request_1_grpc():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = vehicle_api.GetVehicleRequest(**{"name": "providers/sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"provider_id": "providers/sample1"}
@@ -3245,7 +3250,6 @@ def test_delete_vehicle_routing_parameters_request_1_grpc():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = vehicle_api.DeleteVehicleRequest(**{"name": "providers/sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"provider_id": "providers/sample1"}
@@ -3269,7 +3273,6 @@ def test_update_vehicle_routing_parameters_request_1_grpc():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = vehicle_api.UpdateVehicleRequest(**{"name": "providers/sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"provider_id": "providers/sample1"}
@@ -3297,7 +3300,6 @@ def test_update_vehicle_attributes_routing_parameters_request_1_grpc():
         request_msg = vehicle_api.UpdateVehicleAttributesRequest(
             **{"name": "providers/sample1"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"provider_id": "providers/sample1"}
@@ -3321,7 +3323,6 @@ def test_list_vehicles_routing_parameters_request_1_grpc():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = vehicle_api.ListVehiclesRequest(**{"parent": "providers/sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"provider_id": "providers/sample1"}
@@ -3347,7 +3348,6 @@ def test_search_vehicles_routing_parameters_request_1_grpc():
         request_msg = vehicle_api.SearchVehiclesRequest(
             **{"parent": "providers/sample1"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"provider_id": "providers/sample1"}
@@ -3400,7 +3400,6 @@ async def test_create_vehicle_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vehicle_api.CreateVehicleRequest()
-
         assert args[0] == request_msg
 
 
@@ -3434,7 +3433,6 @@ async def test_get_vehicle_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vehicle_api.GetVehicleRequest()
-
         assert args[0] == request_msg
 
 
@@ -3457,7 +3455,6 @@ async def test_delete_vehicle_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vehicle_api.DeleteVehicleRequest()
-
         assert args[0] == request_msg
 
 
@@ -3491,7 +3488,6 @@ async def test_update_vehicle_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vehicle_api.UpdateVehicleRequest()
-
         assert args[0] == request_msg
 
 
@@ -3518,7 +3514,6 @@ async def test_update_vehicle_attributes_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vehicle_api.UpdateVehicleAttributesRequest()
-
         assert args[0] == request_msg
 
 
@@ -3546,7 +3541,6 @@ async def test_list_vehicles_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vehicle_api.ListVehiclesRequest()
-
         assert args[0] == request_msg
 
 
@@ -3571,7 +3565,6 @@ async def test_search_vehicles_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vehicle_api.SearchVehiclesRequest()
-
         assert args[0] == request_msg
 
 
@@ -3605,7 +3598,6 @@ async def test_create_vehicle_routing_parameters_request_1_grpc_asyncio():
         request_msg = vehicle_api.CreateVehicleRequest(
             **{"parent": "providers/sample1"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"provider_id": "providers/sample1"}
@@ -3642,7 +3634,6 @@ async def test_get_vehicle_routing_parameters_request_1_grpc_asyncio():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = vehicle_api.GetVehicleRequest(**{"name": "providers/sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"provider_id": "providers/sample1"}
@@ -3668,7 +3659,6 @@ async def test_delete_vehicle_routing_parameters_request_1_grpc_asyncio():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = vehicle_api.DeleteVehicleRequest(**{"name": "providers/sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"provider_id": "providers/sample1"}
@@ -3705,7 +3695,6 @@ async def test_update_vehicle_routing_parameters_request_1_grpc_asyncio():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = vehicle_api.UpdateVehicleRequest(**{"name": "providers/sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"provider_id": "providers/sample1"}
@@ -3737,7 +3726,6 @@ async def test_update_vehicle_attributes_routing_parameters_request_1_grpc_async
         request_msg = vehicle_api.UpdateVehicleAttributesRequest(
             **{"name": "providers/sample1"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"provider_id": "providers/sample1"}
@@ -3768,7 +3756,6 @@ async def test_list_vehicles_routing_parameters_request_1_grpc_asyncio():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = vehicle_api.ListVehiclesRequest(**{"parent": "providers/sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"provider_id": "providers/sample1"}
@@ -3798,7 +3785,6 @@ async def test_search_vehicles_routing_parameters_request_1_grpc_asyncio():
         request_msg = vehicle_api.SearchVehiclesRequest(
             **{"parent": "providers/sample1"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"provider_id": "providers/sample1"}

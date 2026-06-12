@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -122,6 +117,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1268,8 +1278,8 @@ def test_registry_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        registry_service.ListApisRequest,
-        dict,
+        registry_service.ListApisRequest(),
+        {},
     ],
 )
 def test_list_apis(request_type, transport: str = "grpc"):
@@ -1280,7 +1290,7 @@ def test_list_apis(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_apis), "__call__") as call:
@@ -1326,11 +1336,12 @@ def test_list_apis_non_empty_request_with_auto_populated_field():
         client.list_apis(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.ListApisRequest(
+        request_msg = registry_service.ListApisRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_apis_use_cached_wrapped_rpc():
@@ -1409,9 +1420,14 @@ async def test_list_apis_async_use_cached_wrapped_rpc(transport: str = "grpc_asy
 
 
 @pytest.mark.asyncio
-async def test_list_apis_async(
-    transport: str = "grpc_asyncio", request_type=registry_service.ListApisRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registry_service.ListApisRequest(),
+        {},
+    ],
+)
+async def test_list_apis_async(request_type, transport: str = "grpc_asyncio"):
     client = RegistryAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1419,7 +1435,7 @@ async def test_list_apis_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_apis), "__call__") as call:
@@ -1440,11 +1456,6 @@ async def test_list_apis_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListApisAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_apis_async_from_dict():
-    await test_list_apis_async(request_type=dict)
 
 
 def test_list_apis_field_headers():
@@ -1774,11 +1785,7 @@ async def test_list_apis_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_apis(request={})
-        ).pages:
+        async for page_ in (await client.list_apis(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -1787,8 +1794,8 @@ async def test_list_apis_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        registry_service.GetApiRequest,
-        dict,
+        registry_service.GetApiRequest(),
+        {},
     ],
 )
 def test_get_api(request_type, transport: str = "grpc"):
@@ -1799,7 +1806,7 @@ def test_get_api(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_api), "__call__") as call:
@@ -1853,9 +1860,10 @@ def test_get_api_non_empty_request_with_auto_populated_field():
         client.get_api(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.GetApiRequest(
+        request_msg = registry_service.GetApiRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_api_use_cached_wrapped_rpc():
@@ -1934,9 +1942,14 @@ async def test_get_api_async_use_cached_wrapped_rpc(transport: str = "grpc_async
 
 
 @pytest.mark.asyncio
-async def test_get_api_async(
-    transport: str = "grpc_asyncio", request_type=registry_service.GetApiRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registry_service.GetApiRequest(),
+        {},
+    ],
+)
+async def test_get_api_async(request_type, transport: str = "grpc_asyncio"):
     client = RegistryAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1944,7 +1957,7 @@ async def test_get_api_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_api), "__call__") as call:
@@ -1975,11 +1988,6 @@ async def test_get_api_async(
     assert response.availability == "availability_value"
     assert response.recommended_version == "recommended_version_value"
     assert response.recommended_deployment == "recommended_deployment_value"
-
-
-@pytest.mark.asyncio
-async def test_get_api_async_from_dict():
-    await test_get_api_async(request_type=dict)
 
 
 def test_get_api_field_headers():
@@ -2124,8 +2132,8 @@ async def test_get_api_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        registry_service.CreateApiRequest,
-        dict,
+        registry_service.CreateApiRequest(),
+        {},
     ],
 )
 def test_create_api(request_type, transport: str = "grpc"):
@@ -2136,7 +2144,7 @@ def test_create_api(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_api), "__call__") as call:
@@ -2191,10 +2199,11 @@ def test_create_api_non_empty_request_with_auto_populated_field():
         client.create_api(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.CreateApiRequest(
+        request_msg = registry_service.CreateApiRequest(
             parent="parent_value",
             api_id="api_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_api_use_cached_wrapped_rpc():
@@ -2273,9 +2282,14 @@ async def test_create_api_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_create_api_async(
-    transport: str = "grpc_asyncio", request_type=registry_service.CreateApiRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registry_service.CreateApiRequest(),
+        {},
+    ],
+)
+async def test_create_api_async(request_type, transport: str = "grpc_asyncio"):
     client = RegistryAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2283,7 +2297,7 @@ async def test_create_api_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_api), "__call__") as call:
@@ -2314,11 +2328,6 @@ async def test_create_api_async(
     assert response.availability == "availability_value"
     assert response.recommended_version == "recommended_version_value"
     assert response.recommended_deployment == "recommended_deployment_value"
-
-
-@pytest.mark.asyncio
-async def test_create_api_async_from_dict():
-    await test_create_api_async(request_type=dict)
 
 
 def test_create_api_field_headers():
@@ -2483,8 +2492,8 @@ async def test_create_api_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        registry_service.UpdateApiRequest,
-        dict,
+        registry_service.UpdateApiRequest(),
+        {},
     ],
 )
 def test_update_api(request_type, transport: str = "grpc"):
@@ -2495,7 +2504,7 @@ def test_update_api(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_api), "__call__") as call:
@@ -2547,7 +2556,8 @@ def test_update_api_non_empty_request_with_auto_populated_field():
         client.update_api(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.UpdateApiRequest()
+        request_msg = registry_service.UpdateApiRequest()
+        assert args[0] == request_msg
 
 
 def test_update_api_use_cached_wrapped_rpc():
@@ -2626,9 +2636,14 @@ async def test_update_api_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_update_api_async(
-    transport: str = "grpc_asyncio", request_type=registry_service.UpdateApiRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registry_service.UpdateApiRequest(),
+        {},
+    ],
+)
+async def test_update_api_async(request_type, transport: str = "grpc_asyncio"):
     client = RegistryAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2636,7 +2651,7 @@ async def test_update_api_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_api), "__call__") as call:
@@ -2667,11 +2682,6 @@ async def test_update_api_async(
     assert response.availability == "availability_value"
     assert response.recommended_version == "recommended_version_value"
     assert response.recommended_deployment == "recommended_deployment_value"
-
-
-@pytest.mark.asyncio
-async def test_update_api_async_from_dict():
-    await test_update_api_async(request_type=dict)
 
 
 def test_update_api_field_headers():
@@ -2826,8 +2836,8 @@ async def test_update_api_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        registry_service.DeleteApiRequest,
-        dict,
+        registry_service.DeleteApiRequest(),
+        {},
     ],
 )
 def test_delete_api(request_type, transport: str = "grpc"):
@@ -2838,7 +2848,7 @@ def test_delete_api(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_api), "__call__") as call:
@@ -2879,9 +2889,10 @@ def test_delete_api_non_empty_request_with_auto_populated_field():
         client.delete_api(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.DeleteApiRequest(
+        request_msg = registry_service.DeleteApiRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_api_use_cached_wrapped_rpc():
@@ -2960,9 +2971,14 @@ async def test_delete_api_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_delete_api_async(
-    transport: str = "grpc_asyncio", request_type=registry_service.DeleteApiRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registry_service.DeleteApiRequest(),
+        {},
+    ],
+)
+async def test_delete_api_async(request_type, transport: str = "grpc_asyncio"):
     client = RegistryAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2970,7 +2986,7 @@ async def test_delete_api_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_api), "__call__") as call:
@@ -2986,11 +3002,6 @@ async def test_delete_api_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_api_async_from_dict():
-    await test_delete_api_async(request_type=dict)
 
 
 def test_delete_api_field_headers():
@@ -3135,8 +3146,8 @@ async def test_delete_api_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        registry_service.ListApiVersionsRequest,
-        dict,
+        registry_service.ListApiVersionsRequest(),
+        {},
     ],
 )
 def test_list_api_versions(request_type, transport: str = "grpc"):
@@ -3147,7 +3158,7 @@ def test_list_api_versions(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3197,11 +3208,12 @@ def test_list_api_versions_non_empty_request_with_auto_populated_field():
         client.list_api_versions(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.ListApiVersionsRequest(
+        request_msg = registry_service.ListApiVersionsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_api_versions_use_cached_wrapped_rpc():
@@ -3284,10 +3296,14 @@ async def test_list_api_versions_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_api_versions_async(
-    transport: str = "grpc_asyncio",
-    request_type=registry_service.ListApiVersionsRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registry_service.ListApiVersionsRequest(),
+        {},
+    ],
+)
+async def test_list_api_versions_async(request_type, transport: str = "grpc_asyncio"):
     client = RegistryAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3295,7 +3311,7 @@ async def test_list_api_versions_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3318,11 +3334,6 @@ async def test_list_api_versions_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListApiVersionsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_api_versions_async_from_dict():
-    await test_list_api_versions_async(request_type=dict)
 
 
 def test_list_api_versions_field_headers():
@@ -3668,11 +3679,7 @@ async def test_list_api_versions_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_api_versions(request={})
-        ).pages:
+        async for page_ in (await client.list_api_versions(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -3681,8 +3688,8 @@ async def test_list_api_versions_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        registry_service.GetApiVersionRequest,
-        dict,
+        registry_service.GetApiVersionRequest(),
+        {},
     ],
 )
 def test_get_api_version(request_type, transport: str = "grpc"):
@@ -3693,7 +3700,7 @@ def test_get_api_version(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_api_version), "__call__") as call:
@@ -3743,9 +3750,10 @@ def test_get_api_version_non_empty_request_with_auto_populated_field():
         client.get_api_version(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.GetApiVersionRequest(
+        request_msg = registry_service.GetApiVersionRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_api_version_use_cached_wrapped_rpc():
@@ -3826,9 +3834,14 @@ async def test_get_api_version_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_api_version_async(
-    transport: str = "grpc_asyncio", request_type=registry_service.GetApiVersionRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registry_service.GetApiVersionRequest(),
+        {},
+    ],
+)
+async def test_get_api_version_async(request_type, transport: str = "grpc_asyncio"):
     client = RegistryAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3836,7 +3849,7 @@ async def test_get_api_version_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_api_version), "__call__") as call:
@@ -3863,11 +3876,6 @@ async def test_get_api_version_async(
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.state == "state_value"
-
-
-@pytest.mark.asyncio
-async def test_get_api_version_async_from_dict():
-    await test_get_api_version_async(request_type=dict)
 
 
 def test_get_api_version_field_headers():
@@ -4016,8 +4024,8 @@ async def test_get_api_version_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        registry_service.CreateApiVersionRequest,
-        dict,
+        registry_service.CreateApiVersionRequest(),
+        {},
     ],
 )
 def test_create_api_version(request_type, transport: str = "grpc"):
@@ -4028,7 +4036,7 @@ def test_create_api_version(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4083,10 +4091,11 @@ def test_create_api_version_non_empty_request_with_auto_populated_field():
         client.create_api_version(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.CreateApiVersionRequest(
+        request_msg = registry_service.CreateApiVersionRequest(
             parent="parent_value",
             api_version_id="api_version_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_api_version_use_cached_wrapped_rpc():
@@ -4171,10 +4180,14 @@ async def test_create_api_version_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_api_version_async(
-    transport: str = "grpc_asyncio",
-    request_type=registry_service.CreateApiVersionRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registry_service.CreateApiVersionRequest(),
+        {},
+    ],
+)
+async def test_create_api_version_async(request_type, transport: str = "grpc_asyncio"):
     client = RegistryAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4182,7 +4195,7 @@ async def test_create_api_version_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4211,11 +4224,6 @@ async def test_create_api_version_async(
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.state == "state_value"
-
-
-@pytest.mark.asyncio
-async def test_create_api_version_async_from_dict():
-    await test_create_api_version_async(request_type=dict)
 
 
 def test_create_api_version_field_headers():
@@ -4392,8 +4400,8 @@ async def test_create_api_version_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        registry_service.UpdateApiVersionRequest,
-        dict,
+        registry_service.UpdateApiVersionRequest(),
+        {},
     ],
 )
 def test_update_api_version(request_type, transport: str = "grpc"):
@@ -4404,7 +4412,7 @@ def test_update_api_version(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4456,7 +4464,8 @@ def test_update_api_version_non_empty_request_with_auto_populated_field():
         client.update_api_version(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.UpdateApiVersionRequest()
+        request_msg = registry_service.UpdateApiVersionRequest()
+        assert args[0] == request_msg
 
 
 def test_update_api_version_use_cached_wrapped_rpc():
@@ -4541,10 +4550,14 @@ async def test_update_api_version_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_api_version_async(
-    transport: str = "grpc_asyncio",
-    request_type=registry_service.UpdateApiVersionRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registry_service.UpdateApiVersionRequest(),
+        {},
+    ],
+)
+async def test_update_api_version_async(request_type, transport: str = "grpc_asyncio"):
     client = RegistryAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4552,7 +4565,7 @@ async def test_update_api_version_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4581,11 +4594,6 @@ async def test_update_api_version_async(
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.state == "state_value"
-
-
-@pytest.mark.asyncio
-async def test_update_api_version_async_from_dict():
-    await test_update_api_version_async(request_type=dict)
 
 
 def test_update_api_version_field_headers():
@@ -4752,8 +4760,8 @@ async def test_update_api_version_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        registry_service.DeleteApiVersionRequest,
-        dict,
+        registry_service.DeleteApiVersionRequest(),
+        {},
     ],
 )
 def test_delete_api_version(request_type, transport: str = "grpc"):
@@ -4764,7 +4772,7 @@ def test_delete_api_version(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4809,9 +4817,10 @@ def test_delete_api_version_non_empty_request_with_auto_populated_field():
         client.delete_api_version(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.DeleteApiVersionRequest(
+        request_msg = registry_service.DeleteApiVersionRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_api_version_use_cached_wrapped_rpc():
@@ -4896,10 +4905,14 @@ async def test_delete_api_version_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_api_version_async(
-    transport: str = "grpc_asyncio",
-    request_type=registry_service.DeleteApiVersionRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registry_service.DeleteApiVersionRequest(),
+        {},
+    ],
+)
+async def test_delete_api_version_async(request_type, transport: str = "grpc_asyncio"):
     client = RegistryAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4907,7 +4920,7 @@ async def test_delete_api_version_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4925,11 +4938,6 @@ async def test_delete_api_version_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_api_version_async_from_dict():
-    await test_delete_api_version_async(request_type=dict)
 
 
 def test_delete_api_version_field_headers():
@@ -5082,8 +5090,8 @@ async def test_delete_api_version_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        registry_service.ListApiSpecsRequest,
-        dict,
+        registry_service.ListApiSpecsRequest(),
+        {},
     ],
 )
 def test_list_api_specs(request_type, transport: str = "grpc"):
@@ -5094,7 +5102,7 @@ def test_list_api_specs(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_api_specs), "__call__") as call:
@@ -5140,11 +5148,12 @@ def test_list_api_specs_non_empty_request_with_auto_populated_field():
         client.list_api_specs(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.ListApiSpecsRequest(
+        request_msg = registry_service.ListApiSpecsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_api_specs_use_cached_wrapped_rpc():
@@ -5225,9 +5234,14 @@ async def test_list_api_specs_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_api_specs_async(
-    transport: str = "grpc_asyncio", request_type=registry_service.ListApiSpecsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registry_service.ListApiSpecsRequest(),
+        {},
+    ],
+)
+async def test_list_api_specs_async(request_type, transport: str = "grpc_asyncio"):
     client = RegistryAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5235,7 +5249,7 @@ async def test_list_api_specs_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_api_specs), "__call__") as call:
@@ -5256,11 +5270,6 @@ async def test_list_api_specs_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListApiSpecsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_api_specs_async_from_dict():
-    await test_list_api_specs_async(request_type=dict)
 
 
 def test_list_api_specs_field_headers():
@@ -5590,11 +5599,7 @@ async def test_list_api_specs_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_api_specs(request={})
-        ).pages:
+        async for page_ in (await client.list_api_specs(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -5603,8 +5608,8 @@ async def test_list_api_specs_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        registry_service.GetApiSpecRequest,
-        dict,
+        registry_service.GetApiSpecRequest(),
+        {},
     ],
 )
 def test_get_api_spec(request_type, transport: str = "grpc"):
@@ -5615,7 +5620,7 @@ def test_get_api_spec(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_api_spec), "__call__") as call:
@@ -5675,9 +5680,10 @@ def test_get_api_spec_non_empty_request_with_auto_populated_field():
         client.get_api_spec(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.GetApiSpecRequest(
+        request_msg = registry_service.GetApiSpecRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_api_spec_use_cached_wrapped_rpc():
@@ -5758,9 +5764,14 @@ async def test_get_api_spec_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_api_spec_async(
-    transport: str = "grpc_asyncio", request_type=registry_service.GetApiSpecRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registry_service.GetApiSpecRequest(),
+        {},
+    ],
+)
+async def test_get_api_spec_async(request_type, transport: str = "grpc_asyncio"):
     client = RegistryAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5768,7 +5779,7 @@ async def test_get_api_spec_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_api_spec), "__call__") as call:
@@ -5805,11 +5816,6 @@ async def test_get_api_spec_async(
     assert response.hash_ == "hash__value"
     assert response.source_uri == "source_uri_value"
     assert response.contents == b"contents_blob"
-
-
-@pytest.mark.asyncio
-async def test_get_api_spec_async_from_dict():
-    await test_get_api_spec_async(request_type=dict)
 
 
 def test_get_api_spec_field_headers():
@@ -5958,8 +5964,8 @@ async def test_get_api_spec_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        registry_service.GetApiSpecContentsRequest,
-        dict,
+        registry_service.GetApiSpecContentsRequest(),
+        {},
     ],
 )
 def test_get_api_spec_contents(request_type, transport: str = "grpc"):
@@ -5970,7 +5976,7 @@ def test_get_api_spec_contents(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6020,9 +6026,10 @@ def test_get_api_spec_contents_non_empty_request_with_auto_populated_field():
         client.get_api_spec_contents(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.GetApiSpecContentsRequest(
+        request_msg = registry_service.GetApiSpecContentsRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_api_spec_contents_use_cached_wrapped_rpc():
@@ -6108,9 +6115,15 @@ async def test_get_api_spec_contents_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registry_service.GetApiSpecContentsRequest(),
+        {},
+    ],
+)
 async def test_get_api_spec_contents_async(
-    transport: str = "grpc_asyncio",
-    request_type=registry_service.GetApiSpecContentsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = RegistryAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -6119,7 +6132,7 @@ async def test_get_api_spec_contents_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6144,11 +6157,6 @@ async def test_get_api_spec_contents_async(
     assert isinstance(response, httpbody_pb2.HttpBody)
     assert response.content_type == "content_type_value"
     assert response.data == b"data_blob"
-
-
-@pytest.mark.asyncio
-async def test_get_api_spec_contents_async_from_dict():
-    await test_get_api_spec_contents_async(request_type=dict)
 
 
 def test_get_api_spec_contents_field_headers():
@@ -6305,8 +6313,8 @@ async def test_get_api_spec_contents_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        registry_service.CreateApiSpecRequest,
-        dict,
+        registry_service.CreateApiSpecRequest(),
+        {},
     ],
 )
 def test_create_api_spec(request_type, transport: str = "grpc"):
@@ -6317,7 +6325,7 @@ def test_create_api_spec(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_api_spec), "__call__") as call:
@@ -6378,10 +6386,11 @@ def test_create_api_spec_non_empty_request_with_auto_populated_field():
         client.create_api_spec(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.CreateApiSpecRequest(
+        request_msg = registry_service.CreateApiSpecRequest(
             parent="parent_value",
             api_spec_id="api_spec_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_api_spec_use_cached_wrapped_rpc():
@@ -6462,9 +6471,14 @@ async def test_create_api_spec_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_api_spec_async(
-    transport: str = "grpc_asyncio", request_type=registry_service.CreateApiSpecRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registry_service.CreateApiSpecRequest(),
+        {},
+    ],
+)
+async def test_create_api_spec_async(request_type, transport: str = "grpc_asyncio"):
     client = RegistryAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6472,7 +6486,7 @@ async def test_create_api_spec_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_api_spec), "__call__") as call:
@@ -6509,11 +6523,6 @@ async def test_create_api_spec_async(
     assert response.hash_ == "hash__value"
     assert response.source_uri == "source_uri_value"
     assert response.contents == b"contents_blob"
-
-
-@pytest.mark.asyncio
-async def test_create_api_spec_async_from_dict():
-    await test_create_api_spec_async(request_type=dict)
 
 
 def test_create_api_spec_field_headers():
@@ -6682,8 +6691,8 @@ async def test_create_api_spec_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        registry_service.UpdateApiSpecRequest,
-        dict,
+        registry_service.UpdateApiSpecRequest(),
+        {},
     ],
 )
 def test_update_api_spec(request_type, transport: str = "grpc"):
@@ -6694,7 +6703,7 @@ def test_update_api_spec(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_api_spec), "__call__") as call:
@@ -6752,7 +6761,8 @@ def test_update_api_spec_non_empty_request_with_auto_populated_field():
         client.update_api_spec(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.UpdateApiSpecRequest()
+        request_msg = registry_service.UpdateApiSpecRequest()
+        assert args[0] == request_msg
 
 
 def test_update_api_spec_use_cached_wrapped_rpc():
@@ -6833,9 +6843,14 @@ async def test_update_api_spec_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_api_spec_async(
-    transport: str = "grpc_asyncio", request_type=registry_service.UpdateApiSpecRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registry_service.UpdateApiSpecRequest(),
+        {},
+    ],
+)
+async def test_update_api_spec_async(request_type, transport: str = "grpc_asyncio"):
     client = RegistryAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6843,7 +6858,7 @@ async def test_update_api_spec_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_api_spec), "__call__") as call:
@@ -6880,11 +6895,6 @@ async def test_update_api_spec_async(
     assert response.hash_ == "hash__value"
     assert response.source_uri == "source_uri_value"
     assert response.contents == b"contents_blob"
-
-
-@pytest.mark.asyncio
-async def test_update_api_spec_async_from_dict():
-    await test_update_api_spec_async(request_type=dict)
 
 
 def test_update_api_spec_field_headers():
@@ -7043,8 +7053,8 @@ async def test_update_api_spec_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        registry_service.DeleteApiSpecRequest,
-        dict,
+        registry_service.DeleteApiSpecRequest(),
+        {},
     ],
 )
 def test_delete_api_spec(request_type, transport: str = "grpc"):
@@ -7055,7 +7065,7 @@ def test_delete_api_spec(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_api_spec), "__call__") as call:
@@ -7096,9 +7106,10 @@ def test_delete_api_spec_non_empty_request_with_auto_populated_field():
         client.delete_api_spec(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.DeleteApiSpecRequest(
+        request_msg = registry_service.DeleteApiSpecRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_api_spec_use_cached_wrapped_rpc():
@@ -7179,9 +7190,14 @@ async def test_delete_api_spec_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_api_spec_async(
-    transport: str = "grpc_asyncio", request_type=registry_service.DeleteApiSpecRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registry_service.DeleteApiSpecRequest(),
+        {},
+    ],
+)
+async def test_delete_api_spec_async(request_type, transport: str = "grpc_asyncio"):
     client = RegistryAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7189,7 +7205,7 @@ async def test_delete_api_spec_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_api_spec), "__call__") as call:
@@ -7205,11 +7221,6 @@ async def test_delete_api_spec_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_api_spec_async_from_dict():
-    await test_delete_api_spec_async(request_type=dict)
 
 
 def test_delete_api_spec_field_headers():
@@ -7354,8 +7365,8 @@ async def test_delete_api_spec_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        registry_service.TagApiSpecRevisionRequest,
-        dict,
+        registry_service.TagApiSpecRevisionRequest(),
+        {},
     ],
 )
 def test_tag_api_spec_revision(request_type, transport: str = "grpc"):
@@ -7366,7 +7377,7 @@ def test_tag_api_spec_revision(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7431,10 +7442,11 @@ def test_tag_api_spec_revision_non_empty_request_with_auto_populated_field():
         client.tag_api_spec_revision(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.TagApiSpecRevisionRequest(
+        request_msg = registry_service.TagApiSpecRevisionRequest(
             name="name_value",
             tag="tag_value",
         )
+        assert args[0] == request_msg
 
 
 def test_tag_api_spec_revision_use_cached_wrapped_rpc():
@@ -7520,9 +7532,15 @@ async def test_tag_api_spec_revision_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registry_service.TagApiSpecRevisionRequest(),
+        {},
+    ],
+)
 async def test_tag_api_spec_revision_async(
-    transport: str = "grpc_asyncio",
-    request_type=registry_service.TagApiSpecRevisionRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = RegistryAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -7531,7 +7549,7 @@ async def test_tag_api_spec_revision_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7570,11 +7588,6 @@ async def test_tag_api_spec_revision_async(
     assert response.hash_ == "hash__value"
     assert response.source_uri == "source_uri_value"
     assert response.contents == b"contents_blob"
-
-
-@pytest.mark.asyncio
-async def test_tag_api_spec_revision_async_from_dict():
-    await test_tag_api_spec_revision_async(request_type=dict)
 
 
 def test_tag_api_spec_revision_field_headers():
@@ -7645,8 +7658,8 @@ async def test_tag_api_spec_revision_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        registry_service.ListApiSpecRevisionsRequest,
-        dict,
+        registry_service.ListApiSpecRevisionsRequest(),
+        {},
     ],
 )
 def test_list_api_spec_revisions(request_type, transport: str = "grpc"):
@@ -7657,7 +7670,7 @@ def test_list_api_spec_revisions(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7706,10 +7719,11 @@ def test_list_api_spec_revisions_non_empty_request_with_auto_populated_field():
         client.list_api_spec_revisions(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.ListApiSpecRevisionsRequest(
+        request_msg = registry_service.ListApiSpecRevisionsRequest(
             name="name_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_api_spec_revisions_use_cached_wrapped_rpc():
@@ -7795,9 +7809,15 @@ async def test_list_api_spec_revisions_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registry_service.ListApiSpecRevisionsRequest(),
+        {},
+    ],
+)
 async def test_list_api_spec_revisions_async(
-    transport: str = "grpc_asyncio",
-    request_type=registry_service.ListApiSpecRevisionsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = RegistryAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -7806,7 +7826,7 @@ async def test_list_api_spec_revisions_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7829,11 +7849,6 @@ async def test_list_api_spec_revisions_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListApiSpecRevisionsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_api_spec_revisions_async_from_dict():
-    await test_list_api_spec_revisions_async(request_type=dict)
 
 
 def test_list_api_spec_revisions_field_headers():
@@ -8093,11 +8108,7 @@ async def test_list_api_spec_revisions_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_api_spec_revisions(request={})
-        ).pages:
+        async for page_ in (await client.list_api_spec_revisions(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -8106,8 +8117,8 @@ async def test_list_api_spec_revisions_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        registry_service.RollbackApiSpecRequest,
-        dict,
+        registry_service.RollbackApiSpecRequest(),
+        {},
     ],
 )
 def test_rollback_api_spec(request_type, transport: str = "grpc"):
@@ -8118,7 +8129,7 @@ def test_rollback_api_spec(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8183,10 +8194,11 @@ def test_rollback_api_spec_non_empty_request_with_auto_populated_field():
         client.rollback_api_spec(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.RollbackApiSpecRequest(
+        request_msg = registry_service.RollbackApiSpecRequest(
             name="name_value",
             revision_id="revision_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_rollback_api_spec_use_cached_wrapped_rpc():
@@ -8269,10 +8281,14 @@ async def test_rollback_api_spec_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_rollback_api_spec_async(
-    transport: str = "grpc_asyncio",
-    request_type=registry_service.RollbackApiSpecRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registry_service.RollbackApiSpecRequest(),
+        {},
+    ],
+)
+async def test_rollback_api_spec_async(request_type, transport: str = "grpc_asyncio"):
     client = RegistryAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -8280,7 +8296,7 @@ async def test_rollback_api_spec_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8319,11 +8335,6 @@ async def test_rollback_api_spec_async(
     assert response.hash_ == "hash__value"
     assert response.source_uri == "source_uri_value"
     assert response.contents == b"contents_blob"
-
-
-@pytest.mark.asyncio
-async def test_rollback_api_spec_async_from_dict():
-    await test_rollback_api_spec_async(request_type=dict)
 
 
 def test_rollback_api_spec_field_headers():
@@ -8394,8 +8405,8 @@ async def test_rollback_api_spec_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        registry_service.DeleteApiSpecRevisionRequest,
-        dict,
+        registry_service.DeleteApiSpecRevisionRequest(),
+        {},
     ],
 )
 def test_delete_api_spec_revision(request_type, transport: str = "grpc"):
@@ -8406,7 +8417,7 @@ def test_delete_api_spec_revision(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8470,9 +8481,10 @@ def test_delete_api_spec_revision_non_empty_request_with_auto_populated_field():
         client.delete_api_spec_revision(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.DeleteApiSpecRevisionRequest(
+        request_msg = registry_service.DeleteApiSpecRevisionRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_api_spec_revision_use_cached_wrapped_rpc():
@@ -8558,9 +8570,15 @@ async def test_delete_api_spec_revision_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registry_service.DeleteApiSpecRevisionRequest(),
+        {},
+    ],
+)
 async def test_delete_api_spec_revision_async(
-    transport: str = "grpc_asyncio",
-    request_type=registry_service.DeleteApiSpecRevisionRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = RegistryAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -8569,7 +8587,7 @@ async def test_delete_api_spec_revision_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8608,11 +8626,6 @@ async def test_delete_api_spec_revision_async(
     assert response.hash_ == "hash__value"
     assert response.source_uri == "source_uri_value"
     assert response.contents == b"contents_blob"
-
-
-@pytest.mark.asyncio
-async def test_delete_api_spec_revision_async_from_dict():
-    await test_delete_api_spec_revision_async(request_type=dict)
 
 
 def test_delete_api_spec_revision_field_headers():
@@ -8769,8 +8782,8 @@ async def test_delete_api_spec_revision_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        registry_service.ListApiDeploymentsRequest,
-        dict,
+        registry_service.ListApiDeploymentsRequest(),
+        {},
     ],
 )
 def test_list_api_deployments(request_type, transport: str = "grpc"):
@@ -8781,7 +8794,7 @@ def test_list_api_deployments(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8831,11 +8844,12 @@ def test_list_api_deployments_non_empty_request_with_auto_populated_field():
         client.list_api_deployments(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.ListApiDeploymentsRequest(
+        request_msg = registry_service.ListApiDeploymentsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_api_deployments_use_cached_wrapped_rpc():
@@ -8920,9 +8934,15 @@ async def test_list_api_deployments_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registry_service.ListApiDeploymentsRequest(),
+        {},
+    ],
+)
 async def test_list_api_deployments_async(
-    transport: str = "grpc_asyncio",
-    request_type=registry_service.ListApiDeploymentsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = RegistryAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -8931,7 +8951,7 @@ async def test_list_api_deployments_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8954,11 +8974,6 @@ async def test_list_api_deployments_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListApiDeploymentsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_api_deployments_async_from_dict():
-    await test_list_api_deployments_async(request_type=dict)
 
 
 def test_list_api_deployments_field_headers():
@@ -9304,11 +9319,7 @@ async def test_list_api_deployments_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_api_deployments(request={})
-        ).pages:
+        async for page_ in (await client.list_api_deployments(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -9317,8 +9328,8 @@ async def test_list_api_deployments_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        registry_service.GetApiDeploymentRequest,
-        dict,
+        registry_service.GetApiDeploymentRequest(),
+        {},
     ],
 )
 def test_get_api_deployment(request_type, transport: str = "grpc"):
@@ -9329,7 +9340,7 @@ def test_get_api_deployment(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9393,9 +9404,10 @@ def test_get_api_deployment_non_empty_request_with_auto_populated_field():
         client.get_api_deployment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.GetApiDeploymentRequest(
+        request_msg = registry_service.GetApiDeploymentRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_api_deployment_use_cached_wrapped_rpc():
@@ -9480,10 +9492,14 @@ async def test_get_api_deployment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_api_deployment_async(
-    transport: str = "grpc_asyncio",
-    request_type=registry_service.GetApiDeploymentRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registry_service.GetApiDeploymentRequest(),
+        {},
+    ],
+)
+async def test_get_api_deployment_async(request_type, transport: str = "grpc_asyncio"):
     client = RegistryAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -9491,7 +9507,7 @@ async def test_get_api_deployment_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9530,11 +9546,6 @@ async def test_get_api_deployment_async(
     assert response.external_channel_uri == "external_channel_uri_value"
     assert response.intended_audience == "intended_audience_value"
     assert response.access_guidance == "access_guidance_value"
-
-
-@pytest.mark.asyncio
-async def test_get_api_deployment_async_from_dict():
-    await test_get_api_deployment_async(request_type=dict)
 
 
 def test_get_api_deployment_field_headers():
@@ -9691,8 +9702,8 @@ async def test_get_api_deployment_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        registry_service.CreateApiDeploymentRequest,
-        dict,
+        registry_service.CreateApiDeploymentRequest(),
+        {},
     ],
 )
 def test_create_api_deployment(request_type, transport: str = "grpc"):
@@ -9703,7 +9714,7 @@ def test_create_api_deployment(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9768,10 +9779,11 @@ def test_create_api_deployment_non_empty_request_with_auto_populated_field():
         client.create_api_deployment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.CreateApiDeploymentRequest(
+        request_msg = registry_service.CreateApiDeploymentRequest(
             parent="parent_value",
             api_deployment_id="api_deployment_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_api_deployment_use_cached_wrapped_rpc():
@@ -9857,9 +9869,15 @@ async def test_create_api_deployment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registry_service.CreateApiDeploymentRequest(),
+        {},
+    ],
+)
 async def test_create_api_deployment_async(
-    transport: str = "grpc_asyncio",
-    request_type=registry_service.CreateApiDeploymentRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = RegistryAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -9868,7 +9886,7 @@ async def test_create_api_deployment_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9907,11 +9925,6 @@ async def test_create_api_deployment_async(
     assert response.external_channel_uri == "external_channel_uri_value"
     assert response.intended_audience == "intended_audience_value"
     assert response.access_guidance == "access_guidance_value"
-
-
-@pytest.mark.asyncio
-async def test_create_api_deployment_async_from_dict():
-    await test_create_api_deployment_async(request_type=dict)
 
 
 def test_create_api_deployment_field_headers():
@@ -10088,8 +10101,8 @@ async def test_create_api_deployment_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        registry_service.UpdateApiDeploymentRequest,
-        dict,
+        registry_service.UpdateApiDeploymentRequest(),
+        {},
     ],
 )
 def test_update_api_deployment(request_type, transport: str = "grpc"):
@@ -10100,7 +10113,7 @@ def test_update_api_deployment(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10162,7 +10175,8 @@ def test_update_api_deployment_non_empty_request_with_auto_populated_field():
         client.update_api_deployment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.UpdateApiDeploymentRequest()
+        request_msg = registry_service.UpdateApiDeploymentRequest()
+        assert args[0] == request_msg
 
 
 def test_update_api_deployment_use_cached_wrapped_rpc():
@@ -10248,9 +10262,15 @@ async def test_update_api_deployment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registry_service.UpdateApiDeploymentRequest(),
+        {},
+    ],
+)
 async def test_update_api_deployment_async(
-    transport: str = "grpc_asyncio",
-    request_type=registry_service.UpdateApiDeploymentRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = RegistryAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -10259,7 +10279,7 @@ async def test_update_api_deployment_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10298,11 +10318,6 @@ async def test_update_api_deployment_async(
     assert response.external_channel_uri == "external_channel_uri_value"
     assert response.intended_audience == "intended_audience_value"
     assert response.access_guidance == "access_guidance_value"
-
-
-@pytest.mark.asyncio
-async def test_update_api_deployment_async_from_dict():
-    await test_update_api_deployment_async(request_type=dict)
 
 
 def test_update_api_deployment_field_headers():
@@ -10469,8 +10484,8 @@ async def test_update_api_deployment_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        registry_service.DeleteApiDeploymentRequest,
-        dict,
+        registry_service.DeleteApiDeploymentRequest(),
+        {},
     ],
 )
 def test_delete_api_deployment(request_type, transport: str = "grpc"):
@@ -10481,7 +10496,7 @@ def test_delete_api_deployment(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10526,9 +10541,10 @@ def test_delete_api_deployment_non_empty_request_with_auto_populated_field():
         client.delete_api_deployment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.DeleteApiDeploymentRequest(
+        request_msg = registry_service.DeleteApiDeploymentRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_api_deployment_use_cached_wrapped_rpc():
@@ -10614,9 +10630,15 @@ async def test_delete_api_deployment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registry_service.DeleteApiDeploymentRequest(),
+        {},
+    ],
+)
 async def test_delete_api_deployment_async(
-    transport: str = "grpc_asyncio",
-    request_type=registry_service.DeleteApiDeploymentRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = RegistryAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -10625,7 +10647,7 @@ async def test_delete_api_deployment_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10643,11 +10665,6 @@ async def test_delete_api_deployment_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_api_deployment_async_from_dict():
-    await test_delete_api_deployment_async(request_type=dict)
 
 
 def test_delete_api_deployment_field_headers():
@@ -10800,8 +10817,8 @@ async def test_delete_api_deployment_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        registry_service.TagApiDeploymentRevisionRequest,
-        dict,
+        registry_service.TagApiDeploymentRevisionRequest(),
+        {},
     ],
 )
 def test_tag_api_deployment_revision(request_type, transport: str = "grpc"):
@@ -10812,7 +10829,7 @@ def test_tag_api_deployment_revision(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10877,10 +10894,11 @@ def test_tag_api_deployment_revision_non_empty_request_with_auto_populated_field
         client.tag_api_deployment_revision(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.TagApiDeploymentRevisionRequest(
+        request_msg = registry_service.TagApiDeploymentRevisionRequest(
             name="name_value",
             tag="tag_value",
         )
+        assert args[0] == request_msg
 
 
 def test_tag_api_deployment_revision_use_cached_wrapped_rpc():
@@ -10966,9 +10984,15 @@ async def test_tag_api_deployment_revision_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registry_service.TagApiDeploymentRevisionRequest(),
+        {},
+    ],
+)
 async def test_tag_api_deployment_revision_async(
-    transport: str = "grpc_asyncio",
-    request_type=registry_service.TagApiDeploymentRevisionRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = RegistryAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -10977,7 +11001,7 @@ async def test_tag_api_deployment_revision_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11016,11 +11040,6 @@ async def test_tag_api_deployment_revision_async(
     assert response.external_channel_uri == "external_channel_uri_value"
     assert response.intended_audience == "intended_audience_value"
     assert response.access_guidance == "access_guidance_value"
-
-
-@pytest.mark.asyncio
-async def test_tag_api_deployment_revision_async_from_dict():
-    await test_tag_api_deployment_revision_async(request_type=dict)
 
 
 def test_tag_api_deployment_revision_field_headers():
@@ -11091,8 +11110,8 @@ async def test_tag_api_deployment_revision_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        registry_service.ListApiDeploymentRevisionsRequest,
-        dict,
+        registry_service.ListApiDeploymentRevisionsRequest(),
+        {},
     ],
 )
 def test_list_api_deployment_revisions(request_type, transport: str = "grpc"):
@@ -11103,7 +11122,7 @@ def test_list_api_deployment_revisions(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11152,10 +11171,11 @@ def test_list_api_deployment_revisions_non_empty_request_with_auto_populated_fie
         client.list_api_deployment_revisions(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.ListApiDeploymentRevisionsRequest(
+        request_msg = registry_service.ListApiDeploymentRevisionsRequest(
             name="name_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_api_deployment_revisions_use_cached_wrapped_rpc():
@@ -11241,9 +11261,15 @@ async def test_list_api_deployment_revisions_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registry_service.ListApiDeploymentRevisionsRequest(),
+        {},
+    ],
+)
 async def test_list_api_deployment_revisions_async(
-    transport: str = "grpc_asyncio",
-    request_type=registry_service.ListApiDeploymentRevisionsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = RegistryAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -11252,7 +11278,7 @@ async def test_list_api_deployment_revisions_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11275,11 +11301,6 @@ async def test_list_api_deployment_revisions_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListApiDeploymentRevisionsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_api_deployment_revisions_async_from_dict():
-    await test_list_api_deployment_revisions_async(request_type=dict)
 
 
 def test_list_api_deployment_revisions_field_headers():
@@ -11541,9 +11562,7 @@ async def test_list_api_deployment_revisions_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
+        async for page_ in (
             await client.list_api_deployment_revisions(request={})
         ).pages:
             pages.append(page_)
@@ -11554,8 +11573,8 @@ async def test_list_api_deployment_revisions_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        registry_service.RollbackApiDeploymentRequest,
-        dict,
+        registry_service.RollbackApiDeploymentRequest(),
+        {},
     ],
 )
 def test_rollback_api_deployment(request_type, transport: str = "grpc"):
@@ -11566,7 +11585,7 @@ def test_rollback_api_deployment(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11631,10 +11650,11 @@ def test_rollback_api_deployment_non_empty_request_with_auto_populated_field():
         client.rollback_api_deployment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.RollbackApiDeploymentRequest(
+        request_msg = registry_service.RollbackApiDeploymentRequest(
             name="name_value",
             revision_id="revision_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_rollback_api_deployment_use_cached_wrapped_rpc():
@@ -11720,9 +11740,15 @@ async def test_rollback_api_deployment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registry_service.RollbackApiDeploymentRequest(),
+        {},
+    ],
+)
 async def test_rollback_api_deployment_async(
-    transport: str = "grpc_asyncio",
-    request_type=registry_service.RollbackApiDeploymentRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = RegistryAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -11731,7 +11757,7 @@ async def test_rollback_api_deployment_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11770,11 +11796,6 @@ async def test_rollback_api_deployment_async(
     assert response.external_channel_uri == "external_channel_uri_value"
     assert response.intended_audience == "intended_audience_value"
     assert response.access_guidance == "access_guidance_value"
-
-
-@pytest.mark.asyncio
-async def test_rollback_api_deployment_async_from_dict():
-    await test_rollback_api_deployment_async(request_type=dict)
 
 
 def test_rollback_api_deployment_field_headers():
@@ -11845,8 +11866,8 @@ async def test_rollback_api_deployment_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        registry_service.DeleteApiDeploymentRevisionRequest,
-        dict,
+        registry_service.DeleteApiDeploymentRevisionRequest(),
+        {},
     ],
 )
 def test_delete_api_deployment_revision(request_type, transport: str = "grpc"):
@@ -11857,7 +11878,7 @@ def test_delete_api_deployment_revision(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11921,9 +11942,10 @@ def test_delete_api_deployment_revision_non_empty_request_with_auto_populated_fi
         client.delete_api_deployment_revision(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.DeleteApiDeploymentRevisionRequest(
+        request_msg = registry_service.DeleteApiDeploymentRevisionRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_api_deployment_revision_use_cached_wrapped_rpc():
@@ -12009,9 +12031,15 @@ async def test_delete_api_deployment_revision_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registry_service.DeleteApiDeploymentRevisionRequest(),
+        {},
+    ],
+)
 async def test_delete_api_deployment_revision_async(
-    transport: str = "grpc_asyncio",
-    request_type=registry_service.DeleteApiDeploymentRevisionRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = RegistryAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -12020,7 +12048,7 @@ async def test_delete_api_deployment_revision_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12059,11 +12087,6 @@ async def test_delete_api_deployment_revision_async(
     assert response.external_channel_uri == "external_channel_uri_value"
     assert response.intended_audience == "intended_audience_value"
     assert response.access_guidance == "access_guidance_value"
-
-
-@pytest.mark.asyncio
-async def test_delete_api_deployment_revision_async_from_dict():
-    await test_delete_api_deployment_revision_async(request_type=dict)
 
 
 def test_delete_api_deployment_revision_field_headers():
@@ -12220,8 +12243,8 @@ async def test_delete_api_deployment_revision_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        registry_service.ListArtifactsRequest,
-        dict,
+        registry_service.ListArtifactsRequest(),
+        {},
     ],
 )
 def test_list_artifacts(request_type, transport: str = "grpc"):
@@ -12232,7 +12255,7 @@ def test_list_artifacts(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_artifacts), "__call__") as call:
@@ -12278,11 +12301,12 @@ def test_list_artifacts_non_empty_request_with_auto_populated_field():
         client.list_artifacts(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.ListArtifactsRequest(
+        request_msg = registry_service.ListArtifactsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_artifacts_use_cached_wrapped_rpc():
@@ -12363,9 +12387,14 @@ async def test_list_artifacts_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_artifacts_async(
-    transport: str = "grpc_asyncio", request_type=registry_service.ListArtifactsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registry_service.ListArtifactsRequest(),
+        {},
+    ],
+)
+async def test_list_artifacts_async(request_type, transport: str = "grpc_asyncio"):
     client = RegistryAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -12373,7 +12402,7 @@ async def test_list_artifacts_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_artifacts), "__call__") as call:
@@ -12394,11 +12423,6 @@ async def test_list_artifacts_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListArtifactsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_artifacts_async_from_dict():
-    await test_list_artifacts_async(request_type=dict)
 
 
 def test_list_artifacts_field_headers():
@@ -12728,11 +12752,7 @@ async def test_list_artifacts_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_artifacts(request={})
-        ).pages:
+        async for page_ in (await client.list_artifacts(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -12741,8 +12761,8 @@ async def test_list_artifacts_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        registry_service.GetArtifactRequest,
-        dict,
+        registry_service.GetArtifactRequest(),
+        {},
     ],
 )
 def test_get_artifact(request_type, transport: str = "grpc"):
@@ -12753,7 +12773,7 @@ def test_get_artifact(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_artifact), "__call__") as call:
@@ -12805,9 +12825,10 @@ def test_get_artifact_non_empty_request_with_auto_populated_field():
         client.get_artifact(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.GetArtifactRequest(
+        request_msg = registry_service.GetArtifactRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_artifact_use_cached_wrapped_rpc():
@@ -12888,9 +12909,14 @@ async def test_get_artifact_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_artifact_async(
-    transport: str = "grpc_asyncio", request_type=registry_service.GetArtifactRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registry_service.GetArtifactRequest(),
+        {},
+    ],
+)
+async def test_get_artifact_async(request_type, transport: str = "grpc_asyncio"):
     client = RegistryAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -12898,7 +12924,7 @@ async def test_get_artifact_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_artifact), "__call__") as call:
@@ -12927,11 +12953,6 @@ async def test_get_artifact_async(
     assert response.size_bytes == 1089
     assert response.hash_ == "hash__value"
     assert response.contents == b"contents_blob"
-
-
-@pytest.mark.asyncio
-async def test_get_artifact_async_from_dict():
-    await test_get_artifact_async(request_type=dict)
 
 
 def test_get_artifact_field_headers():
@@ -13080,8 +13101,8 @@ async def test_get_artifact_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        registry_service.GetArtifactContentsRequest,
-        dict,
+        registry_service.GetArtifactContentsRequest(),
+        {},
     ],
 )
 def test_get_artifact_contents(request_type, transport: str = "grpc"):
@@ -13092,7 +13113,7 @@ def test_get_artifact_contents(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -13142,9 +13163,10 @@ def test_get_artifact_contents_non_empty_request_with_auto_populated_field():
         client.get_artifact_contents(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.GetArtifactContentsRequest(
+        request_msg = registry_service.GetArtifactContentsRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_artifact_contents_use_cached_wrapped_rpc():
@@ -13230,9 +13252,15 @@ async def test_get_artifact_contents_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registry_service.GetArtifactContentsRequest(),
+        {},
+    ],
+)
 async def test_get_artifact_contents_async(
-    transport: str = "grpc_asyncio",
-    request_type=registry_service.GetArtifactContentsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = RegistryAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -13241,7 +13269,7 @@ async def test_get_artifact_contents_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -13266,11 +13294,6 @@ async def test_get_artifact_contents_async(
     assert isinstance(response, httpbody_pb2.HttpBody)
     assert response.content_type == "content_type_value"
     assert response.data == b"data_blob"
-
-
-@pytest.mark.asyncio
-async def test_get_artifact_contents_async_from_dict():
-    await test_get_artifact_contents_async(request_type=dict)
 
 
 def test_get_artifact_contents_field_headers():
@@ -13427,8 +13450,8 @@ async def test_get_artifact_contents_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        registry_service.CreateArtifactRequest,
-        dict,
+        registry_service.CreateArtifactRequest(),
+        {},
     ],
 )
 def test_create_artifact(request_type, transport: str = "grpc"):
@@ -13439,7 +13462,7 @@ def test_create_artifact(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_artifact), "__call__") as call:
@@ -13492,10 +13515,11 @@ def test_create_artifact_non_empty_request_with_auto_populated_field():
         client.create_artifact(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.CreateArtifactRequest(
+        request_msg = registry_service.CreateArtifactRequest(
             parent="parent_value",
             artifact_id="artifact_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_artifact_use_cached_wrapped_rpc():
@@ -13576,9 +13600,14 @@ async def test_create_artifact_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_artifact_async(
-    transport: str = "grpc_asyncio", request_type=registry_service.CreateArtifactRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registry_service.CreateArtifactRequest(),
+        {},
+    ],
+)
+async def test_create_artifact_async(request_type, transport: str = "grpc_asyncio"):
     client = RegistryAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -13586,7 +13615,7 @@ async def test_create_artifact_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_artifact), "__call__") as call:
@@ -13615,11 +13644,6 @@ async def test_create_artifact_async(
     assert response.size_bytes == 1089
     assert response.hash_ == "hash__value"
     assert response.contents == b"contents_blob"
-
-
-@pytest.mark.asyncio
-async def test_create_artifact_async_from_dict():
-    await test_create_artifact_async(request_type=dict)
 
 
 def test_create_artifact_field_headers():
@@ -13788,8 +13812,8 @@ async def test_create_artifact_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        registry_service.ReplaceArtifactRequest,
-        dict,
+        registry_service.ReplaceArtifactRequest(),
+        {},
     ],
 )
 def test_replace_artifact(request_type, transport: str = "grpc"):
@@ -13800,7 +13824,7 @@ def test_replace_artifact(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.replace_artifact), "__call__") as call:
@@ -13850,7 +13874,8 @@ def test_replace_artifact_non_empty_request_with_auto_populated_field():
         client.replace_artifact(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.ReplaceArtifactRequest()
+        request_msg = registry_service.ReplaceArtifactRequest()
+        assert args[0] == request_msg
 
 
 def test_replace_artifact_use_cached_wrapped_rpc():
@@ -13933,10 +13958,14 @@ async def test_replace_artifact_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_replace_artifact_async(
-    transport: str = "grpc_asyncio",
-    request_type=registry_service.ReplaceArtifactRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registry_service.ReplaceArtifactRequest(),
+        {},
+    ],
+)
+async def test_replace_artifact_async(request_type, transport: str = "grpc_asyncio"):
     client = RegistryAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -13944,7 +13973,7 @@ async def test_replace_artifact_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.replace_artifact), "__call__") as call:
@@ -13973,11 +14002,6 @@ async def test_replace_artifact_async(
     assert response.size_bytes == 1089
     assert response.hash_ == "hash__value"
     assert response.contents == b"contents_blob"
-
-
-@pytest.mark.asyncio
-async def test_replace_artifact_async_from_dict():
-    await test_replace_artifact_async(request_type=dict)
 
 
 def test_replace_artifact_field_headers():
@@ -14126,8 +14150,8 @@ async def test_replace_artifact_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        registry_service.DeleteArtifactRequest,
-        dict,
+        registry_service.DeleteArtifactRequest(),
+        {},
     ],
 )
 def test_delete_artifact(request_type, transport: str = "grpc"):
@@ -14138,7 +14162,7 @@ def test_delete_artifact(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_artifact), "__call__") as call:
@@ -14179,9 +14203,10 @@ def test_delete_artifact_non_empty_request_with_auto_populated_field():
         client.delete_artifact(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registry_service.DeleteArtifactRequest(
+        request_msg = registry_service.DeleteArtifactRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_artifact_use_cached_wrapped_rpc():
@@ -14262,9 +14287,14 @@ async def test_delete_artifact_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_artifact_async(
-    transport: str = "grpc_asyncio", request_type=registry_service.DeleteArtifactRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registry_service.DeleteArtifactRequest(),
+        {},
+    ],
+)
+async def test_delete_artifact_async(request_type, transport: str = "grpc_asyncio"):
     client = RegistryAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -14272,7 +14302,7 @@ async def test_delete_artifact_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_artifact), "__call__") as call:
@@ -14288,11 +14318,6 @@ async def test_delete_artifact_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_artifact_async_from_dict():
-    await test_delete_artifact_async(request_type=dict)
 
 
 def test_delete_artifact_field_headers():
@@ -14548,7 +14573,7 @@ def test_list_apis_rest_required_fields(request_type=registry_service.ListApisRe
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_apis_rest_unset_required_fields():
@@ -14793,7 +14818,7 @@ def test_get_api_rest_required_fields(request_type=registry_service.GetApiReques
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_api_rest_unset_required_fields():
@@ -14986,7 +15011,7 @@ def test_create_api_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_api_rest_unset_required_fields():
@@ -15179,7 +15204,7 @@ def test_update_api_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_api_rest_unset_required_fields():
@@ -15367,7 +15392,7 @@ def test_delete_api_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_api_rest_unset_required_fields():
@@ -15552,7 +15577,7 @@ def test_list_api_versions_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_api_versions_rest_unset_required_fields():
@@ -15802,7 +15827,7 @@ def test_get_api_version_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_api_version_rest_unset_required_fields():
@@ -16002,7 +16027,7 @@ def test_create_api_version_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_api_version_rest_unset_required_fields():
@@ -16200,7 +16225,7 @@ def test_update_api_version_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_api_version_rest_unset_required_fields():
@@ -16395,7 +16420,7 @@ def test_delete_api_version_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_api_version_rest_unset_required_fields():
@@ -16581,7 +16606,7 @@ def test_list_api_specs_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_api_specs_rest_unset_required_fields():
@@ -16835,7 +16860,7 @@ def test_get_api_spec_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_api_spec_rest_unset_required_fields():
@@ -17018,7 +17043,7 @@ def test_get_api_spec_contents_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_api_spec_contents_rest_unset_required_fields():
@@ -17212,7 +17237,7 @@ def test_create_api_spec_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_api_spec_rest_unset_required_fields():
@@ -17408,7 +17433,7 @@ def test_update_api_spec_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_api_spec_rest_unset_required_fields():
@@ -17599,7 +17624,7 @@ def test_delete_api_spec_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_api_spec_rest_unset_required_fields():
@@ -17787,7 +17812,7 @@ def test_tag_api_spec_revision_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_tag_api_spec_revision_rest_unset_required_fields():
@@ -17929,7 +17954,7 @@ def test_list_api_spec_revisions_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_api_spec_revisions_rest_unset_required_fields():
@@ -18129,7 +18154,7 @@ def test_rollback_api_spec_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_rollback_api_spec_rest_unset_required_fields():
@@ -18262,7 +18287,7 @@ def test_delete_api_spec_revision_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_api_spec_revision_rest_unset_required_fields():
@@ -18454,7 +18479,7 @@ def test_list_api_deployments_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_api_deployments_rest_unset_required_fields():
@@ -18708,7 +18733,7 @@ def test_get_api_deployment_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_api_deployment_rest_unset_required_fields():
@@ -18909,7 +18934,7 @@ def test_create_api_deployment_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_api_deployment_rest_unset_required_fields():
@@ -19108,7 +19133,7 @@ def test_update_api_deployment_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_api_deployment_rest_unset_required_fields():
@@ -19304,7 +19329,7 @@ def test_delete_api_deployment_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_api_deployment_rest_unset_required_fields():
@@ -19492,7 +19517,7 @@ def test_tag_api_deployment_revision_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_tag_api_deployment_revision_rest_unset_required_fields():
@@ -19634,7 +19659,7 @@ def test_list_api_deployment_revisions_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_api_deployment_revisions_rest_unset_required_fields():
@@ -19840,7 +19865,7 @@ def test_rollback_api_deployment_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_rollback_api_deployment_rest_unset_required_fields():
@@ -19973,7 +19998,7 @@ def test_delete_api_deployment_revision_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_api_deployment_revision_rest_unset_required_fields():
@@ -20163,7 +20188,7 @@ def test_list_artifacts_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_artifacts_rest_unset_required_fields():
@@ -20412,7 +20437,7 @@ def test_get_artifact_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_artifact_rest_unset_required_fields():
@@ -20594,7 +20619,7 @@ def test_get_artifact_contents_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_artifact_contents_rest_unset_required_fields():
@@ -20788,7 +20813,7 @@ def test_create_artifact_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_artifact_rest_unset_required_fields():
@@ -20976,7 +21001,7 @@ def test_replace_artifact_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_replace_artifact_rest_unset_required_fields():
@@ -21153,7 +21178,7 @@ def test_delete_artifact_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_artifact_rest_unset_required_fields():
@@ -21345,7 +21370,6 @@ def test_list_apis_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.ListApisRequest()
-
         assert args[0] == request_msg
 
 
@@ -21366,7 +21390,6 @@ def test_get_api_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.GetApiRequest()
-
         assert args[0] == request_msg
 
 
@@ -21387,7 +21410,6 @@ def test_create_api_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.CreateApiRequest()
-
         assert args[0] == request_msg
 
 
@@ -21408,7 +21430,6 @@ def test_update_api_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.UpdateApiRequest()
-
         assert args[0] == request_msg
 
 
@@ -21429,7 +21450,6 @@ def test_delete_api_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.DeleteApiRequest()
-
         assert args[0] == request_msg
 
 
@@ -21452,7 +21472,6 @@ def test_list_api_versions_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.ListApiVersionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -21473,7 +21492,6 @@ def test_get_api_version_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.GetApiVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -21496,7 +21514,6 @@ def test_create_api_version_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.CreateApiVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -21519,7 +21536,6 @@ def test_update_api_version_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.UpdateApiVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -21542,7 +21558,6 @@ def test_delete_api_version_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.DeleteApiVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -21563,7 +21578,6 @@ def test_list_api_specs_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.ListApiSpecsRequest()
-
         assert args[0] == request_msg
 
 
@@ -21584,7 +21598,6 @@ def test_get_api_spec_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.GetApiSpecRequest()
-
         assert args[0] == request_msg
 
 
@@ -21607,7 +21620,6 @@ def test_get_api_spec_contents_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.GetApiSpecContentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -21628,7 +21640,6 @@ def test_create_api_spec_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.CreateApiSpecRequest()
-
         assert args[0] == request_msg
 
 
@@ -21649,7 +21660,6 @@ def test_update_api_spec_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.UpdateApiSpecRequest()
-
         assert args[0] == request_msg
 
 
@@ -21670,7 +21680,6 @@ def test_delete_api_spec_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.DeleteApiSpecRequest()
-
         assert args[0] == request_msg
 
 
@@ -21693,7 +21702,6 @@ def test_tag_api_spec_revision_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.TagApiSpecRevisionRequest()
-
         assert args[0] == request_msg
 
 
@@ -21716,7 +21724,6 @@ def test_list_api_spec_revisions_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.ListApiSpecRevisionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -21739,7 +21746,6 @@ def test_rollback_api_spec_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.RollbackApiSpecRequest()
-
         assert args[0] == request_msg
 
 
@@ -21762,7 +21768,6 @@ def test_delete_api_spec_revision_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.DeleteApiSpecRevisionRequest()
-
         assert args[0] == request_msg
 
 
@@ -21785,7 +21790,6 @@ def test_list_api_deployments_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.ListApiDeploymentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -21808,7 +21812,6 @@ def test_get_api_deployment_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.GetApiDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -21831,7 +21834,6 @@ def test_create_api_deployment_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.CreateApiDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -21854,7 +21856,6 @@ def test_update_api_deployment_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.UpdateApiDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -21877,7 +21878,6 @@ def test_delete_api_deployment_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.DeleteApiDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -21900,7 +21900,6 @@ def test_tag_api_deployment_revision_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.TagApiDeploymentRevisionRequest()
-
         assert args[0] == request_msg
 
 
@@ -21923,7 +21922,6 @@ def test_list_api_deployment_revisions_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.ListApiDeploymentRevisionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -21946,7 +21944,6 @@ def test_rollback_api_deployment_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.RollbackApiDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -21969,7 +21966,6 @@ def test_delete_api_deployment_revision_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.DeleteApiDeploymentRevisionRequest()
-
         assert args[0] == request_msg
 
 
@@ -21990,7 +21986,6 @@ def test_list_artifacts_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.ListArtifactsRequest()
-
         assert args[0] == request_msg
 
 
@@ -22011,7 +22006,6 @@ def test_get_artifact_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.GetArtifactRequest()
-
         assert args[0] == request_msg
 
 
@@ -22034,7 +22028,6 @@ def test_get_artifact_contents_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.GetArtifactContentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -22055,7 +22048,6 @@ def test_create_artifact_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.CreateArtifactRequest()
-
         assert args[0] == request_msg
 
 
@@ -22076,7 +22068,6 @@ def test_replace_artifact_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.ReplaceArtifactRequest()
-
         assert args[0] == request_msg
 
 
@@ -22097,7 +22088,6 @@ def test_delete_artifact_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.DeleteArtifactRequest()
-
         assert args[0] == request_msg
 
 
@@ -22138,7 +22128,6 @@ async def test_list_apis_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.ListApisRequest()
-
         assert args[0] == request_msg
 
 
@@ -22170,7 +22159,6 @@ async def test_get_api_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.GetApiRequest()
-
         assert args[0] == request_msg
 
 
@@ -22202,7 +22190,6 @@ async def test_create_api_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.CreateApiRequest()
-
         assert args[0] == request_msg
 
 
@@ -22234,7 +22221,6 @@ async def test_update_api_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.UpdateApiRequest()
-
         assert args[0] == request_msg
 
 
@@ -22257,7 +22243,6 @@ async def test_delete_api_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.DeleteApiRequest()
-
         assert args[0] == request_msg
 
 
@@ -22286,7 +22271,6 @@ async def test_list_api_versions_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.ListApiVersionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -22316,7 +22300,6 @@ async def test_get_api_version_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.GetApiVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -22348,7 +22331,6 @@ async def test_create_api_version_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.CreateApiVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -22380,7 +22362,6 @@ async def test_update_api_version_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.UpdateApiVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -22405,7 +22386,6 @@ async def test_delete_api_version_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.DeleteApiVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -22432,7 +22412,6 @@ async def test_list_api_specs_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.ListApiSpecsRequest()
-
         assert args[0] == request_msg
 
 
@@ -22467,7 +22446,6 @@ async def test_get_api_spec_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.GetApiSpecRequest()
-
         assert args[0] == request_msg
 
 
@@ -22497,7 +22475,6 @@ async def test_get_api_spec_contents_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.GetApiSpecContentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -22532,7 +22509,6 @@ async def test_create_api_spec_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.CreateApiSpecRequest()
-
         assert args[0] == request_msg
 
 
@@ -22567,7 +22543,6 @@ async def test_update_api_spec_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.UpdateApiSpecRequest()
-
         assert args[0] == request_msg
 
 
@@ -22590,7 +22565,6 @@ async def test_delete_api_spec_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.DeleteApiSpecRequest()
-
         assert args[0] == request_msg
 
 
@@ -22627,7 +22601,6 @@ async def test_tag_api_spec_revision_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.TagApiSpecRevisionRequest()
-
         assert args[0] == request_msg
 
 
@@ -22656,7 +22629,6 @@ async def test_list_api_spec_revisions_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.ListApiSpecRevisionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -22693,7 +22665,6 @@ async def test_rollback_api_spec_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.RollbackApiSpecRequest()
-
         assert args[0] == request_msg
 
 
@@ -22730,7 +22701,6 @@ async def test_delete_api_spec_revision_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.DeleteApiSpecRevisionRequest()
-
         assert args[0] == request_msg
 
 
@@ -22759,7 +22729,6 @@ async def test_list_api_deployments_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.ListApiDeploymentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -22796,7 +22765,6 @@ async def test_get_api_deployment_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.GetApiDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -22833,7 +22801,6 @@ async def test_create_api_deployment_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.CreateApiDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -22870,7 +22837,6 @@ async def test_update_api_deployment_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.UpdateApiDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -22895,7 +22861,6 @@ async def test_delete_api_deployment_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.DeleteApiDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -22932,7 +22897,6 @@ async def test_tag_api_deployment_revision_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.TagApiDeploymentRevisionRequest()
-
         assert args[0] == request_msg
 
 
@@ -22961,7 +22925,6 @@ async def test_list_api_deployment_revisions_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.ListApiDeploymentRevisionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -22998,7 +22961,6 @@ async def test_rollback_api_deployment_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.RollbackApiDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -23035,7 +22997,6 @@ async def test_delete_api_deployment_revision_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.DeleteApiDeploymentRevisionRequest()
-
         assert args[0] == request_msg
 
 
@@ -23062,7 +23023,6 @@ async def test_list_artifacts_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.ListArtifactsRequest()
-
         assert args[0] == request_msg
 
 
@@ -23093,7 +23053,6 @@ async def test_get_artifact_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.GetArtifactRequest()
-
         assert args[0] == request_msg
 
 
@@ -23123,7 +23082,6 @@ async def test_get_artifact_contents_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.GetArtifactContentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -23154,7 +23112,6 @@ async def test_create_artifact_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.CreateArtifactRequest()
-
         assert args[0] == request_msg
 
 
@@ -23185,7 +23142,6 @@ async def test_replace_artifact_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.ReplaceArtifactRequest()
-
         assert args[0] == request_msg
 
 
@@ -23208,7 +23164,6 @@ async def test_delete_artifact_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.DeleteArtifactRequest()
-
         assert args[0] == request_msg
 
 
@@ -29373,7 +29328,6 @@ def test_list_apis_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.ListApisRequest()
-
         assert args[0] == request_msg
 
 
@@ -29393,7 +29347,6 @@ def test_get_api_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.GetApiRequest()
-
         assert args[0] == request_msg
 
 
@@ -29413,7 +29366,6 @@ def test_create_api_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.CreateApiRequest()
-
         assert args[0] == request_msg
 
 
@@ -29433,7 +29385,6 @@ def test_update_api_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.UpdateApiRequest()
-
         assert args[0] == request_msg
 
 
@@ -29453,7 +29404,6 @@ def test_delete_api_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.DeleteApiRequest()
-
         assert args[0] == request_msg
 
 
@@ -29475,7 +29425,6 @@ def test_list_api_versions_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.ListApiVersionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -29495,7 +29444,6 @@ def test_get_api_version_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.GetApiVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -29517,7 +29465,6 @@ def test_create_api_version_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.CreateApiVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -29539,7 +29486,6 @@ def test_update_api_version_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.UpdateApiVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -29561,7 +29507,6 @@ def test_delete_api_version_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.DeleteApiVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -29581,7 +29526,6 @@ def test_list_api_specs_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.ListApiSpecsRequest()
-
         assert args[0] == request_msg
 
 
@@ -29601,7 +29545,6 @@ def test_get_api_spec_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.GetApiSpecRequest()
-
         assert args[0] == request_msg
 
 
@@ -29623,7 +29566,6 @@ def test_get_api_spec_contents_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.GetApiSpecContentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -29643,7 +29585,6 @@ def test_create_api_spec_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.CreateApiSpecRequest()
-
         assert args[0] == request_msg
 
 
@@ -29663,7 +29604,6 @@ def test_update_api_spec_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.UpdateApiSpecRequest()
-
         assert args[0] == request_msg
 
 
@@ -29683,7 +29623,6 @@ def test_delete_api_spec_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.DeleteApiSpecRequest()
-
         assert args[0] == request_msg
 
 
@@ -29705,7 +29644,6 @@ def test_tag_api_spec_revision_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.TagApiSpecRevisionRequest()
-
         assert args[0] == request_msg
 
 
@@ -29727,7 +29665,6 @@ def test_list_api_spec_revisions_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.ListApiSpecRevisionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -29749,7 +29686,6 @@ def test_rollback_api_spec_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.RollbackApiSpecRequest()
-
         assert args[0] == request_msg
 
 
@@ -29771,7 +29707,6 @@ def test_delete_api_spec_revision_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.DeleteApiSpecRevisionRequest()
-
         assert args[0] == request_msg
 
 
@@ -29793,7 +29728,6 @@ def test_list_api_deployments_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.ListApiDeploymentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -29815,7 +29749,6 @@ def test_get_api_deployment_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.GetApiDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -29837,7 +29770,6 @@ def test_create_api_deployment_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.CreateApiDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -29859,7 +29791,6 @@ def test_update_api_deployment_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.UpdateApiDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -29881,7 +29812,6 @@ def test_delete_api_deployment_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.DeleteApiDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -29903,7 +29833,6 @@ def test_tag_api_deployment_revision_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.TagApiDeploymentRevisionRequest()
-
         assert args[0] == request_msg
 
 
@@ -29925,7 +29854,6 @@ def test_list_api_deployment_revisions_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.ListApiDeploymentRevisionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -29947,7 +29875,6 @@ def test_rollback_api_deployment_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.RollbackApiDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -29969,7 +29896,6 @@ def test_delete_api_deployment_revision_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.DeleteApiDeploymentRevisionRequest()
-
         assert args[0] == request_msg
 
 
@@ -29989,7 +29915,6 @@ def test_list_artifacts_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.ListArtifactsRequest()
-
         assert args[0] == request_msg
 
 
@@ -30009,7 +29934,6 @@ def test_get_artifact_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.GetArtifactRequest()
-
         assert args[0] == request_msg
 
 
@@ -30031,7 +29955,6 @@ def test_get_artifact_contents_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.GetArtifactContentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -30051,7 +29974,6 @@ def test_create_artifact_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.CreateArtifactRequest()
-
         assert args[0] == request_msg
 
 
@@ -30071,7 +29993,6 @@ def test_replace_artifact_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.ReplaceArtifactRequest()
-
         assert args[0] == request_msg
 
 
@@ -30091,7 +30012,6 @@ def test_delete_artifact_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registry_service.DeleteArtifactRequest()
-
         assert args[0] == request_msg
 
 

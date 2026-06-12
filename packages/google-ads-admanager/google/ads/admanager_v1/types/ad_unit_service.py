@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -86,6 +86,22 @@ class ListAdUnitsRequest(proto.Message):
             Optional. Expression to filter the response.
             See syntax details at
             https://developers.google.com/ad-manager/api/beta/filters
+
+            <b>Filterable fields:</b>
+            <ul style="list-style-type:none">
+              <li><code>adUnitCode</code></li>
+            <li><code>adUnitSizes.canonicalName</code></li>
+            <li><code>displayName</code></li>
+              <li><code>effectiveAdsenseEnabled</code></li>
+            <li><code>explicitlyTargeted</code></li>
+            <li><code>externalSetTopBoxChannelId</code></li>
+            <li><code>hasChildren</code></li>
+              <li><code>name</code></li>
+              <li><code>parentAdUnit</code></li>
+              <li><code>status</code></li>
+              <li><code>teams</code></li>
+              <li><code>updateTime</code></li>
+            </ul>
         order_by (str):
             Optional. Expression to specify sorting
             order. See syntax details at
@@ -199,7 +215,7 @@ class UpdateAdUnitRequest(proto.Message):
             update. Format:
             ``networks/{network_code}/adUnits/{ad_unit_id}``
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. The list of fields to update.
+            Optional. The list of fields to update.
     """
 
     ad_unit: ad_unit_messages.AdUnit = proto.Field(

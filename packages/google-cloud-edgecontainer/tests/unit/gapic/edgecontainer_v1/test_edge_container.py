@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,19 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-import re
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -124,6 +118,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1325,8 +1334,8 @@ def test_edge_container_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.ListClustersRequest,
-        dict,
+        service.ListClustersRequest(),
+        {},
     ],
 )
 def test_list_clusters(request_type, transport: str = "grpc"):
@@ -1337,7 +1346,7 @@ def test_list_clusters(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_clusters), "__call__") as call:
@@ -1386,12 +1395,13 @@ def test_list_clusters_non_empty_request_with_auto_populated_field():
         client.list_clusters(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListClustersRequest(
+        request_msg = service.ListClustersRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_clusters_use_cached_wrapped_rpc():
@@ -1472,9 +1482,14 @@ async def test_list_clusters_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_clusters_async(
-    transport: str = "grpc_asyncio", request_type=service.ListClustersRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListClustersRequest(),
+        {},
+    ],
+)
+async def test_list_clusters_async(request_type, transport: str = "grpc_asyncio"):
     client = EdgeContainerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1482,7 +1497,7 @@ async def test_list_clusters_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_clusters), "__call__") as call:
@@ -1505,11 +1520,6 @@ async def test_list_clusters_async(
     assert isinstance(response, pagers.ListClustersAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_clusters_async_from_dict():
-    await test_list_clusters_async(request_type=dict)
 
 
 def test_list_clusters_field_headers():
@@ -1839,11 +1849,7 @@ async def test_list_clusters_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_clusters(request={})
-        ).pages:
+        async for page_ in (await client.list_clusters(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -1852,8 +1858,8 @@ async def test_list_clusters_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.GetClusterRequest,
-        dict,
+        service.GetClusterRequest(),
+        {},
     ],
 )
 def test_get_cluster(request_type, transport: str = "grpc"):
@@ -1864,7 +1870,7 @@ def test_get_cluster(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_cluster), "__call__") as call:
@@ -1938,9 +1944,10 @@ def test_get_cluster_non_empty_request_with_auto_populated_field():
         client.get_cluster(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetClusterRequest(
+        request_msg = service.GetClusterRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_cluster_use_cached_wrapped_rpc():
@@ -2021,9 +2028,14 @@ async def test_get_cluster_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_cluster_async(
-    transport: str = "grpc_asyncio", request_type=service.GetClusterRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetClusterRequest(),
+        {},
+    ],
+)
+async def test_get_cluster_async(request_type, transport: str = "grpc_asyncio"):
     client = EdgeContainerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2031,7 +2043,7 @@ async def test_get_cluster_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_cluster), "__call__") as call:
@@ -2082,11 +2094,6 @@ async def test_get_cluster_async(
     assert response.external_load_balancer_ipv6_address_pools == [
         "external_load_balancer_ipv6_address_pools_value"
     ]
-
-
-@pytest.mark.asyncio
-async def test_get_cluster_async_from_dict():
-    await test_get_cluster_async(request_type=dict)
 
 
 def test_get_cluster_field_headers():
@@ -2231,8 +2238,8 @@ async def test_get_cluster_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.CreateClusterRequest,
-        dict,
+        service.CreateClusterRequest(),
+        {},
     ],
 )
 def test_create_cluster(request_type, transport: str = "grpc"):
@@ -2243,7 +2250,7 @@ def test_create_cluster(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_cluster), "__call__") as call:
@@ -2286,11 +2293,12 @@ def test_create_cluster_non_empty_request_with_auto_populated_field():
         client.create_cluster(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CreateClusterRequest(
+        request_msg = service.CreateClusterRequest(
             parent="parent_value",
             cluster_id="cluster_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_cluster_use_cached_wrapped_rpc():
@@ -2381,9 +2389,14 @@ async def test_create_cluster_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_cluster_async(
-    transport: str = "grpc_asyncio", request_type=service.CreateClusterRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.CreateClusterRequest(),
+        {},
+    ],
+)
+async def test_create_cluster_async(request_type, transport: str = "grpc_asyncio"):
     client = EdgeContainerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2391,7 +2404,7 @@ async def test_create_cluster_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_cluster), "__call__") as call:
@@ -2409,11 +2422,6 @@ async def test_create_cluster_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_cluster_async_from_dict():
-    await test_create_cluster_async(request_type=dict)
 
 
 def test_create_cluster_field_headers():
@@ -2582,8 +2590,8 @@ async def test_create_cluster_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.UpdateClusterRequest,
-        dict,
+        service.UpdateClusterRequest(),
+        {},
     ],
 )
 def test_update_cluster(request_type, transport: str = "grpc"):
@@ -2594,7 +2602,7 @@ def test_update_cluster(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_cluster), "__call__") as call:
@@ -2635,9 +2643,10 @@ def test_update_cluster_non_empty_request_with_auto_populated_field():
         client.update_cluster(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.UpdateClusterRequest(
+        request_msg = service.UpdateClusterRequest(
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_cluster_use_cached_wrapped_rpc():
@@ -2728,9 +2737,14 @@ async def test_update_cluster_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_cluster_async(
-    transport: str = "grpc_asyncio", request_type=service.UpdateClusterRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.UpdateClusterRequest(),
+        {},
+    ],
+)
+async def test_update_cluster_async(request_type, transport: str = "grpc_asyncio"):
     client = EdgeContainerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2738,7 +2752,7 @@ async def test_update_cluster_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_cluster), "__call__") as call:
@@ -2756,11 +2770,6 @@ async def test_update_cluster_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_cluster_async_from_dict():
-    await test_update_cluster_async(request_type=dict)
 
 
 def test_update_cluster_field_headers():
@@ -2919,8 +2928,8 @@ async def test_update_cluster_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.UpgradeClusterRequest,
-        dict,
+        service.UpgradeClusterRequest(),
+        {},
     ],
 )
 def test_upgrade_cluster(request_type, transport: str = "grpc"):
@@ -2931,7 +2940,7 @@ def test_upgrade_cluster(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.upgrade_cluster), "__call__") as call:
@@ -2974,11 +2983,12 @@ def test_upgrade_cluster_non_empty_request_with_auto_populated_field():
         client.upgrade_cluster(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.UpgradeClusterRequest(
+        request_msg = service.UpgradeClusterRequest(
             name="name_value",
             target_version="target_version_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_upgrade_cluster_use_cached_wrapped_rpc():
@@ -3069,9 +3079,14 @@ async def test_upgrade_cluster_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_upgrade_cluster_async(
-    transport: str = "grpc_asyncio", request_type=service.UpgradeClusterRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.UpgradeClusterRequest(),
+        {},
+    ],
+)
+async def test_upgrade_cluster_async(request_type, transport: str = "grpc_asyncio"):
     client = EdgeContainerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3079,7 +3094,7 @@ async def test_upgrade_cluster_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.upgrade_cluster), "__call__") as call:
@@ -3097,11 +3112,6 @@ async def test_upgrade_cluster_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_upgrade_cluster_async_from_dict():
-    await test_upgrade_cluster_async(request_type=dict)
 
 
 def test_upgrade_cluster_field_headers():
@@ -3270,8 +3280,8 @@ async def test_upgrade_cluster_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.DeleteClusterRequest,
-        dict,
+        service.DeleteClusterRequest(),
+        {},
     ],
 )
 def test_delete_cluster(request_type, transport: str = "grpc"):
@@ -3282,7 +3292,7 @@ def test_delete_cluster(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_cluster), "__call__") as call:
@@ -3324,10 +3334,11 @@ def test_delete_cluster_non_empty_request_with_auto_populated_field():
         client.delete_cluster(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.DeleteClusterRequest(
+        request_msg = service.DeleteClusterRequest(
             name="name_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_cluster_use_cached_wrapped_rpc():
@@ -3418,9 +3429,14 @@ async def test_delete_cluster_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_cluster_async(
-    transport: str = "grpc_asyncio", request_type=service.DeleteClusterRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.DeleteClusterRequest(),
+        {},
+    ],
+)
+async def test_delete_cluster_async(request_type, transport: str = "grpc_asyncio"):
     client = EdgeContainerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3428,7 +3444,7 @@ async def test_delete_cluster_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_cluster), "__call__") as call:
@@ -3446,11 +3462,6 @@ async def test_delete_cluster_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_cluster_async_from_dict():
-    await test_delete_cluster_async(request_type=dict)
 
 
 def test_delete_cluster_field_headers():
@@ -3599,8 +3610,8 @@ async def test_delete_cluster_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.GenerateAccessTokenRequest,
-        dict,
+        service.GenerateAccessTokenRequest(),
+        {},
     ],
 )
 def test_generate_access_token(request_type, transport: str = "grpc"):
@@ -3611,7 +3622,7 @@ def test_generate_access_token(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3659,9 +3670,10 @@ def test_generate_access_token_non_empty_request_with_auto_populated_field():
         client.generate_access_token(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GenerateAccessTokenRequest(
+        request_msg = service.GenerateAccessTokenRequest(
             cluster="cluster_value",
         )
+        assert args[0] == request_msg
 
 
 def test_generate_access_token_use_cached_wrapped_rpc():
@@ -3747,8 +3759,15 @@ async def test_generate_access_token_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GenerateAccessTokenRequest(),
+        {},
+    ],
+)
 async def test_generate_access_token_async(
-    transport: str = "grpc_asyncio", request_type=service.GenerateAccessTokenRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = EdgeContainerAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3757,7 +3776,7 @@ async def test_generate_access_token_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3780,11 +3799,6 @@ async def test_generate_access_token_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.GenerateAccessTokenResponse)
     assert response.access_token == "access_token_value"
-
-
-@pytest.mark.asyncio
-async def test_generate_access_token_async_from_dict():
-    await test_generate_access_token_async(request_type=dict)
 
 
 def test_generate_access_token_field_headers():
@@ -3941,8 +3955,8 @@ async def test_generate_access_token_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.GenerateOfflineCredentialRequest,
-        dict,
+        service.GenerateOfflineCredentialRequest(),
+        {},
     ],
 )
 def test_generate_offline_credential(request_type, transport: str = "grpc"):
@@ -3953,7 +3967,7 @@ def test_generate_offline_credential(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4005,9 +4019,10 @@ def test_generate_offline_credential_non_empty_request_with_auto_populated_field
         client.generate_offline_credential(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GenerateOfflineCredentialRequest(
+        request_msg = service.GenerateOfflineCredentialRequest(
             cluster="cluster_value",
         )
+        assert args[0] == request_msg
 
 
 def test_generate_offline_credential_use_cached_wrapped_rpc():
@@ -4093,9 +4108,15 @@ async def test_generate_offline_credential_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GenerateOfflineCredentialRequest(),
+        {},
+    ],
+)
 async def test_generate_offline_credential_async(
-    transport: str = "grpc_asyncio",
-    request_type=service.GenerateOfflineCredentialRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = EdgeContainerAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4104,7 +4125,7 @@ async def test_generate_offline_credential_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4131,11 +4152,6 @@ async def test_generate_offline_credential_async(
     assert response.client_certificate == "client_certificate_value"
     assert response.client_key == "client_key_value"
     assert response.user_id == "user_id_value"
-
-
-@pytest.mark.asyncio
-async def test_generate_offline_credential_async_from_dict():
-    await test_generate_offline_credential_async(request_type=dict)
 
 
 def test_generate_offline_credential_field_headers():
@@ -4292,8 +4308,8 @@ async def test_generate_offline_credential_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.ListNodePoolsRequest,
-        dict,
+        service.ListNodePoolsRequest(),
+        {},
     ],
 )
 def test_list_node_pools(request_type, transport: str = "grpc"):
@@ -4304,7 +4320,7 @@ def test_list_node_pools(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_node_pools), "__call__") as call:
@@ -4353,12 +4369,13 @@ def test_list_node_pools_non_empty_request_with_auto_populated_field():
         client.list_node_pools(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListNodePoolsRequest(
+        request_msg = service.ListNodePoolsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_node_pools_use_cached_wrapped_rpc():
@@ -4439,9 +4456,14 @@ async def test_list_node_pools_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_node_pools_async(
-    transport: str = "grpc_asyncio", request_type=service.ListNodePoolsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListNodePoolsRequest(),
+        {},
+    ],
+)
+async def test_list_node_pools_async(request_type, transport: str = "grpc_asyncio"):
     client = EdgeContainerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4449,7 +4471,7 @@ async def test_list_node_pools_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_node_pools), "__call__") as call:
@@ -4472,11 +4494,6 @@ async def test_list_node_pools_async(
     assert isinstance(response, pagers.ListNodePoolsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_node_pools_async_from_dict():
-    await test_list_node_pools_async(request_type=dict)
 
 
 def test_list_node_pools_field_headers():
@@ -4806,11 +4823,7 @@ async def test_list_node_pools_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_node_pools(request={})
-        ).pages:
+        async for page_ in (await client.list_node_pools(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -4819,8 +4832,8 @@ async def test_list_node_pools_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.GetNodePoolRequest,
-        dict,
+        service.GetNodePoolRequest(),
+        {},
     ],
 )
 def test_get_node_pool(request_type, transport: str = "grpc"):
@@ -4831,7 +4844,7 @@ def test_get_node_pool(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_node_pool), "__call__") as call:
@@ -4883,9 +4896,10 @@ def test_get_node_pool_non_empty_request_with_auto_populated_field():
         client.get_node_pool(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetNodePoolRequest(
+        request_msg = service.GetNodePoolRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_node_pool_use_cached_wrapped_rpc():
@@ -4966,9 +4980,14 @@ async def test_get_node_pool_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_node_pool_async(
-    transport: str = "grpc_asyncio", request_type=service.GetNodePoolRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetNodePoolRequest(),
+        {},
+    ],
+)
+async def test_get_node_pool_async(request_type, transport: str = "grpc_asyncio"):
     client = EdgeContainerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4976,7 +4995,7 @@ async def test_get_node_pool_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_node_pool), "__call__") as call:
@@ -5005,11 +5024,6 @@ async def test_get_node_pool_async(
     assert response.node_count == 1070
     assert response.machine_filter == "machine_filter_value"
     assert response.node_version == "node_version_value"
-
-
-@pytest.mark.asyncio
-async def test_get_node_pool_async_from_dict():
-    await test_get_node_pool_async(request_type=dict)
 
 
 def test_get_node_pool_field_headers():
@@ -5154,8 +5168,8 @@ async def test_get_node_pool_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.CreateNodePoolRequest,
-        dict,
+        service.CreateNodePoolRequest(),
+        {},
     ],
 )
 def test_create_node_pool(request_type, transport: str = "grpc"):
@@ -5166,7 +5180,7 @@ def test_create_node_pool(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_node_pool), "__call__") as call:
@@ -5209,11 +5223,12 @@ def test_create_node_pool_non_empty_request_with_auto_populated_field():
         client.create_node_pool(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CreateNodePoolRequest(
+        request_msg = service.CreateNodePoolRequest(
             parent="parent_value",
             node_pool_id="node_pool_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_node_pool_use_cached_wrapped_rpc():
@@ -5306,9 +5321,14 @@ async def test_create_node_pool_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_node_pool_async(
-    transport: str = "grpc_asyncio", request_type=service.CreateNodePoolRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.CreateNodePoolRequest(),
+        {},
+    ],
+)
+async def test_create_node_pool_async(request_type, transport: str = "grpc_asyncio"):
     client = EdgeContainerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5316,7 +5336,7 @@ async def test_create_node_pool_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_node_pool), "__call__") as call:
@@ -5334,11 +5354,6 @@ async def test_create_node_pool_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_node_pool_async_from_dict():
-    await test_create_node_pool_async(request_type=dict)
 
 
 def test_create_node_pool_field_headers():
@@ -5507,8 +5522,8 @@ async def test_create_node_pool_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.UpdateNodePoolRequest,
-        dict,
+        service.UpdateNodePoolRequest(),
+        {},
     ],
 )
 def test_update_node_pool(request_type, transport: str = "grpc"):
@@ -5519,7 +5534,7 @@ def test_update_node_pool(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_node_pool), "__call__") as call:
@@ -5560,9 +5575,10 @@ def test_update_node_pool_non_empty_request_with_auto_populated_field():
         client.update_node_pool(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.UpdateNodePoolRequest(
+        request_msg = service.UpdateNodePoolRequest(
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_node_pool_use_cached_wrapped_rpc():
@@ -5655,9 +5671,14 @@ async def test_update_node_pool_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_node_pool_async(
-    transport: str = "grpc_asyncio", request_type=service.UpdateNodePoolRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.UpdateNodePoolRequest(),
+        {},
+    ],
+)
+async def test_update_node_pool_async(request_type, transport: str = "grpc_asyncio"):
     client = EdgeContainerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5665,7 +5686,7 @@ async def test_update_node_pool_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_node_pool), "__call__") as call:
@@ -5683,11 +5704,6 @@ async def test_update_node_pool_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_node_pool_async_from_dict():
-    await test_update_node_pool_async(request_type=dict)
 
 
 def test_update_node_pool_field_headers():
@@ -5846,8 +5862,8 @@ async def test_update_node_pool_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.DeleteNodePoolRequest,
-        dict,
+        service.DeleteNodePoolRequest(),
+        {},
     ],
 )
 def test_delete_node_pool(request_type, transport: str = "grpc"):
@@ -5858,7 +5874,7 @@ def test_delete_node_pool(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_node_pool), "__call__") as call:
@@ -5900,10 +5916,11 @@ def test_delete_node_pool_non_empty_request_with_auto_populated_field():
         client.delete_node_pool(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.DeleteNodePoolRequest(
+        request_msg = service.DeleteNodePoolRequest(
             name="name_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_node_pool_use_cached_wrapped_rpc():
@@ -5996,9 +6013,14 @@ async def test_delete_node_pool_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_node_pool_async(
-    transport: str = "grpc_asyncio", request_type=service.DeleteNodePoolRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.DeleteNodePoolRequest(),
+        {},
+    ],
+)
+async def test_delete_node_pool_async(request_type, transport: str = "grpc_asyncio"):
     client = EdgeContainerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6006,7 +6028,7 @@ async def test_delete_node_pool_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_node_pool), "__call__") as call:
@@ -6024,11 +6046,6 @@ async def test_delete_node_pool_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_node_pool_async_from_dict():
-    await test_delete_node_pool_async(request_type=dict)
 
 
 def test_delete_node_pool_field_headers():
@@ -6177,8 +6194,8 @@ async def test_delete_node_pool_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.ListMachinesRequest,
-        dict,
+        service.ListMachinesRequest(),
+        {},
     ],
 )
 def test_list_machines(request_type, transport: str = "grpc"):
@@ -6189,7 +6206,7 @@ def test_list_machines(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_machines), "__call__") as call:
@@ -6238,12 +6255,13 @@ def test_list_machines_non_empty_request_with_auto_populated_field():
         client.list_machines(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListMachinesRequest(
+        request_msg = service.ListMachinesRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_machines_use_cached_wrapped_rpc():
@@ -6324,9 +6342,14 @@ async def test_list_machines_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_machines_async(
-    transport: str = "grpc_asyncio", request_type=service.ListMachinesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListMachinesRequest(),
+        {},
+    ],
+)
+async def test_list_machines_async(request_type, transport: str = "grpc_asyncio"):
     client = EdgeContainerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6334,7 +6357,7 @@ async def test_list_machines_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_machines), "__call__") as call:
@@ -6357,11 +6380,6 @@ async def test_list_machines_async(
     assert isinstance(response, pagers.ListMachinesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_machines_async_from_dict():
-    await test_list_machines_async(request_type=dict)
 
 
 def test_list_machines_field_headers():
@@ -6691,11 +6709,7 @@ async def test_list_machines_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_machines(request={})
-        ).pages:
+        async for page_ in (await client.list_machines(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -6704,8 +6718,8 @@ async def test_list_machines_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.GetMachineRequest,
-        dict,
+        service.GetMachineRequest(),
+        {},
     ],
 )
 def test_get_machine(request_type, transport: str = "grpc"):
@@ -6716,7 +6730,7 @@ def test_get_machine(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_machine), "__call__") as call:
@@ -6768,9 +6782,10 @@ def test_get_machine_non_empty_request_with_auto_populated_field():
         client.get_machine(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetMachineRequest(
+        request_msg = service.GetMachineRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_machine_use_cached_wrapped_rpc():
@@ -6851,9 +6866,14 @@ async def test_get_machine_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_machine_async(
-    transport: str = "grpc_asyncio", request_type=service.GetMachineRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetMachineRequest(),
+        {},
+    ],
+)
+async def test_get_machine_async(request_type, transport: str = "grpc_asyncio"):
     client = EdgeContainerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6861,7 +6881,7 @@ async def test_get_machine_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_machine), "__call__") as call:
@@ -6890,11 +6910,6 @@ async def test_get_machine_async(
     assert response.zone == "zone_value"
     assert response.version == "version_value"
     assert response.disabled is True
-
-
-@pytest.mark.asyncio
-async def test_get_machine_async_from_dict():
-    await test_get_machine_async(request_type=dict)
 
 
 def test_get_machine_field_headers():
@@ -7039,8 +7054,8 @@ async def test_get_machine_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.ListVpnConnectionsRequest,
-        dict,
+        service.ListVpnConnectionsRequest(),
+        {},
     ],
 )
 def test_list_vpn_connections(request_type, transport: str = "grpc"):
@@ -7051,7 +7066,7 @@ def test_list_vpn_connections(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7104,12 +7119,13 @@ def test_list_vpn_connections_non_empty_request_with_auto_populated_field():
         client.list_vpn_connections(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListVpnConnectionsRequest(
+        request_msg = service.ListVpnConnectionsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_vpn_connections_use_cached_wrapped_rpc():
@@ -7194,8 +7210,15 @@ async def test_list_vpn_connections_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListVpnConnectionsRequest(),
+        {},
+    ],
+)
 async def test_list_vpn_connections_async(
-    transport: str = "grpc_asyncio", request_type=service.ListVpnConnectionsRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = EdgeContainerAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -7204,7 +7227,7 @@ async def test_list_vpn_connections_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7229,11 +7252,6 @@ async def test_list_vpn_connections_async(
     assert isinstance(response, pagers.ListVpnConnectionsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_vpn_connections_async_from_dict():
-    await test_list_vpn_connections_async(request_type=dict)
 
 
 def test_list_vpn_connections_field_headers():
@@ -7579,11 +7597,7 @@ async def test_list_vpn_connections_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_vpn_connections(request={})
-        ).pages:
+        async for page_ in (await client.list_vpn_connections(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -7592,8 +7606,8 @@ async def test_list_vpn_connections_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.GetVpnConnectionRequest,
-        dict,
+        service.GetVpnConnectionRequest(),
+        {},
     ],
 )
 def test_get_vpn_connection(request_type, transport: str = "grpc"):
@@ -7604,7 +7618,7 @@ def test_get_vpn_connection(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7664,9 +7678,10 @@ def test_get_vpn_connection_non_empty_request_with_auto_populated_field():
         client.get_vpn_connection(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetVpnConnectionRequest(
+        request_msg = service.GetVpnConnectionRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_vpn_connection_use_cached_wrapped_rpc():
@@ -7751,9 +7766,14 @@ async def test_get_vpn_connection_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_vpn_connection_async(
-    transport: str = "grpc_asyncio", request_type=service.GetVpnConnectionRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetVpnConnectionRequest(),
+        {},
+    ],
+)
+async def test_get_vpn_connection_async(request_type, transport: str = "grpc_asyncio"):
     client = EdgeContainerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7761,7 +7781,7 @@ async def test_get_vpn_connection_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7796,11 +7816,6 @@ async def test_get_vpn_connection_async(
     assert response.vpc == "vpc_value"
     assert response.enable_high_availability is True
     assert response.router == "router_value"
-
-
-@pytest.mark.asyncio
-async def test_get_vpn_connection_async_from_dict():
-    await test_get_vpn_connection_async(request_type=dict)
 
 
 def test_get_vpn_connection_field_headers():
@@ -7957,8 +7972,8 @@ async def test_get_vpn_connection_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.CreateVpnConnectionRequest,
-        dict,
+        service.CreateVpnConnectionRequest(),
+        {},
     ],
 )
 def test_create_vpn_connection(request_type, transport: str = "grpc"):
@@ -7969,7 +7984,7 @@ def test_create_vpn_connection(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8016,11 +8031,12 @@ def test_create_vpn_connection_non_empty_request_with_auto_populated_field():
         client.create_vpn_connection(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CreateVpnConnectionRequest(
+        request_msg = service.CreateVpnConnectionRequest(
             parent="parent_value",
             vpn_connection_id="vpn_connection_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_vpn_connection_use_cached_wrapped_rpc():
@@ -8116,8 +8132,15 @@ async def test_create_vpn_connection_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.CreateVpnConnectionRequest(),
+        {},
+    ],
+)
 async def test_create_vpn_connection_async(
-    transport: str = "grpc_asyncio", request_type=service.CreateVpnConnectionRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = EdgeContainerAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -8126,7 +8149,7 @@ async def test_create_vpn_connection_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8146,11 +8169,6 @@ async def test_create_vpn_connection_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_vpn_connection_async_from_dict():
-    await test_create_vpn_connection_async(request_type=dict)
 
 
 def test_create_vpn_connection_field_headers():
@@ -8327,8 +8345,8 @@ async def test_create_vpn_connection_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.DeleteVpnConnectionRequest,
-        dict,
+        service.DeleteVpnConnectionRequest(),
+        {},
     ],
 )
 def test_delete_vpn_connection(request_type, transport: str = "grpc"):
@@ -8339,7 +8357,7 @@ def test_delete_vpn_connection(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8385,10 +8403,11 @@ def test_delete_vpn_connection_non_empty_request_with_auto_populated_field():
         client.delete_vpn_connection(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.DeleteVpnConnectionRequest(
+        request_msg = service.DeleteVpnConnectionRequest(
             name="name_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_vpn_connection_use_cached_wrapped_rpc():
@@ -8484,8 +8503,15 @@ async def test_delete_vpn_connection_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.DeleteVpnConnectionRequest(),
+        {},
+    ],
+)
 async def test_delete_vpn_connection_async(
-    transport: str = "grpc_asyncio", request_type=service.DeleteVpnConnectionRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = EdgeContainerAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -8494,7 +8520,7 @@ async def test_delete_vpn_connection_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8514,11 +8540,6 @@ async def test_delete_vpn_connection_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_vpn_connection_async_from_dict():
-    await test_delete_vpn_connection_async(request_type=dict)
 
 
 def test_delete_vpn_connection_field_headers():
@@ -8675,8 +8696,8 @@ async def test_delete_vpn_connection_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.GetServerConfigRequest,
-        dict,
+        service.GetServerConfigRequest(),
+        {},
     ],
 )
 def test_get_server_config(request_type, transport: str = "grpc"):
@@ -8687,7 +8708,7 @@ def test_get_server_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8735,9 +8756,10 @@ def test_get_server_config_non_empty_request_with_auto_populated_field():
         client.get_server_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetServerConfigRequest(
+        request_msg = service.GetServerConfigRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_server_config_use_cached_wrapped_rpc():
@@ -8820,9 +8842,14 @@ async def test_get_server_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_server_config_async(
-    transport: str = "grpc_asyncio", request_type=service.GetServerConfigRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetServerConfigRequest(),
+        {},
+    ],
+)
+async def test_get_server_config_async(request_type, transport: str = "grpc_asyncio"):
     client = EdgeContainerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -8830,7 +8857,7 @@ async def test_get_server_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8853,11 +8880,6 @@ async def test_get_server_config_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, resources.ServerConfig)
     assert response.default_version == "default_version_value"
-
-
-@pytest.mark.asyncio
-async def test_get_server_config_async_from_dict():
-    await test_get_server_config_async(request_type=dict)
 
 
 def test_get_server_config_field_headers():
@@ -9126,7 +9148,7 @@ def test_list_clusters_rest_required_fields(request_type=service.ListClustersReq
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_clusters_rest_unset_required_fields():
@@ -9372,7 +9394,7 @@ def test_get_cluster_rest_required_fields(request_type=service.GetClusterRequest
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_cluster_rest_unset_required_fields():
@@ -9569,7 +9591,7 @@ def test_create_cluster_rest_required_fields(request_type=service.CreateClusterR
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_cluster_rest_unset_required_fields():
@@ -9868,7 +9890,7 @@ def test_upgrade_cluster_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_upgrade_cluster_rest_unset_required_fields():
@@ -10057,7 +10079,7 @@ def test_delete_cluster_rest_required_fields(request_type=service.DeleteClusterR
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_cluster_rest_unset_required_fields():
@@ -10237,7 +10259,7 @@ def test_generate_access_token_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_generate_access_token_rest_unset_required_fields():
@@ -10422,7 +10444,7 @@ def test_generate_offline_credential_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_generate_offline_credential_rest_unset_required_fields():
@@ -10611,7 +10633,7 @@ def test_list_node_pools_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_node_pools_rest_unset_required_fields():
@@ -10862,7 +10884,7 @@ def test_get_node_pool_rest_required_fields(request_type=service.GetNodePoolRequ
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_node_pool_rest_unset_required_fields():
@@ -11066,7 +11088,7 @@ def test_create_node_pool_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_node_pool_rest_unset_required_fields():
@@ -11371,7 +11393,7 @@ def test_delete_node_pool_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_node_pool_rest_unset_required_fields():
@@ -11556,7 +11578,7 @@ def test_list_machines_rest_required_fields(request_type=service.ListMachinesReq
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_machines_rest_unset_required_fields():
@@ -11802,7 +11824,7 @@ def test_get_machine_rest_required_fields(request_type=service.GetMachineRequest
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_machine_rest_unset_required_fields():
@@ -11992,7 +12014,7 @@ def test_list_vpn_connections_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_vpn_connections_rest_unset_required_fields():
@@ -12247,7 +12269,7 @@ def test_get_vpn_connection_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_vpn_connection_rest_unset_required_fields():
@@ -12454,7 +12476,7 @@ def test_create_vpn_connection_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_vpn_connection_rest_unset_required_fields():
@@ -12656,7 +12678,7 @@ def test_delete_vpn_connection_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_vpn_connection_rest_unset_required_fields():
@@ -12836,7 +12858,7 @@ def test_get_server_config_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_server_config_rest_unset_required_fields():
@@ -13028,7 +13050,6 @@ def test_list_clusters_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListClustersRequest()
-
         assert args[0] == request_msg
 
 
@@ -13049,7 +13070,6 @@ def test_get_cluster_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -13070,7 +13090,6 @@ def test_create_cluster_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -13091,7 +13110,6 @@ def test_update_cluster_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -13112,7 +13130,6 @@ def test_upgrade_cluster_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpgradeClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -13133,7 +13150,6 @@ def test_delete_cluster_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -13156,7 +13172,6 @@ def test_generate_access_token_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GenerateAccessTokenRequest()
-
         assert args[0] == request_msg
 
 
@@ -13179,7 +13194,6 @@ def test_generate_offline_credential_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GenerateOfflineCredentialRequest()
-
         assert args[0] == request_msg
 
 
@@ -13200,7 +13214,6 @@ def test_list_node_pools_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListNodePoolsRequest()
-
         assert args[0] == request_msg
 
 
@@ -13221,7 +13234,6 @@ def test_get_node_pool_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetNodePoolRequest()
-
         assert args[0] == request_msg
 
 
@@ -13242,7 +13254,6 @@ def test_create_node_pool_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateNodePoolRequest()
-
         assert args[0] == request_msg
 
 
@@ -13263,7 +13274,6 @@ def test_update_node_pool_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateNodePoolRequest()
-
         assert args[0] == request_msg
 
 
@@ -13284,7 +13294,6 @@ def test_delete_node_pool_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteNodePoolRequest()
-
         assert args[0] == request_msg
 
 
@@ -13305,7 +13314,6 @@ def test_list_machines_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListMachinesRequest()
-
         assert args[0] == request_msg
 
 
@@ -13326,7 +13334,6 @@ def test_get_machine_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetMachineRequest()
-
         assert args[0] == request_msg
 
 
@@ -13349,7 +13356,6 @@ def test_list_vpn_connections_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListVpnConnectionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -13372,7 +13378,6 @@ def test_get_vpn_connection_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetVpnConnectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -13395,7 +13400,6 @@ def test_create_vpn_connection_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateVpnConnectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -13418,7 +13422,6 @@ def test_delete_vpn_connection_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteVpnConnectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -13441,7 +13444,6 @@ def test_get_server_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetServerConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -13483,7 +13485,6 @@ async def test_list_clusters_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListClustersRequest()
-
         assert args[0] == request_msg
 
 
@@ -13525,7 +13526,6 @@ async def test_get_cluster_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -13550,7 +13550,6 @@ async def test_create_cluster_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -13575,7 +13574,6 @@ async def test_update_cluster_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -13600,7 +13598,6 @@ async def test_upgrade_cluster_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpgradeClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -13625,7 +13622,6 @@ async def test_delete_cluster_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -13654,7 +13650,6 @@ async def test_generate_access_token_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GenerateAccessTokenRequest()
-
         assert args[0] == request_msg
 
 
@@ -13685,7 +13680,6 @@ async def test_generate_offline_credential_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GenerateOfflineCredentialRequest()
-
         assert args[0] == request_msg
 
 
@@ -13713,7 +13707,6 @@ async def test_list_node_pools_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListNodePoolsRequest()
-
         assert args[0] == request_msg
 
 
@@ -13744,7 +13737,6 @@ async def test_get_node_pool_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetNodePoolRequest()
-
         assert args[0] == request_msg
 
 
@@ -13769,7 +13761,6 @@ async def test_create_node_pool_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateNodePoolRequest()
-
         assert args[0] == request_msg
 
 
@@ -13794,7 +13785,6 @@ async def test_update_node_pool_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateNodePoolRequest()
-
         assert args[0] == request_msg
 
 
@@ -13819,7 +13809,6 @@ async def test_delete_node_pool_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteNodePoolRequest()
-
         assert args[0] == request_msg
 
 
@@ -13847,7 +13836,6 @@ async def test_list_machines_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListMachinesRequest()
-
         assert args[0] == request_msg
 
 
@@ -13878,7 +13866,6 @@ async def test_get_machine_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetMachineRequest()
-
         assert args[0] == request_msg
 
 
@@ -13908,7 +13895,6 @@ async def test_list_vpn_connections_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListVpnConnectionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -13943,7 +13929,6 @@ async def test_get_vpn_connection_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetVpnConnectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -13970,7 +13955,6 @@ async def test_create_vpn_connection_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateVpnConnectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -13997,7 +13981,6 @@ async def test_delete_vpn_connection_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteVpnConnectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -14026,7 +14009,6 @@ async def test_get_server_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetServerConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -17652,7 +17634,6 @@ def test_list_clusters_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListClustersRequest()
-
         assert args[0] == request_msg
 
 
@@ -17672,7 +17653,6 @@ def test_get_cluster_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -17692,7 +17672,6 @@ def test_create_cluster_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -17712,7 +17691,6 @@ def test_update_cluster_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -17732,7 +17710,6 @@ def test_upgrade_cluster_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpgradeClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -17752,7 +17729,6 @@ def test_delete_cluster_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -17774,7 +17750,6 @@ def test_generate_access_token_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GenerateAccessTokenRequest()
-
         assert args[0] == request_msg
 
 
@@ -17796,7 +17771,6 @@ def test_generate_offline_credential_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GenerateOfflineCredentialRequest()
-
         assert args[0] == request_msg
 
 
@@ -17816,7 +17790,6 @@ def test_list_node_pools_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListNodePoolsRequest()
-
         assert args[0] == request_msg
 
 
@@ -17836,7 +17809,6 @@ def test_get_node_pool_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetNodePoolRequest()
-
         assert args[0] == request_msg
 
 
@@ -17856,7 +17828,6 @@ def test_create_node_pool_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateNodePoolRequest()
-
         assert args[0] == request_msg
 
 
@@ -17876,7 +17847,6 @@ def test_update_node_pool_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateNodePoolRequest()
-
         assert args[0] == request_msg
 
 
@@ -17896,7 +17866,6 @@ def test_delete_node_pool_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteNodePoolRequest()
-
         assert args[0] == request_msg
 
 
@@ -17916,7 +17885,6 @@ def test_list_machines_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListMachinesRequest()
-
         assert args[0] == request_msg
 
 
@@ -17936,7 +17904,6 @@ def test_get_machine_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetMachineRequest()
-
         assert args[0] == request_msg
 
 
@@ -17958,7 +17925,6 @@ def test_list_vpn_connections_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListVpnConnectionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -17980,7 +17946,6 @@ def test_get_vpn_connection_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetVpnConnectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -18002,7 +17967,6 @@ def test_create_vpn_connection_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateVpnConnectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -18024,7 +17988,6 @@ def test_delete_vpn_connection_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteVpnConnectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -18046,7 +18009,6 @@ def test_get_server_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetServerConfigRequest()
-
         assert args[0] == request_msg
 
 

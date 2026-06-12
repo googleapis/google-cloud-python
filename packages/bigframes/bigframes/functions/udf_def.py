@@ -372,6 +372,30 @@ class UdfSignature:
 
 
 @dataclasses.dataclass(frozen=True)
+class RuntimeRequirements:
+    container_cpu: Optional[float] = None
+    container_memory: Optional[str] = None
+    bq_connection_id: Optional[str] = None
+    max_batching_rows: Optional[int] = None
+    packages: tuple[str, ...] = ()
+
+    def stable_hash(self) -> bytes:
+        hash_val = google_crc32c.Checksum()
+        if self.container_cpu is not None:
+            hash_val.update(str(self.container_cpu).encode())
+        if self.container_memory is not None:
+            hash_val.update(str(self.container_memory).encode())
+        if self.bq_connection_id is not None:
+            hash_val.update(str(self.bq_connection_id).encode())
+        if self.max_batching_rows is not None:
+            hash_val.update(str(self.max_batching_rows).encode())
+        if self.packages:
+            for p in sorted(self.packages):
+                hash_val.update(p.encode())
+        return hash_val.digest()
+
+
+@dataclasses.dataclass(frozen=True)
 class BigqueryUdf:
     """
     Represents the information needed to call a BigQuery remote function - not a full spec.
@@ -396,6 +420,37 @@ class BigqueryUdf:
             routine, is_row_processor=is_row_processor
         )
         return cls(routine.reference, signature=signature)
+
+
+@dataclasses.dataclass(frozen=True)
+class PythonUdf:
+    """
+    Represents user-requested Python UDF semantics, including the code and runtime requirements.
+    """
+
+    signature: UdfSignature
+    code: CodeDef
+    requirements: RuntimeRequirements = dataclasses.field(
+        default_factory=RuntimeRequirements
+    )
+
+    def stable_hash(self) -> bytes:
+        hash_val = google_crc32c.Checksum()
+        hash_val.update(self.code.stable_hash())
+        hash_val.update(self.signature.stable_hash())
+        hash_val.update(self.requirements.stable_hash())
+        return hash_val.digest()
+
+    def to_managed_function_config(self) -> ManagedFunctionConfig:
+        return ManagedFunctionConfig(
+            code=self.code,
+            signature=self.signature,
+            max_batching_rows=self.requirements.max_batching_rows,
+            container_cpu=self.requirements.container_cpu,
+            container_memory=self.requirements.container_memory,
+            bq_connection_id=self.requirements.bq_connection_id,
+            capture_references=False,
+        )
 
 
 @dataclasses.dataclass(frozen=True)
@@ -457,6 +512,14 @@ class CodeDef:
 
         return hash_val.digest()
 
+    def to_callable(self):
+        """
+        Reconstructs the python callable from the pickled code.
+
+        Assumption: package_requirements match local environment
+        """
+        return cloudpickle.loads(self.pickled_code)
+
 
 @dataclasses.dataclass(frozen=True)
 class ManagedFunctionConfig:
@@ -496,6 +559,10 @@ class CloudRunFunctionConfig:
     workers: int | None
     threads: int | None
     concurrency: int | None
+    kms_key_name: str | None
+    docker_repository: str | None
+    cloud_build_service_account: str | None
+    cloud_run_service_account: str | None
 
     def stable_hash(self) -> bytes:
         hash_val = google_crc32c.Checksum()
@@ -511,6 +578,10 @@ class CloudRunFunctionConfig:
         hash_val.update(str(self.workers).encode())
         hash_val.update(str(self.threads).encode())
         hash_val.update(str(self.concurrency).encode())
+        hash_val.update(str(self.kms_key_name).encode())
+        hash_val.update(str(self.docker_repository).encode())
+        hash_val.update(str(self.cloud_build_service_account).encode())
+        hash_val.update(str(self.cloud_run_service_account).encode())
         return hash_val.digest()
 
 

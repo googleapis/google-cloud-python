@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -126,6 +121,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1330,8 +1340,8 @@ def test_answer_records_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        answer_record.ListAnswerRecordsRequest,
-        dict,
+        answer_record.ListAnswerRecordsRequest(),
+        {},
     ],
 )
 def test_list_answer_records(request_type, transport: str = "grpc"):
@@ -1342,7 +1352,7 @@ def test_list_answer_records(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1392,11 +1402,12 @@ def test_list_answer_records_non_empty_request_with_auto_populated_field():
         client.list_answer_records(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == answer_record.ListAnswerRecordsRequest(
+        request_msg = answer_record.ListAnswerRecordsRequest(
             parent="parent_value",
             filter="filter_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_answer_records_use_cached_wrapped_rpc():
@@ -1481,9 +1492,14 @@ async def test_list_answer_records_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_answer_records_async(
-    transport: str = "grpc_asyncio", request_type=answer_record.ListAnswerRecordsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        answer_record.ListAnswerRecordsRequest(),
+        {},
+    ],
+)
+async def test_list_answer_records_async(request_type, transport: str = "grpc_asyncio"):
     client = AnswerRecordsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1491,7 +1507,7 @@ async def test_list_answer_records_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1514,11 +1530,6 @@ async def test_list_answer_records_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAnswerRecordsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_answer_records_async_from_dict():
-    await test_list_answer_records_async(request_type=dict)
 
 
 def test_list_answer_records_field_headers():
@@ -1864,11 +1875,7 @@ async def test_list_answer_records_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_answer_records(request={})
-        ).pages:
+        async for page_ in (await client.list_answer_records(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -1877,8 +1884,8 @@ async def test_list_answer_records_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcd_answer_record.UpdateAnswerRecordRequest,
-        dict,
+        gcd_answer_record.UpdateAnswerRecordRequest(),
+        {},
     ],
 )
 def test_update_answer_record(request_type, transport: str = "grpc"):
@@ -1889,7 +1896,7 @@ def test_update_answer_record(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1935,7 +1942,8 @@ def test_update_answer_record_non_empty_request_with_auto_populated_field():
         client.update_answer_record(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcd_answer_record.UpdateAnswerRecordRequest()
+        request_msg = gcd_answer_record.UpdateAnswerRecordRequest()
+        assert args[0] == request_msg
 
 
 def test_update_answer_record_use_cached_wrapped_rpc():
@@ -2020,9 +2028,15 @@ async def test_update_answer_record_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcd_answer_record.UpdateAnswerRecordRequest(),
+        {},
+    ],
+)
 async def test_update_answer_record_async(
-    transport: str = "grpc_asyncio",
-    request_type=gcd_answer_record.UpdateAnswerRecordRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AnswerRecordsAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2031,7 +2045,7 @@ async def test_update_answer_record_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2054,11 +2068,6 @@ async def test_update_answer_record_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcd_answer_record.AnswerRecord)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_update_answer_record_async_from_dict():
-    await test_update_answer_record_async(request_type=dict)
 
 
 def test_update_answer_record_field_headers():
@@ -2342,7 +2351,7 @@ def test_list_answer_records_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_answer_records_rest_unset_required_fields():
@@ -2592,7 +2601,7 @@ def test_update_answer_record_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_answer_record_rest_unset_required_fields():
@@ -2799,7 +2808,6 @@ def test_list_answer_records_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = answer_record.ListAnswerRecordsRequest()
-
         assert args[0] == request_msg
 
 
@@ -2822,7 +2830,6 @@ def test_update_answer_record_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcd_answer_record.UpdateAnswerRecordRequest()
-
         assert args[0] == request_msg
 
 
@@ -2865,7 +2872,6 @@ async def test_list_answer_records_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = answer_record.ListAnswerRecordsRequest()
-
         assert args[0] == request_msg
 
 
@@ -2894,7 +2900,6 @@ async def test_update_answer_record_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcd_answer_record.UpdateAnswerRecordRequest()
-
         assert args[0] == request_msg
 
 
@@ -3392,6 +3397,9 @@ def test_update_answer_record_rest_call_success(request_type):
                     {
                         "tool_call": {
                             "tool": "tool_value",
+                            "ces_tool": "ces_tool_value",
+                            "ces_toolset": "ces_toolset_value",
+                            "ces_app": "ces_app_value",
                             "tool_display_name": "tool_display_name_value",
                             "tool_display_details": "tool_display_details_value",
                             "action": "action_value",
@@ -3402,6 +3410,9 @@ def test_update_answer_record_rest_call_success(request_type):
                         },
                         "tool_call_result": {
                             "tool": "tool_value",
+                            "ces_toolset": "ces_toolset_value",
+                            "ces_tool": "ces_tool_value",
+                            "ces_app": "ces_app_value",
                             "action": "action_value",
                             "error": {"message": "message_value"},
                             "raw_content": b"raw_content_blob",
@@ -3910,7 +3921,6 @@ def test_list_answer_records_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = answer_record.ListAnswerRecordsRequest()
-
         assert args[0] == request_msg
 
 
@@ -3932,7 +3942,6 @@ def test_update_answer_record_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcd_answer_record.UpdateAnswerRecordRequest()
-
         assert args[0] == request_msg
 
 
@@ -4409,10 +4418,65 @@ def test_parse_answer_record_path():
     assert expected == actual
 
 
-def test_context_path():
+def test_app_path():
     project = "oyster"
-    session = "nudibranch"
-    context = "cuttlefish"
+    location = "nudibranch"
+    app = "cuttlefish"
+    expected = "projects/{project}/locations/{location}/apps/{app}".format(
+        project=project,
+        location=location,
+        app=app,
+    )
+    actual = AnswerRecordsClient.app_path(project, location, app)
+    assert expected == actual
+
+
+def test_parse_app_path():
+    expected = {
+        "project": "mussel",
+        "location": "winkle",
+        "app": "nautilus",
+    }
+    path = AnswerRecordsClient.app_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = AnswerRecordsClient.parse_app_path(path)
+    assert expected == actual
+
+
+def test_ces_tool_path():
+    project = "scallop"
+    location = "abalone"
+    app = "squid"
+    tool = "clam"
+    expected = "projects/{project}/locations/{location}/apps/{app}/tools/{tool}".format(
+        project=project,
+        location=location,
+        app=app,
+        tool=tool,
+    )
+    actual = AnswerRecordsClient.ces_tool_path(project, location, app, tool)
+    assert expected == actual
+
+
+def test_parse_ces_tool_path():
+    expected = {
+        "project": "whelk",
+        "location": "octopus",
+        "app": "oyster",
+        "tool": "nudibranch",
+    }
+    path = AnswerRecordsClient.ces_tool_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = AnswerRecordsClient.parse_ces_tool_path(path)
+    assert expected == actual
+
+
+def test_context_path():
+    project = "cuttlefish"
+    session = "mussel"
+    context = "winkle"
     expected = "projects/{project}/agent/sessions/{session}/contexts/{context}".format(
         project=project,
         session=session,
@@ -4424,9 +4488,9 @@ def test_context_path():
 
 def test_parse_context_path():
     expected = {
-        "project": "mussel",
-        "session": "winkle",
-        "context": "nautilus",
+        "project": "nautilus",
+        "session": "scallop",
+        "context": "abalone",
     }
     path = AnswerRecordsClient.context_path(**expected)
 
@@ -4436,8 +4500,8 @@ def test_parse_context_path():
 
 
 def test_intent_path():
-    project = "scallop"
-    intent = "abalone"
+    project = "squid"
+    intent = "clam"
     expected = "projects/{project}/agent/intents/{intent}".format(
         project=project,
         intent=intent,
@@ -4448,8 +4512,8 @@ def test_intent_path():
 
 def test_parse_intent_path():
     expected = {
-        "project": "squid",
-        "intent": "clam",
+        "project": "whelk",
+        "intent": "octopus",
     }
     path = AnswerRecordsClient.intent_path(**expected)
 
@@ -4459,9 +4523,9 @@ def test_parse_intent_path():
 
 
 def test_tool_path():
-    project = "whelk"
-    location = "octopus"
-    tool = "oyster"
+    project = "oyster"
+    location = "nudibranch"
+    tool = "cuttlefish"
     expected = "projects/{project}/locations/{location}/tools/{tool}".format(
         project=project,
         location=location,
@@ -4473,9 +4537,9 @@ def test_tool_path():
 
 def test_parse_tool_path():
     expected = {
-        "project": "nudibranch",
-        "location": "cuttlefish",
-        "tool": "mussel",
+        "project": "mussel",
+        "location": "winkle",
+        "tool": "nautilus",
     }
     path = AnswerRecordsClient.tool_path(**expected)
 
@@ -4484,8 +4548,39 @@ def test_parse_tool_path():
     assert expected == actual
 
 
+def test_toolset_path():
+    project = "scallop"
+    location = "abalone"
+    app = "squid"
+    toolset = "clam"
+    expected = (
+        "projects/{project}/locations/{location}/apps/{app}/toolsets/{toolset}".format(
+            project=project,
+            location=location,
+            app=app,
+            toolset=toolset,
+        )
+    )
+    actual = AnswerRecordsClient.toolset_path(project, location, app, toolset)
+    assert expected == actual
+
+
+def test_parse_toolset_path():
+    expected = {
+        "project": "whelk",
+        "location": "octopus",
+        "app": "oyster",
+        "toolset": "nudibranch",
+    }
+    path = AnswerRecordsClient.toolset_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = AnswerRecordsClient.parse_toolset_path(path)
+    assert expected == actual
+
+
 def test_common_billing_account_path():
-    billing_account = "winkle"
+    billing_account = "cuttlefish"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -4495,7 +4590,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "nautilus",
+        "billing_account": "mussel",
     }
     path = AnswerRecordsClient.common_billing_account_path(**expected)
 
@@ -4505,7 +4600,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "scallop"
+    folder = "winkle"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -4515,7 +4610,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "abalone",
+        "folder": "nautilus",
     }
     path = AnswerRecordsClient.common_folder_path(**expected)
 
@@ -4525,7 +4620,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "squid"
+    organization = "scallop"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -4535,7 +4630,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "clam",
+        "organization": "abalone",
     }
     path = AnswerRecordsClient.common_organization_path(**expected)
 
@@ -4545,7 +4640,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "whelk"
+    project = "squid"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -4555,7 +4650,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "octopus",
+        "project": "clam",
     }
     path = AnswerRecordsClient.common_project_path(**expected)
 
@@ -4565,8 +4660,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "oyster"
-    location = "nudibranch"
+    project = "whelk"
+    location = "octopus"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -4577,8 +4672,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "cuttlefish",
-        "location": "mussel",
+        "project": "oyster",
+        "location": "nudibranch",
     }
     path = AnswerRecordsClient.common_location_path(**expected)
 

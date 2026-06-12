@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -29,6 +29,7 @@ __protobuf__ = proto.module(
         "EventType",
         "LoadBalancingScheme",
         "WireFormat",
+        "BodySendMode",
         "ExtensionChain",
         "LbTrafficExtension",
         "ListLbTrafficExtensionsRequest",
@@ -132,10 +133,51 @@ class WireFormat(proto.Enum):
             specified. The backend service for the extension must use
             HTTP2 or H2C as the protocol. All ``supported_events`` for a
             client request are sent as part of the same gRPC stream.
+        EXT_AUTHZ_GRPC (3):
+            The extension service uses Envoy's ``ext_authz`` gRPC API.
+            The backend service for the extension must use HTTP2 or H2C
+            as the protocol. ``EXT_AUTHZ_GRPC`` is only supported for
+            regional ``AuthzExtension`` resources.
     """
 
     WIRE_FORMAT_UNSPECIFIED = 0
     EXT_PROC_GRPC = 1
+    EXT_AUTHZ_GRPC = 3
+
+
+class BodySendMode(proto.Enum):
+    r"""The send mode for body processing.
+
+    Values:
+        BODY_SEND_MODE_UNSPECIFIED (0):
+            Default value. Do not use.
+        BODY_SEND_MODE_STREAMED (1):
+            Calls to the extension are executed in the
+            streamed mode. Subsequent chunks will be sent
+            only after the previous chunks have been
+            processed.
+
+            The content of the body chunks is sent one way
+            to the extension. Extension may send modified
+            chunks back.
+
+            This is the default value if the processing mode
+            is not specified.
+        BODY_SEND_MODE_FULL_DUPLEX_STREAMED (2):
+            Calls are executed in the full duplex mode. Subsequent
+            chunks will be sent for processing without waiting for the
+            response for the previous chunk or for the response for
+            ``REQUEST_HEADERS`` event.
+
+            Extension can freely modify or chunk the body contents. If
+            the extension doesn't send the body contents back, the next
+            extension in the chain or the upstream will receive an empty
+            body.
+    """
+
+    BODY_SEND_MODE_UNSPECIFIED = 0
+    BODY_SEND_MODE_STREAMED = 1
+    BODY_SEND_MODE_FULL_DUPLEX_STREAMED = 2
 
 
 class ExtensionChain(proto.Message):
@@ -188,7 +230,7 @@ class ExtensionChain(proto.Message):
 
         Attributes:
             name (str):
-                Required. The name for this extension.
+                Optional. The name for this extension.
                 The name is logged as part of the HTTP request
                 logs. The name must conform with RFC-1034, is
                 restricted to lower-cased letters, numbers and
@@ -196,6 +238,9 @@ class ExtensionChain(proto.Message):
                 characters. Additionally, the first character
                 must be a letter and the last a letter or a
                 number.
+
+                This field is required except for
+                AuthzExtension.
             authority (str):
                 Optional. The ``:authority`` header in the gRPC request sent
                 from Envoy to the extension service. Required for Callout
@@ -239,6 +284,11 @@ class ExtensionChain(proto.Message):
 
                 For the ``LbEdgeExtension`` resource, this field is required
                 and must only contain ``REQUEST_HEADERS`` event.
+
+                For the ``AuthzExtension`` resource, this field is optional.
+                ``REQUEST_HEADERS`` is the only supported event. If
+                unspecified, ``REQUEST_HEADERS`` event is assumed as
+                supported.
             timeout (google.protobuf.duration_pb2.Duration):
                 Optional. Specifies the timeout for each individual message
                 on the stream. The timeout must be between ``10``-``10000``
@@ -268,13 +318,27 @@ class ExtensionChain(proto.Message):
                 to the extension (from the client or backend).
                 If omitted, all headers are sent. Each element
                 is a string indicating the header name.
+            forward_attributes (MutableSequence[str]):
+                Optional. List of the Envoy attributes to forward to the
+                extension server. The attributes provided here are included
+                as part of the ``ProcessingRequest.attributes`` field (of
+                type ``map<string, google.protobuf.Struct>``), where the
+                keys are the attribute names. Refer to the
+                `documentation <https://cloud.google.com/service-extensions/docs/cel-matcher-language-reference#attributes>`__
+                for the names of attributes that can be forwarded. If
+                omitted, no attributes are sent. Each element is a string
+                indicating the attribute name.
             metadata (google.protobuf.struct_pb2.Struct):
                 Optional. The metadata provided here is included as part of
                 the ``metadata_context`` (of type
                 ``google.protobuf.Struct``) in the ``ProcessingRequest``
                 message sent to the extension server.
 
-                The metadata is available under the namespace
+                For ``AuthzExtension`` resources, the metadata is available
+                under the namespace
+                ``com.google.authz_extension.<resource_name>``. For other
+                types of extensions, the metadata is available under the
+                namespace
                 ``com.google.<extension_type>.<resource_name>.<extension_chain_name>.<extension_name>``.
                 For example:
                 ``com.google.lb_traffic_extension.lbtrafficextension1.chain1.ext1``.
@@ -301,6 +365,49 @@ class ExtensionChain(proto.Message):
                 - The length of each value must be less than 1024
                   characters.
                 - All values must be strings.
+            request_body_send_mode (google.cloud.network_services_v1.types.BodySendMode):
+                Optional. Configures the send mode for request body
+                processing.
+
+                The field can only be set if ``supported_events`` includes
+                ``REQUEST_BODY``. If ``supported_events`` includes
+                ``REQUEST_BODY``, but ``request_body_send_mode`` is unset,
+                the default value ``STREAMED`` is used.
+
+                When this field is set to ``FULL_DUPLEX_STREAMED``,
+                ``supported_events`` must include both ``REQUEST_BODY`` and
+                ``REQUEST_TRAILERS``.
+
+                This field can be set only for ``LbTrafficExtension`` and
+                ``LbRouteExtension`` resources, and only when the
+                ``service`` field of the extension points to a
+                ``BackendService``. Only ``FULL_DUPLEX_STREAMED`` mode is
+                supported for ``LbRouteExtension`` resources.
+            response_body_send_mode (google.cloud.network_services_v1.types.BodySendMode):
+                Optional. Configures the send mode for response processing.
+                If unspecified, the default value ``STREAMED`` is used.
+
+                The field can only be set if ``supported_events`` includes
+                ``RESPONSE_BODY``. If ``supported_events`` includes
+                ``RESPONSE_BODY``, but ``response_body_send_mode`` is unset,
+                the default value ``STREAMED`` is used.
+
+                When this field is set to ``FULL_DUPLEX_STREAMED``,
+                ``supported_events`` must include both ``RESPONSE_BODY`` and
+                ``RESPONSE_TRAILERS``.
+
+                This field can be set only for ``LbTrafficExtension``
+                resources, and only when the ``service`` field of the
+                extension points to a ``BackendService``.
+            observability_mode (bool):
+                Optional. When set to ``true``, the calls to the extension
+                backend are performed asynchronously, without pausing the
+                processing of the ongoing request. In this mode, only
+                ``STREAMED`` (default) body processing is supported.
+                Responses, if any, are ignored.
+
+                Supported by regional ``LbTrafficExtension`` and
+                ``LbRouteExtension`` resources.
         """
 
         name: str = proto.Field(
@@ -333,10 +440,28 @@ class ExtensionChain(proto.Message):
             proto.STRING,
             number=7,
         )
+        forward_attributes: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=8,
+        )
         metadata: struct_pb2.Struct = proto.Field(
             proto.MESSAGE,
             number=9,
             message=struct_pb2.Struct,
+        )
+        request_body_send_mode: "BodySendMode" = proto.Field(
+            proto.ENUM,
+            number=14,
+            enum="BodySendMode",
+        )
+        response_body_send_mode: "BodySendMode" = proto.Field(
+            proto.ENUM,
+            number=15,
+            enum="BodySendMode",
+        )
+        observability_mode: bool = proto.Field(
+            proto.BOOL,
+            number=16,
         )
 
     name: str = proto.Field(
@@ -1401,15 +1526,18 @@ class AuthzExtension(proto.Message):
             labels </compute/docs/labeling-resources#requirements>`__
             for Google Cloud resources.
         load_balancing_scheme (google.cloud.network_services_v1.types.LoadBalancingScheme):
-            Required. All backend services and forwarding rules
+            Optional. All backend services and forwarding rules
             referenced by this extension must share the same load
             balancing scheme. Supported values: ``INTERNAL_MANAGED``,
-            ``EXTERNAL_MANAGED``. For more information, refer to
-            `Backend services
+            ``EXTERNAL_MANAGED``. Can be omitted for AuthzExtensions
+            that do not reference a backend service. For more
+            information, refer to `Backend services
             overview <https://cloud.google.com/load-balancing/docs/backend-service>`__.
         authority (str):
-            Required. The ``:authority`` header in the gRPC request sent
-            from Envoy to the extension service.
+            Optional. The ``:authority`` header in the gRPC request sent
+            from Envoy to the extension service. It is required when the
+            ``service`` field points to a backend service or a wasm
+            plugin.
         service (str):
             Required. The reference to the service that runs the
             extension.
@@ -1458,10 +1586,22 @@ class AuthzExtension(proto.Message):
             to the extension (from the client). If omitted,
             all headers are sent. Each element is a string
             indicating the header name.
+        forward_attributes (MutableSequence[str]):
+            Optional. List of the Envoy attributes to forward to the
+            extension server. The attributes provided here are included
+            as part of the ``ProcessingRequest.attributes`` field (of
+            type ``map<string, google.protobuf.Struct>``), where the
+            keys are the attribute names. Refer to the
+            `documentation <https://cloud.google.com/service-extensions/docs/cel-matcher-language-reference#attributes>`__
+            for the names of attributes that can be forwarded. If
+            omitted, no attributes are sent. Each element is a string
+            indicating the attribute name.
         wire_format (google.cloud.network_services_v1.types.WireFormat):
             Optional. The format of communication supported by the
-            callout extension. If not specified, the default value
-            ``EXT_PROC_GRPC`` is used.
+            callout extension. This field is supported only for regional
+            ``AuthzExtension`` resources. If not specified, the default
+            value ``EXT_PROC_GRPC`` is used. Global ``AuthzExtension``
+            resources use the ``EXT_PROC_GRPC`` wire format.
     """
 
     name: str = proto.Field(
@@ -1517,6 +1657,10 @@ class AuthzExtension(proto.Message):
     forward_headers: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=12,
+    )
+    forward_attributes: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=13,
     )
     wire_format: "WireFormat" = proto.Field(
         proto.ENUM,

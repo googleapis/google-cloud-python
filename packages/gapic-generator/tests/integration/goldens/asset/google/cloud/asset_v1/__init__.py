@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -26,6 +26,7 @@ from importlib import metadata
 from .services.asset_service import AssetServiceClient
 from .services.asset_service import AssetServiceAsyncClient
 
+from .types.asset_enrichment_resourceowners import ResourceOwners
 from .types.asset_service import AnalyzeIamPolicyLongrunningMetadata
 from .types.asset_service import AnalyzeIamPolicyLongrunningRequest
 from .types.asset_service import AnalyzeIamPolicyLongrunningResponse
@@ -88,8 +89,10 @@ from .types.asset_service import UpdateFeedRequest
 from .types.asset_service import UpdateSavedQueryRequest
 from .types.asset_service import ContentType
 from .types.assets import Asset
+from .types.assets import AssetEnrichment
 from .types.assets import AttachedResource
 from .types.assets import ConditionEvaluation
+from .types.assets import EffectiveTagDetails
 from .types.assets import IamPolicyAnalysisResult
 from .types.assets import IamPolicyAnalysisState
 from .types.assets import IamPolicySearchResult
@@ -100,6 +103,7 @@ from .types.assets import RelatedResources
 from .types.assets import RelationshipAttributes
 from .types.assets import Resource
 from .types.assets import ResourceSearchResult
+from .types.assets import Tag
 from .types.assets import TemporalAsset
 from .types.assets import TimeWindow
 from .types.assets import VersionedResource
@@ -125,7 +129,7 @@ else:   # pragma: NO COVER
 
         def parse_version_to_tuple(version_string: str):
             """Safely converts a semantic version string to a comparable tuple of integers.
-            Example: "4.25.8" -> (4, 25, 8)
+            Example: "6.33.5" -> (6, 33, 5)
             Ignores non-numeric parts and handles common version formats.
             Args:
                 version_string: Version string in the format "x.y.z" or "x.y.z<suffix>"
@@ -154,9 +158,9 @@ else:   # pragma: NO COVER
                 return (None, "--")
 
         _dependency_package = "google.protobuf"
-        _next_supported_version = "4.25.8"
-        _next_supported_version_tuple = (4, 25, 8)
-        _recommendation = " (we recommend 6.x)"
+        _next_supported_version = "6.33.5"
+        _next_supported_version_tuple = (6, 33, 5)
+        _recommendation = " (we recommend 7.x)"
         (_version_used, _version_used_string) = _get_version(_dependency_package)
         if _version_used and _version_used < _next_supported_version_tuple:
             warnings.warn(f"Package {_package_label} depends on " +
@@ -197,6 +201,7 @@ __all__ = (
 'AnalyzerOrgPolicy',
 'AnalyzerOrgPolicyConstraint',
 'Asset',
+'AssetEnrichment',
 'AssetServiceClient',
 'AttachedResource',
 'BatchGetAssetsHistoryRequest',
@@ -210,6 +215,7 @@ __all__ = (
 'CreateSavedQueryRequest',
 'DeleteFeedRequest',
 'DeleteSavedQueryRequest',
+'EffectiveTagDetails',
 'ExportAssetsRequest',
 'ExportAssetsResponse',
 'Feed',
@@ -246,6 +252,7 @@ __all__ = (
 'RelatedResources',
 'RelationshipAttributes',
 'Resource',
+'ResourceOwners',
 'ResourceSearchResult',
 'SavedQuery',
 'SearchAllIamPoliciesRequest',
@@ -254,6 +261,7 @@ __all__ = (
 'SearchAllResourcesResponse',
 'TableFieldSchema',
 'TableSchema',
+'Tag',
 'TemporalAsset',
 'TimeWindow',
 'UpdateFeedRequest',
