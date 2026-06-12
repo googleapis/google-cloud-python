@@ -173,7 +173,9 @@ class AnonymousDatasetManager(temporary_storage.TemporaryStorageManager):
         """Delete tables that were created with this session's session_id."""
         with ThreadPoolExecutor() as executor:
             for table_ref in self._table_ids:
-                executor.submit(self.bqclient.delete_table, table_ref, not_found_ok=True)
+                executor.submit(
+                    self.bqclient.delete_table, table_ref, not_found_ok=True
+                )
         self._table_ids.clear()
 
         def run_cleanup():
@@ -190,4 +192,6 @@ class AnonymousDatasetManager(temporary_storage.TemporaryStorageManager):
                 )
                 warnings.warn(msg, category=bfe.CleanupFailedWarning)
 
-        threading.Thread(target=run_cleanup, daemon=True, name="bigframes-udf-cleanup").start()
+        threading.Thread(
+            target=run_cleanup, daemon=True, name="bigframes-udf-cleanup"
+        ).start()
