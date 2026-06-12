@@ -187,3 +187,22 @@ class TestRequest:
         # Second call should be idempotent
         await request.close()
         assert request._closed
+
+    async def test_request_clone_with_active_session(self):
+        mock_session = aiohttp.ClientSession(
+            trust_env=True,
+            trace_configs=[aiohttp.TraceConfig()],
+        )
+        request = auth_aiohttp.Request(session=mock_session)
+
+        cloned = request.clone()
+
+        assert cloned is not request
+        assert isinstance(cloned, auth_aiohttp.Request)
+        assert cloned._session is not mock_session
+        assert cloned._session is not None
+        assert cloned._session._trust_env == mock_session._trust_env
+        assert len(cloned._session._trace_configs) == len(mock_session._trace_configs)
+
+        await request.close()
+        await cloned.close()

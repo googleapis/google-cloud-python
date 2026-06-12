@@ -501,20 +501,20 @@ class _AsyncRegionalAccessBoundaryRefreshManager(object):
                 partial_args = request.args
                 partial_kwargs = request.keywords
 
-            # Execute the clone protocol on the concrete underlying request adapter.
-            lookup_request = actual_request
-            if hasattr(actual_request, "clone"):
-                lookup_request = actual_request.clone()
-
-            # Re-apply initial partial call arguments to the detached request adapter.
-            if isinstance(request, functools.partial):
-                lookup_callable = functools.partial(
-                    lookup_request, *partial_args, **partial_kwargs
-                )
-            else:
-                lookup_callable = lookup_request
-
             async def _worker():
+                # Execute the clone protocol on the concrete underlying request adapter.
+                lookup_request = actual_request
+                if hasattr(actual_request, "clone"):
+                    lookup_request = actual_request.clone()
+
+                # Re-apply initial partial call arguments to the detached request adapter.
+                if isinstance(request, functools.partial):
+                    lookup_callable = functools.partial(
+                        lookup_request, *partial_args, **partial_kwargs
+                    )
+                else:
+                    lookup_callable = lookup_request
+
                 try:
                     # credentials._lookup_regional_access_boundary should be async in the async creds class
                     regional_access_boundary_info = (

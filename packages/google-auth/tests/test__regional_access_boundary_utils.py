@@ -731,7 +731,7 @@ class TestAsyncCredentialsWithRegionalAccessBoundary(object):
         assert called_arg.keywords == {"timeout": 180}
 
         # Verify that the cloned request was closed cleanly in the finally block
-        mock_cloned_request.close.assert_called_once()
+        mock_cloned_request.close.assert_awaited_once()
         rab_manager.process_regional_access_boundary_info.assert_called_once_with(
             {"encodedLocations": "0xA30"}
         )
@@ -746,12 +746,16 @@ class TestAsyncCredentialsWithRegionalAccessBoundary(object):
             _regional_access_boundary_utils._AsyncRegionalAccessBoundaryRefreshManager()
         )
 
+        worker_started_event = asyncio.Event()
+        foreground_closed_event = asyncio.Event()
+
         class EphemeralRequest:
             def __init__(self):
                 self.closed = False
 
             async def __call__(self, *args, **kwargs):
-                await asyncio.sleep(0.05)
+                worker_started_event.set()
+                await foreground_closed_event.wait()
                 if self.closed:
                     raise RuntimeError("Session is closed")
                 return "success"
@@ -770,9 +774,12 @@ class TestAsyncCredentialsWithRegionalAccessBoundary(object):
         # Start the background refresh worker
         manager.start_refresh(credentials, ephemeral_req, rab_manager)
 
-        # Simulate fast foreground primary call (completes in 10ms and closes the session)
-        await asyncio.sleep(0.01)
+        # Wait until the background worker has actually started its speculative request
+        await worker_started_event.wait()
+
+        # Simulate fast foreground primary call closing the session
         ephemeral_req.closed = True
+        foreground_closed_event.set()
 
         # Await the background worker task to settle
         await manager._worker_task
