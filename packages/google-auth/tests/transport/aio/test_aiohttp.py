@@ -172,7 +172,7 @@ class TestRequest:
 
     async def test_request_clone(self):
         request = auth_aiohttp.Request()
-        cloned = request.clone()
+        cloned = request._clone()
         assert cloned is not request
         assert isinstance(cloned, auth_aiohttp.Request)
         assert cloned._session is not request._session
@@ -192,7 +192,7 @@ class TestRequest:
         request = auth_aiohttp.Request()
         await request.close()
         with pytest.raises(exceptions.TransportError) as exc:
-            request.clone()
+            request._clone()
         exc.match("Cannot clone a closed transport.")
 
     async def test_request_clone_with_active_session(self):
@@ -219,7 +219,7 @@ class TestRequest:
         )
         request = auth_aiohttp.Request(session=mock_session)
 
-        cloned = request.clone()
+        cloned = request._clone()
 
         assert cloned is not request
         assert cloned._session is not mock_session
@@ -256,7 +256,7 @@ class TestRequest:
         mock_session = aiohttp.ClientSession(connector=connector)
         request = auth_aiohttp.Request(session=mock_session)
 
-        cloned = request.clone()
+        cloned = request._clone()
 
         assert cloned._session is not None
         cloned_connector = cloned._session._connector

@@ -678,7 +678,7 @@ class TestAsyncCredentialsWithRegionalAccessBoundary(object):
         )
 
         request = mock.Mock()
-        request.clone.return_value = request
+        request._clone.return_value = request
         rab_manager = mock.Mock()
 
         manager = (
@@ -706,7 +706,7 @@ class TestAsyncCredentialsWithRegionalAccessBoundary(object):
 
         mock_request = mock.Mock()
         mock_cloned_request = mock.Mock()
-        mock_request.clone.return_value = mock_cloned_request
+        mock_request._clone.return_value = mock_cloned_request
         mock_cloned_request.close = mock.AsyncMock()
 
         # Wrap in a functools.partial to simulate AuthorizedSession.request() timeouts
@@ -721,8 +721,8 @@ class TestAsyncCredentialsWithRegionalAccessBoundary(object):
 
         await manager._worker_task
 
-        # Verify that actual_request.clone() was called
-        mock_request.clone.assert_called_once()
+        # Verify that actual_request._clone() was called
+        mock_request._clone.assert_called_once()
 
         # Verify that the lookup ran on a re-wrapped partial of the cloned request
         called_arg = credentials._lookup_regional_access_boundary.call_args[0][0]
@@ -743,7 +743,7 @@ class TestAsyncCredentialsWithRegionalAccessBoundary(object):
         credentials = mock.AsyncMock()
 
         request = mock.Mock()
-        request.clone.side_effect = exceptions.TransportError(
+        request._clone.side_effect = exceptions.TransportError(
             "Cannot clone a closed transport."
         )
 

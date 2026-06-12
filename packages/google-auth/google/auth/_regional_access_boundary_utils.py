@@ -505,8 +505,8 @@ class _AsyncRegionalAccessBoundaryRefreshManager(object):
                 lookup_request = actual_request
                 try:
                     # Create a separate session so background lookups aren't broken by user teardown.
-                    if hasattr(actual_request, "clone"):
-                        lookup_request = actual_request.clone()
+                    if hasattr(actual_request, "_clone"):
+                        lookup_request = actual_request._clone()
 
                     # Re-apply initial partial call arguments to the new request adapter.
                     if isinstance(request, functools.partial):

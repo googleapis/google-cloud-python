@@ -204,7 +204,7 @@ class Request(transport.Request):
             await self._session.close()
         self._closed = True
 
-    def clone(self) -> "Request":
+    def _clone(self) -> "Request":
         """Creates an independent copy of this request adapter.
 
         Returns:

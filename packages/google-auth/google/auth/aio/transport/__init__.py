@@ -143,6 +143,12 @@ class Request(metaclass=abc.ABCMeta):
         """
         raise NotImplementedError("close must be implemented.")
 
-    def clone(self) -> "Request":
-        """Create an independent detached copy of this request callable."""
+    def _clone(self) -> "Request":
+        """Creates a copy of this request adapter.
+
+        The base implementation returns `self` (an identical shared instance).
+        Transport adapters that maintain internal connection pools or stateful
+        sessions must override this method to return an independent, detached
+        adapter instance.
+        """
         return self
