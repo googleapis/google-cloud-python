@@ -222,7 +222,7 @@ class Request(transport.Request):
             )
             return Request(session=new_session)
 
-        session_kwargs = {
+        session_kwargs: dict = {
             "auto_decompress": False,
             "trust_env": getattr(self._session, "_trust_env", True),
         }
@@ -232,7 +232,7 @@ class Request(transport.Request):
         if orig_connector and not orig_connector.closed:
             if isinstance(orig_connector, aiohttp.TCPConnector):
                 session_kwargs["connector"] = aiohttp.TCPConnector(
-                    ssl=getattr(orig_connector, "_ssl", None),
+                    ssl=getattr(orig_connector, "_ssl", None),  # type: ignore
                     limit=getattr(orig_connector, "_limit", 100),
                     limit_per_host=getattr(orig_connector, "_limit_per_host", 0),
                     force_close=getattr(orig_connector, "_force_close", False),
@@ -265,4 +265,4 @@ class Request(transport.Request):
             if val is not None:
                 session_kwargs[kwarg_name] = val
 
-        return Request(session=aiohttp.ClientSession(**session_kwargs))
+        return Request(session=aiohttp.ClientSession(**session_kwargs))  # type: ignore
