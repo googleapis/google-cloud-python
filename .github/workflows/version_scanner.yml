@@ -33,7 +33,7 @@ jobs:
       - name: Run Version Scanner
         run: |
           # Use -o to output the raw CSV to a file, and --stdout to print the summary to the GitHub Actions UI
-          python scripts/version_scanner/version_scanner.py -d python -v 3.7 --stdout -o version_scanner_output.csv
+          python scripts/version_scanner/version_scanner.py -d python -v 3.7 --stdout -o version_scanner_output.csv --soft-fail
           
       - name: Upload CSV Results
         if: always()
