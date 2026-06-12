@@ -473,8 +473,20 @@ def test_main_stdout(capsys):
                 main()
     
     captured = capsys.readouterr()
-    assert "=== Scan Results ===" in captured.out
     assert "test.py:1 [test] 3.7" in captured.out
+
+
+def test_main_does_not_print_rules(capsys):
+    """Test that main() does not print the list of loaded rules to stdout."""
+    test_args = ['version_scanner.py', '-d', 'python', '-v', '3.7']
+    with mock.patch('sys.argv', test_args):
+        from version_scanner import main
+        with mock.patch('version_scanner.scan_repository', return_value=[]):
+            with pytest.raises(SystemExit):
+                main()
+    captured = capsys.readouterr()
+    assert "explicit_version_string" not in captured.out
+
 
 def test_scan_file_truncation_bug(tmp_path):
     """Test that searching for 3.1 does NOT match 3.10 (truncation bug)."""

@@ -647,10 +647,7 @@ def main():
     config_manager = ConfigManager(args.config, args.dependency, args.version)
     rules = config_manager.load_config()
     
-    print(f"\nLoaded {len(rules)} rules:")
-    for rule in rules:
-        print(f"  - {rule['name']}: {rule['pattern']}")
-        
+
 
             
     # Load ignore file from script directory (Option A)
@@ -664,11 +661,8 @@ def main():
     all_matches = scan_repository(args.path, rules, target_packages, ignore_dirs, version_string=args.version)
     
     print(f"\nFound {len(all_matches)} matches.")
-    for m in all_matches[:10]: # Show first 10
-        print(f"  {m['file_path']}:{m['line_number']} [{m['rule_name']}] {m['matched_string']}")
-        
-    if len(all_matches) > 10:
-        print(f"  ... and {len(all_matches) - 10} more matches.")
+    for m in all_matches:
+        print(format_for_console(m))
         
     # Get and print summary counts
     rule_counts, package_counts = get_match_counts(all_matches)
@@ -689,10 +683,7 @@ def main():
     if args.upload:
         upload_to_drive(output_path, all_matches, github_repo=args.github_repo, branch=args.branch)
 
-    if args.stdout:
-        print("\n=== Scan Results ===")
-        for m in all_matches:
-            print(format_for_console(m))
+
             
     # Distinct exit codes for CI/CD
     if all_matches and not args.soft_fail:
