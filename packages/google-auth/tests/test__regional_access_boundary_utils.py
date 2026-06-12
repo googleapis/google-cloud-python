@@ -678,6 +678,7 @@ class TestAsyncCredentialsWithRegionalAccessBoundary(object):
         )
 
         request = mock.Mock()
+        request.clone.return_value = request
         rab_manager = mock.Mock()
 
         manager = (
@@ -692,6 +693,91 @@ class TestAsyncCredentialsWithRegionalAccessBoundary(object):
 
         # Verify that the lookup was still triggered but failed open cleanly
         credentials._lookup_regional_access_boundary.assert_called_once_with(request)
+        rab_manager.process_regional_access_boundary_info.assert_called_once_with(None)
+
+    @pytest.mark.asyncio
+    async def test_start_refresh_async_clones_request_and_unwraps_partial(self):
+        import functools
+
+        credentials = mock.AsyncMock()
+        credentials._lookup_regional_access_boundary.return_value = {
+            "encodedLocations": "0xA30"
+        }
+
+        mock_request = mock.Mock()
+        mock_cloned_request = mock.Mock()
+        mock_request.clone.return_value = mock_cloned_request
+        mock_cloned_request.close = mock.AsyncMock()
+
+        # Wrap in a functools.partial to simulate AuthorizedSession.request() timeouts
+        partial_request = functools.partial(mock_request, timeout=180)
+
+        rab_manager = mock.Mock()
+
+        manager = (
+            _regional_access_boundary_utils._AsyncRegionalAccessBoundaryRefreshManager()
+        )
+        manager.start_refresh(credentials, partial_request, rab_manager)
+
+        await manager._worker_task
+
+        # Verify that actual_request.clone() was called
+        mock_request.clone.assert_called_once()
+
+        # Verify that the lookup ran on a re-wrapped partial of the cloned request
+        called_arg = credentials._lookup_regional_access_boundary.call_args[0][0]
+        assert isinstance(called_arg, functools.partial)
+        assert called_arg.func is mock_cloned_request
+        assert called_arg.keywords == {"timeout": 180}
+
+        # Verify that the cloned request was closed cleanly in the finally block
+        mock_cloned_request.close.assert_called_once()
+        rab_manager.process_regional_access_boundary_info.assert_called_once_with(
+            {"encodedLocations": "0xA30"}
+        )
+
+    @pytest.mark.asyncio
+    async def test_start_refresh_async_mimics_ephemeral_session_closed_bug(self):
+        # Specifically mimics the real-world race condition where a fast foreground main call
+        # pulls the rug out from under the background worker when using an un-cloned session.
+        import asyncio
+
+        manager = (
+            _regional_access_boundary_utils._AsyncRegionalAccessBoundaryRefreshManager()
+        )
+
+        class EphemeralRequest:
+            def __init__(self):
+                self.closed = False
+
+            async def __call__(self, *args, **kwargs):
+                await asyncio.sleep(0.05)
+                if self.closed:
+                    raise RuntimeError("Session is closed")
+                return "success"
+
+        ephemeral_req = EphemeralRequest()
+
+        credentials = mock.AsyncMock()
+
+        async def mock_lookup(req):
+            return await req()
+
+        credentials._lookup_regional_access_boundary.side_effect = mock_lookup
+
+        rab_manager = mock.Mock()
+
+        # Start the background refresh worker
+        manager.start_refresh(credentials, ephemeral_req, rab_manager)
+
+        # Simulate fast foreground primary call (completes in 10ms and closes the session)
+        await asyncio.sleep(0.01)
+        ephemeral_req.closed = True
+
+        # Await the background worker task to settle
+        await manager._worker_task
+
+        # Verify that the background worker hit the "Session is closed" error and failed open cleanly
         rab_manager.process_regional_access_boundary_info.assert_called_once_with(None)
 
 

@@ -169,3 +169,21 @@ class TestRequest:
 
             exc.match("session is closed.")
             aiohttp_request._closed = False
+
+    async def test_request_clone(self):
+        request = auth_aiohttp.Request()
+        cloned = request.clone()
+        assert cloned is not request
+        assert isinstance(cloned, auth_aiohttp.Request)
+        assert cloned._session is not request._session
+        await request.close()
+        await cloned.close()
+
+    async def test_request_close(self):
+        request = auth_aiohttp.Request()
+        assert not getattr(request, "_closed", False)
+        await request.close()
+        assert request._closed
+        # Second call should be idempotent
+        await request.close()
+        assert request._closed
