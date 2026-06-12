@@ -140,10 +140,26 @@ for path in `find 'packages' \
   set -e
 
   if [[ "${package_modified}" -gt 0 || "$KOKORO_BUILD_ARTIFACTS_SUBDIR" == *"continuous"* ]]; then
-      # Call the function - its internal exports won't affect the next loop
-      run_package_test "$package_name" || RETVAL=$?
+      PACKAGES_TO_TEST="${PACKAGES_TO_TEST} ${package_name}"
   else
       echo "No changes in ${package_name} and not a continuous build, skipping."
   fi
 done
+
+if [ -n "$PACKAGES_TO_TEST" ]; then
+  mkdir -p .logs
+  export -f run_package_test
+  export system_test_script PROJECT_ROOT KOKORO_GFILE_DIR
+  
+  echo "$PACKAGES_TO_TEST" | xargs -n 1 -P 8 -I {} bash -c 'run_package_test "{}" > ".logs/{}.log" 2>&1 || touch ".logs/{}.failed"'
+  
+  for failed in .logs/*.failed; do
+    if [ -f "$failed" ]; then
+      echo "--- FAILED: ${failed%.failed} ---"
+      cat "${failed%.failed}.log"
+      RETVAL=1
+    fi
+  done
+fi
+
 exit ${RETVAL}
