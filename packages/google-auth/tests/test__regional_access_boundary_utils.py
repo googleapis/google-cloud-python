@@ -876,3 +876,55 @@ def test_get_workload_identity_pool_rab_endpoint(monkeypatch):
         url
         == "https://iamcredentials.mtls.googleapis.com/v1/projects/PROJECT_NUM/locations/global/workloadIdentityPools/POOL_ID/allowedLocations"
     )
+
+
+def test_sync_refresh_manager_pickle():
+    import pickle
+    manager = _regional_access_boundary_utils._RegionalAccessBoundaryRefreshManager()
+    manager._worker = mock.Mock()
+    
+    dumped = pickle.dumps(manager)
+    loaded = pickle.loads(dumped)
+    
+    assert loaded._lock is not None
+    assert loaded._worker is None
+
+
+def test_manager_eq_different_type():
+    manager = _regional_access_boundary_utils._RegionalAccessBoundaryManager()
+    assert manager != "not a manager"
+
+
+def test_set_initial_regional_access_boundary_empty():
+    manager = _regional_access_boundary_utils._RegionalAccessBoundaryManager()
+    manager.set_initial_regional_access_boundary(encoded_locations="", expiry=datetime.datetime.now())
+    assert manager._data.encoded_locations == ""
+    assert manager._data.expiry is None
+
+
+def test_set_initial_regional_access_boundary_with_value():
+    manager = _regional_access_boundary_utils._RegionalAccessBoundaryManager()
+    expiry = datetime.datetime.now()
+    manager.set_initial_regional_access_boundary(encoded_locations="us-east1", expiry=expiry)
+    assert manager._data.encoded_locations == "us-east1"
+    assert manager._data.expiry == expiry
+
+
+
+def test_sync_refresh_manager_start_refresh_executes():
+    manager = _regional_access_boundary_utils._RegionalAccessBoundaryRefreshManager()
+    creds = mock.Mock()
+    request = mock.Mock()
+    rab_manager = mock.Mock()
+    
+    with mock.patch(
+        "google.auth._regional_access_boundary_utils._RegionalAccessBoundaryRefreshThread"
+    ) as mock_thread_class:
+        mock_thread = mock.Mock()
+        mock_thread_class.return_value = mock_thread
+        
+        manager.start_refresh(creds, request, rab_manager)
+        
+        mock_thread_class.assert_called_once()
+        mock_thread.start.assert_called_once()
+

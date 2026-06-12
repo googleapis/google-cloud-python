@@ -165,3 +165,61 @@ async def test_close_cloned_request_async_exception():
     # Should swallow the exception and not raise
     await _regional_access_boundary_utils._close_cloned_request(request, is_cloned=True)
     request.close.assert_awaited_once()
+
+
+def test_async_refresh_manager_pickle():
+    import pickle
+    manager = _regional_access_boundary_utils._AsyncRegionalAccessBoundaryRefreshManager()
+    manager._worker_task = mock.Mock()
+    
+    dumped = pickle.dumps(manager)
+    loaded = pickle.loads(dumped)
+    
+    assert loaded._lock is not None
+    assert loaded._worker_task is None
+
+
+@pytest.mark.asyncio
+async def test_async_worker_exception_logging_enabled(monkeypatch):
+    credentials = mock.AsyncMock()
+    credentials._lookup_regional_access_boundary.side_effect = Exception("lookup fail")
+    
+    request = mock.Mock()
+    request._clone.return_value = request
+    rab_manager = mock.Mock()
+    
+    # Force is_logging_enabled to return True
+    monkeypatch.setattr(_regional_access_boundary_utils._helpers, "is_logging_enabled", lambda logger: True)
+    
+    manager = _regional_access_boundary_utils._AsyncRegionalAccessBoundaryRefreshManager()
+    
+    with mock.patch.object(_regional_access_boundary_utils._LOGGER, "warning") as mock_warning:
+        manager.start_refresh(credentials, request, rab_manager)
+        await manager._worker_task
+        
+        mock_warning.assert_called_once()
+        assert "lookup raised an exception" in mock_warning.call_args[0][0]
+        rab_manager.process_regional_access_boundary_info.assert_called_once_with(None)
+
+
+@pytest.mark.asyncio
+async def test_async_worker_exception_logging_disabled(monkeypatch):
+    credentials = mock.AsyncMock()
+    credentials._lookup_regional_access_boundary.side_effect = Exception("lookup fail")
+    
+    request = mock.Mock()
+    request._clone.return_value = request
+    rab_manager = mock.Mock()
+    
+    # Force is_logging_enabled to return False
+    monkeypatch.setattr(_regional_access_boundary_utils._helpers, "is_logging_enabled", lambda logger: False)
+    
+    manager = _regional_access_boundary_utils._AsyncRegionalAccessBoundaryRefreshManager()
+    
+    with mock.patch.object(_regional_access_boundary_utils._LOGGER, "warning") as mock_warning:
+        manager.start_refresh(credentials, request, rab_manager)
+        await manager._worker_task
+        
+        mock_warning.assert_not_called()
+        rab_manager.process_regional_access_boundary_info.assert_called_once_with(None)
+

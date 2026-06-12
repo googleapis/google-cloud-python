@@ -27,7 +27,7 @@ from typing import NamedTuple, Optional, TYPE_CHECKING
 from google.auth import _helpers
 from google.auth import environment_vars
 
-if TYPE_CHECKING:
+if TYPE_CHECKING:  # pragma: NO COVER
     import google.auth.credentials
     import google.auth.transport
 
