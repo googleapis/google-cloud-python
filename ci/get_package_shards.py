@@ -82,9 +82,16 @@ def group_packages(packages):
         index = i + 1
         name = f"Shard {index}"
         
+        # Calculate a descriptive range for step visibility
+        if len(shard_packages) == 1:
+            desc = shard_packages[0].strip('/').split('/')[-1]
+        else:
+            desc = f"{shard_packages[0].strip('/').split('/')[-1]}...{shard_packages[-1].strip('/').split('/')[-1]}"
+        
         shards.append({
             "name": name,
             "index": index,
+            "description": desc,
             "packages": " ".join(shard_packages),
             "is_sharded": num_shards > 1
         })
