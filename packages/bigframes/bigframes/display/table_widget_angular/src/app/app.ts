@@ -19,7 +19,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { WidgetStateService } from './widget-state.service';
 
 @Component({
-  selector: 'app-root',
+  selector: '[app-root]',
   standalone: true,
   imports: [],
   template: `

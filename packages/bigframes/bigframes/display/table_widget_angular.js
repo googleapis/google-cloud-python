@@ -3089,7 +3089,7 @@ var Sp;
 function qs(e12, t) {
   return Sp(e12, t);
 }
-var QE = typeof document < "u" && typeof document?.documentElement?.getAnimations == "function";
+var YE = typeof document < "u" && typeof document?.documentElement?.getAnimations == "function";
 var us = /* @__PURE__ */ new WeakMap();
 var sn = /* @__PURE__ */ new WeakSet();
 function Np(e12, t) {
@@ -5929,7 +5929,7 @@ function vm(e12) {
   });
 }
 var Em = 1e4;
-var zM = Em - 1e3;
+var WM = Em - 1e3;
 function Ju(e12) {
   let { rootComponent: t, appProviders: n, platformProviders: r, platformRef: o } = e12;
   T(C.BootstrapApplicationStart);
@@ -6599,45 +6599,46 @@ var vo = class e10 {
   static \u0275prov = _({ token: e10, factory: e10.\u0275fac, providedIn: "root" });
 };
 var Hm = ["tableContainer"];
-function Vm(e12, t) {
+var Vm = ["app-root", ""];
+function Bm(e12, t) {
   if (e12 & 1 && (k(0, "div", 2), W(1), P()), e12 & 2) {
     let n = ce();
     F(), Oe(n.errorMessage());
   }
 }
-function Bm(e12, t) {
+function $m(e12, t) {
   e12 & 1 && (ao(0, "span", 7), W(1, " Run Query "));
 }
-function $m(e12, t) {
+function Um(e12, t) {
   e12 & 1 && W(0, " Run Query ");
 }
-function Um(e12, t) {
+function zm(e12, t) {
   if (e12 & 1) {
     let n = co();
     k(0, "div", 3)(1, "div", 4)(2, "p", 5), W(3), P(), k(4, "button", 6), Ae("click", function() {
       Te(n);
       let o = ce();
       return Me(o.handleRunQuery());
-    }), bn(5, Bm, 2, 0)(6, $m, 1, 0), P()()();
+    }), bn(5, $m, 2, 0)(6, Um, 1, 0), P()()();
   }
   if (e12 & 2) {
     let n = ce();
     F(3), Oe(n.dryRunInfo()), F(), ae("disabled", n.isLoading()), F(), Cn(n.isLoading() ? 5 : 6);
   }
 }
-function zm(e12, t) {
+function Wm(e12, t) {
   if (e12 & 1 && (k(0, "option", 18), W(1), P()), e12 & 2) {
     let n = t.$implicit;
     ae("value", n), F(), Oe(n === 0 ? "All" : n);
   }
 }
-function Wm(e12, t) {
+function Gm(e12, t) {
   if (e12 & 1 && (k(0, "option", 18), W(1), P()), e12 & 2) {
     let n = t.$implicit;
     ae("value", n), F(), Oe(n);
   }
 }
-function Gm(e12, t) {
+function qm(e12, t) {
   if (e12 & 1) {
     let n = co();
     k(0, "div", 8, 0), Ae("click", function(o) {
@@ -6656,11 +6657,11 @@ function Gm(e12, t) {
       Te(n);
       let i = ce();
       return Me(i.handleMaxColumnsChange(o));
-    }), io(17, zm, 2, 2, "option", 18, oo), P()(), k(19, "div", 19)(20, "label", 20), W(21, "Page size:"), P(), k(22, "select", 21), Ae("change", function(o) {
+    }), io(17, Wm, 2, 2, "option", 18, oo), P()(), k(19, "div", 19)(20, "label", 20), W(21, "Page size:"), P(), k(22, "select", 21), Ae("change", function(o) {
       Te(n);
       let i = ce();
       return Me(i.handlePageSizeChange(o));
-    }), io(23, Wm, 2, 2, "option", 18, oo), P()()()();
+    }), io(23, Gm, 2, 2, "option", 18, oo), P()()()();
   }
   if (e12 & 2) {
     let n = ce();
@@ -6781,24 +6782,24 @@ var Eo = class e11 {
   static \u0275fac = function(n) {
     return new (n || e11)();
   };
-  static \u0275cmp = na({ type: e11, selectors: [["app-root"]], viewQuery: function(n, r) {
+  static \u0275cmp = na({ type: e11, selectors: [["", "app-root", ""]], viewQuery: function(n, r) {
     if (n & 1 && lo(Hm, 7), n & 2) {
       let o;
       aa(o = ca()) && (r.tableContainerRef = o.first);
     }
-  }, decls: 4, vars: 4, consts: [["tableContainer", ""], [1, "bigframes-widget"], [1, "bigframes-error-message"], [1, "deferred-container"], [1, "deferred-card"], [1, "deferred-estimate"], [1, "run-query-button", 3, "click", "disabled"], [1, "spinner"], [1, "table-container", 3, "click", "innerHTML"], [1, "footer"], [1, "row-count"], [1, "pagination"], [3, "click", "disabled"], [1, "page-indicator"], [1, "settings"], [1, "max-columns"], ["for", "max-cols-select"], ["id", "max-cols-select", 3, "change", "value"], [3, "value"], [1, "page-size"], ["for", "page-size-select"], ["id", "page-size-select", 3, "change", "value"]], template: function(n, r) {
-    n & 1 && (k(0, "div", 1), bn(1, Vm, 2, 1, "div", 2), bn(2, Um, 7, 3, "div", 3)(3, Gm, 25, 7), P()), n & 2 && (uo("bigframes-dark-mode", r.isDarkMode()), F(), Cn(r.errorMessage() ? 1 : -1), F(), Cn(r.isDeferredMode() ? 2 : 3));
+  }, attrs: Vm, decls: 4, vars: 4, consts: [["tableContainer", ""], [1, "bigframes-widget"], [1, "bigframes-error-message"], [1, "deferred-container"], [1, "deferred-card"], [1, "deferred-estimate"], [1, "run-query-button", 3, "click", "disabled"], [1, "spinner"], [1, "table-container", 3, "click", "innerHTML"], [1, "footer"], [1, "row-count"], [1, "pagination"], [3, "click", "disabled"], [1, "page-indicator"], [1, "settings"], [1, "max-columns"], ["for", "max-cols-select"], ["id", "max-cols-select", 3, "change", "value"], [3, "value"], [1, "page-size"], ["for", "page-size-select"], ["id", "page-size-select", 3, "change", "value"]], template: function(n, r) {
+    n & 1 && (k(0, "div", 1), bn(1, Bm, 2, 1, "div", 2), bn(2, zm, 7, 3, "div", 3)(3, qm, 25, 7), P()), n & 2 && (uo("bigframes-dark-mode", r.isDarkMode()), F(), Cn(r.errorMessage() ? 1 : -1), F(), Cn(r.isDeferredMode() ? 2 : 3));
   }, styles: [".bigframes-widget.bigframes-widget[_ngcontent-%COMP%]{--bf-bg: white;--bf-border-color: #ccc;--bf-error-bg: #fbe;--bf-error-border: red;--bf-error-fg: black;--bf-fg: black;--bf-header-bg: #f5f5f5;--bf-null-fg: gray;--bf-row-even-bg: #f5f5f5;--bf-row-odd-bg: white;background-color:var(--bf-bg);box-sizing:border-box;color:var(--bf-fg);display:flex;flex-direction:column;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif;margin:0;padding:0}.bigframes-widget[_ngcontent-%COMP%]   *[_ngcontent-%COMP%]{box-sizing:border-box}@media(prefers-color-scheme:dark){.bigframes-widget.bigframes-widget[_ngcontent-%COMP%]{--bf-bg: var(--vscode-editor-background, #202124);--bf-border-color: #444;--bf-error-bg: #511;--bf-error-border: #f88;--bf-error-fg: #fcc;--bf-fg: white;--bf-header-bg: var(--vscode-editor-background, black);--bf-null-fg: #aaa;--bf-row-even-bg: #202124;--bf-row-odd-bg: #383838}}.bigframes-widget.bigframes-dark-mode.bigframes-dark-mode[_ngcontent-%COMP%]{--bf-bg: var(--vscode-editor-background, #202124);--bf-border-color: #444;--bf-error-bg: #511;--bf-error-border: #f88;--bf-error-fg: #fcc;--bf-fg: white;--bf-header-bg: var(--vscode-editor-background, black);--bf-null-fg: #aaa;--bf-row-even-bg: #202124;--bf-row-odd-bg: #383838}.bigframes-widget[_ngcontent-%COMP%]   .table-container[_ngcontent-%COMP%]{background-color:var(--bf-bg);margin:0;max-height:620px;overflow:auto;padding:0}.bigframes-widget[_ngcontent-%COMP%]   .footer[_ngcontent-%COMP%]{align-items:center;background-color:var(--bf-bg);color:var(--bf-fg);display:flex;font-size:.8rem;justify-content:space-between;padding:8px}.bigframes-widget[_ngcontent-%COMP%]   .footer[_ngcontent-%COMP%] > *[_ngcontent-%COMP%]{flex:1}.bigframes-widget[_ngcontent-%COMP%]   .pagination[_ngcontent-%COMP%]{align-items:center;display:flex;flex-direction:row;gap:4px;justify-content:center;padding:4px}.bigframes-widget[_ngcontent-%COMP%]   .page-indicator[_ngcontent-%COMP%], .bigframes-widget[_ngcontent-%COMP%]   .row-count[_ngcontent-%COMP%]{margin:0 8px}.bigframes-widget[_ngcontent-%COMP%]   .settings[_ngcontent-%COMP%]{align-items:center;display:flex;flex-direction:row;gap:16px;justify-content:end}.bigframes-widget[_ngcontent-%COMP%]   .page-size[_ngcontent-%COMP%], .bigframes-widget[_ngcontent-%COMP%]   .max-columns[_ngcontent-%COMP%]{align-items:center;display:flex;flex-direction:row;gap:4px}.bigframes-widget[_ngcontent-%COMP%]   .page-size[_ngcontent-%COMP%]   label[_ngcontent-%COMP%], .bigframes-widget[_ngcontent-%COMP%]   .max-columns[_ngcontent-%COMP%]   label[_ngcontent-%COMP%]{margin-right:8px}.bigframes-widget[_ngcontent-%COMP%]     table.bigframes-widget-table, .bigframes-widget[_ngcontent-%COMP%]     table.dataframe{background-color:var(--bf-bg);border:1px solid var(--bf-border-color);border-collapse:collapse;border-spacing:0;box-shadow:none;color:var(--bf-fg);margin:0;outline:none;text-align:left;width:auto}.bigframes-widget[_ngcontent-%COMP%]     tr{border:none}.bigframes-widget[_ngcontent-%COMP%]     th{background-color:var(--bf-header-bg);border:1px solid var(--bf-border-color);color:var(--bf-fg);padding:0;position:sticky;text-align:left;top:0;z-index:1}.bigframes-widget[_ngcontent-%COMP%]     td{border:1px solid var(--bf-border-color);color:var(--bf-fg);padding:.5em}.bigframes-widget[_ngcontent-%COMP%]     table tbody tr:nth-child(odd), .bigframes-widget[_ngcontent-%COMP%]     table tbody tr:nth-child(odd) td{background-color:var(--bf-row-odd-bg)}.bigframes-widget[_ngcontent-%COMP%]     table tbody tr:nth-child(2n), .bigframes-widget[_ngcontent-%COMP%]     table tbody tr:nth-child(2n) td{background-color:var(--bf-row-even-bg)}.bigframes-widget[_ngcontent-%COMP%]     .bf-header-content{box-sizing:border-box;height:100%;overflow:auto;padding:.5em;resize:horizontal;width:100%}.bigframes-widget[_ngcontent-%COMP%]     th .sort-indicator{padding-left:4px;visibility:hidden}.bigframes-widget[_ngcontent-%COMP%]     th:hover .sort-indicator{visibility:visible}.bigframes-widget[_ngcontent-%COMP%]   button[_ngcontent-%COMP%]{background-color:transparent;border:1px solid currentColor;border-radius:4px;color:inherit;cursor:pointer;display:inline-block;padding:2px 8px;text-align:center;text-decoration:none;-webkit-user-select:none;user-select:none;vertical-align:middle}.bigframes-widget[_ngcontent-%COMP%]   button[_ngcontent-%COMP%]:disabled{opacity:.65;pointer-events:none}.bigframes-widget[_ngcontent-%COMP%]   .bigframes-error-message[_ngcontent-%COMP%]{background-color:var(--bf-error-bg);border:1px solid var(--bf-error-border);border-radius:4px;color:var(--bf-error-fg);font-size:14px;margin-bottom:8px;padding:8px}.bigframes-widget[_ngcontent-%COMP%]     .cell-align-right{text-align:right}.bigframes-widget[_ngcontent-%COMP%]     .cell-align-left{text-align:left}.bigframes-widget[_ngcontent-%COMP%]     .null-value{color:var(--bf-null-fg)}.bigframes-widget[_ngcontent-%COMP%]     .debug-info{border-top:1px solid var(--bf-border-color)}.bigframes-widget[_ngcontent-%COMP%]   .deferred-container[_ngcontent-%COMP%]{align-items:center;display:flex;justify-content:center;min-height:220px;padding:24px;width:100%}.bigframes-widget[_ngcontent-%COMP%]   .deferred-card[_ngcontent-%COMP%]{background:linear-gradient(135deg,#fff9,#ffffff4d);border:1px solid rgba(255,255,255,.4);border-radius:16px;box-shadow:0 8px 32px #1f268712;display:flex;flex-direction:column;gap:16px;max-width:500px;padding:32px;text-align:center;transition:all .3s ease-in-out}.bigframes-widget.bigframes-dark-mode[_ngcontent-%COMP%]   .deferred-card[_ngcontent-%COMP%]{background:linear-gradient(135deg,#20212499,#2021244d);border:1px solid rgba(255,255,255,.1);box-shadow:0 8px 32px #0000004d}@media(prefers-color-scheme:dark){.bigframes-widget[_ngcontent-%COMP%]   .deferred-card[_ngcontent-%COMP%]{background:linear-gradient(135deg,#20212499,#2021244d);border:1px solid rgba(255,255,255,.1);box-shadow:0 8px 32px #0000004d}}.bigframes-widget[_ngcontent-%COMP%]   .deferred-title[_ngcontent-%COMP%]{font-size:1.1rem;font-weight:600;margin:0}.bigframes-widget[_ngcontent-%COMP%]   .deferred-estimate[_ngcontent-%COMP%]{color:var(--bf-null-fg);font-size:.9rem;margin:0}.bigframes-widget[_ngcontent-%COMP%]   .run-query-button[_ngcontent-%COMP%]{align-items:center;background-color:var(--bf-fg);border:1px solid var(--bf-fg);border-radius:8px;color:var(--bf-bg);cursor:pointer;display:inline-flex;font-size:14px;font-weight:600;gap:8px;justify-content:center;padding:10px 20px;transition:transform .2s ease,opacity .2s ease}.bigframes-widget[_ngcontent-%COMP%]   .run-query-button[_ngcontent-%COMP%]:hover{opacity:.9;transform:translateY(-1px)}.bigframes-widget[_ngcontent-%COMP%]   .run-query-button[_ngcontent-%COMP%]:active{transform:translateY(0)}.bigframes-widget[_ngcontent-%COMP%]   .run-query-button[_ngcontent-%COMP%]:disabled{cursor:not-allowed;opacity:.6}.bigframes-widget[_ngcontent-%COMP%]   .spinner[_ngcontent-%COMP%]{animation:_ngcontent-%COMP%_spin 1s linear infinite;border:2px solid currentColor;border-radius:50%;border-top-color:transparent;display:inline-block;height:12px;width:12px}@keyframes _ngcontent-%COMP%_spin{to{transform:rotate(360deg)}}"] });
 };
-function qm({ model: e12, el: t }) {
-  let n = document.createElement("app-root");
-  t.appendChild(n);
+function Zm({ model: e12, el: t }) {
+  let n = document.createElement("div");
+  n.setAttribute("app-root", ""), t.appendChild(n);
   let r = { providers: [Vi(), ua(), { provide: "ANYWIDGET_MODEL", useValue: e12 }] };
   Ca(r).then((o) => {
-    o.bootstrap(Eo, n);
+    o.bootstrap(Eo, n), n.removeAttribute("app-root");
   }).catch((o) => console.error(o));
 }
-var iS = { render: qm };
+var sS = { render: Zm };
 export {
-  iS as default
+  sS as default
 };
