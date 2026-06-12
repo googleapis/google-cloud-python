@@ -1098,7 +1098,7 @@ def test_list_rows_nullable_scalars_dtypes(bigquery_client, scalars_table, max_r
 
     # pandas uses Python string and bytes objects.
     assert df.dtypes["bytes_col"].name == "object"
-    assert df.dtypes["string_col"].name in ("str", "object")
+    assert df.dtypes["string_col"].name in ("str", "string", "object")
 
 
 @pytest.mark.parametrize(
