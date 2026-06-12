@@ -153,15 +153,17 @@ class TestRequestResponse(async_compliance.RequestResponseTests):
         request = aiohttp_requests.Request(http)
         with mock.patch(
             "aiohttp.ClientSession", autospec=True
-        ) as session_mock, mock.patch(
-            "aiohttp.TCPConnector", autospec=True
-        ) as connector_mock:
+        ) as session_mock, mock.patch.object(
+            aiohttp.TCPConnector, "__init__", autospec=True, return_value=None
+        ) as connector_init_mock:
+            session_mock.return_value._auto_decompress = False
             cloned = request._clone()
 
         assert isinstance(cloned, aiohttp_requests.Request)
         assert cloned is not request
 
-        connector_mock.assert_called_once_with(
+        connector_init_mock.assert_called_once_with(
+            mock.ANY,
             ssl=mock.sentinel.ssl,
             limit=50,
             limit_per_host=10,
@@ -171,7 +173,7 @@ class TestRequestResponse(async_compliance.RequestResponseTests):
         )
 
         session_mock.assert_called_once_with(
-            connector=connector_mock.return_value,
+            connector=mock.ANY,
             auto_decompress=False,
             trust_env=False,
             trace_configs=[mock.sentinel.trace_config],
@@ -181,6 +183,7 @@ class TestRequestResponse(async_compliance.RequestResponseTests):
             timeout=mock.sentinel.timeout,
             json_serialize=mock.sentinel.json_serialize,
         )
+        assert isinstance(session_mock.call_args[1]["connector"], aiohttp.TCPConnector)
 
     @pytest.mark.asyncio
     async def test__clone_closed(self):
