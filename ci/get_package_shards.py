@@ -52,19 +52,23 @@ def get_packages_to_test():
     
     return to_test
 
-def group_packages(packages, max_packages_per_shard=50, max_total_shards=10):
+def group_packages(packages):
     if not packages:
         return []
     
     num_packages = len(packages)
     
-    # Calculate number of shards based on packages per shard
-    num_shards = math.ceil(num_packages / max_packages_per_shard)
+    # 1. Only shard if > 10 packages are being touched
+    # 2. Only add a new shard if we'd have > 10 in each shard (meaning size >= 11)
+    num_shards = num_packages // 11
     
-    # Cap the total number of shards
-    num_shards = min(num_shards, max_total_shards)
+    # Ensure at least 1 shard if we have packages
+    num_shards = max(1, num_shards)
     
-    # Recalculate shard size to be as even as possible given the capped shards
+    # 3. Top out at 10 shards
+    num_shards = min(10, num_shards)
+    
+    # Distribute packages between them as evenly as possible
     shard_size = math.ceil(num_packages / num_shards)
     
     shards = []
@@ -81,12 +85,12 @@ def group_packages(packages, max_packages_per_shard=50, max_total_shards=10):
         shards.append({
             "name": name,
             "index": index,
-            "packages": " ".join(shard_packages)
+            "packages": " ".join(shard_packages),
+            "is_sharded": num_shards > 1
         })
     return shards
 
 if __name__ == "__main__":
     packages = get_packages_to_test()
-    # Shard into groups of ~50 libraries, up to 10 parallel jobs
-    shards = group_packages(packages, max_packages_per_shard=50, max_total_shards=10)
+    shards = group_packages(packages)
     print(json.dumps(shards))
