@@ -16,6 +16,7 @@ import datetime
 import threading
 import uuid
 import warnings
+from concurrent.futures import ThreadPoolExecutor
 from typing import List, Optional, Sequence
 
 import google.cloud.bigquery as bigquery
@@ -170,19 +171,23 @@ class AnonymousDatasetManager(temporary_storage.TemporaryStorageManager):
 
     def close(self):
         """Delete tables that were created with this session's session_id."""
-        for table_ref in self._table_ids:
-            self.bqclient.delete_table(table_ref, not_found_ok=True)
+        with ThreadPoolExecutor() as executor:
+            for table_ref in self._table_ids:
+                executor.submit(self.bqclient.delete_table, table_ref, not_found_ok=True)
         self._table_ids.clear()
 
-        try:
-            # Before closing the session, attempt to clean up any uncollected,
-            # old Python UDFs residing in the anonymous dataset. These UDFs
-            # accumulate over time and can eventually exceed resource limits.
-            # See more from b/450913424.
-            self._cleanup_old_udfs()
-        except Exception as e:
-            # Log a warning on the failure, do not interrupt the workflow.
-            msg = bfe.format_message(
-                f"Failed to clean up the old Python UDFs before closing the session: {e}"
-            )
-            warnings.warn(msg, category=bfe.CleanupFailedWarning)
+        def run_cleanup():
+            try:
+                # Before closing the session, attempt to clean up any uncollected,
+                # old Python UDFs residing in the anonymous dataset. These UDFs
+                # accumulate over time and can eventually exceed resource limits.
+                # See more from b/450913424.
+                self._cleanup_old_udfs()
+            except Exception as e:
+                # Log a warning on the failure, do not interrupt the workflow.
+                msg = bfe.format_message(
+                    f"Failed to clean up the old Python UDFs before closing the session: {e}"
+                )
+                warnings.warn(msg, category=bfe.CleanupFailedWarning)
+
+        threading.Thread(target=run_cleanup, daemon=True, name="bigframes-udf-cleanup").start()
