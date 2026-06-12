@@ -109,6 +109,8 @@ run_package_test() {
 
 # A file for running system tests
 system_test_script="${PROJECT_ROOT}/.kokoro/system-single.sh"
+# Ensure KOKORO_ARTIFACTS_DIR is set, fallback to a local directory
+export KOKORO_ARTIFACTS_DIR="${KOKORO_ARTIFACTS_DIR:-${PROJECT_ROOT}/.artifacts}"
 
 # Parallel execution settings
 MAX_PARALLEL=4
@@ -123,24 +125,26 @@ handle_finished_job() {
   local pid=$1
   local pkg=${pid_to_pkg[$pid]}
   local resfile=${pid_to_resfile[$pid]}
-  
+
   # wait $pid might fail if it was already reaped by wait -n, 
   # so we ignore its exit code and use the resfile.
   wait "$pid" 2>/dev/null || true
-  
+
   local res=1
-  if [ -f "$resfile" ]; then
+  if [ -s "$resfile" ]; then
     res=$(cat "$resfile")
     rm "$resfile"
+  else
+    # If the file is empty or missing, the subshell crashed early
+    res=1
   fi
-  
+
   echo "------------------------------------------------------------"
   echo "System tests for ${pkg} finished (Exit code: ${res})"
   echo "Artifacts in: ${KOKORO_ARTIFACTS_DIR}/${pkg}"
   echo "------------------------------------------------------------"
-  
-  if [ "${res}" -ne 0 ]; then
-    RETVAL=${res}
+  if [ -z "${res}" ] || [ "${res}" -ne 0 ]; then
+    RETVAL=1
     results+=("${pkg}: FAILED")
   else
     results+=("${pkg}: PASSED")
@@ -214,8 +218,12 @@ for path in `find 'packages' \
       # Start the next test in the background
       res_file=$(mktemp)
       (
-        run_package_test "$package_name"
-        echo $? > "$res_file"
+        if run_package_test "$package_name"; then
+          echo 0 > "$res_file"
+        else
+          res=$?
+          echo $res > "$res_file"
+        fi
       ) &
       pid=$!
       running_pids+=($pid)
