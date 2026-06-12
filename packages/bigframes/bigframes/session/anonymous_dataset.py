@@ -175,7 +175,9 @@ class AnonymousDatasetManager(temporary_storage.TemporaryStorageManager):
             try:
                 with ThreadPoolExecutor() as executor:
                     futures = [
-                        executor.submit(self.bqclient.delete_table, table_ref, not_found_ok=True)
+                        executor.submit(
+                            self.bqclient.delete_table, table_ref, not_found_ok=True
+                        )
                         for table_ref in self._table_ids
                     ]
                     for future in futures:
@@ -183,20 +185,15 @@ class AnonymousDatasetManager(temporary_storage.TemporaryStorageManager):
             finally:
                 self._table_ids.clear()
 
-        def run_cleanup():
-            try:
-                # Before closing the session, attempt to clean up any uncollected,
-                # old Python UDFs residing in the anonymous dataset. These UDFs
-                # accumulate over time and can eventually exceed resource limits.
-                # See more from b/450913424.
-                self._cleanup_old_udfs()
-            except Exception as e:
-                # Log a warning on the failure, do not interrupt the workflow.
-                msg = bfe.format_message(
-                    f"Failed to clean up the old Python UDFs before closing the session: {e}"
-                )
-                warnings.warn(msg, category=bfe.CleanupFailedWarning)
-
-        threading.Thread(
-            target=run_cleanup, daemon=True, name="bigframes-udf-cleanup"
-        ).start()
+        try:
+            # Before closing the session, attempt to clean up any uncollected,
+            # old Python UDFs residing in the anonymous dataset. These UDFs
+            # accumulate over time and can eventually exceed resource limits.
+            # See more from b/450913424.
+            self._cleanup_old_udfs()
+        except Exception as e:
+            # Log a warning on the failure, do not interrupt the workflow.
+            msg = bfe.format_message(
+                f"Failed to clean up the old Python UDFs before closing the session: {e}"
+            )
+            warnings.warn(msg, category=bfe.CleanupFailedWarning)
