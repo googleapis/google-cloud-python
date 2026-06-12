@@ -51,12 +51,14 @@ class JobMetadata:
     input_bytes: Optional[int] = None
     output_rows: Optional[int] = None
     source_format: Optional[str] = None
+    cell_execution_count: Optional[int] = None
 
     @classmethod
     def from_job(
         cls,
         query_job: Union[QueryJob, LoadJob],
         exec_seconds: Optional[float] = None,
+        cell_execution_count: Optional[int] = None,
     ) -> "JobMetadata":
         query_text = getattr(query_job, "query", None)
         if query_text and len(query_text) > 1024:
@@ -71,6 +73,11 @@ class JobMetadata:
                 f"{job_id}&page=queryresults"
             )
 
+        if cell_execution_count is None:
+            from bigframes.core.utils import get_ipython_execution_count
+
+            cell_execution_count = get_ipython_execution_count()
+
         metadata = cls(
             job_id=query_job.job_id,
             location=query_job.location,
@@ -84,6 +91,7 @@ class JobMetadata:
             error_result=query_job.error_result,
             query=query_text,
             job_url=job_url,
+            cell_execution_count=cell_execution_count,
         )
         if isinstance(query_job, QueryJob):
             metadata.cached = getattr(query_job, "cache_hit", None)
@@ -117,6 +125,7 @@ class JobMetadata:
         cls,
         row_iterator: bq_table.RowIterator,
         exec_seconds: Optional[float] = None,
+        cell_execution_count: Optional[int] = None,
     ) -> "JobMetadata":
         query_text = getattr(row_iterator, "query", None)
         if query_text and len(query_text) > 1024:
@@ -131,6 +140,11 @@ class JobMetadata:
                 f"https://console.cloud.google.com/bigquery?"
                 f"project={project}&j=bq:{location}:{job_id}&page=queryresults"
             )
+
+        if cell_execution_count is None:
+            from bigframes.core.utils import get_ipython_execution_count
+
+            cell_execution_count = get_ipython_execution_count()
 
         # fmt: off
         return cls(
@@ -151,6 +165,7 @@ class JobMetadata:
             cached=getattr(row_iterator, "cache_hit", None),
             query=query_text,
             job_url=job_url,
+            cell_execution_count=cell_execution_count,
         )
         # fmt: on
 
@@ -169,6 +184,8 @@ class ExecutionMetrics:
         self,
         query_job: Optional[Union[QueryJob, LoadJob]] = None,
         row_iterator: Optional[bq_table.RowIterator] = None,
+        *,
+        cell_execution_count: Optional[int] = None,
     ):
         if query_job is None:
             assert row_iterator is not None
@@ -194,7 +211,9 @@ class ExecutionMetrics:
 
             self.jobs.append(
                 JobMetadata.from_row_iterator(
-                    row_iterator, exec_seconds=exec_seconds
+                    row_iterator,
+                    exec_seconds=exec_seconds,
+                    cell_execution_count=cell_execution_count,
                 )
             )
 
@@ -225,7 +244,9 @@ class ExecutionMetrics:
                 self.execution_secs += exec_seconds or 0
 
                 metadata = JobMetadata.from_job(
-                    query_job, exec_seconds=exec_seconds
+                    query_job,
+                    exec_seconds=exec_seconds,
+                    cell_execution_count=cell_execution_count,
                 )
                 self.jobs.append(metadata)
 
@@ -237,7 +258,11 @@ class ExecutionMetrics:
                 else None
             )
             self.jobs.append(
-                JobMetadata.from_job(query_job, exec_seconds=duration)
+                JobMetadata.from_job(
+                    query_job,
+                    exec_seconds=duration,
+                    cell_execution_count=cell_execution_count,
+                )
             )
 
         # For pytest runs only, log information about the query job
@@ -284,6 +309,7 @@ class ExecutionMetrics:
         # EventEnvelope, ensuring subscribers receive a consistent contract.
         assert isinstance(envelope, bigframes.core.events.EventEnvelope)
         event = envelope.event
+        cell_execution_count = envelope.cell_execution_count
 
         if isinstance(event, bigframes.core.events.ExecutionFinished):
             if event.result and isinstance(event.result, LocalExecuteResult):
@@ -291,10 +317,16 @@ class ExecutionMetrics:
                 bytes_processed = event.result.total_bytes_processed or 0
                 self.bytes_processed += bytes_processed
 
+                if cell_execution_count is None:
+                    from bigframes.core.utils import get_ipython_execution_count
+
+                    cell_execution_count = get_ipython_execution_count()
+
                 metadata = JobMetadata(
                     job_type="polars",
                     status="DONE",
                     total_bytes_processed=bytes_processed,
+                    cell_execution_count=cell_execution_count,
                 )
                 self.jobs.append(metadata)
 

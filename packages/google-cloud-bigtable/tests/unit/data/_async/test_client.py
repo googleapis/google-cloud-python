@@ -15,7 +15,6 @@ from __future__ import annotations
 
 import asyncio
 import re
-import sys
 
 import grpc
 import mock
@@ -77,6 +76,21 @@ else:
     CrossSync.add_mapping("MetricsInterceptor", BigtableMetricsInterceptor)
 
 __CROSS_SYNC_OUTPUT__ = "tests.unit.data._sync_autogen.test_client"
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 @CrossSync.convert_class(
@@ -258,9 +272,6 @@ class TestBigtableDataClientAsync:
 
     @CrossSync.drop
     @CrossSync.pytest
-    @pytest.mark.skipif(
-        sys.version_info < (3, 8), reason="Task.name requires python3.8 or higher"
-    )
     async def test__start_background_channel_refresh_task_names(self):
         # if tasks exist, should do nothing
         client = self._make_client(project="project-id", use_emulator=False)
@@ -1110,9 +1121,12 @@ class TestBigtableDataClientAsync:
         """Test that configured universe domain errors with mismatched universe
         domain credentials.
         """
+        creds = AnonymousCredentials()
+        universe_exists = hasattr(creds, "universe_domain")
+        if not universe_exists:
+            pytest.skip("Skip test for older versions of google-auth")
         universe_domain = "test-universe.test"
         options = client_options.ClientOptions(universe_domain=universe_domain)
-        creds = AnonymousCredentials()
         creds._universe_domain = "different-universe"
         with pytest.raises(ValueError) as exc:
             self._make_client(
@@ -1996,9 +2010,21 @@ class TestReadRowsAsync:
         async with self._make_client() as client:
             table = client.get_table("instance", "table")
             row_key = b"test_1"
-            with mock.patch.object(table, "read_rows") as read_rows:
+            with mock.patch.object(
+                CrossSync, "_ReadRowsOperation"
+            ) as mock_op_constructor:
+                mock_op = mock.Mock()
                 expected_result = object()
-                read_rows.side_effect = lambda *args, **kwargs: [expected_result]
+
+                if CrossSync.is_async:
+
+                    async def mock_generator():
+                        yield expected_result
+
+                    mock_op.start_operation.return_value = mock_generator()
+                else:
+                    mock_op.start_operation.return_value = [expected_result]
+                mock_op_constructor.return_value = mock_op
                 expected_op_timeout = 8
                 expected_req_timeout = 4
                 row = await table.read_row(
@@ -2007,16 +2033,17 @@ class TestReadRowsAsync:
                     attempt_timeout=expected_req_timeout,
                 )
                 assert row == expected_result
-                assert read_rows.call_count == 1
-                args, kwargs = read_rows.call_args_list[0]
+                assert mock_op_constructor.call_count == 1
+                args, kwargs = mock_op_constructor.call_args_list[0]
                 assert kwargs["operation_timeout"] == expected_op_timeout
                 assert kwargs["attempt_timeout"] == expected_req_timeout
-                assert len(args) == 1
+                assert len(args) == 2
                 assert isinstance(args[0], ReadRowsQuery)
                 query = args[0]
                 assert query.row_keys == [row_key]
                 assert query.row_ranges == []
                 assert query.limit == 1
+                assert args[1] is table
 
     @CrossSync.pytest
     async def test_read_row_w_filter(self):
@@ -2024,14 +2051,24 @@ class TestReadRowsAsync:
         async with self._make_client() as client:
             table = client.get_table("instance", "table")
             row_key = b"test_1"
-            with mock.patch.object(table, "read_rows") as read_rows:
+            with mock.patch.object(
+                CrossSync, "_ReadRowsOperation"
+            ) as mock_op_constructor:
+                mock_op = mock.Mock()
                 expected_result = object()
-                read_rows.side_effect = lambda *args, **kwargs: [expected_result]
+
+                if CrossSync.is_async:
+
+                    async def mock_generator():
+                        yield expected_result
+
+                    mock_op.start_operation.return_value = mock_generator()
+                else:
+                    mock_op.start_operation.return_value = [expected_result]
+                mock_op_constructor.return_value = mock_op
                 expected_op_timeout = 8
                 expected_req_timeout = 4
-                mock_filter = mock.Mock()
-                expected_filter = {"filter": "mock filter"}
-                mock_filter._to_dict.return_value = expected_filter
+                expected_filter = mock.Mock()
                 row = await table.read_row(
                     row_key,
                     operation_timeout=expected_op_timeout,
@@ -2039,11 +2076,11 @@ class TestReadRowsAsync:
                     row_filter=expected_filter,
                 )
                 assert row == expected_result
-                assert read_rows.call_count == 1
-                args, kwargs = read_rows.call_args_list[0]
+                assert mock_op_constructor.call_count == 1
+                args, kwargs = mock_op_constructor.call_args_list[0]
                 assert kwargs["operation_timeout"] == expected_op_timeout
                 assert kwargs["attempt_timeout"] == expected_req_timeout
-                assert len(args) == 1
+                assert len(args) == 2
                 assert isinstance(args[0], ReadRowsQuery)
                 query = args[0]
                 assert query.row_keys == [row_key]
@@ -2057,9 +2094,21 @@ class TestReadRowsAsync:
         async with self._make_client() as client:
             table = client.get_table("instance", "table")
             row_key = b"test_1"
-            with mock.patch.object(table, "read_rows") as read_rows:
-                # return no rows
-                read_rows.side_effect = lambda *args, **kwargs: []
+            with mock.patch.object(
+                CrossSync, "_ReadRowsOperation"
+            ) as mock_op_constructor:
+                mock_op = mock.Mock()
+
+                if CrossSync.is_async:
+
+                    async def mock_generator():
+                        if False:
+                            yield
+
+                    mock_op.start_operation.return_value = mock_generator()
+                else:
+                    mock_op.start_operation.return_value = []
+                mock_op_constructor.return_value = mock_op
                 expected_op_timeout = 8
                 expected_req_timeout = 4
                 result = await table.read_row(
@@ -2068,8 +2117,8 @@ class TestReadRowsAsync:
                     attempt_timeout=expected_req_timeout,
                 )
                 assert result is None
-                assert read_rows.call_count == 1
-                args, kwargs = read_rows.call_args_list[0]
+                assert mock_op_constructor.call_count == 1
+                args, kwargs = mock_op_constructor.call_args_list[0]
                 assert kwargs["operation_timeout"] == expected_op_timeout
                 assert kwargs["attempt_timeout"] == expected_req_timeout
                 assert isinstance(args[0], ReadRowsQuery)
@@ -2092,22 +2141,36 @@ class TestReadRowsAsync:
         async with self._make_client() as client:
             table = client.get_table("instance", "table")
             row_key = b"test_1"
-            with mock.patch.object(table, "read_rows") as read_rows:
-                # return no rows
-                read_rows.side_effect = lambda *args, **kwargs: return_value
-                expected_op_timeout = 1
-                expected_req_timeout = 2
+            with mock.patch.object(
+                CrossSync, "_ReadRowsOperation"
+            ) as mock_op_constructor:
+                mock_op = mock.Mock()
+                if CrossSync.is_async:
+
+                    async def mock_generator():
+                        for item in return_value:
+                            yield item
+
+                    mock_op.start_operation.return_value = mock_generator()
+                else:
+                    mock_op.start_operation.return_value = return_value
+                mock_op_constructor.return_value = mock_op
+                expected_op_timeout = 2
+                expected_req_timeout = 1
                 result = await table.row_exists(
                     row_key,
                     operation_timeout=expected_op_timeout,
                     attempt_timeout=expected_req_timeout,
                 )
                 assert expected_result == result
-                assert read_rows.call_count == 1
-                args, kwargs = read_rows.call_args_list[0]
+                assert mock_op_constructor.call_count == 1
+                args, kwargs = mock_op_constructor.call_args_list[0]
                 assert kwargs["operation_timeout"] == expected_op_timeout
                 assert kwargs["attempt_timeout"] == expected_req_timeout
-                assert isinstance(args[0], ReadRowsQuery)
+                query = args[0]
+                assert isinstance(query, ReadRowsQuery)
+                assert query.row_keys == [row_key]
+                assert query.limit == 1
                 expected_filter = {
                     "chain": {
                         "filters": [
@@ -2116,10 +2179,6 @@ class TestReadRowsAsync:
                         ]
                     }
                 }
-                query = args[0]
-                assert query.row_keys == [row_key]
-                assert query.row_ranges == []
-                assert query.limit == 1
                 assert query.filter._to_dict() == expected_filter
 
 
@@ -2290,7 +2349,7 @@ class TestReadRowsShardedAsync:
         from google.cloud.bigtable.data._helpers import _CONCURRENCY_LIMIT
         from google.cloud.bigtable.data.exceptions import ShardedReadRowsExceptionGroup
 
-        operation_timeout = 0.1
+        operation_timeout = 5.0
 
         # let the first batch complete, but the next batch times out
         num_queries = 15
@@ -2303,7 +2362,7 @@ class TestReadRowsShardedAsync:
             if isinstance(next_item, Exception):
                 raise next_item
             else:
-                await asyncio.sleep(next_item)
+                await CrossSync.sleep(next_item)
             return [mock.Mock()]
 
         async with self._make_client() as client:
@@ -2391,6 +2450,32 @@ class TestSampleRowKeysAsync:
                     assert result[0] == samples[0]
                     assert result[1] == samples[1]
                     assert result[2] == samples[2]
+
+    @CrossSync.pytest
+    async def test_sample_row_keys_w_row_range(self):
+        """
+        Test that method returns the expected key samples when row_range is provided
+        """
+        samples = [
+            (b"a_key1", 100),
+            (b"b", 200),
+        ]
+        from google.cloud.bigtable.data import RowRange
+
+        row_range = RowRange(start_key=b"a", end_key=b"b")
+        async with self._make_client() as client:
+            async with client.get_table("instance", "table") as table:
+                with mock.patch.object(
+                    table.client._gapic_client, "sample_row_keys", CrossSync.Mock()
+                ) as sample_row_keys:
+                    sample_row_keys.return_value = self._make_gapic_stream(samples)
+                    result = await table.sample_row_keys(row_range=row_range)
+                    assert len(result) == 2
+                    assert result[0] == samples[0]
+                    assert result[1] == samples[1]
+                    sample_row_keys.assert_called_once()
+                    called_request = sample_row_keys.call_args[1]["request"]
+                    assert called_request.row_range == row_range._to_pb()
 
     @CrossSync.pytest
     async def test_sample_row_keys_bad_timeout(self):
@@ -3447,6 +3532,44 @@ class TestExecuteQueryAsync:
         assert results[0]["b"] == 9
         assert execute_query_mock.call_count == 1
         assert prepare_mock.call_count == 1
+
+    @CrossSync.pytest
+    async def test_execute_query_with_view_parameters(
+        self, client, execute_query_mock, prepare_mock
+    ):
+        values = [
+            *chunked_responses(2, str_val("test2"), int_val(9), token=b"r2"),
+        ]
+        execute_query_mock.return_value = self._make_gapic_stream(values)
+        query_str = f"SELECT a, b FROM {self.TABLE_NAME} WHERE user_id = VIEW_PARAMETERS('user_id')"
+        result = await client.execute_query(
+            query_str,
+            self.INSTANCE_NAME,
+            view_parameters={"user_id": "alice"},
+        )
+        results = [r async for r in result]
+        assert len(results) == 1
+        assert results[0]["a"] == "test2"
+        assert results[0]["b"] == 9
+        assert execute_query_mock.call_count == 1
+        assert prepare_mock.call_count == 1
+        assert prepare_mock.call_args[1]["request"]["query"] == query_str
+
+        request = execute_query_mock.call_args[0][0]
+        assert "user_id" in request.view_parameters
+        assert request.view_parameters["user_id"].string_value == "alice"
+
+    @CrossSync.pytest
+    async def test_execute_query_with_view_parameters_invalid_type(
+        self, client, execute_query_mock, prepare_mock
+    ):
+        with pytest.raises(TypeError) as e:
+            await client.execute_query(
+                f"SELECT a, b FROM {self.TABLE_NAME}",
+                self.INSTANCE_NAME,
+                view_parameters={"user_id": 123},
+            )
+        assert "View parameter user_id must be a string, got int" in str(e.value)
 
     @CrossSync.pytest
     async def test_execute_query_error_before_metadata(

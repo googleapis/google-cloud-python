@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -132,6 +133,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1266,8 +1282,8 @@ def test_app_hub_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        apphub_service.LookupServiceProjectAttachmentRequest,
-        dict,
+        apphub_service.LookupServiceProjectAttachmentRequest(),
+        {},
     ],
 )
 def test_lookup_service_project_attachment(request_type, transport: str = "grpc"):
@@ -1278,7 +1294,7 @@ def test_lookup_service_project_attachment(request_type, transport: str = "grpc"
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1323,9 +1339,10 @@ def test_lookup_service_project_attachment_non_empty_request_with_auto_populated
         client.lookup_service_project_attachment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.LookupServiceProjectAttachmentRequest(
+        request_msg = apphub_service.LookupServiceProjectAttachmentRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_lookup_service_project_attachment_use_cached_wrapped_rpc():
@@ -1411,9 +1428,15 @@ async def test_lookup_service_project_attachment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apphub_service.LookupServiceProjectAttachmentRequest(),
+        {},
+    ],
+)
 async def test_lookup_service_project_attachment_async(
-    transport: str = "grpc_asyncio",
-    request_type=apphub_service.LookupServiceProjectAttachmentRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AppHubAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1422,7 +1445,7 @@ async def test_lookup_service_project_attachment_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1442,11 +1465,6 @@ async def test_lookup_service_project_attachment_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, apphub_service.LookupServiceProjectAttachmentResponse)
-
-
-@pytest.mark.asyncio
-async def test_lookup_service_project_attachment_async_from_dict():
-    await test_lookup_service_project_attachment_async(request_type=dict)
 
 
 def test_lookup_service_project_attachment_field_headers():
@@ -1603,8 +1621,8 @@ async def test_lookup_service_project_attachment_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        apphub_service.ListServiceProjectAttachmentsRequest,
-        dict,
+        apphub_service.ListServiceProjectAttachmentsRequest(),
+        {},
     ],
 )
 def test_list_service_project_attachments(request_type, transport: str = "grpc"):
@@ -1615,7 +1633,7 @@ def test_list_service_project_attachments(request_type, transport: str = "grpc")
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1668,12 +1686,13 @@ def test_list_service_project_attachments_non_empty_request_with_auto_populated_
         client.list_service_project_attachments(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.ListServiceProjectAttachmentsRequest(
+        request_msg = apphub_service.ListServiceProjectAttachmentsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_service_project_attachments_use_cached_wrapped_rpc():
@@ -1759,9 +1778,15 @@ async def test_list_service_project_attachments_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apphub_service.ListServiceProjectAttachmentsRequest(),
+        {},
+    ],
+)
 async def test_list_service_project_attachments_async(
-    transport: str = "grpc_asyncio",
-    request_type=apphub_service.ListServiceProjectAttachmentsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AppHubAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1770,7 +1795,7 @@ async def test_list_service_project_attachments_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1795,11 +1820,6 @@ async def test_list_service_project_attachments_async(
     assert isinstance(response, pagers.ListServiceProjectAttachmentsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_service_project_attachments_async_from_dict():
-    await test_list_service_project_attachments_async(request_type=dict)
 
 
 def test_list_service_project_attachments_field_headers():
@@ -2164,8 +2184,8 @@ async def test_list_service_project_attachments_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        apphub_service.CreateServiceProjectAttachmentRequest,
-        dict,
+        apphub_service.CreateServiceProjectAttachmentRequest(),
+        {},
     ],
 )
 def test_create_service_project_attachment(request_type, transport: str = "grpc"):
@@ -2176,7 +2196,7 @@ def test_create_service_project_attachment(request_type, transport: str = "grpc"
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2223,11 +2243,12 @@ def test_create_service_project_attachment_non_empty_request_with_auto_populated
         client.create_service_project_attachment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.CreateServiceProjectAttachmentRequest(
+        request_msg = apphub_service.CreateServiceProjectAttachmentRequest(
             parent="parent_value",
             service_project_attachment_id="service_project_attachment_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_service_project_attachment_use_cached_wrapped_rpc():
@@ -2323,9 +2344,15 @@ async def test_create_service_project_attachment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apphub_service.CreateServiceProjectAttachmentRequest(),
+        {},
+    ],
+)
 async def test_create_service_project_attachment_async(
-    transport: str = "grpc_asyncio",
-    request_type=apphub_service.CreateServiceProjectAttachmentRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AppHubAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2334,7 +2361,7 @@ async def test_create_service_project_attachment_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2354,11 +2381,6 @@ async def test_create_service_project_attachment_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_service_project_attachment_async_from_dict():
-    await test_create_service_project_attachment_async(request_type=dict)
 
 
 def test_create_service_project_attachment_field_headers():
@@ -2547,8 +2569,8 @@ async def test_create_service_project_attachment_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        apphub_service.GetServiceProjectAttachmentRequest,
-        dict,
+        apphub_service.GetServiceProjectAttachmentRequest(),
+        {},
     ],
 )
 def test_get_service_project_attachment(request_type, transport: str = "grpc"):
@@ -2559,7 +2581,7 @@ def test_get_service_project_attachment(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2616,9 +2638,10 @@ def test_get_service_project_attachment_non_empty_request_with_auto_populated_fi
         client.get_service_project_attachment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.GetServiceProjectAttachmentRequest(
+        request_msg = apphub_service.GetServiceProjectAttachmentRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_service_project_attachment_use_cached_wrapped_rpc():
@@ -2704,9 +2727,15 @@ async def test_get_service_project_attachment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apphub_service.GetServiceProjectAttachmentRequest(),
+        {},
+    ],
+)
 async def test_get_service_project_attachment_async(
-    transport: str = "grpc_asyncio",
-    request_type=apphub_service.GetServiceProjectAttachmentRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AppHubAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2715,7 +2744,7 @@ async def test_get_service_project_attachment_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2747,11 +2776,6 @@ async def test_get_service_project_attachment_async(
         response.state
         == service_project_attachment.ServiceProjectAttachment.State.CREATING
     )
-
-
-@pytest.mark.asyncio
-async def test_get_service_project_attachment_async_from_dict():
-    await test_get_service_project_attachment_async(request_type=dict)
 
 
 def test_get_service_project_attachment_field_headers():
@@ -2908,8 +2932,8 @@ async def test_get_service_project_attachment_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        apphub_service.DeleteServiceProjectAttachmentRequest,
-        dict,
+        apphub_service.DeleteServiceProjectAttachmentRequest(),
+        {},
     ],
 )
 def test_delete_service_project_attachment(request_type, transport: str = "grpc"):
@@ -2920,7 +2944,7 @@ def test_delete_service_project_attachment(request_type, transport: str = "grpc"
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2966,10 +2990,11 @@ def test_delete_service_project_attachment_non_empty_request_with_auto_populated
         client.delete_service_project_attachment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.DeleteServiceProjectAttachmentRequest(
+        request_msg = apphub_service.DeleteServiceProjectAttachmentRequest(
             name="name_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_service_project_attachment_use_cached_wrapped_rpc():
@@ -3065,9 +3090,15 @@ async def test_delete_service_project_attachment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apphub_service.DeleteServiceProjectAttachmentRequest(),
+        {},
+    ],
+)
 async def test_delete_service_project_attachment_async(
-    transport: str = "grpc_asyncio",
-    request_type=apphub_service.DeleteServiceProjectAttachmentRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AppHubAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3076,7 +3107,7 @@ async def test_delete_service_project_attachment_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3096,11 +3127,6 @@ async def test_delete_service_project_attachment_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_service_project_attachment_async_from_dict():
-    await test_delete_service_project_attachment_async(request_type=dict)
 
 
 def test_delete_service_project_attachment_field_headers():
@@ -3257,8 +3283,8 @@ async def test_delete_service_project_attachment_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        apphub_service.DetachServiceProjectAttachmentRequest,
-        dict,
+        apphub_service.DetachServiceProjectAttachmentRequest(),
+        {},
     ],
 )
 def test_detach_service_project_attachment(request_type, transport: str = "grpc"):
@@ -3269,7 +3295,7 @@ def test_detach_service_project_attachment(request_type, transport: str = "grpc"
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3314,9 +3340,10 @@ def test_detach_service_project_attachment_non_empty_request_with_auto_populated
         client.detach_service_project_attachment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.DetachServiceProjectAttachmentRequest(
+        request_msg = apphub_service.DetachServiceProjectAttachmentRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_detach_service_project_attachment_use_cached_wrapped_rpc():
@@ -3402,9 +3429,15 @@ async def test_detach_service_project_attachment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apphub_service.DetachServiceProjectAttachmentRequest(),
+        {},
+    ],
+)
 async def test_detach_service_project_attachment_async(
-    transport: str = "grpc_asyncio",
-    request_type=apphub_service.DetachServiceProjectAttachmentRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AppHubAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3413,7 +3446,7 @@ async def test_detach_service_project_attachment_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3433,11 +3466,6 @@ async def test_detach_service_project_attachment_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, apphub_service.DetachServiceProjectAttachmentResponse)
-
-
-@pytest.mark.asyncio
-async def test_detach_service_project_attachment_async_from_dict():
-    await test_detach_service_project_attachment_async(request_type=dict)
 
 
 def test_detach_service_project_attachment_field_headers():
@@ -3594,8 +3622,8 @@ async def test_detach_service_project_attachment_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        apphub_service.ListDiscoveredServicesRequest,
-        dict,
+        apphub_service.ListDiscoveredServicesRequest(),
+        {},
     ],
 )
 def test_list_discovered_services(request_type, transport: str = "grpc"):
@@ -3606,7 +3634,7 @@ def test_list_discovered_services(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3659,12 +3687,13 @@ def test_list_discovered_services_non_empty_request_with_auto_populated_field():
         client.list_discovered_services(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.ListDiscoveredServicesRequest(
+        request_msg = apphub_service.ListDiscoveredServicesRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_discovered_services_use_cached_wrapped_rpc():
@@ -3750,9 +3779,15 @@ async def test_list_discovered_services_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apphub_service.ListDiscoveredServicesRequest(),
+        {},
+    ],
+)
 async def test_list_discovered_services_async(
-    transport: str = "grpc_asyncio",
-    request_type=apphub_service.ListDiscoveredServicesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AppHubAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3761,7 +3796,7 @@ async def test_list_discovered_services_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3786,11 +3821,6 @@ async def test_list_discovered_services_async(
     assert isinstance(response, pagers.ListDiscoveredServicesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_discovered_services_async_from_dict():
-    await test_list_discovered_services_async(request_type=dict)
 
 
 def test_list_discovered_services_field_headers():
@@ -4147,8 +4177,8 @@ async def test_list_discovered_services_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        apphub_service.GetDiscoveredServiceRequest,
-        dict,
+        apphub_service.GetDiscoveredServiceRequest(),
+        {},
     ],
 )
 def test_get_discovered_service(request_type, transport: str = "grpc"):
@@ -4159,7 +4189,7 @@ def test_get_discovered_service(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4207,9 +4237,10 @@ def test_get_discovered_service_non_empty_request_with_auto_populated_field():
         client.get_discovered_service(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.GetDiscoveredServiceRequest(
+        request_msg = apphub_service.GetDiscoveredServiceRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_discovered_service_use_cached_wrapped_rpc():
@@ -4295,9 +4326,15 @@ async def test_get_discovered_service_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apphub_service.GetDiscoveredServiceRequest(),
+        {},
+    ],
+)
 async def test_get_discovered_service_async(
-    transport: str = "grpc_asyncio",
-    request_type=apphub_service.GetDiscoveredServiceRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AppHubAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4306,7 +4343,7 @@ async def test_get_discovered_service_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4329,11 +4366,6 @@ async def test_get_discovered_service_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.DiscoveredService)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_get_discovered_service_async_from_dict():
-    await test_get_discovered_service_async(request_type=dict)
 
 
 def test_get_discovered_service_field_headers():
@@ -4490,8 +4522,8 @@ async def test_get_discovered_service_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        apphub_service.LookupDiscoveredServiceRequest,
-        dict,
+        apphub_service.LookupDiscoveredServiceRequest(),
+        {},
     ],
 )
 def test_lookup_discovered_service(request_type, transport: str = "grpc"):
@@ -4502,7 +4534,7 @@ def test_lookup_discovered_service(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4548,10 +4580,11 @@ def test_lookup_discovered_service_non_empty_request_with_auto_populated_field()
         client.lookup_discovered_service(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.LookupDiscoveredServiceRequest(
+        request_msg = apphub_service.LookupDiscoveredServiceRequest(
             parent="parent_value",
             uri="uri_value",
         )
+        assert args[0] == request_msg
 
 
 def test_lookup_discovered_service_use_cached_wrapped_rpc():
@@ -4637,9 +4670,15 @@ async def test_lookup_discovered_service_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apphub_service.LookupDiscoveredServiceRequest(),
+        {},
+    ],
+)
 async def test_lookup_discovered_service_async(
-    transport: str = "grpc_asyncio",
-    request_type=apphub_service.LookupDiscoveredServiceRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AppHubAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4648,7 +4687,7 @@ async def test_lookup_discovered_service_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4668,11 +4707,6 @@ async def test_lookup_discovered_service_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, apphub_service.LookupDiscoveredServiceResponse)
-
-
-@pytest.mark.asyncio
-async def test_lookup_discovered_service_async_from_dict():
-    await test_lookup_discovered_service_async(request_type=dict)
 
 
 def test_lookup_discovered_service_field_headers():
@@ -4839,8 +4873,8 @@ async def test_lookup_discovered_service_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        apphub_service.ListServicesRequest,
-        dict,
+        apphub_service.ListServicesRequest(),
+        {},
     ],
 )
 def test_list_services(request_type, transport: str = "grpc"):
@@ -4851,7 +4885,7 @@ def test_list_services(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_services), "__call__") as call:
@@ -4900,12 +4934,13 @@ def test_list_services_non_empty_request_with_auto_populated_field():
         client.list_services(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.ListServicesRequest(
+        request_msg = apphub_service.ListServicesRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_services_use_cached_wrapped_rpc():
@@ -4986,9 +5021,14 @@ async def test_list_services_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_services_async(
-    transport: str = "grpc_asyncio", request_type=apphub_service.ListServicesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apphub_service.ListServicesRequest(),
+        {},
+    ],
+)
+async def test_list_services_async(request_type, transport: str = "grpc_asyncio"):
     client = AppHubAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4996,7 +5036,7 @@ async def test_list_services_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_services), "__call__") as call:
@@ -5019,11 +5059,6 @@ async def test_list_services_async(
     assert isinstance(response, pagers.ListServicesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_services_async_from_dict():
-    await test_list_services_async(request_type=dict)
 
 
 def test_list_services_field_headers():
@@ -5362,8 +5397,8 @@ async def test_list_services_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        apphub_service.CreateServiceRequest,
-        dict,
+        apphub_service.CreateServiceRequest(),
+        {},
     ],
 )
 def test_create_service(request_type, transport: str = "grpc"):
@@ -5374,7 +5409,7 @@ def test_create_service(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_service), "__call__") as call:
@@ -5417,11 +5452,12 @@ def test_create_service_non_empty_request_with_auto_populated_field():
         client.create_service(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.CreateServiceRequest(
+        request_msg = apphub_service.CreateServiceRequest(
             parent="parent_value",
             service_id="service_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_service_use_cached_wrapped_rpc():
@@ -5512,9 +5548,14 @@ async def test_create_service_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_service_async(
-    transport: str = "grpc_asyncio", request_type=apphub_service.CreateServiceRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apphub_service.CreateServiceRequest(),
+        {},
+    ],
+)
+async def test_create_service_async(request_type, transport: str = "grpc_asyncio"):
     client = AppHubAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5522,7 +5563,7 @@ async def test_create_service_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_service), "__call__") as call:
@@ -5540,11 +5581,6 @@ async def test_create_service_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_service_async_from_dict():
-    await test_create_service_async(request_type=dict)
 
 
 def test_create_service_field_headers():
@@ -5713,8 +5749,8 @@ async def test_create_service_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        apphub_service.GetServiceRequest,
-        dict,
+        apphub_service.GetServiceRequest(),
+        {},
     ],
 )
 def test_get_service(request_type, transport: str = "grpc"):
@@ -5725,7 +5761,7 @@ def test_get_service(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_service), "__call__") as call:
@@ -5779,9 +5815,10 @@ def test_get_service_non_empty_request_with_auto_populated_field():
         client.get_service(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.GetServiceRequest(
+        request_msg = apphub_service.GetServiceRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_service_use_cached_wrapped_rpc():
@@ -5862,9 +5899,14 @@ async def test_get_service_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_service_async(
-    transport: str = "grpc_asyncio", request_type=apphub_service.GetServiceRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apphub_service.GetServiceRequest(),
+        {},
+    ],
+)
+async def test_get_service_async(request_type, transport: str = "grpc_asyncio"):
     client = AppHubAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5872,7 +5914,7 @@ async def test_get_service_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_service), "__call__") as call:
@@ -5903,11 +5945,6 @@ async def test_get_service_async(
     assert response.discovered_service == "discovered_service_value"
     assert response.uid == "uid_value"
     assert response.state == service.Service.State.CREATING
-
-
-@pytest.mark.asyncio
-async def test_get_service_async_from_dict():
-    await test_get_service_async(request_type=dict)
 
 
 def test_get_service_field_headers():
@@ -6052,8 +6089,8 @@ async def test_get_service_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        apphub_service.UpdateServiceRequest,
-        dict,
+        apphub_service.UpdateServiceRequest(),
+        {},
     ],
 )
 def test_update_service(request_type, transport: str = "grpc"):
@@ -6064,7 +6101,7 @@ def test_update_service(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_service), "__call__") as call:
@@ -6105,9 +6142,10 @@ def test_update_service_non_empty_request_with_auto_populated_field():
         client.update_service(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.UpdateServiceRequest(
+        request_msg = apphub_service.UpdateServiceRequest(
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_service_use_cached_wrapped_rpc():
@@ -6198,9 +6236,14 @@ async def test_update_service_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_service_async(
-    transport: str = "grpc_asyncio", request_type=apphub_service.UpdateServiceRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apphub_service.UpdateServiceRequest(),
+        {},
+    ],
+)
+async def test_update_service_async(request_type, transport: str = "grpc_asyncio"):
     client = AppHubAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6208,7 +6251,7 @@ async def test_update_service_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_service), "__call__") as call:
@@ -6226,11 +6269,6 @@ async def test_update_service_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_service_async_from_dict():
-    await test_update_service_async(request_type=dict)
 
 
 def test_update_service_field_headers():
@@ -6389,8 +6427,8 @@ async def test_update_service_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        apphub_service.DeleteServiceRequest,
-        dict,
+        apphub_service.DeleteServiceRequest(),
+        {},
     ],
 )
 def test_delete_service(request_type, transport: str = "grpc"):
@@ -6401,7 +6439,7 @@ def test_delete_service(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_service), "__call__") as call:
@@ -6443,10 +6481,11 @@ def test_delete_service_non_empty_request_with_auto_populated_field():
         client.delete_service(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.DeleteServiceRequest(
+        request_msg = apphub_service.DeleteServiceRequest(
             name="name_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_service_use_cached_wrapped_rpc():
@@ -6537,9 +6576,14 @@ async def test_delete_service_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_service_async(
-    transport: str = "grpc_asyncio", request_type=apphub_service.DeleteServiceRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apphub_service.DeleteServiceRequest(),
+        {},
+    ],
+)
+async def test_delete_service_async(request_type, transport: str = "grpc_asyncio"):
     client = AppHubAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6547,7 +6591,7 @@ async def test_delete_service_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_service), "__call__") as call:
@@ -6565,11 +6609,6 @@ async def test_delete_service_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_service_async_from_dict():
-    await test_delete_service_async(request_type=dict)
 
 
 def test_delete_service_field_headers():
@@ -6718,8 +6757,8 @@ async def test_delete_service_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        apphub_service.ListDiscoveredWorkloadsRequest,
-        dict,
+        apphub_service.ListDiscoveredWorkloadsRequest(),
+        {},
     ],
 )
 def test_list_discovered_workloads(request_type, transport: str = "grpc"):
@@ -6730,7 +6769,7 @@ def test_list_discovered_workloads(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6783,12 +6822,13 @@ def test_list_discovered_workloads_non_empty_request_with_auto_populated_field()
         client.list_discovered_workloads(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.ListDiscoveredWorkloadsRequest(
+        request_msg = apphub_service.ListDiscoveredWorkloadsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_discovered_workloads_use_cached_wrapped_rpc():
@@ -6874,9 +6914,15 @@ async def test_list_discovered_workloads_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apphub_service.ListDiscoveredWorkloadsRequest(),
+        {},
+    ],
+)
 async def test_list_discovered_workloads_async(
-    transport: str = "grpc_asyncio",
-    request_type=apphub_service.ListDiscoveredWorkloadsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AppHubAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -6885,7 +6931,7 @@ async def test_list_discovered_workloads_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6910,11 +6956,6 @@ async def test_list_discovered_workloads_async(
     assert isinstance(response, pagers.ListDiscoveredWorkloadsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_discovered_workloads_async_from_dict():
-    await test_list_discovered_workloads_async(request_type=dict)
 
 
 def test_list_discovered_workloads_field_headers():
@@ -7271,8 +7312,8 @@ async def test_list_discovered_workloads_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        apphub_service.GetDiscoveredWorkloadRequest,
-        dict,
+        apphub_service.GetDiscoveredWorkloadRequest(),
+        {},
     ],
 )
 def test_get_discovered_workload(request_type, transport: str = "grpc"):
@@ -7283,7 +7324,7 @@ def test_get_discovered_workload(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7331,9 +7372,10 @@ def test_get_discovered_workload_non_empty_request_with_auto_populated_field():
         client.get_discovered_workload(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.GetDiscoveredWorkloadRequest(
+        request_msg = apphub_service.GetDiscoveredWorkloadRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_discovered_workload_use_cached_wrapped_rpc():
@@ -7419,9 +7461,15 @@ async def test_get_discovered_workload_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apphub_service.GetDiscoveredWorkloadRequest(),
+        {},
+    ],
+)
 async def test_get_discovered_workload_async(
-    transport: str = "grpc_asyncio",
-    request_type=apphub_service.GetDiscoveredWorkloadRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AppHubAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -7430,7 +7478,7 @@ async def test_get_discovered_workload_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7453,11 +7501,6 @@ async def test_get_discovered_workload_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, workload.DiscoveredWorkload)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_get_discovered_workload_async_from_dict():
-    await test_get_discovered_workload_async(request_type=dict)
 
 
 def test_get_discovered_workload_field_headers():
@@ -7614,8 +7657,8 @@ async def test_get_discovered_workload_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        apphub_service.LookupDiscoveredWorkloadRequest,
-        dict,
+        apphub_service.LookupDiscoveredWorkloadRequest(),
+        {},
     ],
 )
 def test_lookup_discovered_workload(request_type, transport: str = "grpc"):
@@ -7626,7 +7669,7 @@ def test_lookup_discovered_workload(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7672,10 +7715,11 @@ def test_lookup_discovered_workload_non_empty_request_with_auto_populated_field(
         client.lookup_discovered_workload(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.LookupDiscoveredWorkloadRequest(
+        request_msg = apphub_service.LookupDiscoveredWorkloadRequest(
             parent="parent_value",
             uri="uri_value",
         )
+        assert args[0] == request_msg
 
 
 def test_lookup_discovered_workload_use_cached_wrapped_rpc():
@@ -7761,9 +7805,15 @@ async def test_lookup_discovered_workload_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apphub_service.LookupDiscoveredWorkloadRequest(),
+        {},
+    ],
+)
 async def test_lookup_discovered_workload_async(
-    transport: str = "grpc_asyncio",
-    request_type=apphub_service.LookupDiscoveredWorkloadRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AppHubAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -7772,7 +7822,7 @@ async def test_lookup_discovered_workload_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7792,11 +7842,6 @@ async def test_lookup_discovered_workload_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, apphub_service.LookupDiscoveredWorkloadResponse)
-
-
-@pytest.mark.asyncio
-async def test_lookup_discovered_workload_async_from_dict():
-    await test_lookup_discovered_workload_async(request_type=dict)
 
 
 def test_lookup_discovered_workload_field_headers():
@@ -7963,8 +8008,8 @@ async def test_lookup_discovered_workload_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        apphub_service.ListWorkloadsRequest,
-        dict,
+        apphub_service.ListWorkloadsRequest(),
+        {},
     ],
 )
 def test_list_workloads(request_type, transport: str = "grpc"):
@@ -7975,7 +8020,7 @@ def test_list_workloads(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_workloads), "__call__") as call:
@@ -8024,12 +8069,13 @@ def test_list_workloads_non_empty_request_with_auto_populated_field():
         client.list_workloads(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.ListWorkloadsRequest(
+        request_msg = apphub_service.ListWorkloadsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_workloads_use_cached_wrapped_rpc():
@@ -8110,9 +8156,14 @@ async def test_list_workloads_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_workloads_async(
-    transport: str = "grpc_asyncio", request_type=apphub_service.ListWorkloadsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apphub_service.ListWorkloadsRequest(),
+        {},
+    ],
+)
+async def test_list_workloads_async(request_type, transport: str = "grpc_asyncio"):
     client = AppHubAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -8120,7 +8171,7 @@ async def test_list_workloads_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_workloads), "__call__") as call:
@@ -8143,11 +8194,6 @@ async def test_list_workloads_async(
     assert isinstance(response, pagers.ListWorkloadsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_workloads_async_from_dict():
-    await test_list_workloads_async(request_type=dict)
 
 
 def test_list_workloads_field_headers():
@@ -8486,8 +8532,8 @@ async def test_list_workloads_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        apphub_service.CreateWorkloadRequest,
-        dict,
+        apphub_service.CreateWorkloadRequest(),
+        {},
     ],
 )
 def test_create_workload(request_type, transport: str = "grpc"):
@@ -8498,7 +8544,7 @@ def test_create_workload(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_workload), "__call__") as call:
@@ -8541,11 +8587,12 @@ def test_create_workload_non_empty_request_with_auto_populated_field():
         client.create_workload(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.CreateWorkloadRequest(
+        request_msg = apphub_service.CreateWorkloadRequest(
             parent="parent_value",
             workload_id="workload_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_workload_use_cached_wrapped_rpc():
@@ -8636,9 +8683,14 @@ async def test_create_workload_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_workload_async(
-    transport: str = "grpc_asyncio", request_type=apphub_service.CreateWorkloadRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apphub_service.CreateWorkloadRequest(),
+        {},
+    ],
+)
+async def test_create_workload_async(request_type, transport: str = "grpc_asyncio"):
     client = AppHubAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -8646,7 +8698,7 @@ async def test_create_workload_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_workload), "__call__") as call:
@@ -8664,11 +8716,6 @@ async def test_create_workload_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_workload_async_from_dict():
-    await test_create_workload_async(request_type=dict)
 
 
 def test_create_workload_field_headers():
@@ -8837,8 +8884,8 @@ async def test_create_workload_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        apphub_service.GetWorkloadRequest,
-        dict,
+        apphub_service.GetWorkloadRequest(),
+        {},
     ],
 )
 def test_get_workload(request_type, transport: str = "grpc"):
@@ -8849,7 +8896,7 @@ def test_get_workload(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_workload), "__call__") as call:
@@ -8903,9 +8950,10 @@ def test_get_workload_non_empty_request_with_auto_populated_field():
         client.get_workload(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.GetWorkloadRequest(
+        request_msg = apphub_service.GetWorkloadRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_workload_use_cached_wrapped_rpc():
@@ -8986,9 +9034,14 @@ async def test_get_workload_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_workload_async(
-    transport: str = "grpc_asyncio", request_type=apphub_service.GetWorkloadRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apphub_service.GetWorkloadRequest(),
+        {},
+    ],
+)
+async def test_get_workload_async(request_type, transport: str = "grpc_asyncio"):
     client = AppHubAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -8996,7 +9049,7 @@ async def test_get_workload_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_workload), "__call__") as call:
@@ -9027,11 +9080,6 @@ async def test_get_workload_async(
     assert response.discovered_workload == "discovered_workload_value"
     assert response.uid == "uid_value"
     assert response.state == workload.Workload.State.CREATING
-
-
-@pytest.mark.asyncio
-async def test_get_workload_async_from_dict():
-    await test_get_workload_async(request_type=dict)
 
 
 def test_get_workload_field_headers():
@@ -9176,8 +9224,8 @@ async def test_get_workload_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        apphub_service.UpdateWorkloadRequest,
-        dict,
+        apphub_service.UpdateWorkloadRequest(),
+        {},
     ],
 )
 def test_update_workload(request_type, transport: str = "grpc"):
@@ -9188,7 +9236,7 @@ def test_update_workload(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_workload), "__call__") as call:
@@ -9229,9 +9277,10 @@ def test_update_workload_non_empty_request_with_auto_populated_field():
         client.update_workload(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.UpdateWorkloadRequest(
+        request_msg = apphub_service.UpdateWorkloadRequest(
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_workload_use_cached_wrapped_rpc():
@@ -9322,9 +9371,14 @@ async def test_update_workload_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_workload_async(
-    transport: str = "grpc_asyncio", request_type=apphub_service.UpdateWorkloadRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apphub_service.UpdateWorkloadRequest(),
+        {},
+    ],
+)
+async def test_update_workload_async(request_type, transport: str = "grpc_asyncio"):
     client = AppHubAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -9332,7 +9386,7 @@ async def test_update_workload_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_workload), "__call__") as call:
@@ -9350,11 +9404,6 @@ async def test_update_workload_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_workload_async_from_dict():
-    await test_update_workload_async(request_type=dict)
 
 
 def test_update_workload_field_headers():
@@ -9513,8 +9562,8 @@ async def test_update_workload_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        apphub_service.DeleteWorkloadRequest,
-        dict,
+        apphub_service.DeleteWorkloadRequest(),
+        {},
     ],
 )
 def test_delete_workload(request_type, transport: str = "grpc"):
@@ -9525,7 +9574,7 @@ def test_delete_workload(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_workload), "__call__") as call:
@@ -9567,10 +9616,11 @@ def test_delete_workload_non_empty_request_with_auto_populated_field():
         client.delete_workload(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.DeleteWorkloadRequest(
+        request_msg = apphub_service.DeleteWorkloadRequest(
             name="name_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_workload_use_cached_wrapped_rpc():
@@ -9661,9 +9711,14 @@ async def test_delete_workload_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_workload_async(
-    transport: str = "grpc_asyncio", request_type=apphub_service.DeleteWorkloadRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apphub_service.DeleteWorkloadRequest(),
+        {},
+    ],
+)
+async def test_delete_workload_async(request_type, transport: str = "grpc_asyncio"):
     client = AppHubAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -9671,7 +9726,7 @@ async def test_delete_workload_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_workload), "__call__") as call:
@@ -9689,11 +9744,6 @@ async def test_delete_workload_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_workload_async_from_dict():
-    await test_delete_workload_async(request_type=dict)
 
 
 def test_delete_workload_field_headers():
@@ -9842,8 +9892,8 @@ async def test_delete_workload_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        apphub_service.ListApplicationsRequest,
-        dict,
+        apphub_service.ListApplicationsRequest(),
+        {},
     ],
 )
 def test_list_applications(request_type, transport: str = "grpc"):
@@ -9854,7 +9904,7 @@ def test_list_applications(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9907,12 +9957,13 @@ def test_list_applications_non_empty_request_with_auto_populated_field():
         client.list_applications(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.ListApplicationsRequest(
+        request_msg = apphub_service.ListApplicationsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_applications_use_cached_wrapped_rpc():
@@ -9995,9 +10046,14 @@ async def test_list_applications_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_applications_async(
-    transport: str = "grpc_asyncio", request_type=apphub_service.ListApplicationsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apphub_service.ListApplicationsRequest(),
+        {},
+    ],
+)
+async def test_list_applications_async(request_type, transport: str = "grpc_asyncio"):
     client = AppHubAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -10005,7 +10061,7 @@ async def test_list_applications_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10030,11 +10086,6 @@ async def test_list_applications_async(
     assert isinstance(response, pagers.ListApplicationsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_applications_async_from_dict():
-    await test_list_applications_async(request_type=dict)
 
 
 def test_list_applications_field_headers():
@@ -10389,8 +10440,8 @@ async def test_list_applications_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        apphub_service.CreateApplicationRequest,
-        dict,
+        apphub_service.CreateApplicationRequest(),
+        {},
     ],
 )
 def test_create_application(request_type, transport: str = "grpc"):
@@ -10401,7 +10452,7 @@ def test_create_application(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10448,11 +10499,12 @@ def test_create_application_non_empty_request_with_auto_populated_field():
         client.create_application(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.CreateApplicationRequest(
+        request_msg = apphub_service.CreateApplicationRequest(
             parent="parent_value",
             application_id="application_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_application_use_cached_wrapped_rpc():
@@ -10547,10 +10599,14 @@ async def test_create_application_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_application_async(
-    transport: str = "grpc_asyncio",
-    request_type=apphub_service.CreateApplicationRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apphub_service.CreateApplicationRequest(),
+        {},
+    ],
+)
+async def test_create_application_async(request_type, transport: str = "grpc_asyncio"):
     client = AppHubAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -10558,7 +10614,7 @@ async def test_create_application_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10578,11 +10634,6 @@ async def test_create_application_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_application_async_from_dict():
-    await test_create_application_async(request_type=dict)
 
 
 def test_create_application_field_headers():
@@ -10759,8 +10810,8 @@ async def test_create_application_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        apphub_service.GetApplicationRequest,
-        dict,
+        apphub_service.GetApplicationRequest(),
+        {},
     ],
 )
 def test_get_application(request_type, transport: str = "grpc"):
@@ -10771,7 +10822,7 @@ def test_get_application(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_application), "__call__") as call:
@@ -10823,9 +10874,10 @@ def test_get_application_non_empty_request_with_auto_populated_field():
         client.get_application(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.GetApplicationRequest(
+        request_msg = apphub_service.GetApplicationRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_application_use_cached_wrapped_rpc():
@@ -10906,9 +10958,14 @@ async def test_get_application_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_application_async(
-    transport: str = "grpc_asyncio", request_type=apphub_service.GetApplicationRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apphub_service.GetApplicationRequest(),
+        {},
+    ],
+)
+async def test_get_application_async(request_type, transport: str = "grpc_asyncio"):
     client = AppHubAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -10916,7 +10973,7 @@ async def test_get_application_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_application), "__call__") as call:
@@ -10945,11 +11002,6 @@ async def test_get_application_async(
     assert response.description == "description_value"
     assert response.uid == "uid_value"
     assert response.state == application.Application.State.CREATING
-
-
-@pytest.mark.asyncio
-async def test_get_application_async_from_dict():
-    await test_get_application_async(request_type=dict)
 
 
 def test_get_application_field_headers():
@@ -11098,8 +11150,8 @@ async def test_get_application_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        apphub_service.UpdateApplicationRequest,
-        dict,
+        apphub_service.UpdateApplicationRequest(),
+        {},
     ],
 )
 def test_update_application(request_type, transport: str = "grpc"):
@@ -11110,7 +11162,7 @@ def test_update_application(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11155,9 +11207,10 @@ def test_update_application_non_empty_request_with_auto_populated_field():
         client.update_application(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.UpdateApplicationRequest(
+        request_msg = apphub_service.UpdateApplicationRequest(
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_application_use_cached_wrapped_rpc():
@@ -11252,10 +11305,14 @@ async def test_update_application_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_application_async(
-    transport: str = "grpc_asyncio",
-    request_type=apphub_service.UpdateApplicationRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apphub_service.UpdateApplicationRequest(),
+        {},
+    ],
+)
+async def test_update_application_async(request_type, transport: str = "grpc_asyncio"):
     client = AppHubAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -11263,7 +11320,7 @@ async def test_update_application_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11283,11 +11340,6 @@ async def test_update_application_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_application_async_from_dict():
-    await test_update_application_async(request_type=dict)
 
 
 def test_update_application_field_headers():
@@ -11454,8 +11506,8 @@ async def test_update_application_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        apphub_service.DeleteApplicationRequest,
-        dict,
+        apphub_service.DeleteApplicationRequest(),
+        {},
     ],
 )
 def test_delete_application(request_type, transport: str = "grpc"):
@@ -11466,7 +11518,7 @@ def test_delete_application(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11512,10 +11564,11 @@ def test_delete_application_non_empty_request_with_auto_populated_field():
         client.delete_application(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apphub_service.DeleteApplicationRequest(
+        request_msg = apphub_service.DeleteApplicationRequest(
             name="name_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_application_use_cached_wrapped_rpc():
@@ -11610,10 +11663,14 @@ async def test_delete_application_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_application_async(
-    transport: str = "grpc_asyncio",
-    request_type=apphub_service.DeleteApplicationRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apphub_service.DeleteApplicationRequest(),
+        {},
+    ],
+)
+async def test_delete_application_async(request_type, transport: str = "grpc_asyncio"):
     client = AppHubAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -11621,7 +11678,7 @@ async def test_delete_application_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11641,11 +11698,6 @@ async def test_delete_application_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_application_async_from_dict():
-    await test_delete_application_async(request_type=dict)
 
 
 def test_delete_application_field_headers():
@@ -17660,7 +17712,6 @@ def test_lookup_service_project_attachment_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.LookupServiceProjectAttachmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -17683,7 +17734,6 @@ def test_list_service_project_attachments_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.ListServiceProjectAttachmentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -17706,7 +17756,6 @@ def test_create_service_project_attachment_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.CreateServiceProjectAttachmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -17729,7 +17778,6 @@ def test_get_service_project_attachment_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.GetServiceProjectAttachmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -17752,7 +17800,6 @@ def test_delete_service_project_attachment_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.DeleteServiceProjectAttachmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -17775,7 +17822,6 @@ def test_detach_service_project_attachment_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.DetachServiceProjectAttachmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -17798,7 +17844,6 @@ def test_list_discovered_services_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.ListDiscoveredServicesRequest()
-
         assert args[0] == request_msg
 
 
@@ -17821,7 +17866,6 @@ def test_get_discovered_service_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.GetDiscoveredServiceRequest()
-
         assert args[0] == request_msg
 
 
@@ -17844,7 +17888,6 @@ def test_lookup_discovered_service_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.LookupDiscoveredServiceRequest()
-
         assert args[0] == request_msg
 
 
@@ -17865,7 +17908,6 @@ def test_list_services_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.ListServicesRequest()
-
         assert args[0] == request_msg
 
 
@@ -17886,7 +17928,6 @@ def test_create_service_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.CreateServiceRequest()
-
         assert args[0] == request_msg
 
 
@@ -17907,7 +17948,6 @@ def test_get_service_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.GetServiceRequest()
-
         assert args[0] == request_msg
 
 
@@ -17928,7 +17968,6 @@ def test_update_service_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.UpdateServiceRequest()
-
         assert args[0] == request_msg
 
 
@@ -17949,7 +17988,6 @@ def test_delete_service_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.DeleteServiceRequest()
-
         assert args[0] == request_msg
 
 
@@ -17972,7 +18010,6 @@ def test_list_discovered_workloads_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.ListDiscoveredWorkloadsRequest()
-
         assert args[0] == request_msg
 
 
@@ -17995,7 +18032,6 @@ def test_get_discovered_workload_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.GetDiscoveredWorkloadRequest()
-
         assert args[0] == request_msg
 
 
@@ -18018,7 +18054,6 @@ def test_lookup_discovered_workload_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.LookupDiscoveredWorkloadRequest()
-
         assert args[0] == request_msg
 
 
@@ -18039,7 +18074,6 @@ def test_list_workloads_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.ListWorkloadsRequest()
-
         assert args[0] == request_msg
 
 
@@ -18060,7 +18094,6 @@ def test_create_workload_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.CreateWorkloadRequest()
-
         assert args[0] == request_msg
 
 
@@ -18081,7 +18114,6 @@ def test_get_workload_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.GetWorkloadRequest()
-
         assert args[0] == request_msg
 
 
@@ -18102,7 +18134,6 @@ def test_update_workload_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.UpdateWorkloadRequest()
-
         assert args[0] == request_msg
 
 
@@ -18123,7 +18154,6 @@ def test_delete_workload_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.DeleteWorkloadRequest()
-
         assert args[0] == request_msg
 
 
@@ -18146,7 +18176,6 @@ def test_list_applications_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.ListApplicationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -18169,7 +18198,6 @@ def test_create_application_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.CreateApplicationRequest()
-
         assert args[0] == request_msg
 
 
@@ -18190,7 +18218,6 @@ def test_get_application_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.GetApplicationRequest()
-
         assert args[0] == request_msg
 
 
@@ -18213,7 +18240,6 @@ def test_update_application_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.UpdateApplicationRequest()
-
         assert args[0] == request_msg
 
 
@@ -18236,7 +18262,6 @@ def test_delete_application_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.DeleteApplicationRequest()
-
         assert args[0] == request_msg
 
 
@@ -18277,7 +18302,6 @@ async def test_lookup_service_project_attachment_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.LookupServiceProjectAttachmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -18307,7 +18331,6 @@ async def test_list_service_project_attachments_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.ListServiceProjectAttachmentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -18334,7 +18357,6 @@ async def test_create_service_project_attachment_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.CreateServiceProjectAttachmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -18366,7 +18388,6 @@ async def test_get_service_project_attachment_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.GetServiceProjectAttachmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -18393,7 +18414,6 @@ async def test_delete_service_project_attachment_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.DeleteServiceProjectAttachmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -18420,7 +18440,6 @@ async def test_detach_service_project_attachment_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.DetachServiceProjectAttachmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -18450,7 +18469,6 @@ async def test_list_discovered_services_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.ListDiscoveredServicesRequest()
-
         assert args[0] == request_msg
 
 
@@ -18479,7 +18497,6 @@ async def test_get_discovered_service_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.GetDiscoveredServiceRequest()
-
         assert args[0] == request_msg
 
 
@@ -18506,7 +18523,6 @@ async def test_lookup_discovered_service_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.LookupDiscoveredServiceRequest()
-
         assert args[0] == request_msg
 
 
@@ -18534,7 +18550,6 @@ async def test_list_services_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.ListServicesRequest()
-
         assert args[0] == request_msg
 
 
@@ -18559,7 +18574,6 @@ async def test_create_service_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.CreateServiceRequest()
-
         assert args[0] == request_msg
 
 
@@ -18591,7 +18605,6 @@ async def test_get_service_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.GetServiceRequest()
-
         assert args[0] == request_msg
 
 
@@ -18616,7 +18629,6 @@ async def test_update_service_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.UpdateServiceRequest()
-
         assert args[0] == request_msg
 
 
@@ -18641,7 +18653,6 @@ async def test_delete_service_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.DeleteServiceRequest()
-
         assert args[0] == request_msg
 
 
@@ -18671,7 +18682,6 @@ async def test_list_discovered_workloads_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.ListDiscoveredWorkloadsRequest()
-
         assert args[0] == request_msg
 
 
@@ -18700,7 +18710,6 @@ async def test_get_discovered_workload_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.GetDiscoveredWorkloadRequest()
-
         assert args[0] == request_msg
 
 
@@ -18727,7 +18736,6 @@ async def test_lookup_discovered_workload_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.LookupDiscoveredWorkloadRequest()
-
         assert args[0] == request_msg
 
 
@@ -18755,7 +18763,6 @@ async def test_list_workloads_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.ListWorkloadsRequest()
-
         assert args[0] == request_msg
 
 
@@ -18780,7 +18787,6 @@ async def test_create_workload_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.CreateWorkloadRequest()
-
         assert args[0] == request_msg
 
 
@@ -18812,7 +18818,6 @@ async def test_get_workload_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.GetWorkloadRequest()
-
         assert args[0] == request_msg
 
 
@@ -18837,7 +18842,6 @@ async def test_update_workload_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.UpdateWorkloadRequest()
-
         assert args[0] == request_msg
 
 
@@ -18862,7 +18866,6 @@ async def test_delete_workload_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.DeleteWorkloadRequest()
-
         assert args[0] == request_msg
 
 
@@ -18892,7 +18895,6 @@ async def test_list_applications_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.ListApplicationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -18919,7 +18921,6 @@ async def test_create_application_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.CreateApplicationRequest()
-
         assert args[0] == request_msg
 
 
@@ -18950,7 +18951,6 @@ async def test_get_application_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.GetApplicationRequest()
-
         assert args[0] == request_msg
 
 
@@ -18977,7 +18977,6 @@ async def test_update_application_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.UpdateApplicationRequest()
-
         assert args[0] == request_msg
 
 
@@ -19004,7 +19003,6 @@ async def test_delete_application_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.DeleteApplicationRequest()
-
         assert args[0] == request_msg
 
 
@@ -23788,7 +23786,6 @@ def test_lookup_service_project_attachment_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.LookupServiceProjectAttachmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -23810,7 +23807,6 @@ def test_list_service_project_attachments_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.ListServiceProjectAttachmentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -23832,7 +23828,6 @@ def test_create_service_project_attachment_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.CreateServiceProjectAttachmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -23854,7 +23849,6 @@ def test_get_service_project_attachment_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.GetServiceProjectAttachmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -23876,7 +23870,6 @@ def test_delete_service_project_attachment_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.DeleteServiceProjectAttachmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -23898,7 +23891,6 @@ def test_detach_service_project_attachment_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.DetachServiceProjectAttachmentRequest()
-
         assert args[0] == request_msg
 
 
@@ -23920,7 +23912,6 @@ def test_list_discovered_services_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.ListDiscoveredServicesRequest()
-
         assert args[0] == request_msg
 
 
@@ -23942,7 +23933,6 @@ def test_get_discovered_service_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.GetDiscoveredServiceRequest()
-
         assert args[0] == request_msg
 
 
@@ -23964,7 +23954,6 @@ def test_lookup_discovered_service_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.LookupDiscoveredServiceRequest()
-
         assert args[0] == request_msg
 
 
@@ -23984,7 +23973,6 @@ def test_list_services_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.ListServicesRequest()
-
         assert args[0] == request_msg
 
 
@@ -24004,7 +23992,6 @@ def test_create_service_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.CreateServiceRequest()
-
         assert args[0] == request_msg
 
 
@@ -24024,7 +24011,6 @@ def test_get_service_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.GetServiceRequest()
-
         assert args[0] == request_msg
 
 
@@ -24044,7 +24030,6 @@ def test_update_service_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.UpdateServiceRequest()
-
         assert args[0] == request_msg
 
 
@@ -24064,7 +24049,6 @@ def test_delete_service_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.DeleteServiceRequest()
-
         assert args[0] == request_msg
 
 
@@ -24086,7 +24070,6 @@ def test_list_discovered_workloads_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.ListDiscoveredWorkloadsRequest()
-
         assert args[0] == request_msg
 
 
@@ -24108,7 +24091,6 @@ def test_get_discovered_workload_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.GetDiscoveredWorkloadRequest()
-
         assert args[0] == request_msg
 
 
@@ -24130,7 +24112,6 @@ def test_lookup_discovered_workload_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.LookupDiscoveredWorkloadRequest()
-
         assert args[0] == request_msg
 
 
@@ -24150,7 +24131,6 @@ def test_list_workloads_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.ListWorkloadsRequest()
-
         assert args[0] == request_msg
 
 
@@ -24170,7 +24150,6 @@ def test_create_workload_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.CreateWorkloadRequest()
-
         assert args[0] == request_msg
 
 
@@ -24190,7 +24169,6 @@ def test_get_workload_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.GetWorkloadRequest()
-
         assert args[0] == request_msg
 
 
@@ -24210,7 +24188,6 @@ def test_update_workload_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.UpdateWorkloadRequest()
-
         assert args[0] == request_msg
 
 
@@ -24230,7 +24207,6 @@ def test_delete_workload_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.DeleteWorkloadRequest()
-
         assert args[0] == request_msg
 
 
@@ -24252,7 +24228,6 @@ def test_list_applications_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.ListApplicationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -24274,7 +24249,6 @@ def test_create_application_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.CreateApplicationRequest()
-
         assert args[0] == request_msg
 
 
@@ -24294,7 +24268,6 @@ def test_get_application_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.GetApplicationRequest()
-
         assert args[0] == request_msg
 
 
@@ -24316,7 +24289,6 @@ def test_update_application_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.UpdateApplicationRequest()
-
         assert args[0] == request_msg
 
 
@@ -24338,7 +24310,6 @@ def test_delete_application_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apphub_service.DeleteApplicationRequest()
-
         assert args[0] == request_msg
 
 

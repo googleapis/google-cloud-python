@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -117,6 +118,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1284,8 +1300,8 @@ def test_memorystore_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        memorystore.ListInstancesRequest,
-        dict,
+        memorystore.ListInstancesRequest(),
+        {},
     ],
 )
 def test_list_instances(request_type, transport: str = "grpc"):
@@ -1296,7 +1312,7 @@ def test_list_instances(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_instances), "__call__") as call:
@@ -1345,12 +1361,13 @@ def test_list_instances_non_empty_request_with_auto_populated_field():
         client.list_instances(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == memorystore.ListInstancesRequest(
+        request_msg = memorystore.ListInstancesRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_instances_use_cached_wrapped_rpc():
@@ -1431,9 +1448,14 @@ async def test_list_instances_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_instances_async(
-    transport: str = "grpc_asyncio", request_type=memorystore.ListInstancesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        memorystore.ListInstancesRequest(),
+        {},
+    ],
+)
+async def test_list_instances_async(request_type, transport: str = "grpc_asyncio"):
     client = MemorystoreAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1441,7 +1463,7 @@ async def test_list_instances_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_instances), "__call__") as call:
@@ -1464,11 +1486,6 @@ async def test_list_instances_async(
     assert isinstance(response, pagers.ListInstancesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_instances_async_from_dict():
-    await test_list_instances_async(request_type=dict)
 
 
 def test_list_instances_field_headers():
@@ -1807,8 +1824,8 @@ async def test_list_instances_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        memorystore.GetInstanceRequest,
-        dict,
+        memorystore.GetInstanceRequest(),
+        {},
     ],
 )
 def test_get_instance(request_type, transport: str = "grpc"):
@@ -1819,7 +1836,7 @@ def test_get_instance(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_instance), "__call__") as call:
@@ -1924,9 +1941,10 @@ def test_get_instance_non_empty_request_with_auto_populated_field():
         client.get_instance(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == memorystore.GetInstanceRequest(
+        request_msg = memorystore.GetInstanceRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_instance_use_cached_wrapped_rpc():
@@ -2007,9 +2025,14 @@ async def test_get_instance_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_instance_async(
-    transport: str = "grpc_asyncio", request_type=memorystore.GetInstanceRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        memorystore.GetInstanceRequest(),
+        {},
+    ],
+)
+async def test_get_instance_async(request_type, transport: str = "grpc_asyncio"):
     client = MemorystoreAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2017,7 +2040,7 @@ async def test_get_instance_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_instance), "__call__") as call:
@@ -2099,11 +2122,6 @@ async def test_get_instance_async(
     )
     assert response.server_ca_pool == "server_ca_pool_value"
     assert response.rotate_server_certificate is True
-
-
-@pytest.mark.asyncio
-async def test_get_instance_async_from_dict():
-    await test_get_instance_async(request_type=dict)
 
 
 def test_get_instance_field_headers():
@@ -2252,8 +2270,8 @@ async def test_get_instance_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        memorystore.CreateInstanceRequest,
-        dict,
+        memorystore.CreateInstanceRequest(),
+        {},
     ],
 )
 def test_create_instance(request_type, transport: str = "grpc"):
@@ -2264,7 +2282,7 @@ def test_create_instance(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_instance), "__call__") as call:
@@ -2306,10 +2324,11 @@ def test_create_instance_non_empty_request_with_auto_populated_field():
         client.create_instance(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == memorystore.CreateInstanceRequest(
+        request_msg = memorystore.CreateInstanceRequest(
             parent="parent_value",
             instance_id="instance_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_instance_use_cached_wrapped_rpc():
@@ -2400,9 +2419,14 @@ async def test_create_instance_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_instance_async(
-    transport: str = "grpc_asyncio", request_type=memorystore.CreateInstanceRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        memorystore.CreateInstanceRequest(),
+        {},
+    ],
+)
+async def test_create_instance_async(request_type, transport: str = "grpc_asyncio"):
     client = MemorystoreAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2410,7 +2434,7 @@ async def test_create_instance_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_instance), "__call__") as call:
@@ -2428,11 +2452,6 @@ async def test_create_instance_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_instance_async_from_dict():
-    await test_create_instance_async(request_type=dict)
 
 
 def test_create_instance_field_headers():
@@ -2613,8 +2632,8 @@ async def test_create_instance_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        memorystore.UpdateInstanceRequest,
-        dict,
+        memorystore.UpdateInstanceRequest(),
+        {},
     ],
 )
 def test_update_instance(request_type, transport: str = "grpc"):
@@ -2625,7 +2644,7 @@ def test_update_instance(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_instance), "__call__") as call:
@@ -2664,7 +2683,8 @@ def test_update_instance_non_empty_request_with_auto_populated_field():
         client.update_instance(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == memorystore.UpdateInstanceRequest()
+        request_msg = memorystore.UpdateInstanceRequest()
+        assert args[0] == request_msg
 
 
 def test_update_instance_use_cached_wrapped_rpc():
@@ -2755,9 +2775,14 @@ async def test_update_instance_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_instance_async(
-    transport: str = "grpc_asyncio", request_type=memorystore.UpdateInstanceRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        memorystore.UpdateInstanceRequest(),
+        {},
+    ],
+)
+async def test_update_instance_async(request_type, transport: str = "grpc_asyncio"):
     client = MemorystoreAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2765,7 +2790,7 @@ async def test_update_instance_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_instance), "__call__") as call:
@@ -2783,11 +2808,6 @@ async def test_update_instance_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_instance_async_from_dict():
-    await test_update_instance_async(request_type=dict)
 
 
 def test_update_instance_field_headers():
@@ -2958,8 +2978,8 @@ async def test_update_instance_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        memorystore.DeleteInstanceRequest,
-        dict,
+        memorystore.DeleteInstanceRequest(),
+        {},
     ],
 )
 def test_delete_instance(request_type, transport: str = "grpc"):
@@ -2970,7 +2990,7 @@ def test_delete_instance(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_instance), "__call__") as call:
@@ -3011,9 +3031,10 @@ def test_delete_instance_non_empty_request_with_auto_populated_field():
         client.delete_instance(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == memorystore.DeleteInstanceRequest(
+        request_msg = memorystore.DeleteInstanceRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_instance_use_cached_wrapped_rpc():
@@ -3104,9 +3125,14 @@ async def test_delete_instance_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_instance_async(
-    transport: str = "grpc_asyncio", request_type=memorystore.DeleteInstanceRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        memorystore.DeleteInstanceRequest(),
+        {},
+    ],
+)
+async def test_delete_instance_async(request_type, transport: str = "grpc_asyncio"):
     client = MemorystoreAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3114,7 +3140,7 @@ async def test_delete_instance_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_instance), "__call__") as call:
@@ -3132,11 +3158,6 @@ async def test_delete_instance_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_instance_async_from_dict():
-    await test_delete_instance_async(request_type=dict)
 
 
 def test_delete_instance_field_headers():
@@ -3285,8 +3306,8 @@ async def test_delete_instance_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        memorystore.GetCertificateAuthorityRequest,
-        dict,
+        memorystore.GetCertificateAuthorityRequest(),
+        {},
     ],
 )
 def test_get_certificate_authority(request_type, transport: str = "grpc"):
@@ -3297,7 +3318,7 @@ def test_get_certificate_authority(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3345,9 +3366,10 @@ def test_get_certificate_authority_non_empty_request_with_auto_populated_field()
         client.get_certificate_authority(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == memorystore.GetCertificateAuthorityRequest(
+        request_msg = memorystore.GetCertificateAuthorityRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_certificate_authority_use_cached_wrapped_rpc():
@@ -3433,9 +3455,15 @@ async def test_get_certificate_authority_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        memorystore.GetCertificateAuthorityRequest(),
+        {},
+    ],
+)
 async def test_get_certificate_authority_async(
-    transport: str = "grpc_asyncio",
-    request_type=memorystore.GetCertificateAuthorityRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = MemorystoreAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3444,7 +3472,7 @@ async def test_get_certificate_authority_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3467,11 +3495,6 @@ async def test_get_certificate_authority_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, memorystore.CertificateAuthority)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_get_certificate_authority_async_from_dict():
-    await test_get_certificate_authority_async(request_type=dict)
 
 
 def test_get_certificate_authority_field_headers():
@@ -3628,8 +3651,8 @@ async def test_get_certificate_authority_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        memorystore.GetSharedRegionalCertificateAuthorityRequest,
-        dict,
+        memorystore.GetSharedRegionalCertificateAuthorityRequest(),
+        {},
     ],
 )
 def test_get_shared_regional_certificate_authority(
@@ -3642,7 +3665,7 @@ def test_get_shared_regional_certificate_authority(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3690,9 +3713,10 @@ def test_get_shared_regional_certificate_authority_non_empty_request_with_auto_p
         client.get_shared_regional_certificate_authority(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == memorystore.GetSharedRegionalCertificateAuthorityRequest(
+        request_msg = memorystore.GetSharedRegionalCertificateAuthorityRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_shared_regional_certificate_authority_use_cached_wrapped_rpc():
@@ -3778,9 +3802,15 @@ async def test_get_shared_regional_certificate_authority_async_use_cached_wrappe
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        memorystore.GetSharedRegionalCertificateAuthorityRequest(),
+        {},
+    ],
+)
 async def test_get_shared_regional_certificate_authority_async(
-    transport: str = "grpc_asyncio",
-    request_type=memorystore.GetSharedRegionalCertificateAuthorityRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = MemorystoreAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3789,7 +3819,7 @@ async def test_get_shared_regional_certificate_authority_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3812,11 +3842,6 @@ async def test_get_shared_regional_certificate_authority_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, memorystore.SharedRegionalCertificateAuthority)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_get_shared_regional_certificate_authority_async_from_dict():
-    await test_get_shared_regional_certificate_authority_async(request_type=dict)
 
 
 def test_get_shared_regional_certificate_authority_field_headers():
@@ -3973,8 +3998,8 @@ async def test_get_shared_regional_certificate_authority_flattened_error_async()
 @pytest.mark.parametrize(
     "request_type",
     [
-        memorystore.RescheduleMaintenanceRequest,
-        dict,
+        memorystore.RescheduleMaintenanceRequest(),
+        {},
     ],
 )
 def test_reschedule_maintenance(request_type, transport: str = "grpc"):
@@ -3985,7 +4010,7 @@ def test_reschedule_maintenance(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4030,9 +4055,10 @@ def test_reschedule_maintenance_non_empty_request_with_auto_populated_field():
         client.reschedule_maintenance(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == memorystore.RescheduleMaintenanceRequest(
+        request_msg = memorystore.RescheduleMaintenanceRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_reschedule_maintenance_use_cached_wrapped_rpc():
@@ -4128,9 +4154,15 @@ async def test_reschedule_maintenance_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        memorystore.RescheduleMaintenanceRequest(),
+        {},
+    ],
+)
 async def test_reschedule_maintenance_async(
-    transport: str = "grpc_asyncio",
-    request_type=memorystore.RescheduleMaintenanceRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = MemorystoreAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4139,7 +4171,7 @@ async def test_reschedule_maintenance_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4159,11 +4191,6 @@ async def test_reschedule_maintenance_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_reschedule_maintenance_async_from_dict():
-    await test_reschedule_maintenance_async(request_type=dict)
 
 
 def test_reschedule_maintenance_field_headers():
@@ -4340,8 +4367,8 @@ async def test_reschedule_maintenance_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        memorystore.ListBackupCollectionsRequest,
-        dict,
+        memorystore.ListBackupCollectionsRequest(),
+        {},
     ],
 )
 def test_list_backup_collections(request_type, transport: str = "grpc"):
@@ -4352,7 +4379,7 @@ def test_list_backup_collections(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4403,10 +4430,11 @@ def test_list_backup_collections_non_empty_request_with_auto_populated_field():
         client.list_backup_collections(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == memorystore.ListBackupCollectionsRequest(
+        request_msg = memorystore.ListBackupCollectionsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_backup_collections_use_cached_wrapped_rpc():
@@ -4492,9 +4520,15 @@ async def test_list_backup_collections_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        memorystore.ListBackupCollectionsRequest(),
+        {},
+    ],
+)
 async def test_list_backup_collections_async(
-    transport: str = "grpc_asyncio",
-    request_type=memorystore.ListBackupCollectionsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = MemorystoreAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4503,7 +4537,7 @@ async def test_list_backup_collections_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4528,11 +4562,6 @@ async def test_list_backup_collections_async(
     assert isinstance(response, pagers.ListBackupCollectionsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_backup_collections_async_from_dict():
-    await test_list_backup_collections_async(request_type=dict)
 
 
 def test_list_backup_collections_field_headers():
@@ -4887,8 +4916,8 @@ async def test_list_backup_collections_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        memorystore.GetBackupCollectionRequest,
-        dict,
+        memorystore.GetBackupCollectionRequest(),
+        {},
     ],
 )
 def test_get_backup_collection(request_type, transport: str = "grpc"):
@@ -4899,7 +4928,7 @@ def test_get_backup_collection(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4959,9 +4988,10 @@ def test_get_backup_collection_non_empty_request_with_auto_populated_field():
         client.get_backup_collection(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == memorystore.GetBackupCollectionRequest(
+        request_msg = memorystore.GetBackupCollectionRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_backup_collection_use_cached_wrapped_rpc():
@@ -5047,8 +5077,15 @@ async def test_get_backup_collection_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        memorystore.GetBackupCollectionRequest(),
+        {},
+    ],
+)
 async def test_get_backup_collection_async(
-    transport: str = "grpc_asyncio", request_type=memorystore.GetBackupCollectionRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = MemorystoreAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5057,7 +5094,7 @@ async def test_get_backup_collection_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5092,11 +5129,6 @@ async def test_get_backup_collection_async(
     assert response.uid == "uid_value"
     assert response.total_backup_size_bytes == 2457
     assert response.total_backup_count == 1921
-
-
-@pytest.mark.asyncio
-async def test_get_backup_collection_async_from_dict():
-    await test_get_backup_collection_async(request_type=dict)
 
 
 def test_get_backup_collection_field_headers():
@@ -5253,8 +5285,8 @@ async def test_get_backup_collection_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        memorystore.ListBackupsRequest,
-        dict,
+        memorystore.ListBackupsRequest(),
+        {},
     ],
 )
 def test_list_backups(request_type, transport: str = "grpc"):
@@ -5265,7 +5297,7 @@ def test_list_backups(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_backups), "__call__") as call:
@@ -5312,10 +5344,11 @@ def test_list_backups_non_empty_request_with_auto_populated_field():
         client.list_backups(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == memorystore.ListBackupsRequest(
+        request_msg = memorystore.ListBackupsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_backups_use_cached_wrapped_rpc():
@@ -5396,9 +5429,14 @@ async def test_list_backups_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_backups_async(
-    transport: str = "grpc_asyncio", request_type=memorystore.ListBackupsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        memorystore.ListBackupsRequest(),
+        {},
+    ],
+)
+async def test_list_backups_async(request_type, transport: str = "grpc_asyncio"):
     client = MemorystoreAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5406,7 +5444,7 @@ async def test_list_backups_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_backups), "__call__") as call:
@@ -5429,11 +5467,6 @@ async def test_list_backups_async(
     assert isinstance(response, pagers.ListBackupsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_backups_async_from_dict():
-    await test_list_backups_async(request_type=dict)
 
 
 def test_list_backups_field_headers():
@@ -5772,8 +5805,8 @@ async def test_list_backups_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        memorystore.GetBackupRequest,
-        dict,
+        memorystore.GetBackupRequest(),
+        {},
     ],
 )
 def test_get_backup(request_type, transport: str = "grpc"):
@@ -5784,7 +5817,7 @@ def test_get_backup(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_backup), "__call__") as call:
@@ -5848,9 +5881,10 @@ def test_get_backup_non_empty_request_with_auto_populated_field():
         client.get_backup(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == memorystore.GetBackupRequest(
+        request_msg = memorystore.GetBackupRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_backup_use_cached_wrapped_rpc():
@@ -5929,9 +5963,14 @@ async def test_get_backup_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_get_backup_async(
-    transport: str = "grpc_asyncio", request_type=memorystore.GetBackupRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        memorystore.GetBackupRequest(),
+        {},
+    ],
+)
+async def test_get_backup_async(request_type, transport: str = "grpc_asyncio"):
     client = MemorystoreAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5939,7 +5978,7 @@ async def test_get_backup_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_backup), "__call__") as call:
@@ -5980,11 +6019,6 @@ async def test_get_backup_async(
     assert response.backup_type == memorystore.Backup.BackupType.ON_DEMAND
     assert response.state == memorystore.Backup.State.CREATING
     assert response.uid == "uid_value"
-
-
-@pytest.mark.asyncio
-async def test_get_backup_async_from_dict():
-    await test_get_backup_async(request_type=dict)
 
 
 def test_get_backup_field_headers():
@@ -6129,8 +6163,8 @@ async def test_get_backup_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        memorystore.DeleteBackupRequest,
-        dict,
+        memorystore.DeleteBackupRequest(),
+        {},
     ],
 )
 def test_delete_backup(request_type, transport: str = "grpc"):
@@ -6141,7 +6175,7 @@ def test_delete_backup(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_backup), "__call__") as call:
@@ -6182,9 +6216,10 @@ def test_delete_backup_non_empty_request_with_auto_populated_field():
         client.delete_backup(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == memorystore.DeleteBackupRequest(
+        request_msg = memorystore.DeleteBackupRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_backup_use_cached_wrapped_rpc():
@@ -6275,9 +6310,14 @@ async def test_delete_backup_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_backup_async(
-    transport: str = "grpc_asyncio", request_type=memorystore.DeleteBackupRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        memorystore.DeleteBackupRequest(),
+        {},
+    ],
+)
+async def test_delete_backup_async(request_type, transport: str = "grpc_asyncio"):
     client = MemorystoreAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6285,7 +6325,7 @@ async def test_delete_backup_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_backup), "__call__") as call:
@@ -6303,11 +6343,6 @@ async def test_delete_backup_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_backup_async_from_dict():
-    await test_delete_backup_async(request_type=dict)
 
 
 def test_delete_backup_field_headers():
@@ -6456,8 +6491,8 @@ async def test_delete_backup_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        memorystore.ExportBackupRequest,
-        dict,
+        memorystore.ExportBackupRequest(),
+        {},
     ],
 )
 def test_export_backup(request_type, transport: str = "grpc"):
@@ -6468,7 +6503,7 @@ def test_export_backup(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.export_backup), "__call__") as call:
@@ -6510,10 +6545,11 @@ def test_export_backup_non_empty_request_with_auto_populated_field():
         client.export_backup(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == memorystore.ExportBackupRequest(
+        request_msg = memorystore.ExportBackupRequest(
             gcs_bucket="gcs_bucket_value",
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_export_backup_use_cached_wrapped_rpc():
@@ -6604,9 +6640,14 @@ async def test_export_backup_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_export_backup_async(
-    transport: str = "grpc_asyncio", request_type=memorystore.ExportBackupRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        memorystore.ExportBackupRequest(),
+        {},
+    ],
+)
+async def test_export_backup_async(request_type, transport: str = "grpc_asyncio"):
     client = MemorystoreAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6614,7 +6655,7 @@ async def test_export_backup_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.export_backup), "__call__") as call:
@@ -6632,11 +6673,6 @@ async def test_export_backup_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_export_backup_async_from_dict():
-    await test_export_backup_async(request_type=dict)
 
 
 def test_export_backup_field_headers():
@@ -6703,8 +6739,8 @@ async def test_export_backup_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        memorystore.BackupInstanceRequest,
-        dict,
+        memorystore.BackupInstanceRequest(),
+        {},
     ],
 )
 def test_backup_instance(request_type, transport: str = "grpc"):
@@ -6715,7 +6751,7 @@ def test_backup_instance(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.backup_instance), "__call__") as call:
@@ -6757,10 +6793,11 @@ def test_backup_instance_non_empty_request_with_auto_populated_field():
         client.backup_instance(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == memorystore.BackupInstanceRequest(
+        request_msg = memorystore.BackupInstanceRequest(
             name="name_value",
             backup_id="backup_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_backup_instance_use_cached_wrapped_rpc():
@@ -6851,9 +6888,14 @@ async def test_backup_instance_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_backup_instance_async(
-    transport: str = "grpc_asyncio", request_type=memorystore.BackupInstanceRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        memorystore.BackupInstanceRequest(),
+        {},
+    ],
+)
+async def test_backup_instance_async(request_type, transport: str = "grpc_asyncio"):
     client = MemorystoreAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6861,7 +6903,7 @@ async def test_backup_instance_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.backup_instance), "__call__") as call:
@@ -6879,11 +6921,6 @@ async def test_backup_instance_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_backup_instance_async_from_dict():
-    await test_backup_instance_async(request_type=dict)
 
 
 def test_backup_instance_field_headers():
@@ -10123,7 +10160,6 @@ def test_list_instances_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.ListInstancesRequest()
-
         assert args[0] == request_msg
 
 
@@ -10144,7 +10180,6 @@ def test_get_instance_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.GetInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -10165,7 +10200,6 @@ def test_create_instance_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.CreateInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -10186,7 +10220,6 @@ def test_update_instance_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.UpdateInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -10207,7 +10240,6 @@ def test_delete_instance_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.DeleteInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -10230,7 +10262,6 @@ def test_get_certificate_authority_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.GetCertificateAuthorityRequest()
-
         assert args[0] == request_msg
 
 
@@ -10253,7 +10284,6 @@ def test_get_shared_regional_certificate_authority_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.GetSharedRegionalCertificateAuthorityRequest()
-
         assert args[0] == request_msg
 
 
@@ -10276,7 +10306,6 @@ def test_reschedule_maintenance_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.RescheduleMaintenanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -10299,7 +10328,6 @@ def test_list_backup_collections_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.ListBackupCollectionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10322,7 +10350,6 @@ def test_get_backup_collection_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.GetBackupCollectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -10343,7 +10370,6 @@ def test_list_backups_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.ListBackupsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10364,7 +10390,6 @@ def test_get_backup_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.GetBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -10385,7 +10410,6 @@ def test_delete_backup_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.DeleteBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -10406,7 +10430,6 @@ def test_export_backup_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.ExportBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -10427,7 +10450,6 @@ def test_backup_instance_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.BackupInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -10469,7 +10491,6 @@ async def test_list_instances_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.ListInstancesRequest()
-
         assert args[0] == request_msg
 
 
@@ -10520,7 +10541,6 @@ async def test_get_instance_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.GetInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -10545,7 +10565,6 @@ async def test_create_instance_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.CreateInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -10570,7 +10589,6 @@ async def test_update_instance_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.UpdateInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -10595,7 +10613,6 @@ async def test_delete_instance_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.DeleteInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -10624,7 +10641,6 @@ async def test_get_certificate_authority_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.GetCertificateAuthorityRequest()
-
         assert args[0] == request_msg
 
 
@@ -10653,7 +10669,6 @@ async def test_get_shared_regional_certificate_authority_empty_call_grpc_asyncio
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.GetSharedRegionalCertificateAuthorityRequest()
-
         assert args[0] == request_msg
 
 
@@ -10680,7 +10695,6 @@ async def test_reschedule_maintenance_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.RescheduleMaintenanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -10710,7 +10724,6 @@ async def test_list_backup_collections_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.ListBackupCollectionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10745,7 +10758,6 @@ async def test_get_backup_collection_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.GetBackupCollectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -10773,7 +10785,6 @@ async def test_list_backups_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.ListBackupsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10810,7 +10821,6 @@ async def test_get_backup_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.GetBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -10835,7 +10845,6 @@ async def test_delete_backup_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.DeleteBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -10860,7 +10869,6 @@ async def test_export_backup_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.ExportBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -10885,7 +10893,6 @@ async def test_backup_instance_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.BackupInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -13724,7 +13731,6 @@ def test_list_instances_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.ListInstancesRequest()
-
         assert args[0] == request_msg
 
 
@@ -13744,7 +13750,6 @@ def test_get_instance_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.GetInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -13764,7 +13769,6 @@ def test_create_instance_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.CreateInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -13784,7 +13788,6 @@ def test_update_instance_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.UpdateInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -13804,7 +13807,6 @@ def test_delete_instance_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.DeleteInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -13826,7 +13828,6 @@ def test_get_certificate_authority_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.GetCertificateAuthorityRequest()
-
         assert args[0] == request_msg
 
 
@@ -13848,7 +13849,6 @@ def test_get_shared_regional_certificate_authority_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.GetSharedRegionalCertificateAuthorityRequest()
-
         assert args[0] == request_msg
 
 
@@ -13870,7 +13870,6 @@ def test_reschedule_maintenance_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.RescheduleMaintenanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -13892,7 +13891,6 @@ def test_list_backup_collections_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.ListBackupCollectionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -13914,7 +13912,6 @@ def test_get_backup_collection_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.GetBackupCollectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -13934,7 +13931,6 @@ def test_list_backups_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.ListBackupsRequest()
-
         assert args[0] == request_msg
 
 
@@ -13954,7 +13950,6 @@ def test_get_backup_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.GetBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -13974,7 +13969,6 @@ def test_delete_backup_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.DeleteBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -13994,7 +13988,6 @@ def test_export_backup_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.ExportBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -14014,7 +14007,6 @@ def test_backup_instance_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = memorystore.BackupInstanceRequest()
-
         assert args[0] == request_msg
 
 

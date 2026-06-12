@@ -19,6 +19,8 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
+from google.cloud.ces_v1beta.types import common
+
 __protobuf__ = proto.module(
     package="google.cloud.ces.v1beta",
     manifest={
@@ -44,6 +46,9 @@ class PythonFunction(proto.Message):
             Output only. The description of the Python
             function, parsed from the python code's
             docstring.
+        service_directory_config (google.cloud.ces_v1beta.types.ServiceDirectoryConfig):
+            Optional. Service Directory configuration for
+            the tool.
     """
 
     name: str = proto.Field(
@@ -57,6 +62,11 @@ class PythonFunction(proto.Message):
     description: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+    service_directory_config: common.ServiceDirectoryConfig = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=common.ServiceDirectoryConfig,
     )
 
 

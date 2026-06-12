@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -119,6 +120,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1362,8 +1378,8 @@ def test_sse_gateway_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        sse_gateway.ListPartnerSSEGatewaysRequest,
-        dict,
+        sse_gateway.ListPartnerSSEGatewaysRequest(),
+        {},
     ],
 )
 def test_list_partner_sse_gateways(request_type, transport: str = "grpc"):
@@ -1374,7 +1390,7 @@ def test_list_partner_sse_gateways(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1427,12 +1443,13 @@ def test_list_partner_sse_gateways_non_empty_request_with_auto_populated_field()
         client.list_partner_sse_gateways(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == sse_gateway.ListPartnerSSEGatewaysRequest(
+        request_msg = sse_gateway.ListPartnerSSEGatewaysRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_partner_sse_gateways_use_cached_wrapped_rpc():
@@ -1518,9 +1535,15 @@ async def test_list_partner_sse_gateways_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        sse_gateway.ListPartnerSSEGatewaysRequest(),
+        {},
+    ],
+)
 async def test_list_partner_sse_gateways_async(
-    transport: str = "grpc_asyncio",
-    request_type=sse_gateway.ListPartnerSSEGatewaysRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = SSEGatewayServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1529,7 +1552,7 @@ async def test_list_partner_sse_gateways_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1554,11 +1577,6 @@ async def test_list_partner_sse_gateways_async(
     assert isinstance(response, pagers.ListPartnerSSEGatewaysAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_partner_sse_gateways_async_from_dict():
-    await test_list_partner_sse_gateways_async(request_type=dict)
 
 
 def test_list_partner_sse_gateways_field_headers():
@@ -1915,8 +1933,8 @@ async def test_list_partner_sse_gateways_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        sse_gateway.GetPartnerSSEGatewayRequest,
-        dict,
+        sse_gateway.GetPartnerSSEGatewayRequest(),
+        {},
     ],
 )
 def test_get_partner_sse_gateway(request_type, transport: str = "grpc"):
@@ -1927,7 +1945,7 @@ def test_get_partner_sse_gateway(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2013,9 +2031,10 @@ def test_get_partner_sse_gateway_non_empty_request_with_auto_populated_field():
         client.get_partner_sse_gateway(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == sse_gateway.GetPartnerSSEGatewayRequest(
+        request_msg = sse_gateway.GetPartnerSSEGatewayRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_partner_sse_gateway_use_cached_wrapped_rpc():
@@ -2101,9 +2120,15 @@ async def test_get_partner_sse_gateway_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        sse_gateway.GetPartnerSSEGatewayRequest(),
+        {},
+    ],
+)
 async def test_get_partner_sse_gateway_async(
-    transport: str = "grpc_asyncio",
-    request_type=sse_gateway.GetPartnerSSEGatewayRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = SSEGatewayServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2112,7 +2137,7 @@ async def test_get_partner_sse_gateway_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2173,11 +2198,6 @@ async def test_get_partner_sse_gateway_async(
     assert response.capacity_bps == 1266
     assert response.state == sse_gateway.PartnerSSEGateway.State.CUSTOMER_ATTACHED
     assert response.prober_subnet_ranges == ["prober_subnet_ranges_value"]
-
-
-@pytest.mark.asyncio
-async def test_get_partner_sse_gateway_async_from_dict():
-    await test_get_partner_sse_gateway_async(request_type=dict)
 
 
 def test_get_partner_sse_gateway_field_headers():
@@ -2334,8 +2354,8 @@ async def test_get_partner_sse_gateway_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        sse_gateway.CreatePartnerSSEGatewayRequest,
-        dict,
+        sse_gateway.CreatePartnerSSEGatewayRequest(),
+        {},
     ],
 )
 def test_create_partner_sse_gateway(request_type, transport: str = "grpc"):
@@ -2346,7 +2366,7 @@ def test_create_partner_sse_gateway(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2393,11 +2413,12 @@ def test_create_partner_sse_gateway_non_empty_request_with_auto_populated_field(
         client.create_partner_sse_gateway(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == sse_gateway.CreatePartnerSSEGatewayRequest(
+        request_msg = sse_gateway.CreatePartnerSSEGatewayRequest(
             parent="parent_value",
             partner_sse_gateway_id="partner_sse_gateway_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_partner_sse_gateway_use_cached_wrapped_rpc():
@@ -2493,9 +2514,15 @@ async def test_create_partner_sse_gateway_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        sse_gateway.CreatePartnerSSEGatewayRequest(),
+        {},
+    ],
+)
 async def test_create_partner_sse_gateway_async(
-    transport: str = "grpc_asyncio",
-    request_type=sse_gateway.CreatePartnerSSEGatewayRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = SSEGatewayServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2504,7 +2531,7 @@ async def test_create_partner_sse_gateway_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2524,11 +2551,6 @@ async def test_create_partner_sse_gateway_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_partner_sse_gateway_async_from_dict():
-    await test_create_partner_sse_gateway_async(request_type=dict)
 
 
 def test_create_partner_sse_gateway_field_headers():
@@ -2705,8 +2727,8 @@ async def test_create_partner_sse_gateway_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        sse_gateway.DeletePartnerSSEGatewayRequest,
-        dict,
+        sse_gateway.DeletePartnerSSEGatewayRequest(),
+        {},
     ],
 )
 def test_delete_partner_sse_gateway(request_type, transport: str = "grpc"):
@@ -2717,7 +2739,7 @@ def test_delete_partner_sse_gateway(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2763,10 +2785,11 @@ def test_delete_partner_sse_gateway_non_empty_request_with_auto_populated_field(
         client.delete_partner_sse_gateway(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == sse_gateway.DeletePartnerSSEGatewayRequest(
+        request_msg = sse_gateway.DeletePartnerSSEGatewayRequest(
             name="name_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_partner_sse_gateway_use_cached_wrapped_rpc():
@@ -2862,9 +2885,15 @@ async def test_delete_partner_sse_gateway_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        sse_gateway.DeletePartnerSSEGatewayRequest(),
+        {},
+    ],
+)
 async def test_delete_partner_sse_gateway_async(
-    transport: str = "grpc_asyncio",
-    request_type=sse_gateway.DeletePartnerSSEGatewayRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = SSEGatewayServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2873,7 +2902,7 @@ async def test_delete_partner_sse_gateway_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2893,11 +2922,6 @@ async def test_delete_partner_sse_gateway_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_partner_sse_gateway_async_from_dict():
-    await test_delete_partner_sse_gateway_async(request_type=dict)
 
 
 def test_delete_partner_sse_gateway_field_headers():
@@ -3054,8 +3078,8 @@ async def test_delete_partner_sse_gateway_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        sse_gateway.UpdatePartnerSSEGatewayRequest,
-        dict,
+        sse_gateway.UpdatePartnerSSEGatewayRequest(),
+        {},
     ],
 )
 def test_update_partner_sse_gateway(request_type, transport: str = "grpc"):
@@ -3066,7 +3090,7 @@ def test_update_partner_sse_gateway(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3111,9 +3135,10 @@ def test_update_partner_sse_gateway_non_empty_request_with_auto_populated_field(
         client.update_partner_sse_gateway(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == sse_gateway.UpdatePartnerSSEGatewayRequest(
+        request_msg = sse_gateway.UpdatePartnerSSEGatewayRequest(
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_partner_sse_gateway_use_cached_wrapped_rpc():
@@ -3209,9 +3234,15 @@ async def test_update_partner_sse_gateway_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        sse_gateway.UpdatePartnerSSEGatewayRequest(),
+        {},
+    ],
+)
 async def test_update_partner_sse_gateway_async(
-    transport: str = "grpc_asyncio",
-    request_type=sse_gateway.UpdatePartnerSSEGatewayRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = SSEGatewayServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3220,7 +3251,7 @@ async def test_update_partner_sse_gateway_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3240,11 +3271,6 @@ async def test_update_partner_sse_gateway_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_partner_sse_gateway_async_from_dict():
-    await test_update_partner_sse_gateway_async(request_type=dict)
 
 
 def test_update_partner_sse_gateway_field_headers():
@@ -3411,8 +3437,8 @@ async def test_update_partner_sse_gateway_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        sse_gateway.ListSSEGatewayReferencesRequest,
-        dict,
+        sse_gateway.ListSSEGatewayReferencesRequest(),
+        {},
     ],
 )
 def test_list_sse_gateway_references(request_type, transport: str = "grpc"):
@@ -3423,7 +3449,7 @@ def test_list_sse_gateway_references(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3476,12 +3502,13 @@ def test_list_sse_gateway_references_non_empty_request_with_auto_populated_field
         client.list_sse_gateway_references(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == sse_gateway.ListSSEGatewayReferencesRequest(
+        request_msg = sse_gateway.ListSSEGatewayReferencesRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_sse_gateway_references_use_cached_wrapped_rpc():
@@ -3567,9 +3594,15 @@ async def test_list_sse_gateway_references_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        sse_gateway.ListSSEGatewayReferencesRequest(),
+        {},
+    ],
+)
 async def test_list_sse_gateway_references_async(
-    transport: str = "grpc_asyncio",
-    request_type=sse_gateway.ListSSEGatewayReferencesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = SSEGatewayServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3578,7 +3611,7 @@ async def test_list_sse_gateway_references_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3603,11 +3636,6 @@ async def test_list_sse_gateway_references_async(
     assert isinstance(response, pagers.ListSSEGatewayReferencesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_sse_gateway_references_async_from_dict():
-    await test_list_sse_gateway_references_async(request_type=dict)
 
 
 def test_list_sse_gateway_references_field_headers():
@@ -3964,8 +3992,8 @@ async def test_list_sse_gateway_references_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        sse_gateway.GetSSEGatewayReferenceRequest,
-        dict,
+        sse_gateway.GetSSEGatewayReferenceRequest(),
+        {},
     ],
 )
 def test_get_sse_gateway_reference(request_type, transport: str = "grpc"):
@@ -3976,7 +4004,7 @@ def test_get_sse_gateway_reference(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4028,9 +4056,10 @@ def test_get_sse_gateway_reference_non_empty_request_with_auto_populated_field()
         client.get_sse_gateway_reference(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == sse_gateway.GetSSEGatewayReferenceRequest(
+        request_msg = sse_gateway.GetSSEGatewayReferenceRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_sse_gateway_reference_use_cached_wrapped_rpc():
@@ -4116,9 +4145,15 @@ async def test_get_sse_gateway_reference_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        sse_gateway.GetSSEGatewayReferenceRequest(),
+        {},
+    ],
+)
 async def test_get_sse_gateway_reference_async(
-    transport: str = "grpc_asyncio",
-    request_type=sse_gateway.GetSSEGatewayReferenceRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = SSEGatewayServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4127,7 +4162,7 @@ async def test_get_sse_gateway_reference_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4154,11 +4189,6 @@ async def test_get_sse_gateway_reference_async(
     assert response.name == "name_value"
     assert response.partner_sse_realm == "partner_sse_realm_value"
     assert response.prober_subnet_ranges == ["prober_subnet_ranges_value"]
-
-
-@pytest.mark.asyncio
-async def test_get_sse_gateway_reference_async_from_dict():
-    await test_get_sse_gateway_reference_async(request_type=dict)
 
 
 def test_get_sse_gateway_reference_field_headers():
@@ -5946,7 +5976,6 @@ def test_list_partner_sse_gateways_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = sse_gateway.ListPartnerSSEGatewaysRequest()
-
         assert args[0] == request_msg
 
 
@@ -5969,7 +5998,6 @@ def test_get_partner_sse_gateway_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = sse_gateway.GetPartnerSSEGatewayRequest()
-
         assert args[0] == request_msg
 
 
@@ -5992,7 +6020,6 @@ def test_create_partner_sse_gateway_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = sse_gateway.CreatePartnerSSEGatewayRequest()
-
         assert args[0] == request_msg
 
 
@@ -6015,7 +6042,6 @@ def test_delete_partner_sse_gateway_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = sse_gateway.DeletePartnerSSEGatewayRequest()
-
         assert args[0] == request_msg
 
 
@@ -6038,7 +6064,6 @@ def test_update_partner_sse_gateway_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = sse_gateway.UpdatePartnerSSEGatewayRequest()
-
         assert args[0] == request_msg
 
 
@@ -6061,7 +6086,6 @@ def test_list_sse_gateway_references_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = sse_gateway.ListSSEGatewayReferencesRequest()
-
         assert args[0] == request_msg
 
 
@@ -6084,7 +6108,6 @@ def test_get_sse_gateway_reference_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = sse_gateway.GetSSEGatewayReferenceRequest()
-
         assert args[0] == request_msg
 
 
@@ -6128,7 +6151,6 @@ async def test_list_partner_sse_gateways_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = sse_gateway.ListPartnerSSEGatewaysRequest()
-
         assert args[0] == request_msg
 
 
@@ -6176,7 +6198,6 @@ async def test_get_partner_sse_gateway_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = sse_gateway.GetPartnerSSEGatewayRequest()
-
         assert args[0] == request_msg
 
 
@@ -6203,7 +6224,6 @@ async def test_create_partner_sse_gateway_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = sse_gateway.CreatePartnerSSEGatewayRequest()
-
         assert args[0] == request_msg
 
 
@@ -6230,7 +6250,6 @@ async def test_delete_partner_sse_gateway_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = sse_gateway.DeletePartnerSSEGatewayRequest()
-
         assert args[0] == request_msg
 
 
@@ -6257,7 +6276,6 @@ async def test_update_partner_sse_gateway_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = sse_gateway.UpdatePartnerSSEGatewayRequest()
-
         assert args[0] == request_msg
 
 
@@ -6287,7 +6305,6 @@ async def test_list_sse_gateway_references_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = sse_gateway.ListSSEGatewayReferencesRequest()
-
         assert args[0] == request_msg
 
 
@@ -6318,7 +6335,6 @@ async def test_get_sse_gateway_reference_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = sse_gateway.GetSSEGatewayReferenceRequest()
-
         assert args[0] == request_msg
 
 
@@ -8128,7 +8144,6 @@ def test_list_partner_sse_gateways_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = sse_gateway.ListPartnerSSEGatewaysRequest()
-
         assert args[0] == request_msg
 
 
@@ -8150,7 +8165,6 @@ def test_get_partner_sse_gateway_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = sse_gateway.GetPartnerSSEGatewayRequest()
-
         assert args[0] == request_msg
 
 
@@ -8172,7 +8186,6 @@ def test_create_partner_sse_gateway_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = sse_gateway.CreatePartnerSSEGatewayRequest()
-
         assert args[0] == request_msg
 
 
@@ -8194,7 +8207,6 @@ def test_delete_partner_sse_gateway_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = sse_gateway.DeletePartnerSSEGatewayRequest()
-
         assert args[0] == request_msg
 
 
@@ -8216,7 +8228,6 @@ def test_update_partner_sse_gateway_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = sse_gateway.UpdatePartnerSSEGatewayRequest()
-
         assert args[0] == request_msg
 
 
@@ -8238,7 +8249,6 @@ def test_list_sse_gateway_references_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = sse_gateway.ListSSEGatewayReferencesRequest()
-
         assert args[0] == request_msg
 
 
@@ -8260,7 +8270,6 @@ def test_get_sse_gateway_reference_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = sse_gateway.GetSSEGatewayReferenceRequest()
-
         assert args[0] == request_msg
 
 

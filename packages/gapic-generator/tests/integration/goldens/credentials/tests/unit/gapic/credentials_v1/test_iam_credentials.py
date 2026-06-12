@@ -14,6 +14,7 @@
 # limitations under the License.
 #
 import os
+import asyncio
 from unittest import mock
 from unittest.mock import AsyncMock
 
@@ -93,6 +94,21 @@ def modify_default_endpoint(client):
 # mtls endpoint for endpoint testing purposes.
 def modify_default_endpoint_template(client):
     return "test.{UNIVERSE_DOMAIN}" if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE) else client._DEFAULT_ENDPOINT_TEMPLATE
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -955,10 +971,8 @@ def test_iam_credentials_client_create_channel_credentials_file(client_class, tr
 
 
 @pytest.mark.parametrize("request_type", [
-  common.GenerateAccessTokenRequest({
-  }),
-  {
-  },
+  common.GenerateAccessTokenRequest(),
+  {},
 ])
 def test_generate_access_token(request_type, transport: str = 'grpc'):
     client = IAMCredentialsClient(
@@ -1087,8 +1101,8 @@ async def test_generate_access_token_async_use_cached_wrapped_rpc(transport: str
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  common.GenerateAccessTokenRequest({  }),
-  {  },
+  common.GenerateAccessTokenRequest(),
+  {},
 ])
 async def test_generate_access_token_async(request_type, transport: str = 'grpc_asyncio'):
     client = IAMCredentialsAsyncClient(
@@ -1292,10 +1306,8 @@ async def test_generate_access_token_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  common.GenerateIdTokenRequest({
-  }),
-  {
-  },
+  common.GenerateIdTokenRequest(),
+  {},
 ])
 def test_generate_id_token(request_type, transport: str = 'grpc'):
     client = IAMCredentialsClient(
@@ -1426,8 +1438,8 @@ async def test_generate_id_token_async_use_cached_wrapped_rpc(transport: str = "
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  common.GenerateIdTokenRequest({  }),
-  {  },
+  common.GenerateIdTokenRequest(),
+  {},
 ])
 async def test_generate_id_token_async(request_type, transport: str = 'grpc_asyncio'):
     client = IAMCredentialsAsyncClient(
@@ -1635,10 +1647,8 @@ async def test_generate_id_token_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  common.SignBlobRequest({
-  }),
-  {
-  },
+  common.SignBlobRequest(),
+  {},
 ])
 def test_sign_blob(request_type, transport: str = 'grpc'):
     client = IAMCredentialsClient(
@@ -1769,8 +1779,8 @@ async def test_sign_blob_async_use_cached_wrapped_rpc(transport: str = "grpc_asy
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  common.SignBlobRequest({  }),
-  {  },
+  common.SignBlobRequest(),
+  {},
 ])
 async def test_sign_blob_async(request_type, transport: str = 'grpc_asyncio'):
     client = IAMCredentialsAsyncClient(
@@ -1970,10 +1980,8 @@ async def test_sign_blob_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  common.SignJwtRequest({
-  }),
-  {
-  },
+  common.SignJwtRequest(),
+  {},
 ])
 def test_sign_jwt(request_type, transport: str = 'grpc'):
     client = IAMCredentialsClient(
@@ -2106,8 +2114,8 @@ async def test_sign_jwt_async_use_cached_wrapped_rpc(transport: str = "grpc_asyn
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("request_type", [
-  common.SignJwtRequest({  }),
-  {  },
+  common.SignJwtRequest(),
+  {},
 ])
 async def test_sign_jwt_async(request_type, transport: str = 'grpc_asyncio'):
     client = IAMCredentialsAsyncClient(

@@ -115,6 +115,10 @@ class TableWidget(_WIDGET_BASE):
         else:
             df = dataframe
 
+        from bigframes.core.utils import get_ipython_execution_count
+
+        self._cell_execution_count = get_ipython_execution_count()
+
         super().__init__()
 
         self.is_deferred_mode = is_deferred
@@ -351,7 +355,10 @@ class TableWidget(_WIDGET_BASE):
         if self._dataframe is None:
             return
         with bigframes.option_context("display.progress_bar", None):
-            self._batches = self._dataframe.to_pandas_batches(page_size=self.page_size)
+            self._batches = self._dataframe.to_pandas_batches(
+                page_size=self.page_size,
+                cell_execution_count=self._cell_execution_count,
+            )
 
         self._reset_batch_cache()
 
@@ -390,7 +397,8 @@ class TableWidget(_WIDGET_BASE):
             current_sort_state = _SortState(tuple(sort_columns), tuple(sort_ascending))
             if self._last_sort_state != current_sort_state:
                 self._batches = df_to_display.to_pandas_batches(
-                    page_size=self.page_size
+                    page_size=self.page_size,
+                    cell_execution_count=self._cell_execution_count,
                 )
                 self._reset_batch_cache()
                 self._last_sort_state = current_sort_state

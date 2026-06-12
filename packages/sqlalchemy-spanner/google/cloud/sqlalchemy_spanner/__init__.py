@@ -13,8 +13,6 @@
 # limitations under the License.
 
 from .sqlalchemy_spanner import SpannerDialect
-
 from .version import __version__
-
 
 __all__ = (SpannerDialect, __version__)

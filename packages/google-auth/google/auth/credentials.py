@@ -34,7 +34,7 @@ from google.auth._refresh_worker import RefreshThreadManager
 if TYPE_CHECKING:  # pragma: NO COVER
     import google.auth.transport
 
-DEFAULT_UNIVERSE_DOMAIN = "googleapis.com"
+DEFAULT_UNIVERSE_DOMAIN = _helpers.DEFAULT_UNIVERSE_DOMAIN
 
 # These constants are deprecated and no longer used.
 # They are kept solely for backward compatibility with older implementations.
@@ -239,8 +239,24 @@ class Credentials(_BaseCredentials):
         else:
             self._blocking_refresh(request)
 
+        self._after_refresh(request, method, url, headers)
+
         metrics.add_metric_header(headers, self._metric_header_for_usage())
         self.apply(headers)
+
+    def _after_refresh(self, request, method, url, headers):
+        """Hook for subclasses to perform actions after refresh but before
+        applying credentials to headers.
+
+        Args:
+            request (google.auth.transport.Request): The object used to make
+                HTTP requests.
+            method (str): The request's HTTP method or the RPC method being
+                invoked.
+            url (str): The request's URI or the RPC service's URI.
+            headers (Mapping): The request's headers.
+        """
+        pass
 
     def with_non_blocking_refresh(self):
         self._use_non_blocking_refresh = True
@@ -309,6 +325,22 @@ class CredentialsWithRegionalAccessBoundary(Credentials):
             _regional_access_boundary_utils._RegionalAccessBoundaryManager()
         )
 
+    def __setstate__(self, state):
+        """Pickle helper that restores state, safely reconstructing RAB fields if missing."""
+        self.__dict__.update(state)
+        if "_rab_manager" not in self.__dict__:
+            from google.auth import _regional_access_boundary_utils
+
+            self._rab_manager = (
+                _regional_access_boundary_utils._RegionalAccessBoundaryManager()
+            )
+        if "_use_non_blocking_refresh" not in self.__dict__:
+            self._use_non_blocking_refresh = False
+        if "_refresh_worker" not in self.__dict__:
+            from google.auth._refresh_worker import RefreshThreadManager
+
+            self._refresh_worker = RefreshThreadManager()
+
     @property
     def regional_access_boundary(self):
         """Optional[str]: The encoded Regional Access Boundary locations."""
@@ -364,12 +396,11 @@ class CredentialsWithRegionalAccessBoundary(Credentials):
             )
 
     def _copy_regional_access_boundary_manager(self, target):
-        """Copies the regional access boundary manager to another instance."""
-        # Create a new manager for the clone to isolate background refresh locks and threads,
-        # but share the immutable data reference to avoid unnecessary initial lookups.
-        new_manager = _regional_access_boundary_utils._RegionalAccessBoundaryManager()
-        new_manager._data = self._rab_manager._data
-        target._rab_manager = new_manager
+        """Copies the regional access boundary manager state to another instance."""
+        target._rab_manager._data = self._rab_manager._data
+        target._rab_manager._use_blocking_regional_access_boundary_lookup = (
+            self._rab_manager._use_blocking_regional_access_boundary_lookup
+        )
 
     def _set_regional_access_boundary(self, initial_boundary):
         """Applies the regional_access_boundary provided via the initial_boundary on these
@@ -403,6 +434,29 @@ class CredentialsWithRegionalAccessBoundary(Credentials):
         self._rab_manager.enable_blocking_lookup()
         return self
 
+    def _is_regional_endpoint(self, url):
+        """Checks if the request URL is for a regional endpoint.
+
+        Args:
+            url (str): The URL of the request.
+
+        Returns:
+            bool: True if the URL is a regional endpoint, False otherwise.
+        """
+        try:
+            # Do not perform a lookup if the request is for a regional endpoint.
+            hostname = urlparse(url).hostname
+            if hostname and (
+                hostname.endswith(".rep.googleapis.com")
+                or hostname.endswith(".rep.sandbox.googleapis.com")
+            ):
+                return True
+        except (ValueError, TypeError, AttributeError):
+            # If the URL is malformed, proceed with the default lookup behavior.
+            pass
+
+        return False
+
     def _maybe_start_regional_access_boundary_refresh(self, request, url):
         """
         Starts a background thread to refresh the Regional Access Boundary if needed.
@@ -416,23 +470,15 @@ class CredentialsWithRegionalAccessBoundary(Credentials):
                 HTTP requests.
             url (str): The URL of the request.
         """
-        try:
-            # Do not perform a lookup if the request is for a regional endpoint.
-            hostname = urlparse(url).hostname
-            if hostname and (
-                hostname.endswith(".rep.googleapis.com")
-                or hostname.endswith(".rep.sandbox.googleapis.com")
-            ):
-                return
-        except (ValueError, TypeError):
-            # If the URL is malformed, proceed with the default lookup behavior.
-            pass
+        # Do not perform a lookup if the request is for a regional endpoint.
+        if self._is_regional_endpoint(url):
+            return
 
         # A refresh is only needed if the feature is enabled.
         if not self._is_regional_access_boundary_lookup_required():
             return
 
-        # Start the background refresh if needed.
+        # Trigger background or blocking refresh if needed
         self._rab_manager.maybe_start_refresh(self, request)
 
     def _is_regional_access_boundary_lookup_required(self):
@@ -444,11 +490,11 @@ class CredentialsWithRegionalAccessBoundary(Credentials):
         Returns:
             bool: True if a Regional Access Boundary lookup is required, False otherwise.
         """
-        # 1. Check if the feature is enabled.
+        # Check if the feature is enabled.
         if not _regional_access_boundary_utils.is_regional_access_boundary_enabled():
             return False
 
-        # 2. Skip for non-default universe domains.
+        # Skip for non-default universe domains.
         if self.universe_domain != DEFAULT_UNIVERSE_DOMAIN:
             return False
 
@@ -459,19 +505,9 @@ class CredentialsWithRegionalAccessBoundary(Credentials):
         super().apply(headers, token)
         self._rab_manager.apply_headers(headers)
 
-    def before_request(self, request, method, url, headers):
-        """Refreshes the access token and triggers the Regional Access Boundary
-        lookup if necessary.
-        """
-        if self._use_non_blocking_refresh:
-            self._non_blocking_refresh(request)
-        else:
-            self._blocking_refresh(request)
-
+    def _after_refresh(self, request, method, url, headers):
+        """Triggers the Regional Access Boundary lookup if necessary."""
         self._maybe_start_regional_access_boundary_refresh(request, url)
-
-        metrics.add_metric_header(headers, self._metric_header_for_usage())
-        self.apply(headers)
 
     def refresh(self, request):
         """Refreshes the access token.
@@ -500,12 +536,11 @@ class CredentialsWithRegionalAccessBoundary(Credentials):
 
         url = self._build_regional_access_boundary_lookup_url(request=request)
         if not url:
-            _LOGGER.error("Failed to build Regional Access Boundary lookup URL.")
+            _LOGGER.warning("Failed to build Regional Access Boundary lookup URL.")
             return None
 
         headers: Dict[str, str] = {}
         self._apply(headers)
-        self._rab_manager.apply_headers(headers)
         return _client._lookup_regional_access_boundary(
             request, url, headers=headers, fail_fast=fail_fast
         )

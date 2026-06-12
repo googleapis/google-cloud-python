@@ -17,6 +17,7 @@ from unittest import mock
 
 from google.api_core import exceptions as api_exceptions
 from google.cloud.exceptions import NotFound
+
 from google.cloud.storage._bucket_metadata_cache import BucketMetadataCache
 
 

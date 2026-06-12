@@ -29,17 +29,19 @@ from urllib.parse import urlsplit, urlunsplit
 from uuid import uuid4
 
 from google.api_core import exceptions as api_exceptions
+from google.auth import environment_vars
 from google.cloud.exceptions import NotFound
 
-from google.auth import environment_vars
-
+from google.cloud.storage._opentelemetry_tracing import (
+    _is_bucket_metadata_disabled,
+)
+from google.cloud.storage._opentelemetry_tracing import (
+    create_trace_span as _base_create_trace_span,
+)
 from google.cloud.storage.constants import _DEFAULT_TIMEOUT
 from google.cloud.storage.retry import (
     DEFAULT_RETRY,
     DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED,
-)
-from google.cloud.storage._opentelemetry_tracing import (
-    create_trace_span as _base_create_trace_span,
 )
 
 _logger = logging.getLogger(__name__)
@@ -157,6 +159,7 @@ def create_trace_span_helper(client, bucket_name, name, attributes=None, **kwarg
         and client
         and hasattr(client, "_bucket_metadata_cache")
         and client._bucket_metadata_cache
+        and not _is_bucket_metadata_disabled()
     ):
         try:
             if name in (

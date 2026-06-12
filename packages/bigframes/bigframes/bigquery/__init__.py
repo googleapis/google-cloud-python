@@ -49,11 +49,7 @@ import sys
 
 from bigframes.bigquery import aead, ai, ml, obj
 from bigframes.bigquery._operations.approx_agg import approx_top_count
-from bigframes.bigquery._operations.array import (
-    array_agg,
-    array_length,
-    array_to_string,
-)
+from bigframes.bigquery._operations.array import array_agg
 from bigframes.bigquery._operations.datetime import (
     unix_micros,
     unix_millis,
@@ -71,11 +67,6 @@ from bigframes.bigquery._operations.geo import (
     st_length,
     st_regionstats,
     st_simplify,
-)
-from bigframes.bigquery._operations.global_namespace.aead_encryption import (
-    deterministic_decrypt_bytes,
-    deterministic_decrypt_string,
-    deterministic_encrypt,
 )
 from bigframes.bigquery._operations.io import load_data
 from bigframes.bigquery._operations.json import (
@@ -102,14 +93,69 @@ from bigframes.bigquery._operations.sql import sql_scalar
 from bigframes.bigquery._operations.struct import struct
 from bigframes.bigquery._operations.table import create_external_table
 from bigframes.core.logging import log_adapter
+from bigframes.operations.googlesql.global_namespace.aead_encryption import (
+    deterministic_decrypt_bytes,
+    deterministic_decrypt_string,
+    deterministic_encrypt,
+)
+from bigframes.operations.googlesql.global_namespace.array import (
+    array_concat,
+    array_first,
+    array_first_n,
+    array_includes,
+    array_includes_all,
+    array_includes_any,
+    array_is_distinct,
+    array_last,
+    array_length,
+    array_reverse,
+    array_slice,
+    array_to_string,
+    flatten,
+    generate_array,
+)
+from bigframes.operations.googlesql.global_namespace.bit import (
+    bit_count,
+)
+from bigframes.operations.googlesql.global_namespace.conversion import (
+    bool_,
+    double,
+    float64,
+    int64,
+    parse_bignumeric,
+    parse_numeric,
+    string,
+)
 
 _functions = [
     # approximate aggregate ops
     approx_top_count,
     # array ops
     array_agg,
+    array_concat,
+    array_first,
+    array_first_n,
+    array_includes,
+    array_includes_all,
+    array_includes_any,
+    array_is_distinct,
+    array_last,
     array_length,
+    array_reverse,
+    array_slice,
     array_to_string,
+    flatten,
+    generate_array,
+    # bit ops
+    bit_count,
+    # conversion ops
+    bool_,
+    double,
+    float64,
+    int64,
+    parse_bignumeric,
+    parse_numeric,
+    string,
     # datetime ops
     unix_micros,
     unix_millis,
@@ -170,8 +216,30 @@ __all__ = [
     "approx_top_count",
     # array ops
     "array_agg",
+    "array_concat",
+    "array_first",
+    "array_first_n",
+    "array_includes",
+    "array_includes_all",
+    "array_includes_any",
+    "array_is_distinct",
+    "array_last",
     "array_length",
+    "array_reverse",
+    "array_slice",
     "array_to_string",
+    "flatten",
+    "generate_array",
+    # bit ops
+    "bit_count",
+    # conversion ops
+    "bool_",
+    "double",
+    "float64",
+    "int64",
+    "parse_bignumeric",
+    "parse_numeric",
+    "string",
     # datetime ops
     "unix_micros",
     "unix_millis",

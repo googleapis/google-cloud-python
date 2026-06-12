@@ -57,5 +57,5 @@ def struct(value: dataframe.DataFrame) -> series.Series:
     block, result_id = block.apply_nary_op(
         block.value_columns, ops.StructOp(column_names=tuple(block.column_labels))
     )
-    block = block.select_column(result_id)
+    block = block.select_column(result_id).with_column_labels([None])
     return series.Series(block)

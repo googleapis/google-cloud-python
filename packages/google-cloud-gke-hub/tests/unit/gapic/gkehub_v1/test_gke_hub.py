@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -114,6 +115,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1248,8 +1264,8 @@ def test_gke_hub_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.ListMembershipsRequest,
-        dict,
+        service.ListMembershipsRequest(),
+        {},
     ],
 )
 def test_list_memberships(request_type, transport: str = "grpc"):
@@ -1260,7 +1276,7 @@ def test_list_memberships(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_memberships), "__call__") as call:
@@ -1309,12 +1325,13 @@ def test_list_memberships_non_empty_request_with_auto_populated_field():
         client.list_memberships(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListMembershipsRequest(
+        request_msg = service.ListMembershipsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_memberships_use_cached_wrapped_rpc():
@@ -1397,9 +1414,14 @@ async def test_list_memberships_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_memberships_async(
-    transport: str = "grpc_asyncio", request_type=service.ListMembershipsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListMembershipsRequest(),
+        {},
+    ],
+)
+async def test_list_memberships_async(request_type, transport: str = "grpc_asyncio"):
     client = GkeHubAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1407,7 +1429,7 @@ async def test_list_memberships_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_memberships), "__call__") as call:
@@ -1430,11 +1452,6 @@ async def test_list_memberships_async(
     assert isinstance(response, pagers.ListMembershipsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_memberships_async_from_dict():
-    await test_list_memberships_async(request_type=dict)
 
 
 def test_list_memberships_field_headers():
@@ -1773,8 +1790,8 @@ async def test_list_memberships_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.ListBoundMembershipsRequest,
-        dict,
+        service.ListBoundMembershipsRequest(),
+        {},
     ],
 )
 def test_list_bound_memberships(request_type, transport: str = "grpc"):
@@ -1785,7 +1802,7 @@ def test_list_bound_memberships(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1837,11 +1854,12 @@ def test_list_bound_memberships_non_empty_request_with_auto_populated_field():
         client.list_bound_memberships(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListBoundMembershipsRequest(
+        request_msg = service.ListBoundMembershipsRequest(
             scope_name="scope_name_value",
             filter="filter_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_bound_memberships_use_cached_wrapped_rpc():
@@ -1927,8 +1945,15 @@ async def test_list_bound_memberships_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListBoundMembershipsRequest(),
+        {},
+    ],
+)
 async def test_list_bound_memberships_async(
-    transport: str = "grpc_asyncio", request_type=service.ListBoundMembershipsRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = GkeHubAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1937,7 +1962,7 @@ async def test_list_bound_memberships_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1962,11 +1987,6 @@ async def test_list_bound_memberships_async(
     assert isinstance(response, pagers.ListBoundMembershipsAsyncPager)
     assert response.unreachable == ["unreachable_value"]
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_bound_memberships_async_from_dict():
-    await test_list_bound_memberships_async(request_type=dict)
 
 
 def test_list_bound_memberships_field_headers():
@@ -2321,8 +2341,8 @@ async def test_list_bound_memberships_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.ListFeaturesRequest,
-        dict,
+        service.ListFeaturesRequest(),
+        {},
     ],
 )
 def test_list_features(request_type, transport: str = "grpc"):
@@ -2333,7 +2353,7 @@ def test_list_features(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_features), "__call__") as call:
@@ -2380,12 +2400,13 @@ def test_list_features_non_empty_request_with_auto_populated_field():
         client.list_features(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListFeaturesRequest(
+        request_msg = service.ListFeaturesRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_features_use_cached_wrapped_rpc():
@@ -2466,9 +2487,14 @@ async def test_list_features_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_features_async(
-    transport: str = "grpc_asyncio", request_type=service.ListFeaturesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListFeaturesRequest(),
+        {},
+    ],
+)
+async def test_list_features_async(request_type, transport: str = "grpc_asyncio"):
     client = GkeHubAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2476,7 +2502,7 @@ async def test_list_features_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_features), "__call__") as call:
@@ -2497,11 +2523,6 @@ async def test_list_features_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListFeaturesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_features_async_from_dict():
-    await test_list_features_async(request_type=dict)
 
 
 def test_list_features_field_headers():
@@ -2840,8 +2861,8 @@ async def test_list_features_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.GetMembershipRequest,
-        dict,
+        service.GetMembershipRequest(),
+        {},
     ],
 )
 def test_get_membership(request_type, transport: str = "grpc"):
@@ -2852,7 +2873,7 @@ def test_get_membership(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_membership), "__call__") as call:
@@ -2902,9 +2923,10 @@ def test_get_membership_non_empty_request_with_auto_populated_field():
         client.get_membership(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetMembershipRequest(
+        request_msg = service.GetMembershipRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_membership_use_cached_wrapped_rpc():
@@ -2985,9 +3007,14 @@ async def test_get_membership_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_membership_async(
-    transport: str = "grpc_asyncio", request_type=service.GetMembershipRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetMembershipRequest(),
+        {},
+    ],
+)
+async def test_get_membership_async(request_type, transport: str = "grpc_asyncio"):
     client = GkeHubAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2995,7 +3022,7 @@ async def test_get_membership_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_membership), "__call__") as call:
@@ -3022,11 +3049,6 @@ async def test_get_membership_async(
     assert response.description == "description_value"
     assert response.external_id == "external_id_value"
     assert response.unique_id == "unique_id_value"
-
-
-@pytest.mark.asyncio
-async def test_get_membership_async_from_dict():
-    await test_get_membership_async(request_type=dict)
 
 
 def test_get_membership_field_headers():
@@ -3175,8 +3197,8 @@ async def test_get_membership_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.GetFeatureRequest,
-        dict,
+        service.GetFeatureRequest(),
+        {},
     ],
 )
 def test_get_feature(request_type, transport: str = "grpc"):
@@ -3187,7 +3209,7 @@ def test_get_feature(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_feature), "__call__") as call:
@@ -3233,9 +3255,10 @@ def test_get_feature_non_empty_request_with_auto_populated_field():
         client.get_feature(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetFeatureRequest(
+        request_msg = service.GetFeatureRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_feature_use_cached_wrapped_rpc():
@@ -3316,9 +3339,14 @@ async def test_get_feature_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_feature_async(
-    transport: str = "grpc_asyncio", request_type=service.GetFeatureRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetFeatureRequest(),
+        {},
+    ],
+)
+async def test_get_feature_async(request_type, transport: str = "grpc_asyncio"):
     client = GkeHubAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3326,7 +3354,7 @@ async def test_get_feature_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_feature), "__call__") as call:
@@ -3349,11 +3377,6 @@ async def test_get_feature_async(
     assert isinstance(response, feature.Feature)
     assert response.name == "name_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_get_feature_async_from_dict():
-    await test_get_feature_async(request_type=dict)
 
 
 def test_get_feature_field_headers():
@@ -3498,8 +3521,8 @@ async def test_get_feature_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.CreateMembershipRequest,
-        dict,
+        service.CreateMembershipRequest(),
+        {},
     ],
 )
 def test_create_membership(request_type, transport: str = "grpc"):
@@ -3510,7 +3533,7 @@ def test_create_membership(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3557,11 +3580,12 @@ def test_create_membership_non_empty_request_with_auto_populated_field():
         client.create_membership(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CreateMembershipRequest(
+        request_msg = service.CreateMembershipRequest(
             parent="parent_value",
             membership_id="membership_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_membership_use_cached_wrapped_rpc():
@@ -3654,9 +3678,14 @@ async def test_create_membership_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_membership_async(
-    transport: str = "grpc_asyncio", request_type=service.CreateMembershipRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.CreateMembershipRequest(),
+        {},
+    ],
+)
+async def test_create_membership_async(request_type, transport: str = "grpc_asyncio"):
     client = GkeHubAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3664,7 +3693,7 @@ async def test_create_membership_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3684,11 +3713,6 @@ async def test_create_membership_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_membership_async_from_dict():
-    await test_create_membership_async(request_type=dict)
 
 
 def test_create_membership_field_headers():
@@ -3897,8 +3921,8 @@ async def test_create_membership_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.CreateFeatureRequest,
-        dict,
+        service.CreateFeatureRequest(),
+        {},
     ],
 )
 def test_create_feature(request_type, transport: str = "grpc"):
@@ -3909,7 +3933,7 @@ def test_create_feature(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_feature), "__call__") as call:
@@ -3952,11 +3976,12 @@ def test_create_feature_non_empty_request_with_auto_populated_field():
         client.create_feature(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CreateFeatureRequest(
+        request_msg = service.CreateFeatureRequest(
             parent="parent_value",
             feature_id="feature_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_feature_use_cached_wrapped_rpc():
@@ -4047,9 +4072,14 @@ async def test_create_feature_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_feature_async(
-    transport: str = "grpc_asyncio", request_type=service.CreateFeatureRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.CreateFeatureRequest(),
+        {},
+    ],
+)
+async def test_create_feature_async(request_type, transport: str = "grpc_asyncio"):
     client = GkeHubAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4057,7 +4087,7 @@ async def test_create_feature_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_feature), "__call__") as call:
@@ -4075,11 +4105,6 @@ async def test_create_feature_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_feature_async_from_dict():
-    await test_create_feature_async(request_type=dict)
 
 
 def test_create_feature_field_headers():
@@ -4248,8 +4273,8 @@ async def test_create_feature_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.DeleteMembershipRequest,
-        dict,
+        service.DeleteMembershipRequest(),
+        {},
     ],
 )
 def test_delete_membership(request_type, transport: str = "grpc"):
@@ -4260,7 +4285,7 @@ def test_delete_membership(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4306,10 +4331,11 @@ def test_delete_membership_non_empty_request_with_auto_populated_field():
         client.delete_membership(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.DeleteMembershipRequest(
+        request_msg = service.DeleteMembershipRequest(
             name="name_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_membership_use_cached_wrapped_rpc():
@@ -4402,9 +4428,14 @@ async def test_delete_membership_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_membership_async(
-    transport: str = "grpc_asyncio", request_type=service.DeleteMembershipRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.DeleteMembershipRequest(),
+        {},
+    ],
+)
+async def test_delete_membership_async(request_type, transport: str = "grpc_asyncio"):
     client = GkeHubAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4412,7 +4443,7 @@ async def test_delete_membership_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4432,11 +4463,6 @@ async def test_delete_membership_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_membership_async_from_dict():
-    await test_delete_membership_async(request_type=dict)
 
 
 def test_delete_membership_field_headers():
@@ -4593,8 +4619,8 @@ async def test_delete_membership_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.DeleteFeatureRequest,
-        dict,
+        service.DeleteFeatureRequest(),
+        {},
     ],
 )
 def test_delete_feature(request_type, transport: str = "grpc"):
@@ -4605,7 +4631,7 @@ def test_delete_feature(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_feature), "__call__") as call:
@@ -4647,10 +4673,11 @@ def test_delete_feature_non_empty_request_with_auto_populated_field():
         client.delete_feature(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.DeleteFeatureRequest(
+        request_msg = service.DeleteFeatureRequest(
             name="name_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_feature_use_cached_wrapped_rpc():
@@ -4741,9 +4768,14 @@ async def test_delete_feature_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_feature_async(
-    transport: str = "grpc_asyncio", request_type=service.DeleteFeatureRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.DeleteFeatureRequest(),
+        {},
+    ],
+)
+async def test_delete_feature_async(request_type, transport: str = "grpc_asyncio"):
     client = GkeHubAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4751,7 +4783,7 @@ async def test_delete_feature_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_feature), "__call__") as call:
@@ -4769,11 +4801,6 @@ async def test_delete_feature_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_feature_async_from_dict():
-    await test_delete_feature_async(request_type=dict)
 
 
 def test_delete_feature_field_headers():
@@ -4922,8 +4949,8 @@ async def test_delete_feature_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.UpdateMembershipRequest,
-        dict,
+        service.UpdateMembershipRequest(),
+        {},
     ],
 )
 def test_update_membership(request_type, transport: str = "grpc"):
@@ -4934,7 +4961,7 @@ def test_update_membership(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4980,10 +5007,11 @@ def test_update_membership_non_empty_request_with_auto_populated_field():
         client.update_membership(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.UpdateMembershipRequest(
+        request_msg = service.UpdateMembershipRequest(
             name="name_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_membership_use_cached_wrapped_rpc():
@@ -5076,9 +5104,14 @@ async def test_update_membership_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_membership_async(
-    transport: str = "grpc_asyncio", request_type=service.UpdateMembershipRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.UpdateMembershipRequest(),
+        {},
+    ],
+)
+async def test_update_membership_async(request_type, transport: str = "grpc_asyncio"):
     client = GkeHubAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5086,7 +5119,7 @@ async def test_update_membership_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5106,11 +5139,6 @@ async def test_update_membership_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_membership_async_from_dict():
-    await test_update_membership_async(request_type=dict)
 
 
 def test_update_membership_field_headers():
@@ -5319,8 +5347,8 @@ async def test_update_membership_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.UpdateFeatureRequest,
-        dict,
+        service.UpdateFeatureRequest(),
+        {},
     ],
 )
 def test_update_feature(request_type, transport: str = "grpc"):
@@ -5331,7 +5359,7 @@ def test_update_feature(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_feature), "__call__") as call:
@@ -5373,10 +5401,11 @@ def test_update_feature_non_empty_request_with_auto_populated_field():
         client.update_feature(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.UpdateFeatureRequest(
+        request_msg = service.UpdateFeatureRequest(
             name="name_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_feature_use_cached_wrapped_rpc():
@@ -5467,9 +5496,14 @@ async def test_update_feature_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_feature_async(
-    transport: str = "grpc_asyncio", request_type=service.UpdateFeatureRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.UpdateFeatureRequest(),
+        {},
+    ],
+)
+async def test_update_feature_async(request_type, transport: str = "grpc_asyncio"):
     client = GkeHubAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5477,7 +5511,7 @@ async def test_update_feature_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_feature), "__call__") as call:
@@ -5495,11 +5529,6 @@ async def test_update_feature_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_feature_async_from_dict():
-    await test_update_feature_async(request_type=dict)
 
 
 def test_update_feature_field_headers():
@@ -5668,8 +5697,8 @@ async def test_update_feature_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.GenerateConnectManifestRequest,
-        dict,
+        service.GenerateConnectManifestRequest(),
+        {},
     ],
 )
 def test_generate_connect_manifest(request_type, transport: str = "grpc"):
@@ -5680,7 +5709,7 @@ def test_generate_connect_manifest(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5728,12 +5757,13 @@ def test_generate_connect_manifest_non_empty_request_with_auto_populated_field()
         client.generate_connect_manifest(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GenerateConnectManifestRequest(
+        request_msg = service.GenerateConnectManifestRequest(
             name="name_value",
             namespace="namespace_value",
             version="version_value",
             registry="registry_value",
         )
+        assert args[0] == request_msg
 
 
 def test_generate_connect_manifest_use_cached_wrapped_rpc():
@@ -5819,8 +5849,15 @@ async def test_generate_connect_manifest_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GenerateConnectManifestRequest(),
+        {},
+    ],
+)
 async def test_generate_connect_manifest_async(
-    transport: str = "grpc_asyncio", request_type=service.GenerateConnectManifestRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = GkeHubAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5829,7 +5866,7 @@ async def test_generate_connect_manifest_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5849,11 +5886,6 @@ async def test_generate_connect_manifest_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.GenerateConnectManifestResponse)
-
-
-@pytest.mark.asyncio
-async def test_generate_connect_manifest_async_from_dict():
-    await test_generate_connect_manifest_async(request_type=dict)
 
 
 def test_generate_connect_manifest_field_headers():
@@ -5924,8 +5956,8 @@ async def test_generate_connect_manifest_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.CreateFleetRequest,
-        dict,
+        service.CreateFleetRequest(),
+        {},
     ],
 )
 def test_create_fleet(request_type, transport: str = "grpc"):
@@ -5936,7 +5968,7 @@ def test_create_fleet(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_fleet), "__call__") as call:
@@ -5977,9 +6009,10 @@ def test_create_fleet_non_empty_request_with_auto_populated_field():
         client.create_fleet(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CreateFleetRequest(
+        request_msg = service.CreateFleetRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_fleet_use_cached_wrapped_rpc():
@@ -6070,9 +6103,14 @@ async def test_create_fleet_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_fleet_async(
-    transport: str = "grpc_asyncio", request_type=service.CreateFleetRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.CreateFleetRequest(),
+        {},
+    ],
+)
+async def test_create_fleet_async(request_type, transport: str = "grpc_asyncio"):
     client = GkeHubAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6080,7 +6118,7 @@ async def test_create_fleet_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_fleet), "__call__") as call:
@@ -6098,11 +6136,6 @@ async def test_create_fleet_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_fleet_async_from_dict():
-    await test_create_fleet_async(request_type=dict)
 
 
 def test_create_fleet_field_headers():
@@ -6261,8 +6294,8 @@ async def test_create_fleet_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.GetFleetRequest,
-        dict,
+        service.GetFleetRequest(),
+        {},
     ],
 )
 def test_get_fleet(request_type, transport: str = "grpc"):
@@ -6273,7 +6306,7 @@ def test_get_fleet(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_fleet), "__call__") as call:
@@ -6321,9 +6354,10 @@ def test_get_fleet_non_empty_request_with_auto_populated_field():
         client.get_fleet(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetFleetRequest(
+        request_msg = service.GetFleetRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_fleet_use_cached_wrapped_rpc():
@@ -6402,9 +6436,14 @@ async def test_get_fleet_async_use_cached_wrapped_rpc(transport: str = "grpc_asy
 
 
 @pytest.mark.asyncio
-async def test_get_fleet_async(
-    transport: str = "grpc_asyncio", request_type=service.GetFleetRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetFleetRequest(),
+        {},
+    ],
+)
+async def test_get_fleet_async(request_type, transport: str = "grpc_asyncio"):
     client = GkeHubAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6412,7 +6451,7 @@ async def test_get_fleet_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_fleet), "__call__") as call:
@@ -6437,11 +6476,6 @@ async def test_get_fleet_async(
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.uid == "uid_value"
-
-
-@pytest.mark.asyncio
-async def test_get_fleet_async_from_dict():
-    await test_get_fleet_async(request_type=dict)
 
 
 def test_get_fleet_field_headers():
@@ -6586,8 +6620,8 @@ async def test_get_fleet_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.UpdateFleetRequest,
-        dict,
+        service.UpdateFleetRequest(),
+        {},
     ],
 )
 def test_update_fleet(request_type, transport: str = "grpc"):
@@ -6598,7 +6632,7 @@ def test_update_fleet(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_fleet), "__call__") as call:
@@ -6637,7 +6671,8 @@ def test_update_fleet_non_empty_request_with_auto_populated_field():
         client.update_fleet(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.UpdateFleetRequest()
+        request_msg = service.UpdateFleetRequest()
+        assert args[0] == request_msg
 
 
 def test_update_fleet_use_cached_wrapped_rpc():
@@ -6728,9 +6763,14 @@ async def test_update_fleet_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_fleet_async(
-    transport: str = "grpc_asyncio", request_type=service.UpdateFleetRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.UpdateFleetRequest(),
+        {},
+    ],
+)
+async def test_update_fleet_async(request_type, transport: str = "grpc_asyncio"):
     client = GkeHubAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6738,7 +6778,7 @@ async def test_update_fleet_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_fleet), "__call__") as call:
@@ -6756,11 +6796,6 @@ async def test_update_fleet_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_fleet_async_from_dict():
-    await test_update_fleet_async(request_type=dict)
 
 
 def test_update_fleet_field_headers():
@@ -6919,8 +6954,8 @@ async def test_update_fleet_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.DeleteFleetRequest,
-        dict,
+        service.DeleteFleetRequest(),
+        {},
     ],
 )
 def test_delete_fleet(request_type, transport: str = "grpc"):
@@ -6931,7 +6966,7 @@ def test_delete_fleet(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_fleet), "__call__") as call:
@@ -6972,9 +7007,10 @@ def test_delete_fleet_non_empty_request_with_auto_populated_field():
         client.delete_fleet(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.DeleteFleetRequest(
+        request_msg = service.DeleteFleetRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_fleet_use_cached_wrapped_rpc():
@@ -7065,9 +7101,14 @@ async def test_delete_fleet_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_fleet_async(
-    transport: str = "grpc_asyncio", request_type=service.DeleteFleetRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.DeleteFleetRequest(),
+        {},
+    ],
+)
+async def test_delete_fleet_async(request_type, transport: str = "grpc_asyncio"):
     client = GkeHubAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7075,7 +7116,7 @@ async def test_delete_fleet_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_fleet), "__call__") as call:
@@ -7093,11 +7134,6 @@ async def test_delete_fleet_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_fleet_async_from_dict():
-    await test_delete_fleet_async(request_type=dict)
 
 
 def test_delete_fleet_field_headers():
@@ -7246,8 +7282,8 @@ async def test_delete_fleet_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.ListFleetsRequest,
-        dict,
+        service.ListFleetsRequest(),
+        {},
     ],
 )
 def test_list_fleets(request_type, transport: str = "grpc"):
@@ -7258,7 +7294,7 @@ def test_list_fleets(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_fleets), "__call__") as call:
@@ -7303,10 +7339,11 @@ def test_list_fleets_non_empty_request_with_auto_populated_field():
         client.list_fleets(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListFleetsRequest(
+        request_msg = service.ListFleetsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_fleets_use_cached_wrapped_rpc():
@@ -7387,9 +7424,14 @@ async def test_list_fleets_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_fleets_async(
-    transport: str = "grpc_asyncio", request_type=service.ListFleetsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListFleetsRequest(),
+        {},
+    ],
+)
+async def test_list_fleets_async(request_type, transport: str = "grpc_asyncio"):
     client = GkeHubAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7397,7 +7439,7 @@ async def test_list_fleets_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_fleets), "__call__") as call:
@@ -7418,11 +7460,6 @@ async def test_list_fleets_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListFleetsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_fleets_async_from_dict():
-    await test_list_fleets_async(request_type=dict)
 
 
 def test_list_fleets_field_headers():
@@ -7761,8 +7798,8 @@ async def test_list_fleets_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.GetScopeNamespaceRequest,
-        dict,
+        service.GetScopeNamespaceRequest(),
+        {},
     ],
 )
 def test_get_scope_namespace(request_type, transport: str = "grpc"):
@@ -7773,7 +7810,7 @@ def test_get_scope_namespace(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7825,9 +7862,10 @@ def test_get_scope_namespace_non_empty_request_with_auto_populated_field():
         client.get_scope_namespace(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetScopeNamespaceRequest(
+        request_msg = service.GetScopeNamespaceRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_scope_namespace_use_cached_wrapped_rpc():
@@ -7912,9 +7950,14 @@ async def test_get_scope_namespace_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_scope_namespace_async(
-    transport: str = "grpc_asyncio", request_type=service.GetScopeNamespaceRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetScopeNamespaceRequest(),
+        {},
+    ],
+)
+async def test_get_scope_namespace_async(request_type, transport: str = "grpc_asyncio"):
     client = GkeHubAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7922,7 +7965,7 @@ async def test_get_scope_namespace_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7949,11 +7992,6 @@ async def test_get_scope_namespace_async(
     assert response.name == "name_value"
     assert response.uid == "uid_value"
     assert response.scope == "scope_value"
-
-
-@pytest.mark.asyncio
-async def test_get_scope_namespace_async_from_dict():
-    await test_get_scope_namespace_async(request_type=dict)
 
 
 def test_get_scope_namespace_field_headers():
@@ -8106,8 +8144,8 @@ async def test_get_scope_namespace_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.CreateScopeNamespaceRequest,
-        dict,
+        service.CreateScopeNamespaceRequest(),
+        {},
     ],
 )
 def test_create_scope_namespace(request_type, transport: str = "grpc"):
@@ -8118,7 +8156,7 @@ def test_create_scope_namespace(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8164,10 +8202,11 @@ def test_create_scope_namespace_non_empty_request_with_auto_populated_field():
         client.create_scope_namespace(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CreateScopeNamespaceRequest(
+        request_msg = service.CreateScopeNamespaceRequest(
             parent="parent_value",
             scope_namespace_id="scope_namespace_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_scope_namespace_use_cached_wrapped_rpc():
@@ -8263,8 +8302,15 @@ async def test_create_scope_namespace_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.CreateScopeNamespaceRequest(),
+        {},
+    ],
+)
 async def test_create_scope_namespace_async(
-    transport: str = "grpc_asyncio", request_type=service.CreateScopeNamespaceRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = GkeHubAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -8273,7 +8319,7 @@ async def test_create_scope_namespace_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8293,11 +8339,6 @@ async def test_create_scope_namespace_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_scope_namespace_async_from_dict():
-    await test_create_scope_namespace_async(request_type=dict)
 
 
 def test_create_scope_namespace_field_headers():
@@ -8474,8 +8515,8 @@ async def test_create_scope_namespace_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.UpdateScopeNamespaceRequest,
-        dict,
+        service.UpdateScopeNamespaceRequest(),
+        {},
     ],
 )
 def test_update_scope_namespace(request_type, transport: str = "grpc"):
@@ -8486,7 +8527,7 @@ def test_update_scope_namespace(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8529,7 +8570,8 @@ def test_update_scope_namespace_non_empty_request_with_auto_populated_field():
         client.update_scope_namespace(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.UpdateScopeNamespaceRequest()
+        request_msg = service.UpdateScopeNamespaceRequest()
+        assert args[0] == request_msg
 
 
 def test_update_scope_namespace_use_cached_wrapped_rpc():
@@ -8625,8 +8667,15 @@ async def test_update_scope_namespace_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.UpdateScopeNamespaceRequest(),
+        {},
+    ],
+)
 async def test_update_scope_namespace_async(
-    transport: str = "grpc_asyncio", request_type=service.UpdateScopeNamespaceRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = GkeHubAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -8635,7 +8684,7 @@ async def test_update_scope_namespace_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8655,11 +8704,6 @@ async def test_update_scope_namespace_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_scope_namespace_async_from_dict():
-    await test_update_scope_namespace_async(request_type=dict)
 
 
 def test_update_scope_namespace_field_headers():
@@ -8826,8 +8870,8 @@ async def test_update_scope_namespace_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.DeleteScopeNamespaceRequest,
-        dict,
+        service.DeleteScopeNamespaceRequest(),
+        {},
     ],
 )
 def test_delete_scope_namespace(request_type, transport: str = "grpc"):
@@ -8838,7 +8882,7 @@ def test_delete_scope_namespace(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8883,9 +8927,10 @@ def test_delete_scope_namespace_non_empty_request_with_auto_populated_field():
         client.delete_scope_namespace(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.DeleteScopeNamespaceRequest(
+        request_msg = service.DeleteScopeNamespaceRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_scope_namespace_use_cached_wrapped_rpc():
@@ -8981,8 +9026,15 @@ async def test_delete_scope_namespace_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.DeleteScopeNamespaceRequest(),
+        {},
+    ],
+)
 async def test_delete_scope_namespace_async(
-    transport: str = "grpc_asyncio", request_type=service.DeleteScopeNamespaceRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = GkeHubAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -8991,7 +9043,7 @@ async def test_delete_scope_namespace_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9011,11 +9063,6 @@ async def test_delete_scope_namespace_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_scope_namespace_async_from_dict():
-    await test_delete_scope_namespace_async(request_type=dict)
 
 
 def test_delete_scope_namespace_field_headers():
@@ -9172,8 +9219,8 @@ async def test_delete_scope_namespace_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.ListScopeNamespacesRequest,
-        dict,
+        service.ListScopeNamespacesRequest(),
+        {},
     ],
 )
 def test_list_scope_namespaces(request_type, transport: str = "grpc"):
@@ -9184,7 +9231,7 @@ def test_list_scope_namespaces(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9233,10 +9280,11 @@ def test_list_scope_namespaces_non_empty_request_with_auto_populated_field():
         client.list_scope_namespaces(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListScopeNamespacesRequest(
+        request_msg = service.ListScopeNamespacesRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_scope_namespaces_use_cached_wrapped_rpc():
@@ -9322,8 +9370,15 @@ async def test_list_scope_namespaces_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListScopeNamespacesRequest(),
+        {},
+    ],
+)
 async def test_list_scope_namespaces_async(
-    transport: str = "grpc_asyncio", request_type=service.ListScopeNamespacesRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = GkeHubAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -9332,7 +9387,7 @@ async def test_list_scope_namespaces_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9355,11 +9410,6 @@ async def test_list_scope_namespaces_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListScopeNamespacesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_scope_namespaces_async_from_dict():
-    await test_list_scope_namespaces_async(request_type=dict)
 
 
 def test_list_scope_namespaces_field_headers():
@@ -9714,8 +9764,8 @@ async def test_list_scope_namespaces_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.GetScopeRBACRoleBindingRequest,
-        dict,
+        service.GetScopeRBACRoleBindingRequest(),
+        {},
     ],
 )
 def test_get_scope_rbac_role_binding(request_type, transport: str = "grpc"):
@@ -9726,7 +9776,7 @@ def test_get_scope_rbac_role_binding(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9777,9 +9827,10 @@ def test_get_scope_rbac_role_binding_non_empty_request_with_auto_populated_field
         client.get_scope_rbac_role_binding(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetScopeRBACRoleBindingRequest(
+        request_msg = service.GetScopeRBACRoleBindingRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_scope_rbac_role_binding_use_cached_wrapped_rpc():
@@ -9865,8 +9916,15 @@ async def test_get_scope_rbac_role_binding_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetScopeRBACRoleBindingRequest(),
+        {},
+    ],
+)
 async def test_get_scope_rbac_role_binding_async(
-    transport: str = "grpc_asyncio", request_type=service.GetScopeRBACRoleBindingRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = GkeHubAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -9875,7 +9933,7 @@ async def test_get_scope_rbac_role_binding_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9900,11 +9958,6 @@ async def test_get_scope_rbac_role_binding_async(
     assert isinstance(response, fleet.RBACRoleBinding)
     assert response.name == "name_value"
     assert response.uid == "uid_value"
-
-
-@pytest.mark.asyncio
-async def test_get_scope_rbac_role_binding_async_from_dict():
-    await test_get_scope_rbac_role_binding_async(request_type=dict)
 
 
 def test_get_scope_rbac_role_binding_field_headers():
@@ -10061,8 +10114,8 @@ async def test_get_scope_rbac_role_binding_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.CreateScopeRBACRoleBindingRequest,
-        dict,
+        service.CreateScopeRBACRoleBindingRequest(),
+        {},
     ],
 )
 def test_create_scope_rbac_role_binding(request_type, transport: str = "grpc"):
@@ -10073,7 +10126,7 @@ def test_create_scope_rbac_role_binding(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10119,10 +10172,11 @@ def test_create_scope_rbac_role_binding_non_empty_request_with_auto_populated_fi
         client.create_scope_rbac_role_binding(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CreateScopeRBACRoleBindingRequest(
+        request_msg = service.CreateScopeRBACRoleBindingRequest(
             parent="parent_value",
             rbacrolebinding_id="rbacrolebinding_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_scope_rbac_role_binding_use_cached_wrapped_rpc():
@@ -10218,9 +10272,15 @@ async def test_create_scope_rbac_role_binding_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.CreateScopeRBACRoleBindingRequest(),
+        {},
+    ],
+)
 async def test_create_scope_rbac_role_binding_async(
-    transport: str = "grpc_asyncio",
-    request_type=service.CreateScopeRBACRoleBindingRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = GkeHubAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -10229,7 +10289,7 @@ async def test_create_scope_rbac_role_binding_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10249,11 +10309,6 @@ async def test_create_scope_rbac_role_binding_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_scope_rbac_role_binding_async_from_dict():
-    await test_create_scope_rbac_role_binding_async(request_type=dict)
 
 
 def test_create_scope_rbac_role_binding_field_headers():
@@ -10430,8 +10485,8 @@ async def test_create_scope_rbac_role_binding_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.UpdateScopeRBACRoleBindingRequest,
-        dict,
+        service.UpdateScopeRBACRoleBindingRequest(),
+        {},
     ],
 )
 def test_update_scope_rbac_role_binding(request_type, transport: str = "grpc"):
@@ -10442,7 +10497,7 @@ def test_update_scope_rbac_role_binding(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10485,7 +10540,8 @@ def test_update_scope_rbac_role_binding_non_empty_request_with_auto_populated_fi
         client.update_scope_rbac_role_binding(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.UpdateScopeRBACRoleBindingRequest()
+        request_msg = service.UpdateScopeRBACRoleBindingRequest()
+        assert args[0] == request_msg
 
 
 def test_update_scope_rbac_role_binding_use_cached_wrapped_rpc():
@@ -10581,9 +10637,15 @@ async def test_update_scope_rbac_role_binding_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.UpdateScopeRBACRoleBindingRequest(),
+        {},
+    ],
+)
 async def test_update_scope_rbac_role_binding_async(
-    transport: str = "grpc_asyncio",
-    request_type=service.UpdateScopeRBACRoleBindingRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = GkeHubAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -10592,7 +10654,7 @@ async def test_update_scope_rbac_role_binding_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10612,11 +10674,6 @@ async def test_update_scope_rbac_role_binding_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_scope_rbac_role_binding_async_from_dict():
-    await test_update_scope_rbac_role_binding_async(request_type=dict)
 
 
 def test_update_scope_rbac_role_binding_field_headers():
@@ -10783,8 +10840,8 @@ async def test_update_scope_rbac_role_binding_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.DeleteScopeRBACRoleBindingRequest,
-        dict,
+        service.DeleteScopeRBACRoleBindingRequest(),
+        {},
     ],
 )
 def test_delete_scope_rbac_role_binding(request_type, transport: str = "grpc"):
@@ -10795,7 +10852,7 @@ def test_delete_scope_rbac_role_binding(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10840,9 +10897,10 @@ def test_delete_scope_rbac_role_binding_non_empty_request_with_auto_populated_fi
         client.delete_scope_rbac_role_binding(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.DeleteScopeRBACRoleBindingRequest(
+        request_msg = service.DeleteScopeRBACRoleBindingRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_scope_rbac_role_binding_use_cached_wrapped_rpc():
@@ -10938,9 +10996,15 @@ async def test_delete_scope_rbac_role_binding_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.DeleteScopeRBACRoleBindingRequest(),
+        {},
+    ],
+)
 async def test_delete_scope_rbac_role_binding_async(
-    transport: str = "grpc_asyncio",
-    request_type=service.DeleteScopeRBACRoleBindingRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = GkeHubAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -10949,7 +11013,7 @@ async def test_delete_scope_rbac_role_binding_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10969,11 +11033,6 @@ async def test_delete_scope_rbac_role_binding_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_scope_rbac_role_binding_async_from_dict():
-    await test_delete_scope_rbac_role_binding_async(request_type=dict)
 
 
 def test_delete_scope_rbac_role_binding_field_headers():
@@ -11130,8 +11189,8 @@ async def test_delete_scope_rbac_role_binding_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.ListScopeRBACRoleBindingsRequest,
-        dict,
+        service.ListScopeRBACRoleBindingsRequest(),
+        {},
     ],
 )
 def test_list_scope_rbac_role_bindings(request_type, transport: str = "grpc"):
@@ -11142,7 +11201,7 @@ def test_list_scope_rbac_role_bindings(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11191,10 +11250,11 @@ def test_list_scope_rbac_role_bindings_non_empty_request_with_auto_populated_fie
         client.list_scope_rbac_role_bindings(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListScopeRBACRoleBindingsRequest(
+        request_msg = service.ListScopeRBACRoleBindingsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_scope_rbac_role_bindings_use_cached_wrapped_rpc():
@@ -11280,9 +11340,15 @@ async def test_list_scope_rbac_role_bindings_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListScopeRBACRoleBindingsRequest(),
+        {},
+    ],
+)
 async def test_list_scope_rbac_role_bindings_async(
-    transport: str = "grpc_asyncio",
-    request_type=service.ListScopeRBACRoleBindingsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = GkeHubAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -11291,7 +11357,7 @@ async def test_list_scope_rbac_role_bindings_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11314,11 +11380,6 @@ async def test_list_scope_rbac_role_bindings_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListScopeRBACRoleBindingsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_scope_rbac_role_bindings_async_from_dict():
-    await test_list_scope_rbac_role_bindings_async(request_type=dict)
 
 
 def test_list_scope_rbac_role_bindings_field_headers():
@@ -11677,8 +11738,8 @@ async def test_list_scope_rbac_role_bindings_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.GetScopeRequest,
-        dict,
+        service.GetScopeRequest(),
+        {},
     ],
 )
 def test_get_scope(request_type, transport: str = "grpc"):
@@ -11689,7 +11750,7 @@ def test_get_scope(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_scope), "__call__") as call:
@@ -11735,9 +11796,10 @@ def test_get_scope_non_empty_request_with_auto_populated_field():
         client.get_scope(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetScopeRequest(
+        request_msg = service.GetScopeRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_scope_use_cached_wrapped_rpc():
@@ -11816,9 +11878,14 @@ async def test_get_scope_async_use_cached_wrapped_rpc(transport: str = "grpc_asy
 
 
 @pytest.mark.asyncio
-async def test_get_scope_async(
-    transport: str = "grpc_asyncio", request_type=service.GetScopeRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetScopeRequest(),
+        {},
+    ],
+)
+async def test_get_scope_async(request_type, transport: str = "grpc_asyncio"):
     client = GkeHubAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -11826,7 +11893,7 @@ async def test_get_scope_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_scope), "__call__") as call:
@@ -11849,11 +11916,6 @@ async def test_get_scope_async(
     assert isinstance(response, fleet.Scope)
     assert response.name == "name_value"
     assert response.uid == "uid_value"
-
-
-@pytest.mark.asyncio
-async def test_get_scope_async_from_dict():
-    await test_get_scope_async(request_type=dict)
 
 
 def test_get_scope_field_headers():
@@ -11998,8 +12060,8 @@ async def test_get_scope_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.CreateScopeRequest,
-        dict,
+        service.CreateScopeRequest(),
+        {},
     ],
 )
 def test_create_scope(request_type, transport: str = "grpc"):
@@ -12010,7 +12072,7 @@ def test_create_scope(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_scope), "__call__") as call:
@@ -12052,10 +12114,11 @@ def test_create_scope_non_empty_request_with_auto_populated_field():
         client.create_scope(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CreateScopeRequest(
+        request_msg = service.CreateScopeRequest(
             parent="parent_value",
             scope_id="scope_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_scope_use_cached_wrapped_rpc():
@@ -12146,9 +12209,14 @@ async def test_create_scope_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_scope_async(
-    transport: str = "grpc_asyncio", request_type=service.CreateScopeRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.CreateScopeRequest(),
+        {},
+    ],
+)
+async def test_create_scope_async(request_type, transport: str = "grpc_asyncio"):
     client = GkeHubAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -12156,7 +12224,7 @@ async def test_create_scope_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_scope), "__call__") as call:
@@ -12174,11 +12242,6 @@ async def test_create_scope_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_scope_async_from_dict():
-    await test_create_scope_async(request_type=dict)
 
 
 def test_create_scope_field_headers():
@@ -12347,8 +12410,8 @@ async def test_create_scope_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.UpdateScopeRequest,
-        dict,
+        service.UpdateScopeRequest(),
+        {},
     ],
 )
 def test_update_scope(request_type, transport: str = "grpc"):
@@ -12359,7 +12422,7 @@ def test_update_scope(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_scope), "__call__") as call:
@@ -12398,7 +12461,8 @@ def test_update_scope_non_empty_request_with_auto_populated_field():
         client.update_scope(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.UpdateScopeRequest()
+        request_msg = service.UpdateScopeRequest()
+        assert args[0] == request_msg
 
 
 def test_update_scope_use_cached_wrapped_rpc():
@@ -12489,9 +12553,14 @@ async def test_update_scope_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_scope_async(
-    transport: str = "grpc_asyncio", request_type=service.UpdateScopeRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.UpdateScopeRequest(),
+        {},
+    ],
+)
+async def test_update_scope_async(request_type, transport: str = "grpc_asyncio"):
     client = GkeHubAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -12499,7 +12568,7 @@ async def test_update_scope_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_scope), "__call__") as call:
@@ -12517,11 +12586,6 @@ async def test_update_scope_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_scope_async_from_dict():
-    await test_update_scope_async(request_type=dict)
 
 
 def test_update_scope_field_headers():
@@ -12680,8 +12744,8 @@ async def test_update_scope_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.DeleteScopeRequest,
-        dict,
+        service.DeleteScopeRequest(),
+        {},
     ],
 )
 def test_delete_scope(request_type, transport: str = "grpc"):
@@ -12692,7 +12756,7 @@ def test_delete_scope(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_scope), "__call__") as call:
@@ -12733,9 +12797,10 @@ def test_delete_scope_non_empty_request_with_auto_populated_field():
         client.delete_scope(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.DeleteScopeRequest(
+        request_msg = service.DeleteScopeRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_scope_use_cached_wrapped_rpc():
@@ -12826,9 +12891,14 @@ async def test_delete_scope_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_scope_async(
-    transport: str = "grpc_asyncio", request_type=service.DeleteScopeRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.DeleteScopeRequest(),
+        {},
+    ],
+)
+async def test_delete_scope_async(request_type, transport: str = "grpc_asyncio"):
     client = GkeHubAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -12836,7 +12906,7 @@ async def test_delete_scope_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_scope), "__call__") as call:
@@ -12854,11 +12924,6 @@ async def test_delete_scope_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_scope_async_from_dict():
-    await test_delete_scope_async(request_type=dict)
 
 
 def test_delete_scope_field_headers():
@@ -13007,8 +13072,8 @@ async def test_delete_scope_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.ListScopesRequest,
-        dict,
+        service.ListScopesRequest(),
+        {},
     ],
 )
 def test_list_scopes(request_type, transport: str = "grpc"):
@@ -13019,7 +13084,7 @@ def test_list_scopes(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_scopes), "__call__") as call:
@@ -13064,10 +13129,11 @@ def test_list_scopes_non_empty_request_with_auto_populated_field():
         client.list_scopes(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListScopesRequest(
+        request_msg = service.ListScopesRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_scopes_use_cached_wrapped_rpc():
@@ -13148,9 +13214,14 @@ async def test_list_scopes_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_scopes_async(
-    transport: str = "grpc_asyncio", request_type=service.ListScopesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListScopesRequest(),
+        {},
+    ],
+)
+async def test_list_scopes_async(request_type, transport: str = "grpc_asyncio"):
     client = GkeHubAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -13158,7 +13229,7 @@ async def test_list_scopes_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_scopes), "__call__") as call:
@@ -13179,11 +13250,6 @@ async def test_list_scopes_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListScopesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_scopes_async_from_dict():
-    await test_list_scopes_async(request_type=dict)
 
 
 def test_list_scopes_field_headers():
@@ -13522,8 +13588,8 @@ async def test_list_scopes_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.ListPermittedScopesRequest,
-        dict,
+        service.ListPermittedScopesRequest(),
+        {},
     ],
 )
 def test_list_permitted_scopes(request_type, transport: str = "grpc"):
@@ -13534,7 +13600,7 @@ def test_list_permitted_scopes(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -13583,10 +13649,11 @@ def test_list_permitted_scopes_non_empty_request_with_auto_populated_field():
         client.list_permitted_scopes(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListPermittedScopesRequest(
+        request_msg = service.ListPermittedScopesRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_permitted_scopes_use_cached_wrapped_rpc():
@@ -13672,8 +13739,15 @@ async def test_list_permitted_scopes_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListPermittedScopesRequest(),
+        {},
+    ],
+)
 async def test_list_permitted_scopes_async(
-    transport: str = "grpc_asyncio", request_type=service.ListPermittedScopesRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = GkeHubAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -13682,7 +13756,7 @@ async def test_list_permitted_scopes_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -13705,11 +13779,6 @@ async def test_list_permitted_scopes_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListPermittedScopesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_permitted_scopes_async_from_dict():
-    await test_list_permitted_scopes_async(request_type=dict)
 
 
 def test_list_permitted_scopes_field_headers():
@@ -14064,8 +14133,8 @@ async def test_list_permitted_scopes_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.GetMembershipBindingRequest,
-        dict,
+        service.GetMembershipBindingRequest(),
+        {},
     ],
 )
 def test_get_membership_binding(request_type, transport: str = "grpc"):
@@ -14076,7 +14145,7 @@ def test_get_membership_binding(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -14127,9 +14196,10 @@ def test_get_membership_binding_non_empty_request_with_auto_populated_field():
         client.get_membership_binding(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetMembershipBindingRequest(
+        request_msg = service.GetMembershipBindingRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_membership_binding_use_cached_wrapped_rpc():
@@ -14215,8 +14285,15 @@ async def test_get_membership_binding_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetMembershipBindingRequest(),
+        {},
+    ],
+)
 async def test_get_membership_binding_async(
-    transport: str = "grpc_asyncio", request_type=service.GetMembershipBindingRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = GkeHubAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -14225,7 +14302,7 @@ async def test_get_membership_binding_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -14250,11 +14327,6 @@ async def test_get_membership_binding_async(
     assert isinstance(response, fleet.MembershipBinding)
     assert response.name == "name_value"
     assert response.uid == "uid_value"
-
-
-@pytest.mark.asyncio
-async def test_get_membership_binding_async_from_dict():
-    await test_get_membership_binding_async(request_type=dict)
 
 
 def test_get_membership_binding_field_headers():
@@ -14411,8 +14483,8 @@ async def test_get_membership_binding_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.CreateMembershipBindingRequest,
-        dict,
+        service.CreateMembershipBindingRequest(),
+        {},
     ],
 )
 def test_create_membership_binding(request_type, transport: str = "grpc"):
@@ -14423,7 +14495,7 @@ def test_create_membership_binding(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -14469,10 +14541,11 @@ def test_create_membership_binding_non_empty_request_with_auto_populated_field()
         client.create_membership_binding(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CreateMembershipBindingRequest(
+        request_msg = service.CreateMembershipBindingRequest(
             parent="parent_value",
             membership_binding_id="membership_binding_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_membership_binding_use_cached_wrapped_rpc():
@@ -14568,8 +14641,15 @@ async def test_create_membership_binding_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.CreateMembershipBindingRequest(),
+        {},
+    ],
+)
 async def test_create_membership_binding_async(
-    transport: str = "grpc_asyncio", request_type=service.CreateMembershipBindingRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = GkeHubAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -14578,7 +14658,7 @@ async def test_create_membership_binding_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -14598,11 +14678,6 @@ async def test_create_membership_binding_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_membership_binding_async_from_dict():
-    await test_create_membership_binding_async(request_type=dict)
 
 
 def test_create_membership_binding_field_headers():
@@ -14779,8 +14854,8 @@ async def test_create_membership_binding_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.UpdateMembershipBindingRequest,
-        dict,
+        service.UpdateMembershipBindingRequest(),
+        {},
     ],
 )
 def test_update_membership_binding(request_type, transport: str = "grpc"):
@@ -14791,7 +14866,7 @@ def test_update_membership_binding(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -14834,7 +14909,8 @@ def test_update_membership_binding_non_empty_request_with_auto_populated_field()
         client.update_membership_binding(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.UpdateMembershipBindingRequest()
+        request_msg = service.UpdateMembershipBindingRequest()
+        assert args[0] == request_msg
 
 
 def test_update_membership_binding_use_cached_wrapped_rpc():
@@ -14930,8 +15006,15 @@ async def test_update_membership_binding_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.UpdateMembershipBindingRequest(),
+        {},
+    ],
+)
 async def test_update_membership_binding_async(
-    transport: str = "grpc_asyncio", request_type=service.UpdateMembershipBindingRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = GkeHubAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -14940,7 +15023,7 @@ async def test_update_membership_binding_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -14960,11 +15043,6 @@ async def test_update_membership_binding_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_membership_binding_async_from_dict():
-    await test_update_membership_binding_async(request_type=dict)
 
 
 def test_update_membership_binding_field_headers():
@@ -15131,8 +15209,8 @@ async def test_update_membership_binding_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.DeleteMembershipBindingRequest,
-        dict,
+        service.DeleteMembershipBindingRequest(),
+        {},
     ],
 )
 def test_delete_membership_binding(request_type, transport: str = "grpc"):
@@ -15143,7 +15221,7 @@ def test_delete_membership_binding(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -15188,9 +15266,10 @@ def test_delete_membership_binding_non_empty_request_with_auto_populated_field()
         client.delete_membership_binding(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.DeleteMembershipBindingRequest(
+        request_msg = service.DeleteMembershipBindingRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_membership_binding_use_cached_wrapped_rpc():
@@ -15286,8 +15365,15 @@ async def test_delete_membership_binding_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.DeleteMembershipBindingRequest(),
+        {},
+    ],
+)
 async def test_delete_membership_binding_async(
-    transport: str = "grpc_asyncio", request_type=service.DeleteMembershipBindingRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = GkeHubAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -15296,7 +15382,7 @@ async def test_delete_membership_binding_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -15316,11 +15402,6 @@ async def test_delete_membership_binding_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_membership_binding_async_from_dict():
-    await test_delete_membership_binding_async(request_type=dict)
 
 
 def test_delete_membership_binding_field_headers():
@@ -15477,8 +15558,8 @@ async def test_delete_membership_binding_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.ListMembershipBindingsRequest,
-        dict,
+        service.ListMembershipBindingsRequest(),
+        {},
     ],
 )
 def test_list_membership_bindings(request_type, transport: str = "grpc"):
@@ -15489,7 +15570,7 @@ def test_list_membership_bindings(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -15541,11 +15622,12 @@ def test_list_membership_bindings_non_empty_request_with_auto_populated_field():
         client.list_membership_bindings(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListMembershipBindingsRequest(
+        request_msg = service.ListMembershipBindingsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_membership_bindings_use_cached_wrapped_rpc():
@@ -15631,8 +15713,15 @@ async def test_list_membership_bindings_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListMembershipBindingsRequest(),
+        {},
+    ],
+)
 async def test_list_membership_bindings_async(
-    transport: str = "grpc_asyncio", request_type=service.ListMembershipBindingsRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = GkeHubAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -15641,7 +15730,7 @@ async def test_list_membership_bindings_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -15666,11 +15755,6 @@ async def test_list_membership_bindings_async(
     assert isinstance(response, pagers.ListMembershipBindingsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_membership_bindings_async_from_dict():
-    await test_list_membership_bindings_async(request_type=dict)
 
 
 def test_list_membership_bindings_field_headers():
@@ -16027,8 +16111,8 @@ async def test_list_membership_bindings_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.GetMembershipRBACRoleBindingRequest,
-        dict,
+        service.GetMembershipRBACRoleBindingRequest(),
+        {},
     ],
 )
 def test_get_membership_rbac_role_binding(request_type, transport: str = "grpc"):
@@ -16039,7 +16123,7 @@ def test_get_membership_rbac_role_binding(request_type, transport: str = "grpc")
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -16090,9 +16174,10 @@ def test_get_membership_rbac_role_binding_non_empty_request_with_auto_populated_
         client.get_membership_rbac_role_binding(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetMembershipRBACRoleBindingRequest(
+        request_msg = service.GetMembershipRBACRoleBindingRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_membership_rbac_role_binding_use_cached_wrapped_rpc():
@@ -16178,9 +16263,15 @@ async def test_get_membership_rbac_role_binding_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetMembershipRBACRoleBindingRequest(),
+        {},
+    ],
+)
 async def test_get_membership_rbac_role_binding_async(
-    transport: str = "grpc_asyncio",
-    request_type=service.GetMembershipRBACRoleBindingRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = GkeHubAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -16189,7 +16280,7 @@ async def test_get_membership_rbac_role_binding_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -16214,11 +16305,6 @@ async def test_get_membership_rbac_role_binding_async(
     assert isinstance(response, fleet.RBACRoleBinding)
     assert response.name == "name_value"
     assert response.uid == "uid_value"
-
-
-@pytest.mark.asyncio
-async def test_get_membership_rbac_role_binding_async_from_dict():
-    await test_get_membership_rbac_role_binding_async(request_type=dict)
 
 
 def test_get_membership_rbac_role_binding_field_headers():
@@ -16375,8 +16461,8 @@ async def test_get_membership_rbac_role_binding_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.CreateMembershipRBACRoleBindingRequest,
-        dict,
+        service.CreateMembershipRBACRoleBindingRequest(),
+        {},
     ],
 )
 def test_create_membership_rbac_role_binding(request_type, transport: str = "grpc"):
@@ -16387,7 +16473,7 @@ def test_create_membership_rbac_role_binding(request_type, transport: str = "grp
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -16433,10 +16519,11 @@ def test_create_membership_rbac_role_binding_non_empty_request_with_auto_populat
         client.create_membership_rbac_role_binding(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CreateMembershipRBACRoleBindingRequest(
+        request_msg = service.CreateMembershipRBACRoleBindingRequest(
             parent="parent_value",
             rbacrolebinding_id="rbacrolebinding_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_membership_rbac_role_binding_use_cached_wrapped_rpc():
@@ -16532,9 +16619,15 @@ async def test_create_membership_rbac_role_binding_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.CreateMembershipRBACRoleBindingRequest(),
+        {},
+    ],
+)
 async def test_create_membership_rbac_role_binding_async(
-    transport: str = "grpc_asyncio",
-    request_type=service.CreateMembershipRBACRoleBindingRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = GkeHubAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -16543,7 +16636,7 @@ async def test_create_membership_rbac_role_binding_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -16563,11 +16656,6 @@ async def test_create_membership_rbac_role_binding_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_membership_rbac_role_binding_async_from_dict():
-    await test_create_membership_rbac_role_binding_async(request_type=dict)
 
 
 def test_create_membership_rbac_role_binding_field_headers():
@@ -16744,8 +16832,8 @@ async def test_create_membership_rbac_role_binding_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.UpdateMembershipRBACRoleBindingRequest,
-        dict,
+        service.UpdateMembershipRBACRoleBindingRequest(),
+        {},
     ],
 )
 def test_update_membership_rbac_role_binding(request_type, transport: str = "grpc"):
@@ -16756,7 +16844,7 @@ def test_update_membership_rbac_role_binding(request_type, transport: str = "grp
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -16799,7 +16887,8 @@ def test_update_membership_rbac_role_binding_non_empty_request_with_auto_populat
         client.update_membership_rbac_role_binding(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.UpdateMembershipRBACRoleBindingRequest()
+        request_msg = service.UpdateMembershipRBACRoleBindingRequest()
+        assert args[0] == request_msg
 
 
 def test_update_membership_rbac_role_binding_use_cached_wrapped_rpc():
@@ -16895,9 +16984,15 @@ async def test_update_membership_rbac_role_binding_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.UpdateMembershipRBACRoleBindingRequest(),
+        {},
+    ],
+)
 async def test_update_membership_rbac_role_binding_async(
-    transport: str = "grpc_asyncio",
-    request_type=service.UpdateMembershipRBACRoleBindingRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = GkeHubAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -16906,7 +17001,7 @@ async def test_update_membership_rbac_role_binding_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -16926,11 +17021,6 @@ async def test_update_membership_rbac_role_binding_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_membership_rbac_role_binding_async_from_dict():
-    await test_update_membership_rbac_role_binding_async(request_type=dict)
 
 
 def test_update_membership_rbac_role_binding_field_headers():
@@ -17097,8 +17187,8 @@ async def test_update_membership_rbac_role_binding_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.DeleteMembershipRBACRoleBindingRequest,
-        dict,
+        service.DeleteMembershipRBACRoleBindingRequest(),
+        {},
     ],
 )
 def test_delete_membership_rbac_role_binding(request_type, transport: str = "grpc"):
@@ -17109,7 +17199,7 @@ def test_delete_membership_rbac_role_binding(request_type, transport: str = "grp
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -17154,9 +17244,10 @@ def test_delete_membership_rbac_role_binding_non_empty_request_with_auto_populat
         client.delete_membership_rbac_role_binding(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.DeleteMembershipRBACRoleBindingRequest(
+        request_msg = service.DeleteMembershipRBACRoleBindingRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_membership_rbac_role_binding_use_cached_wrapped_rpc():
@@ -17252,9 +17343,15 @@ async def test_delete_membership_rbac_role_binding_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.DeleteMembershipRBACRoleBindingRequest(),
+        {},
+    ],
+)
 async def test_delete_membership_rbac_role_binding_async(
-    transport: str = "grpc_asyncio",
-    request_type=service.DeleteMembershipRBACRoleBindingRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = GkeHubAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -17263,7 +17360,7 @@ async def test_delete_membership_rbac_role_binding_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -17283,11 +17380,6 @@ async def test_delete_membership_rbac_role_binding_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_membership_rbac_role_binding_async_from_dict():
-    await test_delete_membership_rbac_role_binding_async(request_type=dict)
 
 
 def test_delete_membership_rbac_role_binding_field_headers():
@@ -17444,8 +17536,8 @@ async def test_delete_membership_rbac_role_binding_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.ListMembershipRBACRoleBindingsRequest,
-        dict,
+        service.ListMembershipRBACRoleBindingsRequest(),
+        {},
     ],
 )
 def test_list_membership_rbac_role_bindings(request_type, transport: str = "grpc"):
@@ -17456,7 +17548,7 @@ def test_list_membership_rbac_role_bindings(request_type, transport: str = "grpc
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -17507,10 +17599,11 @@ def test_list_membership_rbac_role_bindings_non_empty_request_with_auto_populate
         client.list_membership_rbac_role_bindings(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListMembershipRBACRoleBindingsRequest(
+        request_msg = service.ListMembershipRBACRoleBindingsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_membership_rbac_role_bindings_use_cached_wrapped_rpc():
@@ -17596,9 +17689,15 @@ async def test_list_membership_rbac_role_bindings_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListMembershipRBACRoleBindingsRequest(),
+        {},
+    ],
+)
 async def test_list_membership_rbac_role_bindings_async(
-    transport: str = "grpc_asyncio",
-    request_type=service.ListMembershipRBACRoleBindingsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = GkeHubAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -17607,7 +17706,7 @@ async def test_list_membership_rbac_role_bindings_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -17632,11 +17731,6 @@ async def test_list_membership_rbac_role_bindings_async(
     assert isinstance(response, pagers.ListMembershipRBACRoleBindingsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_membership_rbac_role_bindings_async_from_dict():
-    await test_list_membership_rbac_role_bindings_async(request_type=dict)
 
 
 def test_list_membership_rbac_role_bindings_field_headers():
@@ -17995,8 +18089,8 @@ async def test_list_membership_rbac_role_bindings_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.GenerateMembershipRBACRoleBindingYAMLRequest,
-        dict,
+        service.GenerateMembershipRBACRoleBindingYAMLRequest(),
+        {},
     ],
 )
 def test_generate_membership_rbac_role_binding_yaml(
@@ -18009,7 +18103,7 @@ def test_generate_membership_rbac_role_binding_yaml(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -18058,10 +18152,11 @@ def test_generate_membership_rbac_role_binding_yaml_non_empty_request_with_auto_
         client.generate_membership_rbac_role_binding_yaml(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GenerateMembershipRBACRoleBindingYAMLRequest(
+        request_msg = service.GenerateMembershipRBACRoleBindingYAMLRequest(
             parent="parent_value",
             rbacrolebinding_id="rbacrolebinding_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_generate_membership_rbac_role_binding_yaml_use_cached_wrapped_rpc():
@@ -18147,9 +18242,15 @@ async def test_generate_membership_rbac_role_binding_yaml_async_use_cached_wrapp
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GenerateMembershipRBACRoleBindingYAMLRequest(),
+        {},
+    ],
+)
 async def test_generate_membership_rbac_role_binding_yaml_async(
-    transport: str = "grpc_asyncio",
-    request_type=service.GenerateMembershipRBACRoleBindingYAMLRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = GkeHubAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -18158,7 +18259,7 @@ async def test_generate_membership_rbac_role_binding_yaml_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -18181,11 +18282,6 @@ async def test_generate_membership_rbac_role_binding_yaml_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.GenerateMembershipRBACRoleBindingYAMLResponse)
     assert response.role_bindings_yaml == "role_bindings_yaml_value"
-
-
-@pytest.mark.asyncio
-async def test_generate_membership_rbac_role_binding_yaml_async_from_dict():
-    await test_generate_membership_rbac_role_binding_yaml_async(request_type=dict)
 
 
 def test_generate_membership_rbac_role_binding_yaml_field_headers():
@@ -26979,7 +27075,6 @@ def test_list_memberships_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListMembershipsRequest()
-
         assert args[0] == request_msg
 
 
@@ -27002,7 +27097,6 @@ def test_list_bound_memberships_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListBoundMembershipsRequest()
-
         assert args[0] == request_msg
 
 
@@ -27023,7 +27117,6 @@ def test_list_features_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListFeaturesRequest()
-
         assert args[0] == request_msg
 
 
@@ -27044,7 +27137,6 @@ def test_get_membership_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetMembershipRequest()
-
         assert args[0] == request_msg
 
 
@@ -27065,7 +27157,6 @@ def test_get_feature_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetFeatureRequest()
-
         assert args[0] == request_msg
 
 
@@ -27088,7 +27179,6 @@ def test_create_membership_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateMembershipRequest()
-
         assert args[0] == request_msg
 
 
@@ -27109,7 +27199,6 @@ def test_create_feature_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateFeatureRequest()
-
         assert args[0] == request_msg
 
 
@@ -27132,7 +27221,6 @@ def test_delete_membership_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteMembershipRequest()
-
         assert args[0] == request_msg
 
 
@@ -27153,7 +27241,6 @@ def test_delete_feature_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteFeatureRequest()
-
         assert args[0] == request_msg
 
 
@@ -27176,7 +27263,6 @@ def test_update_membership_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateMembershipRequest()
-
         assert args[0] == request_msg
 
 
@@ -27197,7 +27283,6 @@ def test_update_feature_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateFeatureRequest()
-
         assert args[0] == request_msg
 
 
@@ -27220,7 +27305,6 @@ def test_generate_connect_manifest_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GenerateConnectManifestRequest()
-
         assert args[0] == request_msg
 
 
@@ -27241,7 +27325,6 @@ def test_create_fleet_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateFleetRequest()
-
         assert args[0] == request_msg
 
 
@@ -27262,7 +27345,6 @@ def test_get_fleet_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetFleetRequest()
-
         assert args[0] == request_msg
 
 
@@ -27283,7 +27365,6 @@ def test_update_fleet_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateFleetRequest()
-
         assert args[0] == request_msg
 
 
@@ -27304,7 +27385,6 @@ def test_delete_fleet_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteFleetRequest()
-
         assert args[0] == request_msg
 
 
@@ -27325,7 +27405,6 @@ def test_list_fleets_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListFleetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -27348,7 +27427,6 @@ def test_get_scope_namespace_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetScopeNamespaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -27371,7 +27449,6 @@ def test_create_scope_namespace_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateScopeNamespaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -27394,7 +27471,6 @@ def test_update_scope_namespace_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateScopeNamespaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -27417,7 +27493,6 @@ def test_delete_scope_namespace_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteScopeNamespaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -27440,7 +27515,6 @@ def test_list_scope_namespaces_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListScopeNamespacesRequest()
-
         assert args[0] == request_msg
 
 
@@ -27463,7 +27537,6 @@ def test_get_scope_rbac_role_binding_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetScopeRBACRoleBindingRequest()
-
         assert args[0] == request_msg
 
 
@@ -27486,7 +27559,6 @@ def test_create_scope_rbac_role_binding_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateScopeRBACRoleBindingRequest()
-
         assert args[0] == request_msg
 
 
@@ -27509,7 +27581,6 @@ def test_update_scope_rbac_role_binding_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateScopeRBACRoleBindingRequest()
-
         assert args[0] == request_msg
 
 
@@ -27532,7 +27603,6 @@ def test_delete_scope_rbac_role_binding_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteScopeRBACRoleBindingRequest()
-
         assert args[0] == request_msg
 
 
@@ -27555,7 +27625,6 @@ def test_list_scope_rbac_role_bindings_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListScopeRBACRoleBindingsRequest()
-
         assert args[0] == request_msg
 
 
@@ -27576,7 +27645,6 @@ def test_get_scope_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetScopeRequest()
-
         assert args[0] == request_msg
 
 
@@ -27597,7 +27665,6 @@ def test_create_scope_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateScopeRequest()
-
         assert args[0] == request_msg
 
 
@@ -27618,7 +27685,6 @@ def test_update_scope_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateScopeRequest()
-
         assert args[0] == request_msg
 
 
@@ -27639,7 +27705,6 @@ def test_delete_scope_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteScopeRequest()
-
         assert args[0] == request_msg
 
 
@@ -27660,7 +27725,6 @@ def test_list_scopes_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListScopesRequest()
-
         assert args[0] == request_msg
 
 
@@ -27683,7 +27747,6 @@ def test_list_permitted_scopes_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListPermittedScopesRequest()
-
         assert args[0] == request_msg
 
 
@@ -27706,7 +27769,6 @@ def test_get_membership_binding_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetMembershipBindingRequest()
-
         assert args[0] == request_msg
 
 
@@ -27729,7 +27791,6 @@ def test_create_membership_binding_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateMembershipBindingRequest()
-
         assert args[0] == request_msg
 
 
@@ -27752,7 +27813,6 @@ def test_update_membership_binding_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateMembershipBindingRequest()
-
         assert args[0] == request_msg
 
 
@@ -27775,7 +27835,6 @@ def test_delete_membership_binding_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteMembershipBindingRequest()
-
         assert args[0] == request_msg
 
 
@@ -27798,7 +27857,6 @@ def test_list_membership_bindings_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListMembershipBindingsRequest()
-
         assert args[0] == request_msg
 
 
@@ -27821,7 +27879,6 @@ def test_get_membership_rbac_role_binding_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetMembershipRBACRoleBindingRequest()
-
         assert args[0] == request_msg
 
 
@@ -27844,7 +27901,6 @@ def test_create_membership_rbac_role_binding_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateMembershipRBACRoleBindingRequest()
-
         assert args[0] == request_msg
 
 
@@ -27867,7 +27923,6 @@ def test_update_membership_rbac_role_binding_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateMembershipRBACRoleBindingRequest()
-
         assert args[0] == request_msg
 
 
@@ -27890,7 +27945,6 @@ def test_delete_membership_rbac_role_binding_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteMembershipRBACRoleBindingRequest()
-
         assert args[0] == request_msg
 
 
@@ -27913,7 +27967,6 @@ def test_list_membership_rbac_role_bindings_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListMembershipRBACRoleBindingsRequest()
-
         assert args[0] == request_msg
 
 
@@ -27936,7 +27989,6 @@ def test_generate_membership_rbac_role_binding_yaml_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GenerateMembershipRBACRoleBindingYAMLRequest()
-
         assert args[0] == request_msg
 
 
@@ -27978,7 +28030,6 @@ async def test_list_memberships_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListMembershipsRequest()
-
         assert args[0] == request_msg
 
 
@@ -28008,7 +28059,6 @@ async def test_list_bound_memberships_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListBoundMembershipsRequest()
-
         assert args[0] == request_msg
 
 
@@ -28035,7 +28085,6 @@ async def test_list_features_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListFeaturesRequest()
-
         assert args[0] == request_msg
 
 
@@ -28065,7 +28114,6 @@ async def test_get_membership_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetMembershipRequest()
-
         assert args[0] == request_msg
 
 
@@ -28093,7 +28141,6 @@ async def test_get_feature_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetFeatureRequest()
-
         assert args[0] == request_msg
 
 
@@ -28120,7 +28167,6 @@ async def test_create_membership_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateMembershipRequest()
-
         assert args[0] == request_msg
 
 
@@ -28145,7 +28191,6 @@ async def test_create_feature_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateFeatureRequest()
-
         assert args[0] == request_msg
 
 
@@ -28172,7 +28217,6 @@ async def test_delete_membership_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteMembershipRequest()
-
         assert args[0] == request_msg
 
 
@@ -28197,7 +28241,6 @@ async def test_delete_feature_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteFeatureRequest()
-
         assert args[0] == request_msg
 
 
@@ -28224,7 +28267,6 @@ async def test_update_membership_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateMembershipRequest()
-
         assert args[0] == request_msg
 
 
@@ -28249,7 +28291,6 @@ async def test_update_feature_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateFeatureRequest()
-
         assert args[0] == request_msg
 
 
@@ -28276,7 +28317,6 @@ async def test_generate_connect_manifest_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GenerateConnectManifestRequest()
-
         assert args[0] == request_msg
 
 
@@ -28301,7 +28341,6 @@ async def test_create_fleet_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateFleetRequest()
-
         assert args[0] == request_msg
 
 
@@ -28330,7 +28369,6 @@ async def test_get_fleet_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetFleetRequest()
-
         assert args[0] == request_msg
 
 
@@ -28355,7 +28393,6 @@ async def test_update_fleet_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateFleetRequest()
-
         assert args[0] == request_msg
 
 
@@ -28380,7 +28417,6 @@ async def test_delete_fleet_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteFleetRequest()
-
         assert args[0] == request_msg
 
 
@@ -28407,7 +28443,6 @@ async def test_list_fleets_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListFleetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -28438,7 +28473,6 @@ async def test_get_scope_namespace_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetScopeNamespaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -28465,7 +28499,6 @@ async def test_create_scope_namespace_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateScopeNamespaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -28492,7 +28525,6 @@ async def test_update_scope_namespace_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateScopeNamespaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -28519,7 +28551,6 @@ async def test_delete_scope_namespace_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteScopeNamespaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -28548,7 +28579,6 @@ async def test_list_scope_namespaces_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListScopeNamespacesRequest()
-
         assert args[0] == request_msg
 
 
@@ -28578,7 +28608,6 @@ async def test_get_scope_rbac_role_binding_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetScopeRBACRoleBindingRequest()
-
         assert args[0] == request_msg
 
 
@@ -28605,7 +28634,6 @@ async def test_create_scope_rbac_role_binding_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateScopeRBACRoleBindingRequest()
-
         assert args[0] == request_msg
 
 
@@ -28632,7 +28660,6 @@ async def test_update_scope_rbac_role_binding_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateScopeRBACRoleBindingRequest()
-
         assert args[0] == request_msg
 
 
@@ -28659,7 +28686,6 @@ async def test_delete_scope_rbac_role_binding_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteScopeRBACRoleBindingRequest()
-
         assert args[0] == request_msg
 
 
@@ -28688,7 +28714,6 @@ async def test_list_scope_rbac_role_bindings_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListScopeRBACRoleBindingsRequest()
-
         assert args[0] == request_msg
 
 
@@ -28716,7 +28741,6 @@ async def test_get_scope_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetScopeRequest()
-
         assert args[0] == request_msg
 
 
@@ -28741,7 +28765,6 @@ async def test_create_scope_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateScopeRequest()
-
         assert args[0] == request_msg
 
 
@@ -28766,7 +28789,6 @@ async def test_update_scope_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateScopeRequest()
-
         assert args[0] == request_msg
 
 
@@ -28791,7 +28813,6 @@ async def test_delete_scope_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteScopeRequest()
-
         assert args[0] == request_msg
 
 
@@ -28818,7 +28839,6 @@ async def test_list_scopes_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListScopesRequest()
-
         assert args[0] == request_msg
 
 
@@ -28847,7 +28867,6 @@ async def test_list_permitted_scopes_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListPermittedScopesRequest()
-
         assert args[0] == request_msg
 
 
@@ -28877,7 +28896,6 @@ async def test_get_membership_binding_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetMembershipBindingRequest()
-
         assert args[0] == request_msg
 
 
@@ -28904,7 +28922,6 @@ async def test_create_membership_binding_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateMembershipBindingRequest()
-
         assert args[0] == request_msg
 
 
@@ -28931,7 +28948,6 @@ async def test_update_membership_binding_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateMembershipBindingRequest()
-
         assert args[0] == request_msg
 
 
@@ -28958,7 +28974,6 @@ async def test_delete_membership_binding_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteMembershipBindingRequest()
-
         assert args[0] == request_msg
 
 
@@ -28988,7 +29003,6 @@ async def test_list_membership_bindings_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListMembershipBindingsRequest()
-
         assert args[0] == request_msg
 
 
@@ -29018,7 +29032,6 @@ async def test_get_membership_rbac_role_binding_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetMembershipRBACRoleBindingRequest()
-
         assert args[0] == request_msg
 
 
@@ -29045,7 +29058,6 @@ async def test_create_membership_rbac_role_binding_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateMembershipRBACRoleBindingRequest()
-
         assert args[0] == request_msg
 
 
@@ -29072,7 +29084,6 @@ async def test_update_membership_rbac_role_binding_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateMembershipRBACRoleBindingRequest()
-
         assert args[0] == request_msg
 
 
@@ -29099,7 +29110,6 @@ async def test_delete_membership_rbac_role_binding_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteMembershipRBACRoleBindingRequest()
-
         assert args[0] == request_msg
 
 
@@ -29129,7 +29139,6 @@ async def test_list_membership_rbac_role_bindings_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListMembershipRBACRoleBindingsRequest()
-
         assert args[0] == request_msg
 
 
@@ -29158,7 +29167,6 @@ async def test_generate_membership_rbac_role_binding_yaml_empty_call_grpc_asynci
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GenerateMembershipRBACRoleBindingYAMLRequest()
-
         assert args[0] == request_msg
 
 
@@ -36246,7 +36254,6 @@ def test_list_memberships_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListMembershipsRequest()
-
         assert args[0] == request_msg
 
 
@@ -36268,7 +36275,6 @@ def test_list_bound_memberships_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListBoundMembershipsRequest()
-
         assert args[0] == request_msg
 
 
@@ -36288,7 +36294,6 @@ def test_list_features_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListFeaturesRequest()
-
         assert args[0] == request_msg
 
 
@@ -36308,7 +36313,6 @@ def test_get_membership_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetMembershipRequest()
-
         assert args[0] == request_msg
 
 
@@ -36328,7 +36332,6 @@ def test_get_feature_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetFeatureRequest()
-
         assert args[0] == request_msg
 
 
@@ -36350,7 +36353,6 @@ def test_create_membership_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateMembershipRequest()
-
         assert args[0] == request_msg
 
 
@@ -36370,7 +36372,6 @@ def test_create_feature_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateFeatureRequest()
-
         assert args[0] == request_msg
 
 
@@ -36392,7 +36393,6 @@ def test_delete_membership_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteMembershipRequest()
-
         assert args[0] == request_msg
 
 
@@ -36412,7 +36412,6 @@ def test_delete_feature_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteFeatureRequest()
-
         assert args[0] == request_msg
 
 
@@ -36434,7 +36433,6 @@ def test_update_membership_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateMembershipRequest()
-
         assert args[0] == request_msg
 
 
@@ -36454,7 +36452,6 @@ def test_update_feature_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateFeatureRequest()
-
         assert args[0] == request_msg
 
 
@@ -36476,7 +36473,6 @@ def test_generate_connect_manifest_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GenerateConnectManifestRequest()
-
         assert args[0] == request_msg
 
 
@@ -36496,7 +36492,6 @@ def test_create_fleet_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateFleetRequest()
-
         assert args[0] == request_msg
 
 
@@ -36516,7 +36511,6 @@ def test_get_fleet_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetFleetRequest()
-
         assert args[0] == request_msg
 
 
@@ -36536,7 +36530,6 @@ def test_update_fleet_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateFleetRequest()
-
         assert args[0] == request_msg
 
 
@@ -36556,7 +36549,6 @@ def test_delete_fleet_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteFleetRequest()
-
         assert args[0] == request_msg
 
 
@@ -36576,7 +36568,6 @@ def test_list_fleets_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListFleetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -36598,7 +36589,6 @@ def test_get_scope_namespace_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetScopeNamespaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -36620,7 +36610,6 @@ def test_create_scope_namespace_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateScopeNamespaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -36642,7 +36631,6 @@ def test_update_scope_namespace_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateScopeNamespaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -36664,7 +36652,6 @@ def test_delete_scope_namespace_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteScopeNamespaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -36686,7 +36673,6 @@ def test_list_scope_namespaces_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListScopeNamespacesRequest()
-
         assert args[0] == request_msg
 
 
@@ -36708,7 +36694,6 @@ def test_get_scope_rbac_role_binding_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetScopeRBACRoleBindingRequest()
-
         assert args[0] == request_msg
 
 
@@ -36730,7 +36715,6 @@ def test_create_scope_rbac_role_binding_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateScopeRBACRoleBindingRequest()
-
         assert args[0] == request_msg
 
 
@@ -36752,7 +36736,6 @@ def test_update_scope_rbac_role_binding_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateScopeRBACRoleBindingRequest()
-
         assert args[0] == request_msg
 
 
@@ -36774,7 +36757,6 @@ def test_delete_scope_rbac_role_binding_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteScopeRBACRoleBindingRequest()
-
         assert args[0] == request_msg
 
 
@@ -36796,7 +36778,6 @@ def test_list_scope_rbac_role_bindings_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListScopeRBACRoleBindingsRequest()
-
         assert args[0] == request_msg
 
 
@@ -36816,7 +36797,6 @@ def test_get_scope_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetScopeRequest()
-
         assert args[0] == request_msg
 
 
@@ -36836,7 +36816,6 @@ def test_create_scope_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateScopeRequest()
-
         assert args[0] == request_msg
 
 
@@ -36856,7 +36835,6 @@ def test_update_scope_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateScopeRequest()
-
         assert args[0] == request_msg
 
 
@@ -36876,7 +36854,6 @@ def test_delete_scope_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteScopeRequest()
-
         assert args[0] == request_msg
 
 
@@ -36896,7 +36873,6 @@ def test_list_scopes_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListScopesRequest()
-
         assert args[0] == request_msg
 
 
@@ -36918,7 +36894,6 @@ def test_list_permitted_scopes_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListPermittedScopesRequest()
-
         assert args[0] == request_msg
 
 
@@ -36940,7 +36915,6 @@ def test_get_membership_binding_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetMembershipBindingRequest()
-
         assert args[0] == request_msg
 
 
@@ -36962,7 +36936,6 @@ def test_create_membership_binding_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateMembershipBindingRequest()
-
         assert args[0] == request_msg
 
 
@@ -36984,7 +36957,6 @@ def test_update_membership_binding_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateMembershipBindingRequest()
-
         assert args[0] == request_msg
 
 
@@ -37006,7 +36978,6 @@ def test_delete_membership_binding_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteMembershipBindingRequest()
-
         assert args[0] == request_msg
 
 
@@ -37028,7 +36999,6 @@ def test_list_membership_bindings_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListMembershipBindingsRequest()
-
         assert args[0] == request_msg
 
 
@@ -37050,7 +37020,6 @@ def test_get_membership_rbac_role_binding_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetMembershipRBACRoleBindingRequest()
-
         assert args[0] == request_msg
 
 
@@ -37072,7 +37041,6 @@ def test_create_membership_rbac_role_binding_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateMembershipRBACRoleBindingRequest()
-
         assert args[0] == request_msg
 
 
@@ -37094,7 +37062,6 @@ def test_update_membership_rbac_role_binding_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateMembershipRBACRoleBindingRequest()
-
         assert args[0] == request_msg
 
 
@@ -37116,7 +37083,6 @@ def test_delete_membership_rbac_role_binding_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteMembershipRBACRoleBindingRequest()
-
         assert args[0] == request_msg
 
 
@@ -37138,7 +37104,6 @@ def test_list_membership_rbac_role_bindings_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListMembershipRBACRoleBindingsRequest()
-
         assert args[0] == request_msg
 
 
@@ -37160,7 +37125,6 @@ def test_generate_membership_rbac_role_binding_yaml_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GenerateMembershipRBACRoleBindingYAMLRequest()
-
         assert args[0] == request_msg
 
 

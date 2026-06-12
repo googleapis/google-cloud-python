@@ -16,12 +16,9 @@ from unittest import mock
 
 import google.cloud.bigquery as bigquery
 import google.cloud.exceptions
-import pyarrow as pa
 import pytest
 
 import bigframes
-import bigframes.core.nodes as nodes
-import bigframes.core.schema as schemata
 from bigframes.session.proxy_executor import DualCompilerProxyExecutor
 
 
@@ -33,8 +30,14 @@ def mock_executor():
     bqstoragereadclient = mock.Mock()
     loader = mock.Mock()
     publisher = mock.Mock()
+    function_manager = mock.Mock()
     return DualCompilerProxyExecutor(
-        bqclient, storage_manager, bqstoragereadclient, loader, publisher=publisher
+        bqclient,
+        storage_manager,
+        bqstoragereadclient,
+        loader,
+        publisher=publisher,
+        function_manager=function_manager,
     )
 
 

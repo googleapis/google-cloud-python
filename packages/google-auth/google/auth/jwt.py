@@ -52,6 +52,7 @@ import urllib
 
 from google.auth import _cache
 from google.auth import _helpers
+from google.auth import _regional_access_boundary_utils
 from google.auth import _service_account_info
 from google.auth import crypt
 from google.auth import exceptions
@@ -317,7 +318,9 @@ def decode(token, certs=None, verify=True, audience=None, clock_skew_in_seconds=
 
 
 class Credentials(
-    google.auth.credentials.Signing, google.auth.credentials.CredentialsWithQuotaProject
+    google.auth.credentials.Signing,
+    google.auth.credentials.CredentialsWithQuotaProject,
+    google.auth.credentials.CredentialsWithRegionalAccessBoundary,
 ):
     """Credentials that use a JWT as the bearer token.
 
@@ -490,7 +493,15 @@ class Credentials(
         """
         kwargs.setdefault("issuer", credentials.signer_email)
         kwargs.setdefault("subject", credentials.signer_email)
-        return cls(credentials.signer, audience=audience, **kwargs)
+        jwt_creds = cls(credentials.signer, audience=audience, **kwargs)
+
+        if isinstance(
+            credentials,
+            google.auth.credentials.CredentialsWithRegionalAccessBoundary,
+        ):
+            credentials._copy_regional_access_boundary_manager(jwt_creds)
+
+        return jwt_creds
 
     def with_claims(
         self, issuer=None, subject=None, audience=None, additional_claims=None
@@ -514,7 +525,7 @@ class Credentials(
         new_additional_claims = copy.deepcopy(self._additional_claims)
         new_additional_claims.update(additional_claims or {})
 
-        return self.__class__(
+        cred = self.__class__(
             self._signer,
             issuer=issuer if issuer is not None else self._issuer,
             subject=subject if subject is not None else self._subject,
@@ -522,10 +533,12 @@ class Credentials(
             additional_claims=new_additional_claims,
             quota_project_id=self._quota_project_id,
         )
+        self._copy_regional_access_boundary_manager(cred)
+        return cred
 
     @_helpers.copy_docstring(google.auth.credentials.CredentialsWithQuotaProject)
     def with_quota_project(self, quota_project_id):
-        return self.__class__(
+        cred = self.__class__(
             self._signer,
             issuer=self._issuer,
             subject=self._subject,
@@ -533,6 +546,8 @@ class Credentials(
             additional_claims=self._additional_claims,
             quota_project_id=quota_project_id,
         )
+        self._copy_regional_access_boundary_manager(cred)
+        return cred
 
     def _make_jwt(self):
         """Make a signed JWT.
@@ -559,7 +574,7 @@ class Credentials(
 
         return jwt, expiry
 
-    def refresh(self, request):
+    def _perform_refresh_token(self, request):
         """Refreshes the access token.
 
         Args:
@@ -568,6 +583,15 @@ class Credentials(
         # pylint: disable=unused-argument
         # (pylint doesn't correctly recognize overridden methods.)
         self.token, self.expiry = self._make_jwt()
+
+    def _build_regional_access_boundary_lookup_url(self, request=None):
+        """Builds the lookup URL using the service account's email address."""
+        if not self.signer_email:
+            return None
+
+        return _regional_access_boundary_utils.get_service_account_rab_endpoint(
+            self.signer_email
+        )
 
     @_helpers.copy_docstring(google.auth.credentials.Signing)
     def sign_bytes(self, message):

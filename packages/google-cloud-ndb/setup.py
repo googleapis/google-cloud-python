@@ -18,7 +18,6 @@ import re
 
 import setuptools
 
-
 PACKAGE_ROOT = os.path.abspath(os.path.dirname(__file__))
 
 version = None
@@ -33,6 +32,7 @@ packages = [
     for package in setuptools.find_namespace_packages()
     if package.startswith("google")
 ]
+
 
 def main():
     package_root = os.path.abspath(os.path.dirname(__file__))
@@ -50,7 +50,7 @@ def main():
 
     setuptools.setup(
         name="google-cloud-ndb",
-        version = version,
+        version=version,
         description="NDB library for Google Cloud Datastore",
         long_description=readme,
         long_description_content_type="text/markdown",
@@ -59,8 +59,8 @@ def main():
         license="Apache 2.0",
         url="https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-ndb",
         project_urls={
-            'Documentation': 'https://googleapis.dev/python/python-ndb/latest',
-            'Issue Tracker': 'https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-ndb/issues'
+            "Documentation": "https://googleapis.dev/python/python-ndb/latest",
+            "Issue Tracker": "https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-ndb/issues",
         },
         classifiers=[
             "Development Status :: 5 - Production/Stable",

@@ -44,7 +44,7 @@ def test_magic_select_lit_to_var(ip):
     assert "dst_var" in ip.user_ns
     result_df = ip.user_ns["dst_var"]
     assert result_df.shape == (1, 1)
-    assert result_df.loc[0, 0] == 3
+    assert result_df.to_pandas().iloc[0, 0] == 3
 
 
 def test_magic_select_lit_dry_run(ip):
@@ -97,4 +97,4 @@ def test_magic_select_interpolate(ip):
     assert "dst_var" in ip.user_ns
     result_df = ip.user_ns["dst_var"]
     assert result_df.shape == (1, 1)
-    assert result_df.loc[0, 0] == 9
+    assert result_df.loc[0, "total"] == 9

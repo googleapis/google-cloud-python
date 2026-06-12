@@ -15,21 +15,22 @@
 import uuid
 from unittest import mock
 
+import google.cloud.spanner_v1.types.result_set as result_set
+import google.cloud.spanner_v1.types.type as spanner_type
 import sqlalchemy
+from google.cloud.spanner_v1 import (
+    CommitRequest,
+    CreateSessionRequest,
+    ExecuteSqlRequest,
+    RollbackRequest,
+)
 from sqlalchemy.orm import Session
 from sqlalchemy.testing import eq_, is_instance_of, is_not_none
-from google.cloud.spanner_v1 import (
-    ExecuteSqlRequest,
-    CommitRequest,
-    RollbackRequest,
-    CreateSessionRequest,
-)
+
 from tests.mockserver_tests.mock_server_test_base import (
     MockServerTestBase,
     add_result,
 )
-import google.cloud.spanner_v1.types.type as spanner_type
-import google.cloud.spanner_v1.types.result_set as result_set
 
 
 class TestInsertmany(MockServerTestBase):
@@ -71,9 +72,7 @@ class TestInsertmany(MockServerTestBase):
         from tests.mockserver_tests.insertmany_model import SingerIntID
 
         self.add_int_id_insert_result(
-            "INSERT INTO singers_int_id (name) "
-            "VALUES (@a0) "
-            "THEN RETURN id, inserted_at"
+            "INSERT INTO singers_int_id (name) VALUES (@a0) THEN RETURN id, inserted_at"
         )
         engine = self.create_engine()
 

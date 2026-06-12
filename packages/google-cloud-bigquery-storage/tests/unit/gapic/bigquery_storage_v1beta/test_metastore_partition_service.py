@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -103,6 +104,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1350,8 +1366,8 @@ def test_metastore_partition_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        metastore_partition.BatchCreateMetastorePartitionsRequest,
-        dict,
+        metastore_partition.BatchCreateMetastorePartitionsRequest(),
+        {},
     ],
 )
 def test_batch_create_metastore_partitions(request_type, transport: str = "grpc"):
@@ -1362,7 +1378,7 @@ def test_batch_create_metastore_partitions(request_type, transport: str = "grpc"
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1410,10 +1426,11 @@ def test_batch_create_metastore_partitions_non_empty_request_with_auto_populated
         client.batch_create_metastore_partitions(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore_partition.BatchCreateMetastorePartitionsRequest(
+        request_msg = metastore_partition.BatchCreateMetastorePartitionsRequest(
             parent="parent_value",
             trace_id="trace_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_batch_create_metastore_partitions_use_cached_wrapped_rpc():
@@ -1499,9 +1516,15 @@ async def test_batch_create_metastore_partitions_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metastore_partition.BatchCreateMetastorePartitionsRequest(),
+        {},
+    ],
+)
 async def test_batch_create_metastore_partitions_async(
-    transport: str = "grpc_asyncio",
-    request_type=metastore_partition.BatchCreateMetastorePartitionsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = MetastorePartitionServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1510,7 +1533,7 @@ async def test_batch_create_metastore_partitions_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1532,11 +1555,6 @@ async def test_batch_create_metastore_partitions_async(
     assert isinstance(
         response, metastore_partition.BatchCreateMetastorePartitionsResponse
     )
-
-
-@pytest.mark.asyncio
-async def test_batch_create_metastore_partitions_async_from_dict():
-    await test_batch_create_metastore_partitions_async(request_type=dict)
 
 
 def test_batch_create_metastore_partitions_field_headers():
@@ -1607,8 +1625,8 @@ async def test_batch_create_metastore_partitions_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        metastore_partition.BatchDeleteMetastorePartitionsRequest,
-        dict,
+        metastore_partition.BatchDeleteMetastorePartitionsRequest(),
+        {},
     ],
 )
 def test_batch_delete_metastore_partitions(request_type, transport: str = "grpc"):
@@ -1619,7 +1637,7 @@ def test_batch_delete_metastore_partitions(request_type, transport: str = "grpc"
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1665,10 +1683,11 @@ def test_batch_delete_metastore_partitions_non_empty_request_with_auto_populated
         client.batch_delete_metastore_partitions(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore_partition.BatchDeleteMetastorePartitionsRequest(
+        request_msg = metastore_partition.BatchDeleteMetastorePartitionsRequest(
             parent="parent_value",
             trace_id="trace_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_batch_delete_metastore_partitions_use_cached_wrapped_rpc():
@@ -1754,9 +1773,15 @@ async def test_batch_delete_metastore_partitions_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metastore_partition.BatchDeleteMetastorePartitionsRequest(),
+        {},
+    ],
+)
 async def test_batch_delete_metastore_partitions_async(
-    transport: str = "grpc_asyncio",
-    request_type=metastore_partition.BatchDeleteMetastorePartitionsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = MetastorePartitionServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1765,7 +1790,7 @@ async def test_batch_delete_metastore_partitions_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1783,11 +1808,6 @@ async def test_batch_delete_metastore_partitions_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_batch_delete_metastore_partitions_async_from_dict():
-    await test_batch_delete_metastore_partitions_async(request_type=dict)
 
 
 def test_batch_delete_metastore_partitions_field_headers():
@@ -1856,8 +1876,8 @@ async def test_batch_delete_metastore_partitions_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        metastore_partition.BatchUpdateMetastorePartitionsRequest,
-        dict,
+        metastore_partition.BatchUpdateMetastorePartitionsRequest(),
+        {},
     ],
 )
 def test_batch_update_metastore_partitions(request_type, transport: str = "grpc"):
@@ -1868,7 +1888,7 @@ def test_batch_update_metastore_partitions(request_type, transport: str = "grpc"
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1916,10 +1936,11 @@ def test_batch_update_metastore_partitions_non_empty_request_with_auto_populated
         client.batch_update_metastore_partitions(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore_partition.BatchUpdateMetastorePartitionsRequest(
+        request_msg = metastore_partition.BatchUpdateMetastorePartitionsRequest(
             parent="parent_value",
             trace_id="trace_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_batch_update_metastore_partitions_use_cached_wrapped_rpc():
@@ -2005,9 +2026,15 @@ async def test_batch_update_metastore_partitions_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metastore_partition.BatchUpdateMetastorePartitionsRequest(),
+        {},
+    ],
+)
 async def test_batch_update_metastore_partitions_async(
-    transport: str = "grpc_asyncio",
-    request_type=metastore_partition.BatchUpdateMetastorePartitionsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = MetastorePartitionServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2016,7 +2043,7 @@ async def test_batch_update_metastore_partitions_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2038,11 +2065,6 @@ async def test_batch_update_metastore_partitions_async(
     assert isinstance(
         response, metastore_partition.BatchUpdateMetastorePartitionsResponse
     )
-
-
-@pytest.mark.asyncio
-async def test_batch_update_metastore_partitions_async_from_dict():
-    await test_batch_update_metastore_partitions_async(request_type=dict)
 
 
 def test_batch_update_metastore_partitions_field_headers():
@@ -2113,8 +2135,8 @@ async def test_batch_update_metastore_partitions_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        metastore_partition.ListMetastorePartitionsRequest,
-        dict,
+        metastore_partition.ListMetastorePartitionsRequest(),
+        {},
     ],
 )
 def test_list_metastore_partitions(request_type, transport: str = "grpc"):
@@ -2125,7 +2147,7 @@ def test_list_metastore_partitions(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2172,11 +2194,12 @@ def test_list_metastore_partitions_non_empty_request_with_auto_populated_field()
         client.list_metastore_partitions(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == metastore_partition.ListMetastorePartitionsRequest(
+        request_msg = metastore_partition.ListMetastorePartitionsRequest(
             parent="parent_value",
             filter="filter_value",
             trace_id="trace_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_metastore_partitions_use_cached_wrapped_rpc():
@@ -2262,9 +2285,15 @@ async def test_list_metastore_partitions_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metastore_partition.ListMetastorePartitionsRequest(),
+        {},
+    ],
+)
 async def test_list_metastore_partitions_async(
-    transport: str = "grpc_asyncio",
-    request_type=metastore_partition.ListMetastorePartitionsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = MetastorePartitionServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2273,7 +2302,7 @@ async def test_list_metastore_partitions_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2293,11 +2322,6 @@ async def test_list_metastore_partitions_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, metastore_partition.ListMetastorePartitionsResponse)
-
-
-@pytest.mark.asyncio
-async def test_list_metastore_partitions_async_from_dict():
-    await test_list_metastore_partitions_async(request_type=dict)
 
 
 def test_list_metastore_partitions_field_headers():
@@ -2454,8 +2478,8 @@ async def test_list_metastore_partitions_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        metastore_partition.StreamMetastorePartitionsRequest,
-        dict,
+        metastore_partition.StreamMetastorePartitionsRequest(),
+        {},
     ],
 )
 def test_stream_metastore_partitions(request_type, transport: str = "grpc"):
@@ -2466,7 +2490,7 @@ def test_stream_metastore_partitions(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
     requests = [request]
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2574,9 +2598,15 @@ async def test_stream_metastore_partitions_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        metastore_partition.StreamMetastorePartitionsRequest(),
+        {},
+    ],
+)
 async def test_stream_metastore_partitions_async(
-    transport: str = "grpc_asyncio",
-    request_type=metastore_partition.StreamMetastorePartitionsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = MetastorePartitionServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2585,7 +2615,7 @@ async def test_stream_metastore_partitions_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
     requests = [request]
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2607,11 +2637,6 @@ async def test_stream_metastore_partitions_async(
     # Establish that the response is the type that we expect.
     message = await response.read()
     assert isinstance(message, metastore_partition.StreamMetastorePartitionsResponse)
-
-
-@pytest.mark.asyncio
-async def test_stream_metastore_partitions_async_from_dict():
-    await test_stream_metastore_partitions_async(request_type=dict)
 
 
 def test_credentials_transport_error():
@@ -2738,7 +2763,6 @@ def test_batch_create_metastore_partitions_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metastore_partition.BatchCreateMetastorePartitionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -2761,7 +2785,6 @@ def test_batch_delete_metastore_partitions_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metastore_partition.BatchDeleteMetastorePartitionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -2784,7 +2807,6 @@ def test_batch_update_metastore_partitions_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metastore_partition.BatchUpdateMetastorePartitionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -2807,7 +2829,6 @@ def test_list_metastore_partitions_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metastore_partition.ListMetastorePartitionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -2848,7 +2869,6 @@ async def test_batch_create_metastore_partitions_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metastore_partition.BatchCreateMetastorePartitionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -2873,7 +2893,6 @@ async def test_batch_delete_metastore_partitions_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metastore_partition.BatchDeleteMetastorePartitionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -2900,7 +2919,6 @@ async def test_batch_update_metastore_partitions_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metastore_partition.BatchUpdateMetastorePartitionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -2927,7 +2945,6 @@ async def test_list_metastore_partitions_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = metastore_partition.ListMetastorePartitionsRequest()
-
         assert args[0] == request_msg
 
 

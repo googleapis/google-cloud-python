@@ -51,14 +51,25 @@ def test_repr_mimebundle_selection_logic():
         )
         mock_deferred.return_value = {"text/plain": "deferred"}
 
-        # Test deferred repr_mode
+        # Test deferred repr_mode when anywidget is available
+        with bpd.option_context("display.repr_mode", "deferred"):
+            bundle = bf_html.repr_mimebundle(mock_obj)
+            assert "application/vnd.jupyter.widget-view+json" in bundle[0]
+            mock_anywidget.assert_called_once()
+            mock_deferred.assert_not_called()
+
+        mock_anywidget.reset_mock()
+
+        # Test fallback to static deferred repr when anywidget fails
+        mock_anywidget.side_effect = Exception("Anywidget failed")
         with bpd.option_context("display.repr_mode", "deferred"):
             bundle = bf_html.repr_mimebundle(mock_obj)
             assert bundle == {"text/plain": "deferred"}
             mock_deferred.assert_called_once()
-            mock_head.assert_not_called()
 
+        mock_anywidget.side_effect = None
         mock_deferred.reset_mock()
+        mock_anywidget.reset_mock()
 
         # Test plaintext render_mode
         with bpd.option_context("display.render_mode", "plaintext"):

@@ -13,10 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
-import re
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
 from unittest import mock
 from unittest.mock import AsyncMock
@@ -111,6 +111,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1319,8 +1334,8 @@ def test_image_annotator_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        image_annotator.BatchAnnotateImagesRequest,
-        dict,
+        image_annotator.BatchAnnotateImagesRequest(),
+        {},
     ],
 )
 def test_batch_annotate_images(request_type, transport: str = "grpc"):
@@ -1331,7 +1346,7 @@ def test_batch_annotate_images(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1374,7 +1389,8 @@ def test_batch_annotate_images_non_empty_request_with_auto_populated_field():
         client.batch_annotate_images(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == image_annotator.BatchAnnotateImagesRequest()
+        request_msg = image_annotator.BatchAnnotateImagesRequest()
+        assert args[0] == request_msg
 
 
 def test_batch_annotate_images_use_cached_wrapped_rpc():
@@ -1460,9 +1476,15 @@ async def test_batch_annotate_images_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        image_annotator.BatchAnnotateImagesRequest(),
+        {},
+    ],
+)
 async def test_batch_annotate_images_async(
-    transport: str = "grpc_asyncio",
-    request_type=image_annotator.BatchAnnotateImagesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ImageAnnotatorAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1471,7 +1493,7 @@ async def test_batch_annotate_images_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1491,11 +1513,6 @@ async def test_batch_annotate_images_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, image_annotator.BatchAnnotateImagesResponse)
-
-
-@pytest.mark.asyncio
-async def test_batch_annotate_images_async_from_dict():
-    await test_batch_annotate_images_async(request_type=dict)
 
 
 def test_batch_annotate_images_flattened():
@@ -1611,8 +1628,8 @@ async def test_batch_annotate_images_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        image_annotator.AsyncBatchAnnotateFilesRequest,
-        dict,
+        image_annotator.AsyncBatchAnnotateFilesRequest(),
+        {},
     ],
 )
 def test_async_batch_annotate_files(request_type, transport: str = "grpc"):
@@ -1623,7 +1640,7 @@ def test_async_batch_annotate_files(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1666,7 +1683,8 @@ def test_async_batch_annotate_files_non_empty_request_with_auto_populated_field(
         client.async_batch_annotate_files(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == image_annotator.AsyncBatchAnnotateFilesRequest()
+        request_msg = image_annotator.AsyncBatchAnnotateFilesRequest()
+        assert args[0] == request_msg
 
 
 def test_async_batch_annotate_files_use_cached_wrapped_rpc():
@@ -1762,9 +1780,15 @@ async def test_async_batch_annotate_files_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        image_annotator.AsyncBatchAnnotateFilesRequest(),
+        {},
+    ],
+)
 async def test_async_batch_annotate_files_async(
-    transport: str = "grpc_asyncio",
-    request_type=image_annotator.AsyncBatchAnnotateFilesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ImageAnnotatorAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1773,7 +1797,7 @@ async def test_async_batch_annotate_files_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1793,11 +1817,6 @@ async def test_async_batch_annotate_files_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_async_batch_annotate_files_async_from_dict():
-    await test_async_batch_annotate_files_async(request_type=dict)
 
 
 def test_async_batch_annotate_files_flattened():
@@ -2420,7 +2439,6 @@ def test_batch_annotate_images_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = image_annotator.BatchAnnotateImagesRequest()
-
         assert args[0] == request_msg
 
 
@@ -2443,7 +2461,6 @@ def test_async_batch_annotate_files_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = image_annotator.AsyncBatchAnnotateFilesRequest()
-
         assert args[0] == request_msg
 
 
@@ -2484,7 +2501,6 @@ async def test_batch_annotate_images_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = image_annotator.BatchAnnotateImagesRequest()
-
         assert args[0] == request_msg
 
 
@@ -2511,7 +2527,6 @@ async def test_async_batch_annotate_files_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = image_annotator.AsyncBatchAnnotateFilesRequest()
-
         assert args[0] == request_msg
 
 
@@ -2806,7 +2821,6 @@ def test_batch_annotate_images_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = image_annotator.BatchAnnotateImagesRequest()
-
         assert args[0] == request_msg
 
 
@@ -2828,7 +2842,6 @@ def test_async_batch_annotate_files_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = image_annotator.AsyncBatchAnnotateFilesRequest()
-
         assert args[0] == request_msg
 
 

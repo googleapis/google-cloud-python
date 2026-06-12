@@ -35,13 +35,13 @@ EXTRAS_REQUIRE = {
 
 setuptools.setup(
     name='google-resumable-media',
-    version = "2.9.0",
+    version = "2.10.0",
     description='Utilities for Google Media Downloads and Resumable Uploads',
     author='Google Cloud Platform',
     author_email='googleapis-publisher@google.com',
     long_description=README,
     scripts=[],
-    url='https://github.com/googleapis/google-resumable-media-python',
+    url="https://github.com/googleapis/google-cloud-python/tree/main/packages/google-resumable-media",
     packages=setuptools.find_namespace_packages(
         exclude=("tests*", "docs*")
     ),

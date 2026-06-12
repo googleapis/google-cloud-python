@@ -1171,7 +1171,7 @@ class _BaseMirroringRestTransport(MirroringTransport):
                 },
                 {
                     "method": "get",
-                    "uri": "/v1/{name=organizations/*/locations/*}",
+                    "uri": "/v1/{name=organizations/*}/locations",
                 },
             ]
             return http_options
@@ -1201,10 +1201,6 @@ class _BaseMirroringRestTransport(MirroringTransport):
                 {
                     "method": "get",
                     "uri": "/v1/{resource=projects/*/locations/*/authorizationPolicies/*}:getIamPolicy",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{resource=organizations/*/locations/*/addressGroups/*}:getIamPolicy",
                 },
                 {
                     "method": "get",
@@ -1247,11 +1243,6 @@ class _BaseMirroringRestTransport(MirroringTransport):
                 {
                     "method": "post",
                     "uri": "/v1/{resource=projects/*/locations/*/authorizationPolicies/*}:setIamPolicy",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{resource=organizations/*/locations/*/addressGroups/*}:setIamPolicy",
                     "body": "*",
                 },
                 {
@@ -1302,12 +1293,12 @@ class _BaseMirroringRestTransport(MirroringTransport):
                 },
                 {
                     "method": "post",
-                    "uri": "/v1/{resource=projects/*/locations/*/authorizationPolicies/*}:testIamPermissions",
+                    "uri": "/v1/{resource=organizations/*/locations/*/addressGroups/*}:testIamPermissions",
                     "body": "*",
                 },
                 {
                     "method": "post",
-                    "uri": "/v1/{resource=organizations/*/locations/*/addressGroups/*}:testIamPermissions",
+                    "uri": "/v1/{resource=projects/*/locations/*/authorizationPolicies/*}:testIamPermissions",
                     "body": "*",
                 },
                 {

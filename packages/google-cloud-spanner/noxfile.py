@@ -43,6 +43,7 @@ UNIT_TEST_STANDARD_DEPENDENCIES = [
     "pytest",
     "pytest-cov",
     "pytest-asyncio",
+    "pytest-xdist",
 ]
 MOCK_SERVER_ADDITIONAL_DEPENDENCIES = [
     "google-cloud-testutils",
@@ -240,6 +241,8 @@ def unit(session, protobuf_implementation):
     # Run py.test against the unit tests.
     args = [
         "py.test",
+        "-n",
+        "auto",
         "-s",
         f"--junitxml=unit_{session.python}_sponge_log.xml",
         "--cov=google",
@@ -754,7 +757,6 @@ def prerelease_deps(session, protobuf_implementation, database_dialect):
 def mypy(session):
     """Run the type checker."""
     session.skip("Mypy is not yet supported")
-
     # TODO(https://github.com/googleapis/gapic-generator-python/issues/2579):
     # use the latest version of mypy
     session.install(
@@ -789,14 +791,6 @@ def core_deps_from_source(session, protobuf_implementation):
     unit_deps_all = UNIT_TEST_STANDARD_DEPENDENCIES + UNIT_TEST_EXTERNAL_DEPENDENCIES
     session.install(*unit_deps_all)
 
-    # Install dependencies for the system test environment
-    system_deps_all = (
-        SYSTEM_TEST_STANDARD_DEPENDENCIES
-        + SYSTEM_TEST_EXTERNAL_DEPENDENCIES
-        + SYSTEM_TEST_EXTRAS
-    )
-    session.install(*system_deps_all)
-
     # Because we test minimum dependency versions on the minimum Python
     # version, the first version we test with in the unit tests sessions has a
     # constraints file containing all dependencies and extras.
@@ -825,19 +819,30 @@ def core_deps_from_source(session, protobuf_implementation):
     # Note: If a dependency is added to the `core_dependencies_from_source` list,
     # the `prerel_deps` list in the `prerelease_deps` nox session should also be updated.
     core_dependencies_from_source = [
-        "googleapis-common-protos @ git+https://github.com/googleapis/google-cloud-python#egg=googleapis-common-protos&subdirectory=packages/googleapis-common-protos",
-        "google-api-core @ git+https://github.com/googleapis/google-cloud-python#egg=google-api-core&subdirectory=packages/google-api-core",
-        "google-auth @ git+https://github.com/googleapis/google-cloud-python#egg=google-auth&subdirectory=packages/google-auth",
-        "grpc-google-iam-v1 @ git+https://github.com/googleapis/google-cloud-python#egg=grpc-google-iam-v1&subdirectory=packages/grpc-google-iam-v1",
-        "proto-plus @ git+https://github.com/googleapis/google-cloud-python#egg=proto-plus&subdirectory=packages/proto-plus",
+        "googleapis-common-protos",
+        "google-api-core",
+        "google-auth",
+        "grpc-google-iam-v1",
+        "proto-plus",
     ]
 
-    for dep in core_dependencies_from_source:
-        session.install(dep, "--no-deps", "--ignore-installed")
-        print(f"Installed {dep}")
+    deps_dir = CURRENT_DIRECTORY.parent
+    while deps_dir.name != "packages" and deps_dir.parent != deps_dir:
+        deps_dir = deps_dir.parent
+
+    # Batch the pip installation to avoid sequential overhead
+    dep_paths = [str(deps_dir / dep) for dep in core_dependencies_from_source]
+
+    session.install(*dep_paths, "--no-deps", "--ignore-installed")
+    session.install("pytest-xdist")
+    print(
+        f"Installed {', '.join(core_dependencies_from_source)} locally from {deps_dir}"
+    )
 
     session.run(
         "py.test",
+        "-n",
+        "auto",
         "tests/unit",
         env={
             "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,

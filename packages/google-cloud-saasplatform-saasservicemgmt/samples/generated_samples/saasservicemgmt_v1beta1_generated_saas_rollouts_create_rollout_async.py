@@ -39,9 +39,13 @@ async def sample_create_rollout():
     client = saasplatform_saasservicemgmt_v1beta1.SaasRolloutsAsyncClient()
 
     # Initialize request argument(s)
+    rollout = saasplatform_saasservicemgmt_v1beta1.Rollout()
+    rollout.rollout_kind = "rollout_kind_value"
+
     request = saasplatform_saasservicemgmt_v1beta1.CreateRolloutRequest(
         parent="parent_value",
         rollout_id="rollout_id_value",
+        rollout=rollout,
     )
 
     # Make the request

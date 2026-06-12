@@ -250,32 +250,31 @@ Documentation for writing a Property subclass is in the docs for the
 :class:`Property` class.
 """
 
-
-import typing
 import copy
 import datetime
 import functools
 import inspect
 import json
 import pickle
+import typing
 import zlib
 
 import pytz
-
 from google.cloud.datastore import entity as ds_entity_module
 from google.cloud.datastore import helpers
 from google.cloud.datastore_v1.types import entity as entity_pb2
 
-from google.cloud.ndb import _legacy_entity_pb
-from google.cloud.ndb import _datastore_types
-from google.cloud.ndb import exceptions
-from google.cloud.ndb import key as key_module
+from google.cloud.ndb import (
+    _datastore_types,
+    _legacy_entity_pb,
+    _transaction,
+    exceptions,
+    tasklets,
+    utils,
+)
 from google.cloud.ndb import _options as options_module
+from google.cloud.ndb import key as key_module
 from google.cloud.ndb import query as query_module
-from google.cloud.ndb import _transaction
-from google.cloud.ndb import tasklets
-from google.cloud.ndb import utils
-
 
 __all__ = [
     "Key",
@@ -1439,8 +1438,9 @@ class Property(ModelAttribute):
         if self._choices is not None:
             if value not in self._choices:
                 raise exceptions.BadValueError(
-                    "Value {!r} for property {} is not an allowed "
-                    "choice".format(value, self._name)
+                    "Value {!r} for property {} is not an allowed choice".format(
+                        value, self._name
+                    )
                 )
 
         return value
@@ -2295,8 +2295,9 @@ def _validate_key(value, entity=None):
     if entity and type(entity) not in (Model, Expando):
         if value.kind() != entity._get_kind():
             raise KindError(
-                "Expected Key kind to be {}; received "
-                "{}".format(entity._get_kind(), value.kind())
+                "Expected Key kind to be {}; received {}".format(
+                    entity._get_kind(), value.kind()
+                )
             )
 
     return value
@@ -2625,8 +2626,9 @@ class BlobProperty(Property):
 
         if self._indexed and len(value) > _MAX_STRING_LENGTH:
             raise exceptions.BadValueError(
-                "Indexed value {} must be at most {:d} "
-                "bytes".format(self._name, _MAX_STRING_LENGTH)
+                "Indexed value {} must be at most {:d} bytes".format(
+                    self._name, _MAX_STRING_LENGTH
+                )
             )
 
     def _to_base_type(self, value):
@@ -2993,8 +2995,9 @@ class TextProperty(Property):
 
         if self._indexed and encoded_length > _MAX_STRING_LENGTH:
             raise exceptions.BadValueError(
-                "Indexed value {} must be at most {:d} "
-                "bytes".format(self._name, _MAX_STRING_LENGTH)
+                "Indexed value {} must be at most {:d} bytes".format(
+                    self._name, _MAX_STRING_LENGTH
+                )
             )
 
     def _to_base_type(self, value):
@@ -3742,8 +3745,9 @@ class KeyProperty(Property):
         if self._kind is not None:
             if value.kind() != self._kind:
                 raise exceptions.BadValueError(
-                    "In field {}, expected Key with kind={!r}, got "
-                    "{!r}".format(self._name, self._kind, value)
+                    "In field {}, expected Key with kind={!r}, got {!r}".format(
+                        self._name, self._kind, value
+                    )
                 )
 
     def _to_base_type(self, value):
@@ -4030,8 +4034,9 @@ class DateProperty(DateTimeProperty):
         """
         if not isinstance(value, datetime.date):
             raise TypeError(
-                "Cannot convert to datetime expected date value; "
-                "received {}".format(value)
+                "Cannot convert to datetime expected date value; received {}".format(
+                    value
+                )
             )
         return datetime.datetime(value.year, value.month, value.day)
 
@@ -4090,8 +4095,9 @@ class TimeProperty(DateTimeProperty):
         """
         if not isinstance(value, datetime.time):
             raise TypeError(
-                "Cannot convert to datetime expected time value; "
-                "received {}".format(value)
+                "Cannot convert to datetime expected time value; received {}".format(
+                    value
+                )
             )
         return datetime.datetime(
             1970,
@@ -4205,8 +4211,11 @@ class StructuredProperty(Property):
                 "Cannot query for unindexed StructuredProperty %s" % self._name
             )
         # Import late to avoid circular imports.
-        from .query import ConjunctionNode, PostFilterNode
-        from .query import RepeatedStructuredPropertyPredicate
+        from .query import (
+            ConjunctionNode,
+            PostFilterNode,
+            RepeatedStructuredPropertyPredicate,
+        )
 
         if value is None:
             from .query import (
@@ -4520,8 +4529,9 @@ class LocalStructuredProperty(BlobProperty):
             raise TypeError("self._model_class cannot be None")
         if not isinstance(value, self._model_class):
             raise TypeError(
-                "Cannot convert to bytes expected {} value; "
-                "received {}".format(self._model_class.__name__, value)
+                "Cannot convert to bytes expected {} value; received {}".format(
+                    self._model_class.__name__, value
+                )
             )
         return _entity_to_protobuf(
             value, set_key=self._keep_keys
@@ -5567,8 +5577,8 @@ class Model(_NotEqualMixin, metaclass=MetaModel):
                 entity. This is always a complete key.
         """
         # Avoid Python 2.7 circular import
-        from google.cloud.ndb import context as context_module
         from google.cloud.ndb import _datastore_api
+        from google.cloud.ndb import context as context_module
 
         self._pre_put_hook()
 
@@ -6402,8 +6412,7 @@ class Expando(Model):
         base_props = super(Expando, self)._properties
         if base_props is not None and name in base_props:
             raise RuntimeError(
-                "Property %s still in the list of properties for the "
-                "base class." % name
+                "Property %s still in the list of properties for the base class." % name
             )
         del self._properties[name]
 

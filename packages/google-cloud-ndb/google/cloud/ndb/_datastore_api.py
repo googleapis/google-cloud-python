@@ -14,25 +14,27 @@
 
 """Functions that interact with Datastore backend."""
 
-import grpc
 import itertools
 import logging
 
+import grpc
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.cloud.datastore import helpers
 from google.cloud.datastore_v1.types import datastore as datastore_pb2
 from google.cloud.datastore_v1.types import entity as entity_pb2
 
+from google.cloud.ndb import (
+    _batch,
+    _cache,
+    _eventloop,
+    _options,
+    _remote,
+    _retry,
+    tasklets,
+    utils,
+)
 from google.cloud.ndb import context as context_module
-from google.cloud.ndb import _batch
-from google.cloud.ndb import _cache
-from google.cloud.ndb import _eventloop
-from google.cloud.ndb import _options
-from google.cloud.ndb import _remote
-from google.cloud.ndb import _retry
-from google.cloud.ndb import tasklets
-from google.cloud.ndb import utils
 
 EVENTUAL = datastore_pb2.ReadOptions.ReadConsistency.EVENTUAL
 EVENTUAL_CONSISTENCY = EVENTUAL  # Legacy NDB

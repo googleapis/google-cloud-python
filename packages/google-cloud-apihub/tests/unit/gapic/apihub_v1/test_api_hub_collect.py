@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -111,6 +112,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1312,8 +1328,8 @@ def test_api_hub_collect_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        collect_service.CollectApiDataRequest,
-        dict,
+        collect_service.CollectApiDataRequest(),
+        {},
     ],
 )
 def test_collect_api_data(request_type, transport: str = "grpc"):
@@ -1324,7 +1340,7 @@ def test_collect_api_data(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.collect_api_data), "__call__") as call:
@@ -1367,11 +1383,12 @@ def test_collect_api_data_non_empty_request_with_auto_populated_field():
         client.collect_api_data(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == collect_service.CollectApiDataRequest(
+        request_msg = collect_service.CollectApiDataRequest(
             location="location_value",
             plugin_instance="plugin_instance_value",
             action_id="action_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_collect_api_data_use_cached_wrapped_rpc():
@@ -1464,9 +1481,14 @@ async def test_collect_api_data_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_collect_api_data_async(
-    transport: str = "grpc_asyncio", request_type=collect_service.CollectApiDataRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        collect_service.CollectApiDataRequest(),
+        {},
+    ],
+)
+async def test_collect_api_data_async(request_type, transport: str = "grpc_asyncio"):
     client = ApiHubCollectAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1474,7 +1496,7 @@ async def test_collect_api_data_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.collect_api_data), "__call__") as call:
@@ -1492,11 +1514,6 @@ async def test_collect_api_data_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_collect_api_data_async_from_dict():
-    await test_collect_api_data_async(request_type=dict)
 
 
 def test_collect_api_data_field_headers():
@@ -2052,7 +2069,6 @@ def test_collect_api_data_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = collect_service.CollectApiDataRequest()
-
         assert args[0] == request_msg
 
 
@@ -2091,7 +2107,6 @@ async def test_collect_api_data_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = collect_service.CollectApiDataRequest()
-
         assert args[0] == request_msg
 
 
@@ -2625,7 +2640,6 @@ def test_collect_api_data_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = collect_service.CollectApiDataRequest()
-
         assert args[0] == request_msg
 
 

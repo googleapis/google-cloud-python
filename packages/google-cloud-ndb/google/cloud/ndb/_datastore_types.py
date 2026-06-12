@@ -24,7 +24,6 @@ import functools
 
 from google.cloud.ndb import exceptions
 
-
 _MAX_STRING_LENGTH = 1500
 
 
@@ -55,12 +54,13 @@ class BlobKey(object):
         if isinstance(blob_key, bytes):
             if len(blob_key) > _MAX_STRING_LENGTH:
                 raise exceptions.BadValueError(
-                    "blob key must be under {:d} " "bytes.".format(_MAX_STRING_LENGTH)
+                    "blob key must be under {:d} bytes.".format(_MAX_STRING_LENGTH)
                 )
         elif blob_key is not None:
             raise exceptions.BadValueError(
-                "blob key should be bytes; received "
-                "{} (a {})".format(blob_key, type(blob_key).__name__)
+                "blob key should be bytes; received {} (a {})".format(
+                    blob_key, type(blob_key).__name__
+                )
             )
 
         self._blob_key = blob_key
