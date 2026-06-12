@@ -33,9 +33,9 @@ jobs:
         TARGET_BRANCH: ${{ github.base_ref || github.event.merge_group.base_ref }}
       run: |
         if [ -n "$TARGET_BRANCH" ]; then
-          git fetch origin "$TARGET_BRANCH" --deepen=200
+          git fetch origin "$TARGET_BRANCH" --deepen=200 || true
         fi
-        echo "matrix=$(python ci/get_package_shards.py)" >> $GITHUB_OUTPUT
+        echo "matrix=$(python3 ci/get_package_shards.py)" >> $GITHUB_OUTPUT
 
   unit:
     needs: discover
@@ -96,7 +96,7 @@ jobs:
     runs-on: ubuntu-latest
     needs:
         - unit
-    ...
+    steps:
     - name: Checkout
       uses: actions/checkout@v4
       # Use a fetch-depth of 2 to avoid error `fatal: origin/main...HEAD: no merge base`
