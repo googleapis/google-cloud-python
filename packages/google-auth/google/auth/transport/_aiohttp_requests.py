@@ -203,7 +203,7 @@ class Request(transport.Request):
             new_exc = exceptions.TransportError(caught_exc)
             raise new_exc from caught_exc
 
-    def clone(self):
+    def _clone(self):
         """Create an independent detached copy of this request adapter.
 
         Returns:
@@ -211,22 +211,62 @@ class Request(transport.Request):
             running an isolated aiohttp.ClientSession with identical environment proxy and
             observability configurations.
         """
-        new_session = None
-        if self.session:
-            trust_env = getattr(self.session, "_trust_env", True)
-            trace_configs = getattr(self.session, "_trace_configs", None)
-            new_session = aiohttp.ClientSession(
-                auto_decompress=False,
-                trust_env=trust_env,
-                trace_configs=list(trace_configs) if trace_configs else None,
-            )
-        else:
+        if getattr(self, "_closed", False):
+            raise exceptions.TransportError("Cannot clone a closed transport.")
+
+        if not self.session:
             new_session = aiohttp.ClientSession(
                 auto_decompress=False,
                 trust_env=True,
             )
+            return Request(session=new_session)
 
-        return Request(session=new_session)
+        session_kwargs: dict = {
+            "auto_decompress": False,
+            "trust_env": getattr(self.session, "_trust_env", True),
+        }
+
+        # Copy underlying connection pool settings (SSL context, IP bindings, limits).
+        orig_connector = getattr(self.session, "_connector", None)
+        if orig_connector and not getattr(orig_connector, "closed", True):
+            if isinstance(orig_connector, aiohttp.TCPConnector):
+                session_kwargs["connector"] = aiohttp.TCPConnector(
+                    ssl=getattr(orig_connector, "_ssl", None),  # type: ignore
+                    limit=getattr(orig_connector, "_limit", 100),
+                    limit_per_host=getattr(orig_connector, "_limit_per_host", 0),
+                    force_close=getattr(orig_connector, "_force_close", False),
+                    resolver=getattr(orig_connector, "_resolver", None),
+                    local_addr=getattr(orig_connector, "_local_addr", None),
+                )
+            elif getattr(aiohttp, "UnixConnector", None) and isinstance(
+                orig_connector, getattr(aiohttp, "UnixConnector")
+            ):
+                path = getattr(orig_connector, "_path", None)
+                if path:
+                    session_kwargs["connector"] = aiohttp.UnixConnector(
+                        path=path,
+                        limit=getattr(orig_connector, "_limit", 100),
+                        force_close=getattr(orig_connector, "_force_close", False),
+                    )
+
+        # Preserve distributed tracing configurations.
+        trace_configs = getattr(self.session, "_trace_configs", None)
+        if trace_configs:
+            session_kwargs["trace_configs"] = list(trace_configs)
+
+        # Copy session-level defaults (headers, cookies, auth, timeout).
+        for attr_name, kwarg_name in [
+            ("_default_headers", "headers"),
+            ("_cookie_jar", "cookie_jar"),
+            ("_default_auth", "auth"),
+            ("_timeout", "timeout"),
+            ("_json_serialize", "json_serialize"),
+        ]:
+            val = getattr(self.session, attr_name, None)
+            if val is not None:
+                session_kwargs[kwarg_name] = val
+
+        return Request(session=aiohttp.ClientSession(**session_kwargs))  # type: ignore
 
     async def close(self):
         """Cleanly release the underlying aiohttp ClientSession resources."""

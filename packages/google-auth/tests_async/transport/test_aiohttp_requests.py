@@ -128,6 +128,86 @@ class TestRequestResponse(async_compliance.RequestResponseTests):
         request = aiohttp_requests.Request(http)
         request(url="http://example.com", method="GET", timeout=5)
 
+    @pytest.mark.asyncio
+    async def test__clone(self):
+        http = mock.create_autospec(
+            aiohttp.ClientSession, instance=True, _auto_decompress=False
+        )
+        http._connector = mock.Mock(spec=aiohttp.TCPConnector)
+        http._connector.closed = False
+        http._connector._ssl = mock.sentinel.ssl
+        http._connector._limit = 50
+        http._connector._limit_per_host = 10
+        http._connector._force_close = True
+        http._connector._resolver = mock.sentinel.resolver
+        http._connector._local_addr = mock.sentinel.local_addr
+
+        http._trust_env = False
+        http._trace_configs = [mock.sentinel.trace_config]
+        http._default_headers = {"test": "header"}
+        http._cookie_jar = mock.sentinel.cookie_jar
+        http._default_auth = mock.sentinel.auth
+        http._timeout = mock.sentinel.timeout
+        http._json_serialize = mock.sentinel.json_serialize
+
+        request = aiohttp_requests.Request(http)
+        with mock.patch(
+            "aiohttp.ClientSession", autospec=True
+        ) as session_mock, mock.patch(
+            "aiohttp.TCPConnector", autospec=True
+        ) as connector_mock:
+            cloned = request._clone()
+
+        assert isinstance(cloned, aiohttp_requests.Request)
+        assert cloned is not request
+
+        connector_mock.assert_called_once_with(
+            ssl=mock.sentinel.ssl,
+            limit=50,
+            limit_per_host=10,
+            force_close=True,
+            resolver=mock.sentinel.resolver,
+            local_addr=mock.sentinel.local_addr,
+        )
+
+        session_mock.assert_called_once_with(
+            connector=connector_mock.return_value,
+            auto_decompress=False,
+            trust_env=False,
+            trace_configs=[mock.sentinel.trace_config],
+            headers={"test": "header"},
+            cookie_jar=mock.sentinel.cookie_jar,
+            auth=mock.sentinel.auth,
+            timeout=mock.sentinel.timeout,
+            json_serialize=mock.sentinel.json_serialize,
+        )
+
+    @pytest.mark.asyncio
+    async def test__clone_closed(self):
+        request = aiohttp_requests.Request()
+        request._closed = True
+        with pytest.raises(
+            google.auth.exceptions.TransportError,
+            match="Cannot clone a closed transport.",
+        ):
+            request._clone()
+
+    @pytest.mark.asyncio
+    async def test_close(self):
+        http = mock.create_autospec(
+            aiohttp.ClientSession, instance=True, _auto_decompress=False
+        )
+        http.close = mock.AsyncMock()
+        request = aiohttp_requests.Request(http)
+
+        await request.close()
+        assert request._closed is True
+        http.close.assert_awaited_once()
+
+        # Check idempotency
+        await request.close()
+        http.close.assert_awaited_once()  # Still only called 1 time
+
 
 class CredentialsStub(google.auth._credentials_async.Credentials):
     def __init__(self, token="token"):
