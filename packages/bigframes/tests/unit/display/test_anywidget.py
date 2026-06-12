@@ -429,6 +429,9 @@ def test_deferred_mode_execution(mock_deferred_df, mock_df_deferred):
         ):
             widget.start_execution = True
 
+        if hasattr(widget, "_execution_thread") and widget._execution_thread is not None:
+            widget._execution_thread.join(timeout=5)
+
         mock_deferred_df.execute.assert_called_once()
         mock_load.assert_called_once()
         assert widget.is_deferred_mode is False
@@ -448,6 +451,9 @@ def test_deferred_mode_execution_error(mock_deferred_df):
             "display.render_mode", bigframes.options.display.render_mode
         ):
             widget.start_execution = True
+
+        if hasattr(widget, "_execution_thread") and widget._execution_thread is not None:
+            widget._execution_thread.join(timeout=5)
 
         assert widget.is_deferred_mode is False
         assert widget._error_message == "Query Failed"
