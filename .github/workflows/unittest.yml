@@ -123,6 +123,12 @@ jobs:
     - name: Report coverage results
       if: steps.packages.outputs.num_files_changed > 0
       run: |
-        find .coverage-results -type f -name '.coverage*' -exec mv {} . \;
-        coverage combine
-        coverage report --show-missing --fail-under=100
+        if [ -d .coverage-results ]; then
+          find .coverage-results -type f -name '.coverage*' -exec mv {} . \;
+          coverage combine
+          coverage report --show-missing --fail-under=100
+        else
+          echo "Error: No coverage results were downloaded from the unit test jobs."
+          echo "This usually means the unit tests did not run or failed to upload their coverage files."
+          exit 1
+        fi
