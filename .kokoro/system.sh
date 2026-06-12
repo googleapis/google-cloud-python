@@ -39,6 +39,9 @@ run_package_test() {
   local package_name=$1
   local package_path="packages/${package_name}"
   
+  # Isolate gcloud config for parallel execution
+  export CLOUDSDK_CONFIG=$(mktemp -d)
+
   # Declare local overrides to prevent bleeding into the next loop iteration
   local PROJECT_ID
   local GOOGLE_APPLICATION_CREDENTIALS
@@ -87,11 +90,51 @@ run_package_test() {
   set -e
   popd > /dev/null
   
+  # Clean up isolated gcloud config
+  rm -rf "${CLOUDSDK_CONFIG}"
+
   return $res
 }
 
 # A file for running system tests
 system_test_script="${PROJECT_ROOT}/.kokoro/system-single.sh"
+
+# Parallel execution settings
+MAX_PARALLEL=4
+running_pids=()
+declare -A pid_to_pkg
+declare -A pid_to_log
+declare -A pid_to_resfile
+
+# Array to keep track of results for the final summary
+results=()
+
+handle_finished_job() {
+  local pid=$1
+  local pkg=${pid_to_pkg[$pid]}
+  local log=${pid_to_log[$pid]}
+  local resfile=${pid_to_resfile[$pid]}
+  
+  # wait $pid might fail if it was already reaped by wait -n, 
+  # so we ignore its exit code and use the resfile.
+  wait "$pid" 2>/dev/null || true
+  
+  local res=$(cat "$resfile")
+  rm "$resfile"
+  
+  echo "------------------------------------------------------------"
+  echo "System tests for ${pkg} finished (Exit code: ${res})"
+  echo "------------------------------------------------------------"
+  cat "$log"
+  rm "$log"
+  
+  if [ "${res}" -ne 0 ]; then
+    RETVAL=${res}
+    results+=("${pkg}: FAILED")
+  else
+    results+=("${pkg}: PASSED")
+  fi
+}
 
 # Run system tests for each package with directory packages/*/tests/system
 for path in `find 'packages' \
@@ -140,10 +183,51 @@ for path in `find 'packages' \
   set -e
 
   if [[ "${package_modified}" -gt 0 || "$KOKORO_BUILD_ARTIFACTS_SUBDIR" == *"continuous"* ]]; then
-      # Call the function - its internal exports won't affect the next loop
-      run_package_test "$package_name" || RETVAL=$?
+      # Wait if we have reached MAX_PARALLEL
+      while [[ ${#running_pids[@]} -ge $MAX_PARALLEL ]]; do
+        wait -n
+        # Find which job finished
+        new_pids=()
+        for pid in "${running_pids[@]}"; do
+          if kill -0 "$pid" 2>/dev/null; then
+            new_pids+=("$pid")
+          else
+            handle_finished_job "$pid"
+          fi
+        done
+        running_pids=("${new_pids[@]}")
+      done
+
+      # Start the next test in the background
+      log_file=$(mktemp)
+      res_file=$(mktemp)
+      (
+        run_package_test "$package_name" > "$log_file" 2>&1
+        echo $? > "$res_file"
+      ) &
+      pid=$!
+      running_pids+=($pid)
+      pid_to_pkg[$pid]=$package_name
+      pid_to_log[$pid]=$log_file
+      pid_to_resfile[$pid]=$res_file
+      echo "Started system tests for ${package_name} (PID: ${pid})"
   else
       echo "No changes in ${package_name} and not a continuous build, skipping."
   fi
 done
+
+# Wait for all remaining jobs
+for pid in "${running_pids[@]}"; do
+  handle_finished_job "$pid"
+done
+
+echo "------------------------------------------------------------"
+echo "System Test Summary"
+echo "------------------------------------------------------------"
+for res in "${results[@]}"; do
+  echo "$res"
+done
+echo "------------------------------------------------------------"
+
 exit ${RETVAL}
+
