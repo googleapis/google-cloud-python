@@ -123,5 +123,6 @@ jobs:
     - name: Report coverage results
       if: steps.packages.outputs.num_files_changed > 0
       run: |
-        coverage combine .coverage-results/**/.coverage*
+        find .coverage-results -type f -name '.coverage*' -exec mv {} . \;
+        coverage combine
         coverage report --show-missing --fail-under=100
