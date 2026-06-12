@@ -390,7 +390,7 @@ def test_create_document_w_vector(client, cleanup, database):
     ] == [data3, data1, data2]
 
     vector_query_future = concurrent.futures.Future()
-    
+
     def on_snapshot(docs, changes, read_time):
         on_snapshot.results += docs
         if len(on_snapshot.results) >= 3 and not vector_query_future.done():
@@ -2341,7 +2341,7 @@ def test_watch_document(client, cleanup, database):
 
     # Setup listener
     ada_future = concurrent.futures.Future()
-    
+
     def on_snapshot(docs, changes, read_time):
         on_snapshot.called_count += 1
         if docs and docs[0].get("first") == "Ada" and not ada_future.done():
@@ -2376,7 +2376,7 @@ def test_watch_collection(client, cleanup, database):
 
     # Setup listener
     born_1815_future = concurrent.futures.Future()
-    
+
     def on_snapshot(docs, changes, read_time):
         for doc in [doc for doc in docs if doc.id == doc_ref.id]:
             if doc.get("born") == 1815 and not born_1815_future.done():
@@ -2402,13 +2402,15 @@ def test_watch_query(client, cleanup, database):
 
     # Setup listener
     one_doc_future = concurrent.futures.Future()
-    
+
     def on_snapshot(docs, changes, read_time):
         on_snapshot.called_count += 1
-        
+
         if docs:
             # A snapshot should return the same thing as if a query ran now.
-            query_ran_query = collection_ref.where(filter=FieldFilter("first", "==", "Ada"))
+            query_ran_query = collection_ref.where(
+                filter=FieldFilter("first", "==", "Ada")
+            )
             query_ran = query_ran_query.stream()
             assert len(docs) == len([i for i in query_ran])
             if not one_doc_future.done():
@@ -2766,7 +2768,7 @@ def test_watch_query_order(client, cleanup, database):
 
     # Setup listener
     five_docs_future = concurrent.futures.Future()
-    
+
     def on_snapshot(docs, changes, read_time):
         try:
             docs = [i for i in docs if i.id.endswith(UNIQUE_RESOURCE_ID)]
