@@ -1669,7 +1669,6 @@ async def test_list_assets_async_pager():
         assert str(async_pager).startswith(f'{async_pager.__class__.__name__}<')
 
         responses = []
-
         async for response in async_pager: # pragma: no branch
             responses.append(response)
 
