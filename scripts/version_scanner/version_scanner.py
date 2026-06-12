@@ -202,10 +202,24 @@ def _truncate_context(context: str, matched: str) -> str:
 
 
 def _wrap_sheet_hyperlink(url: str, label: str) -> str:
+    """Wraps a URL and label into a Google Sheets HYPERLINK formula.
+
+    This ensures that when output is imported into spreadsheet software, the
+    resulting cells contain clickable hyperlinks pointing directly to GitHub file
+    locations and line numbers.
+    """
     return f'=HYPERLINK("{url}", "{label}")'
 
 
 def _wrap_sheet_string(value: str) -> str:
+    """Wraps a string value inside a spreadsheet string formula to prevent float parsing.
+
+    This forces spreadsheet software (such as Google Sheets) to treat numeric
+    string patterns (like python runtime version "3.10") as literal strings,
+    preventing auto-truncation to floats (which would display "3.1"). Double
+    quotes inside the value are escaped by doubling them to avoid formula syntax
+    errors on import.
+    """
     if value is None:
         return ""
     escaped_value = value.replace('"', '""')
@@ -213,6 +227,12 @@ def _wrap_sheet_string(value: str) -> str:
 
 
 def _safe_int(value: Any, default: int = 0) -> int:
+    """Safely converts a value to an integer, falling back to a default value.
+
+    Used primarily during raw data formatting for spreadsheet ingestion. If a
+    value (like a line number) is missing or contains non-integer text (e.g. empty
+    strings for filename-only matches), this avoids crashing the scanner.
+    """
     try:
         return int(value)
     except (ValueError, TypeError):
