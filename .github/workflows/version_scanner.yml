@@ -6,7 +6,7 @@ on:
       - main
       - '**version-scanner**'
   schedule:
-    - cron: '0 7 * * 2' # Run weekly on Tuesdays at 7 AM UTC (mirrors main.yml)
+    - cron: '0 * * * *' # Run hourly at the top of the hour
   workflow_dispatch:
 
 permissions:
