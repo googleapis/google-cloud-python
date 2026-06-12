@@ -39,6 +39,7 @@ from test__helpers import (
     FIRESTORE_CREDS,
     FIRESTORE_EMULATOR,
     FIRESTORE_ENTERPRISE_DB,
+    FIRESTORE_OTHER_DB,
     FIRESTORE_PROJECT,
     MISSING_DOCUMENT,
     RANDOM_ID_REGEX,
@@ -160,8 +161,8 @@ async def cleanup():
     operations = []
     yield operations.append
 
-    for operation in operations:
-        await operation()
+    if operations:
+        await asyncio.gather(*[operation() for operation in operations])
 
 
 @pytest.fixture
@@ -1046,7 +1047,9 @@ def check_snapshot(snapshot, document, data, write_result):
     assert snapshot.update_time == write_result.update_time
 
 
-@pytest.mark.parametrize("database", TEST_DATABASES, indirect=True)
+# We explicitly parameterize test_document_get with FIRESTORE_OTHER_DB to test
+# named database path routing natively, without inflating the rest of the test suite.
+@pytest.mark.parametrize("database", [None, FIRESTORE_OTHER_DB], indirect=True)
 async def test_document_get(client, cleanup, database):
     now = datetime.datetime.now(tz=datetime.timezone.utc)
     document_id = "for-get" + UNIQUE_RESOURCE_ID

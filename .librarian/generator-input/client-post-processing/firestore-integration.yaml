@@ -564,6 +564,31 @@ replacements:
           "freezegun",
       ]
     count: 1
+  - paths: [
+      packages/google-cloud-firestore/noxfile.py
+    ]
+    before: |
+      SYSTEM_TEST_STANDARD_DEPENDENCIES = \[
+          "mock",
+          "pytest",
+          "google-cloud-testutils",
+      \]
+    after: |
+      SYSTEM_TEST_STANDARD_DEPENDENCIES = [
+          "mock",
+          "pytest",
+      ]
+    count: 1
+  - paths: [
+      packages/google-cloud-firestore/noxfile.py
+    ]
+    before: |
+      SYSTEM_TEST_LOCAL_DEPENDENCIES: List\[str\] = \[\]
+    after: |
+      SYSTEM_TEST_LOCAL_DEPENDENCIES: List[str] = [
+          "../google-cloud-testutils"
+      ]
+    count: 1
   # TODO(https://github.com/googleapis/google-cloud-python/issues/17429):
   # Temporary post-processing rule to add pytest-xdist dependency.
   # Remove this once gapic-generator includes pytest-xdist by default.
@@ -619,7 +644,7 @@ replacements:
           session.run(
               "py.test",
               "-n",
-              "auto",
+              "10",
               "--quiet",
               f"--junitxml=system_{session.python}_sponge_log.xml",
               system_test_path,
@@ -629,7 +654,7 @@ replacements:
           session.run(
               "py.test",
               "-n",
-              "auto",
+              "10",
               "--quiet",
               f"--junitxml=system_{session.python}_sponge_log.xml",
               system_test_folder_path,

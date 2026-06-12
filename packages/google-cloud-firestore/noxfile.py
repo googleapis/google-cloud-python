@@ -76,7 +76,6 @@ SYSTEM_TEST_PYTHON_VERSIONS: List[str] = ALL_PYTHON
 SYSTEM_TEST_STANDARD_DEPENDENCIES = [
     "mock",
     "pytest",
-    "google-cloud-testutils",
 ]
 SYSTEM_TEST_EXTERNAL_DEPENDENCIES: List[str] = [
     "pytest-asyncio==0.21.2",
@@ -84,7 +83,7 @@ SYSTEM_TEST_EXTERNAL_DEPENDENCIES: List[str] = [
     "pyyaml",
     "pytest-xdist",
 ]
-SYSTEM_TEST_LOCAL_DEPENDENCIES: List[str] = []
+SYSTEM_TEST_LOCAL_DEPENDENCIES: List[str] = ["../google-cloud-testutils"]
 SYSTEM_TEST_DEPENDENCIES: List[str] = []
 SYSTEM_TEST_EXTRAS: List[str] = []
 SYSTEM_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {}
@@ -404,7 +403,7 @@ def system(session):
         session.run(
             "py.test",
             "-n",
-            "auto",
+            "10",
             "--quiet",
             f"--junitxml=system_{session.python}_sponge_log.xml",
             system_test_path,
@@ -414,7 +413,7 @@ def system(session):
         session.run(
             "py.test",
             "-n",
-            "auto",
+            "10",
             "--quiet",
             f"--junitxml=system_{session.python}_sponge_log.xml",
             system_test_folder_path,
