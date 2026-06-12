@@ -82,10 +82,42 @@ subdirs=(
     packages
 )
 
+if [ -n "${PACKAGE_LIST}" ]; then
+    echo "Using provided PACKAGE_LIST"
+    to_test=(${PACKAGE_LIST})
+    RETVAL=0
+    for d in ${to_test[@]}; do
+        echo "running test in ${d}"
+        pushd ${d}
+        set +e
+        ${test_script}
+        ret=$?
+        set -e
+        if [ ${ret} -ne 0 ]; then
+            RETVAL=${ret}
+        fi
+        popd
+    done
+    exit ${RETVAL}
+fi
+
+# Sharding logic (fallback for manual runs)
+TOTAL_SHARDS="${TOTAL_SHARDS:-1}"
+SHARD_INDEX="${SHARD_INDEX:-1}"
+count=0
+
 RETVAL=0
 
 for subdir in ${subdirs[@]}; do
-    for d in `ls -d ${subdir}/*/`; do
+    # Sort the directories to ensure consistent sharding across jobs
+    for d in `ls -d ${subdir}/*/ | sort`; do
+        # Sharding logic: only process directories that belong to this shard
+        if (( count % TOTAL_SHARDS != SHARD_INDEX - 1 )); then
+            ((count++))
+            continue
+        fi
+        ((count++))
+
         should_test=false
         if [ -n "${GIT_DIFF_ARG}" ]; then
             echo "checking changes with 'git diff --quiet ${GIT_DIFF_ARG} ${d}'"
