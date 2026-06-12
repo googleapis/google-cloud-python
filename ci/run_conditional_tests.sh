@@ -102,10 +102,10 @@ for subdir in ${subdirs[@]}; do
     for d in `ls -d ${subdir}/*/ | sort`; do
         # Sharding logic: only process directories that belong to this shard
         if (( count % TOTAL_SHARDS != SHARD_INDEX - 1 )); then
-            ((count++))
+            ((++count))
             continue
         fi
-        ((count++))
+        ((++count))
 
         should_test=false
         if [ -n "${GIT_DIFF_ARG}" ]; then
