@@ -77,6 +77,7 @@ jobs:
       with:
         name: coverage-artifact-${{ matrix.python }}-${{ matrix.package_shard.index }}
         path: .coverage.${{ matrix.python }}.*
+        include-hidden-files: true
 
   unit-complete:
     needs: [discover, unit]
