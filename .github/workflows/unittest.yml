@@ -20,14 +20,14 @@ jobs:
         python: ['3.9', '3.10', "3.11", "3.12", "3.13", "3.14"]
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
       # Use a fetch-depth of 2 to avoid error `fatal: origin/main...HEAD: no merge base`
       # See https://github.com/googleapis/google-cloud-python/issues/12013
       # and https://github.com/actions/checkout#checkout-head.
       with:
         fetch-depth: 2
     - name: Setup Python
-      uses: actions/setup-python@v5
+      uses: actions/setup-python@v6
       with:
         python-version: ${{ matrix.python }}
     - name: Install nox
@@ -75,7 +75,7 @@ jobs:
         python -m pip install coverage
     - name: Download coverage results
       if: ${{ steps.date.packages.num_files_changed > 0 }}
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v5
       with:
         path: .coverage-results/
     - name: Report coverage results
