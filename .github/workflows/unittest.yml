@@ -141,28 +141,57 @@ jobs:
           # Find all modified packages
           modified_packages=$(git diff --name-only HEAD~1 -- packages | cut -d/ -f1,2 | sort -u)
 
+          failed_packages=()
+          passed_packages=()
+
           for pkg in ${modified_packages}; do
             if [ -d "${pkg}" ]; then
               echo "============================================================"
               echo "Evaluating coverage for package: ${pkg}"
               echo "============================================================"
 
+              set +e
               if [ -f "${pkg}/.coveragerc" ]; then
                 echo "Using package-specific configuration: ${pkg}/.coveragerc"
                 # If fail_under is specified in the package-specific .coveragerc, coverage report
                 # will automatically enforce it. Otherwise, we enforce the default.
                 if grep -q "fail_under" "${pkg}/.coveragerc"; then
-                  coverage report --rcfile="${pkg}/.coveragerc"
+                  coverage report --rcfile="${pkg}/.coveragerc" --include="${pkg}/**"
                 else
                   echo "No fail_under specified in ${pkg}/.coveragerc, enforcing default"
-                  coverage report --rcfile="${pkg}/.coveragerc" --fail-under="${DEFAULT_FAIL_UNDER}"
+                  coverage report --rcfile="${pkg}/.coveragerc" --include="${pkg}/**" --fail-under="${DEFAULT_FAIL_UNDER}"
                 fi
               else
                 echo "No .coveragerc found for ${pkg}, enforcing default"
                 coverage report --include="${pkg}/**" --fail-under="${DEFAULT_FAIL_UNDER}"
               fi
+              status=$?
+              set -e
+
+              if [ ${status} -ne 0 ]; then
+                failed_packages+=("${pkg}")
+              else
+                passed_packages+=("${pkg}")
+              fi
             fi
           done
+
+          echo "============================================================"
+          echo "Coverage Evaluation Summary"
+          echo "============================================================"
+          if [ ${#passed_packages[@]} -gt 0 ]; then
+            echo "Passed packages:"
+            for pkg in "${passed_packages[@]}"; do
+              echo "  - ${pkg}"
+            done
+          fi
+          if [ ${#failed_packages[@]} -gt 0 ]; then
+            echo "Failed packages:"
+            for pkg in "${failed_packages[@]}"; do
+              echo "  - ${pkg}"
+            done
+            exit 1
+          fi
         else
           echo "Error: No coverage results were downloaded from the unit test jobs."
           echo "This usually means the unit tests did not run or failed to upload their coverage files."
