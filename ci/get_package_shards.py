@@ -77,7 +77,7 @@ def group_packages(packages):
         if len(shard_packages) == 1:
             desc = shard_packages[0].strip('/').split('/')[-1]
         else:
-            desc = f"{shard_packages[0].strip('/').split('/')[-1]}...{shard_packages[-1].strip('/').split('/')[-1]} ({num_in_shard})"
+            desc = f"{shard_packages[0].strip('/').split('/')[-1]}...{shard_packages[-1].strip('/').split('/')[-1]} ({num_in_shard} packages)"
 
         shards.append({
             "name": name,
