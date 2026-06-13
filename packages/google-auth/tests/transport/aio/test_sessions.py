@@ -335,8 +335,8 @@ class TestAsyncAuthorizedSession(object):
             assert await response.read() == expected_payload
             response = await authed_session.close()
 
+
 def test_mock_request_clone():
     request = MockRequest()
     cloned = request._clone()
     assert cloned is request
-

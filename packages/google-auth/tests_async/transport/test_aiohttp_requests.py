@@ -247,12 +247,12 @@ class TestRequestResponse(async_compliance.RequestResponseTests):
         http._default_auth = None
         http._timeout = None
         http._json_serialize = None
-        
+
         request = aiohttp_requests.Request(http)
         with mock.patch("aiohttp.ClientSession", autospec=True) as session_mock:
             session_mock.return_value._auto_decompress = False
             cloned = request._clone()
-        
+
         assert isinstance(cloned, aiohttp_requests.Request)
         assert cloned is not request
 
@@ -309,7 +309,9 @@ class TestRequestResponse(async_compliance.RequestResponseTests):
         http._json_serialize = None
 
         request = aiohttp_requests.Request(http)
-        with mock.patch("aiohttp.ClientSession", autospec=True) as session_mock, mock.patch.object(
+        with mock.patch(
+            "aiohttp.ClientSession", autospec=True
+        ) as session_mock, mock.patch.object(
             UnixConnector, "__init__", autospec=True, return_value=None
         ) as connector_init_mock:
             session_mock.return_value._auto_decompress = False
@@ -323,8 +325,6 @@ class TestRequestResponse(async_compliance.RequestResponseTests):
             limit=42,
             force_close=True,
         )
-
-
 
 
 class CredentialsStub(google.auth._credentials_async.Credentials):
