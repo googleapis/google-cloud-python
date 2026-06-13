@@ -13,7 +13,7 @@ permissions:
   contents: read
 
 jobs:
-  discover:
+  initialize:
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
@@ -38,14 +38,14 @@ jobs:
         echo "matrix=$(python3 ci/get_package_shards.py)" >> $GITHUB_OUTPUT
 
   unit:
-    needs: discover
-    if: needs.discover.outputs.matrix != '[]' && needs.discover.outputs.matrix != ''
+    needs: initialize
+    if: needs.initialize.outputs.matrix != '[]' && needs.initialize.outputs.matrix != ''
     runs-on: ubuntu-22.04
     strategy:
       fail-fast: true
       matrix:
         python: ['3.9', '3.10', "3.11", "3.12", "3.13", "3.14"]
-        package_shard: ${{ fromJson(needs.discover.outputs.matrix) }}
+        package_shard: ${{ fromJson(needs.initialize.outputs.matrix) }}
     name: ${{ matrix.package_shard.is_sharded && format('unit ({0}, {1})', matrix.python, matrix.package_shard.name) || format('unit ({0})', matrix.python) }}
     steps:
     - name: Checkout
@@ -79,8 +79,8 @@ jobs:
         path: .coverage.${{ matrix.python }}.*
         include-hidden-files: true
 
-  unit-complete:
-    needs: [discover, unit]
+  all-tests:
+    needs: [initialize, unit]
     if: always()
     runs-on: ubuntu-latest
     steps:
