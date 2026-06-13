@@ -152,7 +152,7 @@ jobs:
                   coverage report --rcfile="${pkg}/.coveragerc" --fail-under="${DEFAULT_FAIL_UNDER}"
                 fi
               else
-                echo "No .coveragerc found for ${pkg}, enforcing default
+                echo "No .coveragerc found for ${pkg}, enforcing default"
                 coverage report --include="${pkg}/**" --fail-under="${DEFAULT_FAIL_UNDER}"
               fi
             fi
