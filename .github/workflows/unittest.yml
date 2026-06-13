@@ -86,6 +86,12 @@ jobs:
     steps:
       - name: Check unit test results
         run: |
+          # 1. Check initialize job
+          if [[ "${{ needs.initialize.result }}" != "success" ]]; then
+            echo "Error: The initialize job status was: ${{ needs.initialize.result }}"
+            exit 1
+          fi
+          # 2. Check unit test shards
           if [[ "${{ needs.unit.result }}" != "success" && "${{ needs.unit.result }}" != "skipped" ]]; then
             echo "Unit tests failed"
             exit 1
