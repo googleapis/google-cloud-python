@@ -229,6 +229,7 @@ class TestRequest:
         cloned_connector = cloned._session._connector
         assert isinstance(cloned_connector, TCPConnector)
         assert cloned_connector is not custom_connector
+        assert cloned_connector._resolver is not custom_connector._resolver
         assert cloned_connector._ssl is custom_ssl
         assert cloned_connector._limit == 42
         assert cloned_connector._limit_per_host == 12
@@ -264,5 +265,56 @@ class TestRequest:
         assert cloned_connector._path == "/var/run/enterprise.sock"
         assert cloned_connector._limit == 42
 
+        await request.close()
+        await cloned.close()
+
+    async def test_request_call_raises_timeout_error_int(self, aiohttp_request):
+        with aioresponses() as m:
+            m.get("http://example.com", exception=asyncio.TimeoutError)
+            with pytest.raises(exceptions.TimeoutError) as exc:
+                await aiohttp_request("http://example.com", timeout=120)
+            exc.match("Request timed out after 120 seconds.")
+
+    async def test_request_clone_with_closed_connector(self):
+        session = aiohttp.ClientSession()
+        request = auth_aiohttp.Request(session=session)
+        await session.close()
+
+        cloned = request._clone()
+        assert cloned is not request
+        assert cloned._session is not None
+        await request.close()
+        await cloned.close()
+
+    async def test_request_clone_with_custom_connector(self):
+        session = aiohttp.ClientSession()
+        custom_connector = AsyncMock()
+        custom_connector.closed = False
+        custom_connector.close = AsyncMock()
+        session._connector = custom_connector
+
+        request = auth_aiohttp.Request(session=session)
+        with pytest.raises(
+            exceptions.TransportError, match="Unsupported connector type for cloning"
+        ):
+            request._clone()
+        await request.close()
+
+    async def test_request_clone_unix_socket_no_path(self):
+        try:
+            from aiohttp import UnixConnector
+        except ImportError:
+            return
+
+        session = aiohttp.ClientSession()
+        connector = UnixConnector(path="/tmp/test.sock")
+        connector._path = None
+        session._connector = connector
+
+        request = auth_aiohttp.Request(session=session)
+        cloned = request._clone()
+        assert cloned is not request
+        assert cloned._session is not None
+        assert cloned._session._connector is not connector
         await request.close()
         await cloned.close()

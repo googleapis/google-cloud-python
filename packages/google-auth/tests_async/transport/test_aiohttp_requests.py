@@ -168,7 +168,6 @@ class TestRequestResponse(async_compliance.RequestResponseTests):
             limit=50,
             limit_per_host=10,
             force_close=True,
-            resolver=mock.sentinel.resolver,
             local_addr=mock.sentinel.local_addr,
         )
 
@@ -192,6 +191,20 @@ class TestRequestResponse(async_compliance.RequestResponseTests):
         with pytest.raises(
             google.auth.exceptions.TransportError,
             match="Cannot clone a closed transport.",
+        ):
+            request._clone()
+
+    @pytest.mark.asyncio
+    async def test__clone_custom_connector(self):
+        http = mock.create_autospec(
+            aiohttp.ClientSession, instance=True, _auto_decompress=False
+        )
+        http._connector = mock.Mock()
+        http._connector.closed = False
+        request = aiohttp_requests.Request(http)
+        with pytest.raises(
+            google.auth.exceptions.TransportError,
+            match="Unsupported connector type for cloning",
         ):
             request._clone()
 

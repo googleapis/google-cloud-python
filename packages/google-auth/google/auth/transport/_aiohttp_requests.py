@@ -230,12 +230,14 @@ class Request(transport.Request):
         orig_connector = getattr(self.session, "_connector", None)
         if orig_connector and not getattr(orig_connector, "closed", True):
             if isinstance(orig_connector, aiohttp.TCPConnector):
+                # We explicitly do not copy the resolver. The connector
+                # owns the resolver, and closing the cloned session would
+                # close the shared resolver, breaking the original session.
                 session_kwargs["connector"] = aiohttp.TCPConnector(
                     ssl=getattr(orig_connector, "_ssl", None),  # type: ignore
                     limit=getattr(orig_connector, "_limit", 100),
                     limit_per_host=getattr(orig_connector, "_limit_per_host", 0),
                     force_close=getattr(orig_connector, "_force_close", False),
-                    resolver=getattr(orig_connector, "_resolver", None),
                     local_addr=getattr(orig_connector, "_local_addr", None),
                 )
             elif getattr(aiohttp, "UnixConnector", None) and isinstance(
@@ -248,6 +250,10 @@ class Request(transport.Request):
                         limit=getattr(orig_connector, "_limit", 100),
                         force_close=getattr(orig_connector, "_force_close", False),
                     )
+            else:
+                raise exceptions.TransportError(
+                    f"Unsupported connector type for cloning: {type(orig_connector)}"
+                )
 
         # Preserve distributed tracing configurations.
         trace_configs = getattr(self.session, "_trace_configs", None)
