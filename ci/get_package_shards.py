@@ -49,8 +49,8 @@ def group_packages(packages):
     num_packages = len(packages)
     
     # 1. Only shard if > 10 packages are being touched
-    # 2. Only add a new shard if we'd have > 10 in each shard (meaning size >= 11)
-    num_shards = num_packages // 11
+    # 2. Only add a new shard if we'd have > 10 packages in at least one shard (meaning ceil(N / S) >= 11)
+    num_shards = (num_packages - 1) // 10
     
     # Ensure at least 1 shard if we have packages
     num_shards = max(1, num_shards)
