@@ -123,7 +123,7 @@ class TestRequestResponse(async_compliance.RequestResponseTests):
 
     def test_timeout(self):
         http = mock.create_autospec(
-            aiohttp.ClientSession, instance=True, _auto_decompress=False
+            aiohttp.ClientSession, instance=True, auto_decompress=False
         )
         request = aiohttp_requests.Request(http)
         request(url="http://example.com", method="GET", timeout=5)
@@ -153,7 +153,7 @@ class TestAuthorizedSession(object):
     @pytest.mark.asyncio
     async def test_constructor_with_auth_request(self):
         http = mock.create_autospec(
-            aiohttp.ClientSession, instance=True, _auto_decompress=False
+            aiohttp.ClientSession, instance=True, auto_decompress=False
         )
         auth_request = aiohttp_requests.Request(http)
 
