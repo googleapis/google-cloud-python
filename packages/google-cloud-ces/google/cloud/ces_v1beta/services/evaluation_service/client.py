@@ -76,6 +76,7 @@ from google.cloud.ces_v1beta.types import (
     agent_service,
     app,
     evaluation,
+    evaluation_metrics_config,
     evaluation_service,
     golden_run,
 )
@@ -4966,6 +4967,411 @@ class EvaluationServiceClient(metaclass=EvaluationServiceClientMeta):
             self._transport.operations_client,
             evaluation_service.ExportEvaluationsResponse,
             metadata_type=agent_service.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def export_evaluation_runs(
+        self,
+        request: Optional[
+            Union[evaluation_service.ExportEvaluationRunsRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        names: Optional[MutableSequence[str]] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation.Operation:
+        r"""Exports evaluations runs.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import ces_v1beta
+
+            def sample_export_evaluation_runs():
+                # Create a client
+                client = ces_v1beta.EvaluationServiceClient()
+
+                # Initialize request argument(s)
+                request = ces_v1beta.ExportEvaluationRunsRequest(
+                    parent="parent_value",
+                    names=['names_value1', 'names_value2'],
+                )
+
+                # Make the request
+                operation = client.export_evaluation_runs(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.ces_v1beta.types.ExportEvaluationRunsRequest, dict]):
+                The request object. Request message for
+                [EvaluationService.ExportEvaluationRuns][google.cloud.ces.v1beta.EvaluationService.ExportEvaluationRuns].
+            parent (str):
+                Required. The resource name of the app to export
+                evaluation runs from. Format:
+                ``projects/{project}/locations/{location}/apps/{app}``
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            names (MutableSequence[str]):
+                Required. The resource names of the
+                evaluation runs to export.
+
+                This corresponds to the ``names`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.ces_v1beta.types.ExportEvaluationRunsResponse` Response message for
+                   [EvaluationService.ExportEvaluationRuns][google.cloud.ces.v1beta.EvaluationService.ExportEvaluationRuns].
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent, names]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, evaluation_service.ExportEvaluationRunsRequest):
+            request = evaluation_service.ExportEvaluationRunsRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if names is not None:
+                request.names = names
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.export_evaluation_runs]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            evaluation_service.ExportEvaluationRunsResponse,
+            metadata_type=evaluation_service.ExportEvaluationRunsOperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def export_evaluation_results(
+        self,
+        request: Optional[
+            Union[evaluation_service.ExportEvaluationResultsRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        names: Optional[MutableSequence[str]] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation.Operation:
+        r"""Exports evaluations results.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import ces_v1beta
+
+            def sample_export_evaluation_results():
+                # Create a client
+                client = ces_v1beta.EvaluationServiceClient()
+
+                # Initialize request argument(s)
+                request = ces_v1beta.ExportEvaluationResultsRequest(
+                    parent="parent_value",
+                    names=['names_value1', 'names_value2'],
+                )
+
+                # Make the request
+                operation = client.export_evaluation_results(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.ces_v1beta.types.ExportEvaluationResultsRequest, dict]):
+                The request object. Request message for
+                [EvaluationService.ExportEvaluationResults][google.cloud.ces.v1beta.EvaluationService.ExportEvaluationResults].
+            parent (str):
+                Required. The resource name of the evaluation to export
+                evaluation results from. Format:
+                ``projects/{project}/locations/{location}/apps/{app}/evaluations/{evaluation}``
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            names (MutableSequence[str]):
+                Required. The resource names of the
+                evaluation results to export.
+
+                This corresponds to the ``names`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.ces_v1beta.types.ExportEvaluationResultsResponse` Response message for
+                   [EvaluationService.ExportEvaluationResults][google.cloud.ces.v1beta.EvaluationService.ExportEvaluationResults].
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent, names]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, evaluation_service.ExportEvaluationResultsRequest):
+            request = evaluation_service.ExportEvaluationResultsRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if names is not None:
+                request.names = names
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.export_evaluation_results
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            evaluation_service.ExportEvaluationResultsResponse,
+            metadata_type=evaluation_service.ExportEvaluationResultsOperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def run_evaluation_result_metrics(
+        self,
+        request: Optional[
+            Union[evaluation_service.RunEvaluationResultMetricsRequest, dict]
+        ] = None,
+        *,
+        evaluation_result_id: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation.Operation:
+        r"""Runs metrics on an existing evaluation result.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import ces_v1beta
+
+            def sample_run_evaluation_result_metrics():
+                # Create a client
+                client = ces_v1beta.EvaluationServiceClient()
+
+                # Initialize request argument(s)
+                request = ces_v1beta.RunEvaluationResultMetricsRequest(
+                    evaluation_result_id="evaluation_result_id_value",
+                )
+
+                # Make the request
+                operation = client.run_evaluation_result_metrics(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.ces_v1beta.types.RunEvaluationResultMetricsRequest, dict]):
+                The request object. Request message for
+                [EvaluationService.RunEvaluationResultMetrics][google.cloud.ces.v1beta.EvaluationService.RunEvaluationResultMetrics].
+            evaluation_result_id (str):
+                Required. The evaluation result to run metrics for.
+                Format:
+                ``projects/{project}/locations/{location}/apps/{app}/evaluations/{evaluation}/results/{evaluation_result_id}``
+
+                This corresponds to the ``evaluation_result_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.ces_v1beta.types.RunEvaluationResultMetricsResponse` Response message for
+                   [EvaluationService.RunEvaluationResultMetrics][google.cloud.ces.v1beta.EvaluationService.RunEvaluationResultMetrics].
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [evaluation_result_id]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, evaluation_service.RunEvaluationResultMetricsRequest
+        ):
+            request = evaluation_service.RunEvaluationResultMetricsRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if evaluation_result_id is not None:
+                request.evaluation_result_id = evaluation_result_id
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.run_evaluation_result_metrics
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("evaluation_result_id", request.evaluation_result_id),)
+            ),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            evaluation_service.RunEvaluationResultMetricsResponse,
+            metadata_type=evaluation_service.RunEvaluationResultMetricsOperationMetadata,
         )
 
         # Done; return the response.

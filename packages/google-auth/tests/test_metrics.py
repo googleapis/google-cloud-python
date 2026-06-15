@@ -15,6 +15,8 @@
 import platform
 from unittest import mock
 
+import pytest
+
 from google.auth import metrics
 from google.auth import version
 
@@ -33,63 +35,71 @@ def test_add_metric_header():
     assert headers == {"x-goog-api-client": "bar"}
 
 
-@mock.patch.object(platform, "python_version", return_value="3.7")
+@mock.patch.object(platform, "python_version", return_value="<python-version>")
 def test_versions(mock_python_version):
     version_save = version.__version__
-    version.__version__ = "1.1"
-    assert metrics.python_and_auth_lib_version() == "gl-python/3.7 auth/1.1"
+    version.__version__ = "<library-version>"
+    assert (
+        metrics.python_and_auth_lib_version()
+        == "gl-python/<python-version> auth/<library-version>"
+    )
     version.__version__ = version_save
 
 
-@mock.patch(
-    "google.auth.metrics.python_and_auth_lib_version",
-    return_value="gl-python/3.7 auth/1.1",
+@pytest.mark.parametrize(
+    "func, expected_suffix",
+    [
+        (metrics.token_request_access_token_mds, "auth-request-type/at cred-type/mds"),
+        (metrics.token_request_id_token_mds, "auth-request-type/it cred-type/mds"),
+        (
+            metrics.token_request_access_token_impersonate,
+            "auth-request-type/at cred-type/imp",
+        ),
+        (
+            metrics.token_request_id_token_impersonate,
+            "auth-request-type/it cred-type/imp",
+        ),
+        (
+            metrics.token_request_access_token_sa_assertion,
+            "auth-request-type/at cred-type/sa",
+        ),
+        (
+            metrics.token_request_id_token_sa_assertion,
+            "auth-request-type/it cred-type/sa",
+        ),
+        (metrics.token_request_user, "cred-type/u"),
+        (metrics.mds_ping, "auth-request-type/mds"),
+        (metrics.reauth_start, "auth-request-type/re-start"),
+        (metrics.reauth_continue, "auth-request-type/re-cont"),
+    ],
 )
-def test_metric_values(mock_python_and_auth_lib_version):
-    assert (
-        metrics.token_request_access_token_mds()
-        == "gl-python/3.7 auth/1.1 auth-request-type/at cred-type/mds"
+@mock.patch(
+    "google.auth.metrics.python_and_auth_lib_version",
+    return_value="gl-python/<python-version> auth/<library-version>",
+)
+def test_metric_values(mock_python_and_auth_lib_version, func, expected_suffix):
+    # mock_python_and_auth_lib_version is injected by mock.patch but is not
+    # explicitly referenced in the test body as the mock behaves as configured.
+    expected = (
+        f"gl-python/<python-version> auth/<library-version> {expected_suffix}".strip()
     )
-    assert (
-        metrics.token_request_id_token_mds()
-        == "gl-python/3.7 auth/1.1 auth-request-type/it cred-type/mds"
-    )
-    assert (
-        metrics.token_request_access_token_impersonate()
-        == "gl-python/3.7 auth/1.1 auth-request-type/at cred-type/imp"
-    )
-    assert (
-        metrics.token_request_id_token_impersonate()
-        == "gl-python/3.7 auth/1.1 auth-request-type/it cred-type/imp"
-    )
-    assert (
-        metrics.token_request_access_token_sa_assertion()
-        == "gl-python/3.7 auth/1.1 auth-request-type/at cred-type/sa"
-    )
-    assert (
-        metrics.token_request_id_token_sa_assertion()
-        == "gl-python/3.7 auth/1.1 auth-request-type/it cred-type/sa"
-    )
-    assert metrics.token_request_user() == "gl-python/3.7 auth/1.1 cred-type/u"
-    assert metrics.mds_ping() == "gl-python/3.7 auth/1.1 auth-request-type/mds"
-    assert metrics.reauth_start() == "gl-python/3.7 auth/1.1 auth-request-type/re-start"
-    assert (
-        metrics.reauth_continue() == "gl-python/3.7 auth/1.1 auth-request-type/re-cont"
-    )
+    assert func() == expected
 
 
 @mock.patch(
     "google.auth.metrics.python_and_auth_lib_version",
-    return_value="gl-python/3.7 auth/1.1",
+    return_value="gl-python/<python-version> auth/<library-version>",
 )
 def test_byoid_metric_header(mock_python_and_auth_lib_version):
+    # mock_python_and_auth_lib_version is injected by mock.patch but is not
+    # explicitly referenced in the test body as the mock behaves as configured.
     metrics_options = {}
     assert (
         metrics.byoid_metrics_header(metrics_options)
-        == "gl-python/3.7 auth/1.1 google-byoid-sdk"
+        == "gl-python/<python-version> auth/<library-version> google-byoid-sdk"
     )
     metrics_options["testKey"] = "testValue"
     assert (
         metrics.byoid_metrics_header(metrics_options)
-        == "gl-python/3.7 auth/1.1 google-byoid-sdk testKey/testValue"
+        == "gl-python/<python-version> auth/<library-version> google-byoid-sdk testKey/testValue"
     )

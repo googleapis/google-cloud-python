@@ -59,12 +59,8 @@ with open(IMPERSONATED_SERVICE_ACCOUNT_AUTHORIZED_USER_SOURCE_FILE, "rb") as fh:
 SIGNER = crypt.RSASigner.from_string(PRIVATE_KEY_BYTES, "1")
 TOKEN_URI = "https://example.com/oauth2/token"
 
-ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE = (
-    "gl-python/3.7 auth/1.1 auth-request-type/at cred-type/imp"
-)
-ID_TOKEN_REQUEST_METRICS_HEADER_VALUE = (
-    "gl-python/3.7 auth/1.1 auth-request-type/it cred-type/imp"
-)
+ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE = "gl-python/<python-version> auth/<library-version> auth-request-type/at cred-type/imp"
+ID_TOKEN_REQUEST_METRICS_HEADER_VALUE = "gl-python/<python-version> auth/<library-version> auth-request-type/it cred-type/imp"
 
 
 @pytest.fixture
@@ -639,6 +635,26 @@ class TestImpersonatedCredentials(object):
 
         assert signature == b"signature"
 
+    @mock.patch(
+        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel",
+        autospec=True,
+    )
+    def test_sign_bytes_configures_mtls(
+        self, mock_configure_mtls, mock_donor_credentials, mock_authorizedsession_sign
+    ):
+        credentials = self.make_credentials(lifetime=None)
+        # Refresh is needed to make credentials valid before signing
+        request = self.make_request(
+            data=json.dumps(
+                {"accessToken": "token", "expireTime": "2026-06-09T00:00:00Z"}
+            ),
+            status=http_client.OK,
+        )
+        credentials.refresh(request)
+
+        credentials.sign_bytes(b"signed bytes")
+        mock_configure_mtls.assert_called_once()
+
     def test_sign_bytes_failure(self):
         credentials = self.make_credentials(lifetime=None)
 
@@ -750,6 +766,29 @@ class TestImpersonatedCredentials(object):
             ["fake_scope1"], default_scopes=["fake_scope2"]
         )
         assert credentials._target_scopes == ["fake_scope1"]
+
+    @mock.patch(
+        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel",
+        autospec=True,
+    )
+    def test_id_token_refresh_configures_mtls(
+        self, mock_configure_mtls, mock_donor_credentials
+    ):
+        credentials = self.make_credentials(lifetime=None)
+        credentials.token = "token"
+        id_creds = impersonated_credentials.IDTokenCredentials(
+            credentials, target_audience="https://foo.bar"
+        )
+
+        with mock.patch(
+            "google.auth.transport.requests.AuthorizedSession.post", autospec=True
+        ) as mock_post:
+            mock_post.return_value = MockResponse(
+                {"token": ID_TOKEN_DATA}, http_client.OK
+            )
+            id_creds.refresh(None)
+
+            mock_configure_mtls.assert_called_once()
 
     def test_id_token_success(
         self, mock_donor_credentials, mock_authorizedsession_idtoken

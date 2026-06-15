@@ -16,6 +16,7 @@ import datetime
 import threading
 import uuid
 import warnings
+from concurrent.futures import ThreadPoolExecutor
 from typing import List, Optional, Sequence
 
 import google.cloud.bigquery as bigquery
@@ -170,9 +171,19 @@ class AnonymousDatasetManager(temporary_storage.TemporaryStorageManager):
 
     def close(self):
         """Delete tables that were created with this session's session_id."""
-        for table_ref in self._table_ids:
-            self.bqclient.delete_table(table_ref, not_found_ok=True)
-        self._table_ids.clear()
+        if self._table_ids:
+            try:
+                with ThreadPoolExecutor() as executor:
+                    futures = [
+                        executor.submit(
+                            self.bqclient.delete_table, table_ref, not_found_ok=True
+                        )
+                        for table_ref in self._table_ids
+                    ]
+                    for future in futures:
+                        future.result()
+            finally:
+                self._table_ids.clear()
 
         try:
             # Before closing the session, attempt to clean up any uncollected,

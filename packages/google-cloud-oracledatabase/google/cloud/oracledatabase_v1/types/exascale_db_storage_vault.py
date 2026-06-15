@@ -346,6 +346,10 @@ class ListExascaleDbStorageVaultsResponse(proto.Message):
             token can be provided to a subsequent
             ListExascaleDbStorageVaults call to list the
             next page. If empty, there are no more pages.
+        unreachable (MutableSequence[str]):
+            Unreachable locations when listing resources
+            across all locations using wildcard location
+            '-'.
     """
 
     @property
@@ -362,6 +366,10 @@ class ListExascaleDbStorageVaultsResponse(proto.Message):
     next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
     )
 
 

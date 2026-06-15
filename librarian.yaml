@@ -12,12 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 language: python
-version: v0.16.0
+version: v0.19.0
 repo: googleapis/google-cloud-python
 sources:
   googleapis:
-    commit: c73334a47800ba03cc65e46ade96c07f01db3446
-    sha256: 07be59c8bc1dfc420e352db0528641baa23943e7dd1659acac41ca55969fb259
+    commit: f93e046328794785ad89869f00c0358dfcff2c35
+    sha256: 415249f584d57e5a2298c36ae9ff71563403112dee04ac961023a1b0098404d2
 default:
   output: packages
   tag_format: '{name}-v{version}'
@@ -29,6 +29,7 @@ default:
       - google.maps
       - google.shopping
       - google.devicesandservices
+      - google.developers
     common_gapic_paths:
       - samples/generated_samples
       - tests/unit/gapic
@@ -57,7 +58,7 @@ default:
     library_type: GAPIC_AUTO
 libraries:
   - name: bigframes
-    version: 2.41.0
+    version: 2.42.0
     skip_release: true
     python:
       library_type: INTEGRATION
@@ -74,7 +75,7 @@ libraries:
     python:
       library_type: INTEGRATION
   - name: gapic-generator
-    version: 1.34.1
+    version: 1.35.0
     python:
       library_type: CORE
   - name: gcp-sphinx-docfx-yaml
@@ -227,7 +228,7 @@ libraries:
       metadata_name_override: area120tables
       default_version: v1alpha1
   - name: google-auth
-    version: 2.53.0
+    version: 2.54.0
     python:
       library_type: AUTH
   - name: google-auth-httplib2
@@ -239,7 +240,7 @@ libraries:
     python:
       library_type: AUTH
   - name: google-backstory
-    version: 0.0.0
+    version: 0.1.0
     apis:
       - path: backstory
     keep:
@@ -278,8 +279,15 @@ libraries:
     python:
       metadata_name_override: advisorynotifications
       default_version: v1
+  - name: google-cloud-agentidentitycredentials
+    version: 0.1.0
+    apis:
+      - path: google/cloud/agentidentitycredentials/v1
+    copyright_year: "2026"
+    python:
+      default_version: v1
   - name: google-cloud-alloydb
-    version: 0.10.0
+    version: 0.11.0
     apis:
       - path: google/cloud/alloydb/v1
       - path: google/cloud/alloydb/v1beta
@@ -518,7 +526,7 @@ libraries:
       metadata_name_override: beyondcorpclientgateways
       default_version: v1
   - name: google-cloud-biglake
-    version: 0.4.0
+    version: 0.5.0
     apis:
       - path: google/cloud/biglake/v1
     python:
@@ -531,7 +539,6 @@ libraries:
       default_version: v1beta
   - name: google-cloud-bigquery
     version: 3.41.0
-    skip_release: true
     python:
       library_type: GAPIC_COMBO
       metadata_name_override: bigquery
@@ -702,7 +709,7 @@ libraries:
       metadata_name_override: certificatemanager
       default_version: v1
   - name: google-cloud-ces
-    version: 0.6.0
+    version: 0.7.0
     apis:
       - path: google/cloud/ces/v1
       - path: google/cloud/ces/v1beta
@@ -766,7 +773,7 @@ libraries:
     python:
       default_version: v1beta
   - name: google-cloud-confidentialcomputing
-    version: 0.10.0
+    version: 0.11.0
     apis:
       - path: google/cloud/confidentialcomputing/v1
     python:
@@ -1143,6 +1150,7 @@ libraries:
       - docs/firestore_v1/transaction.rst
       - docs/firestore_v1/transforms.rst
       - docs/firestore_v1/types.rst
+    skip_generate: true
     skip_release: true
     python:
       library_type: GAPIC_COMBO
@@ -1438,7 +1446,7 @@ libraries:
       metadata_name_override: migrationcenter
       default_version: v1
   - name: google-cloud-modelarmor
-    version: 0.6.0
+    version: 0.7.0
     apis:
       - path: google/cloud/modelarmor/v1
       - path: google/cloud/modelarmor/v1beta
@@ -1528,7 +1536,7 @@ libraries:
       metadata_name_override: networksecurity
       default_version: v1
   - name: google-cloud-network-services
-    version: 0.9.0
+    version: 0.10.0
     apis:
       - path: google/cloud/networkservices/v1
     python:
@@ -1554,7 +1562,7 @@ libraries:
       metadata_name_override: optimization
       default_version: v1
   - name: google-cloud-oracledatabase
-    version: 0.5.0
+    version: 0.6.0
     apis:
       - path: google/cloud/oracledatabase/v1
     python:
@@ -1909,7 +1917,7 @@ libraries:
       metadata_name_override: source
       default_version: v1
   - name: google-cloud-spanner
-    version: 3.67.0
+    version: 3.68.0
     apis:
       - path: google/spanner/v1
       - path: google/spanner/admin/instance/v1
@@ -1951,7 +1959,7 @@ libraries:
       metadata_name_override: speech
       default_version: v1
   - name: google-cloud-storage
-    version: 3.11.0
+    version: 3.12.0
     apis:
       - path: google/storage/v2
     python:
@@ -2218,8 +2226,19 @@ libraries:
     skip_release: true
     python:
       library_type: OTHER
+  - name: google-developer-knowledge
+    version: 0.1.0
+    apis:
+      - path: google/developers/knowledge/v1
+    copyright_year: "2026"
+    python:
+      opt_args_by_api:
+        google/developers/knowledge/v1:
+          - python-gapic-namespace=google
+          - python-gapic-name=developer_knowledge
+      default_version: v1
   - name: google-devicesandservices-health
-    version: 0.0.0
+    version: 0.1.0
     apis:
       - path: google/devicesandservices/health/v4
     copyright_year: "2026"

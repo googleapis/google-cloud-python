@@ -44,12 +44,8 @@ SAMPLE_ID_TOKEN = (
     b"bsxbLa6Fp0SYeYwO8ifEnkRvasVpc1WTQqfRB2JCj5pTBDzJpIpFCMmnQ"
 )
 
-ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE = (
-    "gl-python/3.7 auth/1.1 auth-request-type/at cred-type/mds"
-)
-ID_TOKEN_REQUEST_METRICS_HEADER_VALUE = (
-    "gl-python/3.7 auth/1.1 auth-request-type/it cred-type/mds"
-)
+ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE = "gl-python/<python-version> auth/<library-version> auth-request-type/at cred-type/mds"
+ID_TOKEN_REQUEST_METRICS_HEADER_VALUE = "gl-python/<python-version> auth/<library-version> auth-request-type/it cred-type/mds"
 FAKE_SERVICE_ACCOUNT_EMAIL = "foo@bar.com"
 FAKE_QUOTA_PROJECT_ID = "fake-quota-project"
 FAKE_SCOPES = ["scope1", "scope2"]

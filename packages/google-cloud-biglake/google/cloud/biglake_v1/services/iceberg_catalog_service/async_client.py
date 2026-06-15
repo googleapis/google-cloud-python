@@ -65,34 +65,15 @@ _LOGGER = std_logging.getLogger(__name__)
 
 
 class IcebergCatalogServiceAsyncClient:
-    """Iceberg Catalog Service API: this implements the open-source Iceberg
-    REST Catalog API. See the API definition here:
-    https://github.com/apache/iceberg/blob/main/open-api/rest-catalog-open-api.yaml
+    """Lakehouse runtime catalog supports the following catalog
+    management methods:
 
-    The API is defined as OpenAPI 3.1.1 spec.
-
-    Currently we only support the following methods:
-
-    - GetConfig/GetIcebergCatalogConfig
-    - ListIcebergNamespaces
-    - CheckIcebergNamespaceExists
-    - GetIcebergNamespace
-    - CreateIcebergNamespace (only supports single level)
-    - DeleteIcebergNamespace
-    - UpdateIcebergNamespace properties
-    - ListTableIdentifiers
-    - CreateIcebergTable
-    - DeleteIcebergTable
-    - GetIcebergTable
-    - UpdateIcebergTable (CommitTable)
-    - LoadIcebergTableCredentials
-    - RegisterTable
-
-    Users are required to provided the ``X-Goog-User-Project`` header
-    with the project id or number which can be different from the bucket
-    project id. That project will be charged for the API calls and the
-    calling user must have access to that project. The caller must have
-    ``serviceusage.services.use`` permission on the project.
+    - GetIcebergCatalog
+    - ListIcebergCatalogs
+    - DeleteIcebergCatalog
+    - UpdateIcebergCatalog
+    - CreateIcebergCatalog
+    - FailoverIcebergCatalog
     """
 
     _client: IcebergCatalogServiceClient
@@ -106,6 +87,10 @@ class IcebergCatalogServiceAsyncClient:
 
     catalog_path = staticmethod(IcebergCatalogServiceClient.catalog_path)
     parse_catalog_path = staticmethod(IcebergCatalogServiceClient.parse_catalog_path)
+    secret_path = staticmethod(IcebergCatalogServiceClient.secret_path)
+    parse_secret_path = staticmethod(IcebergCatalogServiceClient.parse_secret_path)
+    service_path = staticmethod(IcebergCatalogServiceClient.service_path)
+    parse_service_path = staticmethod(IcebergCatalogServiceClient.parse_service_path)
     common_billing_account_path = staticmethod(
         IcebergCatalogServiceClient.common_billing_account_path
     )
@@ -599,7 +584,7 @@ class IcebergCatalogServiceAsyncClient:
 
                 # Initialize request argument(s)
                 iceberg_catalog = biglake_v1.IcebergCatalog()
-                iceberg_catalog.catalog_type = "CATALOG_TYPE_GCS_BUCKET"
+                iceberg_catalog.catalog_type = "CATALOG_TYPE_FEDERATED"
 
                 request = biglake_v1.UpdateIcebergCatalogRequest(
                     iceberg_catalog=iceberg_catalog,
@@ -701,12 +686,12 @@ class IcebergCatalogServiceAsyncClient:
         parent: Optional[str] = None,
         iceberg_catalog: Optional[iceberg_rest_catalog.IcebergCatalog] = None,
         iceberg_catalog_id: Optional[str] = None,
+        primary_location: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> iceberg_rest_catalog.IcebergCatalog:
-        r"""Creates the Iceberg REST Catalog. Currently only supports Google
-        Cloud Storage Bucket catalogs. Google Cloud Storage Bucket
+        r"""Creates the Iceberg REST Catalog. Google Cloud Storage Bucket
         catalog id is the bucket for which the catalog is created (e.g.
         ``my-catalog`` for ``gs://my-catalog``).
 
@@ -730,7 +715,7 @@ class IcebergCatalogServiceAsyncClient:
 
                 # Initialize request argument(s)
                 iceberg_catalog = biglake_v1.IcebergCatalog()
-                iceberg_catalog.catalog_type = "CATALOG_TYPE_GCS_BUCKET"
+                iceberg_catalog.catalog_type = "CATALOG_TYPE_FEDERATED"
 
                 request = biglake_v1.CreateIcebergCatalogRequest(
                     parent="parent_value",
@@ -770,6 +755,27 @@ class IcebergCatalogServiceAsyncClient:
                 This corresponds to the ``iceberg_catalog_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
+            primary_location (:class:`str`):
+                Optional. The primary location where the catalog
+                metadata will be stored.
+
+                For Google Cloud Storage bucket catalogs and BigLake
+                catalogs, if this is not specified, then the region is
+                inferred from the bucket's region (``default_location``
+                bucket for BigLake catalogs). If specified, the region
+                must be in jurisdiction (near the ``default_location``
+                bucket's region and the ``restricted_locations``
+                buckets' regions for BigLake catalogs).
+
+                For federated catalogs, this must be specified and be a
+                Lakehouse-supported location
+                (https://docs.cloud.google.com/lakehouse/docs/locations).
+                It should be close to the remote catalog's location for
+                the best performance and cost.
+
+                This corresponds to the ``primary_location`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -785,7 +791,12 @@ class IcebergCatalogServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [parent, iceberg_catalog, iceberg_catalog_id]
+        flattened_params = [
+            parent,
+            iceberg_catalog,
+            iceberg_catalog_id,
+            primary_location,
+        ]
         has_flattened_params = (
             len([param for param in flattened_params if param is not None]) > 0
         )
@@ -808,6 +819,8 @@ class IcebergCatalogServiceAsyncClient:
             request.iceberg_catalog = iceberg_catalog
         if iceberg_catalog_id is not None:
             request.iceberg_catalog_id = iceberg_catalog_id
+        if primary_location is not None:
+            request.primary_location = primary_location
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.

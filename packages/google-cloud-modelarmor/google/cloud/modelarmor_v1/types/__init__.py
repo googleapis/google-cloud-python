@@ -54,6 +54,7 @@ from .service import (
     SdpFinding,
     SdpFindingLikelihood,
     SdpInspectResult,
+    StreamingMode,
     Template,
     UpdateFloorSettingRequest,
     UpdateTemplateRequest,
@@ -107,4 +108,5 @@ __all__ = (
     "InvocationResult",
     "RaiFilterType",
     "SdpFindingLikelihood",
+    "StreamingMode",
 )

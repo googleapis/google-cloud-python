@@ -31,7 +31,7 @@ def test_{{ func.name }}_expression():
     # Verify the internal expression structure
     expr = result._value
     assert isinstance(expr, ex.OpExpression)
-    assert expr.op == {{ short_name }}_op._{{ func.name | upper }}_OP
+    assert expr.op == {{ short_name }}_op.{{ func.op_name }}
 
     # Verify arguments are free variables matching the names
     assert len(expr.inputs) == {{ func.args | length }}

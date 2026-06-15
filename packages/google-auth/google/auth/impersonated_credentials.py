@@ -388,6 +388,7 @@ class Credentials(
         headers = {"Content-Type": "application/json"}
 
         authed_session = AuthorizedSession(self._source_credentials)
+        authed_session.configure_mtls_channel()
 
         try:
             retries = _exponential_backoff.ExponentialBackoff()
@@ -627,6 +628,7 @@ class IDTokenCredentials(credentials.CredentialsWithQuotaProject):
         authed_session = AuthorizedSession(
             self._target_credentials._source_credentials, auth_request=request
         )
+        authed_session.configure_mtls_channel()
 
         try:
             response = authed_session.post(
