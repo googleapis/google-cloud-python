@@ -887,6 +887,16 @@ def template_coverage(session):
         },
     )
 
+    # Enforce 100% coverage on the targeted templates
+    session.run(
+        "coverage",
+        "report",
+        "-m",
+        "--rcfile=.coveragerc-templates",
+        "--fail-under=100",
+        "--include=gapic/templates/%namespace/%name_%version/%sub/services/%service/*,gapic/templates/tests/unit/gapic/%name_%version/%sub/test_macros.j2",
+    )
+
 
 @nox.session(python="3.10")
 def downstream_golden_tests(session):

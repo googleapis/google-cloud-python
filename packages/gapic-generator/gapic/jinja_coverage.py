@@ -159,6 +159,14 @@ class FileReporter(coverage.plugin.FileReporter):
             excluded.update([172, 199])
         if self.filename.endswith("services/%service/_mixins.py.j2"):
             excluded.update([291, 298, 301, 308, 311, 321, 412, 419, 426, 433, 447, 534, 541, 552, 559])
+        if self.filename.endswith("services/%service/_async_mixins.py.j2"):
+            excluded.update([291, 298, 301, 308, 311, 321, 412, 419, 426, 433, 447, 534, 541, 552, 559])
+        if self.filename.endswith("services/%service/_shared_macros.j2"):
+            excluded.update([27, 106, 133, 159, 172, 177, 313, 314, 316, 317, 319, 320, 323, 324])
+        if self.filename.endswith("services/%service/pagers.py.j2"):
+            excluded.update([30])
+        if self.filename.endswith("services/%service/transports/rest_asyncio.py.j2"):
+            excluded.update([188])
 
         return excluded
 
