@@ -28,9 +28,9 @@ from google.auth.credentials import DEFAULT_UNIVERSE_DOMAIN
 from google.auth.credentials import TokenState
 
 IMPERSONATE_ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE = (
-    "gl-python/3.7 auth/1.1 auth-request-type/at cred-type/imp"
+    "gl-python/<python-version> auth/<library-version> auth-request-type/at cred-type/imp"
 )
-LANG_LIBRARY_METRICS_HEADER_VALUE = "gl-python/3.7 auth/1.1"
+LANG_LIBRARY_METRICS_HEADER_VALUE = "gl-python/<python-version> auth/<library-version>"
 
 CLIENT_ID = "username"
 CLIENT_SECRET = "password"
@@ -686,7 +686,7 @@ class TestCredentials(object):
         )
         headers = {
             "Content-Type": "application/x-www-form-urlencoded",
-            "x-goog-api-client": "gl-python/3.7 auth/1.1 google-byoid-sdk sa-impersonation/false config-lifetime/false",
+            "x-goog-api-client": "gl-python/<python-version> auth/<library-version> google-byoid-sdk sa-impersonation/false config-lifetime/false",
         }
         request_data = {
             "grant_type": "urn:ietf:params:oauth:grant-type:token-exchange",
@@ -751,7 +751,7 @@ class TestCredentials(object):
         )
         headers = {
             "Content-Type": "application/x-www-form-urlencoded",
-            "x-goog-api-client": "gl-python/3.7 auth/1.1 google-byoid-sdk sa-impersonation/false config-lifetime/false",
+            "x-goog-api-client": "gl-python/<python-version> auth/<library-version> google-byoid-sdk sa-impersonation/false config-lifetime/false",
         }
         request_data = {
             "grant_type": "urn:ietf:params:oauth:grant-type:token-exchange",
@@ -790,7 +790,7 @@ class TestCredentials(object):
         )
         headers = {
             "Content-Type": "application/x-www-form-urlencoded",
-            "x-goog-api-client": "gl-python/3.7 auth/1.1 google-byoid-sdk sa-impersonation/false config-lifetime/false",
+            "x-goog-api-client": "gl-python/<python-version> auth/<library-version> google-byoid-sdk sa-impersonation/false config-lifetime/false",
         }
         request_data = {
             "grant_type": "urn:ietf:params:oauth:grant-type:token-exchange",
@@ -832,7 +832,7 @@ class TestCredentials(object):
         headers = {
             "Content-Type": "application/x-www-form-urlencoded",
             "Authorization": "Basic {}".format(BASIC_AUTH_ENCODING),
-            "x-goog-api-client": "gl-python/3.7 auth/1.1 google-byoid-sdk sa-impersonation/false config-lifetime/false",
+            "x-goog-api-client": "gl-python/<python-version> auth/<library-version> google-byoid-sdk sa-impersonation/false config-lifetime/false",
         }
         request_data = {
             "grant_type": "urn:ietf:params:oauth:grant-type:token-exchange",
@@ -874,7 +874,7 @@ class TestCredentials(object):
         headers = {
             "Content-Type": "application/x-www-form-urlencoded",
             "Authorization": "Basic {}".format(BASIC_AUTH_ENCODING),
-            "x-goog-api-client": "gl-python/3.7 auth/1.1 google-byoid-sdk sa-impersonation/false config-lifetime/false",
+            "x-goog-api-client": "gl-python/<python-version> auth/<library-version> google-byoid-sdk sa-impersonation/false config-lifetime/false",
         }
         request_data = {
             "grant_type": "urn:ietf:params:oauth:grant-type:token-exchange",
@@ -919,7 +919,7 @@ class TestCredentials(object):
         token_response = self.SUCCESS_RESPONSE.copy()
         token_headers = {
             "Content-Type": "application/x-www-form-urlencoded",
-            "x-goog-api-client": "gl-python/3.7 auth/1.1 google-byoid-sdk sa-impersonation/true config-lifetime/false",
+            "x-goog-api-client": "gl-python/<python-version> auth/<library-version> google-byoid-sdk sa-impersonation/true config-lifetime/false",
         }
         token_request_data = {
             "grant_type": "urn:ietf:params:oauth:grant-type:token-exchange",
@@ -1059,7 +1059,7 @@ class TestCredentials(object):
         token_response = self.SUCCESS_RESPONSE.copy()
         token_headers = {
             "Content-Type": "application/x-www-form-urlencoded",
-            "x-goog-api-client": "gl-python/3.7 auth/1.1 google-byoid-sdk sa-impersonation/true config-lifetime/false",
+            "x-goog-api-client": "gl-python/<python-version> auth/<library-version> google-byoid-sdk sa-impersonation/true config-lifetime/false",
         }
         token_request_data = {
             "grant_type": "urn:ietf:params:oauth:grant-type:token-exchange",
@@ -1142,7 +1142,7 @@ class TestCredentials(object):
         token_response = self.SUCCESS_RESPONSE.copy()
         token_headers = {
             "Content-Type": "application/x-www-form-urlencoded",
-            "x-goog-api-client": "gl-python/3.7 auth/1.1 google-byoid-sdk sa-impersonation/true config-lifetime/false",
+            "x-goog-api-client": "gl-python/<python-version> auth/<library-version> google-byoid-sdk sa-impersonation/true config-lifetime/false",
         }
         token_request_data = {
             "grant_type": "urn:ietf:params:oauth:grant-type:token-exchange",
@@ -1213,7 +1213,7 @@ class TestCredentials(object):
     ):
         headers = {
             "Content-Type": "application/x-www-form-urlencoded",
-            "x-goog-api-client": "gl-python/3.7 auth/1.1 google-byoid-sdk sa-impersonation/false config-lifetime/false",
+            "x-goog-api-client": "gl-python/<python-version> auth/<library-version> google-byoid-sdk sa-impersonation/false config-lifetime/false",
         }
         request_data = {
             "grant_type": "urn:ietf:params:oauth:grant-type:token-exchange",
@@ -1250,7 +1250,7 @@ class TestCredentials(object):
     ):
         headers = {
             "Content-Type": "application/x-www-form-urlencoded",
-            "x-goog-api-client": "gl-python/3.7 auth/1.1 google-byoid-sdk sa-impersonation/false config-lifetime/false",
+            "x-goog-api-client": "gl-python/<python-version> auth/<library-version> google-byoid-sdk sa-impersonation/false config-lifetime/false",
         }
         request_data = {
             "grant_type": "urn:ietf:params:oauth:grant-type:token-exchange",
@@ -1349,7 +1349,7 @@ class TestCredentials(object):
         headers = {
             "Content-Type": "application/x-www-form-urlencoded",
             "Authorization": "Basic {}".format(BASIC_AUTH_ENCODING),
-            "x-goog-api-client": "gl-python/3.7 auth/1.1 google-byoid-sdk sa-impersonation/false config-lifetime/false",
+            "x-goog-api-client": "gl-python/<python-version> auth/<library-version> google-byoid-sdk sa-impersonation/false config-lifetime/false",
         }
         request_data = {
             "grant_type": "urn:ietf:params:oauth:grant-type:token-exchange",
@@ -1393,7 +1393,7 @@ class TestCredentials(object):
         token_headers = {
             "Content-Type": "application/x-www-form-urlencoded",
             "Authorization": "Basic {}".format(BASIC_AUTH_ENCODING),
-            "x-goog-api-client": "gl-python/3.7 auth/1.1 google-byoid-sdk sa-impersonation/true config-lifetime/false",
+            "x-goog-api-client": "gl-python/<python-version> auth/<library-version> google-byoid-sdk sa-impersonation/true config-lifetime/false",
         }
         token_request_data = {
             "grant_type": "urn:ietf:params:oauth:grant-type:token-exchange",
@@ -1476,7 +1476,7 @@ class TestCredentials(object):
         token_headers = {
             "Content-Type": "application/x-www-form-urlencoded",
             "Authorization": "Basic {}".format(BASIC_AUTH_ENCODING),
-            "x-goog-api-client": "gl-python/3.7 auth/1.1 google-byoid-sdk sa-impersonation/true config-lifetime/false",
+            "x-goog-api-client": "gl-python/<python-version> auth/<library-version> google-byoid-sdk sa-impersonation/true config-lifetime/false",
         }
         token_request_data = {
             "grant_type": "urn:ietf:params:oauth:grant-type:token-exchange",
@@ -1967,7 +1967,7 @@ class TestCredentials(object):
         token_response = self.SUCCESS_RESPONSE.copy()
         token_headers = {
             "Content-Type": "application/x-www-form-urlencoded",
-            "x-goog-api-client": "gl-python/3.7 auth/1.1 google-byoid-sdk sa-impersonation/true config-lifetime/false",
+            "x-goog-api-client": "gl-python/<python-version> auth/<library-version> google-byoid-sdk sa-impersonation/true config-lifetime/false",
         }
         token_request_data = {
             "grant_type": "urn:ietf:params:oauth:grant-type:token-exchange",
@@ -2064,7 +2064,7 @@ class TestCredentials(object):
         # STS token exchange request/response.
         token_headers = {
             "Content-Type": "application/x-www-form-urlencoded",
-            "x-goog-api-client": "gl-python/3.7 auth/1.1 google-byoid-sdk sa-impersonation/false config-lifetime/false",
+            "x-goog-api-client": "gl-python/<python-version> auth/<library-version> google-byoid-sdk sa-impersonation/false config-lifetime/false",
         }
         token_request_data = {
             "grant_type": "urn:ietf:params:oauth:grant-type:token-exchange",
@@ -2145,7 +2145,7 @@ class TestCredentials(object):
         token_response = self.SUCCESS_RESPONSE.copy()
         token_headers = {
             "Content-Type": "application/x-www-form-urlencoded",
-            "x-goog-api-client": "gl-python/3.7 auth/1.1 google-byoid-sdk sa-impersonation/true config-lifetime/true",
+            "x-goog-api-client": "gl-python/<python-version> auth/<library-version> google-byoid-sdk sa-impersonation/true config-lifetime/true",
         }
         token_request_data = {
             "grant_type": "urn:ietf:params:oauth:grant-type:token-exchange",

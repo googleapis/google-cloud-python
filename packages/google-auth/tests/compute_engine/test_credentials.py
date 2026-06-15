@@ -44,10 +44,10 @@ SAMPLE_ID_TOKEN = (
 )
 
 ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE = (
-    "gl-python/3.7 auth/1.1 auth-request-type/at cred-type/mds"
+    "gl-python/<python-version> auth/<library-version> auth-request-type/at cred-type/mds"
 )
 ID_TOKEN_REQUEST_METRICS_HEADER_VALUE = (
-    "gl-python/3.7 auth/1.1 auth-request-type/it cred-type/mds"
+    "gl-python/<python-version> auth/<library-version> auth-request-type/it cred-type/mds"
 )
 FAKE_SERVICE_ACCOUNT_EMAIL = "foo@bar.com"
 FAKE_QUOTA_PROJECT_ID = "fake-quota-project"

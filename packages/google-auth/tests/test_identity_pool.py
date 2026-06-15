@@ -369,7 +369,7 @@ class TestCredentials(object):
             )
 
         metrics_header_value = (
-            "gl-python/3.7 auth/1.1 auth-request-type/at cred-type/imp"
+            "gl-python/<python-version> auth/<library-version> auth-request-type/at cred-type/imp"
         )
         if service_account_impersonation_url:
             # Service account impersonation request/response.

@@ -60,10 +60,10 @@ SIGNER = crypt.RSASigner.from_string(PRIVATE_KEY_BYTES, "1")
 TOKEN_URI = "https://example.com/oauth2/token"
 
 ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE = (
-    "gl-python/3.7 auth/1.1 auth-request-type/at cred-type/imp"
+    "gl-python/<python-version> auth/<library-version> auth-request-type/at cred-type/imp"
 )
 ID_TOKEN_REQUEST_METRICS_HEADER_VALUE = (
-    "gl-python/3.7 auth/1.1 auth-request-type/it cred-type/imp"
+    "gl-python/<python-version> auth/<library-version> auth-request-type/it cred-type/imp"
 )
 
 

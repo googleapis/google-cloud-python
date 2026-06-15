@@ -47,10 +47,10 @@ SCOPES_AS_STRING = (
 )
 
 ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE = (
-    "gl-python/3.7 auth/1.1 auth-request-type/at cred-type/sa"
+    "gl-python/<python-version> auth/<library-version> auth-request-type/at cred-type/sa"
 )
 ID_TOKEN_REQUEST_METRICS_HEADER_VALUE = (
-    "gl-python/3.7 auth/1.1 auth-request-type/it cred-type/sa"
+    "gl-python/<python-version> auth/<library-version> auth-request-type/it cred-type/sa"
 )
 
 

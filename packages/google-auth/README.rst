@@ -48,6 +48,7 @@ Unsupported Python Versions
 - Python 3.6:   The last version of this library with support for Python 3.6
   was `google.auth == 2.22.0`.
 
+.. version-scanner: ignore-next-line
 - Python 3.7:   The last version of this library with support for Python 3.7
   was `google.auth == 2.45.0`.
 

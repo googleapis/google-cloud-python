@@ -14,6 +14,7 @@
 
 import json
 import os
+import sys
 from unittest import mock
 
 import pytest  # type: ignore
@@ -306,7 +307,7 @@ def test__get_gae_credentials_gen1(app_identity):
 
 @mock.patch.dict(os.environ)
 def test__get_gae_credentials_gen2():
-    os.environ["GAE_RUNTIME"] = "python37"
+    os.environ["GAE_RUNTIME"] = f"python{sys.version_info.major}{sys.version_info.minor}"
     credentials, project_id = _default._get_gae_credentials()
     assert credentials is None
     assert project_id is None
@@ -316,8 +317,9 @@ def test__get_gae_credentials_gen2():
 def test__get_gae_credentials_gen2_backwards_compat():
     # compat helpers may copy GAE_RUNTIME to APPENGINE_RUNTIME
     # for backwards compatibility with code that relies on it
-    os.environ[environment_vars.LEGACY_APPENGINE_RUNTIME] = "python37"
-    os.environ["GAE_RUNTIME"] = "python37"
+    current_runtime = f"python{sys.version_info.major}{sys.version_info.minor}"
+    os.environ[environment_vars.LEGACY_APPENGINE_RUNTIME] = current_runtime
+    os.environ["GAE_RUNTIME"] = current_runtime
     credentials, project_id = _default._get_gae_credentials()
     assert credentials is None
     assert project_id is None
