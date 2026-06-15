@@ -20,37 +20,16 @@ import datetime
 import functools
 import inspect
 import logging
-import os
 import threading
 from typing import NamedTuple, Optional, TYPE_CHECKING
 
 from google.auth import _helpers
-from google.auth import environment_vars
 
 if TYPE_CHECKING:  # pragma: NO COVER
     import google.auth.credentials
     import google.auth.transport
 
 _LOGGER = logging.getLogger(__name__)
-
-
-@functools.lru_cache()
-def is_regional_access_boundary_enabled():
-    """Checks if Regional Access Boundary is enabled via environment variable.
-
-    The environment variable is interpreted as a boolean with the following
-    (case-insensitive) rules:
-    - "true", "1" are considered true.
-    - Any other value (or unset) is considered false.
-
-    Returns:
-        bool: True if Regional Access Boundary is enabled, False otherwise.
-    """
-    value = os.environ.get(environment_vars.GOOGLE_AUTH_TRUST_BOUNDARY_ENABLED)
-    if value is None:
-        return False
-
-    return value.lower() in ("true", "1")
 
 
 # The default lifetime for a cached Regional Access Boundary.
