@@ -234,7 +234,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Python SDK Import Profiler")
     parser.add_argument("--module", default="google.cloud.compute", help="Target module to profile")
     parser.add_argument("--iterations", type=int, default=50, help="Number of iterations")
-    parser.add_argument("--cpu", default="0", help="CPU core to pin to (or 'none')")
+    default_cpu = "0" if sys.platform.startswith("linux") else "none"
+    parser.add_argument("--cpu", default=default_cpu, help="CPU core to pin to (or 'none')")
     parser.add_argument("--csv", help="Path to export CSV results")
     parser.add_argument("--trace", action="store_true", help="Generate importtime trace log")
     parser.add_argument("--cprofile", action="store_true", help="Run cProfile")
