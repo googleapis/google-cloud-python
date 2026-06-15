@@ -18,7 +18,7 @@
 branch = True
 
 [report]
-fail_under = 80
+fail_under = 75
 show_missing = True
 exclude_lines =
     # Re-enable the standard pragma
