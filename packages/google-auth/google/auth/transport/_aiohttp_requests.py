@@ -149,6 +149,7 @@ class Request(transport.Request):
                 "Client sessions with auto_decompress=True are not supported."
             )
         self.session = session
+        self._closed = False
 
     async def __call__(
         self,
@@ -184,6 +185,9 @@ class Request(transport.Request):
         """
 
         try:
+            if getattr(self, "_closed", False):
+                raise exceptions.TransportError("session is closed.")
+
             if self.session is None:  # pragma: NO COVER
                 self.session = aiohttp.ClientSession(
                     auto_decompress=False

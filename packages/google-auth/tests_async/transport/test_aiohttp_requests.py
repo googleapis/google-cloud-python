@@ -224,6 +224,20 @@ class TestRequestResponse(async_compliance.RequestResponseTests):
         await request.close()
         http.close.assert_awaited_once()  # Still only called 1 time
 
+
+    @pytest.mark.asyncio
+    async def test_request_call_closed(self):
+        http = mock.create_autospec(
+            aiohttp.ClientSession, instance=True, _auto_decompress=False
+        )
+        request = aiohttp_requests.Request(http)
+        await request.close()
+        with pytest.raises(
+            google.auth.exceptions.TransportError, match="session is closed."
+        ):
+            await request("http://example.com")
+
+
     @pytest.mark.asyncio
     async def test__clone_no_session(self):
         request = aiohttp_requests.Request()
