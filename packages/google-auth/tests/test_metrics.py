@@ -62,7 +62,9 @@ def test_versions(mock_python_version):
     "google.auth.metrics.python_and_auth_lib_version",
     return_value="gl-python/<python-version> auth/<library-version>",
 )
-def test_metric_values(mock_version, func, expected_suffix):
+def test_metric_values(mock_python_and_auth_lib_version, func, expected_suffix):
+    # mock_python_and_auth_lib_version is injected by mock.patch but is not
+    # explicitly referenced in the test body as the mock behaves as configured.
     expected = f"gl-python/<python-version> auth/<library-version> {expected_suffix}".strip()
     assert func() == expected
 
@@ -72,6 +74,8 @@ def test_metric_values(mock_version, func, expected_suffix):
     return_value="gl-python/<python-version> auth/<library-version>",
 )
 def test_byoid_metric_header(mock_python_and_auth_lib_version):
+    # mock_python_and_auth_lib_version is injected by mock.patch but is not
+    # explicitly referenced in the test body as the mock behaves as configured.
     metrics_options = {}
     assert (
         metrics.byoid_metrics_header(metrics_options)
