@@ -241,3 +241,56 @@ async def test_async_worker_exception_logging_disabled(monkeypatch):
 
         mock_warning.assert_not_called()
         rab_manager.process_regional_access_boundary_info.assert_called_once_with(None)
+
+
+@pytest.mark.asyncio
+async def test_async_refresh_manager_clone_failure():
+    credentials = mock.AsyncMock()
+    rab_manager = mock.Mock()
+
+    # Configure mock request to raise an exception on clone
+    request = mock.Mock()
+    request._clone.side_effect = Exception("mock clone error")
+
+    manager = (
+        _regional_access_boundary_utils._AsyncRegionalAccessBoundaryRefreshManager()
+    )
+
+    manager.start_refresh(credentials, request, rab_manager)
+
+    # Verify no worker task was created and cooldown was triggered immediately
+    assert manager._worker_task is None
+    rab_manager.process_regional_access_boundary_info.assert_called_once_with(None)
+
+
+@pytest.mark.asyncio
+async def test_async_refresh_manager_task_creation_failure(monkeypatch):
+    credentials = mock.AsyncMock()
+    rab_manager = mock.Mock()
+
+    # Configure a mock request that successfully clones
+    request = mock.Mock()
+    cloned_req = mock.Mock()
+    cloned_req.close = mock.AsyncMock()
+    request._clone.return_value = cloned_req
+
+    # Force task creation to fail
+    monkeypatch.setattr(
+        asyncio,
+        "create_task",
+        mock.Mock(side_effect=RuntimeError("loop closed")),
+    )
+
+    manager = (
+        _regional_access_boundary_utils._AsyncRegionalAccessBoundaryRefreshManager()
+    )
+
+    with pytest.raises(RuntimeError, match="loop closed"):
+        manager.start_refresh(credentials, request, rab_manager)
+
+    # Yield control to the event loop so the scheduled close task can run
+    await asyncio.sleep(0)
+
+    # Verify the cloned session was closed immediately to prevent socket leaks
+    cloned_req.close.assert_awaited_once()
+    rab_manager.process_regional_access_boundary_info.assert_called_once_with(None)

@@ -546,15 +546,24 @@ class _AsyncRegionalAccessBoundaryRefreshManager(object):
                 # A refresh is already in progress.
                 return
 
+            try:
+                (
+                    lookup_callable,
+                    lookup_request,
+                    is_cloned,
+                ) = _prepare_async_lookup_callable(request)
+            except Exception as e:
+                if _helpers.is_logging_enabled(_LOGGER):
+                    _LOGGER.warning(
+                        "Synchronous cloning of request for Regional Access Boundary lookup failed: %s",
+                        e,
+                        exc_info=True,
+                    )
+                rab_manager.process_regional_access_boundary_info(None)
+                return
+
             async def _worker():
-                lookup_request = None
-                is_cloned = False
                 try:
-                    (
-                        lookup_callable,
-                        lookup_request,
-                        is_cloned,
-                    ) = _prepare_async_lookup_callable(request)
                     regional_access_boundary_info = (
                         await credentials._lookup_regional_access_boundary(
                             lookup_callable
@@ -579,7 +588,15 @@ class _AsyncRegionalAccessBoundaryRefreshManager(object):
             try:
                 self._worker_task = asyncio.create_task(coro)
             except Exception:
+                # Clean up cloned request if task creation fails
                 coro.close()
+                try:
+                    asyncio.get_running_loop().create_task(
+                        _close_cloned_request(lookup_request, is_cloned)
+                    )
+                except RuntimeError:
+                    pass
+                rab_manager.process_regional_access_boundary_info(None)
                 raise
 
 
