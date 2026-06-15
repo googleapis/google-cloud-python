@@ -53,8 +53,27 @@ def run_worker(target_module):
         "loaded_lines": loaded_lines
     }))
 
+def _run_worker_and_parse(cmd):
+    result = subprocess.run(cmd, capture_output=True, text=True, check=True)
+    try:
+        lines = result.stdout.strip().splitlines()
+        if not lines:
+            raise ValueError("Worker produced no output on stdout.")
+        data = json.loads(lines[-1])
+        for key in ("time_ms", "peak_ram_mb", "loaded_modules", "loaded_lines"):
+            if key not in data:
+                raise KeyError(f"Missing key '{key}' in worker output")
+        return data
+    except (json.JSONDecodeError, IndexError, KeyError, ValueError) as parse_err:
+        print(f"Error parsing worker output: {parse_err}", file=sys.stderr)
+        print(f"Worker stdout:\n{result.stdout}", file=sys.stderr)
+        print(f"Worker stderr:\n{result.stderr}", file=sys.stderr)
+        raise parse_err
+
 def run_master(iterations, target_module, cpu="0", csv_path=None):
     """Orchestrates the benchmark."""
+    if iterations < 1:
+        raise ValueError("Number of iterations must be at least 1.")
     times, memories = [], []
     loaded_modules_val, loaded_lines_val = 0, 0
     
@@ -73,14 +92,11 @@ def run_master(iterations, target_module, cpu="0", csv_path=None):
         cmd += [sys.executable, __file__, "--worker", f"--module={target_module}"]
         
         try:
-            result = subprocess.run(
-                cmd, capture_output=True, text=True, check=True
-            )
-            data = json.loads(result.stdout.strip().splitlines()[-1])
+            data = _run_worker_and_parse(cmd)
             times.append(data["time_ms"])
             memories.append(data["peak_ram_mb"])
-            loaded_modules_val = data.get("loaded_modules", 0)
-            loaded_lines_val = data.get("loaded_lines", 0)
+            loaded_modules_val = data["loaded_modules"]
+            loaded_lines_val = data["loaded_lines"]
         except (subprocess.CalledProcessError, FileNotFoundError) as e:
             # Fallback if taskset is not found or fails
             if cpu.lower() != "none" and i == 0:
@@ -88,12 +104,11 @@ def run_master(iterations, target_module, cpu="0", csv_path=None):
                 # Try running without taskset
                 cmd = [sys.executable, __file__, "--worker", f"--module={target_module}"]
                 try:
-                    result = subprocess.run(cmd, capture_output=True, text=True, check=True)
-                    data = json.loads(result.stdout.strip().splitlines()[-1])
+                    data = _run_worker_and_parse(cmd)
                     times.append(data["time_ms"])
                     memories.append(data["peak_ram_mb"])
-                    loaded_modules_val = data.get("loaded_modules", 0)
-                    loaded_lines_val = data.get("loaded_lines", 0)
+                    loaded_modules_val = data["loaded_modules"]
+                    loaded_lines_val = data["loaded_lines"]
                     cpu = "none" # Disable cpu pinning for remaining iterations
                 except subprocess.CalledProcessError as err:
                     print(f"Error in worker process:\n{err.stderr}", file=sys.stderr)
@@ -160,7 +175,13 @@ def run_trace(target_module):
         [sys.executable, "-X", "importtime", "-c", f"import {target_module}"],
         capture_output=True, text=True
     )
-    
+    if result.returncode != 0:
+        print(f"WARNING: Import failed with exit code {result.returncode}. The trace log may be incomplete or contain errors.", file=sys.stderr)
+        if result.stdout:
+            print(f"Worker stdout:\n{result.stdout}", file=sys.stderr)
+        if result.stderr:
+            print(f"Worker stderr:\n{result.stderr}", file=sys.stderr)
+            
     with open(trace_file, "w", encoding="utf-8") as f:
         f.write(result.stderr)
         
