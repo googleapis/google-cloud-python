@@ -41,7 +41,6 @@ def sample_switchover_autonomous_database():
     # Initialize request argument(s)
     request = oracledatabase_v1.SwitchoverAutonomousDatabaseRequest(
         name="name_value",
-        peer_autonomous_database="peer_autonomous_database_value",
     )
 
     # Make the request

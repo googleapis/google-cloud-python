@@ -1348,6 +1348,8 @@ def test_get_workstation_cluster(request_type, transport: str = "grpc"):
             subnetwork="subnetwork_value",
             control_plane_ip="control_plane_ip_value",
             degraded=True,
+            workstation_authorization_url="workstation_authorization_url_value",
+            workstation_launch_url="workstation_launch_url_value",
         )
         response = client.get_workstation_cluster(request)
 
@@ -1368,6 +1370,10 @@ def test_get_workstation_cluster(request_type, transport: str = "grpc"):
     assert response.subnetwork == "subnetwork_value"
     assert response.control_plane_ip == "control_plane_ip_value"
     assert response.degraded is True
+    assert (
+        response.workstation_authorization_url == "workstation_authorization_url_value"
+    )
+    assert response.workstation_launch_url == "workstation_launch_url_value"
 
 
 def test_get_workstation_cluster_non_empty_request_with_auto_populated_field():
@@ -1519,6 +1525,8 @@ async def test_get_workstation_cluster_async(
                 subnetwork="subnetwork_value",
                 control_plane_ip="control_plane_ip_value",
                 degraded=True,
+                workstation_authorization_url="workstation_authorization_url_value",
+                workstation_launch_url="workstation_launch_url_value",
             )
         )
         response = await client.get_workstation_cluster(request)
@@ -1540,6 +1548,10 @@ async def test_get_workstation_cluster_async(
     assert response.subnetwork == "subnetwork_value"
     assert response.control_plane_ip == "control_plane_ip_value"
     assert response.degraded is True
+    assert (
+        response.workstation_authorization_url == "workstation_authorization_url_value"
+    )
+    assert response.workstation_launch_url == "workstation_launch_url_value"
 
 
 def test_get_workstation_cluster_field_headers():
@@ -1747,6 +1759,7 @@ def test_list_workstation_clusters_non_empty_request_with_auto_populated_field()
     request = workstations.ListWorkstationClustersRequest(
         parent="parent_value",
         page_token="page_token_value",
+        filter="filter_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1762,6 +1775,7 @@ def test_list_workstation_clusters_non_empty_request_with_auto_populated_field()
         request_msg = workstations.ListWorkstationClustersRequest(
             parent="parent_value",
             page_token="page_token_value",
+            filter="filter_value",
         )
         assert args[0] == request_msg
 
@@ -3349,8 +3363,12 @@ def test_get_workstation_config(request_type, transport: str = "grpc"):
             uid="uid_value",
             reconciling=True,
             etag="etag_value",
+            max_usable_workstations=2488,
             replica_zones=["replica_zones_value"],
             degraded=True,
+            enable_audit_agent=True,
+            disable_tcp_connections=True,
+            grant_workstation_admin_role_on_create=True,
         )
         response = client.get_workstation_config(request)
 
@@ -3367,8 +3385,12 @@ def test_get_workstation_config(request_type, transport: str = "grpc"):
     assert response.uid == "uid_value"
     assert response.reconciling is True
     assert response.etag == "etag_value"
+    assert response.max_usable_workstations == 2488
     assert response.replica_zones == ["replica_zones_value"]
     assert response.degraded is True
+    assert response.enable_audit_agent is True
+    assert response.disable_tcp_connections is True
+    assert response.grant_workstation_admin_role_on_create is True
 
 
 def test_get_workstation_config_non_empty_request_with_auto_populated_field():
@@ -3516,8 +3538,12 @@ async def test_get_workstation_config_async(
                 uid="uid_value",
                 reconciling=True,
                 etag="etag_value",
+                max_usable_workstations=2488,
                 replica_zones=["replica_zones_value"],
                 degraded=True,
+                enable_audit_agent=True,
+                disable_tcp_connections=True,
+                grant_workstation_admin_role_on_create=True,
             )
         )
         response = await client.get_workstation_config(request)
@@ -3535,8 +3561,12 @@ async def test_get_workstation_config_async(
     assert response.uid == "uid_value"
     assert response.reconciling is True
     assert response.etag == "etag_value"
+    assert response.max_usable_workstations == 2488
     assert response.replica_zones == ["replica_zones_value"]
     assert response.degraded is True
+    assert response.enable_audit_agent is True
+    assert response.disable_tcp_connections is True
+    assert response.grant_workstation_admin_role_on_create is True
 
 
 def test_get_workstation_config_field_headers():
@@ -3744,6 +3774,7 @@ def test_list_workstation_configs_non_empty_request_with_auto_populated_field():
     request = workstations.ListWorkstationConfigsRequest(
         parent="parent_value",
         page_token="page_token_value",
+        filter="filter_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3759,6 +3790,7 @@ def test_list_workstation_configs_non_empty_request_with_auto_populated_field():
         request_msg = workstations.ListWorkstationConfigsRequest(
             parent="parent_value",
             page_token="page_token_value",
+            filter="filter_value",
         )
         assert args[0] == request_msg
 
@@ -5899,6 +5931,8 @@ def test_get_workstation(request_type, transport: str = "grpc"):
             etag="etag_value",
             state=workstations.Workstation.State.STATE_STARTING,
             host="host_value",
+            kms_key="kms_key_value",
+            source_workstation="source_workstation_value",
         )
         response = client.get_workstation(request)
 
@@ -5917,6 +5951,8 @@ def test_get_workstation(request_type, transport: str = "grpc"):
     assert response.etag == "etag_value"
     assert response.state == workstations.Workstation.State.STATE_STARTING
     assert response.host == "host_value"
+    assert response.kms_key == "kms_key_value"
+    assert response.source_workstation == "source_workstation_value"
 
 
 def test_get_workstation_non_empty_request_with_auto_populated_field():
@@ -6055,6 +6091,8 @@ async def test_get_workstation_async(request_type, transport: str = "grpc_asynci
                 etag="etag_value",
                 state=workstations.Workstation.State.STATE_STARTING,
                 host="host_value",
+                kms_key="kms_key_value",
+                source_workstation="source_workstation_value",
             )
         )
         response = await client.get_workstation(request)
@@ -6074,6 +6112,8 @@ async def test_get_workstation_async(request_type, transport: str = "grpc_asynci
     assert response.etag == "etag_value"
     assert response.state == workstations.Workstation.State.STATE_STARTING
     assert response.host == "host_value"
+    assert response.kms_key == "kms_key_value"
+    assert response.source_workstation == "source_workstation_value"
 
 
 def test_get_workstation_field_headers():
@@ -6273,6 +6313,7 @@ def test_list_workstations_non_empty_request_with_auto_populated_field():
     request = workstations.ListWorkstationsRequest(
         parent="parent_value",
         page_token="page_token_value",
+        filter="filter_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6288,6 +6329,7 @@ def test_list_workstations_non_empty_request_with_auto_populated_field():
         request_msg = workstations.ListWorkstationsRequest(
             parent="parent_value",
             page_token="page_token_value",
+            filter="filter_value",
         )
         assert args[0] == request_msg
 
@@ -8431,6 +8473,7 @@ def test_start_workstation_non_empty_request_with_auto_populated_field():
     request = workstations.StartWorkstationRequest(
         name="name_value",
         etag="etag_value",
+        boost_config="boost_config_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8446,6 +8489,7 @@ def test_start_workstation_non_empty_request_with_auto_populated_field():
         request_msg = workstations.StartWorkstationRequest(
             name="name_value",
             etag="etag_value",
+            boost_config="boost_config_value",
         )
         assert args[0] == request_msg
 
@@ -9661,6 +9705,7 @@ def test_list_workstation_clusters_rest_required_fields(
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
+            "filter",
             "page_size",
             "page_token",
         )
@@ -9722,6 +9767,7 @@ def test_list_workstation_clusters_rest_unset_required_fields():
     assert set(unset_fields) == (
         set(
             (
+                "filter",
                 "pageSize",
                 "pageToken",
             )
@@ -10738,6 +10784,7 @@ def test_list_workstation_configs_rest_required_fields(
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
+            "filter",
             "page_size",
             "page_token",
         )
@@ -10799,6 +10846,7 @@ def test_list_workstation_configs_rest_unset_required_fields():
     assert set(unset_fields) == (
         set(
             (
+                "filter",
                 "pageSize",
                 "pageToken",
             )
@@ -12087,6 +12135,7 @@ def test_list_workstations_rest_required_fields(
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
+            "filter",
             "page_size",
             "page_token",
         )
@@ -12148,6 +12197,7 @@ def test_list_workstations_rest_unset_required_fields():
     assert set(unset_fields) == (
         set(
             (
+                "filter",
                 "pageSize",
                 "pageToken",
             )
@@ -14302,6 +14352,8 @@ async def test_get_workstation_cluster_empty_call_grpc_asyncio():
                 subnetwork="subnetwork_value",
                 control_plane_ip="control_plane_ip_value",
                 degraded=True,
+                workstation_authorization_url="workstation_authorization_url_value",
+                workstation_launch_url="workstation_launch_url_value",
             )
         )
         await client.get_workstation_cluster(request=None)
@@ -14441,8 +14493,12 @@ async def test_get_workstation_config_empty_call_grpc_asyncio():
                 uid="uid_value",
                 reconciling=True,
                 etag="etag_value",
+                max_usable_workstations=2488,
                 replica_zones=["replica_zones_value"],
                 degraded=True,
+                enable_audit_agent=True,
+                disable_tcp_connections=True,
+                grant_workstation_admin_role_on_create=True,
             )
         )
         await client.get_workstation_config(request=None)
@@ -14611,6 +14667,8 @@ async def test_get_workstation_empty_call_grpc_asyncio():
                 etag="etag_value",
                 state=workstations.Workstation.State.STATE_STARTING,
                 host="host_value",
+                kms_key="kms_key_value",
+                source_workstation="source_workstation_value",
             )
         )
         await client.get_workstation(request=None)
@@ -14902,6 +14960,8 @@ def test_get_workstation_cluster_rest_call_success(request_type):
             subnetwork="subnetwork_value",
             control_plane_ip="control_plane_ip_value",
             degraded=True,
+            workstation_authorization_url="workstation_authorization_url_value",
+            workstation_launch_url="workstation_launch_url_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -14927,6 +14987,10 @@ def test_get_workstation_cluster_rest_call_success(request_type):
     assert response.subnetwork == "subnetwork_value"
     assert response.control_plane_ip == "control_plane_ip_value"
     assert response.degraded is True
+    assert (
+        response.workstation_authorization_url == "workstation_authorization_url_value"
+    )
+    assert response.workstation_launch_url == "workstation_launch_url_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -15194,6 +15258,7 @@ def test_create_workstation_cluster_rest_call_success(request_type):
             "service_attachment_uri": "service_attachment_uri_value",
             "allowed_projects": ["allowed_projects_value1", "allowed_projects_value2"],
         },
+        "domain_config": {"domain": "domain_value"},
         "degraded": True,
         "conditions": [
             {
@@ -15207,6 +15272,10 @@ def test_create_workstation_cluster_rest_call_success(request_type):
                 ],
             }
         ],
+        "tags": {},
+        "gateway_config": {"http2_enabled": True},
+        "workstation_authorization_url": "workstation_authorization_url_value",
+        "workstation_launch_url": "workstation_launch_url_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -15431,6 +15500,7 @@ def test_update_workstation_cluster_rest_call_success(request_type):
             "service_attachment_uri": "service_attachment_uri_value",
             "allowed_projects": ["allowed_projects_value1", "allowed_projects_value2"],
         },
+        "domain_config": {"domain": "domain_value"},
         "degraded": True,
         "conditions": [
             {
@@ -15444,6 +15514,10 @@ def test_update_workstation_cluster_rest_call_success(request_type):
                 ],
             }
         ],
+        "tags": {},
+        "gateway_config": {"http2_enabled": True},
+        "workstation_authorization_url": "workstation_authorization_url_value",
+        "workstation_launch_url": "workstation_launch_url_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -15785,8 +15859,12 @@ def test_get_workstation_config_rest_call_success(request_type):
             uid="uid_value",
             reconciling=True,
             etag="etag_value",
+            max_usable_workstations=2488,
             replica_zones=["replica_zones_value"],
             degraded=True,
+            enable_audit_agent=True,
+            disable_tcp_connections=True,
+            grant_workstation_admin_role_on_create=True,
         )
 
         # Wrap the value into a proper Response obj
@@ -15808,8 +15886,12 @@ def test_get_workstation_config_rest_call_success(request_type):
     assert response.uid == "uid_value"
     assert response.reconciling is True
     assert response.etag == "etag_value"
+    assert response.max_usable_workstations == 2488
     assert response.replica_zones == ["replica_zones_value"]
     assert response.degraded is True
+    assert response.enable_audit_agent is True
+    assert response.disable_tcp_connections is True
+    assert response.grant_workstation_admin_role_on_create is True
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -16224,6 +16306,7 @@ def test_create_workstation_config_rest_call_success(request_type):
         "etag": "etag_value",
         "idle_timeout": {"seconds": 751, "nanos": 543},
         "running_timeout": {},
+        "max_usable_workstations": 2488,
         "host": {
             "gce_instance": {
                 "machine_type": "machine_type_value",
@@ -16244,16 +16327,51 @@ def test_create_workstation_config_rest_call_success(request_type):
                 },
                 "confidential_instance_config": {"enable_confidential_compute": True},
                 "boot_disk_size_gb": 1792,
+                "accelerators": [{"type_": "type__value", "count": 553}],
+                "boost_configs": [
+                    {
+                        "id": "id_value",
+                        "machine_type": "machine_type_value",
+                        "accelerators": {},
+                        "boot_disk_size_gb": 1792,
+                        "enable_nested_virtualization": True,
+                        "pool_size": 980,
+                    }
+                ],
+                "disable_ssh": True,
+                "vm_tags": {},
+                "startup_script_uri": "startup_script_uri_value",
+                "instance_metadata": {},
             }
         },
         "persistent_directories": [
             {
                 "gce_pd": {
                     "size_gb": 739,
+                    "max_size_gb": 1160,
                     "fs_type": "fs_type_value",
                     "disk_type": "disk_type_value",
                     "source_snapshot": "source_snapshot_value",
                     "reclaim_policy": 1,
+                    "archive_timeout": {},
+                },
+                "gce_hd": {
+                    "size_gb": 739,
+                    "max_size_gb": 1160,
+                    "source_snapshot": "source_snapshot_value",
+                    "reclaim_policy": 1,
+                    "archive_timeout": {},
+                },
+                "mount_path": "mount_path_value",
+            }
+        ],
+        "ephemeral_directories": [
+            {
+                "gce_pd": {
+                    "disk_type": "disk_type_value",
+                    "source_snapshot": "source_snapshot_value",
+                    "source_image": "source_image_value",
+                    "read_only": True,
                 },
                 "mount_path": "mount_path_value",
             }
@@ -16285,6 +16403,10 @@ def test_create_workstation_config_rest_call_success(request_type):
                 ],
             }
         ],
+        "enable_audit_agent": True,
+        "disable_tcp_connections": True,
+        "allowed_ports": [{"first": 552, "last": 436}],
+        "grant_workstation_admin_role_on_create": True,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -16502,6 +16624,7 @@ def test_update_workstation_config_rest_call_success(request_type):
         "etag": "etag_value",
         "idle_timeout": {"seconds": 751, "nanos": 543},
         "running_timeout": {},
+        "max_usable_workstations": 2488,
         "host": {
             "gce_instance": {
                 "machine_type": "machine_type_value",
@@ -16522,16 +16645,51 @@ def test_update_workstation_config_rest_call_success(request_type):
                 },
                 "confidential_instance_config": {"enable_confidential_compute": True},
                 "boot_disk_size_gb": 1792,
+                "accelerators": [{"type_": "type__value", "count": 553}],
+                "boost_configs": [
+                    {
+                        "id": "id_value",
+                        "machine_type": "machine_type_value",
+                        "accelerators": {},
+                        "boot_disk_size_gb": 1792,
+                        "enable_nested_virtualization": True,
+                        "pool_size": 980,
+                    }
+                ],
+                "disable_ssh": True,
+                "vm_tags": {},
+                "startup_script_uri": "startup_script_uri_value",
+                "instance_metadata": {},
             }
         },
         "persistent_directories": [
             {
                 "gce_pd": {
                     "size_gb": 739,
+                    "max_size_gb": 1160,
                     "fs_type": "fs_type_value",
                     "disk_type": "disk_type_value",
                     "source_snapshot": "source_snapshot_value",
                     "reclaim_policy": 1,
+                    "archive_timeout": {},
+                },
+                "gce_hd": {
+                    "size_gb": 739,
+                    "max_size_gb": 1160,
+                    "source_snapshot": "source_snapshot_value",
+                    "reclaim_policy": 1,
+                    "archive_timeout": {},
+                },
+                "mount_path": "mount_path_value",
+            }
+        ],
+        "ephemeral_directories": [
+            {
+                "gce_pd": {
+                    "disk_type": "disk_type_value",
+                    "source_snapshot": "source_snapshot_value",
+                    "source_image": "source_image_value",
+                    "read_only": True,
                 },
                 "mount_path": "mount_path_value",
             }
@@ -16563,6 +16721,10 @@ def test_update_workstation_config_rest_call_success(request_type):
                 ],
             }
         ],
+        "enable_audit_agent": True,
+        "disable_tcp_connections": True,
+        "allowed_ports": [{"first": 552, "last": 436}],
+        "grant_workstation_admin_role_on_create": True,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -16906,6 +17068,8 @@ def test_get_workstation_rest_call_success(request_type):
             etag="etag_value",
             state=workstations.Workstation.State.STATE_STARTING,
             host="host_value",
+            kms_key="kms_key_value",
+            source_workstation="source_workstation_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -16929,6 +17093,8 @@ def test_get_workstation_rest_call_success(request_type):
     assert response.etag == "etag_value"
     assert response.state == workstations.Workstation.State.STATE_STARTING
     assert response.host == "host_value"
+    assert response.kms_key == "kms_key_value"
+    assert response.source_workstation == "source_workstation_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -17335,8 +17501,19 @@ def test_create_workstation_rest_call_success(request_type):
         "start_time": {},
         "delete_time": {},
         "etag": "etag_value",
+        "persistent_directories": [{"mount_path": "mount_path_value", "size_gb": 739}],
         "state": 1,
         "host": "host_value",
+        "env": {},
+        "kms_key": "kms_key_value",
+        "source_workstation": "source_workstation_value",
+        "runtime_host": {
+            "gce_instance_host": {
+                "name": "name_value",
+                "id": "id_value",
+                "zone": "zone_value",
+            }
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -17551,8 +17728,19 @@ def test_update_workstation_rest_call_success(request_type):
         "start_time": {},
         "delete_time": {},
         "etag": "etag_value",
+        "persistent_directories": [{"mount_path": "mount_path_value", "size_gb": 739}],
         "state": 1,
         "host": "host_value",
+        "env": {},
+        "kms_key": "kms_key_value",
+        "source_workstation": "source_workstation_value",
+        "runtime_host": {
+            "gce_instance_host": {
+                "name": "name_value",
+                "id": "id_value",
+                "zone": "zone_value",
+            }
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency

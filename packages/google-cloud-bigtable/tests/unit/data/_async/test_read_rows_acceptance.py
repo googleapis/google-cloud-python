@@ -21,6 +21,7 @@ import mock
 import pytest
 
 from google.cloud.bigtable.data._cross_sync import CrossSync
+from google.cloud.bigtable.data._metrics import ActiveOperationMetric
 from google.cloud.bigtable.data.exceptions import InvalidChunk
 from google.cloud.bigtable.data.row import Row
 from google.cloud.bigtable_v2 import ReadRowsResponse
@@ -36,8 +37,11 @@ __CROSS_SYNC_OUTPUT__ = "tests.unit.data._sync_autogen.test_read_rows_acceptance
 class TestReadRowsAcceptanceAsync:
     @staticmethod
     @CrossSync.convert
-    def _get_operation_class():
-        return CrossSync._ReadRowsOperation
+    def _make_operation():
+        metric = ActiveOperationMetric("READ_ROWS")
+        op = CrossSync._ReadRowsOperation(mock.Mock(), mock.Mock(), 5, 5, metric)
+        op._remaining_count = None
+        return op
 
     @staticmethod
     @CrossSync.convert
@@ -80,13 +84,8 @@ class TestReadRowsAcceptanceAsync:
         async def _row_stream():
             yield ReadRowsResponse(chunks=chunks)
 
-        instance = mock.Mock()
-        instance._remaining_count = None
-        instance._last_yielded_row_key = None
-        chunker = self._get_operation_class().chunk_stream(
-            instance, self._coro_wrapper(_row_stream())
-        )
-        merger = self._get_operation_class().merge_rows(chunker)
+        chunker = self._make_operation().chunk_stream(self._coro_wrapper(_row_stream()))
+        merger = self._make_operation().merge_rows(chunker)
         results = []
         async for row in merger:
             results.append(row)
@@ -103,13 +102,10 @@ class TestReadRowsAcceptanceAsync:
 
         try:
             results = []
-            instance = mock.Mock()
-            instance._last_yielded_row_key = None
-            instance._remaining_count = None
-            chunker = self._get_operation_class().chunk_stream(
-                instance, self._coro_wrapper(_scenerio_stream())
+            chunker = self._make_operation().chunk_stream(
+                self._coro_wrapper(_scenerio_stream())
             )
-            merger = self._get_operation_class().merge_rows(chunker)
+            merger = self._make_operation().merge_rows(chunker)
             async for row in merger:
                 for cell in row:
                     cell_result = ReadRowsTest.Result(
@@ -196,13 +192,10 @@ class TestReadRowsAcceptanceAsync:
         async def _row_stream():
             yield ReadRowsResponse(last_scanned_row_key=b"a")
 
-        instance = mock.Mock()
-        instance._remaining_count = None
-        instance._last_yielded_row_key = b"b"
-        chunker = self._get_operation_class().chunk_stream(
-            instance, self._coro_wrapper(_row_stream())
-        )
-        merger = self._get_operation_class().merge_rows(chunker)
+        op = self._make_operation()
+        op._last_yielded_row_key = b"b"
+        chunker = op.chunk_stream(self._coro_wrapper(_row_stream()))
+        merger = self._make_operation().merge_rows(chunker)
         with pytest.raises(InvalidChunk):
             async for _ in merger:
                 pass

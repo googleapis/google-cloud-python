@@ -202,9 +202,9 @@ class CloudVmClusterProperties(proto.Message):
         state (google.cloud.oracledatabase_v1.types.CloudVmClusterProperties.State):
             Output only. State of the cluster.
         scan_listener_port_tcp (int):
-            Output only. SCAN listener port - TCP
+            Optional. SCAN listener port - TCP
         scan_listener_port_tcp_ssl (int):
-            Output only. SCAN listener port - TLS
+            Optional. SCAN listener port - TLS
         domain (str):
             Output only. Parent DNS domain where SCAN DNS
             and hosts names are qualified. ex:

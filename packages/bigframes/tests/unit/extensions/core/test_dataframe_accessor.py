@@ -96,16 +96,16 @@ def test_ai_generate(monkeypatch):
         output_schema={"res": "STRING"},
     )
 
-    assert result == (
-        df["text_input"],
-        {
-            "connection_id": "conn",
-            "endpoint": "endpoint",
-            "request_type": "dedicated",
-            "model_params": {"temp": 0.5},
-            "output_schema": {"res": "STRING"},
-        },
-    )
+    assert isinstance(result, tuple)
+    assert len(result) == 2
+    pd.testing.assert_series_equal(result[0], df["text_input"])
+    assert result[1] == {
+        "connection_id": "conn",
+        "endpoint": "endpoint",
+        "request_type": "dedicated",
+        "model_params": {"temp": 0.5},
+        "output_schema": {"res": "STRING"},
+    }
 
 
 def test_bigframes_ai_generate(scalar_types_df: bpd.DataFrame, monkeypatch):
@@ -147,15 +147,15 @@ def test_ai_generate_bool(monkeypatch):
         model_params={"temp": 0.5},
     )
 
-    assert result == (
-        df["text_input"],
-        {
-            "connection_id": "conn",
-            "endpoint": "endpoint",
-            "request_type": "dedicated",
-            "model_params": {"temp": 0.5},
-        },
-    )
+    assert isinstance(result, tuple)
+    assert len(result) == 2
+    pd.testing.assert_series_equal(result[0], df["text_input"])
+    assert result[1] == {
+        "connection_id": "conn",
+        "endpoint": "endpoint",
+        "request_type": "dedicated",
+        "model_params": {"temp": 0.5},
+    }
 
 
 def test_bigframes_ai_generate_bool(scalar_types_df: bpd.DataFrame, monkeypatch):
@@ -196,15 +196,15 @@ def test_ai_generate_int(monkeypatch):
         model_params={"temp": 0.5},
     )
 
-    assert result == (
-        df["text_input"],
-        {
-            "connection_id": "conn",
-            "endpoint": "endpoint",
-            "request_type": "dedicated",
-            "model_params": {"temp": 0.5},
-        },
-    )
+    assert isinstance(result, tuple)
+    assert len(result) == 2
+    pd.testing.assert_series_equal(result[0], df["text_input"])
+    assert result[1] == {
+        "connection_id": "conn",
+        "endpoint": "endpoint",
+        "request_type": "dedicated",
+        "model_params": {"temp": 0.5},
+    }
 
 
 def test_bigframes_ai_generate_int(scalar_types_df: bpd.DataFrame, monkeypatch):
@@ -245,15 +245,15 @@ def test_ai_generate_double(monkeypatch):
         model_params={"temp": 0.5},
     )
 
-    assert result == (
-        df["text_input"],
-        {
-            "connection_id": "conn",
-            "endpoint": "endpoint",
-            "request_type": "dedicated",
-            "model_params": {"temp": 0.5},
-        },
-    )
+    assert isinstance(result, tuple)
+    assert len(result) == 2
+    pd.testing.assert_series_equal(result[0], df["text_input"])
+    assert result[1] == {
+        "connection_id": "conn",
+        "endpoint": "endpoint",
+        "request_type": "dedicated",
+        "model_params": {"temp": 0.5},
+    }
 
 
 def test_bigframes_ai_generate_double(scalar_types_df: bpd.DataFrame, monkeypatch):

@@ -150,6 +150,10 @@ class ListCloudExadataInfrastructuresResponse(proto.Message):
             The list of Exadata Infrastructures.
         next_page_token (str):
             A token for fetching next page of response.
+        unreachable (MutableSequence[str]):
+            Unreachable locations when listing resources
+            across all locations using wildcard location
+            '-'.
     """
 
     @property
@@ -166,6 +170,10 @@ class ListCloudExadataInfrastructuresResponse(proto.Message):
     next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
     )
 
 
@@ -326,6 +334,10 @@ class ListCloudVmClustersResponse(proto.Message):
             The list of VM Clusters.
         next_page_token (str):
             A token to fetch the next page of results.
+        unreachable (MutableSequence[str]):
+            Unreachable locations when listing resources
+            across all locations using wildcard location
+            '-'.
     """
 
     @property
@@ -340,6 +352,10 @@ class ListCloudVmClustersResponse(proto.Message):
     next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
     )
 
 
@@ -886,6 +902,10 @@ class ListAutonomousDatabasesResponse(proto.Message):
         next_page_token (str):
             A token identifying a page of results the
             server should return.
+        unreachable (MutableSequence[str]):
+            Unreachable locations when listing resources
+            across all locations using wildcard location
+            '-'.
     """
 
     @property
@@ -902,6 +922,10 @@ class ListAutonomousDatabasesResponse(proto.Message):
     next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
     )
 
 
@@ -1129,8 +1153,9 @@ class SwitchoverAutonomousDatabaseRequest(proto.Message):
             following format:
             projects/{project}/locations/{location}/autonomousDatabases/{autonomous_database}.
         peer_autonomous_database (str):
-            Required. The peer database name to switch
-            over to.
+            Optional. The peer database name to switch
+            over to. Required for cross-region standby, and
+            must be omitted for in-region Data Guard.
     """
 
     name: str = proto.Field(
@@ -1152,8 +1177,9 @@ class FailoverAutonomousDatabaseRequest(proto.Message):
             following format:
             projects/{project}/locations/{location}/autonomousDatabases/{autonomous_database}.
         peer_autonomous_database (str):
-            Required. The peer database name to fail over
-            to.
+            Optional. The peer database name to fail over
+            to. Required for cross-region standby, and must
+            be omitted for in-region Data Guard.
     """
 
     name: str = proto.Field(
@@ -1588,6 +1614,10 @@ class ListExadbVmClustersResponse(proto.Message):
         next_page_token (str):
             A token identifying a page of results the
             server should return.
+        unreachable (MutableSequence[str]):
+            Unreachable locations when listing resources
+            across all locations using wildcard location
+            '-'.
     """
 
     @property
@@ -1604,6 +1634,10 @@ class ListExadbVmClustersResponse(proto.Message):
     next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
     )
 
 

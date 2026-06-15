@@ -60,6 +60,7 @@ class ExecutionSpec:
 
     # BigQuery specific options
     bigquery_config: Optional[BqComputeOptions] = None
+    cell_execution_count: Optional[int] = None
 
     def with_bq_labels(self, labels: Mapping[str, str]) -> ExecutionSpec:
         bq_config = self.bigquery_config or BqComputeOptions()
@@ -77,7 +78,18 @@ class ExecutionSpec:
             new_bq_config = new_bq_config.push_labels(
                 dict(self.bigquery_config.extra_query_labels)
             )
-        return dataclasses.replace(self, bigquery_config=new_bq_config)
+
+        cell_execution_count = self.cell_execution_count
+        if cell_execution_count is None:
+            from bigframes.core.utils import get_ipython_execution_count
+
+            cell_execution_count = get_ipython_execution_count()
+
+        return dataclasses.replace(
+            self,
+            bigquery_config=new_bq_config,
+            cell_execution_count=cell_execution_count,
+        )
 
 
 # Used internally by execution

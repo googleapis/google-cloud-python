@@ -40,6 +40,21 @@
                 "create_exascale_db_storage_vault"
               ]
             },
+            "CreateGoldengateConnection": {
+              "methods": [
+                "create_goldengate_connection"
+              ]
+            },
+            "CreateGoldengateConnectionAssignment": {
+              "methods": [
+                "create_goldengate_connection_assignment"
+              ]
+            },
+            "CreateGoldengateDeployment": {
+              "methods": [
+                "create_goldengate_deployment"
+              ]
+            },
             "CreateOdbNetwork": {
               "methods": [
                 "create_odb_network"
@@ -78,6 +93,21 @@
             "DeleteExascaleDbStorageVault": {
               "methods": [
                 "delete_exascale_db_storage_vault"
+              ]
+            },
+            "DeleteGoldengateConnection": {
+              "methods": [
+                "delete_goldengate_connection"
+              ]
+            },
+            "DeleteGoldengateConnectionAssignment": {
+              "methods": [
+                "delete_goldengate_connection_assignment"
+              ]
+            },
+            "DeleteGoldengateDeployment": {
+              "methods": [
+                "delete_goldengate_deployment"
               ]
             },
             "DeleteOdbNetwork": {
@@ -133,6 +163,41 @@
             "GetExascaleDbStorageVault": {
               "methods": [
                 "get_exascale_db_storage_vault"
+              ]
+            },
+            "GetGoldengateConnection": {
+              "methods": [
+                "get_goldengate_connection"
+              ]
+            },
+            "GetGoldengateConnectionAssignment": {
+              "methods": [
+                "get_goldengate_connection_assignment"
+              ]
+            },
+            "GetGoldengateConnectionType": {
+              "methods": [
+                "get_goldengate_connection_type"
+              ]
+            },
+            "GetGoldengateDeployment": {
+              "methods": [
+                "get_goldengate_deployment"
+              ]
+            },
+            "GetGoldengateDeploymentEnvironment": {
+              "methods": [
+                "get_goldengate_deployment_environment"
+              ]
+            },
+            "GetGoldengateDeploymentType": {
+              "methods": [
+                "get_goldengate_deployment_type"
+              ]
+            },
+            "GetGoldengateDeploymentVersion": {
+              "methods": [
+                "get_goldengate_deployment_version"
               ]
             },
             "GetOdbNetwork": {
@@ -240,6 +305,41 @@
                 "list_gi_versions"
               ]
             },
+            "ListGoldengateConnectionAssignments": {
+              "methods": [
+                "list_goldengate_connection_assignments"
+              ]
+            },
+            "ListGoldengateConnectionTypes": {
+              "methods": [
+                "list_goldengate_connection_types"
+              ]
+            },
+            "ListGoldengateConnections": {
+              "methods": [
+                "list_goldengate_connections"
+              ]
+            },
+            "ListGoldengateDeploymentEnvironments": {
+              "methods": [
+                "list_goldengate_deployment_environments"
+              ]
+            },
+            "ListGoldengateDeploymentTypes": {
+              "methods": [
+                "list_goldengate_deployment_types"
+              ]
+            },
+            "ListGoldengateDeploymentVersions": {
+              "methods": [
+                "list_goldengate_deployment_versions"
+              ]
+            },
+            "ListGoldengateDeployments": {
+              "methods": [
+                "list_goldengate_deployments"
+              ]
+            },
             "ListMinorVersions": {
               "methods": [
                 "list_minor_versions"
@@ -280,14 +380,29 @@
                 "start_autonomous_database"
               ]
             },
+            "StartGoldengateDeployment": {
+              "methods": [
+                "start_goldengate_deployment"
+              ]
+            },
             "StopAutonomousDatabase": {
               "methods": [
                 "stop_autonomous_database"
               ]
             },
+            "StopGoldengateDeployment": {
+              "methods": [
+                "stop_goldengate_deployment"
+              ]
+            },
             "SwitchoverAutonomousDatabase": {
               "methods": [
                 "switchover_autonomous_database"
+              ]
+            },
+            "TestGoldengateConnectionAssignment": {
+              "methods": [
+                "test_goldengate_connection_assignment"
               ]
             },
             "UpdateAutonomousDatabase": {
@@ -335,6 +450,21 @@
                 "create_exascale_db_storage_vault"
               ]
             },
+            "CreateGoldengateConnection": {
+              "methods": [
+                "create_goldengate_connection"
+              ]
+            },
+            "CreateGoldengateConnectionAssignment": {
+              "methods": [
+                "create_goldengate_connection_assignment"
+              ]
+            },
+            "CreateGoldengateDeployment": {
+              "methods": [
+                "create_goldengate_deployment"
+              ]
+            },
             "CreateOdbNetwork": {
               "methods": [
                 "create_odb_network"
@@ -373,6 +503,21 @@
             "DeleteExascaleDbStorageVault": {
               "methods": [
                 "delete_exascale_db_storage_vault"
+              ]
+            },
+            "DeleteGoldengateConnection": {
+              "methods": [
+                "delete_goldengate_connection"
+              ]
+            },
+            "DeleteGoldengateConnectionAssignment": {
+              "methods": [
+                "delete_goldengate_connection_assignment"
+              ]
+            },
+            "DeleteGoldengateDeployment": {
+              "methods": [
+                "delete_goldengate_deployment"
               ]
             },
             "DeleteOdbNetwork": {
@@ -428,6 +573,41 @@
             "GetExascaleDbStorageVault": {
               "methods": [
                 "get_exascale_db_storage_vault"
+              ]
+            },
+            "GetGoldengateConnection": {
+              "methods": [
+                "get_goldengate_connection"
+              ]
+            },
+            "GetGoldengateConnectionAssignment": {
+              "methods": [
+                "get_goldengate_connection_assignment"
+              ]
+            },
+            "GetGoldengateConnectionType": {
+              "methods": [
+                "get_goldengate_connection_type"
+              ]
+            },
+            "GetGoldengateDeployment": {
+              "methods": [
+                "get_goldengate_deployment"
+              ]
+            },
+            "GetGoldengateDeploymentEnvironment": {
+              "methods": [
+                "get_goldengate_deployment_environment"
+              ]
+            },
+            "GetGoldengateDeploymentType": {
+              "methods": [
+                "get_goldengate_deployment_type"
+              ]
+            },
+            "GetGoldengateDeploymentVersion": {
+              "methods": [
+                "get_goldengate_deployment_version"
               ]
             },
             "GetOdbNetwork": {
@@ -535,6 +715,41 @@
                 "list_gi_versions"
               ]
             },
+            "ListGoldengateConnectionAssignments": {
+              "methods": [
+                "list_goldengate_connection_assignments"
+              ]
+            },
+            "ListGoldengateConnectionTypes": {
+              "methods": [
+                "list_goldengate_connection_types"
+              ]
+            },
+            "ListGoldengateConnections": {
+              "methods": [
+                "list_goldengate_connections"
+              ]
+            },
+            "ListGoldengateDeploymentEnvironments": {
+              "methods": [
+                "list_goldengate_deployment_environments"
+              ]
+            },
+            "ListGoldengateDeploymentTypes": {
+              "methods": [
+                "list_goldengate_deployment_types"
+              ]
+            },
+            "ListGoldengateDeploymentVersions": {
+              "methods": [
+                "list_goldengate_deployment_versions"
+              ]
+            },
+            "ListGoldengateDeployments": {
+              "methods": [
+                "list_goldengate_deployments"
+              ]
+            },
             "ListMinorVersions": {
               "methods": [
                 "list_minor_versions"
@@ -575,14 +790,29 @@
                 "start_autonomous_database"
               ]
             },
+            "StartGoldengateDeployment": {
+              "methods": [
+                "start_goldengate_deployment"
+              ]
+            },
             "StopAutonomousDatabase": {
               "methods": [
                 "stop_autonomous_database"
               ]
             },
+            "StopGoldengateDeployment": {
+              "methods": [
+                "stop_goldengate_deployment"
+              ]
+            },
             "SwitchoverAutonomousDatabase": {
               "methods": [
                 "switchover_autonomous_database"
+              ]
+            },
+            "TestGoldengateConnectionAssignment": {
+              "methods": [
+                "test_goldengate_connection_assignment"
               ]
             },
             "UpdateAutonomousDatabase": {
@@ -630,6 +860,21 @@
                 "create_exascale_db_storage_vault"
               ]
             },
+            "CreateGoldengateConnection": {
+              "methods": [
+                "create_goldengate_connection"
+              ]
+            },
+            "CreateGoldengateConnectionAssignment": {
+              "methods": [
+                "create_goldengate_connection_assignment"
+              ]
+            },
+            "CreateGoldengateDeployment": {
+              "methods": [
+                "create_goldengate_deployment"
+              ]
+            },
             "CreateOdbNetwork": {
               "methods": [
                 "create_odb_network"
@@ -668,6 +913,21 @@
             "DeleteExascaleDbStorageVault": {
               "methods": [
                 "delete_exascale_db_storage_vault"
+              ]
+            },
+            "DeleteGoldengateConnection": {
+              "methods": [
+                "delete_goldengate_connection"
+              ]
+            },
+            "DeleteGoldengateConnectionAssignment": {
+              "methods": [
+                "delete_goldengate_connection_assignment"
+              ]
+            },
+            "DeleteGoldengateDeployment": {
+              "methods": [
+                "delete_goldengate_deployment"
               ]
             },
             "DeleteOdbNetwork": {
@@ -723,6 +983,41 @@
             "GetExascaleDbStorageVault": {
               "methods": [
                 "get_exascale_db_storage_vault"
+              ]
+            },
+            "GetGoldengateConnection": {
+              "methods": [
+                "get_goldengate_connection"
+              ]
+            },
+            "GetGoldengateConnectionAssignment": {
+              "methods": [
+                "get_goldengate_connection_assignment"
+              ]
+            },
+            "GetGoldengateConnectionType": {
+              "methods": [
+                "get_goldengate_connection_type"
+              ]
+            },
+            "GetGoldengateDeployment": {
+              "methods": [
+                "get_goldengate_deployment"
+              ]
+            },
+            "GetGoldengateDeploymentEnvironment": {
+              "methods": [
+                "get_goldengate_deployment_environment"
+              ]
+            },
+            "GetGoldengateDeploymentType": {
+              "methods": [
+                "get_goldengate_deployment_type"
+              ]
+            },
+            "GetGoldengateDeploymentVersion": {
+              "methods": [
+                "get_goldengate_deployment_version"
               ]
             },
             "GetOdbNetwork": {
@@ -830,6 +1125,41 @@
                 "list_gi_versions"
               ]
             },
+            "ListGoldengateConnectionAssignments": {
+              "methods": [
+                "list_goldengate_connection_assignments"
+              ]
+            },
+            "ListGoldengateConnectionTypes": {
+              "methods": [
+                "list_goldengate_connection_types"
+              ]
+            },
+            "ListGoldengateConnections": {
+              "methods": [
+                "list_goldengate_connections"
+              ]
+            },
+            "ListGoldengateDeploymentEnvironments": {
+              "methods": [
+                "list_goldengate_deployment_environments"
+              ]
+            },
+            "ListGoldengateDeploymentTypes": {
+              "methods": [
+                "list_goldengate_deployment_types"
+              ]
+            },
+            "ListGoldengateDeploymentVersions": {
+              "methods": [
+                "list_goldengate_deployment_versions"
+              ]
+            },
+            "ListGoldengateDeployments": {
+              "methods": [
+                "list_goldengate_deployments"
+              ]
+            },
             "ListMinorVersions": {
               "methods": [
                 "list_minor_versions"
@@ -870,14 +1200,29 @@
                 "start_autonomous_database"
               ]
             },
+            "StartGoldengateDeployment": {
+              "methods": [
+                "start_goldengate_deployment"
+              ]
+            },
             "StopAutonomousDatabase": {
               "methods": [
                 "stop_autonomous_database"
               ]
             },
+            "StopGoldengateDeployment": {
+              "methods": [
+                "stop_goldengate_deployment"
+              ]
+            },
             "SwitchoverAutonomousDatabase": {
               "methods": [
                 "switchover_autonomous_database"
+              ]
+            },
+            "TestGoldengateConnectionAssignment": {
+              "methods": [
+                "test_goldengate_connection_assignment"
               ]
             },
             "UpdateAutonomousDatabase": {

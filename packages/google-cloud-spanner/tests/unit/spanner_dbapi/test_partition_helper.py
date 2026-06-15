@@ -192,7 +192,7 @@ class TestPartitionHelper(unittest.TestCase):
 
         registered_classes = set(partition_helper._PROTO_CLASS_MAP.values())
         for cls in discovered_protobuf_classes:
-            with self.subTest(cls=cls):
+            with self.subTest(cls_name=cls.__name__):
                 self.assertIn(
                     cls,
                     registered_classes,

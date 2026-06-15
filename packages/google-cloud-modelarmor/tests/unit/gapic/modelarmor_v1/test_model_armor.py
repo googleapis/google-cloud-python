@@ -4333,6 +4333,326 @@ async def test_sanitize_model_response_field_headers_async():
     ) in kw["metadata"]
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.SanitizeUserPromptRequest(),
+        {},
+    ],
+)
+def test_stream_sanitize_user_prompt(request_type, transport: str = "grpc"):
+    client = ModelArmorClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+    requests = [request]
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.stream_sanitize_user_prompt), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = iter([service.SanitizeUserPromptResponse()])
+        response = client.stream_sanitize_user_prompt(iter(requests))
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert next(args[0]) == request
+
+    # Establish that the response is the type that we expect.
+    for message in response:
+        assert isinstance(message, service.SanitizeUserPromptResponse)
+
+
+def test_stream_sanitize_user_prompt_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ModelArmorClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.stream_sanitize_user_prompt
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.stream_sanitize_user_prompt
+        ] = mock_rpc
+        request = [{}]
+        client.stream_sanitize_user_prompt(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.stream_sanitize_user_prompt(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_stream_sanitize_user_prompt_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = ModelArmorAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.stream_sanitize_user_prompt
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.stream_sanitize_user_prompt
+        ] = mock_rpc
+
+        request = [{}]
+        await client.stream_sanitize_user_prompt(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.stream_sanitize_user_prompt(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.SanitizeUserPromptRequest(),
+        {},
+    ],
+)
+async def test_stream_sanitize_user_prompt_async(
+    request_type, transport: str = "grpc_asyncio"
+):
+    client = ModelArmorAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+    requests = [request]
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.stream_sanitize_user_prompt), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = mock.Mock(aio.StreamStreamCall, autospec=True)
+        call.return_value.read = mock.AsyncMock(
+            side_effect=[service.SanitizeUserPromptResponse()]
+        )
+        response = await client.stream_sanitize_user_prompt(iter(requests))
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert next(args[0]) == request
+
+    # Establish that the response is the type that we expect.
+    message = await response.read()
+    assert isinstance(message, service.SanitizeUserPromptResponse)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.SanitizeModelResponseRequest(),
+        {},
+    ],
+)
+def test_stream_sanitize_model_response(request_type, transport: str = "grpc"):
+    client = ModelArmorClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+    requests = [request]
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.stream_sanitize_model_response), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = iter([service.SanitizeModelResponseResponse()])
+        response = client.stream_sanitize_model_response(iter(requests))
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert next(args[0]) == request
+
+    # Establish that the response is the type that we expect.
+    for message in response:
+        assert isinstance(message, service.SanitizeModelResponseResponse)
+
+
+def test_stream_sanitize_model_response_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ModelArmorClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.stream_sanitize_model_response
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.stream_sanitize_model_response
+        ] = mock_rpc
+        request = [{}]
+        client.stream_sanitize_model_response(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.stream_sanitize_model_response(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_stream_sanitize_model_response_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = ModelArmorAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.stream_sanitize_model_response
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.stream_sanitize_model_response
+        ] = mock_rpc
+
+        request = [{}]
+        await client.stream_sanitize_model_response(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.stream_sanitize_model_response(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.SanitizeModelResponseRequest(),
+        {},
+    ],
+)
+async def test_stream_sanitize_model_response_async(
+    request_type, transport: str = "grpc_asyncio"
+):
+    client = ModelArmorAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+    requests = [request]
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.stream_sanitize_model_response), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = mock.Mock(aio.StreamStreamCall, autospec=True)
+        call.return_value.read = mock.AsyncMock(
+            side_effect=[service.SanitizeModelResponseResponse()]
+        )
+        response = await client.stream_sanitize_model_response(iter(requests))
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert next(args[0]) == request
+
+    # Establish that the response is the type that we expect.
+    message = await response.read()
+    assert isinstance(message, service.SanitizeModelResponseResponse)
+
+
 def test_list_templates_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -5982,6 +6302,56 @@ def test_sanitize_model_response_rest_unset_required_fields():
                 "modelResponseData",
             )
         )
+    )
+
+
+def test_stream_sanitize_user_prompt_rest_no_http_options():
+    client = ModelArmorClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = service.SanitizeUserPromptRequest()
+    requests = [request]
+    with pytest.raises(RuntimeError):
+        client.stream_sanitize_user_prompt(requests)
+
+
+def test_stream_sanitize_model_response_rest_no_http_options():
+    client = ModelArmorClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = service.SanitizeModelResponseRequest()
+    requests = [request]
+    with pytest.raises(RuntimeError):
+        client.stream_sanitize_model_response(requests)
+
+
+def test_stream_sanitize_user_prompt_rest_error():
+    client = ModelArmorClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # Since a `google.api.http` annotation is required for using a rest transport
+    # method, this should error.
+    with pytest.raises(NotImplementedError) as not_implemented_error:
+        client.stream_sanitize_user_prompt({})
+    assert (
+        "Method StreamSanitizeUserPrompt is not available over REST transport"
+        in str(not_implemented_error.value)
+    )
+
+
+def test_stream_sanitize_model_response_rest_error():
+    client = ModelArmorClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # Since a `google.api.http` annotation is required for using a rest transport
+    # method, this should error.
+    with pytest.raises(NotImplementedError) as not_implemented_error:
+        client.stream_sanitize_model_response({})
+    assert (
+        "Method StreamSanitizeModelResponse is not available over REST transport"
+        in str(not_implemented_error.value)
     )
 
 
@@ -8000,6 +8370,32 @@ def test_sanitize_model_response_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
+def test_stream_sanitize_user_prompt_rest_error():
+    client = ModelArmorClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    with pytest.raises(NotImplementedError) as not_implemented_error:
+        client.stream_sanitize_user_prompt({})
+    assert (
+        "Method StreamSanitizeUserPrompt is not available over REST transport"
+        in str(not_implemented_error.value)
+    )
+
+
+def test_stream_sanitize_model_response_rest_error():
+    client = ModelArmorClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    with pytest.raises(NotImplementedError) as not_implemented_error:
+        client.stream_sanitize_model_response({})
+    assert (
+        "Method StreamSanitizeModelResponse is not available over REST transport"
+        in str(not_implemented_error.value)
+    )
+
+
 def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationRequest):
     client = ModelArmorClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -8350,6 +8746,8 @@ def test_model_armor_base_transport():
         "update_floor_setting",
         "sanitize_user_prompt",
         "sanitize_model_response",
+        "stream_sanitize_user_prompt",
+        "stream_sanitize_model_response",
         "get_location",
         "list_locations",
     )
@@ -8640,6 +9038,12 @@ def test_model_armor_client_transport_session_collision(transport_name):
     assert session1 != session2
     session1 = client1.transport.sanitize_model_response._session
     session2 = client2.transport.sanitize_model_response._session
+    assert session1 != session2
+    session1 = client1.transport.stream_sanitize_user_prompt._session
+    session2 = client2.transport.stream_sanitize_user_prompt._session
+    assert session1 != session2
+    session1 = client1.transport.stream_sanitize_model_response._session
+    session2 = client2.transport.stream_sanitize_model_response._session
     assert session1 != session2
 
 

@@ -136,6 +136,22 @@ class EvaluationServiceRestInterceptor:
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
+            def pre_export_evaluation_results(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_export_evaluation_results(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_export_evaluation_runs(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_export_evaluation_runs(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_export_evaluations(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -261,6 +277,14 @@ class EvaluationServiceRestInterceptor:
                 return request, metadata
 
             def post_run_evaluation(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_run_evaluation_result_metrics(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_run_evaluation_result_metrics(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -641,6 +665,104 @@ class EvaluationServiceRestInterceptor:
         before they are sent to the EvaluationService server.
         """
         return request, metadata
+
+    def pre_export_evaluation_results(
+        self,
+        request: evaluation_service.ExportEvaluationResultsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        evaluation_service.ExportEvaluationResultsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for export_evaluation_results
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the EvaluationService server.
+        """
+        return request, metadata
+
+    def post_export_evaluation_results(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for export_evaluation_results
+
+        DEPRECATED. Please use the `post_export_evaluation_results_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the EvaluationService server but before
+        it is returned to user code. This `post_export_evaluation_results` interceptor runs
+        before the `post_export_evaluation_results_with_metadata` interceptor.
+        """
+        return response
+
+    def post_export_evaluation_results_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for export_evaluation_results
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the EvaluationService server but before it is returned to user code.
+
+        We recommend only using this `post_export_evaluation_results_with_metadata`
+        interceptor in new development instead of the `post_export_evaluation_results` interceptor.
+        When both interceptors are used, this `post_export_evaluation_results_with_metadata` interceptor runs after the
+        `post_export_evaluation_results` interceptor. The (possibly modified) response returned by
+        `post_export_evaluation_results` will be passed to
+        `post_export_evaluation_results_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_export_evaluation_runs(
+        self,
+        request: evaluation_service.ExportEvaluationRunsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        evaluation_service.ExportEvaluationRunsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for export_evaluation_runs
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the EvaluationService server.
+        """
+        return request, metadata
+
+    def post_export_evaluation_runs(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for export_evaluation_runs
+
+        DEPRECATED. Please use the `post_export_evaluation_runs_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the EvaluationService server but before
+        it is returned to user code. This `post_export_evaluation_runs` interceptor runs
+        before the `post_export_evaluation_runs_with_metadata` interceptor.
+        """
+        return response
+
+    def post_export_evaluation_runs_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for export_evaluation_runs
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the EvaluationService server but before it is returned to user code.
+
+        We recommend only using this `post_export_evaluation_runs_with_metadata`
+        interceptor in new development instead of the `post_export_evaluation_runs` interceptor.
+        When both interceptors are used, this `post_export_evaluation_runs_with_metadata` interceptor runs after the
+        `post_export_evaluation_runs` interceptor. The (possibly modified) response returned by
+        `post_export_evaluation_runs` will be passed to
+        `post_export_evaluation_runs_with_metadata`.
+        """
+        return response, metadata
 
     def pre_export_evaluations(
         self,
@@ -1443,6 +1565,55 @@ class EvaluationServiceRestInterceptor:
         `post_run_evaluation` interceptor. The (possibly modified) response returned by
         `post_run_evaluation` will be passed to
         `post_run_evaluation_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_run_evaluation_result_metrics(
+        self,
+        request: evaluation_service.RunEvaluationResultMetricsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        evaluation_service.RunEvaluationResultMetricsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for run_evaluation_result_metrics
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the EvaluationService server.
+        """
+        return request, metadata
+
+    def post_run_evaluation_result_metrics(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for run_evaluation_result_metrics
+
+        DEPRECATED. Please use the `post_run_evaluation_result_metrics_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the EvaluationService server but before
+        it is returned to user code. This `post_run_evaluation_result_metrics` interceptor runs
+        before the `post_run_evaluation_result_metrics_with_metadata` interceptor.
+        """
+        return response
+
+    def post_run_evaluation_result_metrics_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for run_evaluation_result_metrics
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the EvaluationService server but before it is returned to user code.
+
+        We recommend only using this `post_run_evaluation_result_metrics_with_metadata`
+        interceptor in new development instead of the `post_run_evaluation_result_metrics` interceptor.
+        When both interceptors are used, this `post_run_evaluation_result_metrics_with_metadata` interceptor runs after the
+        `post_run_evaluation_result_metrics` interceptor. The (possibly modified) response returned by
+        `post_run_evaluation_result_metrics` will be passed to
+        `post_run_evaluation_result_metrics_with_metadata`.
         """
         return response, metadata
 
@@ -3369,6 +3540,316 @@ class EvaluationServiceRestTransport(_BaseEvaluationServiceRestTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
+    class _ExportEvaluationResults(
+        _BaseEvaluationServiceRestTransport._BaseExportEvaluationResults,
+        EvaluationServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("EvaluationServiceRestTransport.ExportEvaluationResults")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: evaluation_service.ExportEvaluationResultsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the export evaluation results method over HTTP.
+
+            Args:
+                request (~.evaluation_service.ExportEvaluationResultsRequest):
+                    The request object. Request message for
+                [EvaluationService.ExportEvaluationResults][google.cloud.ces.v1beta.EvaluationService.ExportEvaluationResults].
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = _BaseEvaluationServiceRestTransport._BaseExportEvaluationResults._get_http_options()
+
+            request, metadata = self._interceptor.pre_export_evaluation_results(
+                request, metadata
+            )
+            transcoded_request = _BaseEvaluationServiceRestTransport._BaseExportEvaluationResults._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseEvaluationServiceRestTransport._BaseExportEvaluationResults._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseEvaluationServiceRestTransport._BaseExportEvaluationResults._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.ces_v1beta.EvaluationServiceClient.ExportEvaluationResults",
+                    extra={
+                        "serviceName": "google.cloud.ces.v1beta.EvaluationService",
+                        "rpcName": "ExportEvaluationResults",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = (
+                EvaluationServiceRestTransport._ExportEvaluationResults._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_export_evaluation_results(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_export_evaluation_results_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.ces_v1beta.EvaluationServiceClient.export_evaluation_results",
+                    extra={
+                        "serviceName": "google.cloud.ces.v1beta.EvaluationService",
+                        "rpcName": "ExportEvaluationResults",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _ExportEvaluationRuns(
+        _BaseEvaluationServiceRestTransport._BaseExportEvaluationRuns,
+        EvaluationServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("EvaluationServiceRestTransport.ExportEvaluationRuns")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: evaluation_service.ExportEvaluationRunsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the export evaluation runs method over HTTP.
+
+            Args:
+                request (~.evaluation_service.ExportEvaluationRunsRequest):
+                    The request object. Request message for
+                [EvaluationService.ExportEvaluationRuns][google.cloud.ces.v1beta.EvaluationService.ExportEvaluationRuns].
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = _BaseEvaluationServiceRestTransport._BaseExportEvaluationRuns._get_http_options()
+
+            request, metadata = self._interceptor.pre_export_evaluation_runs(
+                request, metadata
+            )
+            transcoded_request = _BaseEvaluationServiceRestTransport._BaseExportEvaluationRuns._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseEvaluationServiceRestTransport._BaseExportEvaluationRuns._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseEvaluationServiceRestTransport._BaseExportEvaluationRuns._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.ces_v1beta.EvaluationServiceClient.ExportEvaluationRuns",
+                    extra={
+                        "serviceName": "google.cloud.ces.v1beta.EvaluationService",
+                        "rpcName": "ExportEvaluationRuns",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = (
+                EvaluationServiceRestTransport._ExportEvaluationRuns._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_export_evaluation_runs(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_export_evaluation_runs_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.ces_v1beta.EvaluationServiceClient.export_evaluation_runs",
+                    extra={
+                        "serviceName": "google.cloud.ces.v1beta.EvaluationService",
+                        "rpcName": "ExportEvaluationRuns",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
 
     class _ExportEvaluations(
         _BaseEvaluationServiceRestTransport._BaseExportEvaluations,
@@ -5799,6 +6280,162 @@ class EvaluationServiceRestTransport(_BaseEvaluationServiceRestTransport):
                 )
             return resp
 
+    class _RunEvaluationResultMetrics(
+        _BaseEvaluationServiceRestTransport._BaseRunEvaluationResultMetrics,
+        EvaluationServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("EvaluationServiceRestTransport.RunEvaluationResultMetrics")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: evaluation_service.RunEvaluationResultMetricsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the run evaluation result
+            metrics method over HTTP.
+
+                Args:
+                    request (~.evaluation_service.RunEvaluationResultMetricsRequest):
+                        The request object. Request message for
+                    [EvaluationService.RunEvaluationResultMetrics][google.cloud.ces.v1beta.EvaluationService.RunEvaluationResultMetrics].
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
+
+                Returns:
+                    ~.operations_pb2.Operation:
+                        This resource represents a
+                    long-running operation that is the
+                    result of a network API call.
+
+            """
+
+            http_options = _BaseEvaluationServiceRestTransport._BaseRunEvaluationResultMetrics._get_http_options()
+
+            request, metadata = self._interceptor.pre_run_evaluation_result_metrics(
+                request, metadata
+            )
+            transcoded_request = _BaseEvaluationServiceRestTransport._BaseRunEvaluationResultMetrics._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseEvaluationServiceRestTransport._BaseRunEvaluationResultMetrics._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseEvaluationServiceRestTransport._BaseRunEvaluationResultMetrics._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.ces_v1beta.EvaluationServiceClient.RunEvaluationResultMetrics",
+                    extra={
+                        "serviceName": "google.cloud.ces.v1beta.EvaluationService",
+                        "rpcName": "RunEvaluationResultMetrics",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = EvaluationServiceRestTransport._RunEvaluationResultMetrics._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_run_evaluation_result_metrics(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = (
+                self._interceptor.post_run_evaluation_result_metrics_with_metadata(
+                    resp, response_metadata
+                )
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.ces_v1beta.EvaluationServiceClient.run_evaluation_result_metrics",
+                    extra={
+                        "serviceName": "google.cloud.ces.v1beta.EvaluationService",
+                        "rpcName": "RunEvaluationResultMetrics",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _TestPersonaVoice(
         _BaseEvaluationServiceRestTransport._BaseTestPersonaVoice,
         EvaluationServiceRestStub,
@@ -6857,6 +7494,28 @@ class EvaluationServiceRestTransport(_BaseEvaluationServiceRestTransport):
         )  # type: ignore
 
     @property
+    def export_evaluation_results(
+        self,
+    ) -> Callable[
+        [evaluation_service.ExportEvaluationResultsRequest], operations_pb2.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ExportEvaluationResults(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
+
+    @property
+    def export_evaluation_runs(
+        self,
+    ) -> Callable[
+        [evaluation_service.ExportEvaluationRunsRequest], operations_pb2.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ExportEvaluationRuns(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def export_evaluations(
         self,
     ) -> Callable[
@@ -7029,6 +7688,18 @@ class EvaluationServiceRestTransport(_BaseEvaluationServiceRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RunEvaluation(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def run_evaluation_result_metrics(
+        self,
+    ) -> Callable[
+        [evaluation_service.RunEvaluationResultMetricsRequest], operations_pb2.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._RunEvaluationResultMetrics(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def test_persona_voice(

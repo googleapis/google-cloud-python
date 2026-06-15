@@ -99,6 +99,11 @@ class JsonObject(dict):
         return json.dumps(self, sort_keys=True, separators=(",", ":"))
 
 
+_INTERVAL_PATTERN = re.compile(
+    r"^P(-?\d+Y)?(-?\d+M)?(-?\d+D)?(T(-?\d+H)?(-?\d+M)?(-?((\d+([.,]\d{1,9})?)|([.,]\d{1,9}))S)?)?$"
+)
+
+
 @dataclass
 class Interval:
     """Represents a Spanner INTERVAL type.
@@ -187,8 +192,7 @@ class Interval:
     @classmethod
     def from_str(cls, s: str) -> "Interval":
         """Parse an ISO8601 duration format string into an Interval."""
-        pattern = r"^P(-?\d+Y)?(-?\d+M)?(-?\d+D)?(T(-?\d+H)?(-?\d+M)?(-?((\d+([.,]\d{1,9})?)|([.,]\d{1,9}))S)?)?$"
-        match = re.match(pattern, s)
+        match = _INTERVAL_PATTERN.match(s)
         if not match or len(s) == 1:
             raise ValueError(f"Invalid interval format: {s}")
 
