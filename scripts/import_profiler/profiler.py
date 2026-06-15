@@ -200,7 +200,7 @@ def run_cprofile(target_module):
     
     # Run profiling in a clean subprocess to ensure cold-start
     result = subprocess.run(
-        [sys.executable, "-m", "cProfile", "-o", prof_file, "-c", f"import importlib; importlib.import_module('{target_module}')"],
+        [sys.executable, "-m", "cProfile", "-o", prof_file, "-c", f"import importlib; importlib.import_module({json.dumps(target_module)})"],
         capture_output=True, text=True
     )
     if result.returncode != 0:
