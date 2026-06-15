@@ -90,8 +90,18 @@ jobs:
         DEFAULT_FAIL_UNDER: 99
       run: |
         if [ -d .coverage-results ]; then
-          find .coverage-results -type f -name '.coverage*' -exec mv {} . \;
-          coverage combine
+          # Unzip any zipped coverage results
+          find .coverage-results -type f -name '*.zip' -exec unzip -o {} \;
+
+          # Find all coverage files and combine them.
+          # We find files starting with .coverage (excluding .coveragerc)
+          coverage_files=$(find .coverage-results . -type f -name '.coverage*' ! -name '.coveragerc')
+          if [ -n "${coverage_files}" ]; then
+            coverage combine ${coverage_files}
+          else
+            echo "Error: No coverage files found to combine."
+            exit 1
+          fi
 
           # Find all modified packages
           modified_packages=$(git diff --name-only HEAD~1 -- packages | cut -d/ -f1,2 | sort -u)
