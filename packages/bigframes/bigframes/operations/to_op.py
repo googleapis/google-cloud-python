@@ -23,7 +23,7 @@ import bigframes.dtypes as dtypes
 from bigframes._config import options
 from bigframes.functions import Udf
 from bigframes.functions.udf_def import BigqueryUdf, PythonUdf
-from bigframes.operations import remote_function_ops
+from bigframes.operations import base_ops, remote_function_ops
 
 
 @dataclasses.dataclass(frozen=True)
@@ -73,21 +73,43 @@ class CallableExpression(ex.Expression):
 
         All args are expected to be column references, or scalars.
         """
-        bindings = {}
+        return self.bind_partial(*args, _offset=0, **kwargs).expr
+
+    def bind_partial(
+        self,
+        *args,
+        _offset: int = 0,
+        **kwargs,
+    ) -> CallableExpression:
+        """
+        Bind a subset of arguments and return a new CallableExpression with the remaining unbound arguments.
+        """
+        bindings: dict[typing.Hashable, ex.Expression] = {}
         pos_idx = 0
+        allowed_params = self.arg_specs[_offset:]
+        allowed_names = {spec.name for spec in allowed_params}
+
+        # Validate unexpected keyword arguments
+        for key in kwargs:
+            if key not in allowed_names:
+                raise TypeError(f"got an unexpected keyword argument '{key}'")
 
         def to_expr(val):
             if isinstance(val, ex.Expression):
                 return val
             return ex.const(val)
 
-        for spec in self.arg_specs:
+        for spec in allowed_params:
             if spec.is_varargs:
                 raise NotImplementedError(
                     "varargs in compiled python functions is not supported"
                 )
 
             if pos_idx < len(args):
+                if spec.name in kwargs:
+                    raise TypeError(
+                        f"got multiple values for keyword argument '{spec.name}'"
+                    )
                 bindings[spec.name] = to_expr(args[pos_idx])
                 pos_idx += 1
             elif spec.name in kwargs:
@@ -99,10 +121,12 @@ class CallableExpression(ex.Expression):
 
         if pos_idx < len(args):
             raise TypeError(
-                f"too many positional arguments: expected {len(self.arg_specs)}, got {len(args)}"
+                f"too many positional arguments: expected {len(allowed_params)}, got {len(args)}"
             )
 
-        return self.expr.bind_variables(bindings)
+        new_expr = self.expr.bind_variables(bindings, allow_partial_bindings=True)
+        remaining_specs = list(self.arg_specs[:_offset])
+        return CallableExpression(expr=new_expr, arg_specs=remaining_specs)
 
     @property
     def column_references(self) -> typing.Tuple[ids.ColumnId, ...]:
@@ -166,6 +190,7 @@ def func_to_expr(op, unpack_mode: bool = False) -> CallableExpression:
     Convert various bigframes, python functions into bigframes CallableExpression.
     """
     if isinstance(op, Udf):
+        bq_op: base_ops.NaryOp
         if isinstance(op.udf_def, BigqueryUdf):
             bq_op = remote_function_ops.RemoteFunctionOp(function_def=op.udf_def)
         elif isinstance(op.udf_def, PythonUdf):

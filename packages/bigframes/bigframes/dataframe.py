@@ -4743,35 +4743,8 @@ class DataFrame:
                 )
 
                 # Bind the extra arguments (args and kwargs) starting from parameter 1
-                bindings = {}
-                # Positional arguments:
-                for idx, val in enumerate(args):
-                    param_name = callable_expr.arg_specs[idx + 1].name
-                    bindings[param_name] = val
-                # Keyword arguments:
-                for key, val in kwargs.items():
-                    bindings[key] = val
-
-                # Bind defaults for other parameters (excluding the first 'row' parameter)
-                for spec in callable_expr.arg_specs[1:]:
-                    if (
-                        spec.name not in bindings
-                        and spec.default_value is not inspect.Parameter.empty
-                    ):
-                        bindings[spec.name] = spec.default_value
-
-                # Wrap all values in bindings as expressions
-                def to_expr(val):
-                    if isinstance(val, ex.Expression):
-                        return val
-                    return ex.const(val)
-
-                bindings = {k: to_expr(v) for k, v in bindings.items()}
-
-                # Now bind these variables in the expression!
-                expr = callable_expr.expr.bind_variables(
-                    bindings, allow_partial_bindings=True
-                )
+                callable_expr = callable_expr.bind_partial(*args, _offset=1, **kwargs)
+                expr = callable_expr.expr
 
                 # Now bind the remaining free variables to the DataFrame columns:
                 col_bindings = {}
@@ -4843,8 +4816,16 @@ class DataFrame:
                 )
 
                 # Apply the function
+                expr = ops.func_to_expr(func).expr
+                if not (
+                    isinstance(expr, ex.OpExpression)
+                    and isinstance(expr.op, ops.NaryOp)
+                ):
+                    raise TypeError(
+                        f"Expected OpExpression with NaryOp, got {expr}"
+                    )
                 result_series = rows_as_json_series._apply_nary_op(
-                    ops.func_to_expr(func).expr.op,
+                    expr.op,
                     list(args),
                 )
 

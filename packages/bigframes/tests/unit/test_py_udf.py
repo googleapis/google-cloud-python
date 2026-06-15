@@ -127,3 +127,124 @@ def test_series_combine_transpile(
     )
 
     assert_series_equal(bf_result, pd_result)
+
+
+def test_dataframe_apply_axis_1_transpile_with_defaults(
+    scalars_df_index,
+    scalars_pandas_df_index,
+):
+    columns = ["int64_too", "int64_col"]
+
+    def foo(input, x=10, y=5):
+        return input.int64_too + input.int64_col + x + y
+
+    bf_result = scalars_df_index[columns].apply(foo, axis=1).to_pandas()
+    pd_result = (
+        scalars_pandas_df_index[columns].apply(foo, axis=1).astype("Int64")
+    )
+
+    assert_series_equal(bf_result, pd_result)
+
+
+def test_dataframe_apply_axis_1_transpile_with_args(
+    scalars_df_index,
+    scalars_pandas_df_index,
+):
+    columns = ["int64_too", "int64_col"]
+
+    def foo(input, x, y=5):
+        return input.int64_too + input.int64_col + x + y
+
+    bf_result = (
+        scalars_df_index[columns].apply(foo, axis=1, args=(12,), y=20).to_pandas()
+    )
+    pd_result = (
+        scalars_pandas_df_index[columns]
+        .apply(foo, axis=1, args=(12,), y=20)
+        .astype("Int64")
+    )
+
+    assert_series_equal(bf_result, pd_result)
+
+
+def test_dataframe_apply_axis_1_transpile_invalid_bindings(
+    scalars_df_index,
+):
+    columns = ["int64_too", "int64_col"]
+
+    def foo(input, x, y=5):
+        return input.int64_too + input.int64_col + x + y
+
+    # 1. Unexpected keyword argument
+    with pytest.raises(TypeError, match="got an unexpected keyword argument 'z'"):
+        scalars_df_index[columns].apply(foo, axis=1, args=(10,), z=20)
+
+    # 2. Multiple values for keyword argument 'x'
+    with pytest.raises(TypeError, match="got multiple values for keyword argument 'x'"):
+        scalars_df_index[columns].apply(foo, axis=1, args=(10,), x=20)
+
+    # 3. Too many positional arguments
+    with pytest.raises(
+        TypeError, match="too many positional arguments: expected 2, got 3"
+    ):
+        scalars_df_index[columns].apply(foo, axis=1, args=(10, 20, 30))
+
+    # 4. Missing required argument 'x'
+    with pytest.raises(TypeError, match="missing required argument: 'x'"):
+        scalars_df_index[columns].apply(foo, axis=1)
+
+
+def test_series_apply_transpile(
+    scalars_df_index,
+    scalars_pandas_df_index,
+):
+    def foo(x, y=10):
+        return x * 2 + y
+
+    bf_result = scalars_df_index["int64_col"].apply(foo, args=(5,)).to_pandas()
+    pd_result = (
+        scalars_pandas_df_index["int64_col"]
+        .apply(foo, args=(5,))
+        .astype("Int64")
+    )
+
+    assert_series_equal(bf_result, pd_result)
+
+
+def test_series_apply_transpile_invalid_bindings(
+    scalars_df_index,
+):
+    def foo(x, y):
+        return x + y
+
+    # Too many positional args: foo takes 2 args (x, y), we pass self and 2 more args (total 3 positional)
+    with pytest.raises(
+        TypeError, match="too many positional arguments: expected 2, got 3"
+    ):
+        scalars_df_index["int64_col"].apply(foo, args=(10, 20))
+
+    # Missing required argument: foo takes 2 args, we only pass self (so y is missing)
+    with pytest.raises(TypeError, match="missing required argument: 'y'"):
+        scalars_df_index["int64_col"].apply(foo)
+
+
+def test_transpilation_unsupported_ops_raise(
+    scalars_df_index,
+):
+    def foo_with_if(x):
+        if x > 0:
+            return x
+        return -x
+
+    with pytest.raises(ValueError, match="Unsupported opcode: POP_JUMP_IF"):
+        scalars_df_index["int64_col"].apply(foo_with_if)
+
+    def foo_with_loop(x):
+        total = 0
+        for i in range(x):
+            total += i
+        return total
+
+    with pytest.raises(ValueError, match="Unsupported opcode:"):
+        scalars_df_index["int64_col"].apply(foo_with_loop)
+
