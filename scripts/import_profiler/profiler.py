@@ -174,7 +174,7 @@ def run_trace(target_module):
     trace_file = f"import_trace_{target_module.replace('.', '_')}.log"
     print(f"Generating importtime trace log for {target_module} -> {trace_file}...")
     
-    # We run: python -X importtime -c "import <module>"
+    # We run: python -X importtime -c "import importlib; importlib.import_module(...)"
     result = subprocess.run(
         [sys.executable, "-X", "importtime", "-c", f"import importlib; importlib.import_module({json.dumps(target_module)})"],
         capture_output=True, text=True
@@ -222,7 +222,7 @@ def run_mprofile(target_module):
         "import tracemalloc\n"
         "import importlib\n"
         "tracemalloc.start()\n"
-        f"importlib.import_module('{target_module}')\n"
+        f"importlib.import_module({json.dumps(target_module)})\n"
         "snapshot = tracemalloc.take_snapshot()\n"
         "tracemalloc.stop()\n"
         "top_stats = snapshot.statistics('lineno')\n"
