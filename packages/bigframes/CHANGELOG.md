@@ -4,6 +4,25 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
+## [2.43.0](https://github.com/googleapis/google-cloud-python/compare/bigframes-v2.42.0...bigframes-v2.43.0) (2026-06-12)
+
+
+### Documentation
+
+* add a notebook explaining bqsql magics cell chaining (#17216) ([1a0de4a7701b7fdf4c2593b1960f1194ebc49793](https://github.com/googleapis/google-cloud-python/commit/1a0de4a7701b7fdf4c2593b1960f1194ebc49793))
+
+
+### Features
+
+* add `bigframes.bigquery.bit_count` and conversion scalar function (#17433) ([7f29823fadb3cff42dbe666f8c7aa33bab3c7021](https://github.com/googleapis/google-cloud-python/commit/7f29823fadb3cff42dbe666f8c7aa33bab3c7021))
+
+
+### Bug Fixes
+
+* preserve aliases on cast columns and fix star selection in sqlglot (#17394) (#17455) ([145034a345eb3e14ea3f23dfcafa3d2409a09067](https://github.com/googleapis/google-cloud-python/commit/145034a345eb3e14ea3f23dfcafa3d2409a09067))
+* bump pyarrow from 15.0.2 to 23.0.1 in /packages/bigframes (#17386) ([f59c2b2aa61316cf04b650933036ef50f6a1f08c](https://github.com/googleapis/google-cloud-python/commit/f59c2b2aa61316cf04b650933036ef50f6a1f08c))
+* improve error message when unescaped `{` are found in SQL cells (#17346) ([3a90cc8e867c8a2d2f8060858fde9eda94f80a54](https://github.com/googleapis/google-cloud-python/commit/3a90cc8e867c8a2d2f8060858fde9eda94f80a54))
+
 ## [2.42.0](https://github.com/googleapis/google-cloud-python/compare/bigframes-v2.41.0...bigframes-v2.42.0) (2026-06-08)
 
 

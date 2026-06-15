@@ -36,7 +36,7 @@ if TYPE_CHECKING:  # pragma: NO COVER
 else:
     try:
         from aiohttp import ClientTimeout
-    except (ImportError, AttributeError):
+    except (ImportError, AttributeError):  # pragma: NO COVER
         ClientTimeout = None
 
 _LOGGER = logging.getLogger(__name__)
@@ -203,3 +203,83 @@ class Request(transport.Request):
         if not self._closed and self._session:
             await self._session.close()
         self._closed = True
+
+    def _clone(self) -> "Request":
+        """Creates an independent copy of this request adapter.
+
+        Clones the connection settings, trace configurations, and session defaults
+        (headers, cookies, basic auth, and timeouts).
+
+        Only standard `aiohttp.TCPConnector` and `aiohttp.UnixConnector` connectors
+        are supported. The DNS resolver is not copied to avoid closing shared resolver
+        resources.
+
+        Returns:
+            google.auth.aio.transport.aiohttp.Request: A new request adapter.
+
+        Raises:
+            google.auth.exceptions.TransportError: If the transport is closed, or if the
+                session uses an unsupported connector.
+        """
+        if self._closed:
+            raise exceptions.TransportError("Cannot clone a closed transport.")
+
+        if not self._session:
+            new_session = aiohttp.ClientSession(
+                auto_decompress=False,
+                trust_env=True,
+            )
+            return Request(session=new_session)
+
+        session_kwargs: dict = {
+            "auto_decompress": False,
+            "trust_env": getattr(self._session, "_trust_env", True),
+        }
+
+        # Copy underlying connection pool settings (SSL context, IP bindings, limits).
+        orig_connector = getattr(self._session, "_connector", None)
+        if orig_connector and not orig_connector.closed:
+            if isinstance(orig_connector, aiohttp.TCPConnector):
+                # We explicitly do not copy the resolver. The connector
+                # owns the resolver, and closing the cloned session would
+                # close the shared resolver, breaking the original session.
+                session_kwargs["connector"] = aiohttp.TCPConnector(
+                    ssl=getattr(orig_connector, "_ssl", None),  # type: ignore
+                    limit=getattr(orig_connector, "_limit", 100),
+                    limit_per_host=getattr(orig_connector, "_limit_per_host", 0),
+                    force_close=getattr(orig_connector, "_force_close", False),
+                    local_addr=getattr(orig_connector, "_local_addr", None),
+                )
+            elif getattr(aiohttp, "UnixConnector", None) and isinstance(
+                orig_connector, getattr(aiohttp, "UnixConnector")
+            ):
+                path = getattr(orig_connector, "_path", None)
+                if path:
+                    session_kwargs["connector"] = aiohttp.UnixConnector(
+                        path=path,
+                        limit=getattr(orig_connector, "_limit", 100),
+                        force_close=getattr(orig_connector, "_force_close", False),
+                    )
+            else:
+                raise exceptions.TransportError(
+                    f"Unsupported connector type for cloning: {type(orig_connector)}"
+                )
+
+        # Preserve distributed tracing configurations.
+        trace_configs = getattr(self._session, "_trace_configs", None)
+        if trace_configs:
+            session_kwargs["trace_configs"] = list(trace_configs)
+
+        # Copy session-level defaults (headers, cookies, auth, timeout).
+        for attr_name, kwarg_name in [
+            ("_default_headers", "headers"),
+            ("_cookie_jar", "cookie_jar"),
+            ("_default_auth", "auth"),
+            ("_timeout", "timeout"),
+            ("_json_serialize", "json_serialize"),
+        ]:
+            val = getattr(self._session, attr_name, None)
+            if val is not None:
+                session_kwargs[kwarg_name] = val
+
+        return Request(session=aiohttp.ClientSession(**session_kwargs))  # type: ignore

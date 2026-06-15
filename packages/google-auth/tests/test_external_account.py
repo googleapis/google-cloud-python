@@ -27,10 +27,8 @@ from google.auth import transport
 from google.auth.credentials import DEFAULT_UNIVERSE_DOMAIN
 from google.auth.credentials import TokenState
 
-IMPERSONATE_ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE = (
-    "gl-python/3.7 auth/1.1 auth-request-type/at cred-type/imp"
-)
-LANG_LIBRARY_METRICS_HEADER_VALUE = "gl-python/3.7 auth/1.1"
+IMPERSONATE_ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE = "gl-python/<python-version> auth/<library-version> auth-request-type/at cred-type/imp"
+LANG_LIBRARY_METRICS_HEADER_VALUE = "gl-python/<python-version> auth/<library-version>"
 
 CLIENT_ID = "username"
 CLIENT_SECRET = "password"
@@ -686,7 +684,7 @@ class TestCredentials(object):
         )
         headers = {
             "Content-Type": "application/x-www-form-urlencoded",
-            "x-goog-api-client": "gl-python/3.7 auth/1.1 google-byoid-sdk sa-impersonation/false config-lifetime/false",
+            "x-goog-api-client": "gl-python/<python-version> auth/<library-version> google-byoid-sdk sa-impersonation/false config-lifetime/false",
         }
         request_data = {
             "grant_type": "urn:ietf:params:oauth:grant-type:token-exchange",
@@ -751,7 +749,7 @@ class TestCredentials(object):
         )
         headers = {
             "Content-Type": "application/x-www-form-urlencoded",
-            "x-goog-api-client": "gl-python/3.7 auth/1.1 google-byoid-sdk sa-impersonation/false config-lifetime/false",
+            "x-goog-api-client": "gl-python/<python-version> auth/<library-version> google-byoid-sdk sa-impersonation/false config-lifetime/false",
         }
         request_data = {
             "grant_type": "urn:ietf:params:oauth:grant-type:token-exchange",
@@ -790,7 +788,7 @@ class TestCredentials(object):
         )
         headers = {
             "Content-Type": "application/x-www-form-urlencoded",
-            "x-goog-api-client": "gl-python/3.7 auth/1.1 google-byoid-sdk sa-impersonation/false config-lifetime/false",
+            "x-goog-api-client": "gl-python/<python-version> auth/<library-version> google-byoid-sdk sa-impersonation/false config-lifetime/false",
         }
         request_data = {
             "grant_type": "urn:ietf:params:oauth:grant-type:token-exchange",
@@ -832,7 +830,7 @@ class TestCredentials(object):
         headers = {
             "Content-Type": "application/x-www-form-urlencoded",
             "Authorization": "Basic {}".format(BASIC_AUTH_ENCODING),
-            "x-goog-api-client": "gl-python/3.7 auth/1.1 google-byoid-sdk sa-impersonation/false config-lifetime/false",
+            "x-goog-api-client": "gl-python/<python-version> auth/<library-version> google-byoid-sdk sa-impersonation/false config-lifetime/false",
         }
         request_data = {
             "grant_type": "urn:ietf:params:oauth:grant-type:token-exchange",
@@ -874,7 +872,7 @@ class TestCredentials(object):
         headers = {
             "Content-Type": "application/x-www-form-urlencoded",
             "Authorization": "Basic {}".format(BASIC_AUTH_ENCODING),
-            "x-goog-api-client": "gl-python/3.7 auth/1.1 google-byoid-sdk sa-impersonation/false config-lifetime/false",
+            "x-goog-api-client": "gl-python/<python-version> auth/<library-version> google-byoid-sdk sa-impersonation/false config-lifetime/false",
         }
         request_data = {
             "grant_type": "urn:ietf:params:oauth:grant-type:token-exchange",
@@ -919,7 +917,7 @@ class TestCredentials(object):
         token_response = self.SUCCESS_RESPONSE.copy()
         token_headers = {
             "Content-Type": "application/x-www-form-urlencoded",
-            "x-goog-api-client": "gl-python/3.7 auth/1.1 google-byoid-sdk sa-impersonation/true config-lifetime/false",
+            "x-goog-api-client": "gl-python/<python-version> auth/<library-version> google-byoid-sdk sa-impersonation/true config-lifetime/false",
         }
         token_request_data = {
             "grant_type": "urn:ietf:params:oauth:grant-type:token-exchange",
@@ -1028,6 +1026,37 @@ class TestCredentials(object):
             is credentials._impersonated_credentials._rab_manager
         )
 
+    def test_cached_token_initializes_impersonated_credentials(self):
+        # Initialize credentials with impersonation.
+        credentials = self.make_credentials(
+            service_account_impersonation_url=self.SERVICE_ACCOUNT_IMPERSONATION_URL,
+            scopes=self.SCOPES,
+        )
+
+        assert credentials._impersonated_credentials is None
+
+        # Simulate cached token by setting it directly.
+        credentials.token = "CACHED_SA_TOKEN"
+        credentials.expiry = _helpers.utcnow() + datetime.timedelta(seconds=3600)
+
+        assert credentials.token == "CACHED_SA_TOKEN"
+
+        request = self.make_mock_request(status=http_client.OK, data={})
+
+        # Mock RAB refresh on ImpersonatedCredentials to verify delegation.
+        with mock.patch(
+            "google.auth.impersonated_credentials.Credentials._maybe_start_regional_access_boundary_refresh"
+        ) as mock_rab_refresh:
+            headers = {}
+            credentials.before_request(request, "GET", "https://example.com", headers)
+
+            assert credentials._impersonated_credentials is not None
+            assert credentials._impersonated_credentials.token == "CACHED_SA_TOKEN"
+            assert credentials._impersonated_credentials.expiry == credentials.expiry
+
+            # Verify delegation occurred.
+            mock_rab_refresh.assert_called_once_with(request, "https://example.com")
+
     @mock.patch(
         "google.auth.metrics.token_request_access_token_impersonate",
         return_value=IMPERSONATE_ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE,
@@ -1059,7 +1088,7 @@ class TestCredentials(object):
         token_response = self.SUCCESS_RESPONSE.copy()
         token_headers = {
             "Content-Type": "application/x-www-form-urlencoded",
-            "x-goog-api-client": "gl-python/3.7 auth/1.1 google-byoid-sdk sa-impersonation/true config-lifetime/false",
+            "x-goog-api-client": "gl-python/<python-version> auth/<library-version> google-byoid-sdk sa-impersonation/true config-lifetime/false",
         }
         token_request_data = {
             "grant_type": "urn:ietf:params:oauth:grant-type:token-exchange",
@@ -1142,7 +1171,7 @@ class TestCredentials(object):
         token_response = self.SUCCESS_RESPONSE.copy()
         token_headers = {
             "Content-Type": "application/x-www-form-urlencoded",
-            "x-goog-api-client": "gl-python/3.7 auth/1.1 google-byoid-sdk sa-impersonation/true config-lifetime/false",
+            "x-goog-api-client": "gl-python/<python-version> auth/<library-version> google-byoid-sdk sa-impersonation/true config-lifetime/false",
         }
         token_request_data = {
             "grant_type": "urn:ietf:params:oauth:grant-type:token-exchange",
@@ -1213,7 +1242,7 @@ class TestCredentials(object):
     ):
         headers = {
             "Content-Type": "application/x-www-form-urlencoded",
-            "x-goog-api-client": "gl-python/3.7 auth/1.1 google-byoid-sdk sa-impersonation/false config-lifetime/false",
+            "x-goog-api-client": "gl-python/<python-version> auth/<library-version> google-byoid-sdk sa-impersonation/false config-lifetime/false",
         }
         request_data = {
             "grant_type": "urn:ietf:params:oauth:grant-type:token-exchange",
@@ -1250,7 +1279,7 @@ class TestCredentials(object):
     ):
         headers = {
             "Content-Type": "application/x-www-form-urlencoded",
-            "x-goog-api-client": "gl-python/3.7 auth/1.1 google-byoid-sdk sa-impersonation/false config-lifetime/false",
+            "x-goog-api-client": "gl-python/<python-version> auth/<library-version> google-byoid-sdk sa-impersonation/false config-lifetime/false",
         }
         request_data = {
             "grant_type": "urn:ietf:params:oauth:grant-type:token-exchange",
@@ -1349,7 +1378,7 @@ class TestCredentials(object):
         headers = {
             "Content-Type": "application/x-www-form-urlencoded",
             "Authorization": "Basic {}".format(BASIC_AUTH_ENCODING),
-            "x-goog-api-client": "gl-python/3.7 auth/1.1 google-byoid-sdk sa-impersonation/false config-lifetime/false",
+            "x-goog-api-client": "gl-python/<python-version> auth/<library-version> google-byoid-sdk sa-impersonation/false config-lifetime/false",
         }
         request_data = {
             "grant_type": "urn:ietf:params:oauth:grant-type:token-exchange",
@@ -1393,7 +1422,7 @@ class TestCredentials(object):
         token_headers = {
             "Content-Type": "application/x-www-form-urlencoded",
             "Authorization": "Basic {}".format(BASIC_AUTH_ENCODING),
-            "x-goog-api-client": "gl-python/3.7 auth/1.1 google-byoid-sdk sa-impersonation/true config-lifetime/false",
+            "x-goog-api-client": "gl-python/<python-version> auth/<library-version> google-byoid-sdk sa-impersonation/true config-lifetime/false",
         }
         token_request_data = {
             "grant_type": "urn:ietf:params:oauth:grant-type:token-exchange",
@@ -1476,7 +1505,7 @@ class TestCredentials(object):
         token_headers = {
             "Content-Type": "application/x-www-form-urlencoded",
             "Authorization": "Basic {}".format(BASIC_AUTH_ENCODING),
-            "x-goog-api-client": "gl-python/3.7 auth/1.1 google-byoid-sdk sa-impersonation/true config-lifetime/false",
+            "x-goog-api-client": "gl-python/<python-version> auth/<library-version> google-byoid-sdk sa-impersonation/true config-lifetime/false",
         }
         token_request_data = {
             "grant_type": "urn:ietf:params:oauth:grant-type:token-exchange",
@@ -1967,7 +1996,7 @@ class TestCredentials(object):
         token_response = self.SUCCESS_RESPONSE.copy()
         token_headers = {
             "Content-Type": "application/x-www-form-urlencoded",
-            "x-goog-api-client": "gl-python/3.7 auth/1.1 google-byoid-sdk sa-impersonation/true config-lifetime/false",
+            "x-goog-api-client": "gl-python/<python-version> auth/<library-version> google-byoid-sdk sa-impersonation/true config-lifetime/false",
         }
         token_request_data = {
             "grant_type": "urn:ietf:params:oauth:grant-type:token-exchange",
@@ -2064,7 +2093,7 @@ class TestCredentials(object):
         # STS token exchange request/response.
         token_headers = {
             "Content-Type": "application/x-www-form-urlencoded",
-            "x-goog-api-client": "gl-python/3.7 auth/1.1 google-byoid-sdk sa-impersonation/false config-lifetime/false",
+            "x-goog-api-client": "gl-python/<python-version> auth/<library-version> google-byoid-sdk sa-impersonation/false config-lifetime/false",
         }
         token_request_data = {
             "grant_type": "urn:ietf:params:oauth:grant-type:token-exchange",
@@ -2145,7 +2174,7 @@ class TestCredentials(object):
         token_response = self.SUCCESS_RESPONSE.copy()
         token_headers = {
             "Content-Type": "application/x-www-form-urlencoded",
-            "x-goog-api-client": "gl-python/3.7 auth/1.1 google-byoid-sdk sa-impersonation/true config-lifetime/true",
+            "x-goog-api-client": "gl-python/<python-version> auth/<library-version> google-byoid-sdk sa-impersonation/true config-lifetime/true",
         }
         token_request_data = {
             "grant_type": "urn:ietf:params:oauth:grant-type:token-exchange",
@@ -2292,6 +2321,115 @@ class TestCredentials(object):
         credentials = self.make_credentials()
         with pytest.raises(NotImplementedError):
             credentials._get_mtls_cert_and_key_paths()
+
+    def test_unpickle_legacy_state_preserves_token(self):
+        from google.auth import identity_pool
+
+        creds = identity_pool.Credentials(
+            audience=self.AUDIENCE,
+            subject_token_type=self.SUBJECT_TOKEN_TYPE,
+            token_url=self.TOKEN_URL,
+            credential_source=self.CREDENTIAL_SOURCE,
+        )
+        legacy_state = creds.__dict__.copy()
+        legacy_state["token"] = "LEGACY_PICKLED_TOKEN"
+        legacy_state["expiry"] = _helpers.utcnow() + datetime.timedelta(seconds=3600)
+
+        unpickled_creds = identity_pool.Credentials.__new__(identity_pool.Credentials)
+        unpickled_creds.__setstate__(legacy_state)
+
+        assert unpickled_creds.token == "LEGACY_PICKLED_TOKEN"
+        assert unpickled_creds.expiry == legacy_state["expiry"]
+
+    def test_custom_subclass_instantiation(self):
+        class CustomExternalCredentials(external_account.Credentials):
+            def __init__(self, custom_arg, *args, **kwargs):
+                super().__init__(*args, **kwargs)
+                self.custom_arg = custom_arg
+
+            def retrieve_subject_token(self, request):
+                return "CUSTOM_SUBJECT_TOKEN"
+
+        creds = CustomExternalCredentials(
+            custom_arg="subclass_value",
+            audience=self.AUDIENCE,
+            subject_token_type=self.SUBJECT_TOKEN_TYPE,
+            token_url=self.TOKEN_URL,
+            credential_source=self.CREDENTIAL_SOURCE,
+            service_account_impersonation_url=self.SERVICE_ACCOUNT_IMPERSONATION_URL,
+        )
+        assert creds.custom_arg == "subclass_value"
+        assert creds._impersonated_credentials is None
+
+    def test_invalid_configuration_raises_validation_error(self):
+        from google.auth import identity_pool
+
+        with pytest.raises(exceptions.InvalidValue) as excinfo:
+            identity_pool.Credentials(
+                audience=self.AUDIENCE,
+                subject_token_type=self.SUBJECT_TOKEN_TYPE,
+                token_url=self.TOKEN_URL,
+                credential_source=None,
+            )
+        assert (
+            "A valid credential source or a subject token supplier must be provided"
+            in str(excinfo.value)
+        )
+
+        with pytest.raises(exceptions.InvalidValue) as excinfo:
+            identity_pool.Credentials(
+                audience=self.AUDIENCE,
+                subject_token_type=self.SUBJECT_TOKEN_TYPE,
+                token_url=self.TOKEN_URL,
+                credential_source=self.CREDENTIAL_SOURCE,
+                subject_token_supplier=mock.Mock(),
+            )
+        assert (
+            "cannot have both a credential source and a subject token supplier"
+            in str(excinfo.value)
+        )
+
+    def test_before_request_multithreaded_lazy_initialization(self):
+        from google.auth import identity_pool
+        import threading
+        import time
+
+        creds = identity_pool.Credentials(
+            audience=self.AUDIENCE,
+            subject_token_type=self.SUBJECT_TOKEN_TYPE,
+            token_url=self.TOKEN_URL,
+            credential_source=self.CREDENTIAL_SOURCE,
+            service_account_impersonation_url=self.SERVICE_ACCOUNT_IMPERSONATION_URL,
+        )
+
+        init_mock = mock.Mock()
+        mock_impersonated = mock.Mock()
+        mock_impersonated._rab_manager = mock.Mock()
+        mock_impersonated.token = "IMPERSONATED_TOKEN"
+        mock_impersonated.expiry = None
+
+        def slow_initialize():
+            time.sleep(0.01)
+            return mock_impersonated
+
+        init_mock.side_effect = slow_initialize
+        creds._initialize_impersonated_credentials = init_mock
+
+        num_threads = 10
+        barrier = threading.Barrier(num_threads)
+
+        def worker():
+            barrier.wait()
+            creds.before_request(mock.Mock(), "GET", "https://example.com", {})
+
+        threads = [threading.Thread(target=worker) for _ in range(num_threads)]
+        for t in threads:
+            t.start()
+        for t in threads:
+            t.join()
+
+        assert init_mock.call_count == 1
+        assert creds._impersonated_credentials == mock_impersonated
 
 
 def test_supplier_context():
