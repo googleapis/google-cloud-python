@@ -368,7 +368,18 @@ def unit(session, test_type):
             *UNIT_TEST_DEPENDENCIES,
         )
         session.install(".")
-        session.run("py.test", "--quiet", os.path.join("tests/unit"), *session.posargs)
+        session.run(
+            "py.test",
+            "--quiet",
+            "--cov=google.cloud.sqlalchemy_spanner",
+            "--cov=tests/unit",
+            "--cov-append",
+            "--cov-config=.coveragerc",
+            "--cov-report=",
+            "--cov-fail-under=0",
+            os.path.join("tests/unit"),
+            *session.posargs,
+        )
         return
 
 
