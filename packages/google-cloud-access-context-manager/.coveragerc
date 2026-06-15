@@ -20,7 +20,7 @@ omit =
   google/__init__.py
 
 [report]
-fail_under = 0
+fail_under = 99
 show_missing = True
 exclude_lines =
     # Re-enable the standard pragma
