@@ -865,6 +865,11 @@ class TestIDTokenCredentials(object):
         # Check that the signer have been initialized with a Request object
         assert isinstance(self.credentials._signer._request, transport.Request)
 
+        headers = {}
+        self.credentials.token = "fake-token"
+        self.credentials.before_request(request, "GET", "https://example.com", headers)
+        assert headers.get("x-goog-user-project") == "project-foo"
+
     @mock.patch(
         "google.auth._helpers.utcnow",
         return_value=_helpers.utcfromtimestamp(0),
