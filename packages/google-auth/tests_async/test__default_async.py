@@ -307,7 +307,9 @@ def test__get_gae_credentials_gen1(app_identity):
 
 @mock.patch.dict(os.environ)
 def test__get_gae_credentials_gen2():
-    os.environ["GAE_RUNTIME"] = f"python{sys.version_info.major}{sys.version_info.minor}"
+    os.environ[
+        "GAE_RUNTIME"
+    ] = f"python{sys.version_info.major}{sys.version_info.minor}"
     credentials, project_id = _default._get_gae_credentials()
     assert credentials is None
     assert project_id is None

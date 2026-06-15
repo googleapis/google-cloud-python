@@ -368,9 +368,7 @@ class TestCredentials(object):
                 json.dumps({"userProject": workforce_pool_user_project})
             )
 
-        metrics_header_value = (
-            "gl-python/<python-version> auth/<library-version> auth-request-type/at cred-type/imp"
-        )
+        metrics_header_value = "gl-python/<python-version> auth/<library-version> auth-request-type/at cred-type/imp"
         if service_account_impersonation_url:
             # Service account impersonation request/response.
             expire_time = (

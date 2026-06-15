@@ -39,7 +39,10 @@ def test_add_metric_header():
 def test_versions(mock_python_version):
     version_save = version.__version__
     version.__version__ = "<library-version>"
-    assert metrics.python_and_auth_lib_version() == "gl-python/<python-version> auth/<library-version>"
+    assert (
+        metrics.python_and_auth_lib_version()
+        == "gl-python/<python-version> auth/<library-version>"
+    )
     version.__version__ = version_save
 
 
@@ -48,10 +51,22 @@ def test_versions(mock_python_version):
     [
         (metrics.token_request_access_token_mds, "auth-request-type/at cred-type/mds"),
         (metrics.token_request_id_token_mds, "auth-request-type/it cred-type/mds"),
-        (metrics.token_request_access_token_impersonate, "auth-request-type/at cred-type/imp"),
-        (metrics.token_request_id_token_impersonate, "auth-request-type/it cred-type/imp"),
-        (metrics.token_request_access_token_sa_assertion, "auth-request-type/at cred-type/sa"),
-        (metrics.token_request_id_token_sa_assertion, "auth-request-type/it cred-type/sa"),
+        (
+            metrics.token_request_access_token_impersonate,
+            "auth-request-type/at cred-type/imp",
+        ),
+        (
+            metrics.token_request_id_token_impersonate,
+            "auth-request-type/it cred-type/imp",
+        ),
+        (
+            metrics.token_request_access_token_sa_assertion,
+            "auth-request-type/at cred-type/sa",
+        ),
+        (
+            metrics.token_request_id_token_sa_assertion,
+            "auth-request-type/it cred-type/sa",
+        ),
         (metrics.token_request_user, "cred-type/u"),
         (metrics.mds_ping, "auth-request-type/mds"),
         (metrics.reauth_start, "auth-request-type/re-start"),
@@ -65,7 +80,9 @@ def test_versions(mock_python_version):
 def test_metric_values(mock_python_and_auth_lib_version, func, expected_suffix):
     # mock_python_and_auth_lib_version is injected by mock.patch but is not
     # explicitly referenced in the test body as the mock behaves as configured.
-    expected = f"gl-python/<python-version> auth/<library-version> {expected_suffix}".strip()
+    expected = (
+        f"gl-python/<python-version> auth/<library-version> {expected_suffix}".strip()
+    )
     assert func() == expected
 
 

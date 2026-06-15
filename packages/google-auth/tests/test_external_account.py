@@ -27,9 +27,7 @@ from google.auth import transport
 from google.auth.credentials import DEFAULT_UNIVERSE_DOMAIN
 from google.auth.credentials import TokenState
 
-IMPERSONATE_ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE = (
-    "gl-python/<python-version> auth/<library-version> auth-request-type/at cred-type/imp"
-)
+IMPERSONATE_ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE = "gl-python/<python-version> auth/<library-version> auth-request-type/at cred-type/imp"
 LANG_LIBRARY_METRICS_HEADER_VALUE = "gl-python/<python-version> auth/<library-version>"
 
 CLIENT_ID = "username"

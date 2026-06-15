@@ -40,11 +40,15 @@ CHALLENGES_RESPONSE_AUTHENTICATED = {
     "encodedProofOfReauthToken": "new_rapt_token",
 }
 
-REAUTH_START_METRICS_HEADER_VALUE = "gl-python/<python-version> auth/<library-version> auth-request-type/re-start"
+REAUTH_START_METRICS_HEADER_VALUE = (
+    "gl-python/<python-version> auth/<library-version> auth-request-type/re-start"
+)
 REAUTH_CONTINUE_METRICS_HEADER_VALUE = (
     "gl-python/<python-version> auth/<library-version> auth-request-type/re-cont"
 )
-TOKEN_REQUEST_METRICS_HEADER_VALUE = "gl-python/<python-version> auth/<library-version> cred-type/u"
+TOKEN_REQUEST_METRICS_HEADER_VALUE = (
+    "gl-python/<python-version> auth/<library-version> cred-type/u"
+)
 
 
 class MockChallenge(object):

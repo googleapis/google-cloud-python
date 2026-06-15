@@ -59,12 +59,8 @@ with open(IMPERSONATED_SERVICE_ACCOUNT_AUTHORIZED_USER_SOURCE_FILE, "rb") as fh:
 SIGNER = crypt.RSASigner.from_string(PRIVATE_KEY_BYTES, "1")
 TOKEN_URI = "https://example.com/oauth2/token"
 
-ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE = (
-    "gl-python/<python-version> auth/<library-version> auth-request-type/at cred-type/imp"
-)
-ID_TOKEN_REQUEST_METRICS_HEADER_VALUE = (
-    "gl-python/<python-version> auth/<library-version> auth-request-type/it cred-type/imp"
-)
+ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE = "gl-python/<python-version> auth/<library-version> auth-request-type/at cred-type/imp"
+ID_TOKEN_REQUEST_METRICS_HEADER_VALUE = "gl-python/<python-version> auth/<library-version> auth-request-type/it cred-type/imp"
 
 
 @pytest.fixture
