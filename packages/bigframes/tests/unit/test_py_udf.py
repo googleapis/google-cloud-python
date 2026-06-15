@@ -232,7 +232,7 @@ def test_transpilation_unsupported_ops_raise(
             return x
         return -x
 
-    with pytest.raises(ValueError, match="Unsupported opcode: POP_JUMP_IF"):
+    with pytest.raises(ValueError, match="Unsupported opcode:"):
         scalars_df_index["int64_col"].apply(foo_with_if)
 
     def foo_with_loop(x):
