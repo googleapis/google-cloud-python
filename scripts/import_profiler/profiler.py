@@ -176,7 +176,7 @@ def run_trace(target_module):
     
     # We run: python -X importtime -c "import <module>"
     result = subprocess.run(
-        [sys.executable, "-X", "importtime", "-c", f"import {target_module}"],
+        [sys.executable, "-X", "importtime", "-c", f"import importlib; importlib.import_module({json.dumps(target_module)})"],
         capture_output=True, text=True
     )
     if result.returncode != 0:
