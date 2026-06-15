@@ -102,11 +102,10 @@ def run_master(iterations, target_module, cpu="0", csv_path=None):
             memories.append(data["peak_ram_mb"])
             loaded_modules_val = data["loaded_modules"]
             loaded_lines_val = data["loaded_lines"]
-        except (subprocess.CalledProcessError, FileNotFoundError) as e:
-            # Fallback if taskset is not found or fails
+        except FileNotFoundError as e:
             if cpu.lower() != "none" and i == 0:
-                print("WARNING: taskset CPU pinning failed or is not available. Falling back to unpinned execution...")
-                # Try running without taskset
+                print("WARNING: taskset CPU pinning is not available. Falling back to unpinned execution...")
+                cpu = "none"
                 cmd = [sys.executable, __file__, "--worker", f"--module={target_module}"]
                 try:
                     data = _run_worker_and_parse(cmd)
@@ -114,14 +113,14 @@ def run_master(iterations, target_module, cpu="0", csv_path=None):
                     memories.append(data["peak_ram_mb"])
                     loaded_modules_val = data["loaded_modules"]
                     loaded_lines_val = data["loaded_lines"]
-                    cpu = "none" # Disable cpu pinning for remaining iterations
                 except subprocess.CalledProcessError as err:
                     print(f"Error in worker process:\n{err.stderr}", file=sys.stderr)
                     raise err
             else:
-                if isinstance(e, subprocess.CalledProcessError):
-                    print(f"Error in worker process:\n{e.stderr}", file=sys.stderr)
                 raise e
+        except subprocess.CalledProcessError as e:
+            print(f"Error in worker process:\n{e.stderr}", file=sys.stderr)
+            raise e
         
     # Write CSV if requested
     if csv_path:
@@ -193,41 +192,49 @@ def run_trace(target_module):
     print(f"Trace log successfully written to {trace_file}")
 
 def run_cprofile(target_module):
-    """Runs cProfile to capture stack traces for latency."""
-    import cProfile
+    """Runs cProfile in a clean subprocess to capture stack traces for latency."""
     import pstats
     
     prof_file = f"cprofile_{target_module.replace('.', '_')}.prof"
     print(f"Generating cProfile data for {target_module} -> {prof_file}...")
     
-    # Run profiling
-    pr = cProfile.Profile()
-    pr.enable()
-    importlib.import_module(target_module)
-    pr.disable()
-    
-    # Save for flame charts (e.g. via snakeviz)
-    pr.dump_stats(prof_file)
+    # Run profiling in a clean subprocess to ensure cold-start
+    result = subprocess.run(
+        [sys.executable, "-m", "cProfile", "-o", prof_file, "-c", f"import importlib; importlib.import_module('{target_module}')"],
+        capture_output=True, text=True
+    )
+    if result.returncode != 0:
+        print(f"Error generating cProfile data:\n{result.stderr}", file=sys.stderr)
+        return
+
     print(f"cProfile stats successfully written to {prof_file}")
     
     # Print top bottlenecks
     print("\n--- Top 15 functions by cumulative time ---")
-    ps = pstats.Stats(pr).sort_stats(pstats.SortKey.CUMULATIVE)
+    ps = pstats.Stats(prof_file).sort_stats(pstats.SortKey.CUMULATIVE)
     ps.print_stats(15)
 
 def run_mprofile(target_module):
-    """Runs tracemalloc snapshot to see where memory is allocated."""
+    """Runs tracemalloc snapshot in a clean subprocess to see where memory is allocated."""
     print(f"Generating tracemalloc memory snapshot for {target_module}...")
     
-    tracemalloc.start()
-    importlib.import_module(target_module)
-    snapshot = tracemalloc.take_snapshot()
-    tracemalloc.stop()
-    
-    print("\n--- Top 15 memory allocations by line ---")
-    top_stats = snapshot.statistics('lineno')
-    for stat in top_stats[:15]:
-        print(stat)
+    code = (
+        "import tracemalloc\n"
+        "import importlib\n"
+        "tracemalloc.start()\n"
+        f"importlib.import_module('{target_module}')\n"
+        "snapshot = tracemalloc.take_snapshot()\n"
+        "tracemalloc.stop()\n"
+        "top_stats = snapshot.statistics('lineno')\n"
+        "for stat in top_stats[:15]:\n"
+        "    print(stat)\n"
+    )
+    result = subprocess.run([sys.executable, "-c", code], capture_output=True, text=True)
+    if result.returncode != 0:
+        print(f"Error generating memory snapshot:\n{result.stderr}", file=sys.stderr)
+    else:
+        print("\n--- Top 15 memory allocations by line ---")
+        print(result.stdout, end="")
 
 if __name__ == "__main__":
     import argparse
