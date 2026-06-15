@@ -857,7 +857,7 @@ def core_deps_from_source(session, protobuf_implementation):
     session.skip("core_deps_from_source session is not yet implemented for gapic-generator-python.")
 
 
-@nox.session(python="3.10")
+@nox.session(python=NEWEST_PYTHON)
 def template_coverage(session):
     """Measure coverage of the Jinja templates."""
     session.install(
