@@ -244,7 +244,7 @@ def get_anywidget_bundle(
     else:
         df = obj
 
-    df, _ = df._process_display_df()
+    df = df._prepare_display_df()
 
     widget = display.TableWidget(df)
     widget_repr_result = widget._repr_mimebundle_(include=include, exclude=exclude)
@@ -300,7 +300,7 @@ def repr_mimebundle_head(
     else:
         df = obj
 
-    df, _ = df._process_display_df()
+    df = df._prepare_display_df()
     pandas_df, row_count, query_job = df._block.retrieve_repr_request_results(
         opts.max_rows
     )

@@ -206,7 +206,7 @@ def test_json_column_converted_to_string_for_display():
 
     with mock.patch.object(DataFrame, "__getitem__", return_value=mock_series):
         with mock.patch.object(DataFrame, "assign") as mock_assign:
-            df._process_display_df()
+            df._prepare_display_df()
 
             mock_assign.assert_called_once()
             _, kwargs = mock_assign.call_args
@@ -236,7 +236,7 @@ def test_struct_column_with_nested_json_converted_to_string_for_display():
 
     with mock.patch.object(DataFrame, "__getitem__", return_value=mock_series):
         with mock.patch.object(DataFrame, "assign") as mock_assign:
-            df._process_display_df()
+            df._prepare_display_df()
 
             mock_assign.assert_called_once()
             _, kwargs = mock_assign.call_args

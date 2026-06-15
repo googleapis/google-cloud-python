@@ -819,7 +819,7 @@ class DataFrame:
             column_count=len(self.columns),
         )
 
-    def _process_display_df(self) -> tuple[DataFrame, list[str]]:
+    def _prepare_display_df(self) -> DataFrame:
         """Process ObjectRef and JSON/nested JSON columns for display."""
         df = self
         # Arrow/Pandas to_pandas_batches does not support raw JSON/nested JSON
@@ -837,7 +837,7 @@ class DataFrame:
                 sql_template="TO_JSON_STRING({0})",
             )
             df = df.assign(**{col: df[col]._apply_unary_op(op) for col in json_cols})
-        return df, []
+        return df
 
     def _repr_mimebundle_(self, include=None, exclude=None):
         """
