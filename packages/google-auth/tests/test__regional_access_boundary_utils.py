@@ -753,8 +753,8 @@ class TestAsyncCredentialsWithRegionalAccessBoundary(object):
         )
 
         manager.start_refresh(credentials, request, rab_manager)
-        await manager._worker_task
 
+        assert manager._worker_task is None
         credentials._lookup_regional_access_boundary.assert_not_called()
         rab_manager.process_regional_access_boundary_info.assert_called_once_with(None)
 
