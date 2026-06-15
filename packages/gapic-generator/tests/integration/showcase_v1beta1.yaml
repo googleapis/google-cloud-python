@@ -1,0 +1,69 @@
+type: google.api.Service
+config_version: 3
+name: localhost
+title: Showcase API
+
+apis:
+- name: google.showcase.v1beta1.Echo
+- name: google.showcase.v1beta1.Identity
+- name: google.showcase.v1beta1.Messaging
+- name: google.showcase.v1beta1.SequenceService
+- name: google.showcase.v1beta1.Testing
+- name: google.showcase.v1beta1.Compliance
+- name: google.showcase.v1beta1.EchoOperations
+- name: google.showcase.v1beta1.CustomOperations
+- name: google.iam.v1.IAMPolicy
+- name: google.cloud.location.Locations
+- name: google.longrunning.Operations
+
+backend:
+  rules:
+  - selector: google.cloud.location.Locations.GetLocation
+    deadline: 60.0
+  - selector: google.cloud.location.Locations.ListLocations
+    deadline: 60.0
+  - selector: 'google.iam.v1.IAMPolicy.*'
+    deadline: 60.0
+  - selector: 'google.longrunning.Operations.*'
+    deadline: 60.0
+
+http:
+  rules:
+  - selector: google.cloud.location.Locations.GetLocation
+    get: '/v1beta1/{name=projects/*/locations/*}'
+  - selector: google.cloud.location.Locations.ListLocations
+    get: '/v1beta1/{name=projects/*}/locations'
+  - selector: google.iam.v1.IAMPolicy.GetIamPolicy
+    get: '/v1beta1/{resource=projects/*/locations/*/triggers/*}:getIamPolicy'
+  - selector: google.iam.v1.IAMPolicy.SetIamPolicy
+    post: '/v1beta1/{resource=projects/*/locations/*/triggers/*}:setIamPolicy'
+    body: '*'
+  - selector: google.iam.v1.IAMPolicy.TestIamPermissions
+    post: '/v1beta1/{resource=projects/*/locations/*/triggers/*}:testIamPermissions'
+    body: '*'
+  - selector: google.longrunning.Operations.CancelOperation
+    post: '/v1beta1/{name=projects/*/locations/*/operations/*}:cancel'
+    body: '*'
+  - selector: google.longrunning.Operations.DeleteOperation
+    delete: '/v1beta1/{name=projects/*/locations/*/operations/*}'
+  - selector: google.longrunning.Operations.GetOperation
+    get: '/v1beta1/{name=projects/*/locations/*/operations/*}'
+  - selector: google.longrunning.Operations.ListOperations
+    get: '/v1beta1/{name=projects/*/locations/*}/operations'
+  - selector: google.longrunning.Operations.WaitOperation
+    post: '/v1beta1/{name=projects/*/locations/*/operations/*}:wait'
+    body: '*'
+
+publishing:
+  method_settings:
+  - selector: google.showcase.v1beta1.Echo.Echo
+    auto_populated_fields:
+    - request_id
+  - selector: google.showcase.v1beta1.Echo.AutoPopulate
+    auto_populated_fields:
+    - request_id
+  library_settings:
+  - version: google.showcase.v1beta1
+    python_settings:
+      experimental_features:
+        rest_async_io_enabled: true
