@@ -5,11 +5,11 @@ This document provides a comprehensive guide to the `import_profiler` scripts, d
 ---
 
 ## 1. File Guide & Directory Structure
-The profiling tool is located in the [scripts/import_profiler/](file:///usr/local/google/home/hebaalazzeh/git/google-cloud-python/scripts/import_profiler/) directory:
+The profiling tool is located in the [scripts/import_profiler/](./) directory:
 
-* **[profiler.py](file:///usr/local/google/home/hebaalazzeh/git/google-cloud-python/scripts/import_profiler/profiler.py)**: The core executable script. It is designed as a single-file, self-spawning harness that performs process-isolated importing benchmarks and generates trace logs.
-* **[plan.md](file:///usr/local/google/home/hebaalazzeh/git/google-cloud-python/scripts/import_profiler/plan.md)**: The current project phases and roadmap checklist.
-* **[status.md](file:///usr/local/google/home/hebaalazzeh/git/google-cloud-python/scripts/import_profiler/status.md)**: Tracks the active task state and hosts recorded baseline performance metrics.
+* **[profiler.py](./profiler.py)**: The core executable script. It is designed as a single-file, self-spawning harness that performs process-isolated importing benchmarks and generates trace logs.
+* **[plan.md](./plan.md)**: The current project phases and roadmap checklist.
+* **[status.md](./status.md)**: Tracks the active task state and hosts recorded baseline performance metrics.
 
 ---
 

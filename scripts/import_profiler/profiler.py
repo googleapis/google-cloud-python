@@ -29,12 +29,17 @@ def run_worker(target_module):
     loaded_lines = 0
     for m in new_modules:
         mod = sys.modules.get(m)
-        if mod and getattr(mod, '__file__', None) and mod.__file__.endswith('.py'):
-            try:
-                with open(mod.__file__, 'r', encoding='utf-8') as f:
-                    loaded_lines += sum(1 for _ in f)
-            except Exception:
-                pass
+        if mod and getattr(mod, '__file__', None):
+            file_path = mod.__file__
+            if file_path.endswith('.pyc'):
+                file_path = file_path[:-1]
+            if file_path.endswith('.py'):
+                try:
+                    with open(file_path, 'r', encoding='utf-8') as f:
+                        loaded_lines += sum(1 for _ in f)
+                except Exception as e:
+                    import logging
+                    logging.warning(f"Failed to read lines from {file_path}: {e}")
     
     # Output to stdout for the Master to capture
     print(json.dumps({
@@ -78,14 +83,20 @@ def run_master(iterations, target_module, cpu="0", csv_path=None):
                 print("WARNING: taskset CPU pinning failed or is not available. Falling back to unpinned execution...")
                 # Try running without taskset
                 cmd = [sys.executable, __file__, "--worker", f"--module={target_module}"]
-                result = subprocess.run(cmd, capture_output=True, text=True, check=True)
-                data = json.loads(result.stdout)
-                times.append(data["time_ms"])
-                memories.append(data["peak_ram_mb"])
-                loaded_modules_val = data.get("loaded_modules", 0)
-                loaded_lines_val = data.get("loaded_lines", 0)
-                cpu = "none" # Disable cpu pinning for remaining iterations
+                try:
+                    result = subprocess.run(cmd, capture_output=True, text=True, check=True)
+                    data = json.loads(result.stdout)
+                    times.append(data["time_ms"])
+                    memories.append(data["peak_ram_mb"])
+                    loaded_modules_val = data.get("loaded_modules", 0)
+                    loaded_lines_val = data.get("loaded_lines", 0)
+                    cpu = "none" # Disable cpu pinning for remaining iterations
+                except subprocess.CalledProcessError as err:
+                    print(f"Error in worker process:\n{err.stderr}", file=sys.stderr)
+                    raise err
             else:
+                if isinstance(e, subprocess.CalledProcessError):
+                    print(f"Error in worker process:\n{e.stderr}", file=sys.stderr)
                 raise e
         
     # Write CSV if requested
@@ -99,11 +110,17 @@ def run_master(iterations, target_module, cpu="0", csv_path=None):
 
     # Compute percentiles (P50, P90, P99)
     # statistics.quantiles returns 99 cut points for n=100
-    q_time = statistics.quantiles(times, n=100)
-    q_mem = statistics.quantiles(memories, n=100)
-    
-    p50_time, p90_time, p99_time = q_time[49], q_time[89], q_time[98]
-    p50_mem, p90_mem, p99_mem = q_mem[49], q_mem[89], q_mem[98]
+    if len(times) > 1:
+        q_time = statistics.quantiles(times, n=100)
+        p50_time, p90_time, p99_time = q_time[49], q_time[89], q_time[98]
+    else:
+        p50_time = p90_time = p99_time = times[0] if times else 0.0
+
+    if len(memories) > 1:
+        q_mem = statistics.quantiles(memories, n=100)
+        p50_mem, p90_mem, p99_mem = q_mem[49], q_mem[89], q_mem[98]
+    else:
+        p50_mem = p90_mem = p99_mem = memories[0] if memories else 0.0
 
     print(f"\n--- Results for {target_module} ({iterations} iterations) ---")
     print(f"Code Volume (Deterministic):")
