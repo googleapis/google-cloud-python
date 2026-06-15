@@ -568,12 +568,41 @@ replacements:
       packages/google-cloud-firestore/noxfile.py
     ]
     before: |
+      SYSTEM_TEST_STANDARD_DEPENDENCIES = \[
+          "mock",
+          "pytest",
+          "google-cloud-testutils",
+      \]
+    after: |
+      SYSTEM_TEST_STANDARD_DEPENDENCIES = [
+          "mock",
+          "pytest",
+      ]
+    count: 1
+  - paths: [
+      packages/google-cloud-firestore/noxfile.py
+    ]
+    before: |
+      SYSTEM_TEST_LOCAL_DEPENDENCIES: List\[str\] = \[\]
+    after: |
+      SYSTEM_TEST_LOCAL_DEPENDENCIES: List[str] = [
+          "../google-cloud-testutils"
+      ]
+    count: 1
+  # TODO(https://github.com/googleapis/google-cloud-python/issues/17429):
+  # Temporary post-processing rule to add pytest-xdist dependency.
+  # Remove this once gapic-generator includes pytest-xdist by default.
+  - paths: [
+      packages/google-cloud-firestore/noxfile.py
+    ]
+    before: |
       SYSTEM_TEST_EXTERNAL_DEPENDENCIES: List\[str\] = \[\]
     after: |
       SYSTEM_TEST_EXTERNAL_DEPENDENCIES: List[str] = [
           "pytest-asyncio",
           "six",
           "pyyaml",
+          "pytest-xdist",
       ]
     count: 1
   - paths: [
@@ -584,6 +613,54 @@ replacements:
     after: |
       "pytest-asyncio==0.21.2",
     count: 2
+  # TODO(https://github.com/googleapis/google-cloud-python/issues/17429):
+  # Temporary post-processing rule to inject `-n auto` for Firestore parallel tests.
+  # This rule should be removed once the generator template changes are released
+  # and the generator version is updated in librarian.yaml.
+  - paths: [
+      packages/google-cloud-firestore/noxfile.py
+    ]
+    before: |
+      # Run py.test against the system tests\.
+      if system_test_exists:
+          session\.run\(
+              "py.test",
+              "--quiet",
+              f"--junitxml=system_\{session\.python\}_sponge_log\.xml",
+              system_test_path,
+              \*session\.posargs,
+          \)
+      if system_test_folder_exists:
+          session\.run\(
+              "py.test",
+              "--quiet",
+              f"--junitxml=system_\{session\.python\}_sponge_log\.xml",
+              system_test_folder_path,
+              \*session\.posargs,
+          \)
+    after: |
+      # Run py.test against the system tests.
+      if system_test_exists:
+          session.run(
+              "py.test",
+              "-n",
+              "10",
+              "--quiet",
+              f"--junitxml=system_{session.python}_sponge_log.xml",
+              system_test_path,
+              *session.posargs,
+          )
+      if system_test_folder_exists:
+          session.run(
+              "py.test",
+              "-n",
+              "10",
+              "--quiet",
+              f"--junitxml=system_{session.python}_sponge_log.xml",
+              system_test_folder_path,
+              *session.posargs,
+          )
+    count: 1
   - paths: [
       "packages/google-cloud-firestore/docs/conf.py",
     ]

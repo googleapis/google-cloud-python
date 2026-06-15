@@ -143,8 +143,7 @@ class Request(transport.Request):
     """
 
     def __init__(self, session=None):
-        # TODO: Use auto_decompress property for aiohttp 3.7+
-        if session is not None and session._auto_decompress:
+        if session is not None and getattr(session, "auto_decompress", None) is True:
             raise exceptions.InvalidOperation(
                 "Client sessions with auto_decompress=True are not supported."
             )

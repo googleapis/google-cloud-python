@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## [3.68.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-spanner-v3.67.0...google-cloud-spanner-v3.68.0) (2026-06-11)
+
+
+### Features
+
+* add asynchronous code snippets and minor cleanup changes (#17337) ([d6aaf610fa97b76077cacade2fca306dbe1e8c80](https://github.com/googleapis/google-cloud-python/commit/d6aaf610fa97b76077cacade2fca306dbe1e8c80))
+
 ## [3.67.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-spanner-v3.66.0...google-cloud-spanner-v3.67.0) (2026-06-02)
 
 
