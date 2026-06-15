@@ -228,7 +228,7 @@ libraries:
       metadata_name_override: area120tables
       default_version: v1alpha1
   - name: google-auth
-    version: 2.54.0
+    version: 2.55.0
     python:
       library_type: AUTH
   - name: google-auth-httplib2
