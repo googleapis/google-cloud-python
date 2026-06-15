@@ -65,7 +65,7 @@ def _create_failure_message(
     )
 
 
-def generate_tracked_version_test_cases():
+def get_tracked_version_test_cases():
     """
     Returns a list of test parameters for all tracked versions and boundary conditions.
     """
@@ -129,7 +129,7 @@ def generate_tracked_version_test_cases():
 
 @pytest.mark.parametrize(
     "version_tuple, mock_date, expected_status, gapic_dep, gapic_end, eol_warning_starts",
-    generate_tracked_version_test_cases(),
+    get_tracked_version_test_cases(),
 )
 def test_all_tracked_versions_and_date_scenarios(
     version_tuple, mock_date, expected_status, gapic_dep, gapic_end, eol_warning_starts
