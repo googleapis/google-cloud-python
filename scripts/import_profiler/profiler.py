@@ -58,9 +58,13 @@ def _run_worker_and_parse(cmd):
     result = subprocess.run(cmd, capture_output=True, text=True, check=True)
     try:
         lines = result.stdout.strip().splitlines()
-        if not lines:
-            raise ValueError("Worker produced no output on stdout.")
-        data = json.loads(lines[-1])
+        data = None
+        for line in reversed(lines):
+            if line.startswith("__METRICS__:"):
+                data = json.loads(line[len("__METRICS__:"):])
+                break
+        if data is None:
+            raise ValueError("Worker did not output metrics JSON.")
         for key in ("time_ms", "peak_ram_mb", "loaded_modules", "loaded_lines"):
             if key not in data:
                 raise KeyError(f"Missing key '{key}' in worker output")
