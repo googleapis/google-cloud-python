@@ -4821,9 +4821,7 @@ class DataFrame:
                     isinstance(expr, ex.OpExpression)
                     and isinstance(expr.op, ops.NaryOp)
                 ):
-                    raise TypeError(
-                        f"Expected OpExpression with NaryOp, got {expr}"
-                    )
+                    raise TypeError(f"Expected OpExpression with NaryOp, got {expr}")
                 result_series = rows_as_json_series._apply_nary_op(
                     expr.op,
                     list(args),

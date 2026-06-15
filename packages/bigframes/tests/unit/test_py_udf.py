@@ -139,9 +139,7 @@ def test_dataframe_apply_axis_1_transpile_with_defaults(
         return input.int64_too + input.int64_col + x + y
 
     bf_result = scalars_df_index[columns].apply(foo, axis=1).to_pandas()
-    pd_result = (
-        scalars_pandas_df_index[columns].apply(foo, axis=1).astype("Int64")
-    )
+    pd_result = scalars_pandas_df_index[columns].apply(foo, axis=1).astype("Int64")
 
     assert_series_equal(bf_result, pd_result)
 
@@ -203,9 +201,7 @@ def test_series_apply_transpile(
 
     bf_result = scalars_df_index["int64_col"].apply(foo, args=(5,)).to_pandas()
     pd_result = (
-        scalars_pandas_df_index["int64_col"]
-        .apply(foo, args=(5,))
-        .astype("Int64")
+        scalars_pandas_df_index["int64_col"].apply(foo, args=(5,)).astype("Int64")
     )
 
     assert_series_equal(bf_result, pd_result)
@@ -247,4 +243,3 @@ def test_transpilation_unsupported_ops_raise(
 
     with pytest.raises(ValueError, match="Unsupported opcode:"):
         scalars_df_index["int64_col"].apply(foo_with_loop)
-
