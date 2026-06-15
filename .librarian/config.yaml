@@ -38,5 +38,3 @@ libraries:
   # TODO(https://github.com/googleapis/google-cloud-python/issues/17327)
   - id: "google-cloud-bigtable"
     release_blocked: true
-
-
