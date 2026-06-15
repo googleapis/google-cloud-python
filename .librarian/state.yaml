@@ -387,7 +387,7 @@ libraries:
       - packages/google-area120-tables/docs/
     tag_format: '{id}-v{version}'
   - id: google-auth
-    version: 2.54.0
+    version: 2.55.0
     last_generated_commit: ""
     apis: []
     source_roots:
@@ -1139,7 +1139,7 @@ libraries:
       - packages/google-cloud-biglake-hive/docs/
     tag_format: '{id}-v{version}'
   - id: google-cloud-bigquery
-    version: 3.41.0
+    version: 3.42.0
     last_generated_commit: ""
     apis: []
     source_roots:
