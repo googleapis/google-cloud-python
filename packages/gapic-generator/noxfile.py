@@ -514,6 +514,15 @@ def showcase_unit(
         run_showcase_unit_tests(session)
 
 
+@nox.session(python=ALL_PYTHON)
+def showcase_prerelease_deps(session):
+    """Run core_deps_from_source and prerelease_deps on the generated Showcase library."""
+    with showcase_library(session) as lib:
+        session.chdir(lib)
+        session.install("nox")
+        session.run("nox", "-s", "core_deps_from_source", "prerelease_deps")
+
+
 # TODO: `showcase_unit_w_rest_async` nox session runs showcase unit tests with the
 # experimental async rest transport and must be removed once support for async rest is GA.
 # See related issue: https://github.com/googleapis/gapic-generator-python/issues/2121.
@@ -846,3 +855,53 @@ def core_deps_from_source(session, protobuf_implementation):
     # TODO(https://github.com/googleapis/google-cloud-python/issues/16185): 
     # Implement logic to install core packages directly from the mono-repo directories.
     session.skip("core_deps_from_source session is not yet implemented for gapic-generator-python.")
+
+
+@nox.session(python="3.10")
+def template_coverage(session):
+    """Measure coverage of the Jinja templates."""
+    session.install(
+        "coverage<=7.11.0",
+        "pytest-cov",
+        "pytest",
+        "pytest-xdist",
+        "pyfakefs",
+        "grpcio-status",
+        "proto-plus",
+    )
+    session.install("-e", ".")
+
+
+
+    session.run(
+        "py.test",
+        "-vv",
+        "--cov=gapic",
+        "--cov-config=.coveragerc-templates",
+        "--cov-report=html",
+        "tests/unit/generator/test_goldens_coverage.py",
+        *session.posargs,
+        env={
+            "COVERAGE_CORE": "ctrace",
+            "SHOWCASE_DESC_PATH": "/tmp/showcase.desc",
+        },
+    )
+
+
+@nox.session(python="3.10")
+def downstream_golden_tests(session):
+    """Run the downstream unit tests for all generated goldens to prove generator correctness."""
+    session.install("nox")
+    goldens_dir = path.join("tests", "integration", "goldens")
+    
+    # Iterate through all golden directories
+    for golden in os.listdir(goldens_dir):
+        golden_path = path.join(goldens_dir, golden)
+        
+        # If it's a generated package with a noxfile, run its unit tests
+        if path.isdir(golden_path) and path.exists(path.join(golden_path, "noxfile.py")):
+            session.log(f"Running downstream unit tests for golden: {golden}")
+            
+            # Change directory to the golden package and run its tests
+            with session.chdir(golden_path):
+                session.run("nox", "-s", "unit-3.10", external=True)
