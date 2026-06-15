@@ -46,12 +46,13 @@ def run_worker(target_module):
                     logging.warning(f"Failed to read lines from {file_path}: {e}")
     
     # Output to stdout for the Master to capture
-    print(json.dumps({
+    metrics = {
         "time_ms": (end_time - start_time) * 1000,
         "peak_ram_mb": peak / (1024 * 1024),
         "loaded_modules": len(new_modules),
         "loaded_lines": loaded_lines
-    }))
+    }
+    print(f"__METRICS__:{json.dumps(metrics)}")
 
 def _run_worker_and_parse(cmd):
     result = subprocess.run(cmd, capture_output=True, text=True, check=True)
