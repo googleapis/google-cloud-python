@@ -2030,6 +2030,28 @@ class TestSampleRowKeys:
                     assert result[1] == samples[1]
                     assert result[2] == samples[2]
 
+    def test_sample_row_keys_w_row_range(self):
+        """Test that method returns the expected key samples when row_range is provided"""
+        samples = [(b"a_key1", 100), (b"b", 200)]
+        from google.cloud.bigtable.data import RowRange
+
+        row_range = RowRange(start_key=b"a", end_key=b"b")
+        with self._make_client() as client:
+            with client.get_table("instance", "table") as table:
+                with mock.patch.object(
+                    table.client._gapic_client,
+                    "sample_row_keys",
+                    CrossSync._Sync_Impl.Mock(),
+                ) as sample_row_keys:
+                    sample_row_keys.return_value = self._make_gapic_stream(samples)
+                    result = table.sample_row_keys(row_range=row_range)
+                    assert len(result) == 2
+                    assert result[0] == samples[0]
+                    assert result[1] == samples[1]
+                    sample_row_keys.assert_called_once()
+                    called_request = sample_row_keys.call_args[1]["request"]
+                    assert called_request.row_range == row_range._to_pb()
+
     def test_sample_row_keys_bad_timeout(self):
         """should raise error if timeout is negative"""
         with self._make_client() as client:

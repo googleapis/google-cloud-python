@@ -114,6 +114,18 @@ from bigframes.operations.googlesql.global_namespace.array import (
     flatten,
     generate_array,
 )
+from bigframes.operations.googlesql.global_namespace.bit import (
+    bit_count,
+)
+from bigframes.operations.googlesql.global_namespace.conversion import (
+    bool_,
+    double,
+    float64,
+    int64,
+    parse_bignumeric,
+    parse_numeric,
+    string,
+)
 
 _functions = [
     # approximate aggregate ops
@@ -134,6 +146,16 @@ _functions = [
     array_to_string,
     flatten,
     generate_array,
+    # bit ops
+    bit_count,
+    # conversion ops
+    bool_,
+    double,
+    float64,
+    int64,
+    parse_bignumeric,
+    parse_numeric,
+    string,
     # datetime ops
     unix_micros,
     unix_millis,
@@ -208,6 +230,16 @@ __all__ = [
     "array_to_string",
     "flatten",
     "generate_array",
+    # bit ops
+    "bit_count",
+    # conversion ops
+    "bool_",
+    "double",
+    "float64",
+    "int64",
+    "parse_bignumeric",
+    "parse_numeric",
+    "string",
     # datetime ops
     "unix_micros",
     "unix_millis",

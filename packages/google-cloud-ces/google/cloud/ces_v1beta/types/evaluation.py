@@ -26,6 +26,7 @@ import proto  # type: ignore
 from google.cloud.ces_v1beta.types import app as gcc_app
 from google.cloud.ces_v1beta.types import (
     common,
+    evaluation_metrics_config,
     example,
     fakes,
     golden_run,
@@ -383,6 +384,12 @@ class Evaluation(proto.Message):
             evaluation. This is only populated if
             include_last_ten_results is set to true in the
             ListEvaluationsRequest or GetEvaluationRequest.
+        evaluation_metrics_threshold_override (google.cloud.ces_v1beta.types.EvaluationMetricsThresholds):
+            Optional. Overrides metrics thresholds for
+            this specific evaluation.
+        evaluation_metrics_config_override (google.cloud.ces_v1beta.types.EvaluationMetricsConfig):
+            Optional. Overrides metrics config for this
+            specific evaluation.
     """
 
     class GoldenExpectation(proto.Message):
@@ -430,10 +437,30 @@ class Evaluation(proto.Message):
                 not specified will be hallucinated by the LLM.
 
                 This field is a member of `oneof`_ ``condition``.
+            no_tool_calls (bool):
+                Optional. Check that no tools were called
+                during this turn.
+
+                This field is a member of `oneof`_ ``condition``.
             note (str):
                 Optional. A note for this requirement, useful in reporting
                 when specific checks fail. E.g.,
                 "Check_Payment_Tool_Called".
+            skip_evaluation (bool):
+                Optional. If set to true, this specific
+                expectation will not be evaluated.
+            expectation_level_metrics_thresholds_override (google.cloud.ces_v1beta.types.EvaluationMetricsThresholds.GoldenEvaluationMetricsThresholds.ExpectationLevelMetricsThresholds):
+                Optional. Overrides metrics at the step
+                level.
+            agent_response_semantic_similarity_metrics_config_override (google.cloud.ces_v1beta.types.EvaluationMetricsConfig.SemanticSimilarityMetricsConfig):
+                Optional. Overrides for agent_response semantic similarity
+                metrics.
+            agent_response_hallucination_metrics_config_override (google.cloud.ces_v1beta.types.EvaluationMetricsConfig.HallucinationMetricsConfig):
+                Optional. Overrides for agent_response hallucination
+                metrics.
+            comparison_type (google.cloud.ces_v1beta.types.EvaluationMetricsConfig.ComparisonType):
+                Optional. The comparison type to use for the
+                expectation check.
         """
 
         tool_call: example.ToolCall = proto.Field(
@@ -472,9 +499,38 @@ class Evaluation(proto.Message):
             oneof="condition",
             message=example.ToolResponse,
         )
+        no_tool_calls: bool = proto.Field(
+            proto.BOOL,
+            number=13,
+            oneof="condition",
+        )
         note: str = proto.Field(
             proto.STRING,
             number=1,
+        )
+        skip_evaluation: bool = proto.Field(
+            proto.BOOL,
+            number=8,
+        )
+        expectation_level_metrics_thresholds_override: gcc_app.EvaluationMetricsThresholds.GoldenEvaluationMetricsThresholds.ExpectationLevelMetricsThresholds = proto.Field(
+            proto.MESSAGE,
+            number=9,
+            message=gcc_app.EvaluationMetricsThresholds.GoldenEvaluationMetricsThresholds.ExpectationLevelMetricsThresholds,
+        )
+        agent_response_semantic_similarity_metrics_config_override: evaluation_metrics_config.EvaluationMetricsConfig.SemanticSimilarityMetricsConfig = proto.Field(
+            proto.MESSAGE,
+            number=10,
+            message=evaluation_metrics_config.EvaluationMetricsConfig.SemanticSimilarityMetricsConfig,
+        )
+        agent_response_hallucination_metrics_config_override: evaluation_metrics_config.EvaluationMetricsConfig.HallucinationMetricsConfig = proto.Field(
+            proto.MESSAGE,
+            number=11,
+            message=evaluation_metrics_config.EvaluationMetricsConfig.HallucinationMetricsConfig,
+        )
+        comparison_type: evaluation_metrics_config.EvaluationMetricsConfig.ComparisonType = proto.Field(
+            proto.ENUM,
+            number=12,
+            enum=evaluation_metrics_config.EvaluationMetricsConfig.ComparisonType,
         )
 
     class Step(proto.Message):
@@ -534,7 +590,14 @@ class Evaluation(proto.Message):
             root_span (google.cloud.ces_v1beta.types.Span):
                 Optional. The root span of the golden turn
                 for processing and maintaining audio
-                information.
+                information. The uri for the audio must contain
+                audio saved in 16Khz sample rate.
+            turn_level_metrics_thresholds_override (google.cloud.ces_v1beta.types.EvaluationMetricsThresholds.GoldenEvaluationMetricsThresholds.TurnLevelMetricsThresholds):
+                Optional. Overrides for turn-level metric
+                thresholds.
+            hallucination_metric_behavior_override (google.cloud.ces_v1beta.types.EvaluationMetricsThresholds.HallucinationMetricBehavior):
+                Optional. Override for turn-level
+                hallucination metric behavior.
         """
 
         steps: MutableSequence["Evaluation.Step"] = proto.RepeatedField(
@@ -547,6 +610,16 @@ class Evaluation(proto.Message):
             number=2,
             message=common.Span,
         )
+        turn_level_metrics_thresholds_override: gcc_app.EvaluationMetricsThresholds.GoldenEvaluationMetricsThresholds.TurnLevelMetricsThresholds = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            message=gcc_app.EvaluationMetricsThresholds.GoldenEvaluationMetricsThresholds.TurnLevelMetricsThresholds,
+        )
+        hallucination_metric_behavior_override: gcc_app.EvaluationMetricsThresholds.HallucinationMetricBehavior = proto.Field(
+            proto.ENUM,
+            number=4,
+            enum=gcc_app.EvaluationMetricsThresholds.HallucinationMetricBehavior,
+        )
 
     class Golden(proto.Message):
         r"""The steps required to replay a golden conversation.
@@ -554,7 +627,8 @@ class Evaluation(proto.Message):
         Attributes:
             turns (MutableSequence[google.cloud.ces_v1beta.types.Evaluation.GoldenTurn]):
                 Required. The golden turns required to replay
-                a golden conversation.
+                a golden conversation. The maximum number of
+                allowed turns is 100.
             evaluation_expectations (MutableSequence[str]):
                 Optional. The evaluation expectations to evaluate the
                 replayed conversation against. Format:
@@ -646,8 +720,8 @@ class Evaluation(proto.Message):
                 scenario.
             max_turns (int):
                 Optional. The maximum number of turns to
-                simulate. If not specified, the simulation will
-                continue until the task is complete.
+                simulate. The maximum allowed value is 100. The
+                default value is 100.
             rubrics (MutableSequence[str]):
                 Required. The rubrics to score the scenario
                 against.
@@ -674,6 +748,9 @@ class Evaluation(proto.Message):
                 Optional. The evaluation expectations to evaluate the
                 conversation produced by the simulation against. Format:
                 ``projects/{project}/locations/{location}/apps/{app}/evaluationExpectations/{evaluationExpectation}``
+            scenario_execution_mode (google.cloud.ces_v1beta.types.EvaluationSettings.ScenarioExecutionMode):
+                Optional. The execution mode for scenario
+                evaluations.
         """
 
         class TaskCompletionBehavior(proto.Enum):
@@ -781,6 +858,13 @@ class Evaluation(proto.Message):
             proto.STRING,
             number=10,
         )
+        scenario_execution_mode: gcc_app.EvaluationSettings.ScenarioExecutionMode = (
+            proto.Field(
+                proto.ENUM,
+                number=12,
+                enum=gcc_app.EvaluationSettings.ScenarioExecutionMode,
+            )
+        )
 
     golden: Golden = proto.Field(
         proto.MESSAGE,
@@ -858,6 +942,18 @@ class Evaluation(proto.Message):
         proto.MESSAGE,
         number=19,
         message="EvaluationResult",
+    )
+    evaluation_metrics_threshold_override: gcc_app.EvaluationMetricsThresholds = (
+        proto.Field(
+            proto.MESSAGE,
+            number=20,
+            message=gcc_app.EvaluationMetricsThresholds,
+        )
+    )
+    evaluation_metrics_config_override: evaluation_metrics_config.EvaluationMetricsConfig = proto.Field(
+        proto.MESSAGE,
+        number=21,
+        message=evaluation_metrics_config.EvaluationMetricsConfig,
     )
 
 
@@ -1055,6 +1151,8 @@ class EvaluationResult(proto.Message):
             EXECUTION_STATE_UNSPECIFIED (0):
                 Evaluation result execution state is not
                 specified.
+            QUEUED (5):
+                Evaluation result execution is queued.
             RUNNING (1):
                 Evaluation result execution is running.
             COMPLETED (2):
@@ -1062,12 +1160,16 @@ class EvaluationResult(proto.Message):
             ERROR (3):
                 Evaluation result execution failed due to an
                 internal error.
+            CANCELLED (4):
+                Evaluation result execution was cancelled.
         """
 
         EXECUTION_STATE_UNSPECIFIED = 0
+        QUEUED = 5
         RUNNING = 1
         COMPLETED = 2
         ERROR = 3
+        CANCELLED = 4
 
     class GoldenExpectationOutcome(proto.Message):
         r"""Specifies the expectation and the result of that expectation.
@@ -1098,6 +1200,13 @@ class EvaluationResult(proto.Message):
             observed_agent_transfer (google.cloud.ces_v1beta.types.AgentTransfer):
                 Output only. The result of the agent transfer
                 expectation.
+
+                This field is a member of `oneof`_ ``result``.
+            observed_payload (google.protobuf.struct_pb2.Struct):
+                Output only. An observed custom payload.
+                There are no expectations for custom payloads.
+                This is only used for metrics calculation. The
+                outcome is always SKIPPED.
 
                 This field is a member of `oneof`_ ``result``.
             expectation (google.cloud.ces_v1beta.types.Evaluation.GoldenExpectation):
@@ -1175,6 +1284,12 @@ class EvaluationResult(proto.Message):
             number=5,
             oneof="result",
             message=example.AgentTransfer,
+        )
+        observed_payload: struct_pb2.Struct = proto.Field(
+            proto.MESSAGE,
+            number=9,
+            oneof="result",
+            message=struct_pb2.Struct,
         )
         expectation: "Evaluation.GoldenExpectation" = proto.Field(
             proto.MESSAGE,
@@ -2131,6 +2246,10 @@ class EvaluationRun(proto.Message):
         golden_run_method (google.cloud.ces_v1beta.types.GoldenRunMethod):
             Output only. The method used to run the
             evaluation.
+        operation (str):
+            Output only. The operation that created this evaluation run.
+            Format:
+            ``projects/{project}/locations/{location}/operations/{operation}``
     """
 
     class EvaluationType(proto.Enum):
@@ -2160,18 +2279,24 @@ class EvaluationRun(proto.Message):
         Values:
             EVALUATION_RUN_STATE_UNSPECIFIED (0):
                 Evaluation run state is not specified.
+            QUEUED (5):
+                Indicates the evaluation run is queued.
             RUNNING (1):
                 Evaluation run is running.
             COMPLETED (2):
                 Evaluation run has completed.
             ERROR (3):
                 The evaluation run has an error.
+            CANCELLED (4):
+                Evaluation run was cancelled.
         """
 
         EVALUATION_RUN_STATE_UNSPECIFIED = 0
+        QUEUED = 5
         RUNNING = 1
         COMPLETED = 2
         ERROR = 3
+        CANCELLED = 4
 
     class Progress(proto.Message):
         r"""The progress of the evaluation run.
@@ -2195,6 +2320,9 @@ class EvaluationRun(proto.Message):
                 Output only. Number of completed evaluation results with an
                 outcome of PASS. (EvaluationResult.execution_state is
                 COMPLETED and EvaluationResult.evaluation_status is PASS).
+            cancelled_count (int):
+                Output only. Number of evaluation results that were
+                cancelled. (EvaluationResult.execution_state is CANCELLED).
         """
 
         total_count: int = proto.Field(
@@ -2216,6 +2344,10 @@ class EvaluationRun(proto.Message):
         passed_count: int = proto.Field(
             proto.INT32,
             number=5,
+        )
+        cancelled_count: int = proto.Field(
+            proto.INT32,
+            number=6,
         )
 
     class EvaluationRunSummary(proto.Message):
@@ -2358,6 +2490,10 @@ class EvaluationRun(proto.Message):
         proto.ENUM,
         number=21,
         enum=golden_run.GoldenRunMethod,
+    )
+    operation: str = proto.Field(
+        proto.STRING,
+        number=26,
     )
 
 
@@ -2714,6 +2850,8 @@ class EvaluationErrorInfo(proto.Message):
         session_id (str):
             Output only. The session ID for the
             conversation that caused the error.
+        user_facing_error_message (str):
+            Output only. The user facing error message.
     """
 
     class ErrorType(proto.Enum):
@@ -2757,6 +2895,10 @@ class EvaluationErrorInfo(proto.Message):
     session_id: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+    user_facing_error_message: str = proto.Field(
+        proto.STRING,
+        number=4,
     )
 
 

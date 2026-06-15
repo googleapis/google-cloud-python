@@ -7835,6 +7835,7 @@ def test_get_authz_extension(request_type, transport: str = "grpc"):
             service="service_value",
             fail_open=True,
             forward_headers=["forward_headers_value"],
+            forward_attributes=["forward_attributes_value"],
             wire_format=dep.WireFormat.EXT_PROC_GRPC,
         )
         response = client.get_authz_extension(request)
@@ -7854,6 +7855,7 @@ def test_get_authz_extension(request_type, transport: str = "grpc"):
     assert response.service == "service_value"
     assert response.fail_open is True
     assert response.forward_headers == ["forward_headers_value"]
+    assert response.forward_attributes == ["forward_attributes_value"]
     assert response.wire_format == dep.WireFormat.EXT_PROC_GRPC
 
 
@@ -8001,6 +8003,7 @@ async def test_get_authz_extension_async(request_type, transport: str = "grpc_as
                 service="service_value",
                 fail_open=True,
                 forward_headers=["forward_headers_value"],
+                forward_attributes=["forward_attributes_value"],
                 wire_format=dep.WireFormat.EXT_PROC_GRPC,
             )
         )
@@ -8021,6 +8024,7 @@ async def test_get_authz_extension_async(request_type, transport: str = "grpc_as
     assert response.service == "service_value"
     assert response.fail_open is True
     assert response.forward_headers == ["forward_headers_value"]
+    assert response.forward_attributes == ["forward_attributes_value"]
     assert response.wire_format == dep.WireFormat.EXT_PROC_GRPC
 
 
@@ -14501,6 +14505,7 @@ async def test_get_authz_extension_empty_call_grpc_asyncio():
                 service="service_value",
                 fail_open=True,
                 forward_headers=["forward_headers_value"],
+                forward_attributes=["forward_attributes_value"],
                 wire_format=dep.WireFormat.EXT_PROC_GRPC,
             )
         )
@@ -14940,7 +14945,14 @@ def test_create_lb_traffic_extension_rest_call_success(request_type):
                             "forward_headers_value1",
                             "forward_headers_value2",
                         ],
+                        "forward_attributes": [
+                            "forward_attributes_value1",
+                            "forward_attributes_value2",
+                        ],
                         "metadata": {"fields": {}},
+                        "request_body_send_mode": 1,
+                        "response_body_send_mode": 1,
+                        "observability_mode": True,
                     }
                 ],
             }
@@ -15174,7 +15186,14 @@ def test_update_lb_traffic_extension_rest_call_success(request_type):
                             "forward_headers_value1",
                             "forward_headers_value2",
                         ],
+                        "forward_attributes": [
+                            "forward_attributes_value1",
+                            "forward_attributes_value2",
+                        ],
                         "metadata": {"fields": {}},
+                        "request_body_send_mode": 1,
+                        "response_body_send_mode": 1,
+                        "observability_mode": True,
                     }
                 ],
             }
@@ -15804,7 +15823,14 @@ def test_create_lb_route_extension_rest_call_success(request_type):
                             "forward_headers_value1",
                             "forward_headers_value2",
                         ],
+                        "forward_attributes": [
+                            "forward_attributes_value1",
+                            "forward_attributes_value2",
+                        ],
                         "metadata": {"fields": {}},
+                        "request_body_send_mode": 1,
+                        "response_body_send_mode": 1,
+                        "observability_mode": True,
                     }
                 ],
             }
@@ -16036,7 +16062,14 @@ def test_update_lb_route_extension_rest_call_success(request_type):
                             "forward_headers_value1",
                             "forward_headers_value2",
                         ],
+                        "forward_attributes": [
+                            "forward_attributes_value1",
+                            "forward_attributes_value2",
+                        ],
                         "metadata": {"fields": {}},
+                        "request_body_send_mode": 1,
+                        "response_body_send_mode": 1,
+                        "observability_mode": True,
                     }
                 ],
             }
@@ -16664,7 +16697,14 @@ def test_create_lb_edge_extension_rest_call_success(request_type):
                             "forward_headers_value1",
                             "forward_headers_value2",
                         ],
+                        "forward_attributes": [
+                            "forward_attributes_value1",
+                            "forward_attributes_value2",
+                        ],
                         "metadata": {"fields": {}},
+                        "request_body_send_mode": 1,
+                        "response_body_send_mode": 1,
+                        "observability_mode": True,
                     }
                 ],
             }
@@ -16895,7 +16935,14 @@ def test_update_lb_edge_extension_rest_call_success(request_type):
                             "forward_headers_value1",
                             "forward_headers_value2",
                         ],
+                        "forward_attributes": [
+                            "forward_attributes_value1",
+                            "forward_attributes_value2",
+                        ],
                         "metadata": {"fields": {}},
+                        "request_body_send_mode": 1,
+                        "response_body_send_mode": 1,
+                        "observability_mode": True,
                     }
                 ],
             }
@@ -17375,6 +17422,7 @@ def test_get_authz_extension_rest_call_success(request_type):
             service="service_value",
             fail_open=True,
             forward_headers=["forward_headers_value"],
+            forward_attributes=["forward_attributes_value"],
             wire_format=dep.WireFormat.EXT_PROC_GRPC,
         )
 
@@ -17399,6 +17447,7 @@ def test_get_authz_extension_rest_call_success(request_type):
     assert response.service == "service_value"
     assert response.fail_open is True
     assert response.forward_headers == ["forward_headers_value"]
+    assert response.forward_attributes == ["forward_attributes_value"]
     assert response.wire_format == dep.WireFormat.EXT_PROC_GRPC
 
 
@@ -17518,6 +17567,10 @@ def test_create_authz_extension_rest_call_success(request_type):
         "fail_open": True,
         "metadata": {"fields": {}},
         "forward_headers": ["forward_headers_value1", "forward_headers_value2"],
+        "forward_attributes": [
+            "forward_attributes_value1",
+            "forward_attributes_value2",
+        ],
         "wire_format": 1,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
@@ -17734,6 +17787,10 @@ def test_update_authz_extension_rest_call_success(request_type):
         "fail_open": True,
         "metadata": {"fields": {}},
         "forward_headers": ["forward_headers_value1", "forward_headers_value2"],
+        "forward_attributes": [
+            "forward_attributes_value1",
+            "forward_attributes_value2",
+        ],
         "wire_format": 1,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.

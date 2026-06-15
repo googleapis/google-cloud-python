@@ -121,12 +121,229 @@ class TestRequestResponse(async_compliance.RequestResponseTests):
         with pytest.raises(ValueError):
             await aiohttp_requests.Request(http)
 
+    def test_mock_session_unspecified_auto_decompress(self):
+        # A plain mock object (without spec) will return a mock on attribute access.
+        # Ensure this does not trigger InvalidOperation.
+        http = mock.Mock()
+        request = aiohttp_requests.Request(http)
+        assert request.session == http
+
     def test_timeout(self):
+        http = mock.create_autospec(
+            aiohttp.ClientSession, instance=True, auto_decompress=False
+        )
+        request = aiohttp_requests.Request(http)
+        request(url="http://example.com", method="GET", timeout=5)
+
+    @pytest.mark.asyncio
+    async def test__clone(self):
+        http = mock.create_autospec(
+            aiohttp.ClientSession, instance=True, _auto_decompress=False
+        )
+        http._connector = mock.Mock(spec=aiohttp.TCPConnector)
+        http._connector.closed = False
+        http._connector._ssl = mock.sentinel.ssl
+        http._connector._limit = 50
+        http._connector._limit_per_host = 10
+        http._connector._force_close = True
+        http._connector._resolver = mock.sentinel.resolver
+        http._connector._local_addr = mock.sentinel.local_addr
+
+        http._trust_env = False
+        http._trace_configs = [mock.sentinel.trace_config]
+        http._default_headers = {"test": "header"}
+        http._cookie_jar = mock.sentinel.cookie_jar
+        http._default_auth = mock.sentinel.auth
+        http._timeout = mock.sentinel.timeout
+        http._json_serialize = mock.sentinel.json_serialize
+
+        request = aiohttp_requests.Request(http)
+        with mock.patch(
+            "aiohttp.ClientSession", autospec=True
+        ) as session_mock, mock.patch.object(
+            aiohttp.TCPConnector, "__init__", autospec=True, return_value=None
+        ) as connector_init_mock:
+            session_mock.return_value._auto_decompress = False
+            cloned = request._clone()
+
+        assert isinstance(cloned, aiohttp_requests.Request)
+        assert cloned is not request
+
+        connector_init_mock.assert_called_once_with(
+            mock.ANY,
+            ssl=mock.sentinel.ssl,
+            limit=50,
+            limit_per_host=10,
+            force_close=True,
+            local_addr=mock.sentinel.local_addr,
+        )
+
+        session_mock.assert_called_once_with(
+            connector=mock.ANY,
+            auto_decompress=False,
+            trust_env=False,
+            trace_configs=[mock.sentinel.trace_config],
+            headers={"test": "header"},
+            cookie_jar=mock.sentinel.cookie_jar,
+            auth=mock.sentinel.auth,
+            timeout=mock.sentinel.timeout,
+            json_serialize=mock.sentinel.json_serialize,
+        )
+        assert isinstance(session_mock.call_args[1]["connector"], aiohttp.TCPConnector)
+
+    @pytest.mark.asyncio
+    async def test__clone_closed(self):
+        request = aiohttp_requests.Request()
+        request._closed = True
+        with pytest.raises(
+            google.auth.exceptions.TransportError,
+            match="Cannot clone a closed transport.",
+        ):
+            request._clone()
+
+    @pytest.mark.asyncio
+    async def test__clone_custom_connector(self):
+        http = mock.create_autospec(
+            aiohttp.ClientSession, instance=True, _auto_decompress=False
+        )
+        http._connector = mock.Mock()
+        http._connector.closed = False
+        request = aiohttp_requests.Request(http)
+        with pytest.raises(
+            google.auth.exceptions.TransportError,
+            match="Unsupported connector type for cloning",
+        ):
+            request._clone()
+
+    @pytest.mark.asyncio
+    async def test_close(self):
+        http = mock.create_autospec(
+            aiohttp.ClientSession, instance=True, _auto_decompress=False
+        )
+        http.close = mock.AsyncMock()
+        request = aiohttp_requests.Request(http)
+
+        await request.close()
+        assert request._closed is True
+        http.close.assert_awaited_once()
+
+        # Check idempotency
+        await request.close()
+        http.close.assert_awaited_once()  # Still only called 1 time
+
+    @pytest.mark.asyncio
+    async def test_request_call_closed(self):
         http = mock.create_autospec(
             aiohttp.ClientSession, instance=True, _auto_decompress=False
         )
         request = aiohttp_requests.Request(http)
-        request(url="http://example.com", method="GET", timeout=5)
+        await request.close()
+        with pytest.raises(
+            google.auth.exceptions.TransportError, match="session is closed."
+        ):
+            await request("http://example.com")
+
+    @pytest.mark.asyncio
+    async def test__clone_no_session(self):
+        request = aiohttp_requests.Request()
+        cloned = request._clone()
+        assert isinstance(cloned, aiohttp_requests.Request)
+        assert cloned is not request
+        assert cloned.session is not None
+        await cloned.close()
+
+    @pytest.mark.asyncio
+    async def test__clone_closed_connector(self):
+        http = mock.create_autospec(
+            aiohttp.ClientSession, instance=True, _auto_decompress=False
+        )
+        http._connector = mock.Mock()
+        http._connector.closed = True
+        http._trust_env = True
+        http._trace_configs = None
+        http._default_headers = None
+        http._cookie_jar = None
+        http._default_auth = None
+        http._timeout = None
+        http._json_serialize = None
+
+        request = aiohttp_requests.Request(http)
+        with mock.patch("aiohttp.ClientSession", autospec=True) as session_mock:
+            session_mock.return_value._auto_decompress = False
+            cloned = request._clone()
+
+        assert isinstance(cloned, aiohttp_requests.Request)
+        assert cloned is not request
+
+    @pytest.mark.asyncio
+    async def test__clone_unix_socket_no_path(self):
+        try:
+            from aiohttp import UnixConnector
+        except ImportError:
+            return
+
+        http = mock.create_autospec(
+            aiohttp.ClientSession, instance=True, _auto_decompress=False
+        )
+        http._connector = mock.Mock(spec=UnixConnector)
+        http._connector.closed = False
+        http._connector._path = None
+        http._trust_env = True
+        http._trace_configs = None
+        http._default_headers = None
+        http._cookie_jar = None
+        http._default_auth = None
+        http._timeout = None
+        http._json_serialize = None
+
+        request = aiohttp_requests.Request(http)
+        with mock.patch("aiohttp.ClientSession", autospec=True) as session_mock:
+            session_mock.return_value._auto_decompress = False
+            cloned = request._clone()
+
+        assert isinstance(cloned, aiohttp_requests.Request)
+        assert cloned is not request
+
+    @pytest.mark.asyncio
+    async def test__clone_unix_socket_with_path(self):
+        try:
+            from aiohttp import UnixConnector
+        except ImportError:
+            return
+
+        http = mock.create_autospec(
+            aiohttp.ClientSession, instance=True, _auto_decompress=False
+        )
+        http._connector = mock.Mock(spec=UnixConnector)
+        http._connector.closed = False
+        http._connector._path = "/tmp/test.sock"
+        http._connector._limit = 42
+        http._connector._force_close = True
+        http._trust_env = True
+        http._trace_configs = None
+        http._default_headers = None
+        http._cookie_jar = None
+        http._default_auth = None
+        http._timeout = None
+        http._json_serialize = None
+
+        request = aiohttp_requests.Request(http)
+        with mock.patch(
+            "aiohttp.ClientSession", autospec=True
+        ) as session_mock, mock.patch.object(
+            UnixConnector, "__init__", autospec=True, return_value=None
+        ) as connector_init_mock:
+            session_mock.return_value._auto_decompress = False
+            cloned = request._clone()
+
+        assert isinstance(cloned, aiohttp_requests.Request)
+        assert cloned is not request
+        connector_init_mock.assert_called_once_with(
+            mock.ANY,
+            path="/tmp/test.sock",
+            limit=42,
+            force_close=True,
+        )
 
 
 class CredentialsStub(google.auth._credentials_async.Credentials):
@@ -153,7 +370,7 @@ class TestAuthorizedSession(object):
     @pytest.mark.asyncio
     async def test_constructor_with_auth_request(self):
         http = mock.create_autospec(
-            aiohttp.ClientSession, instance=True, _auto_decompress=False
+            aiohttp.ClientSession, instance=True, auto_decompress=False
         )
         auth_request = aiohttp_requests.Request(http)
 

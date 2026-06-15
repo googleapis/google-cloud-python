@@ -446,9 +446,13 @@ class CredentialsWithRegionalAccessBoundary(Credentials):
         try:
             # Do not perform a lookup if the request is for a regional endpoint.
             hostname = urlparse(url).hostname
-            if hostname and (
-                hostname.endswith(".rep.googleapis.com")
-                or hostname.endswith(".rep.sandbox.googleapis.com")
+            if hostname and hostname.endswith(
+                (
+                    ".rep.googleapis.com",
+                    ".rep.sandbox.googleapis.com",
+                    ".rep.mtls.googleapis.com",
+                    ".rep.mtls.sandbox.googleapis.com",
+                )
             ):
                 return True
         except (ValueError, TypeError, AttributeError):
@@ -484,16 +488,11 @@ class CredentialsWithRegionalAccessBoundary(Credentials):
     def _is_regional_access_boundary_lookup_required(self):
         """Checks if a Regional Access Boundary lookup is required.
 
-        A lookup is required if the feature is enabled via an environment
-        variable and the universe domain is supported.
+        A lookup is required if the universe domain is supported.
 
         Returns:
             bool: True if a Regional Access Boundary lookup is required, False otherwise.
         """
-        # Check if the feature is enabled.
-        if not _regional_access_boundary_utils.is_regional_access_boundary_enabled():
-            return False
-
         # Skip for non-default universe domains.
         if self.universe_domain != DEFAULT_UNIVERSE_DOMAIN:
             return False
