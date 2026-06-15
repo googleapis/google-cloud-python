@@ -13,6 +13,7 @@
 # limitations under the License.
 import base64
 import datetime
+import re
 from unittest import mock
 
 import pytest  # type: ignore
@@ -202,6 +203,7 @@ class TestCredentials(object):
                 "access_token": "token",
                 "expires_in": 500,
             },
+            "googleapis.com",
         ]
 
         # Credentials should start as invalid
@@ -248,7 +250,11 @@ class TestCredentials(object):
         assert creds.universe_domain == "universe_domain"
         assert creds._universe_domain_cached
 
-    def test_token_usage_metrics(self):
+    @mock.patch(
+        "google.auth.compute_engine._metadata.get_universe_domain",
+        return_value="googleapis.com",
+    )
+    def test_token_usage_metrics(self, mock_get_universe_domain):
         self.credentials.token = "token"
         self.credentials.expiry = None
 
@@ -406,11 +412,7 @@ class TestCredentials(object):
         url = creds._build_regional_access_boundary_lookup_url()
         assert url is None
 
-    @mock.patch(
-        "google.auth._regional_access_boundary_utils.is_regional_access_boundary_enabled",
-        return_value=True,
-    )
-    def test_is_regional_access_boundary_lookup_required(self, mock_enabled):
+    def test_is_regional_access_boundary_lookup_required(self):
         creds = self.credentials
         creds._universe_domain_cached = True
 
@@ -439,14 +441,10 @@ class TestCredentials(object):
         assert url is None
 
     @mock.patch(
-        "google.auth._regional_access_boundary_utils.is_regional_access_boundary_enabled",
-        return_value=True,
-    )
-    @mock.patch(
         "google.auth.compute_engine._metadata.get_service_account_info", autospec=True
     )
     def test_regional_access_boundary_disabled_state_transitions(
-        self, mock_get_service_account_info, mock_enabled
+        self, mock_get_service_account_info
     ):
         mock_get_service_account_info.return_value = {
             "email": "spiffe://trust-domain/ns/ns/sa/sa",
@@ -765,6 +763,15 @@ class TestIDTokenCredentials(object):
             json={},
         )
 
+        # mock allowedLocations for Regional Access Boundary
+        responses.add(
+            responses.GET,
+            re.compile(r".*/allowedLocations$"),
+            status=200,
+            content_type="application/json",
+            json={"encodedLocations": "0xABC"},
+        )
+
         # mock token for credentials
         responses.add(
             responses.GET,
@@ -783,8 +790,10 @@ class TestIDTokenCredentials(object):
         signature = base64.b64encode(b"some-signature").decode("utf-8")
         responses.add(
             responses.POST,
-            "https://iamcredentials.googleapis.com/v1/projects/-/"
-            "serviceAccounts/service-account@example.com:signBlob",
+            re.compile(
+                r"https://iamcredentials\.(mtls\.)?googleapis\.com/v1/projects/-/"
+                r"serviceAccounts/service-account@example\.com:signBlob"
+            ),
             status=200,
             content_type="application/json",
             json={"keyId": "some-key-id", "signedBlob": signature},
@@ -947,12 +956,23 @@ class TestIDTokenCredentials(object):
             json={},
         )
 
+        # mock allowedLocations for Regional Access Boundary
+        responses.add(
+            responses.GET,
+            re.compile(r".*/allowedLocations$"),
+            status=200,
+            content_type="application/json",
+            json={"encodedLocations": "0xABC"},
+        )
+
         # mock sign blob endpoint
         signature = base64.b64encode(b"some-signature").decode("utf-8")
         responses.add(
             responses.POST,
-            "https://iamcredentials.googleapis.com/v1/projects/-/"
-            "serviceAccounts/service-account@example.com:signBlob",
+            re.compile(
+                r"https://iamcredentials\.(mtls\.)?googleapis\.com/v1/projects/-/"
+                r"serviceAccounts/service-account@example\.com:signBlob"
+            ),
             status=200,
             content_type="application/json",
             json={"keyId": "some-key-id", "signedBlob": signature},
