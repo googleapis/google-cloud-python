@@ -230,38 +230,26 @@ def run_mprofile(target_module):
         print(stat)
 
 if __name__ == "__main__":
-    # Parse CLI arguments
-    target_module = "google.cloud.compute"
-    iterations = 50
-    trace = False
-    cprofile = False
-    mprofile = False
-    cpu = "0"
-    csv_path = None
+    import argparse
+    parser = argparse.ArgumentParser(description="Python SDK Import Profiler")
+    parser.add_argument("--module", default="google.cloud.compute", help="Target module to profile")
+    parser.add_argument("--iterations", type=int, default=50, help="Number of iterations")
+    parser.add_argument("--cpu", default="0", help="CPU core to pin to (or 'none')")
+    parser.add_argument("--csv", help="Path to export CSV results")
+    parser.add_argument("--trace", action="store_true", help="Generate importtime trace log")
+    parser.add_argument("--cprofile", action="store_true", help="Run cProfile")
+    parser.add_argument("--mprofile", action="store_true", help="Run tracemalloc memory snapshot")
+    parser.add_argument("--worker", action="store_true", help=argparse.SUPPRESS)
     
-    for arg in sys.argv[1:]:
-        if arg.startswith("--module="):
-            target_module = arg.split("=")[1]
-        elif arg.startswith("--iterations="):
-            iterations = int(arg.split("=")[1])
-        elif arg.startswith("--cpu="):
-            cpu = arg.split("=")[1]
-        elif arg.startswith("--csv="):
-            csv_path = arg.split("=")[1]
-        elif arg == "--trace":
-            trace = True
-        elif arg == "--cprofile":
-            cprofile = True
-        elif arg == "--mprofile":
-            mprofile = True
-            
-    if "--worker" in sys.argv:
-        run_worker(target_module)
-    elif trace:
-        run_trace(target_module)
-    elif cprofile:
-        run_cprofile(target_module)
-    elif mprofile:
-        run_mprofile(target_module)
+    args = parser.parse_args()
+    
+    if args.worker:
+        run_worker(args.module)
+    elif args.trace:
+        run_trace(args.module)
+    elif args.cprofile:
+        run_cprofile(args.module)
+    elif args.mprofile:
+        run_mprofile(args.module)
     else:
-        run_master(iterations, target_module, cpu, csv_path)
+        run_master(args.iterations, args.module, args.cpu, args.csv)
