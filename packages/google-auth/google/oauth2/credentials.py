@@ -167,7 +167,7 @@ class Credentials(
     def __getstate__(self):
         """A __getstate__ method must exist for the __setstate__ to be called
         This is identical to the default implementation.
-        See https://docs.python.org/3.7/library/pickle.html#object.__setstate__
+        See https://docs.python.org/3/library/pickle.html#object.__setstate__
         """
         state_dict = self.__dict__.copy()
         # Remove _refresh_handler function as there are limitations pickling and
