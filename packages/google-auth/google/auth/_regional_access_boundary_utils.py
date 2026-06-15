@@ -17,6 +17,7 @@
 import asyncio
 import copy
 import datetime
+import functools
 import inspect
 import logging
 import threading
