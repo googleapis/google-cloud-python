@@ -94,8 +94,8 @@ jobs:
           find .coverage-results -type f -name '*.zip' -exec unzip -o {} \;
 
           # Find all coverage files and combine them.
-          # We find files starting with .coverage (excluding .coveragerc)
-          coverage_files=$(find .coverage-results . -type f -name '.coverage*' ! -name '.coveragerc')
+          # We find files starting with .coverage (excluding .coveragerc files and templates)
+          coverage_files=$(find .coverage-results . -type f -name '.coverage*' ! -name '.coveragerc*')
           if [ -n "${coverage_files}" ]; then
             coverage combine ${coverage_files}
           else
