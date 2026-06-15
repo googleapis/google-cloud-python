@@ -207,10 +207,19 @@ class Request(transport.Request):
     def _clone(self) -> "Request":
         """Creates an independent copy of this request adapter.
 
+        Clones the connection settings, trace configurations, and session defaults
+        (headers, cookies, basic auth, and timeouts).
+
+        Only standard `aiohttp.TCPConnector` and `aiohttp.UnixConnector` connectors
+        are supported. The DNS resolver is not copied to avoid closing shared resolver
+        resources.
+
         Returns:
-            google.auth.aio.transport.aiohttp.Request: A request adapter copy
-            running a new aiohttp.ClientSession with identical connection,
-            proxy, and session configurations.
+            google.auth.aio.transport.aiohttp.Request: A new request adapter.
+
+        Raises:
+            google.auth.exceptions.TransportError: If the transport is closed, or if the
+                session uses an unsupported connector.
         """
         if self._closed:
             raise exceptions.TransportError("Cannot clone a closed transport.")
