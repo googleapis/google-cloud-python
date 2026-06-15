@@ -13,6 +13,8 @@ def run_worker(target_module):
     tracemalloc.start()
     start_time = time.perf_counter()
     
+    modules_before = set(sys.modules.keys())
+    
     # --- TARGET IMPORT ---
     importlib.import_module(target_module)
     # ---------------------
@@ -21,15 +23,31 @@ def run_worker(target_module):
     _, peak = tracemalloc.get_traced_memory()
     tracemalloc.stop()
     
+    modules_after = set(sys.modules.keys())
+    new_modules = modules_after - modules_before
+    
+    loaded_lines = 0
+    for m in new_modules:
+        mod = sys.modules.get(m)
+        if mod and getattr(mod, '__file__', None) and mod.__file__.endswith('.py'):
+            try:
+                with open(mod.__file__, 'r', encoding='utf-8') as f:
+                    loaded_lines += sum(1 for _ in f)
+            except Exception:
+                pass
+    
     # Output to stdout for the Master to capture
     print(json.dumps({
         "time_ms": (end_time - start_time) * 1000,
-        "peak_ram_mb": peak / (1024 * 1024)
+        "peak_ram_mb": peak / (1024 * 1024),
+        "loaded_modules": len(new_modules),
+        "loaded_lines": loaded_lines
     }))
 
 def run_master(iterations, target_module, cpu="0", csv_path=None):
     """Orchestrates the benchmark."""
     times, memories = [], []
+    loaded_modules_val, loaded_lines_val = 0, 0
     
     print(f"Profiling start... Running {iterations} cold-start iterations for {target_module}.")
     if cpu.lower() != "none":
@@ -52,6 +70,8 @@ def run_master(iterations, target_module, cpu="0", csv_path=None):
             data = json.loads(result.stdout)
             times.append(data["time_ms"])
             memories.append(data["peak_ram_mb"])
+            loaded_modules_val = data.get("loaded_modules", 0)
+            loaded_lines_val = data.get("loaded_lines", 0)
         except (subprocess.CalledProcessError, FileNotFoundError) as e:
             # Fallback if taskset is not found or fails
             if cpu.lower() != "none" and i == 0:
@@ -62,6 +82,8 @@ def run_master(iterations, target_module, cpu="0", csv_path=None):
                 data = json.loads(result.stdout)
                 times.append(data["time_ms"])
                 memories.append(data["peak_ram_mb"])
+                loaded_modules_val = data.get("loaded_modules", 0)
+                loaded_lines_val = data.get("loaded_lines", 0)
                 cpu = "none" # Disable cpu pinning for remaining iterations
             else:
                 raise e
@@ -84,6 +106,9 @@ def run_master(iterations, target_module, cpu="0", csv_path=None):
     p50_mem, p90_mem, p99_mem = q_mem[49], q_mem[89], q_mem[98]
 
     print(f"\n--- Results for {target_module} ({iterations} iterations) ---")
+    print(f"Code Volume (Deterministic):")
+    print(f"  Loaded Modules: {loaded_modules_val}")
+    print(f"  Loaded Lines:   {loaded_lines_val}")
     print(f"Time (ms):")
     print(f"  P50 (Median): {p50_time:.2f}")
     print(f"  P90:          {p90_time:.2f}")
@@ -120,11 +145,50 @@ def run_trace(target_module):
         
     print(f"Trace log successfully written to {trace_file}")
 
+def run_cprofile(target_module):
+    """Runs cProfile to capture stack traces for latency."""
+    import cProfile
+    import pstats
+    
+    prof_file = f"cprofile_{target_module.replace('.', '_')}.prof"
+    print(f"Generating cProfile data for {target_module} -> {prof_file}...")
+    
+    # Run profiling
+    pr = cProfile.Profile()
+    pr.enable()
+    importlib.import_module(target_module)
+    pr.disable()
+    
+    # Save for flame charts (e.g. via snakeviz)
+    pr.dump_stats(prof_file)
+    print(f"cProfile stats successfully written to {prof_file}")
+    
+    # Print top bottlenecks
+    print("\n--- Top 15 functions by cumulative time ---")
+    ps = pstats.Stats(pr).sort_stats(pstats.SortKey.CUMULATIVE)
+    ps.print_stats(15)
+
+def run_mprofile(target_module):
+    """Runs tracemalloc snapshot to see where memory is allocated."""
+    print(f"Generating tracemalloc memory snapshot for {target_module}...")
+    
+    tracemalloc.start()
+    importlib.import_module(target_module)
+    snapshot = tracemalloc.take_snapshot()
+    tracemalloc.stop()
+    
+    print("\n--- Top 15 memory allocations by line ---")
+    top_stats = snapshot.statistics('lineno')
+    for stat in top_stats[:15]:
+        print(stat)
+
 if __name__ == "__main__":
     # Parse CLI arguments
     target_module = "google.cloud.compute"
     iterations = 50
     trace = False
+    cprofile = False
+    mprofile = False
     cpu = "0"
     csv_path = None
     
@@ -139,10 +203,18 @@ if __name__ == "__main__":
             csv_path = arg.split("=")[1]
         elif arg == "--trace":
             trace = True
+        elif arg == "--cprofile":
+            cprofile = True
+        elif arg == "--mprofile":
+            mprofile = True
             
     if "--worker" in sys.argv:
         run_worker(target_module)
     elif trace:
         run_trace(target_module)
+    elif cprofile:
+        run_cprofile(target_module)
+    elif mprofile:
+        run_mprofile(target_module)
     else:
         run_master(iterations, target_module, cpu, csv_path)
