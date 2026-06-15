@@ -5,8 +5,10 @@ import subprocess
 import statistics
 import tracemalloc
 import importlib
+import importlib.util
 import csv
 import os
+import logging
 
 def run_worker(target_module):
     """Performs ONE import and returns metrics."""
@@ -32,13 +34,15 @@ def run_worker(target_module):
         if mod and getattr(mod, '__file__', None):
             file_path = mod.__file__
             if file_path.endswith('.pyc'):
-                file_path = file_path[:-1]
+                try:
+                    file_path = importlib.util.source_from_cache(file_path)
+                except ValueError:
+                    pass
             if file_path.endswith('.py'):
                 try:
                     with open(file_path, 'r', encoding='utf-8') as f:
                         loaded_lines += sum(1 for _ in f)
                 except Exception as e:
-                    import logging
                     logging.warning(f"Failed to read lines from {file_path}: {e}")
     
     # Output to stdout for the Master to capture
@@ -72,7 +76,7 @@ def run_master(iterations, target_module, cpu="0", csv_path=None):
             result = subprocess.run(
                 cmd, capture_output=True, text=True, check=True
             )
-            data = json.loads(result.stdout)
+            data = json.loads(result.stdout.strip().splitlines()[-1])
             times.append(data["time_ms"])
             memories.append(data["peak_ram_mb"])
             loaded_modules_val = data.get("loaded_modules", 0)
@@ -85,7 +89,7 @@ def run_master(iterations, target_module, cpu="0", csv_path=None):
                 cmd = [sys.executable, __file__, "--worker", f"--module={target_module}"]
                 try:
                     result = subprocess.run(cmd, capture_output=True, text=True, check=True)
-                    data = json.loads(result.stdout)
+                    data = json.loads(result.stdout.strip().splitlines()[-1])
                     times.append(data["time_ms"])
                     memories.append(data["peak_ram_mb"])
                     loaded_modules_val = data.get("loaded_modules", 0)
@@ -101,7 +105,7 @@ def run_master(iterations, target_module, cpu="0", csv_path=None):
         
     # Write CSV if requested
     if csv_path:
-        with open(csv_path, "w", newline="") as f:
+        with open(csv_path, "w", newline="", encoding="utf-8") as f:
             writer = csv.writer(f)
             writer.writerow(["Iteration", "Time (ms)", "Peak RAM (MB)"])
             for idx, (t, m) in enumerate(zip(times, memories)):
@@ -157,7 +161,7 @@ def run_trace(target_module):
         capture_output=True, text=True
     )
     
-    with open(trace_file, "w") as f:
+    with open(trace_file, "w", encoding="utf-8") as f:
         f.write(result.stderr)
         
     print(f"Trace log successfully written to {trace_file}")
