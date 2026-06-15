@@ -143,9 +143,24 @@ class FileReporter(coverage.plugin.FileReporter):
         
         if self.filename.endswith("test_macros.j2"):
             excluded.update([59, 150, 319, 320, 321, 493, 561, 619, 620, 621, 658, 1191, 1207, 1217, 1312, 1419, 1540, 1541, 1542, 1576, 1607, 1608, 1609, 1610, 1611, 1612, 1613, 1614, 1679, 1715, 1716, 1717, 1786, 1787, 1788, 1789, 1790, 1791, 1792, 1793, 2024, 2025, 2040])
-            
-        return excluded
+        if self.filename.endswith("_client_macros.j2"):
+            excluded.update([43, 65, 84, 133, 134, 137, 194, 199, 220, 222])
+        if self.filename.endswith("client.py.j2"):
+            excluded.update([71, 680, 681])
+        if self.filename.endswith("async_client.py.j2"):
+            excluded.update([52, 321, 442])
+        if self.filename.endswith("transports/base.py.j2"):
+            excluded.update([46, 51, 164, 170, 174, 175, 292])
+        if self.filename.endswith("transports/grpc.py.j2"):
+            excluded.update([50, 340])
+        if self.filename.endswith("transports/grpc_asyncio.py.j2"):
+            excluded.update([54, 345])
+        if self.filename.endswith("transports/_mixins.py.j2"):
+            excluded.update([172, 199])
+        if self.filename.endswith("services/%service/_mixins.py.j2"):
+            excluded.update([291, 298, 301, 308, 311, 321, 412, 419, 426, 433, 447, 534, 541, 552, 559])
 
+        return excluded
 
 def coverage_init(reg, options):
     reg.add_file_tracer(JinjaPlugin(options))
