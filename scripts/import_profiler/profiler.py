@@ -40,7 +40,7 @@ def run_worker(target_module):
                     pass
             if file_path.endswith('.py'):
                 try:
-                    with open(file_path, 'r', encoding='utf-8') as f:
+                    with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
                         loaded_lines += sum(1 for _ in f)
                 except Exception as e:
                     logging.warning(f"Failed to read lines from {file_path}: {e}")
