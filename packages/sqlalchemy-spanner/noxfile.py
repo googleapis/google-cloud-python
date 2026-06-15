@@ -85,6 +85,7 @@ CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 UNIT_TEST_STANDARD_DEPENDENCIES = [
     "mock",
     "pytest",
+    "pytest-cov",
 ]
 
 UNIT_TEST_EXTERNAL_DEPENDENCIES = [
