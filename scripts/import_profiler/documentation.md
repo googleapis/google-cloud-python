@@ -1,6 +1,6 @@
 # Python SDK Import Profiler: Documentation & Breakdown
 
-This document provides a comprehensive guide to the `import_profiler` scripts, directory files, and how to analyze the generated import trace logs to target optimization areas, along with the details of the implemented lazy-loading refactor.
+This document provides a comprehensive guide to the `import_profiler` scripts, directory files, and how to analyze the generated import trace logs to target optimization areas.
 
 ---
 
@@ -8,15 +8,13 @@ This document provides a comprehensive guide to the `import_profiler` scripts, d
 The profiling tool is located in the [scripts/import_profiler/](./) directory:
 
 * **[profiler.py](./profiler.py)**: The core executable script. It is designed as a single-file, self-spawning harness that performs process-isolated importing benchmarks and generates trace logs.
-* **[plan.md](./plan.md)**: The current project phases and roadmap checklist.
-* **[status.md](./status.md)**: Tracks the active task state and hosts recorded baseline performance metrics.
 
 ---
 
 ## 2. Profiler Mechanism (`profiler.py`)
 
 **Objective**
-The Profiler functions as a process-isolated verification harness designed to capture before-and-after metrics across three distinct vectors: Initialization Latency (ms), Peak Memory Usage (MB), and **Dynamic Code Volume (Loaded Modules & Lines of Code)**.
+The Profiler functions as a process-isolated verification harness designed to capture before-and-after metrics across three distinct vectors: Initialization Latency (ms), Peak Memory Usage (MB), and Dynamic Code Volume (Loaded Modules & Lines of Code).
 
 **Usage**
 
