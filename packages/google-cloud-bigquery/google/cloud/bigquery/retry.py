@@ -67,6 +67,9 @@ def _should_retry(exc):
     We retry if and only if the 'reason' is in _RETRYABLE_REASONS or is
     in _UNSTRUCTURED_RETRYABLE_TYPES.
     """
+    if isinstance(exc, requests.exceptions.SSLError):
+        return False
+
     try:
         reason = exc.errors[0]["reason"]
     except (AttributeError, IndexError, TypeError, KeyError):
