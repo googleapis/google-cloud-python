@@ -143,7 +143,7 @@ class Request(transport.Request):
     """
 
     def __init__(self, session=None):
-        if session is not None and session.auto_decompress:
+        if session is not None and getattr(session, "auto_decompress", None) is True:
             raise exceptions.InvalidOperation(
                 "Client sessions with auto_decompress=True are not supported."
             )
