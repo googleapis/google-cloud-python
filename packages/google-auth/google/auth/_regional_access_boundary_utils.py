@@ -497,7 +497,7 @@ async def _close_cloned_request(lookup_request, is_cloned):
     is_async = False
     try:
         maybe_coro = lookup_request.close()
-        if is_async := inspect.iscoroutine(maybe_coro):
+        if is_async := inspect.isawaitable(maybe_coro):
             await maybe_coro
     except Exception as e:
         if _helpers.is_logging_enabled(_LOGGER):

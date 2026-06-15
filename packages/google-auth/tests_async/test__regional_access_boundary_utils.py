@@ -159,6 +159,18 @@ async def test_close_cloned_request_async():
 
 
 @pytest.mark.asyncio
+async def test_close_cloned_request_future():
+    request = mock.Mock()
+    future = asyncio.Future()
+    future.set_result(None)
+    request.close = mock.Mock(return_value=future)
+
+    await _regional_access_boundary_utils._close_cloned_request(request, is_cloned=True)
+    request.close.assert_called_once()
+    assert future.done()
+
+
+@pytest.mark.asyncio
 async def test_close_cloned_request_async_exception():
     request = mock.Mock()
     request.close = mock.AsyncMock(side_effect=Exception("close error"))
