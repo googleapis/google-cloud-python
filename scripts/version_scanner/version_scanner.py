@@ -146,7 +146,7 @@ class ConfigManager:
                 
         return resolved_rules
 
-def scan_file(file_path: str, compiled_rules: List[Dict[str, re.Pattern]]) -> List[Dict[str, str]]:
+def scan_file(file_path: str, compiled_rules: List[Dict[str, re.Pattern]]) -> List[Dict[str, Any]]:
     """
     Scan a single file for matching patterns.
     
@@ -239,7 +239,7 @@ def _safe_int(value: Any, default: int = 0) -> int:
         return default
 
 
-def format_for_raw_csv(match: Dict[str, str]) -> Dict[str, str]:
+def format_for_raw_csv(match: Dict[str, Any]) -> Dict[str, Any]:
     """Prepares a full raw dataset (n + x columns) with clean text values."""
     file_name = match.get("file_name")
     if not file_name and match.get("file_path"):
@@ -258,10 +258,10 @@ def format_for_raw_csv(match: Dict[str, str]) -> Dict[str, str]:
 
 
 def format_for_spreadsheet(
-    match: Dict[str, str], 
+    match: Dict[str, Any], 
     github_repo: str = None, 
     branch: str = "main"
-) -> Dict[str, str]:
+) -> Dict[str, Any]:
     """Builds on top of raw CSV but applies Sheets-specific formulas."""
     formatted = format_for_raw_csv(match)
     
@@ -276,7 +276,7 @@ def format_for_spreadsheet(
     return formatted
 
 
-def format_for_console(match: Dict[str, str]) -> str:
+def format_for_console(match: Dict[str, Any]) -> str:
     """Prepares a slim, readable string representation (n columns) for stdout/logs."""
     file_path = match.get("file_path", "")
     line_number = match.get("line_number", "")
@@ -286,7 +286,7 @@ def format_for_console(match: Dict[str, str]) -> str:
 
 
 
-def get_match_counts(matches: List[Dict[str, str]]) -> Tuple[Dict[str, int], Dict[str, int]]:
+def get_match_counts(matches: List[Dict[str, Any]]) -> Tuple[Dict[str, int], Dict[str, int]]:
     """
     Aggregate matches by rule and by package.
     """
@@ -339,7 +339,7 @@ def load_ignore_file(file_path: str) -> List[str]:
 
 def write_csv_report(
     output_path: str, 
-    matches: List[Dict[str, str]]
+    matches: List[Dict[str, Any]]
 ) -> None:
     """
     Write the collected matches to a CSV file.
@@ -366,7 +366,7 @@ def write_csv_report(
         print(f"Error writing CSV report: {e}", file=sys.stderr)
 
 
-def upload_to_drive(csv_path: str, matches: List[Dict[str, str]], github_repo: str = None, branch: str = "main") -> str:
+def upload_to_drive(csv_path: str, matches: List[Dict[str, Any]], github_repo: str = None, branch: str = "main") -> str:
     """
     Upload matches to a Google Sheet in Drive.
     """
@@ -469,7 +469,7 @@ def scan_repository(
     target_packages: List[str] = None,
     ignore_dirs: List[str] = None,
     version_string: str = None
-) -> List[Dict[str, str]]:
+) -> List[Dict[str, Any]]:
     """
     Scans the repository directory tree applying resolved regex patterns to files.
     
