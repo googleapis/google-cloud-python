@@ -241,13 +241,19 @@ def _safe_int(value: Any, default: int = 0) -> int:
 
 def format_for_raw_csv(match: Dict[str, str]) -> Dict[str, str]:
     """Prepares a full raw dataset (n + x columns) with clean text values."""
+    file_name = match.get("file_name")
+    if not file_name and match.get("file_path"):
+        file_name = os.path.basename(match.get("file_path"))
     return {
+        "file_name": file_name or "",
         "file_path": match.get("file_path", ""),
         "package_name": match.get("package_name", ""),
         "rule_name": match.get("rule_name", ""),
         "line_number": _safe_int(match.get("line_number")),
         "matched_string": match.get("matched_string", ""),
-        "context_line": _truncate_context(match.get("context_line", ""), match.get("matched_string", ""))
+        "context_line": _truncate_context(match.get("context_line", ""), match.get("matched_string", "")),
+        "dependency": match.get("dependency", ""),
+        "version": match.get("version", "")
     }
 
 
@@ -342,7 +348,7 @@ def write_csv_report(
         output_path: Path to the output CSV file.
         matches: A list of dictionaries containing match details.
     """
-    fieldnames = ["file_path", "package_name", "rule_name", "line_number", "matched_string", "context_line"]
+    fieldnames = ["file_name", "file_path", "package_name", "rule_name", "dependency", "version", "line_number", "matched_string", "context_line"]
     
     try:
         with open(output_path, 'w', encoding='utf-8', newline='') as f:
@@ -391,13 +397,16 @@ def upload_to_drive(csv_path: str, matches: List[Dict[str, str]], github_repo: s
         spreadsheet_id = spreadsheet.get('spreadsheetId')
         
         # Prepare data
-        values = [["file_path", "package_name", "rule_name", "line_number", "matched_string", "context_line"]]
+        values = [["file_name", "file_path", "package_name", "rule_name", "dependency", "version", "line_number", "matched_string", "context_line"]]
         for m in matches:
             formatted_m = format_for_spreadsheet(m, github_repo=github_repo, branch=branch)
             values.append([
+                formatted_m.get("file_name", ""),
                 formatted_m.get("file_path", ""),
                 formatted_m.get("package_name", ""),
                 formatted_m.get("rule_name", ""),
+                formatted_m.get("dependency", ""),
+                formatted_m.get("version", ""),
                 str(formatted_m.get("line_number", "")),
                 formatted_m.get("matched_string", ""),
                 formatted_m.get("context_line", "")
@@ -510,7 +519,6 @@ def scan_repository(
         files = [f for f in files if f.lower() not in ignore_lower]
         
         rel_root = os.path.relpath(root, root_path)
-        parts = rel_root.split(os.sep)
         
         # Layout-agnostic generic subdirectory filtering
         if target_packages:
@@ -559,6 +567,7 @@ def scan_repository(
                 display_path = rel_file_path
                 
             for m in matches:
+                m["file_name"] = file
                 m["file_path"] = display_path
                 m["repo_path"] = rel_file_path
                 m["package_name"] = package_name
@@ -663,7 +672,7 @@ def main():
         
     print(f"Starting scan for dependency: {args.dependency} version: {args.version}")
     print(f"Root path: {args.path}")
-    print(f"Targets to scan:")
+    print("Targets to scan:")
     if target_packages:
         for pkg in target_packages:
             print(f"  - {os.path.join(args.path, pkg)}")
