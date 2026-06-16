@@ -67,10 +67,6 @@ Python >= 3.10, including 3.14
 .. _active: https://devguide.python.org/devcycle/#in-development-main-branch
 .. _maintenance: https://devguide.python.org/devcycle/#maintenance-branches
 
-Unsupported Python Versions
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Python <= 3.9
-
 
 If you are using an `end-of-life`_
 version of Python, we recommend that you update as soon as possible to an actively supported version.
