@@ -6767,7 +6767,7 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         client = self._make_one(project=PROJECT, credentials=creds, _http=object())
         conn = client._connection = make_connection({})
-        
+
         # Make the connection raise an SSLError
         conn.api_request.side_effect = requests.exceptions.SSLError("EOF occurred")
 

@@ -17,8 +17,8 @@ from unittest import mock
 
 import pytest
 import requests.exceptions
-from google.api_core import exceptions as core_exceptions
 from google.cloud import bigquery
+
 
 def test_insert_rows_json_ssl_error_no_retry(bigquery_client, dataset_id, project_id):
     """
@@ -32,7 +32,7 @@ def test_insert_rows_json_ssl_error_no_retry(bigquery_client, dataset_id, projec
     try:
         # We mock the api_request to simulate the GFE abruptly closing the connection
         # which manifests as a requests.exceptions.SSLError.
-        original_api_request = bigquery_client._connection.api_request
+        bigquery_client._connection.api_request
         call_count = 0
 
         def mock_api_request(*args, **kwargs):
@@ -40,17 +40,15 @@ def test_insert_rows_json_ssl_error_no_retry(bigquery_client, dataset_id, projec
             call_count += 1
             raise requests.exceptions.SSLError("EOF occurred in violation of protocol")
 
-        with mock.patch.object(bigquery_client._connection, "api_request", side_effect=mock_api_request):
+        with mock.patch.object(
+            bigquery_client._connection, "api_request", side_effect=mock_api_request
+        ):
             # Use a reasonably short deadline for the test, although it should fail on the first attempt anyway.
             retry = bigquery.DEFAULT_RETRY.with_deadline(5.0)
 
             start_time = time.time()
             with pytest.raises(requests.exceptions.SSLError) as excinfo:
-                bigquery_client.insert_rows_json(
-                    table, 
-                    [{"name": "test"}],
-                    retry=retry
-                )
+                bigquery_client.insert_rows_json(table, [{"name": "test"}], retry=retry)
             duration = time.time() - start_time
 
         # Verification:
