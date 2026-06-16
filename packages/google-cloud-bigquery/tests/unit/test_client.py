@@ -6753,6 +6753,38 @@ class TestClient(unittest.TestCase):
         with self.assertRaises(TypeError):
             client.insert_rows_json(table, ROW)
 
+    def test_insert_rows_json_w_ssl_error(self):
+        from google.cloud.bigquery.dataset import DatasetReference
+        from google.cloud.bigquery.schema import SchemaField
+        from google.cloud.bigquery.table import Table
+        import requests.exceptions
+
+        PROJECT = "PROJECT"
+        DS_ID = "DS_ID"
+        TABLE_ID = "TABLE_ID"
+        ROWS = [{"full_name": "Bhettye Rhubble", "age": "27", "joined": None}]
+
+        creds = _make_credentials()
+        client = self._make_one(project=PROJECT, credentials=creds, _http=object())
+        conn = client._connection = make_connection({})
+        
+        # Make the connection raise an SSLError
+        conn.api_request.side_effect = requests.exceptions.SSLError("EOF occurred")
+
+        table_ref = DatasetReference(PROJECT, DS_ID).table(TABLE_ID)
+        schema = [
+            SchemaField("full_name", "STRING", mode="REQUIRED"),
+            SchemaField("age", "INTEGER", mode="REQUIRED"),
+            SchemaField("joined", "TIMESTAMP", mode="NULLABLE"),
+        ]
+        table = Table(table_ref, schema=schema)
+
+        with self.assertRaises(requests.exceptions.SSLError) as context:
+            client.insert_rows_json(table, ROWS)
+
+        self.assertIn("invalid table schema", str(context.exception))
+        self.assertIn("SSL/Connection error occurred", str(context.exception))
+
     def test_list_partitions(self):
         from google.cloud.bigquery.table import Table
 
