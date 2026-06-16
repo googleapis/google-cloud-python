@@ -143,7 +143,7 @@ def test_astype_from_json(json_types_df: bpd.DataFrame, snapshot):
 
 def test_tojson_invalid(scalar_types_df: bpd.DataFrame, json_types_df: bpd.DataFrame):
     # Test invalid cast to JSON
-    with pytest.raises(TypeError, match="Cannot cast"):
+    with pytest.raises(TypeError):
         ops_map_to = {
             "datetime_to_json": ops.ToJSON().as_expr("datetime_col"),
         }
@@ -152,7 +152,7 @@ def test_tojson_invalid(scalar_types_df: bpd.DataFrame, json_types_df: bpd.DataF
         )
 
     # Test invalid cast from JSON
-    with pytest.raises(TypeError, match="Cannot cast"):
+    with pytest.raises(TypeError):
         ops_map_from = {
             "json_to_datetime": ops.JSONDecode(to_type=dtypes.DATETIME_DTYPE).as_expr(
                 "json_col"

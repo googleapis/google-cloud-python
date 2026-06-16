@@ -109,7 +109,7 @@ class ToJSON(base_ops.UnaryOp):
 
     def output_type(self, *input_types):
         input_type = input_types[0]
-        if not dtypes.is_json_encoding_type(input_type):
+        if not dtypes.is_json_encoding_type(input_type, strict=True):
             raise TypeError(
                 "The value to be assigned must be a type that can be encoded as JSON."
                 + f"Received type: {input_type}"
