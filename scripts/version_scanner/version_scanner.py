@@ -137,7 +137,9 @@ class ConfigManager:
                     resolved_pattern = template.strip().format(**self.variables)
                     resolved_rules.append({
                         "name": name,
-                        "pattern": resolved_pattern
+                        "pattern": resolved_pattern,
+                        "dependency": self.dependency,
+                        "version": self.version
                     })
                 except KeyError as e:
                     print(f"Warning: Missing variable for interpolation in rule {name}: {e}", file=sys.stderr)
@@ -178,7 +180,9 @@ def scan_file(file_path: str, compiled_rules: List[Dict[str, re.Pattern]]) -> Li
                             "rule_name": rule["name"],
                             "line_number": line_num,
                             "matched_string": match.group(0).strip(),
-                            "context_line": line.strip()
+                            "context_line": line.strip(),
+                            "dependency": rule.get("dependency", ""),
+                            "version": rule.get("version", "")
                         })
     except IOError as e:
         print(f"Warning: Could not read file {file_path}: {e}", file=sys.stderr)
@@ -241,13 +245,19 @@ def _safe_int(value: Any, default: int = 0) -> int:
 
 def format_for_raw_csv(match: Dict[str, str]) -> Dict[str, str]:
     """Prepares a full raw dataset (n + x columns) with clean text values."""
+    file_name = match.get("file_name")
+    if not file_name and match.get("file_path"):
+        file_name = os.path.basename(match.get("file_path"))
     return {
+        "file_name": file_name or "",
         "file_path": match.get("file_path", ""),
         "package_name": match.get("package_name", ""),
         "rule_name": match.get("rule_name", ""),
         "line_number": _safe_int(match.get("line_number")),
         "matched_string": match.get("matched_string", ""),
-        "context_line": _truncate_context(match.get("context_line", ""), match.get("matched_string", ""))
+        "context_line": _truncate_context(match.get("context_line", ""), match.get("matched_string", "")),
+        "dependency": match.get("dependency", ""),
+        "version": match.get("version", "")
     }
 
 
@@ -342,7 +352,7 @@ def write_csv_report(
         output_path: Path to the output CSV file.
         matches: A list of dictionaries containing match details.
     """
-    fieldnames = ["file_path", "package_name", "rule_name", "line_number", "matched_string", "context_line"]
+    fieldnames = ["file_name", "file_path", "package_name", "rule_name", "dependency", "version", "line_number", "matched_string", "context_line"]
     
     try:
         with open(output_path, 'w', encoding='utf-8', newline='') as f:
@@ -391,13 +401,16 @@ def upload_to_drive(csv_path: str, matches: List[Dict[str, str]], github_repo: s
         spreadsheet_id = spreadsheet.get('spreadsheetId')
         
         # Prepare data
-        values = [["file_path", "package_name", "rule_name", "line_number", "matched_string", "context_line"]]
+        values = [["file_name", "file_path", "package_name", "rule_name", "dependency", "version", "line_number", "matched_string", "context_line"]]
         for m in matches:
             formatted_m = format_for_spreadsheet(m, github_repo=github_repo, branch=branch)
             values.append([
+                formatted_m.get("file_name", ""),
                 formatted_m.get("file_path", ""),
                 formatted_m.get("package_name", ""),
                 formatted_m.get("rule_name", ""),
+                formatted_m.get("dependency", ""),
+                formatted_m.get("version", ""),
                 str(formatted_m.get("line_number", "")),
                 formatted_m.get("matched_string", ""),
                 formatted_m.get("context_line", "")
@@ -459,7 +472,8 @@ def scan_repository(
     rules: List[Dict[str, str]],
     target_packages: List[str] = None,
     ignore_dirs: List[str] = None,
-    version_string: str = None
+    version_string: str = None,
+    targets: List[Tuple[str, str]] = None
 ) -> List[Dict[str, str]]:
     """
     Scans the repository directory tree applying resolved regex patterns to files.
@@ -478,6 +492,7 @@ def scan_repository(
                          performs a full recursive scan of the repository.
         ignore_dirs: Optional list of directory names or glob-like files to ignore (case-insensitive).
         version_string: Optional target version string (e.g. "3.7") to scan for in filenames.
+        targets: Optional list of (dependency, version) tuples to check for in filenames.
         
     Returns:
         A list of dictionaries detailing each match: 'file_path', 'repo_path',
@@ -486,13 +501,22 @@ def scan_repository(
     ignore_lower = {i.lower() for i in ignore_dirs} if ignore_dirs else set()
     results = []
     
+    filename_targets = []
+    if targets:
+        filename_targets = targets
+    elif version_string:
+        dep = rules[0].get("dependency") if rules else None
+        filename_targets = [(dep, version_string)]
+    
     # Compile patterns once here
     compiled_rules = []
     for rule in rules:
         try:
             compiled_rules.append({
                 "name": rule["name"],
-                "pattern": re.compile(rule["pattern"], re.IGNORECASE)
+                "pattern": re.compile(rule["pattern"], re.IGNORECASE),
+                "dependency": rule.get("dependency", ""),
+                "version": rule.get("version", "")
             })
         except re.error as e:
             print(f"Error compiling regex for rule {rule['name']}: {e}", file=sys.stderr)
@@ -510,7 +534,6 @@ def scan_repository(
         files = [f for f in files if f.lower() not in ignore_lower]
         
         rel_root = os.path.relpath(root, root_path)
-        parts = rel_root.split(os.sep)
         
         # Layout-agnostic generic subdirectory filtering
         if target_packages:
@@ -533,13 +556,16 @@ def scan_repository(
             matches = scan_file(file_path, compiled_rules)
             
             # Add filename match if applicable
-            if version_string and version_string in file:
-                matches.append({
-                    "rule_name": "filename_match",
-                    "line_number": 0,
-                    "matched_string": version_string,
-                    "context_line": f"Filename contains {version_string}"
-                })
+            for dep, ver in filename_targets:
+                if ver and ver in file:
+                    matches.append({
+                        "rule_name": "filename_match",
+                        "line_number": 0,
+                        "matched_string": ver,
+                        "context_line": f"Filename contains {ver}",
+                        "dependency": dep or "",
+                        "version": ver
+                    })
             
             # Compute display path and package name
             rel_file_path = os.path.relpath(file_path, root_path)
@@ -559,12 +585,53 @@ def scan_repository(
                 display_path = rel_file_path
                 
             for m in matches:
+                m["file_name"] = file
                 m["file_path"] = display_path
                 m["repo_path"] = rel_file_path
                 m["package_name"] = package_name
                 results.append(m)
                 
     return results
+
+
+def parse_targets(targets_input: str) -> List[Tuple[str, str]]:
+    """
+    Parses a targets input (file path or inline YAML/JSON string) into a list of (dependency, version) tuples.
+    """
+    raw_targets = {}
+    content = targets_input
+    
+    # Check if the input is a file path
+    if os.path.exists(targets_input):
+        try:
+            with open(targets_input, 'r', encoding='utf-8') as f:
+                content = f.read()
+        except PermissionError:
+            print(f"Error: Permission denied reading targets file: {targets_input}", file=sys.stderr)
+            sys.exit(1)
+        except Exception as e:
+            print(f"Error reading targets file {targets_input}: {e}", file=sys.stderr)
+            sys.exit(1)
+
+    try:
+        raw_targets = yaml.safe_load(content)
+    except Exception as e:
+        print(f"Error parsing targets YAML/JSON content: {e}", file=sys.stderr)
+        sys.exit(1)
+        
+    if not isinstance(raw_targets, dict):
+        print("Error: Targets input must resolve to a JSON object or YAML mapping", file=sys.stderr)
+        sys.exit(1)
+        
+    targets = []
+    for dep, versions in raw_targets.items():
+        if isinstance(versions, list):
+            for v in versions:
+                targets.append((str(dep), str(v)))
+        else:
+            targets.append((str(dep), str(versions)))
+            
+    return targets
 
 
 def main():
@@ -577,14 +644,17 @@ def main():
     
     parser.add_argument(
         "-d", "--dependency",
-        required=True,
         help="Name of the dependency (e.g., python, protobuf)"
     )
     
     parser.add_argument(
         "-v", "--version",
-        required=True,
         help="Specific version to search for (e.g., 3.7, 4.25.8)"
+    )
+    
+    parser.add_argument(
+        "--targets",
+        help="Path to a YAML/JSON targets file, or an inline YAML/JSON string (e.g. 'python: [3.8, 3.9]')"
     )
     
     parser.add_argument(
@@ -650,6 +720,25 @@ def main():
     
     args = parser.parse_args()
     
+    # Validation of required inputs
+    has_single_target = bool(args.dependency and args.version)
+    has_targets_list = bool(args.targets)
+    
+    if not (has_single_target or has_targets_list):
+        parser.error("Must specify either (-d/--dependency AND -v/--version) OR (--targets)")
+    if has_single_target and has_targets_list:
+        parser.error("Cannot specify both single target (-d/-v) and targets list (--targets)")
+        
+    targets = []
+    if has_targets_list:
+        targets = parse_targets(args.targets)
+    else:
+        targets = [(args.dependency, args.version)]
+        
+    if not targets:
+        print("Error: No targets resolved to scan.", file=sys.stderr)
+        sys.exit(1)
+        
     # Resolve target packages if filtering is requested
     target_packages = []
     if args.package:
@@ -661,9 +750,14 @@ def main():
     elif args.package_file:
         target_packages = read_package_file(args.package_file)
         
-    print(f"Starting scan for dependency: {args.dependency} version: {args.version}")
+    if has_targets_list:
+        print("Starting scan for multiple targets:")
+        for dep, ver in targets:
+            print(f"  - {dep}: {ver}")
+    else:
+        print(f"Starting scan for dependency: {args.dependency} version: {args.version}")
     print(f"Root path: {args.path}")
-    print(f"Targets to scan:")
+    print("Targets to scan:")
     if target_packages:
         for pkg in target_packages:
             print(f"  - {os.path.join(args.path, pkg)}")
@@ -672,8 +766,10 @@ def main():
     print(f"Using config: {args.config}")
     
     # Load and resolve rules
-    config_manager = ConfigManager(args.config, args.dependency, args.version)
-    rules = config_manager.load_config()
+    rules = []
+    for dep, ver in targets:
+        config_manager = ConfigManager(args.config, dep, ver)
+        rules.extend(config_manager.load_config())
     
 
 
@@ -686,7 +782,14 @@ def main():
         print(f"Loaded {len(ignore_dirs)} ignore patterns from {ignore_file_path}")
         
     # Scan repository
-    all_matches = scan_repository(args.path, rules, target_packages, ignore_dirs, version_string=args.version)
+    all_matches = scan_repository(
+        args.path, 
+        rules, 
+        target_packages, 
+        ignore_dirs, 
+        version_string=(None if has_targets_list else args.version), 
+        targets=targets
+    )
     
     print(f"\nFound {len(all_matches)} matches.")
     display_matches = all_matches if args.stdout else all_matches[:10]
@@ -708,7 +811,14 @@ def main():
         script_dir = os.path.dirname(os.path.abspath(__file__))
         results_dir = os.path.join(script_dir, "results")
         os.makedirs(results_dir, exist_ok=True)
-        output_path = os.path.join(results_dir, f"{args.dependency}-{args.version}-{timestamp}.csv")
+        if has_targets_list:
+            if os.path.exists(args.targets):
+                base_name = os.path.splitext(os.path.basename(args.targets))[0]
+            else:
+                base_name = "targets"
+            output_path = os.path.join(results_dir, f"{base_name}-{timestamp}.csv")
+        else:
+            output_path = os.path.join(results_dir, f"{args.dependency}-{args.version}-{timestamp}.csv")
         
     write_csv_report(output_path, all_matches)
     

@@ -227,7 +227,6 @@ def test_main_package_file_permission_error(tmp_path, capsys):
     package_file = tmp_path / "packages.txt"
     package_file.write_text("packages/pkg_a")
     
-    import sys
     test_args = ["version_scanner.py", "-d", "python", "-v", "3.7", "--package-file", str(package_file)]
     
     real_open = open
@@ -246,7 +245,6 @@ def test_main_package_file_permission_error(tmp_path, capsys):
     captured = capsys.readouterr()
     assert "Error: Permission denied reading package file" in captured.err
 def test_main_package_file_not_found(capsys):
-    import sys
     test_args = ["version_scanner.py", "-d", "python", "-v", "3.7", "--package-file", "non_existent_file.txt"]
     
     with patch("sys.argv", test_args):
@@ -323,7 +321,6 @@ def test_main_loads_ignore_from_script_dir(mock_scan, mock_load_ignore):
     mock_load_ignore.return_value = []
     mock_scan.return_value = []
     
-    import sys
     test_args = ["version_scanner.py", "-d", "python", "-v", "3.7"]
     
     with mock.patch('sys.argv', test_args):
@@ -339,7 +336,8 @@ def test_main_loads_ignore_from_script_dir(mock_scan, mock_load_ignore):
 
 
 try:
-    import googleapiclient
+    # Ruff linter F401: Imported solely to detect Google API Client library presence for test skipping
+    import googleapiclient  # noqa: F401
     HAS_GOOGLE_API = True
 except ImportError:
     HAS_GOOGLE_API = False
@@ -407,8 +405,8 @@ def test_regex_examples_from_config():
         
     rules_list = config.get("rules", [])
     
-    # Variables for interpolation (simulate Python 3.7)
-    vars = {
+    # Base variables for interpolation (simulate target version 3.7)
+    base_vars = {
         "major": "3",
         "minor": "7",
         "version": "3.7",
@@ -423,6 +421,11 @@ def test_regex_examples_from_config():
         
         if not examples or not templates:
             continue
+            
+        # Resolve target dependency name based on applies_to metadata, falling back to protobuf
+        applies_to = rule_group.get("applies_to", [])
+        dep_name = applies_to[0] if applies_to else "protobuf"
+        vars = {**base_vars, "name": dep_name}
             
         compiled_patterns = []
         for template in templates:
@@ -638,39 +641,67 @@ def test_format_for_raw_csv_handles_empty_line_number():
 
 def test_format_for_raw_csv():
     match = {
+        "file_name": "setup.py",
         "file_path": "google-cloud-python/main/packages/pkg_a/setup.py",
         "repo_path": "packages/pkg_a/setup.py",
         "package_name": "pkg_a",
         "rule_name": "python_requires_check",
         "line_number": "123",
         "matched_string": "3.7",
-        "context_line": "python_requires = '>=3.7'"
+        "context_line": "python_requires = '>=3.7'",
+        "dependency": "python",
+        "version": "3.7"
     }
     
     formatted = format_for_raw_csv(match)
     
+    assert formatted["file_name"] == "setup.py"
     assert formatted["file_path"] == "google-cloud-python/main/packages/pkg_a/setup.py"
     assert formatted["package_name"] == "pkg_a"
     assert formatted["rule_name"] == "python_requires_check"
     assert formatted["line_number"] == 123  # Int conversion
     assert formatted["matched_string"] == "3.7"  # No formula wrapping
     assert formatted["context_line"] == "python_requires = '>=3.7'"
+    assert formatted["dependency"] == "python"
+    assert formatted["version"] == "3.7"
+
+def test_format_for_raw_csv_fallback_filename():
+    match = {
+        "file_path": "google-cloud-python/main/packages/pkg_a/setup.py",
+        "repo_path": "packages/pkg_a/setup.py",
+        "package_name": "pkg_a",
+        "rule_name": "python_requires_check",
+        "line_number": "123",
+        "matched_string": "3.7",
+        "context_line": "python_requires = '>=3.7'",
+        "dependency": "python",
+        "version": "3.7"
+    }
+    
+    formatted = format_for_raw_csv(match)
+    assert formatted["file_name"] == "setup.py"
 
 def test_format_for_spreadsheet():
     match = {
+        "file_name": "setup.py",
         "file_path": "google-cloud-python/main/packages/pkg_a/setup.py",
         "repo_path": "packages/pkg_a/setup.py",
         "package_name": "pkg_a",
         "rule_name": "python_requires_check",
         "line_number": 123,
         "matched_string": "3.7",
-        "context_line": "python_requires = '>=3.7'"
+        "context_line": "python_requires = '>=3.7'",
+        "dependency": "python",
+        "version": "3.7"
     }
     
     # Without github_repo
     formatted_no_repo = format_for_spreadsheet(match)
+    assert formatted_no_repo["file_name"] == "setup.py"
     assert formatted_no_repo["line_number"] == 123
     assert formatted_no_repo["matched_string"] == '="3.7"'  # Decimal protection formula
+    assert formatted_no_repo["dependency"] == "python"
+    assert formatted_no_repo["version"] == "3.7"
     
     # With github_repo
     formatted_repo = format_for_spreadsheet(match, github_repo="https://github.com/user/repo", branch="main")
@@ -694,4 +725,92 @@ def test_format_for_console():
     assert "[python_requires_check]" in log_str
     assert "3.7" in log_str
     assert "python_requires = " not in log_str  # Slim format doesn't print context line
+
+def test_parse_targets_inline_json():
+    from version_scanner import parse_targets
+    json_str = '{"python": ["3.7", "3.8"], "protobuf": "4.25.8"}'
+    targets = parse_targets(json_str)
+    assert targets == [("python", "3.7"), ("python", "3.8"), ("protobuf", "4.25.8")]
+
+def test_parse_targets_inline_yaml():
+    from version_scanner import parse_targets
+    yaml_str = """
+python:
+  - "3.7"
+  - "3.8"
+protobuf: "4.25.8"
+"""
+    targets = parse_targets(yaml_str)
+    assert targets == [("python", "3.7"), ("python", "3.8"), ("protobuf", "4.25.8")]
+
+def test_parse_targets_from_file(tmp_path):
+    from version_scanner import parse_targets
+    yaml_file = tmp_path / "targets.yaml"
+    yaml_file.write_text("""
+python:
+  - "3.7"
+  - "3.8"
+protobuf: "4.25.8"
+""")
+    targets = parse_targets(str(yaml_file))
+    assert targets == [("python", "3.7"), ("python", "3.8"), ("protobuf", "4.25.8")]
+
+def test_parse_targets_invalid_syntax():
+    from version_scanner import parse_targets
+    with pytest.raises(SystemExit) as excinfo:
+        parse_targets('{"invalid"')
+    assert excinfo.value.code == 1
+
+def test_scan_repository_multi_targets(tmp_path):
+    # Setup files in tmp repository
+    file1 = tmp_path / "packages" / "pkg1" / "setup.py"
+    file1.parent.mkdir(parents=True)
+    file1.write_text("python_requires = '>=3.7'\n")
+    
+    file2 = tmp_path / "packages" / "pkg2" / "requirements.txt"
+    file2.parent.mkdir(parents=True)
+    file2.write_text("protobuf==4.25.8\n")
+    
+    # Let's mock a config file with rules for both python and protobuf
+    config_file = tmp_path / "regex_config.yaml"
+    config_file.write_text("""
+rules:
+  - name: python_requires_check
+    applies_to:
+      - python
+    rules:
+      - python_requires\\s*=\\s*['\"]>={version}['\"]
+  - name: protobuf_check
+    applies_to:
+      - protobuf
+    rules:
+      - protobuf=={version}
+""")
+    
+    from version_scanner import ConfigManager, scan_repository
+    
+    targets = [("python", "3.7"), ("protobuf", "4.25.8")]
+    rules = []
+    for dep, ver in targets:
+        cm = ConfigManager(str(config_file), dep, ver)
+        rules.extend(cm.load_config())
+        
+    results = scan_repository(str(tmp_path), rules, targets=targets)
+    
+    # We should have 2 matches
+    assert len(results) == 2
+    
+    # Match for python
+    python_match = [r for r in results if r["dependency"] == "python"]
+    assert len(python_match) == 1
+    assert python_match[0]["version"] == "3.7"
+    assert python_match[0]["rule_name"] == "python_requires_check"
+    assert python_match[0]["file_name"] == "setup.py"
+    
+    # Match for protobuf
+    protobuf_match = [r for r in results if r["dependency"] == "protobuf"]
+    assert len(protobuf_match) == 1
+    assert protobuf_match[0]["version"] == "4.25.8"
+    assert protobuf_match[0]["rule_name"] == "protobuf_check"
+    assert protobuf_match[0]["file_name"] == "requirements.txt"
 
