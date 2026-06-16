@@ -442,17 +442,16 @@ class DataFrame:
         if errors not in ["raise", "null"]:
             raise ValueError("Arg 'error' must be one of 'raise' or 'null'")
 
-        safe_cast = errors == "null"
-
         if isinstance(dtype, dict):
             result = self.copy()
             for col, to_type in dtype.items():
-                result[col] = result[col].astype(to_type)
+                result[col] = result[col].astype(to_type, errors=errors)
             return result
 
-        dtype = bigframes.dtypes.bigframes_type(dtype)
-
-        return self._apply_unary_op(ops.AsTypeOp(dtype, safe_cast))
+        result = self.copy()
+        for col in result.columns:
+            result[col] = result[col].astype(dtype, errors=errors)
+        return result
 
     def _should_sql_have_index(self) -> bool:
         """Should the SQL we pass to BQML and other I/O include the index?"""

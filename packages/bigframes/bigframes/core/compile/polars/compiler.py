@@ -482,6 +482,11 @@ if polars_installed:
             assert isinstance(op, json_ops.JSONDecode)
             return input.str.json_decode(_DTYPE_MAPPING[op.to_type])
 
+        @compile_op.register(json_ops.ToJSON)
+        def _(self, op: ops.ScalarOp, input: pl.Expr) -> pl.Expr:
+            # Polars represents JSON as string, so to_json is cast to String
+            return input.cast(pl.String())
+
         @compile_op.register(arr_ops.ToArrayOp)
         def _(self, op: ops.ToArrayOp, *inputs: pl.Expr) -> pl.Expr:
             return pl.concat_list(*inputs)

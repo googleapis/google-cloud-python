@@ -105,6 +105,7 @@ class ParseJSON(base_ops.UnaryOp):
 @dataclasses.dataclass(frozen=True)
 class ToJSON(base_ops.UnaryOp):
     name: typing.ClassVar[str] = "to_json"
+    safe: bool = True
 
     def output_type(self, *input_types):
         input_type = input_types[0]
@@ -220,6 +221,7 @@ class JSONKeys(base_ops.UnaryOp):
 class JSONDecode(base_ops.UnaryOp):
     name: typing.ClassVar[str] = "json_decode"
     to_type: dtypes.Dtype
+    safe: bool = True
 
     def output_type(self, *input_types):
         input_type = input_types[0]

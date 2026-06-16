@@ -17,6 +17,7 @@ from __future__ import annotations
 import bigframes_vendored.sqlglot.expressions as sge
 
 import bigframes.core.compile.sqlglot.expression_compiler as expression_compiler
+from bigframes import dtypes
 from bigframes import operations as ops
 from bigframes.core.compile.sqlglot.expressions.typed_expr import TypedExpr
 
@@ -69,9 +70,37 @@ def _(expr: TypedExpr) -> sge.Expression:
     return sge.func("PARSE_JSON", expr.expr)
 
 
-@register_unary_op(ops.ToJSON)
-def _(expr: TypedExpr) -> sge.Expression:
-    return sge.func("TO_JSON", expr.expr)
+@register_unary_op(ops.ToJSON, pass_op=True)
+def _(expr: TypedExpr, op: ops.ToJSON) -> sge.Expression:
+    from_type = expr.dtype
+    sg_expr = expr.expr
+
+    if from_type == dtypes.STRING_DTYPE:
+        func_name = "SAFE.PARSE_JSON" if op.safe else "PARSE_JSON"
+        return sge.func(func_name, sg_expr)
+    if from_type in (dtypes.INT_DTYPE, dtypes.BOOL_DTYPE, dtypes.FLOAT_DTYPE):
+        sg_expr = sge.Cast(this=sg_expr, to="STRING")
+        return sge.func("PARSE_JSON", sg_expr)
+    raise TypeError(f"Cannot cast from {from_type} to {dtypes.JSON_DTYPE}")
+
+
+@register_unary_op(ops.JSONDecode, pass_op=True)
+def _(expr: TypedExpr, op: ops.JSONDecode) -> sge.Expression:
+    to_type = op.to_type
+    sg_expr = expr.expr
+    func_name = ""
+    if to_type == dtypes.INT_DTYPE:
+        func_name = "INT64"
+    elif to_type == dtypes.FLOAT_DTYPE:
+        func_name = "FLOAT64"
+    elif to_type == dtypes.BOOL_DTYPE:
+        func_name = "BOOL"
+    elif to_type == dtypes.STRING_DTYPE:
+        func_name = "STRING"
+    if func_name:
+        func_name = "SAFE." + func_name if op.safe else func_name
+        return sge.func(func_name, sg_expr)
+    raise TypeError(f"Cannot cast from {dtypes.JSON_DTYPE} to {to_type}")
 
 
 @register_unary_op(ops.ToJSONString)

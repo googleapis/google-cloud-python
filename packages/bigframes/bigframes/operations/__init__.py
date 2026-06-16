@@ -128,6 +128,7 @@ from bigframes.operations.geo_ops import (
 )
 from bigframes.operations.googlesql import GoogleSqlScalarOp
 from bigframes.operations.json_ops import (
+    JSONDecode,
     JSONExtract,
     JSONExtractArray,
     JSONExtractStringArray,
