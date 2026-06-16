@@ -940,6 +940,7 @@ class SubstraitCompiler:
         self, op: Any, inputs: Sequence[ex.Expression], child: nodes.BigFrameNode
     ) -> algebra_pb2.Expression:
         import bigframes.dtypes as dtypes
+
         input_dtype = self._get_expression_dtype(inputs[0], child)
         if input_dtype == dtypes.INT_DTYPE:
             if isinstance(op, bool_ops.AndOp):
