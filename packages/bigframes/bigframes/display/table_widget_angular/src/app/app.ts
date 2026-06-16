@@ -104,8 +104,10 @@ import { WidgetStateService } from './widget-state.service';
       flex-direction: column;
       font-family:
         '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', sans-serif;
+      height: 450px;
       margin: 0;
       padding: 0;
+      width: 100%;
     }
 
     .bigframes-widget * {
@@ -143,8 +145,8 @@ import { WidgetStateService } from './widget-state.service';
 
     .bigframes-widget .table-container {
       background-color: var(--bf-bg);
+      flex: 1;
       margin: 0;
-      max-height: 620px;
       overflow: auto;
       padding: 0;
     }
@@ -313,8 +315,8 @@ import { WidgetStateService } from './widget-state.service';
     .bigframes-widget .deferred-container {
       align-items: center;
       display: flex;
+      flex: 1;
       justify-content: center;
-      min-height: 220px;
       padding: 24px;
       width: 100%;
     }
