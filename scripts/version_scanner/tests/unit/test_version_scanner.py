@@ -151,7 +151,9 @@ def test_write_csv_report(tmp_path):
             "rule_name": "python_requires_check",
             "line_number": 1,
             "matched_string": "python_requires = '>=3.7'",
-            "context_line": "python_requires = '>=3.7'"
+            "context_line": "python_requires = '>=3.7'",
+            "dependency": "python",
+            "version": "3.7"
         }
     ]
     
@@ -164,11 +166,14 @@ def test_write_csv_report(tmp_path):
         rows = list(reader)
         
     assert len(rows) == 1
+    assert rows[0]["file_name"] == "setup.py"
     assert rows[0]["file_path"] == "./setup.py"
     assert rows[0]["rule_name"] == "python_requires_check"
     assert rows[0]["line_number"] == "1"
     assert rows[0]["matched_string"] == "python_requires = '>=3.7'"
     assert rows[0]["context_line"] == "python_requires = '>=3.7'"
+    assert rows[0]["dependency"] == "python"
+    assert rows[0]["version"] == "3.7"
 
 
 def test_load_config(tmp_path):
@@ -227,7 +232,6 @@ def test_main_package_file_permission_error(tmp_path, capsys):
     package_file = tmp_path / "packages.txt"
     package_file.write_text("packages/pkg_a")
     
-    import sys
     test_args = ["version_scanner.py", "-d", "python", "-v", "3.7", "--package-file", str(package_file)]
     
     real_open = open
@@ -246,7 +250,6 @@ def test_main_package_file_permission_error(tmp_path, capsys):
     captured = capsys.readouterr()
     assert "Error: Permission denied reading package file" in captured.err
 def test_main_package_file_not_found(capsys):
-    import sys
     test_args = ["version_scanner.py", "-d", "python", "-v", "3.7", "--package-file", "non_existent_file.txt"]
     
     with patch("sys.argv", test_args):
@@ -323,7 +326,6 @@ def test_main_loads_ignore_from_script_dir(mock_scan, mock_load_ignore):
     mock_load_ignore.return_value = []
     mock_scan.return_value = []
     
-    import sys
     test_args = ["version_scanner.py", "-d", "python", "-v", "3.7"]
     
     with mock.patch('sys.argv', test_args):
@@ -339,7 +341,8 @@ def test_main_loads_ignore_from_script_dir(mock_scan, mock_load_ignore):
 
 
 try:
-    import googleapiclient
+    # Ruff linter F401: Imported solely to detect Google API Client library presence for test skipping
+    import googleapiclient  # noqa: F401
     HAS_GOOGLE_API = True
 except ImportError:
     HAS_GOOGLE_API = False
@@ -392,7 +395,7 @@ def test_upload_to_drive(mock_auth, mock_build):
     body = kwargs.get('body', {})
     values = body.get('values', [])
     assert len(values) > 1
-    assert "HYPERLINK" in values[1][3] # line_number is at index 3
+    assert "HYPERLINK" in values[1][6] # line_number is at index 6
 
 
 def test_regex_examples_from_config():
@@ -638,39 +641,67 @@ def test_format_for_raw_csv_handles_empty_line_number():
 
 def test_format_for_raw_csv():
     match = {
+        "file_name": "setup.py",
         "file_path": "google-cloud-python/main/packages/pkg_a/setup.py",
         "repo_path": "packages/pkg_a/setup.py",
         "package_name": "pkg_a",
         "rule_name": "python_requires_check",
         "line_number": "123",
         "matched_string": "3.7",
-        "context_line": "python_requires = '>=3.7'"
+        "context_line": "python_requires = '>=3.7'",
+        "dependency": "python",
+        "version": "3.7"
     }
     
     formatted = format_for_raw_csv(match)
     
+    assert formatted["file_name"] == "setup.py"
     assert formatted["file_path"] == "google-cloud-python/main/packages/pkg_a/setup.py"
     assert formatted["package_name"] == "pkg_a"
     assert formatted["rule_name"] == "python_requires_check"
     assert formatted["line_number"] == 123  # Int conversion
     assert formatted["matched_string"] == "3.7"  # No formula wrapping
     assert formatted["context_line"] == "python_requires = '>=3.7'"
+    assert formatted["dependency"] == "python"
+    assert formatted["version"] == "3.7"
+
+def test_format_for_raw_csv_fallback_filename():
+    match = {
+        "file_path": "google-cloud-python/main/packages/pkg_a/setup.py",
+        "repo_path": "packages/pkg_a/setup.py",
+        "package_name": "pkg_a",
+        "rule_name": "python_requires_check",
+        "line_number": "123",
+        "matched_string": "3.7",
+        "context_line": "python_requires = '>=3.7'",
+        "dependency": "python",
+        "version": "3.7"
+    }
+    
+    formatted = format_for_raw_csv(match)
+    assert formatted["file_name"] == "setup.py"
 
 def test_format_for_spreadsheet():
     match = {
+        "file_name": "setup.py",
         "file_path": "google-cloud-python/main/packages/pkg_a/setup.py",
         "repo_path": "packages/pkg_a/setup.py",
         "package_name": "pkg_a",
         "rule_name": "python_requires_check",
         "line_number": 123,
         "matched_string": "3.7",
-        "context_line": "python_requires = '>=3.7'"
+        "context_line": "python_requires = '>=3.7'",
+        "dependency": "python",
+        "version": "3.7"
     }
     
     # Without github_repo
     formatted_no_repo = format_for_spreadsheet(match)
+    assert formatted_no_repo["file_name"] == "setup.py"
     assert formatted_no_repo["line_number"] == 123
     assert formatted_no_repo["matched_string"] == '="3.7"'  # Decimal protection formula
+    assert formatted_no_repo["dependency"] == "python"
+    assert formatted_no_repo["version"] == "3.7"
     
     # With github_repo
     formatted_repo = format_for_spreadsheet(match, github_repo="https://github.com/user/repo", branch="main")
