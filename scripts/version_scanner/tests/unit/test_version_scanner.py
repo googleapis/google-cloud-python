@@ -410,8 +410,8 @@ def test_regex_examples_from_config():
         
     rules_list = config.get("rules", [])
     
-    # Variables for interpolation (simulate Python 3.7)
-    vars = {
+    # Base variables for interpolation (simulate target version 3.7)
+    base_vars = {
         "major": "3",
         "minor": "7",
         "version": "3.7",
@@ -426,6 +426,11 @@ def test_regex_examples_from_config():
         
         if not examples or not templates:
             continue
+            
+        # Resolve target dependency name based on applies_to metadata, falling back to protobuf
+        applies_to = rule_group.get("applies_to", [])
+        dep_name = applies_to[0] if applies_to else "protobuf"
+        vars = {**base_vars, "name": dep_name}
             
         compiled_patterns = []
         for template in templates:

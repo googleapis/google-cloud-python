@@ -17,20 +17,23 @@ rules:
     examples:
       - "python_requires = '==3.7'"
       - "python_requires = '>=3.7'"
+      - "python_requires = '>=3.7.0'"
       - "python_requires = '<=3.7'"
       - "python_requires = '>3.6'"
       - "python_requires = '<3.8'"
     rules:
       - |
-        python_requires\s*=\s*['"]==3\.{minor}['"]
+        python_requires\s*=\s*['"]==3\.{minor}(?:\.\d+)?['"]
       - |
-        python_requires\s*=\s*['"]>=3\.{minor}['"]
+        python_requires\s*=\s*['"]>=3\.{minor}(?:\.\d+)?['"]
       - |
-        python_requires\s*=\s*['"]<=3\.{minor}['"]
+        python_requires\s*=\s*['"]<=3\.{minor}(?:\.\d+)?['"]
+      # Matches >3.6 (equivalent to >=3.7)
       - |
-        python_requires\s*=\s*['"]>3\.{minor_minus_one}['"]
+        python_requires\s*=\s*['"]>3\.{minor_minus_one}(?:\.\d+)?['"]
+      # Matches <3.8 (equivalent to <=3.7)
       - |
-        python_requires\s*=\s*['"]<3\.{minor_plus_one}['"]
+        python_requires\s*=\s*['"]<3\.{minor_plus_one}(?:\.\d+)?['"]
 
   - name: sys_version_info
     description: Finds sys.version_info checks in code.
@@ -46,6 +49,11 @@ rules:
       - "sys.version_info.minor <= 7"
       - "sys.version_info.minor > 6"
       - "sys.version_info.minor < 8"
+      - "sys.version_info[1] == 7"
+      - "sys.version_info[1] >= 7"
+      - "sys.version_info[1] <= 7"
+      - "sys.version_info[1] > 6"
+      - "sys.version_info[1] < 8"
     rules:
       - |
         sys\.version_info\s*==\s*\(3,\s*{minor}\)
@@ -53,8 +61,10 @@ rules:
         sys\.version_info\s*>=\s*\(3,\s*{minor}\)
       - |
         sys\.version_info\s*<=\s*\(3,\s*{minor}\)
+      # Matches sys.version_info > (3, 6) (equivalent to >=3.7)
       - |
         sys\.version_info\s*>\s*\(3,\s*{minor_minus_one}\)
+      # Matches sys.version_info < (3, 8) (equivalent to <=3.7)
       - |
         sys\.version_info\s*<\s*\(3,\s*{minor_plus_one}\)
       - |
@@ -63,10 +73,24 @@ rules:
         sys\.version_info\.minor\s*>=\s*{minor}(?!\d)
       - |
         sys\.version_info\.minor\s*<=\s*{minor}(?!\d)
+      # Matches sys.version_info.minor > 6 (equivalent to >=7)
       - |
         sys\.version_info\.minor\s*>\s*{minor_minus_one}(?!\d)
+      # Matches sys.version_info.minor < 8 (equivalent to <=7)
       - |
         sys\.version_info\.minor\s*<\s*{minor_plus_one}(?!\d)
+      - |
+        sys\.version_info\[1\]\s*==\s*{minor}(?!\d)
+      - |
+        sys\.version_info\[1\]\s*>=\s*{minor}(?!\d)
+      - |
+        sys\.version_info\[1\]\s*<=\s*{minor}(?!\d)
+      # Matches sys.version_info[1] > 6 (equivalent to >=7)
+      - |
+        sys\.version_info\[1\]\s*>\s*{minor_minus_one}(?!\d)
+      # Matches sys.version_info[1] < 8 (equivalent to <=7)
+      - |
+        sys\.version_info\[1\]\s*<\s*{minor_plus_one}(?!\d)
 
   - name: python_env_short
     description: Finds short python environment names often used in tox or nox.
@@ -98,5 +122,17 @@ rules:
     rules:
       - |
         Python{major}{minor}(?!\d)
+
+  - name: dependency_requirement
+    description: Finds standard dependency requirement formats (e.g., protobuf==3.7).
+    examples:
+      - "protobuf==3.7"
+      - "protobuf>=3.7"
+      - "protobuf<=3.7"
+      - "protobuf~=3.7"
+      - "protobuf!=3.7"
+    rules:
+      - |
+        {name}\s*(?:==|>=|<=|~=|!=)\s*{version}
 
 
