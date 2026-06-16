@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.55.0](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.54.0...google-auth-v2.55.0) (2026-06-15)
+
+
+### Features
+
+* make RAB feature production ready (#17390) ([af193931e4e38c4b59751edb8e915ae3388b8524](https://github.com/googleapis/google-cloud-python/commit/af193931e4e38c4b59751edb8e915ae3388b8524))
+
+
+### Bug Fixes
+
+* run async background boundary refresh on detached session (#17441) ([56cbea8509c66889485b43f2d98d60210eae81bc](https://github.com/googleapis/google-cloud-python/commit/56cbea8509c66889485b43f2d98d60210eae81bc))
+
 ## [2.54.0](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.53.0...google-auth-v2.54.0) (2026-06-11)
 
 

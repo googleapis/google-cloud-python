@@ -20,37 +20,16 @@ import datetime
 import functools
 import inspect
 import logging
-import os
 import threading
 from typing import NamedTuple, Optional, TYPE_CHECKING
 
 from google.auth import _helpers
-from google.auth import environment_vars
 
-if TYPE_CHECKING:
+if TYPE_CHECKING:  # pragma: NO COVER
     import google.auth.credentials
     import google.auth.transport
 
 _LOGGER = logging.getLogger(__name__)
-
-
-@functools.lru_cache()
-def is_regional_access_boundary_enabled():
-    """Checks if Regional Access Boundary is enabled via environment variable.
-
-    The environment variable is interpreted as a boolean with the following
-    (case-insensitive) rules:
-    - "true", "1" are considered true.
-    - Any other value (or unset) is considered false.
-
-    Returns:
-        bool: True if Regional Access Boundary is enabled, False otherwise.
-    """
-    value = os.environ.get(environment_vars.GOOGLE_AUTH_TRUST_BOUNDARY_ENABLED)
-    if value is None:
-        return False
-
-    return value.lower() in ("true", "1")
 
 
 # The default lifetime for a cached Regional Access Boundary.
@@ -455,6 +434,61 @@ class _RegionalAccessBoundaryRefreshManager(object):
             self._worker.start()
 
 
+def _prepare_async_lookup_callable(request):
+    """Unwraps a request callable, clones the transport, and returns the new callable.
+
+    Args:
+        request: The original request callable (e.g. functools.partial or raw Request).
+
+    Returns:
+        Tuple[Callable, Any, bool]: A tuple containing the new lookup callable, the
+            underlying request object, and a boolean indicating if it was cloned.
+    """
+    is_partial = isinstance(request, functools.partial)
+    base_callable = request.func if is_partial else request
+
+    if not hasattr(base_callable, "_clone"):
+        return request, base_callable, False
+
+    cloned_callable = base_callable._clone()
+    is_cloned = cloned_callable is not base_callable
+
+    if is_partial:
+        new_request = functools.partial(
+            cloned_callable, *request.args, **request.keywords
+        )
+    else:
+        new_request = cloned_callable
+
+    return new_request, cloned_callable, is_cloned
+
+
+async def _close_cloned_request(lookup_request, is_cloned):
+    """Safely closes the underlying cloned request transport, if applicable.
+
+    Args:
+        lookup_request (Any): The request object/transport to close.
+        is_cloned (bool): Whether the request was actually cloned.
+    """
+    if not is_cloned or not hasattr(lookup_request, "close"):
+        return
+
+    is_async = False
+    try:
+        maybe_coro = lookup_request.close()
+        if is_async := inspect.isawaitable(maybe_coro):
+            await maybe_coro
+    except Exception as e:
+        if _helpers.is_logging_enabled(_LOGGER):
+            adapter_type = " asynchronous " if is_async else " "
+            _LOGGER.warning(
+                "Failed to cleanly close cloned%srequest transport: %s",
+                adapter_type,
+                e,
+                exc_info=True,
+            )
+
+
 class _AsyncRegionalAccessBoundaryRefreshManager(object):
     """Manages a task for background refreshing of the Regional Access Boundary in async flows."""
 
@@ -491,11 +525,28 @@ class _AsyncRegionalAccessBoundaryRefreshManager(object):
                 # A refresh is already in progress.
                 return
 
+            try:
+                (
+                    lookup_callable,
+                    lookup_request,
+                    is_cloned,
+                ) = _prepare_async_lookup_callable(request)
+            except Exception as e:
+                if _helpers.is_logging_enabled(_LOGGER):
+                    _LOGGER.warning(
+                        "Synchronous cloning of request for Regional Access Boundary lookup failed: %s",
+                        e,
+                        exc_info=True,
+                    )
+                rab_manager.process_regional_access_boundary_info(None)
+                return
+
             async def _worker():
                 try:
-                    # credentials._lookup_regional_access_boundary should be async in the async creds class
                     regional_access_boundary_info = (
-                        await credentials._lookup_regional_access_boundary(request)
+                        await credentials._lookup_regional_access_boundary(
+                            lookup_callable
+                        )
                     )
                 except Exception as e:
                     if _helpers.is_logging_enabled(_LOGGER):
@@ -505,6 +556,8 @@ class _AsyncRegionalAccessBoundaryRefreshManager(object):
                             exc_info=True,
                         )
                     regional_access_boundary_info = None
+                finally:
+                    await _close_cloned_request(lookup_request, is_cloned)
 
                 rab_manager.process_regional_access_boundary_info(
                     regional_access_boundary_info
@@ -514,7 +567,15 @@ class _AsyncRegionalAccessBoundaryRefreshManager(object):
             try:
                 self._worker_task = asyncio.create_task(coro)
             except Exception:
+                # Clean up cloned request if task creation fails
                 coro.close()
+                try:
+                    asyncio.get_running_loop().create_task(
+                        _close_cloned_request(lookup_request, is_cloned)
+                    )
+                except RuntimeError:
+                    pass
+                rab_manager.process_regional_access_boundary_info(None)
                 raise
 
 

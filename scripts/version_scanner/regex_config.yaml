@@ -58,15 +58,15 @@ rules:
       - |
         sys\.version_info\s*<\s*\(3,\s*{minor_plus_one}\)
       - |
-        sys\.version_info\.minor\s*==\s*{minor}
+        sys\.version_info\.minor\s*==\s*{minor}(?!\d)
       - |
-        sys\.version_info\.minor\s*>=\s*{minor}
+        sys\.version_info\.minor\s*>=\s*{minor}(?!\d)
       - |
-        sys\.version_info\.minor\s*<=\s*{minor}
+        sys\.version_info\.minor\s*<=\s*{minor}(?!\d)
       - |
-        sys\.version_info\.minor\s*>\s*{minor_minus_one}
+        sys\.version_info\.minor\s*>\s*{minor_minus_one}(?!\d)
       - |
-        sys\.version_info\.minor\s*<\s*{minor_plus_one}
+        sys\.version_info\.minor\s*<\s*{minor_plus_one}(?!\d)
 
   - name: python_env_short
     description: Finds short python environment names often used in tox or nox.
@@ -87,7 +87,7 @@ rules:
       - "Python3.7"
     rules:
       - |
-        python3\.{minor}
+        python3\.{minor}(?!\d)
 
   - name: combined_version_string
     description: Finds combined version strings often used in class or variable names.
@@ -97,6 +97,6 @@ rules:
       - "Python37DeprecationWarning"
     rules:
       - |
-        Python{major}{minor}
+        Python{major}{minor}(?!\d)
 
 
