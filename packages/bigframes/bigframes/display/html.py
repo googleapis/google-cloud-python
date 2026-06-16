@@ -30,7 +30,6 @@ import bigframes
 import bigframes.formatting_helpers as formatter
 from bigframes._config import display_options, options
 from bigframes.display import plaintext
-from bigframes.series import Series
 
 if typing.TYPE_CHECKING:
     import bigframes.dataframe
@@ -192,9 +191,11 @@ def create_html_representation(
     total_columns: int,
 ) -> str:
     """Create an HTML representation of the DataFrame or Series."""
+    import bigframes.series
+
     opts = options.display
     with display_options.pandas_repr(opts):
-        if isinstance(obj, Series):
+        if isinstance(obj, bigframes.series.Series):
             pd_series = pandas_df.iloc[:, 0]
             try:
                 html_string = pd_series._repr_html_()
@@ -216,7 +217,9 @@ def create_html_representation(
 def _get_obj_metadata(
     obj: Union[bigframes.dataframe.DataFrame, bigframes.series.Series],
 ) -> tuple[bool, bool]:
-    is_series = isinstance(obj, Series)
+    import bigframes.series
+
+    is_series = isinstance(obj, bigframes.series.Series)
     if is_series:
         has_index = len(obj._block.index_columns) > 0
     else:
@@ -233,9 +236,15 @@ def get_anywidget_bundle(
     Helper method to create and return the anywidget mimebundle.
     This function encapsulates the logic for anywidget display.
     """
+    import bigframes.series
     from bigframes import display
 
-    df = obj._get_display_df()
+    if isinstance(obj, bigframes.series.Series):
+        df = obj.to_frame()
+    else:
+        df = obj
+
+    df = df._prepare_display_df()
 
     widget = display.TableWidget(df)
     widget_repr_result = widget._repr_mimebundle_(include=include, exclude=exclude)
@@ -283,8 +292,15 @@ def repr_mimebundle_deferred(
 def repr_mimebundle_head(
     obj: Union[bigframes.dataframe.DataFrame, bigframes.series.Series],
 ) -> dict[str, str]:
+    import bigframes.series
+
     opts = options.display
-    df = obj._get_display_df()
+    if isinstance(obj, bigframes.series.Series):
+        df = obj.to_frame()
+    else:
+        df = obj
+
+    df = df._prepare_display_df()
     pandas_df, row_count, query_job = df._block.retrieve_repr_request_results(
         opts.max_rows
     )
