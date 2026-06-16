@@ -1168,20 +1168,7 @@ def parse_json_op_impl(x: ibis_types.Value, op: ops.ParseJSON):
 def to_json_op_impl(x: ibis_types.Value, op: ops.ToJSON):
     if x.type() == ibis_dtypes.string:
         return parse_json_in_safe(x) if op.safe else parse_json(x)
-    if x.type() == ibis_dtypes.bool:
-        x_bool = typing.cast(
-            ibis_types.StringValue,
-            bigframes.core.compile.ibis_types.cast_ibis_value(
-                x, ibis_dtypes.string, safe=op.safe
-            ),
-        ).lower()
-        return parse_json_in_safe(x_bool) if op.safe else parse_json(x_bool)
-    if x.type() in (ibis_dtypes.int64, ibis_dtypes.float64):
-        x_str = bigframes.core.compile.ibis_types.cast_ibis_value(
-            x, ibis_dtypes.string, safe=op.safe
-        )
-        return parse_json_in_safe(x_str) if op.safe else parse_json(x_str)
-    raise TypeError(f"Cannot cast to JSON from type {x.type()}")
+    return to_json(x)
 
 
 @scalar_op_compiler.register_unary_op(ops.JSONDecode, pass_op=True)

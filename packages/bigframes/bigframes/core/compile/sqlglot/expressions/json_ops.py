@@ -78,10 +78,8 @@ def _(expr: TypedExpr, op: ops.ToJSON) -> sge.Expression:
     if from_type == dtypes.STRING_DTYPE:
         func_name = "SAFE.PARSE_JSON" if op.safe else "PARSE_JSON"
         return sge.func(func_name, sg_expr)
-    if from_type in (dtypes.INT_DTYPE, dtypes.BOOL_DTYPE, dtypes.FLOAT_DTYPE):
-        sg_expr = sge.Cast(this=sg_expr, to="STRING")
-        return sge.func("PARSE_JSON", sg_expr)
-    raise TypeError(f"Cannot cast from {from_type} to {dtypes.JSON_DTYPE}")
+    else:
+        return sge.func("TO_JSON", sg_expr)
 
 
 @register_unary_op(ops.JSONDecode, pass_op=True)

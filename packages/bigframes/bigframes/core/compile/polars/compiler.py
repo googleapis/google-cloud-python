@@ -484,8 +484,13 @@ if polars_installed:
 
         @compile_op.register(json_ops.ToJSON)
         def _(self, op: ops.ScalarOp, input: pl.Expr) -> pl.Expr:
-            # Polars represents JSON as string, so to_json is cast to String
-            return input.cast(pl.String())
+            # Polars represents JSON as string, so to_json is cast to String.
+            # Handle null values by mapping them to JSON 'null' representation.
+            return (
+                pl.when(input.is_null())
+                .then(pl.lit("null"))
+                .otherwise(input.cast(pl.String()))
+            )
 
         @compile_op.register(arr_ops.ToArrayOp)
         def _(self, op: ops.ToArrayOp, *inputs: pl.Expr) -> pl.Expr:
