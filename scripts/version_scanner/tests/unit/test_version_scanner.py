@@ -448,6 +448,57 @@ def test_regex_examples_from_config():
                     break
             assert matched, f"Example '{example}' in group '{name}' did not match any pattern."
 
+
+def test_regex_negative_cases():
+    """Verify regex patterns prevent false positives (lookaheads, patch bounds) and support whitespace."""
+    config_path = "regex_config.yaml"
+    with open(config_path, 'r') as f:
+        config = yaml.safe_load(f)
+        
+    rules_list = config.get("rules", [])
+    
+    # Target version 3.7
+    vars = {
+        "name": "protobuf",
+        "major": "3",
+        "minor": "7",
+        "version": "3.7",
+        "minor_plus_one": "8",
+        "minor_minus_one": "6"
+    }
+    
+    # Find specific rule groups
+    dep_req_group = next(r for r in rules_list if r["name"] == "dependency_requirement")
+    python_cmd_group = next(r for r in rules_list if r["name"] == "explicit_python_command")
+    python_req_group = next(r for r in rules_list if r["name"] == "python_requires")
+    sys_info_group = next(r for r in rules_list if r["name"] == "sys_version_info")
+    
+    # 1. Verify dependency_requirement looks ahead correctly (no partial match)
+    dep_pattern = re.compile(dep_req_group["rules"][0].strip().format(**vars), re.IGNORECASE)
+    assert dep_pattern.search("protobuf==3.7")
+    assert not dep_pattern.search("protobuf==3.72")
+    
+    # 2. Verify explicit_python_command negative lookahead
+    cmd_pattern = re.compile(python_cmd_group["rules"][0].strip().format(**vars), re.IGNORECASE)
+    assert cmd_pattern.search("python3.7")
+    assert not cmd_pattern.search("python3.72")
+    
+    # 3. Verify python_requires optional patch limits boundary rules to .0
+    # Boundary rule 1: >=3.7 (python_requires = '>=3.7.0' is OK, but >=3.7.1 is not equivalent and should be skipped)
+    req_ge_pattern = re.compile(python_req_group["rules"][1].strip().format(**vars), re.IGNORECASE)
+    assert req_ge_pattern.search("python_requires = '>=3.7'")
+    assert req_ge_pattern.search("python_requires = '>=3.7.0'")
+    assert not req_ge_pattern.search("python_requires = '>=3.7.1'")
+    
+    # 4. Verify sys_version_info[1] allows optional whitespace
+    # Matches sys.version_info[ 1 ]
+    sys_sub_pattern = re.compile(sys_info_group["rules"][10].strip().format(**vars), re.IGNORECASE)  # sys.version_info[1] == 7
+    assert sys_sub_pattern.search("sys.version_info[1] == 7")
+    assert sys_sub_pattern.search("sys.version_info[ 1 ] == 7")
+    assert sys_sub_pattern.search("sys.version_info[1 ] == 7")
+    assert sys_sub_pattern.search("sys.version_info[ 1] == 7")
+
+
 def test_main_exit_code_1():
     """Test that main() calls sys.exit(1) when matches are found."""
     # We can mock scan_repository to return a dummy match
