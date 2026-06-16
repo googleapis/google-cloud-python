@@ -495,17 +495,19 @@ export class App {
       const _html = this.state.tableHtml();
       const _sort = this.state.sortContext();
       const _orderable = this.state.orderableColumns();
-      const deferred = this.isDeferredMode();
-
-      if (deferred) {
-        this.isHeightInitialized = false;
-      }
+      this.isHeightInitialized = false;
 
       // Schedule DOM post-processing once the innerHTML render completes
       setTimeout(() => {
         this.applySortIndicators();
         this.lockInitialHeight();
       }, 0);
+    });
+
+    effect(() => {
+      if (!this.state.startExecution()) {
+        this.isLoading.set(false);
+      }
     });
   }
 

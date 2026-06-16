@@ -245,8 +245,14 @@ def get_anywidget_bundle(
     else:
         df = obj
 
-    widget = display.TableWidget(df, dry_run_info=dry_run_info)
-    display_df, _ = df._process_display_df()
+    from bigframes.session import deferred
+
+    if not isinstance(df, deferred.DeferredBigQueryDataFrame) and bigframes.options.display.repr_mode != "deferred":
+        display_df, _ = df._process_display_df()
+    else:
+        display_df = df
+
+    widget = display.TableWidget(display_df, dry_run_info=dry_run_info)
     widget_repr_result = widget._repr_mimebundle_(include=include, exclude=exclude)
 
     if isinstance(widget_repr_result, tuple):

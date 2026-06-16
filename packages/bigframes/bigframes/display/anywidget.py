@@ -18,6 +18,9 @@ from __future__ import annotations
 
 import dataclasses
 import functools
+import logging
+
+logger = logging.getLogger(__name__)
 import math
 import threading
 import uuid
@@ -157,25 +160,31 @@ class TableWidget(_WIDGET_BASE):
 
             def run_execution():
                 try:
+                    self._error_message = None
                     if self.is_deferred_mode:
-                        self.is_deferred_mode = False
                         if self._deferred_dataframe is not None:
                             result = self._deferred_dataframe.execute()
                             if isinstance(result, bigframes.series.Series):
                                 df = result.to_frame()
-                            else:
+                            elif isinstance(result, bigframes.dataframe.DataFrame):
                                 df = result
+                            else:
+                                raise TypeError(
+                                    f"Unexpected result type: {type(result)}"
+                                )
                             self._dataframe, _ = df._process_display_df()
                             self._initialize_from_dataframe()
+                            self.is_deferred_mode = False
                         elif self._dataframe is not None:
                             self._dataframe, _ = self._dataframe._process_display_df()
                             self._initialize_from_dataframe()
+                            self.is_deferred_mode = False
                     elif not self.is_deferred_mode and self._dataframe is not None:
                         self._initial_load()
                 except Exception as e:
+                    logger.warning(f"Error in background execution: {e}")
                     self._error_message = str(e)
                 finally:
-                    self.is_deferred_mode = False
                     self.start_execution = False
 
             self._execution_thread = threading.Thread(target=run_execution, daemon=True)

@@ -286,7 +286,7 @@ def mock_deferred_df():
                 pass
 
         df = mock.MagicMock(spec=MockDeferredBigQueryDataFrame)
-        df.__class__ = DeferredBigQueryDataFrame
+        df.__class__ = DeferredBigQueryDataFrame  # type: ignore[assignment]
         yield df
 
 
@@ -458,5 +458,5 @@ def test_deferred_mode_execution_error(mock_deferred_df):
         if thread is not None:
             thread.join(timeout=5)
 
-        assert widget.is_deferred_mode is False
+        assert widget.is_deferred_mode is True
         assert widget._error_message == "Query Failed"
