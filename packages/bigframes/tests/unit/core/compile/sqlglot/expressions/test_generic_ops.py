@@ -60,7 +60,7 @@ def test_astype_float(scalar_types_df: bpd.DataFrame, snapshot):
         "bool_w_safe": ops.AsTypeOp(to_type=to_type, safe=True).as_expr("bool_col"),
     }
     sql = utils._apply_ops_to_sql(bf_df, list(ops_map.values()), list(ops_map.keys()))
-    snapshot.assert_match(sql, "out.sql")
+    snapshot.assert_match(sql + "\n", "out.sql")
 
 
 def test_astype_bool(scalar_types_df: bpd.DataFrame, snapshot):
@@ -107,7 +107,7 @@ def test_astype_string(scalar_types_df: bpd.DataFrame, snapshot):
         "bool_w_safe": ops.AsTypeOp(to_type=to_type, safe=True).as_expr("bool_col"),
     }
     sql = utils._apply_ops_to_sql(bf_df, list(ops_map.values()), list(ops_map.keys()))
-    snapshot.assert_match(sql, "out.sql")
+    snapshot.assert_match(sql + "\n", "out.sql")
 
 
 def test_astype_json(scalar_types_df: bpd.DataFrame, snapshot):

@@ -48,7 +48,14 @@ import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 
-from google.cloud.ces_v1beta.types import schema, tool, tool_service, toolset_tool
+from google.cloud.ces_v1beta.types import (
+    schema,
+    search_suggestions,
+    session_service,
+    tool,
+    tool_service,
+    toolset_tool,
+)
 
 from .client import ToolServiceClient
 from .transports.base import DEFAULT_CLIENT_INFO, ToolServiceTransport
