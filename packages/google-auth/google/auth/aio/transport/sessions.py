@@ -150,9 +150,9 @@ class AsyncAuthorizedSession:
     async def configure_mtls_channel(self, client_cert_callback=None):
         """Configure the client certificate and key for SSL connection.
 
-        This method configures mTLS if client certificates are explicitly enabled 
-        (via GOOGLE_API_USE_CLIENT_CERTIFICATE=true) or auto-enabled (when the env 
-        variable is unset and workload certificates are discovered). In these cases, 
+        This method configures mTLS if client certificates are explicitly enabled
+        (via GOOGLE_API_USE_CLIENT_CERTIFICATE=true) or auto-enabled (when the env
+        variable is unset and workload certificates are discovered). In these cases,
         the underlying transport will be reconfigured to use mTLS.
 
         Note: This function does nothing if the `aiohttp` library is not
@@ -170,7 +170,7 @@ class AsyncAuthorizedSession:
 
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If mutual TLS channel
-                creation failed for any reason (e.g., missing dependencies, custom request 
+                creation failed for any reason (e.g., missing dependencies, custom request
                 handler limitations, or missing certificates when mTLS was requested).
         """
         if self._mtls_init_task is None:

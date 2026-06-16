@@ -428,10 +428,10 @@ class AuthorizedSession(requests.Session):
     def configure_mtls_channel(self, client_cert_callback=None):
         """Configure the client certificate and key for SSL connection.
 
-        This method configures mTLS if client certificates are explicitly enabled 
-        (via GOOGLE_API_USE_CLIENT_CERTIFICATE=true) or auto-enabled (when the env 
+        This method configures mTLS if client certificates are explicitly enabled
+        (via GOOGLE_API_USE_CLIENT_CERTIFICATE=true) or auto-enabled (when the env
         variable is unset and workload certificates are discovered). In these cases,
-        if the client certificate and key are successfully obtained, a 
+        if the client certificate and key are successfully obtained, a
         :class:`_MutualTlsAdapter` instance will be mounted to the "https://" prefix.
 
         Args:
@@ -443,7 +443,7 @@ class AuthorizedSession(requests.Session):
 
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If mutual TLS channel
-                creation failed for any reason (e.g. missing dependencies, missing 
+                creation failed for any reason (e.g. missing dependencies, missing
                 certificates when explicitly requested, or custom request adapter issues).
         """
         use_client_cert = google.auth.transport._mtls_helper.check_use_client_cert()

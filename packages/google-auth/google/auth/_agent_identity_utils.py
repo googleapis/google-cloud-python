@@ -330,6 +330,7 @@ def should_request_bound_token(cert):
     # if the transport is capable of handling it.
     if use_client_cert is None or use_client_cert == "":
         from google.auth.transport import _mtls_helper
+
         if not _mtls_helper.is_transport_mtls_capable():
             return False
 

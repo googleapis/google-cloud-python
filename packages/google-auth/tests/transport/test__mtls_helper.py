@@ -911,33 +911,49 @@ class TestCheckUseClientCert(object):
 
             assert _mtls_helper.check_use_client_cert() is True
 
-    @mock.patch("google.auth.transport._mtls_helper.is_transport_mtls_capable", autospec=True)
+    @mock.patch(
+        "google.auth.transport._mtls_helper.is_transport_mtls_capable", autospec=True
+    )
     @mock.patch("os.path.exists", autospec=True)
     @mock.patch("os.path.getsize", autospec=True)
     @mock.patch.dict(os.environ, {}, clear=True)
     def test_well_known_path_success(self, mock_getsize, mock_exists, mock_capable):
         mock_capable.return_value = True
-        mock_exists.side_effect = lambda p: p == _mtls_helper._WELL_KNOWN_SPIFFE_CERT_PATH
+        mock_exists.side_effect = (
+            lambda p: p == _mtls_helper._WELL_KNOWN_SPIFFE_CERT_PATH
+        )
         mock_getsize.return_value = 100
         assert _mtls_helper.check_use_client_cert() is True
 
-    @mock.patch("google.auth.transport._mtls_helper.is_transport_mtls_capable", autospec=True)
+    @mock.patch(
+        "google.auth.transport._mtls_helper.is_transport_mtls_capable", autospec=True
+    )
     @mock.patch("os.path.exists", autospec=True)
     @mock.patch("os.path.getsize", autospec=True)
     @mock.patch.dict(os.environ, {}, clear=True)
     def test_well_known_path_incapable(self, mock_getsize, mock_exists, mock_capable):
         mock_capable.return_value = False
-        mock_exists.side_effect = lambda p: p == _mtls_helper._WELL_KNOWN_SPIFFE_CERT_PATH
+        mock_exists.side_effect = (
+            lambda p: p == _mtls_helper._WELL_KNOWN_SPIFFE_CERT_PATH
+        )
         mock_getsize.return_value = 100
         assert _mtls_helper.check_use_client_cert() is False
 
-    @mock.patch("google.auth.transport._mtls_helper.is_transport_mtls_capable", autospec=True)
+    @mock.patch(
+        "google.auth.transport._mtls_helper.is_transport_mtls_capable", autospec=True
+    )
     @mock.patch("os.path.exists", autospec=True)
     @mock.patch("os.path.getsize", autospec=True)
-    @mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}, clear=True)
-    def test_explicit_opt_out_with_well_known_path(self, mock_getsize, mock_exists, mock_capable):
+    @mock.patch.dict(
+        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}, clear=True
+    )
+    def test_explicit_opt_out_with_well_known_path(
+        self, mock_getsize, mock_exists, mock_capable
+    ):
         mock_capable.return_value = True
-        mock_exists.side_effect = lambda p: p == _mtls_helper._WELL_KNOWN_SPIFFE_CERT_PATH
+        mock_exists.side_effect = (
+            lambda p: p == _mtls_helper._WELL_KNOWN_SPIFFE_CERT_PATH
+        )
         mock_getsize.return_value = 100
         assert _mtls_helper.check_use_client_cert() is False
 

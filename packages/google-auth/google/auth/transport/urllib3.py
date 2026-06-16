@@ -313,12 +313,12 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
 
     def configure_mtls_channel(self, client_cert_callback=None):
         """Configures mutual TLS channel using the given client_cert_callback or
-        application default SSL credentials. 
+        application default SSL credentials.
 
-        The channel is configured if GOOGLE_API_USE_CLIENT_CERTIFICATE is "true", 
-        or if it is unset and workload certificates are detected in the environment. 
-        If client_cert_callback is None, default SSL credentials (workload or SecureConnect) 
-        are loaded. 
+        The channel is configured if GOOGLE_API_USE_CLIENT_CERTIFICATE is "true",
+        or if it is unset and workload certificates are detected in the environment.
+        If client_cert_callback is None, default SSL credentials (workload or SecureConnect)
+        are loaded.
 
         Args:
             client_cert_callback (Optional[Callable[[], (bytes, bytes)]]):
@@ -332,7 +332,7 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
 
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If mutual TLS channel
-                creation failed for any reason (e.g., missing dependencies, or missing 
+                creation failed for any reason (e.g., missing dependencies, or missing
                 certificates when mTLS was explicitly/implicitly requested).
         """
         use_client_cert = transport._mtls_helper.check_use_client_cert()

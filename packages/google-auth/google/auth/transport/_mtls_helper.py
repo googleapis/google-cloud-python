@@ -457,6 +457,7 @@ def is_transport_mtls_capable():
     try:
         import OpenSSL
         from cryptography import x509
+
         return True
     except ImportError:
         return False
