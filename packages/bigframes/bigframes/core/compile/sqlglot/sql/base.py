@@ -69,8 +69,6 @@ def literal(value: typing.Any, dtype: dtypes.Dtype | None = None) -> sge.Express
         return sge.Null()
 
     if value is None:
-        if sqlglot_type.upper() == "NULL":
-            return sge.Null()
         return cast(sge.Null(), sqlglot_type)
     if dtypes.is_struct_like(dtype):
         items = [
