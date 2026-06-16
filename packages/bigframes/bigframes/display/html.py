@@ -247,7 +247,10 @@ def get_anywidget_bundle(
 
     from bigframes.session import deferred
 
-    if not isinstance(df, deferred.DeferredBigQueryDataFrame) and bigframes.options.display.repr_mode != "deferred":
+    if (
+        not isinstance(df, deferred.DeferredBigQueryDataFrame)
+        and bigframes.options.display.repr_mode != "deferred"
+    ):
         display_df, _ = df._process_display_df()
     else:
         display_df = df
