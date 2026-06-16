@@ -14,7 +14,7 @@
 image: us-central1-docker.pkg.dev/cloud-sdk-librarian-prod/images-prod/python-librarian-generator@sha256:234b9d1f2ddb057ed7ac6a38db0bf8163d839c65c6cf88ade52530cddebce59e
 libraries:
   - id: bigframes
-    version: 2.42.0
+    version: 2.43.0
     last_generated_commit: ""
     apis: []
     source_roots:
@@ -387,7 +387,7 @@ libraries:
       - packages/google-area120-tables/docs/
     tag_format: '{id}-v{version}'
   - id: google-auth
-    version: 2.54.0
+    version: 2.55.0
     last_generated_commit: ""
     apis: []
     source_roots:
@@ -1139,7 +1139,7 @@ libraries:
       - packages/google-cloud-biglake-hive/docs/
     tag_format: '{id}-v{version}'
   - id: google-cloud-bigquery
-    version: 3.41.0
+    version: 3.42.0
     last_generated_commit: ""
     apis: []
     source_roots:
