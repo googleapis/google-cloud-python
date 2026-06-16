@@ -352,7 +352,10 @@ def repr_mimebundle(
                         dry_run_job = obj._compute_dry_run()
                         dry_run_info = formatter.repr_query_job(dry_run_job)
                     return get_anywidget_bundle(
-                        obj, include=include, exclude=exclude, dry_run_info=dry_run_info
+                        obj,
+                        include=include,
+                        exclude=exclude,
+                        dry_run_info=dry_run_info,
                     )
         except Exception as e:
             # Anywidget is an optional dependency, so warn rather than fail.
@@ -360,7 +363,8 @@ def repr_mimebundle(
             # remove this warning.
             warnings.warn(
                 "Anywidget mode is not available or failed to load. "
-                "Please `pip install anywidget traitlets` or `pip install 'bigframes[anywidget]'` to use interactive tables. "
+                "Please `pip install anywidget traitlets` or "
+                "`pip install 'bigframes[anywidget]'` to use interactive tables. "
                 f"Falling back to static HTML. Error: {traceback.format_exc()}"
             )
             if opts.repr_mode == "deferred":

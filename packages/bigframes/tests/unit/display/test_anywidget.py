@@ -429,8 +429,9 @@ def test_deferred_mode_execution(mock_deferred_df, mock_df_deferred):
         ):
             widget.start_execution = True
 
-        if hasattr(widget, "_execution_thread") and widget._execution_thread is not None:
-            widget._execution_thread.join(timeout=5)
+        thread = getattr(widget, "_execution_thread", None)
+        if thread is not None:
+            thread.join(timeout=5)
 
         mock_deferred_df.execute.assert_called_once()
         mock_load.assert_called_once()
@@ -452,8 +453,9 @@ def test_deferred_mode_execution_error(mock_deferred_df):
         ):
             widget.start_execution = True
 
-        if hasattr(widget, "_execution_thread") and widget._execution_thread is not None:
-            widget._execution_thread.join(timeout=5)
+        thread = getattr(widget, "_execution_thread", None)
+        if thread is not None:
+            thread.join(timeout=5)
 
         assert widget.is_deferred_mode is False
         assert widget._error_message == "Query Failed"

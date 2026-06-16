@@ -32,7 +32,8 @@ describe('TableWidgetAngular', () => {
   });
 
   it(
-    'should bootstrap multiple widgets independently on their respective elements',
+    'should bootstrap multiple widgets independently ' +
+      'on their respective elements',
     async () => {
       const el1 = document.createElement('div');
       document.body.appendChild(el1);

@@ -320,7 +320,11 @@ import { WidgetStateService } from './widget-state.service';
     }
 
     .bigframes-widget .deferred-card {
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.3));
+      background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.6),
+        rgba(255, 255, 255, 0.3)
+      );
       border: 1px solid rgba(255, 255, 255, 0.4);
       border-radius: 16px;
       box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
@@ -334,14 +338,22 @@ import { WidgetStateService } from './widget-state.service';
     }
 
     .bigframes-widget.bigframes-dark-mode .deferred-card {
-      background: linear-gradient(135deg, rgba(32, 33, 36, 0.6), rgba(32, 33, 36, 0.3));
+      background: linear-gradient(
+        135deg,
+        rgba(32, 33, 36, 0.6),
+        rgba(32, 33, 36, 0.3)
+      );
       border: 1px solid rgba(255, 255, 255, 0.1);
       box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
     }
 
     @media (prefers-color-scheme: dark) {
       .bigframes-widget .deferred-card {
-        background: linear-gradient(135deg, rgba(32, 33, 36, 0.6), rgba(32, 33, 36, 0.3));
+        background: linear-gradient(
+          135deg,
+          rgba(32, 33, 36, 0.6),
+          rgba(32, 33, 36, 0.3)
+        );
         border: 1px solid rgba(255, 255, 255, 0.1);
         box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
       }

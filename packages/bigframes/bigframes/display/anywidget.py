@@ -167,9 +167,14 @@ class TableWidget(_WIDGET_BASE):
                             self._dataframe, _ = df._process_display_df()
                             self._initialize_from_dataframe()
                         elif self._dataframe is not None:
-                            self._dataframe, _ = self._dataframe._process_display_df()
+                            self._dataframe, _ = (
+                                self._dataframe._process_display_df()
+                            )
                             self._initialize_from_dataframe()
-                    elif not self.is_deferred_mode and self._dataframe is not None:
+                    elif (
+                        not self.is_deferred_mode
+                        and self._dataframe is not None
+                    ):
                         self._initial_load()
                 except Exception as e:
                     self._error_message = str(e)
@@ -177,7 +182,9 @@ class TableWidget(_WIDGET_BASE):
                     self.is_deferred_mode = False
                     self.start_execution = False
 
-            self._execution_thread = threading.Thread(target=run_execution, daemon=True)
+            self._execution_thread = threading.Thread(
+                target=run_execution, daemon=True
+            )
             self._execution_thread.start()
 
     def _initialize_from_dataframe(self):
