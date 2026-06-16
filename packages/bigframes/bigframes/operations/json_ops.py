@@ -230,4 +230,11 @@ class JSONDecode(base_ops.UnaryOp):
                 "Input type must be a valid JSON object or JSON-formatted string type."
                 + f" Received type: {input_type}"
             )
+        if self.to_type not in (
+            dtypes.INT_DTYPE,
+            dtypes.FLOAT_DTYPE,
+            dtypes.BOOL_DTYPE,
+            dtypes.STRING_DTYPE,
+        ):
+            raise TypeError(f"Cannot cast from {dtypes.JSON_DTYPE} to {self.to_type}")
         return self.to_type

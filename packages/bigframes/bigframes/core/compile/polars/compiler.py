@@ -138,11 +138,20 @@ if polars_installed:
         Should be extended to dispatch based on bigframes schema types.
         """
 
-        @functools.singledispatchmethod
+        _expr_types: dict[int, bigframes.dtypes.ExpressionType] = dataclasses.field(
+            default_factory=dict, init=False, compare=False
+        )
+
         def compile_expression(self, expression: ex.Expression) -> pl.Expr:
+            res = self._compile_expression(expression)
+            self._expr_types[id(res)] = expression.output_type
+            return res
+
+        @functools.singledispatchmethod
+        def _compile_expression(self, expression: ex.Expression) -> pl.Expr:
             raise NotImplementedError(f"Cannot compile expression: {expression}")
 
-        @compile_expression.register
+        @_compile_expression.register
         def _(
             self,
             expression: ex.ScalarConstantExpression,
@@ -159,21 +168,21 @@ if polars_installed:
 
             return pl.lit(value, _bigframes_dtype_to_polars_dtype(expression.dtype))
 
-        @compile_expression.register
+        @_compile_expression.register
         def _(
             self,
             expression: ex.DerefOp,
         ) -> pl.Expr:
             return pl.col(expression.id.sql)
 
-        @compile_expression.register
+        @_compile_expression.register
         def _(
             self,
             expression: ex.ResolvedDerefOp,
         ) -> pl.Expr:
             return pl.col(expression.id.sql)
 
-        @compile_expression.register
+        @_compile_expression.register
         def _(
             self,
             expression: ex.OpExpression,
@@ -484,13 +493,18 @@ if polars_installed:
 
         @compile_op.register(json_ops.ToJSON)
         def _(self, op: ops.ScalarOp, input: pl.Expr) -> pl.Expr:
-            # Polars represents JSON as string, so to_json is cast to String.
-            # Handle null values by mapping them to JSON 'null' representation.
-            return (
-                pl.when(input.is_null())
-                .then(pl.lit("null"))
-                .otherwise(input.cast(pl.String()))
-            )
+            from_type = self._expr_types.get(id(input))
+            if from_type in (
+                bigframes.dtypes.STRING_DTYPE,
+                bigframes.dtypes.JSON_DTYPE,
+            ):
+                return input
+            else:
+                return (
+                    pl.when(input.is_null())
+                    .then(pl.lit("null"))
+                    .otherwise(input.cast(pl.String()))
+                )
 
         @compile_op.register(arr_ops.ToArrayOp)
         def _(self, op: ops.ToArrayOp, *inputs: pl.Expr) -> pl.Expr:
