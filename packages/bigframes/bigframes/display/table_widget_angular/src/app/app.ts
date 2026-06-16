@@ -104,7 +104,6 @@ import { WidgetStateService } from './widget-state.service';
       flex-direction: column;
       font-family:
         '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', sans-serif;
-      height: 450px;
       margin: 0;
       padding: 0;
       width: 100%;
@@ -145,7 +144,6 @@ import { WidgetStateService } from './widget-state.service';
 
     .bigframes-widget .table-container {
       background-color: var(--bf-bg);
-      flex: 1;
       margin: 0;
       overflow: auto;
       padding: 0;
@@ -315,8 +313,8 @@ import { WidgetStateService } from './widget-state.service';
     .bigframes-widget .deferred-container {
       align-items: center;
       display: flex;
-      flex: 1;
       justify-content: center;
+      min-height: 220px;
       padding: 24px;
       width: 100%;
     }
@@ -486,8 +484,10 @@ export class App {
   protected readonly isDarkMode = signal(false);
   private themeObserver: MutationObserver | null = null;
 
-  @ViewChild('tableContainer', { static: true })
+  @ViewChild('tableContainer')
   tableContainerRef!: ElementRef<HTMLDivElement>;
+
+  private isHeightInitialized = false;
 
   constructor() {
     effect(() => {
@@ -495,10 +495,16 @@ export class App {
       const _html = this.state.tableHtml();
       const _sort = this.state.sortContext();
       const _orderable = this.state.orderableColumns();
+      const deferred = this.isDeferredMode();
+
+      if (deferred) {
+        this.isHeightInitialized = false;
+      }
 
       // Schedule DOM post-processing once the innerHTML render completes
       setTimeout(() => {
         this.applySortIndicators();
+        this.lockInitialHeight();
       }, 0);
     });
   }
@@ -638,6 +644,20 @@ export class App {
     });
   }
 
+  private lockInitialHeight() {
+    if (this.isHeightInitialized) return;
+    const container = this.tableContainerRef?.nativeElement;
+    if (!container) return;
+
+    const table = container.querySelector('table');
+    if (table) {
+      const tableHeight = (table as HTMLElement).offsetHeight;
+      if (tableHeight > 0) {
+        container.style.height = `${tableHeight + 2}px`;
+        this.isHeightInitialized = true;
+      }
+    }
+  }
 
   private initThemeDetection() {
     this.updateTheme();
