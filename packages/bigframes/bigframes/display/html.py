@@ -357,7 +357,7 @@ def repr_mimebundle(
                         exclude=exclude,
                         dry_run_info=dry_run_info,
                     )
-        except Exception as e:
+        except Exception:
             # Anywidget is an optional dependency, so warn rather than fail.
             # TODO(shuowei): When Anywidget becomes the default for all repr modes,
             # remove this warning.

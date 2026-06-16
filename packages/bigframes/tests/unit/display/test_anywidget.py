@@ -386,7 +386,7 @@ def test_page_size_change_resets_batches(mock_df_deferred):
     mock_df_deferred.to_pandas_batches.assert_called()
 
 
-def test_page_size_change_resets_sort(mock_df_deferred):
+def test_sort_change_resets_batches(mock_df_deferred):
     from bigframes.display.anywidget import TableWidget
 
     with bigframes.option_context("display.render_mode", "anywidget"):
