@@ -26,7 +26,6 @@ from bigframes.operations import (
     comparison_ops,
     datetime_ops,
     generic_ops,
-    json_ops,
     numeric_ops,
     string_ops,
 )

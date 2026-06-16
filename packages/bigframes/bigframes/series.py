@@ -648,9 +648,7 @@ class Series:
         dtype = bigframes.dtypes.bigframes_type(dtype)
         safe = errors == "null"
         if dtype == bigframes.dtypes.JSON_DTYPE:
-            return self._apply_unary_op(
-                bigframes.operations.ToJSON(safe=safe)
-            )
+            return self._apply_unary_op(bigframes.operations.ToJSON(safe=safe))
         elif self.dtype == bigframes.dtypes.JSON_DTYPE:
             return self._apply_unary_op(
                 bigframes.operations.JSONDecode(to_type=dtype, safe=safe)

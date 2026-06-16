@@ -383,6 +383,7 @@ __all__ = [
     "FloorDtOp",
     "IntegerLabelToDatetimeOp",
     # JSON ops
+    "JSONDecode",
     "JSONExtract",
     "JSONExtractArray",
     "JSONExtractStringArray",

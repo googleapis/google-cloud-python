@@ -1192,9 +1192,7 @@ def json_decode_op_impl(x: ibis_types.Value, op: ops.JSONDecode):
     if to_type == ibis_dtypes.int64:
         return cast_json_to_int64_in_safe(x) if op.safe else cast_json_to_int64(x)
     if to_type == ibis_dtypes.float64:
-        return (
-            cast_json_to_float64_in_safe(x) if op.safe else cast_json_to_float64(x)
-        )
+        return cast_json_to_float64_in_safe(x) if op.safe else cast_json_to_float64(x)
     if to_type == ibis_dtypes.bool:
         return cast_json_to_bool_in_safe(x) if op.safe else cast_json_to_bool(x)
     if to_type == ibis_dtypes.string:

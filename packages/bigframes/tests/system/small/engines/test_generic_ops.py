@@ -284,16 +284,12 @@ def test_engines_astype_from_json(scalars_array_value: array_value.ArrayValue, e
 @pytest.mark.parametrize("engine", ["polars", "bq", "bq-sqlglot"], indirect=True)
 def test_engines_astype_to_json(scalars_array_value: array_value.ArrayValue, engine):
     exprs = [
-        ops.ToJSON().as_expr(
-            expression.deref("int64_col")
-        ),
+        ops.ToJSON().as_expr(expression.deref("int64_col")),
         ops.ToJSON().as_expr(
             # Use a const since float to json has precision issues
             expression.const(5.2, bigframes.dtypes.FLOAT_DTYPE)
         ),
-        ops.ToJSON().as_expr(
-            expression.deref("bool_col")
-        ),
+        ops.ToJSON().as_expr(expression.deref("bool_col")),
         ops.ToJSON().as_expr(
             # Use a const since "str_col" has special chars.
             expression.const('"hello world"', bigframes.dtypes.STRING_DTYPE)
