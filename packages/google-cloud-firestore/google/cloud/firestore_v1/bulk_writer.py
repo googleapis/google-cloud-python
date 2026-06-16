@@ -508,8 +508,9 @@ class BulkWriter(AsyncBulkWriterMixin):
         )
 
         for _ in range(take_until_index):
-            retry: OperationRetry = self._retries.popleft()
-            retry.retry(self)
+            if self._retries:
+                retry: OperationRetry = self._retries.popleft()
+                retry.retry(self)
         return None
 
     def _request_send(self, batch_size: int) -> bool:
