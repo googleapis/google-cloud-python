@@ -19,7 +19,18 @@ from unittest import mock
 from unittest.mock import patch
 import pytest
 import yaml
-from version_scanner import ConfigManager, scan_file, write_csv_report
+from version_scanner import (
+    ConfigManager, 
+    scan_file, 
+    write_csv_report,
+    _truncate_context,
+    _wrap_sheet_hyperlink,
+    _wrap_sheet_string,
+    _safe_int,
+    format_for_raw_csv,
+    format_for_spreadsheet,
+    format_for_console
+)
 
 # Test ConfigManager
 @pytest.mark.parametrize("dependency, version, expected", [
@@ -246,43 +257,7 @@ def test_main_package_file_not_found(capsys):
     assert excinfo.value.code == 1
     captured = capsys.readouterr()
     assert "Error: Package file not found" in captured.err
-def test_format_match_for_csv():
-    from version_scanner import format_match_for_csv
-    match = {
-        "file_path": "google-cloud-python/main/packages/pkg_a/setup.py",
-        "repo_path": "packages/pkg_a/setup.py",
-        "line_number": 123,
-        "rule_name": "test_rule"
-    }
-    
-    # Test without github_repo
-    formatted = format_match_for_csv(match)
-    assert formatted["line_number"] == 123
-    
-    # Test with github_repo
-    formatted = format_match_for_csv(match, github_repo="https://github.com/user/repo", branch="main")
-    expected_url = "https://github.com/user/repo/blob/main/packages/pkg_a/setup.py#L123"
-    assert formatted["line_number"] == f'=HYPERLINK("{expected_url}", "123")'
 
-
-def test_format_match_for_csv_truncates_long_line():
-    from version_scanner import format_match_for_csv
-    
-    long_line = "a" * 1000 + "PY37" + "b" * 1000
-    match = {
-        "file_path": "test.py",
-        "line_number": 1,
-        "rule_name": "test_rule",
-        "matched_string": "PY37",
-        "context_line": long_line
-    }
-    
-    formatted = format_match_for_csv(match)
-    context = formatted["context_line"]
-    
-    assert len(context) <= 600
-    assert "PY37" in context
-    assert "..." in context
 
 
 def test_get_match_counts():
@@ -315,30 +290,7 @@ def test_scan_file_removes_newline_from_match(tmp_path):
     assert "\n" not in results[0]["matched_string"]
 
 
-def test_write_csv_report_with_links(tmp_path):
-    output_file = tmp_path / "report.csv"
-    matches = [
-        {
-            "file_path": "google-cloud-python/main/packages/pkg_a/setup.py",
-            "repo_path": "packages/pkg_a/setup.py",
-            "line_number": 1,
-            "rule_name": "python_requires_check",
-            "matched_string": "python_requires = '>=3.7'",
-            "context_line": "python_requires = '>=3.7'"
-        }
-    ]
-    
-    from version_scanner import write_csv_report
-    write_csv_report(str(output_file), matches, github_repo="https://github.com/user/repo", branch="main")
-    
-    assert output_file.exists()
-    
-    with open(output_file, 'r', encoding='utf-8', newline='') as f:
-        reader = csv.DictReader(f)
-        rows = list(reader)
-        
-    assert len(rows) == 1
-    assert "HYPERLINK" in rows[0]["line_number"]
+
 def test_scan_repository_ignores_version_scanner(tmp_path):
     vs_dir = tmp_path / "version_scanner"
     vs_dir.mkdir()
@@ -376,7 +328,8 @@ def test_main_loads_ignore_from_script_dir(mock_scan, mock_load_ignore):
     
     with mock.patch('sys.argv', test_args):
         from version_scanner import main
-        main()
+        with pytest.raises(SystemExit):
+            main()
         
     mock_load_ignore.assert_called_once()
     args, kwargs = mock_load_ignore.call_args
@@ -385,9 +338,17 @@ def test_main_loads_ignore_from_script_dir(mock_scan, mock_load_ignore):
     assert "scripts/version_scanner" in path
 
 
+try:
+    import googleapiclient
+    HAS_GOOGLE_API = True
+except ImportError:
+    HAS_GOOGLE_API = False
+
+@pytest.mark.skipif(not HAS_GOOGLE_API, reason="Requires googleapiclient")
 @mock.patch('googleapiclient.discovery.build')
 @mock.patch('google.auth.default')
 def test_upload_to_drive(mock_auth, mock_build):
+    """Test the ability to upload results to drive for visibility in gSheets."""
     from unittest import mock
     
     mock_creds = mock.Mock()
@@ -479,6 +440,108 @@ def test_regex_examples_from_config():
                     break
             assert matched, f"Example '{example}' in group '{name}' did not match any pattern."
 
+def test_main_exit_code_1():
+    """Test that main() calls sys.exit(1) when matches are found."""
+    # We can mock scan_repository to return a dummy match
+    test_args = ['version_scanner.py', '-d', 'python', '-v', '3.7']
+    with mock.patch('sys.argv', test_args):
+        from version_scanner import main
+        with mock.patch('version_scanner.scan_repository', return_value=[{'file_path': 'test', 'line_number': 1, 'matched_string': '3.7', 'rule_name': 'test'}]):
+            with pytest.raises(SystemExit) as excinfo:
+                main()
+            assert excinfo.value.code == 1
+
+
+def test_main_soft_fail_exit_code_0():
+    """Test that main() calls sys.exit(0) when matches are found but --soft-fail is set."""
+    test_args = ['version_scanner.py', '-d', 'python', '-v', '3.7', '--soft-fail']
+    with mock.patch('sys.argv', test_args):
+        from version_scanner import main
+        with mock.patch('version_scanner.scan_repository', return_value=[{'file_path': 'test', 'line_number': 1, 'matched_string': '3.7', 'rule_name': 'test'}]):
+            with pytest.raises(SystemExit) as excinfo:
+                main()
+            assert excinfo.value.code == 0
+
+
+def test_main_stdout(capsys):
+    """Test that --stdout prints the CSV output to stdout."""
+    test_args = ['version_scanner.py', '-d', 'python', '-v', '3.7', '--stdout']
+    with mock.patch('sys.argv', test_args):
+        from version_scanner import main
+        with mock.patch('version_scanner.scan_repository', return_value=[{'file_path': 'test.py', 'line_number': 1, 'matched_string': '3.7', 'rule_name': 'test'}]):
+            with pytest.raises(SystemExit):
+                main()
+    
+    captured = capsys.readouterr()
+    assert "test.py:1 [test] 3.7" in captured.out
+
+
+def test_main_without_stdout_limits_output(capsys):
+    """Test that main() without --stdout prints only 10 matches and shows a suffix."""
+    test_args = ['version_scanner.py', '-d', 'python', '-v', '3.7']
+    matches = [{'file_path': f'test_{i}.py', 'line_number': i, 'matched_string': '3.7', 'rule_name': 'test'} for i in range(15)]
+    with mock.patch('sys.argv', test_args):
+        from version_scanner import main
+        with mock.patch('version_scanner.scan_repository', return_value=matches):
+            with pytest.raises(SystemExit):
+                main()
+    
+    captured = capsys.readouterr()
+    # Should only print first 10 matches
+    for i in range(10):
+        assert f"test_{i}.py:{i} [test] 3.7" in captured.out
+    for i in range(10, 15):
+        assert f"test_{i}.py:{i} [test] 3.7" not in captured.out
+    assert "... and 5 more matches." in captured.out
+
+
+def test_main_with_stdout_prints_all(capsys):
+    """Test that main() with --stdout prints all matches without limiting."""
+    test_args = ['version_scanner.py', '-d', 'python', '-v', '3.7', '--stdout']
+    matches = [{'file_path': f'test_{i}.py', 'line_number': i, 'matched_string': '3.7', 'rule_name': 'test'} for i in range(15)]
+    with mock.patch('sys.argv', test_args):
+        from version_scanner import main
+        with mock.patch('version_scanner.scan_repository', return_value=matches):
+            with pytest.raises(SystemExit):
+                main()
+    
+    captured = capsys.readouterr()
+    # Should print all 15 matches
+    for i in range(15):
+        assert f"test_{i}.py:{i} [test] 3.7" in captured.out
+    assert "... and 5 more matches." not in captured.out
+
+
+def test_main_does_not_print_rules(capsys):
+    """Test that main() does not print the list of loaded rules to stdout."""
+    test_args = ['version_scanner.py', '-d', 'python', '-v', '3.7']
+    with mock.patch('sys.argv', test_args):
+        from version_scanner import main
+        with mock.patch('version_scanner.scan_repository', return_value=[]):
+            with pytest.raises(SystemExit):
+                main()
+    captured = capsys.readouterr()
+    assert "explicit_version_string" not in captured.out
+
+
+def test_scan_file_truncation_bug(tmp_path):
+    """Test that searching for 3.1 does NOT match 3.10 (truncation bug)."""
+    # Create a file with 3.10
+    test_file = tmp_path / "test_file.py"
+    test_file.write_text("python_requires = '>=3.10'\npython3.10\nPython310\n")
+    
+    from version_scanner import ConfigManager, scan_file
+    
+    # Init config for 3.1
+    config_manager = ConfigManager("regex_config.yaml", "python", "3.1")
+    rules = config_manager.load_config()
+    import re
+    compiled_rules = [{"name": r["name"], "pattern": re.compile(r["pattern"], re.IGNORECASE)} for r in rules]
+    
+    # It should not match anything because all strings are 3.10, not 3.1
+    matches = scan_file(str(test_file), compiled_rules)
+    assert len(matches) == 0, f"Expected 0 matches for 3.1 in 3.10 content, but got {len(matches)}: {matches}"
+
 
 def test_scan_repository_layout_agnostic(tmp_path):
     # Create directories under different roots
@@ -525,3 +588,110 @@ def test_scan_repository_package_name_roots(tmp_path):
     assert len(results) == 1
     assert results[0]["package_name"] == "pkg_third"
     assert "third_party/pkg_third/setup.py" in results[0]["file_path"]
+
+
+# --- Decoupled Formatters Tests (TDD) ---
+
+def test_truncate_context():
+    # Context shorter than 500 characters shouldn't be truncated
+    assert _truncate_context("short context", "short") == "short context"
+    
+    # Context longer than 500 characters should be truncated around the matched string
+    matched = "TARGET_VERSION"
+    long_prefix = "a" * 300
+    long_suffix = "b" * 300
+    long_context = long_prefix + matched + long_suffix
+    
+    truncated = _truncate_context(long_context, matched)
+    assert len(truncated) <= 500
+    assert matched in truncated
+    assert truncated.startswith("...")
+    assert truncated.endswith("...")
+
+def test_wrap_sheet_hyperlink():
+    assert _wrap_sheet_hyperlink("https://github.com/foo", "12") == '=HYPERLINK("https://github.com/foo", "12")'
+
+def test_wrap_sheet_string():
+    assert _wrap_sheet_string("3.10") == '="3.10"'
+    assert _wrap_sheet_string('python_requires = ">=3.7"') == '="python_requires = "">=3.7"""'
+    assert _wrap_sheet_string("") == ""
+    assert _wrap_sheet_string(None) == ""
+
+def test_safe_int():
+    assert _safe_int("123") == 123
+    assert _safe_int("") == 0
+    assert _safe_int(None) == 0
+    assert _safe_int("abc") == 0
+
+def test_format_for_raw_csv_handles_empty_line_number():
+    match = {
+        "file_path": "google-cloud-python/main/packages/pkg_a/setup.py",
+        "repo_path": "packages/pkg_a/setup.py",
+        "package_name": "pkg_a",
+        "rule_name": "python_requires_check",
+        "line_number": "",
+        "matched_string": "3.7",
+        "context_line": "python_requires = '>=3.7'"
+    }
+    formatted = format_for_raw_csv(match)
+    assert formatted["line_number"] == 0
+
+def test_format_for_raw_csv():
+    match = {
+        "file_path": "google-cloud-python/main/packages/pkg_a/setup.py",
+        "repo_path": "packages/pkg_a/setup.py",
+        "package_name": "pkg_a",
+        "rule_name": "python_requires_check",
+        "line_number": "123",
+        "matched_string": "3.7",
+        "context_line": "python_requires = '>=3.7'"
+    }
+    
+    formatted = format_for_raw_csv(match)
+    
+    assert formatted["file_path"] == "google-cloud-python/main/packages/pkg_a/setup.py"
+    assert formatted["package_name"] == "pkg_a"
+    assert formatted["rule_name"] == "python_requires_check"
+    assert formatted["line_number"] == 123  # Int conversion
+    assert formatted["matched_string"] == "3.7"  # No formula wrapping
+    assert formatted["context_line"] == "python_requires = '>=3.7'"
+
+def test_format_for_spreadsheet():
+    match = {
+        "file_path": "google-cloud-python/main/packages/pkg_a/setup.py",
+        "repo_path": "packages/pkg_a/setup.py",
+        "package_name": "pkg_a",
+        "rule_name": "python_requires_check",
+        "line_number": 123,
+        "matched_string": "3.7",
+        "context_line": "python_requires = '>=3.7'"
+    }
+    
+    # Without github_repo
+    formatted_no_repo = format_for_spreadsheet(match)
+    assert formatted_no_repo["line_number"] == 123
+    assert formatted_no_repo["matched_string"] == '="3.7"'  # Decimal protection formula
+    
+    # With github_repo
+    formatted_repo = format_for_spreadsheet(match, github_repo="https://github.com/user/repo", branch="main")
+    expected_url = "https://github.com/user/repo/blob/main/packages/pkg_a/setup.py#L123"
+    assert formatted_repo["line_number"] == f'=HYPERLINK("{expected_url}", "123")'
+    assert formatted_repo["matched_string"] == '="3.7"'
+
+def test_format_for_console():
+    match = {
+        "file_path": "google-cloud-python/main/packages/pkg_a/setup.py",
+        "repo_path": "packages/pkg_a/setup.py",
+        "package_name": "pkg_a",
+        "rule_name": "python_requires_check",
+        "line_number": 123,
+        "matched_string": "3.7",
+        "context_line": "python_requires = '>=3.7'"
+    }
+    
+    log_str = format_for_console(match)
+    assert "google-cloud-python/main/packages/pkg_a/setup.py:123" in log_str
+    assert "[python_requires_check]" in log_str
+    assert "3.7" in log_str
+    assert "python_requires = " not in log_str  # Slim format doesn't print context line
+

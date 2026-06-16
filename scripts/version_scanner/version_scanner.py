@@ -23,7 +23,7 @@ import datetime
 import os
 import re
 import sys
-from typing import Dict, List, Tuple
+from typing import Dict, List, Tuple, Any
 import yaml
 
 class ConfigManager:
@@ -186,59 +186,98 @@ def scan_file(file_path: str, compiled_rules: List[Dict[str, re.Pattern]]) -> Li
     return results
 
 
-def format_match_for_csv(
-    match: Dict[str, str], 
-    github_repo: str = None, 
-    branch: str = "main"
-) -> Dict[str, str]:
-    """
-    Formats a raw match dictionary for clean CSV presentation and imports.
-    
-    Cleans long context lines by truncating them around the match location to prevent
-    extreme cell overflow in spreadsheets. Optionally transforms line numbers into 
-    clickable `=HYPERLINK(...)` formulas linking directly to the exact file and line
-    number in GitHub.
-    
-    Args:
-        match: A match dictionary containing 'file_path', 'repo_path', 'rule_name', 
-               'line_number', 'matched_string', and 'context_line'.
-        github_repo: Optional GitHub repository base URL (e.g., "https://github.com/user/repo").
-                     If provided, triggers the hyperlink generation.
-        branch: Optional branch name to build the GitHub blob URL (defaults to "main").
-        
-    Returns:
-        A copy of the match dictionary with formatted/truncated values, suitable for CSV writing.
-    """
-    formatted = match.copy()
-    
-    if github_repo:
-        # Use repo_path if available, fallback to file_path
-        file_path = match.get("repo_path", match.get("file_path", ""))
-        line_number = match.get("line_number", "")
-        
-        # Construct URL
-        url = f"{github_repo}/blob/{branch}/{file_path}#L{line_number}"
-        
-        # Format as Google Sheets formula
-        formatted["line_number"] = f'=HYPERLINK("{url}", "{line_number}")'
-        
-    context = formatted.get("context_line", "")
-    matched = formatted.get("matched_string", "")
-    
+def _truncate_context(context: str, matched: str) -> str:
+    """Safely truncates context around the match location to prevent overflow."""
     if len(context) > 500:
         match_start = context.find(matched)
         if match_start != -1:
             start = max(0, match_start - 200)
             end = min(len(context), match_start + len(matched) + 200)
-            
             prefix = "..." if start > 0 else ""
             suffix = "..." if end < len(context) else ""
-            
-            formatted["context_line"] = prefix + context[start:end] + suffix
+            return prefix + context[start:end] + suffix
         else:
-            formatted["context_line"] = context[:500] + "..."
-            
+            return context[:500] + "..."
+    return context
+
+
+def _wrap_sheet_hyperlink(url: str, label: str) -> str:
+    """Wraps a URL and label into a Google Sheets HYPERLINK formula.
+
+    This ensures that when output is imported into spreadsheet software, the
+    resulting cells contain clickable hyperlinks pointing directly to GitHub file
+    locations and line numbers.
+    """
+    return f'=HYPERLINK("{url}", "{label}")'
+
+
+def _wrap_sheet_string(value: str) -> str:
+    """Wraps a string value inside a spreadsheet string formula to prevent float parsing.
+
+    This forces spreadsheet software (such as Google Sheets) to treat numeric
+    string patterns (like python runtime version "3.10") as literal strings,
+    preventing auto-truncation to floats (which would display "3.1"). Double
+    quotes inside the value are escaped by doubling them to avoid formula syntax
+    errors on import.
+    """
+    if value is None:
+        return ""
+    escaped_value = value.replace('"', '""')
+    return f'="{escaped_value}"' if value else ""
+
+
+def _safe_int(value: Any, default: int = 0) -> int:
+    """Safely converts a value to an integer, falling back to a default value.
+
+    Used primarily during raw data formatting for spreadsheet ingestion. If a
+    value (like a line number) is missing or contains non-integer text (e.g. empty
+    strings for filename-only matches), this avoids crashing the scanner.
+    """
+    try:
+        return int(value)
+    except (ValueError, TypeError):
+        return default
+
+
+def format_for_raw_csv(match: Dict[str, str]) -> Dict[str, str]:
+    """Prepares a full raw dataset (n + x columns) with clean text values."""
+    return {
+        "file_path": match.get("file_path", ""),
+        "package_name": match.get("package_name", ""),
+        "rule_name": match.get("rule_name", ""),
+        "line_number": _safe_int(match.get("line_number")),
+        "matched_string": match.get("matched_string", ""),
+        "context_line": _truncate_context(match.get("context_line", ""), match.get("matched_string", ""))
+    }
+
+
+def format_for_spreadsheet(
+    match: Dict[str, str], 
+    github_repo: str = None, 
+    branch: str = "main"
+) -> Dict[str, str]:
+    """Builds on top of raw CSV but applies Sheets-specific formulas."""
+    formatted = format_for_raw_csv(match)
+    
+    # Override fields with spreadsheet formatting
+    if github_repo:
+        file_path = match.get("repo_path", match.get("file_path", ""))
+        line_number = match.get("line_number", "")
+        url = f"{github_repo}/blob/{branch}/{file_path}#L{line_number}"
+        formatted["line_number"] = _wrap_sheet_hyperlink(url, str(line_number))
+        
+    formatted["matched_string"] = _wrap_sheet_string(match.get("matched_string", ""))
     return formatted
+
+
+def format_for_console(match: Dict[str, str]) -> str:
+    """Prepares a slim, readable string representation (n columns) for stdout/logs."""
+    file_path = match.get("file_path", "")
+    line_number = match.get("line_number", "")
+    rule_name = match.get("rule_name", "")
+    matched_string = match.get("matched_string", "")
+    return f"  {file_path}:{line_number} [{rule_name}] {matched_string}"
+
 
 
 def get_match_counts(matches: List[Dict[str, str]]) -> Tuple[Dict[str, int], Dict[str, int]]:
@@ -294,9 +333,7 @@ def load_ignore_file(file_path: str) -> List[str]:
 
 def write_csv_report(
     output_path: str, 
-    matches: List[Dict[str, str]], 
-    github_repo: str = None, 
-    branch: str = "main"
+    matches: List[Dict[str, str]]
 ) -> None:
     """
     Write the collected matches to a CSV file.
@@ -304,8 +341,6 @@ def write_csv_report(
     Args:
         output_path: Path to the output CSV file.
         matches: A list of dictionaries containing match details.
-        github_repo: Optional GitHub repository URL base.
-        branch: GitHub branch for links (defaults to main).
     """
     fieldnames = ["file_path", "package_name", "rule_name", "line_number", "matched_string", "context_line"]
     
@@ -315,7 +350,7 @@ def write_csv_report(
             writer.writeheader()
             
             for match in matches:
-                formatted_match = format_match_for_csv(match, github_repo, branch)
+                formatted_match = format_for_raw_csv(match)
                 # Ensure only specified fields are written
                 row = {field: formatted_match.get(field, "") for field in fieldnames}
                 writer.writerow(row)
@@ -358,7 +393,7 @@ def upload_to_drive(csv_path: str, matches: List[Dict[str, str]], github_repo: s
         # Prepare data
         values = [["file_path", "package_name", "rule_name", "line_number", "matched_string", "context_line"]]
         for m in matches:
-            formatted_m = format_match_for_csv(m, github_repo=github_repo, branch=branch)
+            formatted_m = format_for_spreadsheet(m, github_repo=github_repo, branch=branch)
             values.append([
                 formatted_m.get("file_path", ""),
                 formatted_m.get("package_name", ""),
@@ -601,6 +636,18 @@ def main():
         help="Upload results to a Google Sheet in Drive"
     )
     
+    parser.add_argument(
+        "--stdout",
+        action="store_true",
+        help="Print the full CSV report to stdout instead of/in addition to writing to a file"
+    )
+    
+    parser.add_argument(
+        "--soft-fail",
+        action="store_true",
+        help="Exit with code 0 even if matches are found (useful during development and testing runs)"
+    )
+    
     args = parser.parse_args()
     
     # Resolve target packages if filtering is requested
@@ -628,10 +675,7 @@ def main():
     config_manager = ConfigManager(args.config, args.dependency, args.version)
     rules = config_manager.load_config()
     
-    print(f"\nLoaded {len(rules)} rules:")
-    for rule in rules:
-        print(f"  - {rule['name']}: {rule['pattern']}")
-        
+
 
             
     # Load ignore file from script directory (Option A)
@@ -645,10 +689,11 @@ def main():
     all_matches = scan_repository(args.path, rules, target_packages, ignore_dirs, version_string=args.version)
     
     print(f"\nFound {len(all_matches)} matches.")
-    for m in all_matches[:10]: # Show first 10
-        print(f"  {m['file_path']}:{m['line_number']} [{m['rule_name']}] {m['matched_string']}")
+    display_matches = all_matches if args.stdout else all_matches[:10]
+    for m in display_matches:
+        print(format_for_console(m))
         
-    if len(all_matches) > 10:
+    if not args.stdout and len(all_matches) > 10:
         print(f"  ... and {len(all_matches) - 10} more matches.")
         
     # Get and print summary counts
@@ -665,10 +710,18 @@ def main():
         os.makedirs(results_dir, exist_ok=True)
         output_path = os.path.join(results_dir, f"{args.dependency}-{args.version}-{timestamp}.csv")
         
-    write_csv_report(output_path, all_matches, github_repo=args.github_repo, branch=args.branch)
+    write_csv_report(output_path, all_matches)
     
     if args.upload:
         upload_to_drive(output_path, all_matches, github_repo=args.github_repo, branch=args.branch)
+
+
+            
+    # Distinct exit codes for CI/CD
+    if all_matches and not args.soft_fail:
+        sys.exit(1)
+    else:
+        sys.exit(0)
 
 if __name__ == "__main__":
     main()
