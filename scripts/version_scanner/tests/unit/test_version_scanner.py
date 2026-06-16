@@ -782,3 +782,90 @@ def test_format_for_console():
     assert "3.7" in log_str
     assert "python_requires = " not in log_str  # Slim format doesn't print context line
 
+
+def test_parse_targets_inline_json():
+    from version_scanner import parse_targets
+    json_str = '{"python": ["3.7", "3.8"], "protobuf": "4.25.8"}'
+    targets = parse_targets(json_str)
+    assert targets == [("python", "3.7"), ("python", "3.8"), ("protobuf", "4.25.8")]
+
+def test_parse_targets_inline_yaml():
+    from version_scanner import parse_targets
+    yaml_str = """
+python:
+  - "3.7"
+  - "3.8"
+protobuf: "4.25.8"
+"""
+    targets = parse_targets(yaml_str)
+    assert targets == [("python", "3.7"), ("python", "3.8"), ("protobuf", "4.25.8")]
+
+def test_parse_targets_from_file(tmp_path):
+    from version_scanner import parse_targets
+    yaml_file = tmp_path / "targets.yaml"
+    yaml_file.write_text("""
+python:
+  - "3.7"
+  - "3.8"
+protobuf: "4.25.8"
+""")
+    targets = parse_targets(str(yaml_file))
+    assert targets == [("python", "3.7"), ("python", "3.8"), ("protobuf", "4.25.8")]
+
+def test_parse_targets_invalid_syntax():
+    from version_scanner import parse_targets
+    with pytest.raises(SystemExit) as excinfo:
+        parse_targets('{"invalid"')
+    assert excinfo.value.code == 1
+
+def test_scan_repository_multi_targets(tmp_path):
+    # Setup files in tmp repository
+    file1 = tmp_path / "packages" / "pkg1" / "setup.py"
+    file1.parent.mkdir(parents=True)
+    file1.write_text("python_requires = '>=3.7'\n")
+    
+    file2 = tmp_path / "packages" / "pkg2" / "requirements.txt"
+    file2.parent.mkdir(parents=True)
+    file2.write_text("protobuf==4.25.8\n")
+    
+    # Let's mock a config file with rules for both python and protobuf
+    config_file = tmp_path / "regex_config.yaml"
+    config_file.write_text("""
+rules:
+  - name: python_requires_check
+    applies_to:
+      - python
+    rules:
+      - python_requires\\s*=\\s*['\"]>={version}['\"]
+  - name: protobuf_check
+    applies_to:
+      - protobuf
+    rules:
+      - protobuf=={version}
+""")
+    
+    from version_scanner import ConfigManager, scan_repository
+    
+    targets = [("python", "3.7"), ("protobuf", "4.25.8")]
+    rules = []
+    for dep, ver in targets:
+        cm = ConfigManager(str(config_file), dep, ver)
+        rules.extend(cm.load_config())
+        
+    results = scan_repository(str(tmp_path), rules, targets=targets)
+    
+    # We should have 2 matches
+    assert len(results) == 2
+    
+    # Match for python
+    python_match = [r for r in results if r["dependency"] == "python"]
+    assert len(python_match) == 1
+    assert python_match[0]["version"] == "3.7"
+    assert python_match[0]["rule_name"] == "python_requires_check"
+    
+    # Match for protobuf
+    protobuf_match = [r for r in results if r["dependency"] == "protobuf"]
+    assert len(protobuf_match) == 1
+    assert protobuf_match[0]["version"] == "4.25.8"
+    assert protobuf_match[0]["rule_name"] == "protobuf_check"
+
