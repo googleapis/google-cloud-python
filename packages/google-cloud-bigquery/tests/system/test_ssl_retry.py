@@ -20,12 +20,12 @@ import requests.exceptions
 from google.api_core import exceptions as core_exceptions
 from google.cloud import bigquery
 
-def test_insert_rows_json_ssl_error_no_retry(bigquery_client, dataset_id):
+def test_insert_rows_json_ssl_error_no_retry(bigquery_client, dataset_id, project_id):
     """
     Verify that SSLError during insert_rows_json is NOT retried and
     propagates a descriptive error message immediately.
     """
-    table_id = f"{dataset_id}.test_ssl_retry_{int(time.time())}"
+    table_id = f"{project_id}.{dataset_id}.test_ssl_retry_{int(time.time())}"
     schema = [bigquery.SchemaField("name", "STRING")]
     table = bigquery.Table(table_id, schema=schema)
     bigquery_client.create_table(table)
