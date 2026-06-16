@@ -94,4 +94,84 @@ describe('TableWidgetAngular', () => {
       document.body.removeChild(el1);
       document.body.removeChild(el2);
     });
+
+  it(
+    'should render deferred card and trigger execution on click',
+    async () => {
+      // Arrange
+      const el = document.createElement('div');
+      document.body.appendChild(el);
+
+      const state = {
+        is_deferred_mode: true,
+        dry_run_info: 'Estimated cost: $0.05',
+        start_execution: false,
+        table_html: '',
+        page_size: 10,
+        page: 0,
+        row_count: 0,
+        max_columns: 20,
+      };
+
+      const listeners = {};
+      const model = {
+        get: jest.fn((prop) => state[prop]),
+        set: jest.fn((prop, val) => {
+          state[prop] = val;
+        }),
+        save_changes: jest.fn(),
+        on: jest.fn((event, callback) => {
+          listeners[event] = callback;
+        }),
+      };
+
+      // Act
+      render({ model, el });
+      await new Promise((resolve) => setTimeout(resolve, 200));
+
+      // Assert (Initial state)
+      const estimate = el.querySelector('.deferred-estimate');
+      expect(estimate).not.toBeNull();
+      expect(estimate.textContent).toContain('Estimated cost: $0.05');
+
+      const runButton = el.querySelector('.run-query-button');
+      expect(runButton).not.toBeNull();
+      expect(runButton.textContent).toContain('Run Query');
+      expect(el.querySelector('.table-container')).toBeNull();
+
+      // Act (Click Run Query)
+      runButton.click();
+
+      // Assert (Execution requested)
+      expect(model.set).toHaveBeenCalledWith('start_execution', true);
+      expect(model.save_changes).toHaveBeenCalled();
+      expect(runButton.disabled).toBe(true);
+      expect(el.querySelector('.spinner')).not.toBeNull();
+
+      // Act (Simulate Python load completion)
+      state.is_deferred_mode = false;
+      state.table_html = '<table><tr><td>Data Loaded</td></tr></table>';
+      state.row_count = 50;
+
+      if (listeners['change:is_deferred_mode']) {
+        listeners['change:is_deferred_mode']();
+      }
+      if (listeners['change:table_html']) {
+        listeners['change:table_html']();
+      }
+      if (listeners['change:row_count']) {
+        listeners['change:row_count']();
+      }
+      await new Promise((resolve) => setTimeout(resolve, 200));
+
+      // Assert (Transition to loaded state)
+      expect(el.querySelector('.deferred-container')).toBeNull();
+      const tableContainer = el.querySelector('.table-container');
+      expect(tableContainer).not.toBeNull();
+      expect(el.textContent).toContain('Data Loaded');
+      expect(el.textContent).toContain('50 total rows');
+
+      // Clean up
+      document.body.removeChild(el);
+    });
 });
