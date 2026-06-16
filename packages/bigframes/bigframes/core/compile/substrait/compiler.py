@@ -516,6 +516,9 @@ class SubstraitCompiler:
         "pow": 69,
         "cov": 70,
         "corr": 71,
+        "bitwise_and": 72,
+        "bitwise_or": 73,
+        "bitwise_xor": 74,
     }
 
     _OP_TO_EXTENSION = {
@@ -923,14 +926,33 @@ class SubstraitCompiler:
     @_compile_op.register(comparison_ops.GtOp)
     @_compile_op.register(comparison_ops.LeOp)
     @_compile_op.register(comparison_ops.GeOp)
-    @_compile_op.register(bool_ops.AndOp)
-    @_compile_op.register(bool_ops.OrOp)
-    @_compile_op.register(bool_ops.XorOp)
     def _compile_basic_binops(
         self, op: Any, inputs: Sequence[ex.Expression], child: nodes.BigFrameNode
     ) -> algebra_pb2.Expression:
         op_class = type(op)
         ext_name = self._OP_TO_EXTENSION[op_class]
+        return self._compile_basic_binop(ext_name, inputs, child)
+
+    @_compile_op.register(bool_ops.AndOp)
+    @_compile_op.register(bool_ops.OrOp)
+    @_compile_op.register(bool_ops.XorOp)
+    def _compile_logical_binops(
+        self, op: Any, inputs: Sequence[ex.Expression], child: nodes.BigFrameNode
+    ) -> algebra_pb2.Expression:
+        import bigframes.dtypes as dtypes
+        input_dtype = self._get_expression_dtype(inputs[0], child)
+        if input_dtype == dtypes.INT_DTYPE:
+            if isinstance(op, bool_ops.AndOp):
+                ext_name = "bitwise_and"
+            elif isinstance(op, bool_ops.OrOp):
+                ext_name = "bitwise_or"
+            elif isinstance(op, bool_ops.XorOp):
+                ext_name = "bitwise_xor"
+            else:
+                raise NotImplementedError(f"Unsupported binary bitwise op: {type(op)}")
+        else:
+            op_class = type(op)
+            ext_name = self._OP_TO_EXTENSION[op_class]
         return self._compile_basic_binop(ext_name, inputs, child)
 
     def _compile_basic_binop(
