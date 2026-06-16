@@ -284,6 +284,7 @@ def mock_deferred_df():
         class MockDeferredBigQueryDataFrame(DeferredBigQueryDataFrame):
             def __init__(self):
                 pass
+
         df = mock.MagicMock(spec=MockDeferredBigQueryDataFrame)
         df.__class__ = DeferredBigQueryDataFrame
         yield df
