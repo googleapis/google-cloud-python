@@ -313,13 +313,12 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
 
     def configure_mtls_channel(self, client_cert_callback=None):
         """Configures mutual TLS channel using the given client_cert_callback or
-        application default SSL credentials. The behavior is controlled by
-        `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable.
-        (1) If the environment variable value is `true`, the function returns True
-        if the channel is mutual TLS and False otherwise. The `http` provided
-        in the constructor will be overwritten.
-        (2) If the environment variable is not set or `false`, the function does
-        nothing and it always return False.
+        application default SSL credentials. 
+
+        The channel is configured if GOOGLE_API_USE_CLIENT_CERTIFICATE is "true", 
+        or if it is unset and workload certificates are detected in the environment. 
+        If client_cert_callback is None, default SSL credentials (workload or SecureConnect) 
+        are loaded. 
 
         Args:
             client_cert_callback (Optional[Callable[[], (bytes, bytes)]]):
@@ -333,7 +332,8 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
 
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If mutual TLS channel
-                creation failed for any reason.
+                creation failed for any reason (e.g., missing dependencies, or missing 
+                certificates when mTLS was explicitly/implicitly requested).
         """
         use_client_cert = transport._mtls_helper.check_use_client_cert()
         if not use_client_cert:
@@ -356,7 +356,12 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
                 self.http = _make_mutual_tls_http(cert, key)
                 self._cached_cert = cert
             else:
-                self.http = _make_default_http()
+                # If mTLS is configured or intended, but we fail to find client certificates,
+                # we must fail fast by raising an error instead of silently falling back to
+                # standard TLS.
+                raise exceptions.MutualTLSChannelError(
+                    "mTLS channel configuration failed because no client certificates were found."
+                )
         except (
             exceptions.ClientCertError,
             ImportError,

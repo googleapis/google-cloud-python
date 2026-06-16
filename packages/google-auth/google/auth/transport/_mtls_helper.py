@@ -28,6 +28,9 @@ CONTEXT_AWARE_METADATA_PATH = "~/.secureConnect/context_aware_metadata.json"
 
 # Default gcloud config path, to be used with path.expanduser for cross-platform compatibility.
 CERTIFICATE_CONFIGURATION_DEFAULT_PATH = "~/.config/gcloud/certificate_config.json"
+_WELL_KNOWN_SPIFFE_CERT_PATH = (
+    "/var/run/secrets/workload-spiffe-credentials/certificates.pem"
+)
 _CERT_PROVIDER_COMMAND = "cert_provider_command"
 _CERT_REGEX = re.compile(
     b"-----BEGIN CERTIFICATE-----.+-----END CERTIFICATE-----\r?\n?", re.DOTALL
@@ -200,12 +203,13 @@ def _get_workload_cert_and_key_paths(config_path, include_context_aware=True):
         return None, None
     workload = cert_configs["workload"]
 
-    if "cert_path" not in workload:
-        return None, None
+    if "cert_path" not in workload or "key_path" not in workload:
+        raise exceptions.ClientCertError(
+            'Workload certificate configuration is missing "cert_path" or "key_path" in {}'.format(
+                absolute_path
+            )
+        )
     cert_path = workload["cert_path"]
-
-    if "key_path" not in workload:
-        return None, None
     key_path = workload["key_path"]
 
     # == BEGIN Temporary Cloud Run PATCH ==
@@ -448,6 +452,16 @@ def decrypt_private_key(key, passphrase):
     return crypto.dump_privatekey(crypto.FILETYPE_PEM, pkey)
 
 
+def is_transport_mtls_capable():
+    """Returns True if the required dependencies for establishing an mTLS connection are present."""
+    try:
+        import OpenSSL
+        from cryptography import x509
+        return True
+    except ImportError:
+        return False
+
+
 def check_use_client_cert():
     """Returns boolean for whether the client certificate should be used for mTLS.
 
@@ -455,9 +469,13 @@ def check_use_client_cert():
     bool value will be returned. If the value is set to an unexpected string, it
     will default to False.
     If GOOGLE_API_USE_CLIENT_CERTIFICATE is unset, the value will be inferred
-    by reading a file pointed at by GOOGLE_API_CERTIFICATE_CONFIG, and verifying
-    it contains a "workload" section. If so, the function will return True,
-    otherwise False.
+    as True (auto-enabled) if the required transport libraries (pyOpenSSL and cryptography)
+    are installed AND either:
+    1. A workload config file exists (pointed at by GOOGLE_API_CERTIFICATE_CONFIG)
+       containing a "workload" section.
+    2. A certificate file exists at the well-known SPIFFE path
+       (/var/run/secrets/workload-spiffe-credentials/certificates.pem).
+    Otherwise, it returns False.
 
     Returns:
         bool: Whether the client certificate should be used for mTLS connection.
@@ -471,30 +489,43 @@ def check_use_client_cert():
     # Check if the value of GOOGLE_API_USE_CLIENT_CERTIFICATE is set.
     if use_client_cert:
         return use_client_cert.lower() == "true"
-    else:
-        # Check if the value of GOOGLE_API_CERTIFICATE_CONFIG is set.
-        cert_path = getenv(environment_vars.GOOGLE_API_CERTIFICATE_CONFIG)
-        if cert_path is None:
-            cert_path = getenv(
-                environment_vars.CLOUDSDK_CONTEXT_AWARE_CERTIFICATE_CONFIG_FILE_PATH
-            )
 
-        if cert_path:
-            try:
-                with open(cert_path, "r") as f:
-                    content = json.load(f)
-                    # verify json has workload key
-                    content["cert_configs"]["workload"]
-                    return True
-            except (
-                FileNotFoundError,
-                OSError,
-                KeyError,
-                TypeError,
-                json.JSONDecodeError,
-            ) as e:
-                _LOGGER.debug("error decoding certificate: %s", e)
+    # Auto-enablement checks (when GOOGLE_API_USE_CLIENT_CERTIFICATE is not set)
+    # Gracefully degrade to standard TLS if transport capabilities are missing
+    if not is_transport_mtls_capable():
         return False
+
+    # Check if the value of GOOGLE_API_CERTIFICATE_CONFIG is set.
+    cert_path = getenv(environment_vars.GOOGLE_API_CERTIFICATE_CONFIG)
+    if cert_path is None:
+        cert_path = getenv(
+            environment_vars.CLOUDSDK_CONTEXT_AWARE_CERTIFICATE_CONFIG_FILE_PATH
+        )
+
+    if cert_path:
+        try:
+            with open(cert_path, "r") as f:
+                content = json.load(f)
+                # verify json has workload key
+                content["cert_configs"]["workload"]
+                return True
+        except (
+            FileNotFoundError,
+            OSError,
+            KeyError,
+            TypeError,
+            json.JSONDecodeError,
+        ) as e:
+            _LOGGER.debug("error decoding certificate: %s", e)
+
+    # Fallback check for well-known SPIFFE path (agent identity)
+    if (
+        path.exists(_WELL_KNOWN_SPIFFE_CERT_PATH)
+        and path.getsize(_WELL_KNOWN_SPIFFE_CERT_PATH) > 0
+    ):
+        return True
+
+    return False
 
 
 def check_parameters_for_unauthorized_response(cached_cert):

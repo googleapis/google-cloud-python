@@ -201,6 +201,11 @@ def get_and_parse_agent_identity_certificate():
     if is_opted_out:
         return None
 
+    # Respect explicit opt-out of mTLS / client certs
+    use_client_cert = os.environ.get(environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE)
+    if use_client_cert and use_client_cert.lower() == "false":
+        return None
+
     cert_path = get_agent_identity_certificate_path()
     if not cert_path:
         return None
@@ -312,7 +317,23 @@ def should_request_bound_token(cert):
         ).lower()
         == "true"
     )
-    return is_agent_cert and is_opted_in
+    if not (is_agent_cert and is_opted_in):
+        return False
+
+    # Respect explicit opt-out of mTLS / client certs
+    use_client_cert = os.environ.get(environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE)
+    if use_client_cert and use_client_cert.lower() == "false":
+        return False
+
+    # Graceful degradation for auto-enablement:
+    # If GOOGLE_API_USE_CLIENT_CERTIFICATE is not set, we only request a bound token
+    # if the transport is capable of handling it.
+    if use_client_cert is None or use_client_cert == "":
+        from google.auth.transport import _mtls_helper
+        if not _mtls_helper.is_transport_mtls_capable():
+            return False
+
+    return True
 
 
 def get_cached_cert_fingerprint(cached_cert):

@@ -21,6 +21,7 @@ import pytest
 
 from google.auth import exceptions
 from google.auth.aio import credentials
+from google.auth.aio import transport
 from google.auth.aio.transport import sessions
 
 # This is the valid "workload" format the library expects
@@ -76,10 +77,8 @@ class TestSessionsMtls:
             mock_creds = mock.AsyncMock(spec=credentials.Credentials)
             session = sessions.AsyncAuthorizedSession(mock_creds)
 
-            await session.configure_mtls_channel()
-
-            # If the file doesn't exist, it shouldn't error; it just won't use mTLS
-            assert session._is_mtls is False
+            with pytest.raises(exceptions.MutualTLSChannelError):
+                await session.configure_mtls_channel()
 
     @pytest.mark.asyncio
     async def test_configure_mtls_channel_invalid_format(self):
@@ -112,10 +111,8 @@ class TestSessionsMtls:
             mock_creds = mock.AsyncMock(spec=credentials.Credentials)
             session = sessions.AsyncAuthorizedSession(mock_creds)
 
-            await session.configure_mtls_channel()
-
-            # If the file couldn't be parsed, it shouldn't error; it just won't use mTLS
-            assert session._is_mtls is False
+            with pytest.raises(exceptions.MutualTLSChannelError):
+                await session.configure_mtls_channel()
 
     @pytest.mark.asyncio
     async def test_configure_mtls_channel_mock_callback(self):
@@ -140,3 +137,32 @@ class TestSessionsMtls:
             await session.configure_mtls_channel(client_cert_callback=mock_callback)
 
             assert session._is_mtls is True
+
+    @pytest.mark.asyncio
+    async def test_configure_mtls_channel_custom_request(self):
+        """
+        Tests that if _auth_request is not an AiohttpRequest, a MutualTLSChannelError is raised.
+        """
+        with mock.patch.dict(
+            os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}
+        ), mock.patch("os.path.exists") as mock_exists, mock.patch(
+            "builtins.open", mock.mock_open(read_data=json.dumps(VALID_WORKLOAD_CONFIG))
+        ), mock.patch(
+            "google.auth.aio.transport.mtls.get_client_cert_and_key"
+        ) as mock_helper, mock.patch(
+            "google.auth.aio.transport.mtls.make_client_cert_ssl_context"
+        ) as mock_make_context:
+            mock_exists.return_value = True
+            mock_helper.return_value = (True, b"fake_cert_data", b"fake_key_data")
+
+            mock_context = mock.Mock(spec=ssl.SSLContext)
+            mock_make_context.return_value = mock_context
+
+            mock_creds = mock.AsyncMock(spec=credentials.Credentials)
+            mock_auth_request = mock.AsyncMock(spec=transport.Request)
+            session = sessions.AsyncAuthorizedSession(
+                mock_creds, auth_request=mock_auth_request
+            )
+
+            with pytest.raises(exceptions.MutualTLSChannelError):
+                await session.configure_mtls_channel()

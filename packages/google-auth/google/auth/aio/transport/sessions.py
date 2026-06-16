@@ -150,11 +150,11 @@ class AsyncAuthorizedSession:
     async def configure_mtls_channel(self, client_cert_callback=None):
         """Configure the client certificate and key for SSL connection.
 
-        The function does nothing unless `GOOGLE_API_USE_CLIENT_CERTIFICATE` is
-        explicitly set to `true`. In this case if client certificate and key are
-        successfully obtained (from the given client_cert_callback or from application
-        default SSL credentials), the underlying transport will be reconfigured
-        to use mTLS.
+        This method configures mTLS if client certificates are explicitly enabled 
+        (via GOOGLE_API_USE_CLIENT_CERTIFICATE=true) or auto-enabled (when the env 
+        variable is unset and workload certificates are discovered). In these cases, 
+        the underlying transport will be reconfigured to use mTLS.
+
         Note: This function does nothing if the `aiohttp` library is not
         installed.
         Important: Calling this method will close any ongoing API requests associated
@@ -170,7 +170,8 @@ class AsyncAuthorizedSession:
 
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If mutual TLS channel
-                creation failed for any reason.
+                creation failed for any reason (e.g., missing dependencies, custom request 
+                handler limitations, or missing certificates when mTLS was requested).
         """
         if self._mtls_init_task is None:
 
@@ -207,6 +208,20 @@ class AsyncAuthorizedSession:
                             self._auth_request = AiohttpRequest(session=new_session)
 
                             await old_auth_request.close()
+                        else:
+                            self._is_mtls = False
+                            # If a custom request handler was provided, the library cannot configure
+                            # the connection to use mTLS. Raise an error instead of silently falling back.
+                            raise exceptions.MutualTLSChannelError(
+                                "mTLS was configured/enabled but client certificate or private key could not be loaded."
+                            )
+                    else:
+                        # If mTLS is configured or intended, but we fail to find client certificates,
+                        # we must fail fast by raising an error instead of silently falling back to
+                        # standard TLS.
+                        raise exceptions.MutualTLSChannelError(
+                            "mTLS was configured/enabled but client certificate or private key could not be loaded."
+                        )
 
                 except (
                     exceptions.ClientCertError,
