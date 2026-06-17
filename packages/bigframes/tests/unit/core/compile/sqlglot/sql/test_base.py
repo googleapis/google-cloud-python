@@ -181,5 +181,6 @@ def test_cast_to_null_type_returns_flat_null():
 
 def test_nested_cast_to_null_type_is_flattened():
     import bigframes_vendored.sqlglot.expressions as sge
+
     nested = sge.Cast(this=sge.Cast(this=sge.Null(), to="NULL"), to="INT64")
     assert sql.to_sql(nested) == "CAST(NULL AS INT64)"

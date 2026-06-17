@@ -49,11 +49,9 @@ DIALECT = sg.dialects.bigquery.BigQuery
 
 def to_sql(expr: sge.Expression) -> str:
     """Generate SQL string from the given expression."""
+
     def _flatten_null_casts(node: sge.Expression) -> sge.Expression:
-        if (
-            isinstance(node, (sge.Cast, sge.TryCast))
-            and str(node.to).upper() == "NULL"
-        ):
+        if isinstance(node, (sge.Cast, sge.TryCast)) and str(node.to).upper() == "NULL":
             return sge.Null()
         return node
 
