@@ -32,6 +32,22 @@ from version_scanner import (
     format_for_console
 )
 
+@pytest.fixture
+def sample_match():
+    return {
+        "file_name": "setup.py",
+        "file_path": "google-cloud-python/main/packages/pkg_a/setup.py",
+        "repo_path": "packages/pkg_a/setup.py",
+        "package_name": "pkg_a",
+        "rule_name": "python_requires_check",
+        "line_number": "123",
+        "matched_string": "3.7",
+        "context_line": "python_requires = '>=3.7'",
+        "dependency": "python",
+        "version": "3.7"
+    }
+
+
 # Test ConfigManager
 @pytest.mark.parametrize("dependency, version, expected", [
     (
@@ -681,21 +697,6 @@ def test_safe_int():
     assert _safe_int("") == 0
     assert _safe_int(None) == 0
     assert _safe_int("abc") == 0
-
-@pytest.fixture
-def sample_match():
-    return {
-        "file_name": "setup.py",
-        "file_path": "google-cloud-python/main/packages/pkg_a/setup.py",
-        "repo_path": "packages/pkg_a/setup.py",
-        "package_name": "pkg_a",
-        "rule_name": "python_requires_check",
-        "line_number": "123",
-        "matched_string": "3.7",
-        "context_line": "python_requires = '>=3.7'",
-        "dependency": "python",
-        "version": "3.7"
-    }
 
 def test_format_for_raw_csv_handles_empty_line_number(sample_match):
     sample_match["line_number"] = ""
