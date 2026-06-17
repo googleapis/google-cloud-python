@@ -682,21 +682,9 @@ def test_safe_int():
     assert _safe_int(None) == 0
     assert _safe_int("abc") == 0
 
-def test_format_for_raw_csv_handles_empty_line_number():
-    match = {
-        "file_path": "google-cloud-python/main/packages/pkg_a/setup.py",
-        "repo_path": "packages/pkg_a/setup.py",
-        "package_name": "pkg_a",
-        "rule_name": "python_requires_check",
-        "line_number": "",
-        "matched_string": "3.7",
-        "context_line": "python_requires = '>=3.7'"
-    }
-    formatted = format_for_raw_csv(match)
-    assert formatted["line_number"] == 0
-
-def test_format_for_raw_csv():
-    match = {
+@pytest.fixture
+def sample_match():
+    return {
         "file_name": "setup.py",
         "file_path": "google-cloud-python/main/packages/pkg_a/setup.py",
         "repo_path": "packages/pkg_a/setup.py",
@@ -708,8 +696,14 @@ def test_format_for_raw_csv():
         "dependency": "python",
         "version": "3.7"
     }
-    
-    formatted = format_for_raw_csv(match)
+
+def test_format_for_raw_csv_handles_empty_line_number(sample_match):
+    sample_match["line_number"] = ""
+    formatted = format_for_raw_csv(sample_match)
+    assert formatted["line_number"] == 0
+
+def test_format_for_raw_csv(sample_match):
+    formatted = format_for_raw_csv(sample_match)
     
     assert formatted["file_name"] == "setup.py"
     assert formatted["file_path"] == "google-cloud-python/main/packages/pkg_a/setup.py"
@@ -721,38 +715,14 @@ def test_format_for_raw_csv():
     assert formatted["dependency"] == "python"
     assert formatted["version"] == "3.7"
 
-def test_format_for_raw_csv_fallback_filename():
-    match = {
-        "file_path": "google-cloud-python/main/packages/pkg_a/setup.py",
-        "repo_path": "packages/pkg_a/setup.py",
-        "package_name": "pkg_a",
-        "rule_name": "python_requires_check",
-        "line_number": "123",
-        "matched_string": "3.7",
-        "context_line": "python_requires = '>=3.7'",
-        "dependency": "python",
-        "version": "3.7"
-    }
-    
-    formatted = format_for_raw_csv(match)
+def test_format_for_raw_csv_fallback_filename(sample_match):
+    del sample_match["file_name"]
+    formatted = format_for_raw_csv(sample_match)
     assert formatted["file_name"] == "setup.py"
 
-def test_format_for_spreadsheet():
-    match = {
-        "file_name": "setup.py",
-        "file_path": "google-cloud-python/main/packages/pkg_a/setup.py",
-        "repo_path": "packages/pkg_a/setup.py",
-        "package_name": "pkg_a",
-        "rule_name": "python_requires_check",
-        "line_number": 123,
-        "matched_string": "3.7",
-        "context_line": "python_requires = '>=3.7'",
-        "dependency": "python",
-        "version": "3.7"
-    }
-    
+def test_format_for_spreadsheet(sample_match):
     # Without github_repo
-    formatted_no_repo = format_for_spreadsheet(match)
+    formatted_no_repo = format_for_spreadsheet(sample_match)
     assert formatted_no_repo["file_name"] == "setup.py"
     assert formatted_no_repo["line_number"] == 123
     assert formatted_no_repo["matched_string"] == '="3.7"'  # Decimal protection formula
@@ -760,23 +730,13 @@ def test_format_for_spreadsheet():
     assert formatted_no_repo["version"] == "3.7"
     
     # With github_repo
-    formatted_repo = format_for_spreadsheet(match, github_repo="https://github.com/user/repo", branch="main")
+    formatted_repo = format_for_spreadsheet(sample_match, github_repo="https://github.com/user/repo", branch="main")
     expected_url = "https://github.com/user/repo/blob/main/packages/pkg_a/setup.py#L123"
     assert formatted_repo["line_number"] == f'=HYPERLINK("{expected_url}", "123")'
     assert formatted_repo["matched_string"] == '="3.7"'
 
-def test_format_for_console():
-    match = {
-        "file_path": "google-cloud-python/main/packages/pkg_a/setup.py",
-        "repo_path": "packages/pkg_a/setup.py",
-        "package_name": "pkg_a",
-        "rule_name": "python_requires_check",
-        "line_number": 123,
-        "matched_string": "3.7",
-        "context_line": "python_requires = '>=3.7'"
-    }
-    
-    log_str = format_for_console(match)
+def test_format_for_console(sample_match):
+    log_str = format_for_console(sample_match)
     assert "google-cloud-python/main/packages/pkg_a/setup.py:123" in log_str
     assert "[python_requires_check]" in log_str
     assert "3.7" in log_str
