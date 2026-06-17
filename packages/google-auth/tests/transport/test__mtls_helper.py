@@ -13,8 +13,9 @@
 # limitations under the License.
 
 import os
+
 if not hasattr(os, "MFD_CLOEXEC"):
-    os.MFD_CLOEXEC = 1
+    setattr(os, "MFD_CLOEXEC", 1)
 import re
 import sys
 import tempfile
@@ -1170,10 +1171,9 @@ class TestMemfdCertKeyPaths(object):
         ):
             assert cert_path == "/proc/self/fd/10"
             assert key_path == "/proc/self/fd/11"
-        mock_fdopen.assert_has_calls([
-            mock.call(10, "wb", closefd=False),
-            mock.call(11, "wb", closefd=False)
-        ])
+        mock_fdopen.assert_has_calls(
+            [mock.call(10, "wb", closefd=False), mock.call(11, "wb", closefd=False)]
+        )
         mock_file_cert.write.assert_called_once_with(b"cert")
         mock_file_key.write.assert_called_once_with(b"key")
         assert mock_close.call_count == 2

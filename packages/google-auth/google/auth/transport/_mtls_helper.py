@@ -224,14 +224,14 @@ def _memfd_cert_key_paths(
     try:
         if cert_bytes is not None:
             # MFD_CLOEXEC prevents FD leaks to spawned subprocesses.
-            fd_cert = os.memfd_create("mtls_cert", os.MFD_CLOEXEC)
+            fd_cert = os.memfd_create("mtls_cert", os.MFD_CLOEXEC)  # type: ignore[attr-defined]
             cleanup_fds.append(fd_cert)
             with os.fdopen(fd_cert, "wb", closefd=False) as f:
                 f.write(cert_bytes)
             cert_path = f"/proc/self/fd/{fd_cert}"
 
         if key_bytes is not None:
-            fd_key = os.memfd_create("mtls_key", os.MFD_CLOEXEC)
+            fd_key = os.memfd_create("mtls_key", os.MFD_CLOEXEC)  # type: ignore[attr-defined]
             cleanup_fds.append(fd_key)
             with os.fdopen(fd_key, "wb", closefd=False) as f:
                 f.write(key_bytes)
