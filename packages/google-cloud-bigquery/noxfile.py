@@ -14,9 +14,11 @@
 
 from __future__ import absolute_import
 
+import contextlib
 from functools import wraps
 import os
 import pathlib
+from typing import Generator
 import re
 import shutil
 import time
@@ -78,6 +80,26 @@ nox.options.sessions = [
     "core_deps_from_source",
     "format",
 ]
+
+
+@contextlib.contextmanager
+def log_package_context(session: nox.Session) -> Generator[None, None, None]:
+    """Logs a highly visible package context banner right before a session exits.
+
+    Ensures metadata is printed adjacent to Nox's final status log,
+    even if the session fails or raises an exception.
+    """
+    # Dynamically extract current folder name (e.g., 'google-cloud-bigquery')
+    # Falls back to the root directory name if run from the repo root
+    package_name = os.path.basename(os.getcwd())
+
+    try:
+        # Hands control back to the session code block
+        yield
+    finally:
+        # This executes AFTER test output finishes, immediately above Nox's summary line
+        banner_text = f"Finished session for {package_name.lower()}"
+        session.log(banner_text)
 
 
 def default(session, install_extras=True):
@@ -193,7 +215,8 @@ def mypy(session):
         "types-setuptools",
     )
     session.run("python", "-m", "pip", "freeze")
-    session.run("mypy", "-p", "google", "--show-traceback")
+    with log_package_context(session):
+        session.run("mypy", "-p", "google", "--show-traceback")
 
 
 @nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
