@@ -13,9 +13,6 @@
 # limitations under the License.
 
 import os
-
-if not hasattr(os, "MFD_CLOEXEC"):
-    setattr(os, "MFD_CLOEXEC", 1)
 import re
 import sys
 import tempfile
@@ -27,6 +24,9 @@ import pytest  # type: ignore
 
 from google.auth import environment_vars, exceptions
 from google.auth.transport import _mtls_helper
+
+if not hasattr(os, "MFD_CLOEXEC"):
+    setattr(os, "MFD_CLOEXEC", 1)
 
 CERT_MOCK_VAL = b"cert"
 KEY_MOCK_VAL = b"key"
