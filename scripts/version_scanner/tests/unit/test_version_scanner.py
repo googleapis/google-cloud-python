@@ -795,37 +795,27 @@ protobuf: "4.25.8"
     targets = parse_targets_file(str(yaml_file))
     assert targets == [("python", "3.7"), ("python", "3.8"), ("protobuf", "4.25.8")]
 
-def test_parse_targets_file_not_found():
+@pytest.mark.parametrize(
+    "file_content, file_exists",
+    [
+        (None, False),                  # File not found
+        ("invalid: {", True),           # Invalid YAML
+        ("- not_a_mapping", True),      # Invalid structure (list instead of map)
+        ("python:\n  - null", True),    # Invalid version type (null/None value)
+    ]
+)
+def test_parse_targets_file_failures(tmp_path, file_content, file_exists):
     from version_scanner import parse_targets_file
+    
+    if file_exists:
+        yaml_file = tmp_path / "targets_failures.yaml"
+        yaml_file.write_text(file_content)
+        path = str(yaml_file)
+    else:
+        path = "nonexistent_file.yaml"
+        
     with pytest.raises(SystemExit) as excinfo:
-        parse_targets_file("nonexistent_file.yaml")
-    assert excinfo.value.code == 1
-
-def test_parse_targets_file_invalid_yaml(tmp_path):
-    from version_scanner import parse_targets_file
-    yaml_file = tmp_path / "targets.yaml"
-    yaml_file.write_text("invalid: {")
-    with pytest.raises(SystemExit) as excinfo:
-        parse_targets_file(str(yaml_file))
-    assert excinfo.value.code == 1
-
-def test_parse_targets_file_invalid_structure(tmp_path):
-    from version_scanner import parse_targets_file
-    yaml_file = tmp_path / "targets.yaml"
-    yaml_file.write_text("- not_a_mapping")
-    with pytest.raises(SystemExit) as excinfo:
-        parse_targets_file(str(yaml_file))
-    assert excinfo.value.code == 1
-
-def test_parse_targets_file_invalid_version_type(tmp_path):
-    from version_scanner import parse_targets_file
-    yaml_file = tmp_path / "targets.yaml"
-    yaml_file.write_text("""
-python:
-  - null
-""")
-    with pytest.raises(SystemExit) as excinfo:
-        parse_targets_file(str(yaml_file))
+        parse_targets_file(path)
     assert excinfo.value.code == 1
 
 def test_scan_repository_multi_targets(tmp_path):
