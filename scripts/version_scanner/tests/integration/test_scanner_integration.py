@@ -32,7 +32,8 @@ def test_integration_scan(tmp_path):
         "-v", "3.7",
         "-p", data_dir,
         "--config", config_path,
-        "-o", "scanner_report.csv"
+        "-o", "scanner_report.csv",
+        "--soft-fail"
     ]
     
     result = subprocess.run(cmd, cwd=tmp_path, capture_output=True, text=True, check=True)

@@ -32,6 +32,60 @@ from version_scanner import (
     format_for_console
 )
 
+@pytest.fixture
+def sample_match():
+    return {
+        "file_name": "setup.py",
+        "file_path": "google-cloud-python/main/packages/pkg_a/setup.py",
+        "repo_path": "packages/pkg_a/setup.py",
+        "package_name": "pkg_a",
+        "rule_name": "python_requires_check",
+        "line_number": "123",
+        "matched_string": "3.7",
+        "context_line": "python_requires = '>=3.7'",
+        "dependency": "python",
+        "version": "3.7"
+    }
+
+
+@pytest.mark.parametrize(
+    "exception_to_raise, required, silent_missing, expected_exit, expected_output, expected_return",
+    [
+        (None, True, False, False, None, "file content"),  # Success
+        (FileNotFoundError(), True, True, False, None, None),  # Silent missing FileNotFoundError
+        (FileNotFoundError(), True, False, True, "Error: Test_desc not found", None),  # Required FileNotFoundError
+        (FileNotFoundError(), False, False, False, "Warning: Test_desc not found", None),  # Optional FileNotFoundError
+        (PermissionError(), True, False, True, "Error: Permission denied reading test_desc", None),  # Required PermissionError
+        (PermissionError(), False, False, False, "Warning: Permission denied reading test_desc", None),  # Optional PermissionError
+        (IOError("disk full"), True, False, True, "Error reading test_desc", None),  # Required IOError
+        (IOError("disk full"), False, False, False, "Warning: Error reading test_desc", None),  # Optional IOError
+    ]
+)
+def test_safe_read_file_scenarios(
+    capsys, exception_to_raise, required, silent_missing, expected_exit, expected_output, expected_return
+):
+    from version_scanner import _safe_read_file
+    
+    if exception_to_raise:
+        mock_open = mock.mock_open()
+        mock_open.side_effect = exception_to_raise
+    else:
+        mock_open = mock.mock_open(read_data="file content")
+        
+    with patch("builtins.open", mock_open):
+        if expected_exit:
+            with pytest.raises(SystemExit) as excinfo:
+                _safe_read_file("dummy.txt", required=required, description="test_desc", silent_missing=silent_missing)
+            assert excinfo.value.code == 1
+        else:
+            res = _safe_read_file("dummy.txt", required=required, description="test_desc", silent_missing=silent_missing)
+            assert res == expected_return
+            
+    if expected_output:
+        captured = capsys.readouterr()
+        assert expected_output in captured.err
+
+
 # Test ConfigManager
 @pytest.mark.parametrize("dependency, version, expected", [
     (
@@ -682,34 +736,13 @@ def test_safe_int():
     assert _safe_int(None) == 0
     assert _safe_int("abc") == 0
 
-def test_format_for_raw_csv_handles_empty_line_number():
-    match = {
-        "file_path": "google-cloud-python/main/packages/pkg_a/setup.py",
-        "repo_path": "packages/pkg_a/setup.py",
-        "package_name": "pkg_a",
-        "rule_name": "python_requires_check",
-        "line_number": "",
-        "matched_string": "3.7",
-        "context_line": "python_requires = '>=3.7'"
-    }
-    formatted = format_for_raw_csv(match)
+def test_format_for_raw_csv_handles_empty_line_number(sample_match):
+    sample_match["line_number"] = ""
+    formatted = format_for_raw_csv(sample_match)
     assert formatted["line_number"] == 0
 
-def test_format_for_raw_csv():
-    match = {
-        "file_name": "setup.py",
-        "file_path": "google-cloud-python/main/packages/pkg_a/setup.py",
-        "repo_path": "packages/pkg_a/setup.py",
-        "package_name": "pkg_a",
-        "rule_name": "python_requires_check",
-        "line_number": "123",
-        "matched_string": "3.7",
-        "context_line": "python_requires = '>=3.7'",
-        "dependency": "python",
-        "version": "3.7"
-    }
-    
-    formatted = format_for_raw_csv(match)
+def test_format_for_raw_csv(sample_match):
+    formatted = format_for_raw_csv(sample_match)
     
     assert formatted["file_name"] == "setup.py"
     assert formatted["file_path"] == "google-cloud-python/main/packages/pkg_a/setup.py"
@@ -721,38 +754,14 @@ def test_format_for_raw_csv():
     assert formatted["dependency"] == "python"
     assert formatted["version"] == "3.7"
 
-def test_format_for_raw_csv_fallback_filename():
-    match = {
-        "file_path": "google-cloud-python/main/packages/pkg_a/setup.py",
-        "repo_path": "packages/pkg_a/setup.py",
-        "package_name": "pkg_a",
-        "rule_name": "python_requires_check",
-        "line_number": "123",
-        "matched_string": "3.7",
-        "context_line": "python_requires = '>=3.7'",
-        "dependency": "python",
-        "version": "3.7"
-    }
-    
-    formatted = format_for_raw_csv(match)
+def test_format_for_raw_csv_fallback_filename(sample_match):
+    del sample_match["file_name"]
+    formatted = format_for_raw_csv(sample_match)
     assert formatted["file_name"] == "setup.py"
 
-def test_format_for_spreadsheet():
-    match = {
-        "file_name": "setup.py",
-        "file_path": "google-cloud-python/main/packages/pkg_a/setup.py",
-        "repo_path": "packages/pkg_a/setup.py",
-        "package_name": "pkg_a",
-        "rule_name": "python_requires_check",
-        "line_number": 123,
-        "matched_string": "3.7",
-        "context_line": "python_requires = '>=3.7'",
-        "dependency": "python",
-        "version": "3.7"
-    }
-    
+def test_format_for_spreadsheet(sample_match):
     # Without github_repo
-    formatted_no_repo = format_for_spreadsheet(match)
+    formatted_no_repo = format_for_spreadsheet(sample_match)
     assert formatted_no_repo["file_name"] == "setup.py"
     assert formatted_no_repo["line_number"] == 123
     assert formatted_no_repo["matched_string"] == '="3.7"'  # Decimal protection formula
@@ -760,25 +769,102 @@ def test_format_for_spreadsheet():
     assert formatted_no_repo["version"] == "3.7"
     
     # With github_repo
-    formatted_repo = format_for_spreadsheet(match, github_repo="https://github.com/user/repo", branch="main")
+    formatted_repo = format_for_spreadsheet(sample_match, github_repo="https://github.com/user/repo", branch="main")
     expected_url = "https://github.com/user/repo/blob/main/packages/pkg_a/setup.py#L123"
     assert formatted_repo["line_number"] == f'=HYPERLINK("{expected_url}", "123")'
     assert formatted_repo["matched_string"] == '="3.7"'
 
-def test_format_for_console():
-    match = {
-        "file_path": "google-cloud-python/main/packages/pkg_a/setup.py",
-        "repo_path": "packages/pkg_a/setup.py",
-        "package_name": "pkg_a",
-        "rule_name": "python_requires_check",
-        "line_number": 123,
-        "matched_string": "3.7",
-        "context_line": "python_requires = '>=3.7'"
-    }
-    
-    log_str = format_for_console(match)
+def test_format_for_console(sample_match):
+    log_str = format_for_console(sample_match)
     assert "google-cloud-python/main/packages/pkg_a/setup.py:123" in log_str
     assert "[python_requires_check]" in log_str
     assert "3.7" in log_str
     assert "python_requires = " not in log_str  # Slim format doesn't print context line
+
+
+def test_parse_targets_file(tmp_path):
+    from version_scanner import parse_targets_file
+    yaml_file = tmp_path / "targets.yaml"
+    yaml_file.write_text("""
+python:
+  - "3.7"
+  - "3.8"
+protobuf: "4.25.8"
+""")
+    targets = parse_targets_file(str(yaml_file))
+    assert targets == [("python", "3.7"), ("python", "3.8"), ("protobuf", "4.25.8")]
+
+@pytest.mark.parametrize(
+    "file_content, file_exists",
+    [
+        (None, False),                  # File not found
+        ("invalid: {", True),           # Invalid YAML
+        ("- not_a_mapping", True),      # Invalid structure (list instead of map)
+        ("python:\n  - null", True),    # Invalid version type (null/None value)
+    ]
+)
+def test_parse_targets_file_failures(tmp_path, file_content, file_exists):
+    from version_scanner import parse_targets_file
+    
+    if file_exists:
+        yaml_file = tmp_path / "targets_failures.yaml"
+        yaml_file.write_text(file_content)
+        path = str(yaml_file)
+    else:
+        path = "nonexistent_file.yaml"
+        
+    with pytest.raises(SystemExit) as excinfo:
+        parse_targets_file(path)
+    assert excinfo.value.code == 1
+
+def test_scan_repository_multi_targets(tmp_path):
+    # Setup files in tmp repository
+    file1 = tmp_path / "packages" / "pkg1" / "setup.py"
+    file1.parent.mkdir(parents=True)
+    file1.write_text("python_requires = '>=3.7'\n")
+    
+    file2 = tmp_path / "packages" / "pkg2" / "requirements.txt"
+    file2.parent.mkdir(parents=True)
+    file2.write_text("protobuf==4.25.8\n")
+    
+    # Let's mock a config file with rules for both python and protobuf
+    config_file = tmp_path / "regex_config.yaml"
+    config_file.write_text("""
+rules:
+  - name: python_requires_check
+    applies_to:
+      - python
+    rules:
+      - python_requires\\s*=\\s*['\"]>={version}['\"]
+  - name: protobuf_check
+    applies_to:
+      - protobuf
+    rules:
+      - protobuf=={version}
+""")
+    
+    from version_scanner import ConfigManager, scan_repository
+    
+    targets = [("python", "3.7"), ("protobuf", "4.25.8")]
+    rules = []
+    for dep, ver in targets:
+        cm = ConfigManager(str(config_file), dep, ver)
+        rules.extend(cm.load_config())
+        
+    results = scan_repository(str(tmp_path), rules, targets=targets)
+    
+    # We should have 2 matches
+    assert len(results) == 2
+    
+    # Match for python
+    python_match = [r for r in results if r["dependency"] == "python"]
+    assert len(python_match) == 1
+    assert python_match[0]["version"] == "3.7"
+    assert python_match[0]["rule_name"] == "python_requires_check"
+    
+    # Match for protobuf
+    protobuf_match = [r for r in results if r["dependency"] == "protobuf"]
+    assert len(protobuf_match) == 1
+    assert protobuf_match[0]["version"] == "4.25.8"
+    assert protobuf_match[0]["rule_name"] == "protobuf_check"
 
