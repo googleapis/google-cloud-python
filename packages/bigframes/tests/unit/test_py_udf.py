@@ -174,21 +174,19 @@ def test_dataframe_apply_axis_1_transpile_invalid_bindings(
         return input.int64_too + input.int64_col + x + y
 
     # 1. Unexpected keyword argument
-    with pytest.raises(TypeError, match="got an unexpected keyword argument 'z'"):
+    with pytest.raises(TypeError, match="unexpected keyword argument 'z'"):
         scalars_df_index[columns].apply(foo, axis=1, args=(10,), z=20)
 
     # 2. Multiple values for keyword argument 'x'
-    with pytest.raises(TypeError, match="got multiple values for keyword argument 'x'"):
+    with pytest.raises(TypeError, match="multiple values for argument 'x'"):
         scalars_df_index[columns].apply(foo, axis=1, args=(10,), x=20)
 
     # 3. Too many positional arguments
-    with pytest.raises(
-        TypeError, match="too many positional arguments: expected 2, got 3"
-    ):
+    with pytest.raises(TypeError, match="too many positional arguments"):
         scalars_df_index[columns].apply(foo, axis=1, args=(10, 20, 30))
 
     # 4. Missing required argument 'x'
-    with pytest.raises(TypeError, match="missing required argument: 'x'"):
+    with pytest.raises(TypeError, match="missing a required argument: 'x'"):
         scalars_df_index[columns].apply(foo, axis=1)
 
 

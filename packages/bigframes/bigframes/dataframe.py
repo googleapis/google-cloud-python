@@ -4736,32 +4736,10 @@ class DataFrame:
                 and options.experiments.enable_python_transpiler
                 and callable(func)
             ):
-                from bigframes.operations.to_op import CallableExpression
-
-                callable_expr = CallableExpression.from_callable(
-                    func, unpack_mode=False
+                result_block = block_ops.apply_to_block_rows(
+                    func, self._block, *args, **kwargs
                 )
-
-                # Bind the extra arguments (args and kwargs) starting from parameter 1
-                callable_expr = callable_expr.bind_partial(*args, _offset=1, **kwargs)
-                expr = callable_expr.expr
-
-                # Now bind the remaining free variables to the DataFrame columns:
-                col_bindings = {}
-                block = self._get_block()
-                for col in self.columns:
-                    if col in expr.free_variables:
-                        col_id = block.resolve_label_exact(col)
-                        if col_id is not None:
-                            col_bindings[col] = ex.deref(col_id)
-
-                expr = expr.bind_variables(col_bindings)
-
-                # Project the expression on the DataFrame block to get a new Series!
-                block, result_id = self._get_block().project_expr(expr)
-                from bigframes.series import Series
-
-                return Series(block.select_column(result_id))
+                return bigframes.series.Series(result_block)
 
             if func.udf_def.signature.is_row_processor:
                 # Early check whether the dataframe dtypes are currently supported

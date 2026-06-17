@@ -17,7 +17,7 @@ from __future__ import annotations
 import dataclasses
 import itertools
 from types import ModuleType
-from typing import Callable, Hashable, Mapping, Tuple
+from typing import Callable, Hashable, Mapping, Optional, Tuple
 
 import bigframes.operations.python_op_maps as python_op_maps
 from bigframes import dtypes
@@ -27,6 +27,7 @@ from bigframes.core.expression import (
     OpExpression,
     UnboundVariableExpression,
     const,
+    deref,
 )
 from bigframes.operations import NUMPY_TO_BINOP, NUMPY_TO_OP, generic_ops, numeric_ops
 
@@ -310,7 +311,11 @@ class Call(Expression):
 
 
 # TODO: Mode that resolves free variable attrs as columns
-def resolve_py_exprs(expression: Expression, unpack_mode: bool = False) -> Expression:
+def resolve_py_exprs(
+    expression: Expression,
+    series_arg: Optional[str] = None,
+    series_attrs: Mapping[str, identifiers.ColumnId] | None = None,
+) -> Expression:
     """Replace all PyObject, attribute, call expressions. Bottom-up."""
 
     def resolve_expr_if_call(expression: Expression) -> Expression:
@@ -325,10 +330,13 @@ def resolve_py_exprs(expression: Expression, unpack_mode: bool = False) -> Expre
             if isinstance(expression.input, Module):
                 # resolves things like Math.pi
                 return PyObject(getattr(expression.input.module, expression.attr))
-            if not unpack_mode and isinstance(
-                expression.input, UnboundVariableExpression
+            # TODO: Resolve some series methods
+            if (
+                series_arg is not None
+                and isinstance(expression.input, UnboundVariableExpression)
+                and expression.input.id == series_arg
             ):
-                return UnboundVariableExpression(expression.attr)
+                return deref(series_attrs[expression.attr])
         return expression
 
     def resolve_pyobjs(expression: Expression) -> Expression:

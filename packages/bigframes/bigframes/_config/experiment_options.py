@@ -179,5 +179,5 @@ class ExperimentOptions:
                 "Python transpiler is an unstable, experimental feature, and not yet fully "
                 "validated, use at your own risk."
             )
-            warnings.warn(msg, category=bfe.PreviewWarning)
+            warnings.warn(msg, category=bfe.PythonTranspilerPreviewWarning)
         self._enable_python_transpiler = value
