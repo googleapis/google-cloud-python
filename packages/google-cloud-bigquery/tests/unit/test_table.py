@@ -79,6 +79,82 @@ class TestEncryptionConfiguration(unittest.TestCase):
         self.assertEqual(encryption_config.kms_key_name, self.KMS_KEY_NAME)
 
 
+class TestPropertyGraphReference(unittest.TestCase):
+    PROJECT = "my-project"
+    DATASET_ID = "my_dataset"
+    PROPERTY_GRAPH_ID = "my_pg"
+
+    def _get_target_class(self):
+        from google.cloud.bigquery.table import PropertyGraphReference
+
+        return PropertyGraphReference
+
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
+
+    def test_ctor(self):
+        dataset_ref = DatasetReference(self.PROJECT, self.DATASET_ID)
+        ref = self._make_one(dataset_ref, self.PROPERTY_GRAPH_ID)
+        self.assertEqual(ref.project, self.PROJECT)
+        self.assertEqual(ref.dataset_id, self.DATASET_ID)
+        self.assertEqual(ref.property_graph_id, self.PROPERTY_GRAPH_ID)
+
+    def test_from_api_repr(self):
+        resource = {
+            "projectId": self.PROJECT,
+            "datasetId": self.DATASET_ID,
+            "propertyGraphId": self.PROPERTY_GRAPH_ID,
+        }
+        ref = self._get_target_class().from_api_repr(resource)
+        self.assertEqual(ref.project, self.PROJECT)
+        self.assertEqual(ref.dataset_id, self.DATASET_ID)
+        self.assertEqual(ref.property_graph_id, self.PROPERTY_GRAPH_ID)
+
+    def test_to_api_repr(self):
+        dataset_ref = DatasetReference(self.PROJECT, self.DATASET_ID)
+        ref = self._make_one(dataset_ref, self.PROPERTY_GRAPH_ID)
+        resource = ref.to_api_repr()
+        expected = {
+            "projectId": self.PROJECT,
+            "datasetId": self.DATASET_ID,
+            "propertyGraphId": self.PROPERTY_GRAPH_ID,
+        }
+        self.assertEqual(resource, expected)
+
+    def test___str__(self):
+        dataset_ref = DatasetReference(self.PROJECT, self.DATASET_ID)
+        ref = self._make_one(dataset_ref, self.PROPERTY_GRAPH_ID)
+        self.assertEqual(
+            str(ref), f"{self.PROJECT}.{self.DATASET_ID}.{self.PROPERTY_GRAPH_ID}"
+        )
+
+    def test___repr__(self):
+        dataset_ref = DatasetReference(self.PROJECT, self.DATASET_ID)
+        ref = self._make_one(dataset_ref, self.PROPERTY_GRAPH_ID)
+        expected = (
+            f"PropertyGraphReference({dataset_ref!r}, '{self.PROPERTY_GRAPH_ID}')"
+        )
+        self.assertEqual(repr(ref), expected)
+
+    def test___eq__(self):
+        dataset_ref1 = DatasetReference(self.PROJECT, self.DATASET_ID)
+        ref1 = self._make_one(dataset_ref1, self.PROPERTY_GRAPH_ID)
+        dataset_ref2 = DatasetReference(self.PROJECT, self.DATASET_ID)
+        ref2 = self._make_one(dataset_ref2, self.PROPERTY_GRAPH_ID)
+        self.assertEqual(ref1, ref2)
+
+        ref3 = self._make_one(dataset_ref1, "other_pg")
+        self.assertNotEqual(ref1, ref3)
+        self.assertNotEqual(ref1, object())
+
+    def test___hash__(self):
+        dataset_ref1 = DatasetReference(self.PROJECT, self.DATASET_ID)
+        ref1 = self._make_one(dataset_ref1, self.PROPERTY_GRAPH_ID)
+        dataset_ref2 = DatasetReference(self.PROJECT, self.DATASET_ID)
+        ref2 = self._make_one(dataset_ref2, self.PROPERTY_GRAPH_ID)
+        self.assertEqual(hash(ref1), hash(ref2))
+
+
 class TestTableBase:
     @staticmethod
     def _get_target_class():
