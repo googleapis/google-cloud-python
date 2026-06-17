@@ -23,8 +23,56 @@ import datetime
 import os
 import re
 import sys
-from typing import Dict, List, Tuple, Any
+from typing import Dict, List, Tuple, Any, Optional
 import yaml
+
+
+def _safe_read_file(
+    file_path: str, 
+    required: bool = True, 
+    description: str = "file",
+    silent_missing: bool = False
+) -> Optional[str]:
+    """
+    Safely reads file content and handles common file errors.
+    
+    Args:
+        file_path: Path to the file.
+        required: If True, exits the program with code 1 on read failure.
+                  If False, prints a warning (or ignores) and returns None.
+        description: Description of the file type for error logging.
+        silent_missing: If True, silently ignores FileNotFoundError (returns None).
+        
+    Returns:
+        The file content string, or None if reading failed/was ignored.
+    """
+    try:
+        with open(file_path, 'r', encoding='utf-8') as f:
+            return f.read()
+    except FileNotFoundError:
+        if silent_missing:
+            return None
+        if required:
+            print(f"Error: {description.capitalize()} not found: {file_path}", file=sys.stderr)
+            sys.exit(1)
+        else:
+            print(f"Warning: {description.capitalize()} not found: {file_path}", file=sys.stderr)
+            return None
+    except PermissionError:
+        if required:
+            print(f"Error: Permission denied reading {description}: {file_path}", file=sys.stderr)
+            sys.exit(1)
+        else:
+            print(f"Warning: Permission denied reading {description}: {file_path}", file=sys.stderr)
+            return None
+    except IOError as e:
+        if required:
+            print(f"Error reading {description} {file_path}: {e}", file=sys.stderr)
+            sys.exit(1)
+        else:
+            print(f"Warning: Error reading {description} {file_path}: {e}", file=sys.stderr)
+            return None
+
 
 class ConfigManager:
     """
@@ -106,15 +154,9 @@ class ConfigManager:
         
     def load_config(self) -> List[Dict[str, str]]:
         """Load and resolve rules from config."""
+        content = _safe_read_file(self.config_path, required=True, description="config file")
         try:
-            with open(self.config_path, 'r', encoding='utf-8') as f:
-                config = yaml.safe_load(f)
-        except FileNotFoundError:
-            print(f"Error: Config file not found: {self.config_path}", file=sys.stderr)
-            sys.exit(1)
-        except PermissionError:
-            print(f"Error: Permission denied reading config file: {self.config_path}", file=sys.stderr)
-            sys.exit(1)
+            config = yaml.safe_load(content)
         except yaml.YAMLError as e:
             print(f"Error parsing config file: {e}", file=sys.stderr)
             sys.exit(1)
@@ -330,14 +372,12 @@ def load_ignore_file(file_path: str) -> List[str]:
     Read ignore paths from a file.
     """
     ignore_dirs = []
-    try:
-        with open(file_path, 'r', encoding='utf-8') as f:
-            for line in f:
-                line = line.strip()
-                if line and not line.startswith('#'):
-                    ignore_dirs.append(line)
-    except FileNotFoundError:
-        pass
+    content = _safe_read_file(file_path, required=False, silent_missing=True)
+    if content:
+        for line in content.splitlines():
+            line = line.strip()
+            if line and not line.startswith('#'):
+                ignore_dirs.append(line)
     return ignore_dirs
 
 
@@ -449,21 +489,12 @@ def read_package_file(file_path: str) -> List[str]:
         A list of package paths.
     """
     packages = []
-    try:
-        with open(file_path, 'r', encoding='utf-8') as f:
-            for line in f:
-                line = line.strip()
-                if line and not line.startswith('#'):
-                    packages.append(line)
-    except FileNotFoundError:
-        print(f"Error: Package file not found: {file_path}", file=sys.stderr)
-        sys.exit(1)
-    except PermissionError:
-        print(f"Error: Permission denied reading package file: {file_path}", file=sys.stderr)
-        sys.exit(1)
-    except IOError as e:
-        print(f"Error reading package file: {e}", file=sys.stderr)
-        sys.exit(1)
+    content = _safe_read_file(file_path, required=True, description="package file")
+    if content:
+        for line in content.splitlines():
+            line = line.strip()
+            if line and not line.startswith('#'):
+                packages.append(line)
     return packages
 
 
@@ -597,18 +628,11 @@ def parse_targets_file(file_path: str) -> List[Tuple[str, str]]:
     """
     Parses a YAML targets file into a list of (dependency, version) tuples.
     """
-    if not os.path.exists(file_path):
-        print(f"Error: Targets file not found: {file_path}", file=sys.stderr)
-        sys.exit(1)
-        
+    content = _safe_read_file(file_path, required=True, description="targets file")
     try:
-        with open(file_path, 'r', encoding='utf-8') as f:
-            raw_targets = yaml.safe_load(f)
-    except PermissionError:
-        print(f"Error: Permission denied reading targets file: {file_path}", file=sys.stderr)
-        sys.exit(1)
+        raw_targets = yaml.safe_load(content)
     except Exception as e:
-        print(f"Error reading or parsing targets file {file_path}: {e}", file=sys.stderr)
+        print(f"Error parsing targets YAML mapping: {e}", file=sys.stderr)
         sys.exit(1)
         
     if not isinstance(raw_targets, dict):
@@ -630,7 +654,6 @@ def parse_targets_file(file_path: str) -> List[Tuple[str, str]]:
             sys.exit(1)
             
     return targets
-
 
 
 def main():
