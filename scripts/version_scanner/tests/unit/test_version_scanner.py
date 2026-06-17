@@ -48,6 +48,44 @@ def sample_match():
     }
 
 
+@pytest.mark.parametrize(
+    "exception_to_raise, required, silent_missing, expected_exit, expected_output, expected_return",
+    [
+        (None, True, False, False, None, "file content"),  # Success
+        (FileNotFoundError(), True, True, False, None, None),  # Silent missing FileNotFoundError
+        (FileNotFoundError(), True, False, True, "Error: Test_desc not found", None),  # Required FileNotFoundError
+        (FileNotFoundError(), False, False, False, "Warning: Test_desc not found", None),  # Optional FileNotFoundError
+        (PermissionError(), True, False, True, "Error: Permission denied reading test_desc", None),  # Required PermissionError
+        (PermissionError(), False, False, False, "Warning: Permission denied reading test_desc", None),  # Optional PermissionError
+        (IOError("disk full"), True, False, True, "Error reading test_desc", None),  # Required IOError
+        (IOError("disk full"), False, False, False, "Warning: Error reading test_desc", None),  # Optional IOError
+    ]
+)
+def test_safe_read_file_scenarios(
+    capsys, exception_to_raise, required, silent_missing, expected_exit, expected_output, expected_return
+):
+    from version_scanner import _safe_read_file
+    
+    if exception_to_raise:
+        mock_open = mock.mock_open()
+        mock_open.side_effect = exception_to_raise
+    else:
+        mock_open = mock.mock_open(read_data="file content")
+        
+    with patch("builtins.open", mock_open):
+        if expected_exit:
+            with pytest.raises(SystemExit) as excinfo:
+                _safe_read_file("dummy.txt", required=required, description="test_desc", silent_missing=silent_missing)
+            assert excinfo.value.code == 1
+        else:
+            res = _safe_read_file("dummy.txt", required=required, description="test_desc", silent_missing=silent_missing)
+            assert res == expected_return
+            
+    if expected_output:
+        captured = capsys.readouterr()
+        assert expected_output in captured.err
+
+
 # Test ConfigManager
 @pytest.mark.parametrize("dependency, version, expected", [
     (
