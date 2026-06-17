@@ -3048,7 +3048,7 @@ class TestRowIterator(unittest.TestCase):
             self.assertEqual(record_batch, expected_record_batch)
 
         # Don't close the client if it was passed in.
-        bqstorage_client._transport.grpc_channel.close.assert_not_called()
+        bqstorage_client._transport.close.assert_not_called()
 
     def test_to_arrow(self):
         pytest.importorskip("numpy")
@@ -3424,7 +3424,7 @@ class TestRowIterator(unittest.TestCase):
         self.assertEqual(actual_tbl.num_rows, total_rows)
 
         # Don't close the client if it was passed in.
-        bqstorage_client._transport.grpc_channel.close.assert_not_called()
+        bqstorage_client._transport.close.assert_not_called()
 
     def test_to_arrow_w_bqstorage_creates_client(self):
         pytest.importorskip("numpy")
@@ -3458,7 +3458,7 @@ class TestRowIterator(unittest.TestCase):
         )
         row_iterator.to_arrow(create_bqstorage_client=True)
         mock_client._ensure_bqstorage_client.assert_called_once()
-        bqstorage_client._transport.grpc_channel.close.assert_called_once()
+        bqstorage_client._transport.close.assert_called_once()
 
     def test_to_arrow_ensure_bqstorage_client_wo_bqstorage(self):
         pytest.importorskip("numpy")
@@ -3741,7 +3741,7 @@ class TestRowIterator(unittest.TestCase):
         self.assertEqual(len(got), total_pages)
 
         # Don't close the client if it was passed in.
-        bqstorage_client._transport.grpc_channel.close.assert_not_called()
+        bqstorage_client._transport.close.assert_not_called()
 
     def test_to_dataframe_iterable_w_bqstorage_max_results_warning(self):
         pytest.importorskip("numpy")
@@ -4807,7 +4807,7 @@ class TestRowIterator(unittest.TestCase):
         )
         row_iterator.to_dataframe(create_bqstorage_client=True)
         mock_client._ensure_bqstorage_client.assert_called_once()
-        bqstorage_client._transport.grpc_channel.close.assert_called_once()
+        bqstorage_client._transport.close.assert_called_once()
 
     def test_to_dataframe_w_bqstorage_no_streams(self):
         pytest.importorskip("numpy")
@@ -4999,7 +4999,7 @@ class TestRowIterator(unittest.TestCase):
         self.assertEqual(len(got.index), total_rows)
 
         # Don't close the client if it was passed in.
-        bqstorage_client._transport.grpc_channel.close.assert_not_called()
+        bqstorage_client._transport.close.assert_not_called()
 
     def test_to_dataframe_w_bqstorage_multiple_streams_return_unique_index(self):
         pytest.importorskip("numpy")
@@ -5421,7 +5421,7 @@ class TestRowIterator(unittest.TestCase):
         )
 
         # Don't close the client if it was passed in.
-        bqstorage_client._transport.grpc_channel.close.assert_not_called()
+        bqstorage_client._transport.close.assert_not_called()
 
     def test_to_dataframe_geography_as_object(self):
         pandas = pytest.importorskip("pandas")

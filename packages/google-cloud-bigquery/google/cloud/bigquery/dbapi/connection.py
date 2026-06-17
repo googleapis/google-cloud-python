@@ -84,7 +84,7 @@ class Connection(object):
 
         if self._owns_bqstorage_client:
             # There is no close() on the BQ Storage client itself.
-            self._bqstorage_client._transport.grpc_channel.close()
+            self._bqstorage_client._transport.close()
 
         for cursor_ in self._cursors_created:
             if not cursor_._closed:
