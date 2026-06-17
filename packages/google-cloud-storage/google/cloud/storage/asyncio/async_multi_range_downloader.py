@@ -581,5 +581,4 @@ class AsyncMultiRangeDownloader:
     @property
     def object_metadata(self) -> Optional[_storage_v2.Object]:
         """The metadata of the object being downloaded."""
-        stream = getattr(self, "read_obj_str", None)
-        return stream.object_metadata if stream else None
+        return self.read_obj_str.object_metadata if self.read_obj_str else None
