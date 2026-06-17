@@ -451,7 +451,7 @@ class DataFrame:
 
         safe_cast = errors == "null"
 
-        exprs = []
+        exprs: list[ex.Expression] = []
         for col_id, col_label in zip(
             self._block.value_columns, self._block.column_labels
         ):
@@ -465,6 +465,7 @@ class DataFrame:
             else:
                 to_type = bigframes.dtypes.bigframes_type(dtype)
 
+            op: ops.UnaryOp
             if to_type == bigframes.dtypes.JSON_DTYPE:
                 op = ops.ToJSON(safe=safe_cast)
             elif from_type == bigframes.dtypes.JSON_DTYPE:
