@@ -13,6 +13,8 @@
 # limitations under the License.
 
 import os
+if not hasattr(os, "MFD_CLOEXEC"):
+    os.MFD_CLOEXEC = 1
 import re
 import sys
 import tempfile
@@ -1153,41 +1155,61 @@ class TestSecureCertKeyPaths(object):
 
 class TestMemfdCertKeyPaths(object):
     @mock.patch.object(os, "memfd_create", create=True)
-    @mock.patch.object(os, "write")
+    @mock.patch.object(os, "fdopen")
     @mock.patch.object(os, "close")
-    def test_success_both_bytes(self, mock_close, mock_write, mock_memfd_create):
+    def test_success_both_bytes(self, mock_close, mock_fdopen, mock_memfd_create):
         mock_memfd_create.side_effect = [10, 11]
+        mock_file_cert = mock.MagicMock()
+        mock_file_cert.__enter__.return_value = mock_file_cert
+        mock_file_key = mock.MagicMock()
+        mock_file_key.__enter__.return_value = mock_file_key
+        mock_fdopen.side_effect = [mock_file_cert, mock_file_key]
         with _mtls_helper._memfd_cert_key_paths(b"cert", b"key") as (
             cert_path,
             key_path,
         ):
             assert cert_path == "/proc/self/fd/10"
             assert key_path == "/proc/self/fd/11"
-        mock_write.assert_has_calls([mock.call(10, b"cert"), mock.call(11, b"key")])
+        mock_fdopen.assert_has_calls([
+            mock.call(10, "wb", closefd=False),
+            mock.call(11, "wb", closefd=False)
+        ])
+        mock_file_cert.write.assert_called_once_with(b"cert")
+        mock_file_key.write.assert_called_once_with(b"key")
         assert mock_close.call_count == 2
 
     @mock.patch.object(os, "memfd_create", create=True)
-    @mock.patch.object(os, "write")
+    @mock.patch.object(os, "fdopen")
     @mock.patch.object(os, "close")
-    def test_close_ignores_oserror(self, mock_close, mock_write, mock_memfd_create):
+    def test_close_ignores_oserror(self, mock_close, mock_fdopen, mock_memfd_create):
         mock_memfd_create.return_value = 12
         mock_close.side_effect = OSError("close error")
+        mock_file = mock.MagicMock()
+        mock_file.__enter__.return_value = mock_file
+        mock_fdopen.return_value = mock_file
         with _mtls_helper._memfd_cert_key_paths(b"cert", None) as (cert_path, key_path):
             assert cert_path == "/proc/self/fd/12"
             assert key_path is None
+        mock_fdopen.assert_called_once_with(12, "wb", closefd=False)
+        mock_file.write.assert_called_once_with(b"cert")
         mock_close.assert_called_once_with(12)
 
     @mock.patch.object(os, "memfd_create", create=True)
-    @mock.patch.object(os, "write")
+    @mock.patch.object(os, "fdopen")
     @mock.patch.object(os, "close")
     def test_write_oserror_prevents_fd_leak(
-        self, mock_close, mock_write, mock_memfd_create
+        self, mock_close, mock_fdopen, mock_memfd_create
     ):
         mock_memfd_create.return_value = 15
-        mock_write.side_effect = OSError("write fault")
+        mock_file = mock.MagicMock()
+        mock_file.__enter__.return_value = mock_file
+        mock_file.write.side_effect = OSError("write fault")
+        mock_fdopen.return_value = mock_file
         with pytest.raises(OSError):
             with _mtls_helper._memfd_cert_key_paths(b"cert", None):
                 pass
+        mock_fdopen.assert_called_once_with(15, "wb", closefd=False)
+        mock_file.write.assert_called_once_with(b"cert")
         mock_close.assert_called_once_with(15)
 
 
