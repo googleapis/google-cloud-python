@@ -593,44 +593,44 @@ def scan_repository(
     return results
 
 
-def parse_targets(targets_input: str) -> List[Tuple[str, str]]:
+def parse_targets_file(file_path: str) -> List[Tuple[str, str]]:
     """
-    Parses a targets input (file path or inline YAML/JSON string) into a list of (dependency, version) tuples.
+    Parses a YAML targets file into a list of (dependency, version) tuples.
     """
-    raw_targets = {}
-    content = targets_input
-    
-    # Check if the input is a file path
-    if os.path.exists(targets_input):
-        try:
-            with open(targets_input, 'r', encoding='utf-8') as f:
-                content = f.read()
-        except PermissionError:
-            print(f"Error: Permission denied reading targets file: {targets_input}", file=sys.stderr)
-            sys.exit(1)
-        except Exception as e:
-            print(f"Error reading targets file {targets_input}: {e}", file=sys.stderr)
-            sys.exit(1)
-
+    if not os.path.exists(file_path):
+        print(f"Error: Targets file not found: {file_path}", file=sys.stderr)
+        sys.exit(1)
+        
     try:
-        raw_targets = yaml.safe_load(content)
+        with open(file_path, 'r', encoding='utf-8') as f:
+            raw_targets = yaml.safe_load(f)
+    except PermissionError:
+        print(f"Error: Permission denied reading targets file: {file_path}", file=sys.stderr)
+        sys.exit(1)
     except Exception as e:
-        print(f"Error parsing targets YAML/JSON content: {e}", file=sys.stderr)
+        print(f"Error reading or parsing targets file {file_path}: {e}", file=sys.stderr)
         sys.exit(1)
         
     if not isinstance(raw_targets, dict):
-        print("Error: Targets input must resolve to a JSON object or YAML mapping", file=sys.stderr)
+        print("Error: Targets file content must resolve to a YAML mapping", file=sys.stderr)
         sys.exit(1)
         
     targets = []
     for dep, versions in raw_targets.items():
         if isinstance(versions, list):
             for v in versions:
+                if v is None or isinstance(v, (dict, list)):
+                    print(f"Error: Invalid version '{v}' for dependency '{dep}'", file=sys.stderr)
+                    sys.exit(1)
                 targets.append((str(dep), str(v)))
-        else:
+        elif versions is not None and not isinstance(versions, dict):
             targets.append((str(dep), str(versions)))
+        else:
+            print(f"Error: Invalid version '{versions}' for dependency '{dep}'", file=sys.stderr)
+            sys.exit(1)
             
     return targets
+
 
 
 def main():
@@ -652,8 +652,8 @@ def main():
     )
     
     parser.add_argument(
-        "--targets",
-        help="Path to a YAML/JSON targets file, or an inline YAML/JSON string (e.g. 'python: [3.8, 3.9]')"
+        "--targets-file",
+        help="Path to a YAML file containing target dependencies and versions."
     )
     
     parser.add_argument(
@@ -721,16 +721,16 @@ def main():
     
     # Validation of required inputs
     has_single_target = bool(args.dependency and args.version)
-    has_targets_list = bool(args.targets)
+    has_targets_file = bool(args.targets_file)
     
-    if not (has_single_target or has_targets_list):
-        parser.error("Must specify either (-d/--dependency AND -v/--version) OR (--targets)")
-    if has_single_target and has_targets_list:
-        parser.error("Cannot specify both single target (-d/-v) and targets list (--targets)")
+    if not (has_single_target or has_targets_file):
+        parser.error("Must specify either (-d/--dependency AND -v/--version) OR (--targets-file)")
+    if has_single_target and has_targets_file:
+        parser.error("Cannot specify both single target (-d/-v) and targets file (--targets-file)")
         
     targets = []
-    if has_targets_list:
-        targets = parse_targets(args.targets)
+    if has_targets_file:
+        targets = parse_targets_file(args.targets_file)
     else:
         targets = [(args.dependency, args.version)]
         
@@ -749,7 +749,7 @@ def main():
     elif args.package_file:
         target_packages = read_package_file(args.package_file)
         
-    if has_targets_list:
+    if has_targets_file:
         print("Starting scan for multiple targets:")
         for dep, ver in targets:
             print(f"  - {dep}: {ver}")
@@ -786,7 +786,7 @@ def main():
         rules,
         target_packages,
         ignore_dirs,
-        version_string=(None if has_targets_list else args.version),
+        version_string=(None if has_targets_file else args.version),
         targets=targets
     )
     
@@ -810,11 +810,8 @@ def main():
         script_dir = os.path.dirname(os.path.abspath(__file__))
         results_dir = os.path.join(script_dir, "results")
         os.makedirs(results_dir, exist_ok=True)
-        if has_targets_list:
-            if os.path.exists(args.targets):
-                base_name = os.path.splitext(os.path.basename(args.targets))[0]
-            else:
-                base_name = "targets"
+        if has_targets_file:
+            base_name = os.path.splitext(os.path.basename(args.targets_file))[0]
             output_path = os.path.join(results_dir, f"{base_name}-{timestamp}.csv")
         else:
             output_path = os.path.join(results_dir, f"{args.dependency}-{args.version}-{timestamp}.csv")

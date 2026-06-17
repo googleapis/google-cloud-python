@@ -783,25 +783,8 @@ def test_format_for_console():
     assert "python_requires = " not in log_str  # Slim format doesn't print context line
 
 
-def test_parse_targets_inline_json():
-    from version_scanner import parse_targets
-    json_str = '{"python": ["3.7", "3.8"], "protobuf": "4.25.8"}'
-    targets = parse_targets(json_str)
-    assert targets == [("python", "3.7"), ("python", "3.8"), ("protobuf", "4.25.8")]
-
-def test_parse_targets_inline_yaml():
-    from version_scanner import parse_targets
-    yaml_str = """
-python:
-  - "3.7"
-  - "3.8"
-protobuf: "4.25.8"
-"""
-    targets = parse_targets(yaml_str)
-    assert targets == [("python", "3.7"), ("python", "3.8"), ("protobuf", "4.25.8")]
-
-def test_parse_targets_from_file(tmp_path):
-    from version_scanner import parse_targets
+def test_parse_targets_file(tmp_path):
+    from version_scanner import parse_targets_file
     yaml_file = tmp_path / "targets.yaml"
     yaml_file.write_text("""
 python:
@@ -809,13 +792,40 @@ python:
   - "3.8"
 protobuf: "4.25.8"
 """)
-    targets = parse_targets(str(yaml_file))
+    targets = parse_targets_file(str(yaml_file))
     assert targets == [("python", "3.7"), ("python", "3.8"), ("protobuf", "4.25.8")]
 
-def test_parse_targets_invalid_syntax():
-    from version_scanner import parse_targets
+def test_parse_targets_file_not_found():
+    from version_scanner import parse_targets_file
     with pytest.raises(SystemExit) as excinfo:
-        parse_targets('{"invalid"')
+        parse_targets_file("nonexistent_file.yaml")
+    assert excinfo.value.code == 1
+
+def test_parse_targets_file_invalid_yaml(tmp_path):
+    from version_scanner import parse_targets_file
+    yaml_file = tmp_path / "targets.yaml"
+    yaml_file.write_text("invalid: {")
+    with pytest.raises(SystemExit) as excinfo:
+        parse_targets_file(str(yaml_file))
+    assert excinfo.value.code == 1
+
+def test_parse_targets_file_invalid_structure(tmp_path):
+    from version_scanner import parse_targets_file
+    yaml_file = tmp_path / "targets.yaml"
+    yaml_file.write_text("- not_a_mapping")
+    with pytest.raises(SystemExit) as excinfo:
+        parse_targets_file(str(yaml_file))
+    assert excinfo.value.code == 1
+
+def test_parse_targets_file_invalid_version_type(tmp_path):
+    from version_scanner import parse_targets_file
+    yaml_file = tmp_path / "targets.yaml"
+    yaml_file.write_text("""
+python:
+  - null
+""")
+    with pytest.raises(SystemExit) as excinfo:
+        parse_targets_file(str(yaml_file))
     assert excinfo.value.code == 1
 
 def test_scan_repository_multi_targets(tmp_path):
