@@ -49,6 +49,15 @@ DIALECT = sg.dialects.bigquery.BigQuery
 
 def to_sql(expr: sge.Expression) -> str:
     """Generate SQL string from the given expression."""
+    def _flatten_null_casts(node: sge.Expression) -> sge.Expression:
+        if (
+            isinstance(node, (sge.Cast, sge.TryCast))
+            and str(node.to).upper() == "NULL"
+        ):
+            return sge.Null()
+        return node
+
+    expr = expr.transform(_flatten_null_casts)
     return expr.sql(dialect=DIALECT, pretty=PRETTY)
 
 
@@ -69,8 +78,6 @@ def literal(value: typing.Any, dtype: dtypes.Dtype | None = None) -> sge.Express
         return sge.Null()
 
     if value is None:
-        if str(sqlglot_type).upper() == "NULL":
-            return sge.Null()
         return cast(sge.Null(), sqlglot_type)
     if dtypes.is_struct_like(dtype):
         items = [
@@ -121,8 +128,10 @@ def literal(value: typing.Any, dtype: dtypes.Dtype | None = None) -> sge.Express
         return sge.convert(value)
 
 
-def cast(arg: typing.Any, to: str, safe: bool = False) -> sge.Cast | sge.TryCast:
+def cast(arg: typing.Any, to: str | sge.DataType, safe: bool = False) -> sge.Expression:
     """Return a SQL expression that casts the given argument to the specified type."""
+    if str(to).upper() == "NULL":
+        return sge.Null()
     if safe:
         return sge.TryCast(this=arg, to=to)
     else:
