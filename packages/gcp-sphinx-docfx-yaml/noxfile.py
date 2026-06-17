@@ -140,8 +140,17 @@ def unit(session):
     # Track 3.14 compatibility as upstream dependencies stabilize.
     _skip_python_session(session, ["3.11", "3.12", "3.13", "3.14"])
     session.install("-r", "requirements.txt")
-    session.install("pytest")
-    session.run("pytest", "tests")
+    session.install("pytest", "pytest-cov")
+    session.run(
+        "pytest",
+        "--cov=docfx_yaml",
+        "--cov=tests",
+        "--cov-append",
+        "--cov-config=.coveragerc",
+        "--cov-report=",
+        "--cov-fail-under=0",
+        "tests",
+    )
 
 
 @nox.session(python="3.10")

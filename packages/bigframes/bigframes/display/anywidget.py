@@ -175,8 +175,8 @@ class TableWidget(_WIDGET_BASE):
 
     @functools.cached_property
     def _esm(self):
-        """Load JavaScript code from external file."""
-        return resources.read_text(bigframes.display, "table_widget.js")
+        """Load JavaScript code from the compiled Angular hybrid bundle."""
+        return resources.read_text(bigframes.display, "table_widget_angular.js")
 
     @functools.cached_property
     def _css(self):

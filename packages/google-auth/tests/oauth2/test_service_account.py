@@ -224,9 +224,11 @@ class TestCredentials(object):
         credentials = self.make_credentials()
         new_credentials = credentials.with_quota_project("new-project-456")
         assert new_credentials.quota_project_id == "new-project-456"
+        request = mock.create_autospec(transport.Request, instance=True)
         hdrs = {}
-        new_credentials.apply(hdrs, token="tok")
-        assert "x-goog-user-project" in hdrs
+        new_credentials.token = "tok"
+        new_credentials.before_request(request, "GET", "https://example.com", hdrs)
+        assert hdrs.get("x-goog-user-project") == "new-project-456"
 
     def test_copy_regional_access_boundary_manager_state_and_config_with_scopes(self):
         credentials = self.make_credentials()
