@@ -171,3 +171,15 @@ def test_literal_null_type():
     ):
         got = sql.to_sql(sql.literal(None, dtype=mock_dtype))
     assert got == "NULL"
+
+
+def test_cast_to_null_type():
+    assert sql.to_sql(sql.cast("abc", "NULL")) == "NULL"
+    assert sql.to_sql(sql.cast(None, "NULL")) == "NULL"
+    assert sql.to_sql(sql.cast("abc", "NULL", safe=True)) == "NULL"
+
+
+def test_nested_cast_to_null_type():
+    import bigframes_vendored.sqlglot.expressions as sge
+    nested = sge.Cast(this=sge.Cast(this=sge.Null(), to="NULL"), to="INT64")
+    assert sql.to_sql(nested) == "CAST(NULL AS INT64)"
