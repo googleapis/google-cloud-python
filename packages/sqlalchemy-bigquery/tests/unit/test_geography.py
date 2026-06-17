@@ -28,9 +28,6 @@ geoalchemy2 = pytest.importorskip("geoalchemy2")
 @pytest.mark.skip(reason="Failing in CI with AssertionError.")
 def test_geoalchemy2_core(faux_conn, last_query):
     """Make sure GeoAlchemy 2 Core Tutorial works as adapted to only having geometry"""
-    pytest.skip(
-        "Test is skipped due to https://github.com/googleapis/google-cloud-python/issues/17287"
-    )
     conn = faux_conn
 
     # Create the Table
