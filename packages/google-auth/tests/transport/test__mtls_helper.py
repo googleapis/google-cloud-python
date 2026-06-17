@@ -1302,6 +1302,21 @@ class TestEncryptKeyIfPlaintext(object):
         assert passphrase == b"0123456789abcdef0123456789abcdef"
         assert b"ENCRYPTED PRIVATE KEY" in encrypted_bytes
 
+    def test_returns_encrypted_key_asis(self):
+        encrypted_bytes, passphrase = _mtls_helper._encrypt_key_if_plaintext(
+            ENCRYPTED_EC_PRIVATE_KEY, b"passphrase"
+        )
+        assert encrypted_bytes == ENCRYPTED_EC_PRIVATE_KEY
+        assert passphrase == b"passphrase"
+
+    def test_returns_invalid_key_asis(self):
+        invalid_bytes = b"not a valid key"
+        encrypted_bytes, passphrase = _mtls_helper._encrypt_key_if_plaintext(
+            invalid_bytes, b"passphrase"
+        )
+        assert encrypted_bytes == invalid_bytes
+        assert passphrase == b"passphrase"
+
 
 class TestSecureWipeAndRemove(object):
     @mock.patch.object(os.path, "exists", return_value=True)
@@ -1320,5 +1335,51 @@ class TestSecureWipeAndRemove(object):
 
         mock_open.assert_called_once_with("/path/to/secret", "r+b")
         mock_fh.write.assert_called_once_with(b"\0" * 10)
+        mock_fsync.assert_called_once()
+        mock_remove.assert_called_once_with("/path/to/secret")
+
+    @mock.patch.object(os.path, "exists", return_value=False)
+    @mock.patch.object(os, "remove")
+    def test_file_not_found(self, mock_remove, mock_exists):
+        _mtls_helper._secure_wipe_and_remove("/path/to/nonexistent")
+
+        mock_exists.assert_called_once_with("/path/to/nonexistent")
+        mock_remove.assert_not_called()
+
+    @mock.patch.object(os.path, "exists", return_value=True)
+    @mock.patch.object(os.path, "getsize", return_value=10)
+    @mock.patch("builtins.open", autospec=True)
+    @mock.patch.object(os, "fsync")
+    @mock.patch.object(os, "remove")
+    def test_write_oserror_ignored(
+        self, mock_remove, mock_fsync, mock_open, mock_getsize, mock_exists
+    ):
+        mock_fh = mock.MagicMock()
+        mock_fh.fileno.return_value = 1
+        mock_fh.write.side_effect = OSError("write fault")
+        mock_open.return_value.__enter__.return_value = mock_fh
+
+        _mtls_helper._secure_wipe_and_remove("/path/to/secret")
+
+        mock_open.assert_called_once_with("/path/to/secret", "r+b")
+        mock_fsync.assert_not_called()
+        mock_remove.assert_called_once_with("/path/to/secret")
+
+    @mock.patch.object(os.path, "exists", return_value=True)
+    @mock.patch.object(os.path, "getsize", return_value=10)
+    @mock.patch("builtins.open", autospec=True)
+    @mock.patch.object(os, "fsync")
+    @mock.patch.object(os, "remove")
+    def test_remove_oserror_ignored(
+        self, mock_remove, mock_fsync, mock_open, mock_getsize, mock_exists
+    ):
+        mock_fh = mock.MagicMock()
+        mock_fh.fileno.return_value = 1
+        mock_open.return_value.__enter__.return_value = mock_fh
+        mock_remove.side_effect = OSError("remove fault")
+
+        _mtls_helper._secure_wipe_and_remove("/path/to/secret")
+
+        mock_open.assert_called_once_with("/path/to/secret", "r+b")
         mock_fsync.assert_called_once()
         mock_remove.assert_called_once_with("/path/to/secret")
