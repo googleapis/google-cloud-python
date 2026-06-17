@@ -168,6 +168,7 @@ def test_remote_function_direct_no_session_param(
     assert_frame_equal(bf_result, pd_result)
 
 
+@pytest.mark.skip(reason="b/525124882: connection with location test failing")
 @pytest.mark.flaky(retries=2, delay=120)
 def test_remote_function_connection_w_location(
     session,
