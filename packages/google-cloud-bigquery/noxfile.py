@@ -90,8 +90,7 @@ def log_package_context(session: nox.Session) -> Generator[None, None, None]:
     even if the session fails or raises an exception.
     """
     # Dynamically extract current folder name (e.g., 'google-cloud-bigquery')
-    # Falls back to the root directory name if run from the repo root
-    package_name = os.path.basename(os.getcwd())
+    package_name = CURRENT_DIRECTORY.name
 
     try:
         # Hands control back to the session code block
