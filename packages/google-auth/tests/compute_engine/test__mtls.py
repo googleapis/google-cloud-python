@@ -123,7 +123,7 @@ def test_mds_mtls_adapter_init(mock_ssl_context, mock_mds_mtls_config):
         cafile=mock_mds_mtls_config.ca_cert_path
     )
     adapter.ssl_context.load_cert_chain.assert_called_once_with(
-        certfile=mock_mds_mtls_config.client_combined_cert_path
+        certfile=mock_mds_mtls_config.client_combined_cert_path, password=""
     )
 
 
