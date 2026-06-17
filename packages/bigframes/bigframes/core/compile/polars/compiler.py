@@ -487,12 +487,12 @@ if polars_installed:
             )
 
         @compile_op.register(json_ops.JSONDecode)
-        def _(self, op: ops.ScalarOp, input: pl.Expr) -> pl.Expr:
+        def _(self, op: json_ops.JSONDecode, input: pl.Expr) -> pl.Expr:
             assert isinstance(op, json_ops.JSONDecode)
             return input.str.json_decode(_DTYPE_MAPPING[op.to_type])
 
         @compile_op.register(json_ops.ToJSON)
-        def _(self, op: ops.ScalarOp, input: pl.Expr) -> pl.Expr:
+        def _(self, op: json_ops.ToJSON, input: pl.Expr) -> pl.Expr:
             from_type = self._expr_types.get(id(input))
             if from_type in (
                 bigframes.dtypes.STRING_DTYPE,
@@ -500,11 +500,7 @@ if polars_installed:
             ):
                 return input
             else:
-                return (
-                    pl.when(input.is_null())
-                    .then(pl.lit("null"))
-                    .otherwise(input.cast(pl.String()))
-                )
+                return input.cast(pl.String())
 
         @compile_op.register(arr_ops.ToArrayOp)
         def _(self, op: ops.ToArrayOp, *inputs: pl.Expr) -> pl.Expr:

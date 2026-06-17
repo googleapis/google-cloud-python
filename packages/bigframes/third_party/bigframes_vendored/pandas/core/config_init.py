@@ -116,7 +116,7 @@ class DisplayOptions:
         >>> bpd.options.display.progress_bar = "terminal"  # doctest: +SKIP
     """
 
-    repr_mode: Literal["head", "deferred", "anywidget"] = "head"
+    repr_mode: Literal["head", "deferred", "anywidget"] = "deferred"
     """
     Determines how to display a DataFrame or Series. Default "head".
 

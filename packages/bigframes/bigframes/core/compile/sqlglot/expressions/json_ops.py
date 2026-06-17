@@ -75,11 +75,15 @@ def _(expr: TypedExpr, op: ops.ToJSON) -> sge.Expression:
     from_type = expr.dtype
     sg_expr = expr.expr
 
+    # Parsing really should be a distinct operation from serialization, but
+    # this was the way things were intially launched.
     if from_type == dtypes.STRING_DTYPE:
         func_name = "SAFE.PARSE_JSON" if op.safe else "PARSE_JSON"
         return sge.func(func_name, sg_expr)
     else:
-        return sge.func("TO_JSON", sg_expr)
+        return sge.func(
+            "IF", sg_expr.is_(sge.Null()), sge.Null(), sge.func("TO_JSON", sg_expr)
+        )
 
 
 @register_unary_op(ops.JSONDecode, pass_op=True)

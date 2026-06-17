@@ -1168,7 +1168,7 @@ def parse_json_op_impl(x: ibis_types.Value, op: ops.ParseJSON):
 def to_json_op_impl(x: ibis_types.Value, op: ops.ToJSON):
     if x.type() == ibis_dtypes.string:
         return parse_json_in_safe(x) if op.safe else parse_json(x)
-    return to_json(x)
+    return x.isnull().ifelse(ibis.null().cast(ibis_dtypes.json), to_json(x))
 
 
 @scalar_op_compiler.register_unary_op(ops.JSONDecode, pass_op=True)

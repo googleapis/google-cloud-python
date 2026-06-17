@@ -443,15 +443,39 @@ class DataFrame:
             raise ValueError("Arg 'error' must be one of 'raise' or 'null'")
 
         if isinstance(dtype, dict):
-            result = self.copy()
-            for col, to_type in dtype.items():
-                result[col] = result[col].astype(to_type, errors=errors)
-            return result
+            for col in dtype:
+                if col not in self.columns:
+                    raise KeyError(
+                        f"Only Column Names are allowed in dtypes dict. '{col}' is not in the columns."
+                    )
 
-        result = self.copy()
-        for col in result.columns:
-            result[col] = result[col].astype(dtype, errors=errors)
-        return result
+        safe_cast = errors == "null"
+
+        exprs = []
+        for col_id, col_label in zip(
+            self._block.value_columns, self._block.column_labels
+        ):
+            from_type = self._block._column_type(col_id)
+
+            if isinstance(dtype, dict):
+                if col_label not in dtype:
+                    exprs.append(ex.deref(col_id))
+                    continue
+                to_type = bigframes.dtypes.bigframes_type(dtype[col_label])
+            else:
+                to_type = bigframes.dtypes.bigframes_type(dtype)
+
+            if to_type == bigframes.dtypes.JSON_DTYPE:
+                op = ops.ToJSON(safe=safe_cast)
+            elif from_type == bigframes.dtypes.JSON_DTYPE:
+                op = ops.JSONDecode(to_type=to_type, safe=safe_cast)
+            else:
+                op = ops.AsTypeOp(to_type=to_type, safe=safe_cast)
+
+            exprs.append(op.as_expr(ex.deref(col_id)))
+
+        block = self._block.project_exprs(exprs, labels=self.columns, drop=True)
+        return DataFrame(block)
 
     def _should_sql_have_index(self) -> bool:
         """Should the SQL we pass to BQML and other I/O include the index?"""
