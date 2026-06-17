@@ -249,7 +249,7 @@ def _compile_bytecode_to_py_expr(func: Callable) -> expression.Expression:
     raise ValueError("No return value found")
 
 
-def dis_to_expr(func: Callable, unpack_mode: bool = False) -> expression.Expression:
+def py_to_expression(func: Callable) -> expression.Expression:
     """
     Try to convert a python function to a BigQuery expression.
 

@@ -125,6 +125,9 @@ class FunctionPackageVersionWarning(PreviewWarning):
     match local or specified versions, which might cause unexpected behavior.
     """
 
+class PythonTranspilerPreviewWarning(PreviewWarning):
+    """Python Transpiler is a preview feature."""
+
 
 def format_message(message: str, fill: bool = True):
     """[Private] Formats a warning message.

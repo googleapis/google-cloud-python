@@ -47,9 +47,7 @@ class CallableExpression(ex.Expression):
     arg_specs: typing.Sequence[ArgumentSpec]
 
     @classmethod
-    def from_callable(
-        cls, func: typing.Callable, unpack_mode: bool = False
-    ) -> CallableExpression:
+    def from_callable(cls, func: typing.Callable) -> CallableExpression:
         sig = inspect.signature(func)
         arg_specs = []
         for name, param in sig.parameters.items():
@@ -64,7 +62,7 @@ class CallableExpression(ex.Expression):
 
         from bigframes.core.bytecode import dis_to_expr
 
-        expr = dis_to_expr(func, unpack_mode=unpack_mode)
+        expr = dis_to_expr(func)
         return cls(expr=expr, arg_specs=arg_specs)
 
     def apply(self, *args, **kwargs) -> ex.Expression:
@@ -185,7 +183,7 @@ class CallableExpression(ex.Expression):
         return self
 
 
-def func_to_expr(op, unpack_mode: bool = False) -> CallableExpression:
+def func_to_expr(op) -> CallableExpression:
     """
     Convert various bigframes, python functions into bigframes CallableExpression.
     """
@@ -214,7 +212,7 @@ def func_to_expr(op, unpack_mode: bool = False) -> CallableExpression:
         return CallableExpression(expr=expr, arg_specs=arg_specs)
 
     elif options.experiments.enable_python_transpiler and callable(op):
-        return CallableExpression.from_callable(op, unpack_mode=unpack_mode)
+        return CallableExpression.from_callable(op)
 
     else:
         raise TypeError(f"Unsupported function type: {op}")
