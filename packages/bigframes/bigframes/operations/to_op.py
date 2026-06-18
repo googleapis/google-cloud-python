@@ -18,12 +18,18 @@ import inspect
 import typing
 
 import bigframes.core.expression as ex
-import bigframes.core.identifiers as ids
-import bigframes.dtypes as dtypes
 from bigframes._config import options
 from bigframes.functions import Udf
 from bigframes.functions.udf_def import BigqueryUdf, PythonUdf
 from bigframes.operations import base_ops, remote_function_ops
+
+_ARGKIND_MAP = {
+    inspect.Parameter.POSITIONAL_ONLY: "positional_only",
+    inspect.Parameter.POSITIONAL_OR_KEYWORD: "positional_or_keyword",
+    inspect.Parameter.VAR_POSITIONAL: "var_positional",
+    inspect.Parameter.KEYWORD_ONLY: "keyword_only",
+    inspect.Parameter.VAR_KEYWORD: "var_keyword",
+}
 
 
 @dataclasses.dataclass(frozen=True)
@@ -34,11 +40,41 @@ class ArgumentSpec:
 
     name: str
     default_value: typing.Any
-    is_varargs: bool
+    argkind: typing.Literal[
+        "positional_only",
+        "positional_or_keyword",
+        "keyword_only",
+        "var_positional",
+        "var_keyword",
+    ]
+
+    @property
+    def is_positional(self) -> bool:
+        return self.argkind in ["positional_only", "positional_or_keyword"]
+
+    @property
+    def is_keyword(self) -> bool:
+        return self.argkind in ["keyword_only", "positional_or_keyword"]
+
+    @property
+    def is_var_positional(self) -> bool:
+        return self.argkind == "var_positional"
+
+    @property
+    def is_var_keyword(self) -> bool:
+        return self.argkind == "var_keyword"
+
+    @property
+    def is_varargs(self) -> bool:
+        return self.is_var_positional
+
+    def __post_init__(self):
+        if self.argkind == "positional_only" and self.default_value is not None:
+            raise ValueError("positional-only arguments cannot have default values")
 
 
 @dataclasses.dataclass(frozen=True)
-class CallableExpression(ex.Expression):
+class CallableExpression:
     """
     Encodes a calling convention and an expression to bind arguments to.
     """
@@ -51,12 +87,11 @@ class CallableExpression(ex.Expression):
         sig = inspect.signature(func)
         arg_specs = []
         for name, param in sig.parameters.items():
-            is_varargs = param.kind == inspect.Parameter.VAR_POSITIONAL
             arg_specs.append(
                 ArgumentSpec(
                     name=name,
                     default_value=param.default,
-                    is_varargs=is_varargs,
+                    argkind=_ARGKIND_MAP[param.kind],
                 )
             )
 
@@ -126,62 +161,6 @@ class CallableExpression(ex.Expression):
         remaining_specs = list(self.arg_specs[:_offset])
         return CallableExpression(expr=new_expr, arg_specs=remaining_specs)
 
-    @property
-    def column_references(self) -> typing.Tuple[ids.ColumnId, ...]:
-        return self.expr.column_references
-
-    @property
-    def free_variables(self) -> typing.Tuple[typing.Hashable, ...]:
-        return self.expr.free_variables
-
-    @property
-    def is_const(self) -> bool:
-        return self.expr.is_const
-
-    @property
-    def is_resolved(self) -> bool:
-        return False
-
-    @property
-    def output_type(self) -> dtypes.ExpressionType:
-        raise ValueError(
-            "CallableExpression does not have a fixed output type until arguments are applied."
-        )
-
-    def bind_refs(
-        self,
-        bindings: typing.Mapping[ids.ColumnId, ex.Expression],
-        allow_partial_bindings: bool = False,
-    ) -> CallableExpression:
-        return dataclasses.replace(
-            self,
-            expr=self.expr.bind_refs(
-                bindings, allow_partial_bindings=allow_partial_bindings
-            ),
-        )
-
-    def bind_variables(
-        self,
-        bindings: typing.Mapping[typing.Hashable, ex.Expression],
-        allow_partial_bindings: bool = False,
-    ) -> CallableExpression:
-        arg_names = {spec.name for spec in self.arg_specs}
-        filtered_bindings = {k: v for k, v in bindings.items() if k not in arg_names}
-        return dataclasses.replace(
-            self,
-            expr=self.expr.bind_variables(
-                filtered_bindings, allow_partial_bindings=allow_partial_bindings
-            ),
-        )
-
-    def transform_children(
-        self, t: typing.Callable[[ex.Expression], ex.Expression]
-    ) -> ex.Expression:
-        new_expr = t(self.expr)
-        if new_expr != self.expr:
-            return dataclasses.replace(self, expr=new_expr)
-        return self
-
 
 def func_to_expr(op) -> CallableExpression:
     """
@@ -205,7 +184,9 @@ def func_to_expr(op) -> CallableExpression:
             ArgumentSpec(
                 name=arg.name,
                 default_value=inspect.Parameter.empty,
-                is_varargs=False,
+                # Udf specs don't have concept of positional only or keyword only yet,
+                # so default to positional_or_keyword.
+                argkind="positional_or_keyword",
             )
             for arg in op.udf_def.signature.inputs
         ]
