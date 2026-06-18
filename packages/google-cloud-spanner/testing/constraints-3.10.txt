@@ -11,7 +11,7 @@ grpcio-status==1.49.1
 proto-plus==1.26.1
 protobuf==6.33.5
 google-cloud-core==2.0.0
-grpc-google-iam-v1==0.12.4
+grpc-google-iam-v1==0.14.2
 sqlparse==0.4.4
 grpc-interceptor==0.15.4
 opentelemetry-api==1.22.0

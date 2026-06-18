@@ -49,10 +49,9 @@ dependencies = [
     "google-cloud-core >= 2.0.0, < 3.0.0",
     "grpcio >= 1.49.1, < 2.0.0",
     "grpcio >= 1.75.1, < 2.0.0; python_version >= '3.14'",
-    "grpc-google-iam-v1 >= 0.12.4, <1.0.0",
-    "proto-plus >= 1.22.3, <2.0.0",
-    "proto-plus >= 1.25.0, <2.0.0; python_version >= '3.13'",
-    "protobuf >= 4.25.8, < 8.0.0",
+    "grpc-google-iam-v1 >= 0.14.2, <1.0.0",
+    "proto-plus >= 1.26.1, <2.0.0",
+    "protobuf >= 6.33.5, < 8.0.0",
     "grpc-interceptor >= 0.15.4",
     "sqlparse >= 0.4.4",
     # Make OpenTelemetry a core dependency
