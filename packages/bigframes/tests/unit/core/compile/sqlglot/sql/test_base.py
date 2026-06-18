@@ -173,6 +173,7 @@ def test_literal_null_type():
     assert got == "NULL"
 
 
+
 def test_cast_to_null_type_returns_flat_null():
     assert sql.to_sql(sql.cast("abc", "NULL")) == "NULL"
     assert sql.to_sql(sql.cast(None, "NULL")) == "NULL"

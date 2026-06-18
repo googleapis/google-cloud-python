@@ -27,13 +27,7 @@ from google.cloud.pubsub_v1.open_telemetry.subscribe_opentelemetry import (
 )
 from google.cloud.pubsub_v1.subscriber._protocol.dispatcher import _MAX_BATCH_LATENCY
 
-try:
-    from collections.abc import KeysView
-
-    KeysView[None]  # KeysView is only subscriptable in Python 3.9+
-except TypeError:
-    # Deprecated since Python 3.9, thus only use as a fallback in older Python versions
-    from typing import KeysView
+from collections.abc import KeysView
 
 from google.cloud.pubsub_v1.subscriber._protocol import requests
 
