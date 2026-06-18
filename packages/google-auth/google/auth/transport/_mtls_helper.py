@@ -78,27 +78,32 @@ _INCORRECT_CLOUD_RUN_KEY_PATH = (
 
 @contextlib.contextmanager
 def secure_cert_key_paths(
-    cert: Union[str, bytes],
-    key: Union[str, bytes],
+    cert: Union[bytes, str, None],
+    key: Union[bytes, str, None],
     passphrase: Optional[bytes] = None,
 ) -> Generator[Tuple[str, str, Optional[bytes]], None, None]:
     """Provides secure file paths for certificate and key.
 
-    Standard TLS libraries (like Python's standard library `ssl`) require file paths to
-    load credentials. To minimize exposure of raw private key bytes on physical storage,
-    this context manager implements a three-tier fallback strategy: yielding pass-through
-    paths (Tier 1), using RAM-backed virtual files on Linux (Tier 2), or falling back
-    to encrypted temporary files on disk (Tier 3).
+    This function is implemented as a context manager generator to ensure that
+    any temporary resources (such as in-memory virtual files or encrypted physical
+    temp files) are automatically cleaned up and securely wiped when the context exits.
+
+    It supports mixed inputs (e.g. passing one as a string path and the other as bytes).
+    If a parameter is already a string path or None, it is passed through as-is, and
+    only raw bytes are written to temporary storage.
 
     Args:
-        cert (Union[str, bytes]): Certificate path or raw PEM content bytes.
-        key (Union[str, bytes]): Private key path or raw PEM content bytes.
+        cert (Union[str, bytes, None]): Certificate path, raw PEM content bytes, or None.
+        key (Union[str, bytes, None]): Private key path, raw PEM content bytes, or None.
         passphrase (Optional[bytes]): Optional passphrase for the private key.
 
     Yields:
         Tuple[str, str, Optional[bytes]]: The certificate path, key path, and
             the passphrase needed to load the key (either the user's original,
             or the newly generated one if Tier 3 had to encrypt the key).
+
+    Raises:
+        OSError: If temporary file creation or writing fails during the Tier 3 fallback.
     """
     # Tier 1: Pass-through (No-op). If the caller already provided file paths,
     # we yield them directly to avoid any unnecessary file creation.
@@ -106,6 +111,8 @@ def secure_cert_key_paths(
         yield cert, key, passphrase
         return
 
+    # If a value is a string path, it is passed through. If bytes, we will write
+    # it to temporary storage. None values are also passed through as-is.
     cert_bytes = cert if isinstance(cert, bytes) else None
     key_bytes = key if isinstance(key, bytes) else None
 
@@ -212,24 +219,22 @@ def _memfd_cert_key_paths(
             the active descriptors (e.g., '/proc/self/fd/3').
     """
     cleanup_fds = []
-    cert_path, key_path = None, None
+    print("--- in memfd_cert_key_paths")
+    paths = []
 
     try:
-        if cert_bytes is not None:
-            # MFD_CLOEXEC prevents FD leaks to spawned subprocesses.
-            fd_cert = os.memfd_create("mtls_cert", os.MFD_CLOEXEC)  # type: ignore[attr-defined]
-            cleanup_fds.append(fd_cert)
-            with os.fdopen(fd_cert, "wb", closefd=False) as f:
-                f.write(cert_bytes)
-            cert_path = f"/proc/self/fd/{fd_cert}"
+        for data, name in [(cert_bytes, "mtls_cert"), (key_bytes, "mtls_key")]:
+            if data is not None:
+                # MFD_CLOEXEC prevents FD leaks to spawned subprocesses.
+                fd = os.memfd_create(name, os.MFD_CLOEXEC)  # type: ignore[attr-defined]
+                cleanup_fds.append(fd)
+                with os.fdopen(fd, "wb", closefd=False) as f:
+                    f.write(data)
+                paths.append(f"/proc/self/fd/{fd}")
+            else:
+                paths.append(None)
 
-        if key_bytes is not None:
-            fd_key = os.memfd_create("mtls_key", os.MFD_CLOEXEC)  # type: ignore[attr-defined]
-            cleanup_fds.append(fd_key)
-            with os.fdopen(fd_key, "wb", closefd=False) as f:
-                f.write(key_bytes)
-            key_path = f"/proc/self/fd/{fd_key}"
-
+        cert_path, key_path = paths
         yield cert_path, key_path
     finally:
         # Closing the descriptors automatically frees the RAM allocation.
@@ -258,32 +263,30 @@ def _tempfile_cert_key_paths(
         if os.path.isdir("/dev/shm") and os.access("/dev/shm", os.W_OK)
         else None
     )
-    cert_path, key_path = None, None
     cleanup_files = []
+    print("--- in _tempfile_cert_key_paths")
     new_passphrase = passphrase
+    cert_data = cert_bytes
+    key_data = None
+    if key_bytes is not None:
+        key_data, new_passphrase = _encrypt_key_if_plaintext(key_bytes, passphrase)
 
+    cert_path, key_path = None, None
     try:
-        if cert_bytes is not None:
-            fd, cert_path = tempfile.mkstemp(dir=tmp_dir)
-            cleanup_files.append(cert_path)
-            with os.fdopen(fd, "wb") as f:
-                f.write(cert_bytes)
-                f.flush()
-                os.fsync(f.fileno())
+        paths = []
+        for data in [cert_data, key_data]:
+            if data is not None:
+                fd, path = tempfile.mkstemp(dir=tmp_dir)
+                cleanup_files.append(path)
+                with os.fdopen(fd, "wb") as f:
+                    f.write(data)
+                    f.flush()
+                    os.fsync(f.fileno())
+                paths.append(path)
+            else:
+                paths.append(None)
 
-        if key_bytes is not None:
-            # Encrypt plaintext keys on-the-fly before dropping to disk.
-            encrypted_key_bytes, new_passphrase = _encrypt_key_if_plaintext(
-                key_bytes, passphrase
-            )
-
-            fd, key_path = tempfile.mkstemp(dir=tmp_dir)
-            cleanup_files.append(key_path)
-            with os.fdopen(fd, "wb") as f:
-                f.write(encrypted_key_bytes)
-                f.flush()
-                os.fsync(f.fileno())
-
+        cert_path, key_path = paths
         yield cert_path, key_path, new_passphrase
     finally:
         for file_path in cleanup_files:
