@@ -76,6 +76,12 @@ _INCORRECT_CLOUD_RUN_KEY_PATH = (
 )
 
 
+class _MemfdCreationError(OSError):
+    """Raised when Linux in-memory virtual file creation (memfd) fails."""
+
+    pass
+
+
 @contextlib.contextmanager
 def secure_cert_key_paths(
     cert: Union[bytes, str, None],
@@ -120,13 +126,8 @@ def secure_cert_key_paths(
     # the bytes to anonymous in-memory files using memfd_create. This yields
     # /proc/self/fd/... paths, keeping the private key entirely in memory.
     if sys.platform == "linux" and hasattr(os, "memfd_create"):
-        cm = _memfd_cert_key_paths(cert_bytes, key_bytes)
         try:
-            cert_path, key_path = cm.__enter__()
-        except OSError:
-            pass  # Fallback to Tier 3 on failure.
-        else:
-            try:
+            with _memfd_cert_key_paths(cert_bytes, key_bytes) as (cert_path, key_path):
                 # Handle cases where path exists but might be restricted.
                 if (cert_path is None or os.path.exists(cert_path)) and (
                     key_path is None or os.path.exists(key_path)
@@ -135,9 +136,8 @@ def secure_cert_key_paths(
                         str, key_path or key
                     ), passphrase
                     return
-            finally:
-                cm.__exit__(*sys.exc_info())
-            # If verification failed, fall through to Tier 3.
+        except _MemfdCreationError:
+            pass  # Fallback to Tier 3 on failure.
 
     # Tier 3: Fallback Encrypted Temp Files. If in-memory files are not supported
     # (macOS/Windows), we write to disk. To protect the key, we encrypt plaintext
@@ -219,20 +219,24 @@ def _memfd_cert_key_paths(
             the active descriptors (e.g., '/proc/self/fd/3').
     """
     cleanup_fds = []
-    print("--- in memfd_cert_key_paths")
     paths = []
 
     try:
-        for data, name in [(cert_bytes, "mtls_cert"), (key_bytes, "mtls_key")]:
-            if data is not None:
-                # MFD_CLOEXEC prevents FD leaks to spawned subprocesses.
-                fd = os.memfd_create(name, os.MFD_CLOEXEC)  # type: ignore[attr-defined]
-                cleanup_fds.append(fd)
-                with os.fdopen(fd, "wb", closefd=False) as f:
-                    f.write(data)
-                paths.append(f"/proc/self/fd/{fd}")
-            else:
-                paths.append(None)
+        try:
+            for data, name in [(cert_bytes, "mtls_cert"), (key_bytes, "mtls_key")]:
+                if data is not None:
+                    # MFD_CLOEXEC prevents FD leaks to spawned subprocesses.
+                    fd = os.memfd_create(name, os.MFD_CLOEXEC)  # type: ignore[attr-defined]
+                    cleanup_fds.append(fd)
+                    with os.fdopen(fd, "wb", closefd=False) as f:
+                        f.write(data)
+                    paths.append(f"/proc/self/fd/{fd}")
+                else:
+                    paths.append(None)
+        except OSError as exc:
+            raise _MemfdCreationError(
+                "Failed to create in-memory virtual files"
+            ) from exc
 
         cert_path, key_path = paths
         yield cert_path, key_path
@@ -264,7 +268,6 @@ def _tempfile_cert_key_paths(
         else None
     )
     cleanup_files = []
-    print("--- in _tempfile_cert_key_paths")
     new_passphrase = passphrase
     cert_data = cert_bytes
     key_data = None

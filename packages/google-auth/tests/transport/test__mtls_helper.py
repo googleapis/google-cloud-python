@@ -1099,7 +1099,9 @@ class TestSecureCertKeyPaths(object):
         self, mock_tempfile_cm, mock_memfd_cm, mock_memfd_create
     ):
         mock_memfd_ctx = mock.MagicMock()
-        mock_memfd_ctx.__enter__.side_effect = OSError("memfd failed")
+        mock_memfd_ctx.__enter__.side_effect = _mtls_helper._MemfdCreationError(
+            "memfd failed"
+        )
         mock_memfd_cm.return_value = mock_memfd_ctx
 
         mock_tempfile_ctx = mock.MagicMock()
@@ -1235,7 +1237,7 @@ class TestTempfileCertKeyPaths(object):
 
         with mock.patch.object(os, "remove") as mock_remove, mock.patch.object(
             os.path, "exists", return_value=True
-        ):
+        ), mock.patch.object(os, "access", return_value=True):
             with _mtls_helper._tempfile_cert_key_paths(b"cert", b"key", b"pass") as (
                 cert_path,
                 key_path,
@@ -1274,7 +1276,7 @@ class TestTempfileCertKeyPaths(object):
 
         with mock.patch.object(os, "remove") as mock_remove, mock.patch.object(
             os.path, "exists", return_value=True
-        ):
+        ), mock.patch.object(os, "access", return_value=True):
             with _mtls_helper._tempfile_cert_key_paths(b"cert", b"key", b"pass"):
                 pass
             mock_remove.assert_called_once_with("/shm/cert")
