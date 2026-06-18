@@ -157,10 +157,17 @@ class TableWidget(_WIDGET_BASE):
     @traitlets.observe("start_execution")
     def _on_start_execution(self, change: dict[str, Any]):
         if change["new"]:
+            import tornado.ioloop
+
+            try:
+                loop = tornado.ioloop.IOLoop.current().asyncio_loop
+            except Exception:
+                loop = None
 
             def run_execution():
                 try:
                     self._error_message = None
+                    df = None
                     if self.is_deferred_mode:
                         if self._deferred_dataframe is not None:
                             result = self._deferred_dataframe.execute()
@@ -172,20 +179,89 @@ class TableWidget(_WIDGET_BASE):
                                 raise TypeError(
                                     f"Unexpected result type: {type(result)}"
                                 )
-                            self._dataframe, _ = df._process_display_df()
-                            self.is_deferred_mode = False
-                            self._initialize_from_dataframe()
                         elif self._dataframe is not None:
-                            self._dataframe, _ = self._dataframe._process_display_df()
+                            df = self._dataframe
+                    else:
+                        df = self._dataframe
+
+                    if df is None:
+                        raise ValueError("No DataFrame to execute.")
+
+                    df_to_set, _ = df._process_display_df()
+                    orderable_cols = self._get_orderable_columns(df_to_set)
+
+                    with bigframes.option_context("display.progress_bar", None):
+                        batches = df_to_set.to_pandas_batches(
+                            page_size=self.page_size,
+                            cell_execution_count=self._cell_execution_count,
+                        )
+
+                    total_rows = getattr(batches, "total_rows", None)
+
+                    # Fetch the first batch
+                    batch_iter = iter(batches)
+                    try:
+                        initial_batch = next(batch_iter)
+                        cached_batches = [initial_batch]
+                        all_data_loaded = False
+                    except StopIteration:
+                        initial_batch = pd.DataFrame(columns=df_to_set.columns)
+                        cached_batches = []
+                        all_data_loaded = True
+
+                    # Render the HTML
+                    page_data = initial_batch.copy()
+                    start = 0
+                    if df_to_set._block.has_index:
+                        is_unnamed_single_index = (
+                            page_data.index.name is None
+                            and not isinstance(page_data.index, pd.MultiIndex)
+                        )
+                        page_data = page_data.reset_index()
+                        if is_unnamed_single_index and "index" in page_data.columns:
+                            page_data.rename(columns={"index": ""}, inplace=True)
+                    else:
+                        page_data.insert(
+                            0, "Row", range(start + 1, start + len(page_data) + 1)
+                        )
+
+                    initial_html = bigframes.display.html.render_html(
+                        dataframe=page_data,
+                        table_id=f"table-{self._table_id}",
+                        orderable_columns=orderable_cols,
+                        max_columns=self.max_columns,
+                    )
+
+                    def update_ui():
+                        with self.hold_sync():
+                            self._dataframe = df_to_set
+                            self.orderable_columns = orderable_cols
+                            self._batches = batches
+                            self._batch_iter = batch_iter
+                            self._cached_batches = cached_batches
+                            self._all_data_loaded = all_data_loaded
+                            self.row_count = total_rows
+                            self.table_html = initial_html
                             self.is_deferred_mode = False
-                            self._initialize_from_dataframe()
-                    elif not self.is_deferred_mode and self._dataframe is not None:
-                        self._initial_load()
+                            self.start_execution = False
+
+                    if loop is not None and loop.is_running():
+                        loop.call_soon_threadsafe(update_ui)
+                    else:
+                        update_ui()
                 except Exception as e:
                     logger.warning(f"Error in background execution: {e}")
-                    self._error_message = str(e)
-                finally:
-                    self.start_execution = False
+                    err_msg = str(e)
+
+                    def set_error():
+                        with self.hold_sync():
+                            self._error_message = err_msg
+                            self.start_execution = False
+
+                    if loop is not None and loop.is_running():
+                        loop.call_soon_threadsafe(set_error)
+                    else:
+                        set_error()
 
             self._execution_thread = threading.Thread(target=run_execution, daemon=True)
             self._execution_thread.start()

@@ -417,26 +417,24 @@ def test_deferred_mode_execution(mock_deferred_df, mock_df_deferred):
 
     mock_deferred_df.execute.return_value = mock_df_deferred
 
-    with mock.patch.object(TableWidget, "_initial_load") as mock_load:
-        widget = TableWidget(mock_deferred_df)
+    widget = TableWidget(mock_deferred_df)
 
-        assert widget.is_deferred_mode is True
-        mock_load.assert_not_called()
+    assert widget.is_deferred_mode is True
 
-        import bigframes
+    import bigframes
 
-        with bigframes.option_context(
-            "display.render_mode", bigframes.options.display.render_mode
-        ):
-            widget.start_execution = True
+    with bigframes.option_context(
+        "display.render_mode", bigframes.options.display.render_mode
+    ):
+        widget.start_execution = True
 
-        thread = getattr(widget, "_execution_thread", None)
-        if thread is not None:
-            thread.join(timeout=5)
+    thread = getattr(widget, "_execution_thread", None)
+    if thread is not None:
+        thread.join(timeout=5)
 
-        mock_deferred_df.execute.assert_called_once()
-        mock_load.assert_called_once()
-        assert widget.is_deferred_mode is False
+    mock_deferred_df.execute.assert_called_once()
+    mock_df_deferred.to_pandas_batches.assert_called_once()
+    assert widget.is_deferred_mode is False
 
 
 def test_deferred_mode_execution_updates_table_html(mock_deferred_df, mock_df_deferred):
