@@ -6789,7 +6789,7 @@ var bo = class e11 {
   constructor() {
     Cr(() => {
       let t = this.state.tableHtml(), n = this.state.sortContext(), r = this.state.orderableColumns();
-      this.isHeightInitialized = false, setTimeout(() => {
+      this.isDeferredMode() && (this.isHeightInitialized = false), setTimeout(() => {
         this.applySortIndicators(), this.lockInitialHeight();
       }, 0);
     }), Cr(() => {

@@ -496,7 +496,10 @@ export class App {
       const _html = this.state.tableHtml();
       const _sort = this.state.sortContext();
       const _orderable = this.state.orderableColumns();
-      this.isHeightInitialized = false;
+      const deferred = this.isDeferredMode();
+      if (deferred) {
+        this.isHeightInitialized = false;
+      }
 
       // Schedule DOM post-processing once the innerHTML render completes
       setTimeout(() => {
