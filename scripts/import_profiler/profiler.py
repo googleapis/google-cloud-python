@@ -10,6 +10,16 @@ import csv
 import os
 import logging
 
+def get_rss_mb():
+    """Gets current Resident Set Size (physical memory) in MB. Linux only."""
+    try:
+        with open('/proc/self/statm', 'r') as f:
+            rss_pages = int(f.read().split()[1])
+            page_size = os.sysconf('SC_PAGE_SIZE')
+            return (rss_pages * page_size) / (1024 * 1024)
+    except Exception:
+        return 0.0
+
 def run_worker(target_module):
     """Performs ONE import and returns metrics."""
     tracemalloc.start()
@@ -19,6 +29,7 @@ def run_worker(target_module):
     # This explicitly isolates the pure import latency and entirely omits the 
     # 10ms-50ms Python VM interpreter startup overhead that would skew the metrics.
     start_time = time.perf_counter()
+    rss_before = get_rss_mb()
     
     modules_before = set(sys.modules.keys())
     
@@ -27,6 +38,7 @@ def run_worker(target_module):
     # ---------------------
     
     end_time = time.perf_counter()
+    rss_after = get_rss_mb()
     _, peak = tracemalloc.get_traced_memory()
     tracemalloc.stop()
     
@@ -54,6 +66,7 @@ def run_worker(target_module):
     metrics = {
         "time_ms": (end_time - start_time) * 1000,
         "peak_ram_mb": peak / (1024 * 1024),
+        "rss_ram_mb": rss_after - rss_before,
         "loaded_modules": len(new_modules),
         "loaded_lines": loaded_lines
     }
@@ -70,7 +83,7 @@ def _run_worker_and_parse(cmd):
                 break
         if data is None:
             raise ValueError("Worker did not output metrics JSON.")
-        for key in ("time_ms", "peak_ram_mb", "loaded_modules", "loaded_lines"):
+        for key in ("time_ms", "peak_ram_mb", "rss_ram_mb", "loaded_modules", "loaded_lines"):
             if key not in data:
                 raise KeyError(f"Missing key '{key}' in worker output")
         return data
@@ -84,7 +97,7 @@ def run_master(iterations, target_module, cpu="0", csv_path=None):
     """Orchestrates the benchmark."""
     if iterations < 1:
         raise ValueError("Number of iterations must be at least 1.")
-    times, memories = [], []
+    times, memories, rss_memories = [], [], []
     loaded_modules_val, loaded_lines_val = 0, 0
     
     print(f"Profiling start... Running {iterations} cold-start iterations for {target_module}.")
@@ -105,6 +118,7 @@ def run_master(iterations, target_module, cpu="0", csv_path=None):
             data = _run_worker_and_parse(cmd)
             times.append(data["time_ms"])
             memories.append(data["peak_ram_mb"])
+            rss_memories.append(data["rss_ram_mb"])
             loaded_modules_val = data["loaded_modules"]
             loaded_lines_val = data["loaded_lines"]
         except FileNotFoundError as e:
@@ -116,6 +130,7 @@ def run_master(iterations, target_module, cpu="0", csv_path=None):
                     data = _run_worker_and_parse(cmd)
                     times.append(data["time_ms"])
                     memories.append(data["peak_ram_mb"])
+                    rss_memories.append(data["rss_ram_mb"])
                     loaded_modules_val = data["loaded_modules"]
                     loaded_lines_val = data["loaded_lines"]
                 except subprocess.CalledProcessError as err:
@@ -131,9 +146,9 @@ def run_master(iterations, target_module, cpu="0", csv_path=None):
     if csv_path:
         with open(csv_path, "w", newline="", encoding="utf-8") as f:
             writer = csv.writer(f)
-            writer.writerow(["Iteration", "Time (ms)", "Peak RAM (MB)"])
-            for idx, (t, m) in enumerate(zip(times, memories)):
-                writer.writerow([idx + 1, f"{t:.2f}", f"{m:.4f}"])
+            writer.writerow(["Iteration", "Time (ms)", "Tracemalloc RAM (MB)", "RSS Physical RAM (MB)"])
+            for idx, (t, m, r) in enumerate(zip(times, memories, rss_memories)):
+                writer.writerow([idx + 1, f"{t:.2f}", f"{m:.4f}", f"{r:.4f}"])
         print(f"Raw metrics successfully exported to CSV: {csv_path}")
 
     # Compute percentiles (P50, P90, P99)
@@ -150,6 +165,12 @@ def run_master(iterations, target_module, cpu="0", csv_path=None):
     else:
         p50_mem = p90_mem = p99_mem = memories[0] if memories else 0.0
 
+    if len(rss_memories) > 1:
+        q_rss = statistics.quantiles(rss_memories, n=100)
+        p50_rss, p90_rss, p99_rss = q_rss[49], q_rss[89], q_rss[98]
+    else:
+        p50_rss = p90_rss = p99_rss = rss_memories[0] if rss_memories else 0.0
+
     print(f"\n--- Results for {target_module} ({iterations} iterations) ---")
     print(f"Code Volume (Deterministic):")
     print(f"  Loaded Modules: {loaded_modules_val}")
@@ -164,7 +185,7 @@ def run_master(iterations, target_module, cpu="0", csv_path=None):
     if len(times) > 1:
         print(f"  StdDev:       {statistics.stdev(times):.2f}")
         
-    print(f"RAM (MB):")
+    print(f"Tracemalloc RAM (MB):")
     print(f"  P50 (Median): {p50_mem:.4f}")
     print(f"  P90:          {p90_mem:.4f}")
     print(f"  P99:          {p99_mem:.4f}")
@@ -173,6 +194,16 @@ def run_master(iterations, target_module, cpu="0", csv_path=None):
     print(f"  Max:          {max(memories):.4f}")
     if len(memories) > 1:
         print(f"  StdDev:       {statistics.stdev(memories):.4f}")
+
+    print(f"Physical RSS RAM (MB):")
+    print(f"  P50 (Median): {p50_rss:.4f}")
+    print(f"  P90:          {p90_rss:.4f}")
+    print(f"  P99:          {p99_rss:.4f}")
+    print(f"  Mean:         {statistics.mean(rss_memories):.4f}")
+    print(f"  Min:          {min(rss_memories):.4f}")
+    print(f"  Max:          {max(rss_memories):.4f}")
+    if len(rss_memories) > 1:
+        print(f"  StdDev:       {statistics.stdev(rss_memories):.4f}")
 
 def run_trace(target_module):
     """Generates importtime trace log and writes it to a file."""
