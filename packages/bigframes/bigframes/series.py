@@ -2065,11 +2065,45 @@ class Series:
                 " are supported."
             )
 
-        from bigframes._config import options
 
+        # Highest priority: try to map directly to an operator, for eg numpy
+        # ufuncs, or simple arithmetic/logic operators.
         bf_op = python_ops.python_callable_to_op(func)
         if bf_op and isinstance(bf_op, ops.UnaryOp):
             return self._apply_unary_op(bf_op)
+
+        # "compat": try by row, and then fall back to passing whole series if that fails
+        if by_row: 
+            try:
+                return self._apply_by_row(func)
+            except Exception as ex:
+                raise ValueError(
+                    "You have passed a function as-is. If your intention is to "
+                    "apply this function in a vectorized way (i.e. to the "
+                    "entire Series as a whole, and you are sure that it "
+                    "performs only the operations that are implemented for a "
+                    "Series (e.g. a chain of arithmetic/logical operations, "
+                    "such as `def foo(s): return s % 2 == 1`), please also "
+                    "specify `by_row=False`. If your function contains "
+                    "arbitrary code, it can only be applied to every element "
+                    "in the Series individually, in which case you must "
+                    "convert it to a BigFrames BigQuery function using "
+                    "`bigframes.pandas.udf`, "
+                    "or `bigframes.pandas.remote_function` before passing."
+                )
+
+        try:
+            return func(self)  # type: ignore
+        except Exception as ex:
+            # This could happen if any of the operators in func is not
+            # supported on a Series. Let's guide the customer to use a
+            # bigquery function instead
+            if hasattr(ex, "message"):
+                ex.message += f"\n{_bigquery_function_recommendation_message}"
+            raise
+
+    def _apply_by_row(self, func: typing.Callable, args: typing.Tuple = ()) -> Series:
+        from bigframes._config import options
 
         if isinstance(func, bigframes.functions.Udf) or (
             options.experiments.enable_python_transpiler and callable(func)
@@ -2081,35 +2115,7 @@ class Series:
             result_series.name = self.name
 
             return result_series
-
-        # It is neither a remote function nor a managed function.
-        # Then it must be a vectorized function that applies to the Series
-        # as a whole.
-        if by_row:
-            raise ValueError(
-                "You have passed a function as-is. If your intention is to "
-                "apply this function in a vectorized way (i.e. to the "
-                "entire Series as a whole, and you are sure that it "
-                "performs only the operations that are implemented for a "
-                "Series (e.g. a chain of arithmetic/logical operations, "
-                "such as `def foo(s): return s % 2 == 1`), please also "
-                "specify `by_row=False`. If your function contains "
-                "arbitrary code, it can only be applied to every element "
-                "in the Series individually, in which case you must "
-                "convert it to a BigFrames BigQuery function using "
-                "`bigframes.pandas.udf`, "
-                "or `bigframes.pandas.remote_function` before passing."
-            )
-
-        try:
-            return func(self)  # type: ignore
-        except Exception as ex:
-            # This could happen if any of the operators in func is not
-            # supported on a Series. Let's guide the customer to use a
-            # bigquery function instead
-            if hasattr(ex, "message"):
-                ex.message += f"\n{_bigquery_function_recommendation_message}"
-            raise
+        raise ValueError(f"Cannot apply function {func} to Series {self}")
 
     def combine(
         self,
