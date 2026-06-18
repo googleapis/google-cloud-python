@@ -78,6 +78,7 @@ DTYPE_MAP = {
     "timestamp": "dtypes.TIMESTAMP_DTYPE",
     "decimal<38,9>": "dtypes.NUMERIC_DTYPE",
     "decimal<76,38>": "dtypes.BIGNUMERIC_DTYPE",
+    "interval_day": "dtypes.TIMEDELTA_DTYPE",
 }
 
 PY_TYPE_MAP = {
@@ -98,6 +99,7 @@ PY_TYPE_MAP = {
     "struct": "dict",
     "decimal<38,9>": "decimal.Decimal",
     "decimal<76,38>": "decimal.Decimal",
+    "interval_day": "datetime.timedelta",
 }
 
 YAML_TYPE_TO_COL = {
@@ -222,9 +224,12 @@ def load_templates():
 def _collect_args(impls):
     args_by_name = {}
     arg_order = []
+    arg_appearances = {}
     for impl in impls:
+        seen_in_impl = set()
         for arg in impl["args"]:
             name = arg["name"]
+            seen_in_impl.add(name)
             if name not in args_by_name:
                 args_by_name[name] = {
                     "types": set(),
@@ -232,7 +237,23 @@ def _collect_args(impls):
                     "keyword_only": arg["keyword_only"],
                 }
                 arg_order.append(name)
+            else:
+                # If it was marked optional or keyword_only in any previous impl, keep it.
+                # Or if this impl marks it as optional/keyword_only, update it.
+                if arg["optional"]:
+                    args_by_name[name]["optional"] = True
+                if arg["keyword_only"]:
+                    args_by_name[name]["keyword_only"] = True
             args_by_name[name]["types"].add(arg["value"])
+        for name in seen_in_impl:
+            arg_appearances[name] = arg_appearances.get(name, 0) + 1
+
+    # If an argument is not in all impls, it must be optional overall
+    num_impls = len(impls)
+    for name, count in arg_appearances.items():
+        if count < num_impls:
+            args_by_name[name]["optional"] = True
+
     return args_by_name, arg_order
 
 

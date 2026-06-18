@@ -19,6 +19,7 @@
 from __future__ import annotations
 
 import abc
+import datetime
 from typing import (
     Any,
     Generic,
@@ -598,6 +599,22 @@ class BigQuerySeriesAccessor(AbstractBigQuerySeriesAccessor[S]):
         )
         return self._to_series(cast(series.Series, result))
 
+    def bit_count(
+        self,
+        *,
+        session: Optional[bigframes.session.Session] = None,
+    ) -> S:
+        """The input, `expression`, must be an integer or `BYTES`. Returns the number of bits that are set in the input expression. For signed integers, this is the number of bits in two's complement form."""
+        from bigframes.operations.googlesql.global_namespace.bit import (
+            bit_count as bit_count_impl,
+        )
+
+        bf_series = self._bf_from_series(session)
+        result = bit_count_impl(
+            bf_series,
+        )
+        return self._to_series(cast(series.Series, result))
+
     def bool_(
         self,
         *,
@@ -749,6 +766,416 @@ class BigQuerySeriesAccessor(AbstractBigQuerySeriesAccessor[S]):
         result = string_impl(
             bf_series,
             timezone,
+        )
+        return self._to_series(cast(series.Series, result))
+
+    def date(
+        self,
+        time_zone_expression: Union[
+            series.Series,
+            bigframes.core.col.Expression,
+            Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], str],
+        ] = sentinels.Sentinel.ARGUMENT_DEFAULT,
+        year: Union[
+            series.Series,
+            bigframes.core.col.Expression,
+            Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], int],
+        ] = sentinels.Sentinel.ARGUMENT_DEFAULT,
+        month: Union[
+            series.Series,
+            bigframes.core.col.Expression,
+            Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], int],
+        ] = sentinels.Sentinel.ARGUMENT_DEFAULT,
+        day: Union[
+            series.Series,
+            bigframes.core.col.Expression,
+            Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], int],
+        ] = sentinels.Sentinel.ARGUMENT_DEFAULT,
+        *,
+        session: Optional[bigframes.session.Session] = None,
+    ) -> S:
+        """Constructs or extracts a date."""
+        from bigframes.operations.googlesql.global_namespace.date import (
+            date as date_impl,
+        )
+
+        # Resolve session from other arguments if not passed
+        if session is None:
+            import bigframes.core.googlesql as googlesql
+
+            session = googlesql._find_session(
+                time_zone_expression,
+                year,
+                month,
+                day,
+            )
+
+        bf_series = self._bf_from_series(session)
+        result = date_impl(
+            bf_series,
+            time_zone_expression,
+            year,
+            month,
+            day,
+        )
+        return self._to_series(cast(series.Series, result))
+
+    def date_add(
+        self,
+        int64_expression: Union[
+            series.Series,
+            bigframes.core.col.Expression,
+            Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], int],
+        ],
+        date_part: Union[
+            series.Series,
+            bigframes.core.col.Expression,
+            Union[Any, Literal[sentinels.Sentinel.ARGUMENT_DEFAULT]],
+        ],
+        *,
+        session: Optional[bigframes.session.Session] = None,
+    ) -> S:
+        """Adds a specified time interval to a DATE."""
+        from bigframes.operations.googlesql.global_namespace.date import (
+            date_add as date_add_impl,
+        )
+
+        # Resolve session from other arguments if not passed
+        if session is None:
+            import bigframes.core.googlesql as googlesql
+
+            session = googlesql._find_session(
+                int64_expression,
+                date_part,
+            )
+
+        bf_series = self._bf_from_series(session)
+        result = date_add_impl(
+            bf_series,
+            int64_expression,
+            date_part,
+        )
+        return self._to_series(cast(series.Series, result))
+
+    def date_bucket(
+        self,
+        bucket_width: Union[
+            series.Series,
+            bigframes.core.col.Expression,
+            Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], datetime.timedelta],
+        ],
+        bucket_origin: Union[
+            series.Series,
+            bigframes.core.col.Expression,
+            Union[
+                Literal[sentinels.Sentinel.ARGUMENT_DEFAULT],
+                datetime.date,
+                datetime.datetime,
+            ],
+        ] = sentinels.Sentinel.ARGUMENT_DEFAULT,
+        *,
+        session: Optional[bigframes.session.Session] = None,
+    ) -> S:
+        """Gets the lower bound of the date bucket that contains a date."""
+        from bigframes.operations.googlesql.global_namespace.date import (
+            date_bucket as date_bucket_impl,
+        )
+
+        # Resolve session from other arguments if not passed
+        if session is None:
+            import bigframes.core.googlesql as googlesql
+
+            session = googlesql._find_session(
+                bucket_width,
+                bucket_origin,
+            )
+
+        bf_series = self._bf_from_series(session)
+        result = date_bucket_impl(
+            bf_series,
+            bucket_width,
+            bucket_origin,
+        )
+        return self._to_series(cast(series.Series, result))
+
+    def date_diff(
+        self,
+        start_date: Union[
+            series.Series,
+            bigframes.core.col.Expression,
+            Union[
+                Literal[sentinels.Sentinel.ARGUMENT_DEFAULT],
+                datetime.date,
+                datetime.datetime,
+            ],
+        ],
+        granularity: Union[
+            series.Series,
+            bigframes.core.col.Expression,
+            Union[Any, Literal[sentinels.Sentinel.ARGUMENT_DEFAULT]],
+        ],
+        *,
+        session: Optional[bigframes.session.Session] = None,
+    ) -> S:
+        """Gets the number of unit boundaries between two DATE values (end_date - start_date) at a particular time granularity."""
+        from bigframes.operations.googlesql.global_namespace.date import (
+            date_diff as date_diff_impl,
+        )
+
+        # Resolve session from other arguments if not passed
+        if session is None:
+            import bigframes.core.googlesql as googlesql
+
+            session = googlesql._find_session(
+                start_date,
+                granularity,
+            )
+
+        bf_series = self._bf_from_series(session)
+        result = date_diff_impl(
+            bf_series,
+            start_date,
+            granularity,
+        )
+        return self._to_series(cast(series.Series, result))
+
+    def date_from_unix_date(
+        self,
+        *,
+        session: Optional[bigframes.session.Session] = None,
+    ) -> S:
+        """Interprets an INT64 expression as the number of days since 1970-01-01."""
+        from bigframes.operations.googlesql.global_namespace.date import (
+            date_from_unix_date as date_from_unix_date_impl,
+        )
+
+        bf_series = self._bf_from_series(session)
+        result = date_from_unix_date_impl(
+            bf_series,
+        )
+        return self._to_series(cast(series.Series, result))
+
+    def date_sub(
+        self,
+        int64_expression: Union[
+            series.Series,
+            bigframes.core.col.Expression,
+            Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], int],
+        ],
+        date_part: Union[
+            series.Series,
+            bigframes.core.col.Expression,
+            Union[Any, Literal[sentinels.Sentinel.ARGUMENT_DEFAULT]],
+        ],
+        *,
+        session: Optional[bigframes.session.Session] = None,
+    ) -> S:
+        """Subtracts a specified time interval from a DATE."""
+        from bigframes.operations.googlesql.global_namespace.date import (
+            date_sub as date_sub_impl,
+        )
+
+        # Resolve session from other arguments if not passed
+        if session is None:
+            import bigframes.core.googlesql as googlesql
+
+            session = googlesql._find_session(
+                int64_expression,
+                date_part,
+            )
+
+        bf_series = self._bf_from_series(session)
+        result = date_sub_impl(
+            bf_series,
+            int64_expression,
+            date_part,
+        )
+        return self._to_series(cast(series.Series, result))
+
+    def date_trunc(
+        self,
+        granularity: Union[
+            series.Series,
+            bigframes.core.col.Expression,
+            Union[Any, Literal[sentinels.Sentinel.ARGUMENT_DEFAULT]],
+        ],
+        time_zone: Union[
+            series.Series,
+            bigframes.core.col.Expression,
+            Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], str],
+        ] = sentinels.Sentinel.ARGUMENT_DEFAULT,
+        *,
+        session: Optional[bigframes.session.Session] = None,
+    ) -> S:
+        """Truncates a DATE, DATETIME, or TIMESTAMP value at a particular granularity."""
+        from bigframes.operations.googlesql.global_namespace.date import (
+            date_trunc as date_trunc_impl,
+        )
+
+        # Resolve session from other arguments if not passed
+        if session is None:
+            import bigframes.core.googlesql as googlesql
+
+            session = googlesql._find_session(
+                granularity,
+                time_zone,
+            )
+
+        bf_series = self._bf_from_series(session)
+        result = date_trunc_impl(
+            bf_series,
+            granularity,
+            time_zone,
+        )
+        return self._to_series(cast(series.Series, result))
+
+    def extract(
+        self,
+        part: Union[
+            series.Series,
+            bigframes.core.col.Expression,
+            Union[Any, Literal[sentinels.Sentinel.ARGUMENT_DEFAULT]],
+        ] = sentinels.Sentinel.ARGUMENT_DEFAULT,
+        time_zone: Union[
+            series.Series,
+            bigframes.core.col.Expression,
+            Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], str],
+        ] = sentinels.Sentinel.ARGUMENT_DEFAULT,
+        *,
+        session: Optional[bigframes.session.Session] = None,
+    ) -> S:
+        """Returns the value corresponding to the specified date part."""
+        from bigframes.operations.googlesql.global_namespace.date import (
+            extract as extract_impl,
+        )
+
+        # Resolve session from other arguments if not passed
+        if session is None:
+            import bigframes.core.googlesql as googlesql
+
+            session = googlesql._find_session(
+                part,
+                time_zone,
+            )
+
+        bf_series = self._bf_from_series(session)
+        result = extract_impl(
+            bf_series,
+            part,
+            time_zone,
+        )
+        return self._to_series(cast(series.Series, result))
+
+    def format_date(
+        self,
+        format_string: Union[
+            series.Series,
+            bigframes.core.col.Expression,
+            Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], str],
+        ],
+        time_zone: Union[
+            series.Series,
+            bigframes.core.col.Expression,
+            Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], str],
+        ] = sentinels.Sentinel.ARGUMENT_DEFAULT,
+        *,
+        session: Optional[bigframes.session.Session] = None,
+    ) -> S:
+        """Formats a DATE value according to a specified format string."""
+        from bigframes.operations.googlesql.global_namespace.date import (
+            format_date as format_date_impl,
+        )
+
+        # Resolve session from other arguments if not passed
+        if session is None:
+            import bigframes.core.googlesql as googlesql
+
+            session = googlesql._find_session(
+                format_string,
+                time_zone,
+            )
+
+        bf_series = self._bf_from_series(session)
+        result = format_date_impl(
+            format_string,
+            bf_series,
+            time_zone,
+        )
+        return self._to_series(cast(series.Series, result))
+
+    def last_day(
+        self,
+        date_part: Union[
+            series.Series,
+            bigframes.core.col.Expression,
+            Union[Any, Literal[sentinels.Sentinel.ARGUMENT_DEFAULT]],
+        ] = sentinels.Sentinel.ARGUMENT_DEFAULT,
+        *,
+        session: Optional[bigframes.session.Session] = None,
+    ) -> S:
+        """Returns the last day from a date expression. This is commonly used to return the last day of the month."""
+        from bigframes.operations.googlesql.global_namespace.date import (
+            last_day as last_day_impl,
+        )
+
+        # Resolve session from other arguments if not passed
+        if session is None:
+            import bigframes.core.googlesql as googlesql
+
+            session = googlesql._find_session(
+                date_part,
+            )
+
+        bf_series = self._bf_from_series(session)
+        result = last_day_impl(
+            bf_series,
+            date_part,
+        )
+        return self._to_series(cast(series.Series, result))
+
+    def parse_date(
+        self,
+        format_string: Union[
+            series.Series,
+            bigframes.core.col.Expression,
+            Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], str],
+        ],
+        *,
+        session: Optional[bigframes.session.Session] = None,
+    ) -> S:
+        """Converts a STRING value to a DATE value."""
+        from bigframes.operations.googlesql.global_namespace.date import (
+            parse_date as parse_date_impl,
+        )
+
+        # Resolve session from other arguments if not passed
+        if session is None:
+            import bigframes.core.googlesql as googlesql
+
+            session = googlesql._find_session(
+                format_string,
+            )
+
+        bf_series = self._bf_from_series(session)
+        result = parse_date_impl(
+            format_string,
+            bf_series,
+        )
+        return self._to_series(cast(series.Series, result))
+
+    def unix_date(
+        self,
+        *,
+        session: Optional[bigframes.session.Session] = None,
+    ) -> S:
+        """Returns the number of days since 1970-01-01."""
+        from bigframes.operations.googlesql.global_namespace.date import (
+            unix_date as unix_date_impl,
+        )
+
+        bf_series = self._bf_from_series(session)
+        result = unix_date_impl(
+            bf_series,
         )
         return self._to_series(cast(series.Series, result))
 
