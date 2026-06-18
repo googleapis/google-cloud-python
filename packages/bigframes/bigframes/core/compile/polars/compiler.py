@@ -138,11 +138,20 @@ if polars_installed:
         Should be extended to dispatch based on bigframes schema types.
         """
 
-        @functools.singledispatchmethod
+        _expr_types: dict[int, bigframes.dtypes.ExpressionType] = dataclasses.field(
+            default_factory=dict, init=False, compare=False
+        )
+
         def compile_expression(self, expression: ex.Expression) -> pl.Expr:
+            res = self._compile_expression(expression)
+            self._expr_types[id(res)] = expression.output_type
+            return res
+
+        @functools.singledispatchmethod
+        def _compile_expression(self, expression: ex.Expression) -> pl.Expr:
             raise NotImplementedError(f"Cannot compile expression: {expression}")
 
-        @compile_expression.register
+        @_compile_expression.register
         def _(
             self,
             expression: ex.ScalarConstantExpression,
@@ -159,21 +168,21 @@ if polars_installed:
 
             return pl.lit(value, _bigframes_dtype_to_polars_dtype(expression.dtype))
 
-        @compile_expression.register
+        @_compile_expression.register
         def _(
             self,
             expression: ex.DerefOp,
         ) -> pl.Expr:
             return pl.col(expression.id.sql)
 
-        @compile_expression.register
+        @_compile_expression.register
         def _(
             self,
             expression: ex.ResolvedDerefOp,
         ) -> pl.Expr:
             return pl.col(expression.id.sql)
 
-        @compile_expression.register
+        @_compile_expression.register
         def _(
             self,
             expression: ex.OpExpression,
@@ -478,9 +487,20 @@ if polars_installed:
             )
 
         @compile_op.register(json_ops.JSONDecode)
-        def _(self, op: ops.ScalarOp, input: pl.Expr) -> pl.Expr:
+        def _(self, op: json_ops.JSONDecode, input: pl.Expr) -> pl.Expr:
             assert isinstance(op, json_ops.JSONDecode)
             return input.str.json_decode(_DTYPE_MAPPING[op.to_type])
+
+        @compile_op.register(json_ops.ToJSON)
+        def _(self, op: json_ops.ToJSON, input: pl.Expr) -> pl.Expr:
+            from_type = self._expr_types.get(id(input))
+            if from_type in (
+                bigframes.dtypes.STRING_DTYPE,
+                bigframes.dtypes.JSON_DTYPE,
+            ):
+                return input
+            else:
+                return input.cast(pl.String())
 
         @compile_op.register(arr_ops.ToArrayOp)
         def _(self, op: ops.ToArrayOp, *inputs: pl.Expr) -> pl.Expr:

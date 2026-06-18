@@ -646,9 +646,17 @@ class Series:
         if errors not in ["raise", "null"]:
             raise ValueError("Argument 'errors' must be one of 'raise' or 'null'")
         dtype = bigframes.dtypes.bigframes_type(dtype)
-        return self._apply_unary_op(
-            bigframes.operations.AsTypeOp(to_type=dtype, safe=(errors == "null"))
-        )
+        safe = errors == "null"
+        if dtype == bigframes.dtypes.JSON_DTYPE:
+            return self._apply_unary_op(bigframes.operations.ToJSON(safe=safe))
+        elif self.dtype == bigframes.dtypes.JSON_DTYPE:
+            return self._apply_unary_op(
+                bigframes.operations.JSONDecode(to_type=dtype, safe=safe)
+            )
+        else:
+            return self._apply_unary_op(
+                bigframes.operations.AsTypeOp(to_type=dtype, safe=safe)
+            )
 
     def to_pandas(
         self,
