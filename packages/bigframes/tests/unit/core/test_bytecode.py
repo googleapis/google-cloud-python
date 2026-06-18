@@ -22,7 +22,7 @@ from bigframes.core.bytecode import py_to_expression
 
 
 def test_py_to_expression_simple_arithmetic():
-    func = lambda row: row.x + 1
+    func = lambda x: x + 1
     expr = py_to_expression(func)
     assert expr is not None
 
@@ -30,17 +30,8 @@ def test_py_to_expression_simple_arithmetic():
     assert expr == expected
 
 
-def test_py_to_expression_unpack_mode():
-    func = lambda col1, col2: col1 * col2
-    expr = py_to_expression(func, unpack_mode=True)
-    assert expr is not None
-
-    expected = ops.mul_op.as_expr(ex.free_var("col1"), ex.free_var("col2"))
-    assert expr == expected
-
-
 def test_py_to_expression_math_function():
-    func = lambda row: math.sin(row.x)
+    func = lambda x: math.sin(x)
     expr = py_to_expression(func)
     assert expr is not None
 
@@ -49,7 +40,7 @@ def test_py_to_expression_math_function():
 
 
 def test_py_to_expression_negation():
-    func = lambda row: -row.x
+    func = lambda x: -x
     expr = py_to_expression(func)
     assert expr is not None
 
@@ -58,7 +49,7 @@ def test_py_to_expression_negation():
 
 
 def test_py_to_expression_comparison():
-    func = lambda row: row.x == row.y
+    func = lambda x, y: x == y
     expr = py_to_expression(func)
     assert expr is not None
 
@@ -68,9 +59,9 @@ def test_py_to_expression_comparison():
 
 def test_py_to_expression_unsupported():
     # Control flow or unsupported structures should return None
-    def func_with_loop(row):
+    def func_with_loop(x):
         res = 0
-        for val in range(int(row.x)):
+        for val in range(int(x)):
             res += val
         return res
 
@@ -83,7 +74,7 @@ global_none_val = None
 
 def test_py_to_expression_global_none():
     # Test resolving a global variable explicitly set to None
-    func = lambda row: row.x == global_none_val
+    func = lambda x: x == global_none_val
     expr = py_to_expression(func)
     assert expr is not None
 
