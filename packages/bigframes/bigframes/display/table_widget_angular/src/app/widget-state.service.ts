@@ -21,9 +21,7 @@ export interface SortItem {
   ascending: boolean;
 }
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class WidgetStateService {
   readonly page = signal<number>(0);
   readonly pageSize = signal<number>(10);

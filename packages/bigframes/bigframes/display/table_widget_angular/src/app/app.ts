@@ -22,6 +22,7 @@ import { WidgetStateService } from './widget-state.service';
   selector: '[app-root]',
   standalone: true,
   imports: [],
+  providers: [WidgetStateService],
   template: `
     <div class="bigframes-widget" [class.bigframes-dark-mode]="isDarkMode()">
       @if (errorMessage()) {
