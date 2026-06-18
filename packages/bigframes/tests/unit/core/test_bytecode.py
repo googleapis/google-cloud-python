@@ -18,55 +18,55 @@ import pytest
 
 import bigframes.core.expression as ex
 import bigframes.operations as ops
-from bigframes.core.bytecode import dis_to_expr
+from bigframes.core.bytecode import py_to_expression
 
 
-def test_dis_to_expr_simple_arithmetic():
+def test_py_to_expression_simple_arithmetic():
     func = lambda row: row.x + 1
-    expr = dis_to_expr(func, unpack_mode=False)
+    expr = py_to_expression(func)
     assert expr is not None
 
     expected = ops.add_op.as_expr(ex.free_var("x"), ex.const(1))
     assert expr == expected
 
 
-def test_dis_to_expr_unpack_mode():
+def test_py_to_expression_unpack_mode():
     func = lambda col1, col2: col1 * col2
-    expr = dis_to_expr(func, unpack_mode=True)
+    expr = py_to_expression(func, unpack_mode=True)
     assert expr is not None
 
     expected = ops.mul_op.as_expr(ex.free_var("col1"), ex.free_var("col2"))
     assert expr == expected
 
 
-def test_dis_to_expr_math_function():
+def test_py_to_expression_math_function():
     func = lambda row: math.sin(row.x)
-    expr = dis_to_expr(func, unpack_mode=False)
+    expr = py_to_expression(func)
     assert expr is not None
 
     expected = ops.numeric_ops.sin_op.as_expr(ex.free_var("x"))
     assert expr == expected
 
 
-def test_dis_to_expr_negation():
+def test_py_to_expression_negation():
     func = lambda row: -row.x
-    expr = dis_to_expr(func, unpack_mode=False)
+    expr = py_to_expression(func)
     assert expr is not None
 
     expected = ops.numeric_ops.neg_op.as_expr(ex.free_var("x"))
     assert expr == expected
 
 
-def test_dis_to_expr_comparison():
+def test_py_to_expression_comparison():
     func = lambda row: row.x == row.y
-    expr = dis_to_expr(func, unpack_mode=False)
+    expr = py_to_expression(func)
     assert expr is not None
 
     expected = ops.comparison_ops.eq_op.as_expr(ex.free_var("x"), ex.free_var("y"))
     assert expr == expected
 
 
-def test_dis_to_expr_unsupported():
+def test_py_to_expression_unsupported():
     # Control flow or unsupported structures should return None
     def func_with_loop(row):
         res = 0
@@ -75,16 +75,16 @@ def test_dis_to_expr_unsupported():
         return res
 
     with pytest.raises(ValueError):
-        dis_to_expr(func_with_loop, unpack_mode=False)
+        py_to_expression(func_with_loop)
 
 
 global_none_val = None
 
 
-def test_dis_to_expr_global_none():
+def test_py_to_expression_global_none():
     # Test resolving a global variable explicitly set to None
     func = lambda row: row.x == global_none_val
-    expr = dis_to_expr(func, unpack_mode=False)
+    expr = py_to_expression(func)
     assert expr is not None
 
     expected = ops.comparison_ops.eq_op.as_expr(ex.free_var("x"), ex.const(None))

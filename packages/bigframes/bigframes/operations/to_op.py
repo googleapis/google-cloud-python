@@ -60,9 +60,9 @@ class CallableExpression(ex.Expression):
                 )
             )
 
-        from bigframes.core.bytecode import dis_to_expr
+        from bigframes.core.bytecode import py_to_expression
 
-        expr = dis_to_expr(func)
+        expr = py_to_expression(func)
         return cls(expr=expr, arg_specs=arg_specs)
 
     def apply(self, *args, **kwargs) -> ex.Expression:

@@ -55,6 +55,7 @@ def default_doctest_imports(doctest_namespace, polars_session_or_bpd):
     doctest_namespace["pa"] = pa
     doctest_namespace["bpd"] = polars_session_or_bpd
     bigframes._config.options.display.progress_bar = None
+    bigframes._config.options.experiments.enable_python_transpiler = True
 
     # TODO(tswast): Consider setting the numpy printoptions here for better
     # compatibility across numpy versions.
