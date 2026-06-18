@@ -173,14 +173,21 @@ def test_literal_null_type():
     assert got == "NULL"
 
 
-def test_cast_to_null_type_returns_flat_null():
-    assert sql.to_sql(sql.cast("abc", "NULL")) == "NULL"
-    assert sql.to_sql(sql.cast(None, "NULL")) == "NULL"
-    assert sql.to_sql(sql.cast("abc", "NULL", safe=True)) == "NULL"
+@pytest.mark.parametrize(
+    ("arg", "safe"),
+    (
+        pytest.param("abc", False, id="string"),
+        pytest.param(None, False, id="none"),
+        pytest.param("abc", True, id="safe_cast"),
+    ),
+)
+def test_cast_to_null_type_returns_flat_null(arg, safe):
+    assert sql.to_sql(sql.cast(arg, "NULL", safe=safe)) == "NULL"
 
 
 def test_nested_cast_to_null_type_is_flattened():
     import bigframes_vendored.sqlglot.expressions as sge
 
     nested = sge.Cast(this=sge.Cast(this=sge.Null(), to="NULL"), to="INT64")
+
     assert sql.to_sql(nested) == "CAST(NULL AS INT64)"
