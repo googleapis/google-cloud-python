@@ -1,0 +1,17 @@
+# -*- coding: utf-8 -*-
+# This requirements file is required for unit tests.
+# List all library dependencies and extras in this file.
+google-api-core
+google-auth
+grpcio
+proto-plus
+protobuf
+# cryptography is a direct dependency of google-auth
+cryptography
+# pytest-asyncio is needed for tests otherwise async tests are skipped
+pytest-asyncio
+# pytest/pytest-cov are needed for tests
+pytest
+pytest-cov
+aiohttp
+requests

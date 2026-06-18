@@ -14,7 +14,7 @@
 
 # Helpful notes for local usage:
 #   unset PYENV_VERSION
-#   pyenv local 3.14.1 3.13.10 3.12.11 3.11.4 3.10.12 3.9.17
+#   pyenv local 3.14.1 3.13.10 3.12.11 3.11.4 3.10.12
 #   PIP_INDEX_URL=https://pypi.org/simple nox
 
 from __future__ import absolute_import
@@ -29,6 +29,12 @@ import nox  # type: ignore
 from contextlib import contextmanager
 from os import path
 import shutil
+import sys
+
+# Add the current directory to sys.path so we can import _update_hashes.py
+sys.path.append(path.dirname(__file__))
+
+import _update_hashes
 
 
 nox.options.error_on_missing_interpreters = True
@@ -44,7 +50,6 @@ LINT_PATHS = ["docs", "gapic", "tests", "test_utils", "noxfile.py", "setup.py"]
 RUFF_EXCLUDES = "*golden*,*pb2.py,*pb2.pyi"
 
 ALL_PYTHON = (
-    "3.9",
     "3.10",
     "3.11",
     "3.12",
@@ -53,14 +58,19 @@ ALL_PYTHON = (
     "3.15",
 )
 
+PREVIEW_PYTHON = ALL_PYTHON[-1]
 NEWEST_PYTHON = ALL_PYTHON[-2]
+
+
+def install_requirements(session):
+    """Install requirements from the appropriate requirements file."""
+    requirements_file = f"requirements-{session.python}.txt"
+    session.install("-r", requirements_file)
 
 
 @nox.session(python=ALL_PYTHON)
 def unit(session):
     """Run the unit test suite."""
-    if session.python == "3.9":
-        session.skip("Skipping Python 3.9 unit tests temporarily.")
     session.install(
         # TODO(https://github.com/googleapis/gapic-generator-python/issues/2478):
         # Temporarily pin coverage to 7.11.0
@@ -73,7 +83,8 @@ def unit(session):
         "grpcio-status",
         "proto-plus",
     )
-    session.install("-e", ".")
+    install_requirements(session)
+    session.install("-e", ".", "--no-deps")
     session.run(
         "py.test",
         *(
@@ -142,16 +153,20 @@ class FragTester:
             if self.use_ads_templates:
                 self.session.install(tmp_dir, "-e", ".", "-qqq")
             else:
-                # Use the constraints file for the specific python runtime version.
+                # Use the requirements file for the specific python runtime version.
                 # We do this to make sure that we're testing against the lowest
                 # supported version of a dependency.
                 # This is needed to recreate the issue reported in
                 # https://github.com/googleapis/gapic-generator-python/issues/1748
-                # The ads templates do not have constraints files.
-                constraints_path = str(
-                    f"{tmp_dir}/testing/constraints-{self.session.python}.txt"
+                # The ads templates do not have requirements files.
+                requirements_path = str(
+                    f"{tmp_dir}/testing/requirements-{self.session.python}.txt"
                 )
-                self.session.install(tmp_dir, "-e", ".", "-qqq", "-r", constraints_path)
+                self.session.install(
+                    "-r",
+                    requirements_path,
+                )
+                self.session.install(tmp_dir, "-e", ".", "--no-deps")
 
             # Run the fragment's generated unit tests.
             # Don't bother parallelizing them: we already parallelize
@@ -181,7 +196,14 @@ def fragment(session, use_ads_templates=False):
         "pytest-asyncio",
         "grpcio-tools",
     )
-    session.install("-e", ".")
+    requirements_path = str(
+        f"testing/requirements-{session.python}.txt"
+    )
+    session.install(
+        "-r",
+        requirements_path,
+    )
+    session.install("-e", ".", "--no-deps")
 
     # The specific failure is `Plugin output is unparseable`
     if session.python == "3.10":
@@ -245,7 +267,8 @@ def showcase_library(
     session.log("-" * 70)
 
     # Install gapic-generator-python
-    session.install("-e", ".")
+    install_requirements(session)
+    session.install("-e", ".", "--no-deps")
 
     # Install grpcio-tools for protoc
     session.install("grpcio-tools")
@@ -352,33 +375,23 @@ def showcase_library(
 
         # Install the generated showcase library.
         if templates == "DEFAULT":
-            # Use the constraints file for the specific python runtime version.
+            # Use the requirements file for the specific python runtime version.
             # We do this to make sure that we're testing against the lowest
             # supported version of a dependency.
             # This is needed to recreate the issue reported in
             # https://github.com/googleapis/google-cloud-python/issues/12254
-            constraints_path = str(
-                f"{tmp_dir}/testing/constraints-{session.python}.txt"
+            requirements_path = str(
+                f"{tmp_dir}/testing/requirements-{session.python}.txt"
             )
-            extras = ""
-            if rest_async_io_enabled:
-                async_rest_constraints_path = str(
-                    f"{tmp_dir}/testing/constraints-{session.python}-async-rest.txt"
-                )
-                if os.path.exists(async_rest_constraints_path):
-                    # use async-rest constraints if available
-                    constraints_path = async_rest_constraints_path
-                else:
-                    session.log(
-                        f"{async_rest_constraints_path} not found. Using base constraints file"
-                    )
-                extras = "[async_rest]"
-
-            session.install("-e", f"{tmp_dir}{extras}", "-r", constraints_path)
+            session.install(
+                "-r",
+                requirements_path,
+            )
+            session.install(tmp_dir, "--no-deps")
         else:
-            # The ads templates do not have constraints files.
+            # The ads templates do not have requirements files.
             # See https://github.com/googleapis/gapic-generator-python/issues/1788
-            # Install the library without a constraints file.
+            # Install the library without a requirements file.
             session.install("-e", tmp_dir)
 
         yield tmp_dir
@@ -701,6 +714,18 @@ def docfx(session):
     )
 
 
+@nox.session(python=ALL_PYTHON, venv_backend="uv")
+def update_hashes(session):
+    """Update the requirements hashes for the current python version.
+
+    To run for all versions, ensure they are in your PATH, e.g.:
+    export PYENV_VERSION=3.10:3.11:3.12:3.13:3.14:3.15
+    nox -s update_hashes
+    """
+    # Always update standard hashes for the current version
+    _update_hashes.update(python_version=session.python)
+
+
 @nox.session(python=ALL_PYTHON)
 def mypy(session):
     """Perform typecheck analysis."""
@@ -823,7 +848,7 @@ def system(session):
     session.skip(f"system session is not yet implemented for gapic-generator-python.")
 
 
-@nox.session(python=NEWEST_PYTHON)
+@nox.session(python=PREVIEW_PYTHON)
 @nox.parametrize(
     "protobuf_implementation",
     ["python", "upb"],
@@ -837,7 +862,7 @@ def prerelease_deps(session, protobuf_implementation):
     session.skip("prerelease_deps session is not yet implemented for gapic-generator-python.")
 
 
-@nox.session(python=NEWEST_PYTHON)
+@nox.session(python=PREVIEW_PYTHON)
 @nox.parametrize(
     "protobuf_implementation",
     ["python", "upb"],

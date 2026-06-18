@@ -1,4 +1,4 @@
-# This constraints file is used to check that lower bounds
+# This requirements file is used to check that lower bounds
 # are correct in setup.py
 # List all library dependencies and extras in this file,
 # pinning their versions to their lower bounds.
@@ -9,6 +9,11 @@ google-auth==2.14.1
 grpcio==1.59.0
 proto-plus==1.26.1
 protobuf==6.33.5
+# pytest-asyncio is needed for tests otherwise async tests are skipped
+pytest-asyncio==1.3.0
+# pytest/pytest-cov are needed for tests
+pytest==9.0.3
+pytest-cov==7.1.0
 google-cloud-access-context-manager==0.2.2
 google-cloud-os-config==1.20.1
 grpc-google-iam-v1==0.14.2

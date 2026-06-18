@@ -1,17 +1,29 @@
+{% set rest_async_io_enabled = api.all_library_settings[api.naming.proto_package].python_settings.experimental_features.rest_async_io_enabled %}
 {% from '_pypi_packages.j2' import pypi_packages %}
-# This constraints file is used to check that lower bounds
+# This requirements file is used to check that lower bounds
 # are correct in setup.py
 # List all library dependencies and extras in this file,
 # pinning their versions to their lower bounds.
 # For example, if setup.py has "google-cloud-foo >= 1.14.0, < 2.0.0",
 # then this file should have google-cloud-foo==1.14.0
 google-api-core==2.24.2
+{% if rest_async_io_enabled %}
+google-auth==2.35.0
+aiohttp==3.8.0
+requests==2.20.0
+{% else %}
 google-auth==2.14.1
+{% endif %}
 grpcio==1.59.0
 proto-plus==1.26.1
 protobuf==6.33.5
+# pytest-asyncio is needed for tests otherwise async tests are skipped
+pytest-asyncio==1.3.0
+# pytest/pytest-cov are needed for tests
+pytest==9.0.3
+pytest-cov==7.1.0
 {% for package_tuple, package_info in pypi_packages.items() %}
-{# Quick check to make sure `package_info.package_name` is not the package being generated so we don't circularly include this package in its own constraints file. #}
+{# Quick check to make sure `package_info.package_name` is not the package being generated so we don't circularly include this package in its own requirements file. #}
 {% if api.naming.warehouse_package_name != package_info.package_name %}
 {% if api.requires_package(package_tuple) %}
 {{ package_info.package_name }}=={{ package_info.lower_bound }}
