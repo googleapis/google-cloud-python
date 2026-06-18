@@ -19,6 +19,7 @@ import typing
 
 import bigframes.core.expression as ex
 from bigframes._config import options
+from bigframes.exceptions import TranspilationError
 from bigframes.functions import Udf
 from bigframes.functions.udf_def import BigqueryUdf, PythonUdf
 from bigframes.operations import base_ops, remote_function_ops
@@ -95,7 +96,10 @@ class CallableExpression:
 
         from bigframes.core.bytecode import py_to_expression
 
-        expr = py_to_expression(func)
+        try:
+            expr = py_to_expression(func)
+        except Exception as ex:
+            raise TranspilationError(f"Failed to transpile function {func}") from ex
         return cls(expr=expr, arg_specs=arg_specs)
 
     def apply(self, *args, **kwargs) -> ex.Expression:

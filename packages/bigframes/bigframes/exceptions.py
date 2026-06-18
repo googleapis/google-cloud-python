@@ -75,6 +75,10 @@ class MaximumResultRowsExceeded(RuntimeError):
     """Maximum number of rows in the result was exceeded."""
 
 
+class TranspilationError(RuntimeError):
+    """Failed to transpile a Python function to BigFrames Expression."""
+
+
 class TimeTravelDisabledWarning(Warning):
     """A query was reattempted without time travel."""
 

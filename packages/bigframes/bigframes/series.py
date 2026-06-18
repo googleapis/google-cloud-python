@@ -2065,33 +2065,19 @@ class Series:
                 " are supported."
             )
 
-
         # Highest priority: try to map directly to an operator, for eg numpy
         # ufuncs, or simple arithmetic/logic operators.
         bf_op = python_ops.python_callable_to_op(func)
         if bf_op and isinstance(bf_op, ops.UnaryOp):
             return self._apply_unary_op(bf_op)
 
-        # "compat": try by row, and then fall back to passing whole series if that fails
-        if by_row: 
-            try:
-                return self._apply_by_row(func)
-            except Exception as ex:
-                raise ValueError(
-                    "You have passed a function as-is. If your intention is to "
-                    "apply this function in a vectorized way (i.e. to the "
-                    "entire Series as a whole, and you are sure that it "
-                    "performs only the operations that are implemented for a "
-                    "Series (e.g. a chain of arithmetic/logical operations, "
-                    "such as `def foo(s): return s % 2 == 1`), please also "
-                    "specify `by_row=False`. If your function contains "
-                    "arbitrary code, it can only be applied to every element "
-                    "in the Series individually, in which case you must "
-                    "convert it to a BigFrames BigQuery function using "
-                    "`bigframes.pandas.udf`, "
-                    "or `bigframes.pandas.remote_function` before passing."
-                )
+        if by_row:
+            from bigframes._config import options
 
+            enable_transpile = options.experiments.enable_python_transpiler
+            return self._apply_by_row(
+                func, args=args, transpile_enabled=enable_transpile
+            )
         try:
             return func(self)  # type: ignore
         except Exception as ex:
@@ -2102,20 +2088,44 @@ class Series:
                 ex.message += f"\n{_bigquery_function_recommendation_message}"
             raise
 
-    def _apply_by_row(self, func: typing.Callable, args: typing.Tuple = ()) -> Series:
-        from bigframes._config import options
+    def _apply_by_row(
+        self,
+        func: typing.Callable,
+        args: typing.Tuple = (),
+        transpile_enabled: bool = False,
+    ) -> Series:
+        """
+        Apply callable or deployed udf row-wise on the series.
+        """
+        if not callable(func):
+            raise ValueError(
+                "Expected a callable function. If you meant to use a BigQuery function, please wrap it with bigframes.pandas.udf(...)"
+            )
+        try:
+            expr = ops.func_to_expr(func)
+        # We get this message even if transpiler could have in theory translated it.
+        except Exception:
+            raise ValueError(
+                "You have passed a functi1on as-is. If your intention is to "
+                "apply this function in a vectorized way (i.e. to the "
+                "entire Series as a whole, and you are sure that it "
+                "performs only the operations that are implemented for a "
+                "Series (e.g. a chain of arithmetic/logical operations, "
+                "such as `def foo(s): return s % 2 == 1`), please also "
+                "specify `by_row=False`. If your function contains "
+                "arbitrary code, it can only be applied to every element "
+                "in the Series individually, in which case you must "
+                "convert it to a BigFrames BigQuery function using "
+                "`bigframes.pandas.udf`, "
+                "or `bigframes.pandas.remote_function` before passing."
+            )
 
-        if isinstance(func, bigframes.functions.Udf) or (
-            options.experiments.enable_python_transpiler and callable(func)
-        ):
-            # We are working with bigquery function at this point
-            result_series = self._apply_callable_expr(ops.func_to_expr(func), args)
-            # TODO(jialuo): Investigate why `_apply_nary_op` drops the series
-            # `name`. Manually reassigning it here as a temporary fix.
-            result_series.name = self.name
+        result_series = self._apply_callable_expr(expr, args)
+        # TODO(jialuo): Investigate why `_apply_nary_op` drops the series
+        # `name`. Manually reassigning it here as a temporary fix.
+        result_series.name = self.name
 
-            return result_series
-        raise ValueError(f"Cannot apply function {func} to Series {self}")
+        return result_series
 
     def combine(
         self,
@@ -2504,7 +2514,10 @@ class Series:
             map_df = map_df.set_index("keys")
         elif callable(arg):
             # This is for remote function and managed funtion.
-            return self.apply(arg)
+            from bigframes._config import options
+
+            enable_transpile = options.experiments.enable_python_transpiler
+            return self._apply_by_row(arg, transpile_enabled=enable_transpile)
         else:
             # Mirroring pandas, call the uncallable object
             arg()  # throws TypeError: object is not callable
