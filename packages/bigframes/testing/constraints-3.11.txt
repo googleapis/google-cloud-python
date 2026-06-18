@@ -252,7 +252,7 @@ jsonschema-specifications==2025.4.1
 jupyter-client==6.1.12
 jupyter-console==6.1.0
 jupyter-leaflet==0.20.0
-jupyter-server==1.16.0
+jupyter-server==2.20.0
 jupyter_core==5.8.1
 jupyterlab_pygments==0.3.0
 jupyterlab_widgets==3.0.15
