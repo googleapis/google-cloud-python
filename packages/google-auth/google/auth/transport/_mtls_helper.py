@@ -23,7 +23,7 @@ import re
 import subprocess
 import sys
 import tempfile
-from typing import cast, Generator, Optional, Tuple, Union
+from typing import cast, Generator, List, Optional, Tuple, Union
 
 from google.auth import _agent_identity_utils
 from google.auth import environment_vars
@@ -219,7 +219,7 @@ def _memfd_cert_key_paths(
             the active descriptors (e.g., '/proc/self/fd/3').
     """
     cleanup_fds = []
-    paths = []
+    paths: List[Optional[str]] = []
 
     try:
         try:
@@ -276,7 +276,7 @@ def _tempfile_cert_key_paths(
 
     cert_path, key_path = None, None
     try:
-        paths = []
+        paths: List[Optional[str]] = []
         for data in [cert_data, key_data]:
             if data is not None:
                 fd, path = tempfile.mkstemp(dir=tmp_dir)
