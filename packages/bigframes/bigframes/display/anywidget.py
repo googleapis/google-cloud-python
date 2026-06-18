@@ -157,12 +157,17 @@ class TableWidget(_WIDGET_BASE):
     @traitlets.observe("start_execution")
     def _on_start_execution(self, change: dict[str, Any]):
         if change["new"]:
-            import tornado.ioloop
+            import asyncio
 
             try:
-                loop = tornado.ioloop.IOLoop.current().asyncio_loop
-            except Exception:
-                loop = None
+                loop = asyncio.get_running_loop()
+            except RuntimeError:
+                try:
+                    import tornado.ioloop
+
+                    loop = tornado.ioloop.IOLoop.current().asyncio_loop
+                except Exception:
+                    loop = None
 
             def run_execution():
                 try:
