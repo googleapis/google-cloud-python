@@ -49,5 +49,6 @@
       "component": "sqlalchemy-bigquery"
     }
   },
-  "release-type": "python-librarian"
+  "release-type": "python-librarian",
+  "separate-pull-requests": true
 }
