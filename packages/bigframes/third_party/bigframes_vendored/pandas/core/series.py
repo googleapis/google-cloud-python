@@ -5631,6 +5631,17 @@ class Series(NDFrame):  # type: ignore[misc]
             3    rAbbIt
             dtype: string
 
+        With experimental Python Transpiler enabled, you can use some lambda functions without
+        deploying them as remote functions:
+
+            >>> bpd.options.experiments.enable_python_transpiler = True
+            >>> s.map(lambda val: val + "fish")
+            0       catfish
+            1       dogfish
+            2          <NA>
+            3    rabbitfish
+            dtype: string
+
         Args:
             arg (function, Mapping, Series):
                 remote function, collections.abc.Mapping subclass or Series
