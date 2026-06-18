@@ -13,7 +13,6 @@
 # limitations under the License.
 
 import datetime
-import sys
 import threading
 import time
 from unittest import mock
@@ -723,9 +722,6 @@ def test_batch_done_callback_called_on_publish_response_invalid():
 
 
 # Refer https://opentelemetry.io/docs/languages/python/#version-support
-@pytest.mark.skipif(
-    sys.version_info < (3, 8), reason="Open Telemetry requires python3.8 or higher"
-)
 def test_open_telemetry_commit_publish_rpc_span_none(span_exporter):
     """
     Test scenario where OpenTelemetry is enabled, publish RPC
@@ -771,9 +767,6 @@ def test_open_telemetry_commit_publish_rpc_span_none(span_exporter):
 
 
 # Refer https://opentelemetry.io/docs/languages/python/#version-support
-@pytest.mark.skipif(
-    sys.version_info < (3, 8), reason="Open Telemetry requires python3.8 or higher"
-)
 def test_open_telemetry_commit_publish_rpc_exception(span_exporter):
     TOPIC = "projects/projectID/topics/topicID"
     batch = create_batch(topic=TOPIC, enable_open_telemetry=True)
@@ -819,9 +812,6 @@ def test_open_telemetry_commit_publish_rpc_exception(span_exporter):
 
 
 # Refer https://opentelemetry.io/docs/languages/python/#version-support
-@pytest.mark.skipif(
-    sys.version_info < (3, 8), reason="Open Telemetry requires python3.8 or higher"
-)
 def test_opentelemetry_commit_sampling(span_exporter):
     TOPIC = "projects/projectID/topics/topic"
     batch = create_batch(
@@ -886,9 +876,6 @@ def test_opentelemetry_commit_sampling(span_exporter):
         assert span.events[1].name == "publish end"
 
 
-@pytest.mark.skipif(
-    sys.version_info < (3, 8), reason="Open Telemetry requires python3.8 or higher"
-)
 def test_opentelemetry_commit(span_exporter):
     TOPIC = "projects/projectID/topics/topic"
     batch = create_batch(
