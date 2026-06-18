@@ -42,6 +42,7 @@ __protobuf__ = proto.module(
         "ConversationReference",
         "ClientManagedResourceContext",
         "Message",
+        "LookerSettings",
         "UserMessage",
         "SystemMessage",
         "TextMessage",
@@ -179,17 +180,34 @@ class ParameterizedSecureViewParameters(proto.Message):
     generation and query execution.
 
     Attributes:
-        parameters (MutableMapping[str, str]):
-            Optional. Named parameters for Parameterized Secure Views
-            (PSV). The map keys are parameter names (e.g.,
-            ``"user_id"``), and values are the corresponding parameter
-            values (e.g., ``"123"``).
+        parameters (MutableSequence[google.cloud.geminidataanalytics_v1beta.types.ParameterizedSecureViewParameters.Parameter]):
+            Optional. Named parameters for Parameterized
+            Secure Views (PSV).
     """
 
-    parameters: MutableMapping[str, str] = proto.MapField(
-        proto.STRING,
-        proto.STRING,
+    class Parameter(proto.Message):
+        r"""Represents a single parameter for Parameterized Secure Views.
+
+        Attributes:
+            key (str):
+                Required. The parameter key (e.g., ``"user_id"``).
+            value (str):
+                Required. The parameter value (e.g., ``"123"``).
+        """
+
+        key: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        value: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+
+    parameters: MutableSequence[Parameter] = proto.RepeatedField(
+        proto.MESSAGE,
         number=1,
+        message=Parameter,
     )
 
 
@@ -356,11 +374,10 @@ class ListMessagesRequest(proto.Message):
             Required. The conversation to list messages under. Format:
             ``projects/{project}/locations/{location}/conversations/{conversation_id}``
         page_size (int):
-            Optional. Requested page size. Server may
-            return fewer items than requested. The max page
-            size is 100. All larger page sizes will be
-            coerced to 100. If unspecified, server will pick
-            50 as an approperiate default.
+            Optional. Requested page size. Server may return fewer items
+            than requested. The max page size is ``100``. All larger
+            page sizes will be coerced to ``100``. If unspecified,
+            server will pick ``50`` as an appropriate default.
         page_token (str):
             Optional. A token identifying a page of
             results the server should return.
@@ -479,17 +496,35 @@ class ChatRequest(proto.Message):
             conversations and agents resources.
 
             This field is a member of `oneof`_ ``context_provider``.
+        looker_settings (google.cloud.geminidataanalytics_v1beta.types.LookerSettings):
+            Optional. Looker specific settings.
+
+            This field is a member of `oneof`_ ``datasource_settings``.
         project (str):
-            Optional. The Google Cloud project to be used
-            for quota and billing.
+            Optional. Deprecated: Use ``parent`` field instead. The
+            Google Cloud project to be used for quota and billing.
         parent (str):
             Required. The parent value for chat request. Pattern:
             ``projects/{project}/locations/{location}``
         messages (MutableSequence[google.cloud.geminidataanalytics_v1beta.types.Message]):
             Required. Content of current conversation.
+        credentials (google.cloud.geminidataanalytics_v1beta.types.Credentials):
+            Optional. The credentials to use when calling the data
+            source(s) specified in the context.
+
+            This field can be used to provide credentials for various
+            data sources. For example, when connecting to Looker, it
+            currently supports both OAuth token and API key-based
+            credentials, as described in `Authentication with an
+            SDK <https://cloud.google.com/looker/docs/api-auth#authentication_with_an_sdk>`__.
         thinking_mode (google.cloud.geminidataanalytics_v1beta.types.ChatRequest.ThinkingMode):
             Optional. The thinking mode to use for the agent loop.
             Defaults to THINKING_MODE_UNSPECIFIED if not specified.
+        model (google.cloud.geminidataanalytics_v1beta.types.ChatRequest.Model):
+            Optional. The model to use for the agent loop
+            when processing the request. This setting only
+            has an effect when context.options.model is not
+            set.
     """
 
     class ThinkingMode(proto.Enum):
@@ -508,6 +543,22 @@ class ChatRequest(proto.Message):
         THINKING_MODE_UNSPECIFIED = 0
         FAST = 1
         THINKING = 2
+
+    class Model(proto.Enum):
+        r"""Model selection for the agent.
+
+        Values:
+            MODEL_UNSPECIFIED (0):
+                No model specified. The default model will be
+                used.
+            LATEST_GA_MODEL (1):
+                Use the most up-to-date non-preview model.
+                This may constrain certain request level
+                settings.
+        """
+
+        MODEL_UNSPECIFIED = 0
+        LATEST_GA_MODEL = 1
 
     inline_context: gcg_context.Context = proto.Field(
         proto.MESSAGE,
@@ -533,6 +584,12 @@ class ChatRequest(proto.Message):
         oneof="context_provider",
         message="ClientManagedResourceContext",
     )
+    looker_settings: "LookerSettings" = proto.Field(
+        proto.MESSAGE,
+        number=13,
+        oneof="datasource_settings",
+        message="LookerSettings",
+    )
     project: str = proto.Field(
         proto.STRING,
         number=1,
@@ -546,10 +603,20 @@ class ChatRequest(proto.Message):
         number=2,
         message="Message",
     )
+    credentials: gcg_credentials.Credentials = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=gcg_credentials.Credentials,
+    )
     thinking_mode: ThinkingMode = proto.Field(
         proto.ENUM,
         number=9,
         enum=ThinkingMode,
+    )
+    model: Model = proto.Field(
+        proto.ENUM,
+        number=11,
+        enum=Model,
     )
 
 
@@ -561,8 +628,8 @@ class DataAgentContext(proto.Message):
             Required. The name of the data agent
             resource.
         credentials (google.cloud.geminidataanalytics_v1beta.types.Credentials):
-            Optional. The credentials to use when calling the Looker
-            data source.
+            Optional. Deprecated: Use credentials in ChatRequest. The
+            credentials to use when calling the Looker data source.
 
             Currently supports both OAuth token and API key-based
             credentials, as described in `Authentication with an
@@ -719,6 +786,28 @@ class Message(proto.Message):
     )
 
 
+class LookerSettings(proto.Message):
+    r"""Message to hold Looker specific custom settings.
+
+    Attributes:
+        enable_dev_mode (bool):
+            Optional. Whether to operate in Looker's
+            Development Mode. If true, the API session will
+            be switched to the "dev" workspace, allowing
+            interaction with LookML changes in the user's
+            development branch. If false or unset, the
+            session remains in the default state (Production
+            Mode).
+            See
+            https://cloud.google.com/looker/docs/dev-mode-prod-mode.
+    """
+
+    enable_dev_mode: bool = proto.Field(
+        proto.BOOL,
+        number=1,
+    )
+
+
 class UserMessage(proto.Message):
     r"""A message from the user that is interacting with the system.
 
@@ -741,7 +830,7 @@ class UserMessage(proto.Message):
 class SystemMessage(proto.Message):
     r"""A message from the system in response to the user. This
     message can also be a message from the user as historical
-    context for multiturn conversations with the system.
+    context for multi-turn conversations with the system.
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -782,8 +871,9 @@ class SystemMessage(proto.Message):
 
             This field is a member of `oneof`_ ``kind``.
         clarification (google.cloud.geminidataanalytics_v1beta.types.ClarificationMessage):
-            Optional. A message containing clarification
-            questions.
+            Optional. Deprecated: Use TextMessage with
+            TextType.FINAL_RESPONSE instead. A message containing
+            clarification questions.
 
             This field is a member of `oneof`_ ``kind``.
         group_id (int):
@@ -793,6 +883,9 @@ class SystemMessage(proto.Message):
             together in the UI.
 
             This field is a member of `oneof`_ ``_group_id``.
+        citation (google.cloud.geminidataanalytics_v1beta.types.Citation):
+            Output only. Citation information for the
+            system message.
     """
 
     text: "TextMessage" = proto.Field(
@@ -848,6 +941,11 @@ class SystemMessage(proto.Message):
         number=12,
         optional=True,
     )
+    citation: gcg_context.Citation = proto.Field(
+        proto.MESSAGE,
+        number=15,
+        message=gcg_context.Citation,
+    )
 
 
 class TextMessage(proto.Message):
@@ -880,12 +978,17 @@ class TextMessage(proto.Message):
                 from the agent's internal thought process (``THOUGHT``) and
                 the final answer to the user (``FINAL_RESPONSE``). These
                 messages provide insight into the agent's actions.
+            FOLLOWUP_QUESTIONS (4):
+                The text is a list of follow-up questions
+                suggested. Each item in parts is a follow-up
+                question.
         """
 
         TEXT_TYPE_UNSPECIFIED = 0
         FINAL_RESPONSE = 1
         THOUGHT = 2
         PROGRESS = 3
+        FOLLOWUP_QUESTIONS = 4
 
     parts: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
@@ -993,13 +1096,18 @@ class DataMessage(proto.Message):
 
             This field is a member of `oneof`_ ``kind``.
         generated_looker_query (google.cloud.geminidataanalytics_v1beta.types.LookerQuery):
-            Looker Query generated by the system to
-            retrieve data. Deprecated: generated looker
-            query is now under DataQuery.looker.
+            Deprecated: generated looker query is now
+            under DataQuery.looker. Looker Query generated
+            by the system to retrieve data.
 
             This field is a member of `oneof`_ ``kind``.
         big_query_job (google.cloud.geminidataanalytics_v1beta.types.BigQueryJob):
             A BigQuery job executed by the system to
+            retrieve data.
+
+            This field is a member of `oneof`_ ``kind``.
+        matched_query (google.cloud.geminidataanalytics_v1beta.types.MatchedQuery):
+            A pre-existing query that was matched to
             retrieve data.
 
             This field is a member of `oneof`_ ``kind``.
@@ -1033,6 +1141,12 @@ class DataMessage(proto.Message):
         number=5,
         oneof="kind",
         message="BigQueryJob",
+    )
+    matched_query: gcg_context.MatchedQuery = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        oneof="kind",
+        message=gcg_context.MatchedQuery,
     )
 
 
@@ -1463,57 +1577,71 @@ class ErrorMessage(proto.Message):
 
 
 class ClarificationQuestion(proto.Message):
-    r"""Represents a single question to the user to help clarify
-    their query.
+    r"""Deprecated: Use TextMessage with TextType.FINAL_RESPONSE instead.
+    Represents a single question to the user to help clarify their
+    query.
 
     Attributes:
         question (str):
-            Required. The natural language question to
-            ask the user.
+            Required. Deprecated: The parent message is
+            deprecated. The natural language question to ask
+            the user.
         selection_mode (google.cloud.geminidataanalytics_v1beta.types.ClarificationQuestion.SelectionMode):
-            Required. The selection mode for this
+            Required. Deprecated: The parent message is
+            deprecated. The selection mode for this
             question.
         options (MutableSequence[str]):
-            Required. A list of distinct options for the
+            Required. Deprecated: The parent message is
+            deprecated. A list of distinct options for the
             user to choose from. The number of options is
             limited to a maximum of 5.
         clarification_question_type (google.cloud.geminidataanalytics_v1beta.types.ClarificationQuestion.ClarificationQuestionType):
-            Optional. The type of clarification question.
+            Optional. Deprecated: The parent message is
+            deprecated. The type of clarification question.
     """
 
     class SelectionMode(proto.Enum):
-        r"""The selection mode for the clarification question.
+        r"""Deprecated: The parent message is deprecated.
+        The selection mode for the clarification question.
 
         Values:
             SELECTION_MODE_UNSPECIFIED (0):
+                Deprecated: The parent message is deprecated.
                 Unspecified selection mode.
             SINGLE_SELECT (1):
+                Deprecated: The parent message is deprecated.
                 The user can select only one option.
             MULTI_SELECT (2):
+                Deprecated: The parent message is deprecated.
                 The user can select multiple options.
         """
 
+        _pb_options = {"deprecated": True}
         SELECTION_MODE_UNSPECIFIED = 0
         SINGLE_SELECT = 1
         MULTI_SELECT = 2
 
     class ClarificationQuestionType(proto.Enum):
-        r"""The type of clarification question.
+        r"""Deprecated: The parent message is deprecated.
+        The type of clarification question.
         This enum may be extended with new values in the future.
 
         Values:
             CLARIFICATION_QUESTION_TYPE_UNSPECIFIED (0):
+                Deprecated: The parent message is deprecated.
                 Unspecified clarification question type.
             FILTER_VALUES (1):
-                The clarification question is for filter
-                values.
+                Deprecated: The parent message is deprecated.
+                The clarification question is for filter values.
             FIELDS (2):
-                The clarification question is for data
-                fields. This is a generic term encompassing SQL
-                columns, Looker fields (dimensions/measures), or
-                nested data structure properties.
+                Deprecated: The parent message is deprecated.
+                The clarification question is for data fields.
+                This is a generic term encompassing SQL columns,
+                Looker fields (dimensions/measures), or nested
+                data structure properties.
         """
 
+        _pb_options = {"deprecated": True}
         CLARIFICATION_QUESTION_TYPE_UNSPECIFIED = 0
         FILTER_VALUES = 1
         FIELDS = 2
@@ -1539,13 +1667,15 @@ class ClarificationQuestion(proto.Message):
 
 
 class ClarificationMessage(proto.Message):
-    r"""A message of questions to help clarify the user's query. This
-    is returned when the system cannot confidently answer the user's
+    r"""Deprecated: Use TextMessage with TextType.FINAL_RESPONSE instead. A
+    message of questions to help clarify the user's query. This is
+    returned when the system cannot confidently answer the user's
     question.
 
     Attributes:
         questions (MutableSequence[google.cloud.geminidataanalytics_v1beta.types.ClarificationQuestion]):
-            Required. A batch of clarification questions
+            Required. Deprecated: The parent message is
+            deprecated. A batch of clarification questions
             to ask the user.
     """
 

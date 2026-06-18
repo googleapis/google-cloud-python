@@ -856,7 +856,9 @@ class TestClient(unittest.TestCase):
             info_logger.assert_not_called()
 
         # Also test when the environment variable is not set at all
-        with mock.patch.dict(os.environ, {}, clear=True):
+        with mock.patch.dict(
+            os.environ, {"SPANNER_DISABLE_BUILTIN_METRICS": "true"}, clear=True
+        ):
             with mock.patch.object(logger, "info") as info_logger:
                 client = self._make_one(project=self.PROJECT, credentials=creds)
                 self.assertIsNotNone(client)

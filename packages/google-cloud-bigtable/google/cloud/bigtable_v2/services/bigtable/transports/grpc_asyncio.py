@@ -373,11 +373,13 @@ class BigtableGrpcAsyncIOTransport(BigtableTransport):
     ]:
         r"""Return a callable for the sample row keys method over gRPC.
 
-        Returns a sample of row keys in the table. The
-        returned row keys will delimit contiguous sections of
-        the table of approximately equal size, which can be used
-        to break up the data for distributed tasks like
-        mapreduces.
+        Returns a sample of row keys in the table. The returned row keys
+        will delimit contiguous sections of the table of approximately
+        equal size, which can be used to break up the data for
+        distributed tasks like mapreduces.
+
+        If a ``row_range`` is provided in the request, the returned
+        samples will be restricted to the specified range.
 
         Returns:
             Callable[[~.SampleRowKeysRequest],

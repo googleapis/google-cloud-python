@@ -252,6 +252,28 @@ class ConfidentialComputingClient(metaclass=ConfidentialComputingClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def instance_path(
+        project: str,
+        zone: str,
+        instance: str,
+    ) -> str:
+        """Returns a fully-qualified instance string."""
+        return "projects/{project}/zones/{zone}/instances/{instance}".format(
+            project=project,
+            zone=zone,
+            instance=instance,
+        )
+
+    @staticmethod
+    def parse_instance_path(path: str) -> Dict[str, str]:
+        """Parses a instance path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/zones/(?P<zone>.+?)/instances/(?P<instance>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def common_billing_account_path(
         billing_account: str,
     ) -> str:

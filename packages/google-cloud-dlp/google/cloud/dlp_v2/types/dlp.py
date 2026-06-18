@@ -68,6 +68,8 @@ __protobuf__ = proto.module(
         "ContentMetadata",
         "Conversation",
         "ConversationMessage",
+        "BatchContentItem",
+        "StringValueBatch",
         "Table",
         "KeyValueMetadataProperty",
         "InspectResult",
@@ -75,6 +77,7 @@ __protobuf__ = proto.module(
         "Location",
         "ContentLocation",
         "ConversationLocation",
+        "BatchContentLocation",
         "MetadataLocation",
         "StorageMetadataLabel",
         "KeyValueMetadataLabel",
@@ -1645,6 +1648,10 @@ class ContentItem(proto.Message):
             chronological order.
 
             This field is a member of `oneof`_ ``data_item``.
+        batch_content_item (google.cloud.dlp_v2.types.BatchContentItem):
+            Represents a batch of items to inspect.
+
+            This field is a member of `oneof`_ ``data_item``.
         content_metadata (google.cloud.dlp_v2.types.ContentMetadata):
             User provided metadata for the content.
     """
@@ -1671,6 +1678,12 @@ class ContentItem(proto.Message):
         number=7,
         oneof="data_item",
         message="Conversation",
+    )
+    batch_content_item: "BatchContentItem" = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        oneof="data_item",
+        message="BatchContentItem",
     )
     content_metadata: "ContentMetadata" = proto.Field(
         proto.MESSAGE,
@@ -1725,7 +1738,7 @@ class ConversationMessage(proto.Message):
         message_type (google.cloud.dlp_v2.types.ConversationMessage.MessageType):
             The type of message.
         participant_id (str):
-            Optional. The identifier of the participant, for example,
+            Optional. The identifier of the participant, for example
             'test-user' or 'gemini'. The participant ID can contain
             lowercase letters, numbers, and hyphens; that is, it must
             match the regular expression:
@@ -1764,6 +1777,42 @@ class ConversationMessage(proto.Message):
     participant_id: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+
+
+class BatchContentItem(proto.Message):
+    r"""Represents a batch of content to inspect or redact.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        string_value_batch (google.cloud.dlp_v2.types.StringValueBatch):
+            Optional. Represents a batch of string values
+            to inspect or redact.
+
+            This field is a member of `oneof`_ ``batch``.
+    """
+
+    string_value_batch: "StringValueBatch" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="batch",
+        message="StringValueBatch",
+    )
+
+
+class StringValueBatch(proto.Message):
+    r"""Represents a batch of string values to inspect or redact.
+
+    Attributes:
+        values (MutableSequence[str]):
+            Optional. Represents string data to inspect
+            or redact.
+    """
+
+    values: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=1,
     )
 
 
@@ -2070,6 +2119,10 @@ class ContentLocation(proto.Message):
             Location within a conversation.
 
             This field is a member of `oneof`_ ``location``.
+        batch_content_location (google.cloud.dlp_v2.types.BatchContentLocation):
+            Location within a batch of content.
+
+            This field is a member of `oneof`_ ``location``.
         container_timestamp (google.protobuf.timestamp_pb2.Timestamp):
             Finding container modification timestamp, if applicable. For
             Cloud Storage, this field contains the last file
@@ -2114,6 +2167,12 @@ class ContentLocation(proto.Message):
         number=10,
         oneof="location",
         message="ConversationLocation",
+    )
+    batch_content_location: "BatchContentLocation" = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        oneof="location",
+        message="BatchContentLocation",
     )
     container_timestamp: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
@@ -2165,6 +2224,21 @@ class ConversationLocation(proto.Message):
         number=2,
         oneof="location",
         message=AllMessages,
+    )
+
+
+class BatchContentLocation(proto.Message):
+    r"""Location within a batch of content.
+
+    Attributes:
+        item_index (int):
+            Matches an index of a batch item in the batch
+            provided in the request.
+    """
+
+    item_index: int = proto.Field(
+        proto.INT32,
+        number=1,
     )
 
 

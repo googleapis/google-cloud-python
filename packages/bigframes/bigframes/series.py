@@ -595,8 +595,8 @@ class Series:
                 block = block.assign_label(self._value_column, name)
             return bigframes.dataframe.DataFrame(block)
 
-    def _get_display_df(self) -> bigframes.dataframe.DataFrame:
-        return self.to_frame()._get_display_df()
+    def _prepare_display_df(self) -> bigframes.dataframe.DataFrame:
+        return self.to_frame()._prepare_display_df()
 
     def _repr_mimebundle_(self, include=None, exclude=None):
         """
@@ -646,9 +646,17 @@ class Series:
         if errors not in ["raise", "null"]:
             raise ValueError("Argument 'errors' must be one of 'raise' or 'null'")
         dtype = bigframes.dtypes.bigframes_type(dtype)
-        return self._apply_unary_op(
-            bigframes.operations.AsTypeOp(to_type=dtype, safe=(errors == "null"))
-        )
+        safe = errors == "null"
+        if dtype == bigframes.dtypes.JSON_DTYPE:
+            return self._apply_unary_op(bigframes.operations.ToJSON(safe=safe))
+        elif self.dtype == bigframes.dtypes.JSON_DTYPE:
+            return self._apply_unary_op(
+                bigframes.operations.JSONDecode(to_type=dtype, safe=safe)
+            )
+        else:
+            return self._apply_unary_op(
+                bigframes.operations.AsTypeOp(to_type=dtype, safe=safe)
+            )
 
     def to_pandas(
         self,
@@ -2280,11 +2288,14 @@ class Series:
         return self.where(~cond, other)
 
     def to_frame(self, name: blocks.Label = None) -> bigframes.dataframe.DataFrame:
-        provided_name = name if name else self.name
+        provided_name = name if name is not None else self.name
         # To be consistent with Pandas, it assigns 0 as the column name if missing. 0 is the first element of RangeIndex.
-        block = self._block.with_column_labels(
-            [provided_name] if provided_name else [0]
-        )
+        column_names: List[blocks.Label]
+        if provided_name is None or pandas.isna([cast(Any, provided_name)])[0]:
+            column_names = [0]
+        else:
+            column_names = [provided_name]
+        block = self._block.with_column_labels(column_names)
         return bigframes.dataframe.DataFrame(block)
 
     def to_csv(
