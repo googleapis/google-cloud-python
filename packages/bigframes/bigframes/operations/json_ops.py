@@ -105,10 +105,11 @@ class ParseJSON(base_ops.UnaryOp):
 @dataclasses.dataclass(frozen=True)
 class ToJSON(base_ops.UnaryOp):
     name: typing.ClassVar[str] = "to_json"
+    safe: bool = True
 
     def output_type(self, *input_types):
         input_type = input_types[0]
-        if not dtypes.is_json_encoding_type(input_type):
+        if not dtypes.is_json_encoding_type(input_type, strict=True):
             raise TypeError(
                 "The value to be assigned must be a type that can be encoded as JSON."
                 + f"Received type: {input_type}"
@@ -220,6 +221,7 @@ class JSONKeys(base_ops.UnaryOp):
 class JSONDecode(base_ops.UnaryOp):
     name: typing.ClassVar[str] = "json_decode"
     to_type: dtypes.Dtype
+    safe: bool = True
 
     def output_type(self, *input_types):
         input_type = input_types[0]
@@ -228,4 +230,11 @@ class JSONDecode(base_ops.UnaryOp):
                 "Input type must be a valid JSON object or JSON-formatted string type."
                 + f" Received type: {input_type}"
             )
+        if self.to_type not in (
+            dtypes.INT_DTYPE,
+            dtypes.FLOAT_DTYPE,
+            dtypes.BOOL_DTYPE,
+            dtypes.STRING_DTYPE,
+        ):
+            raise TypeError(f"Cannot cast from {dtypes.JSON_DTYPE} to {self.to_type}")
         return self.to_type

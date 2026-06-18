@@ -263,16 +263,16 @@ def test_engines_astype_time(scalars_array_value: array_value.ArrayValue, engine
 @pytest.mark.parametrize("engine", ["polars", "bq", "bq-sqlglot"], indirect=True)
 def test_engines_astype_from_json(scalars_array_value: array_value.ArrayValue, engine):
     exprs = [
-        ops.AsTypeOp(to_type=bigframes.dtypes.INT_DTYPE).as_expr(
+        ops.JSONDecode(to_type=bigframes.dtypes.INT_DTYPE).as_expr(
             expression.const("5", bigframes.dtypes.JSON_DTYPE)
         ),
-        ops.AsTypeOp(to_type=bigframes.dtypes.FLOAT_DTYPE).as_expr(
+        ops.JSONDecode(to_type=bigframes.dtypes.FLOAT_DTYPE).as_expr(
             expression.const("5", bigframes.dtypes.JSON_DTYPE)
         ),
-        ops.AsTypeOp(to_type=bigframes.dtypes.BOOL_DTYPE).as_expr(
+        ops.JSONDecode(to_type=bigframes.dtypes.BOOL_DTYPE).as_expr(
             expression.const("true", bigframes.dtypes.JSON_DTYPE)
         ),
-        ops.AsTypeOp(to_type=bigframes.dtypes.STRING_DTYPE).as_expr(
+        ops.JSONDecode(to_type=bigframes.dtypes.STRING_DTYPE).as_expr(
             expression.const('"hello world"', bigframes.dtypes.JSON_DTYPE)
         ),
     ]
@@ -284,17 +284,13 @@ def test_engines_astype_from_json(scalars_array_value: array_value.ArrayValue, e
 @pytest.mark.parametrize("engine", ["polars", "bq", "bq-sqlglot"], indirect=True)
 def test_engines_astype_to_json(scalars_array_value: array_value.ArrayValue, engine):
     exprs = [
-        ops.AsTypeOp(to_type=bigframes.dtypes.JSON_DTYPE).as_expr(
-            expression.deref("int64_col")
-        ),
-        ops.AsTypeOp(to_type=bigframes.dtypes.JSON_DTYPE).as_expr(
+        ops.ToJSON().as_expr(expression.deref("int64_col")),
+        ops.ToJSON().as_expr(
             # Use a const since float to json has precision issues
             expression.const(5.2, bigframes.dtypes.FLOAT_DTYPE)
         ),
-        ops.AsTypeOp(to_type=bigframes.dtypes.JSON_DTYPE).as_expr(
-            expression.deref("bool_col")
-        ),
-        ops.AsTypeOp(to_type=bigframes.dtypes.JSON_DTYPE).as_expr(
+        ops.ToJSON().as_expr(expression.deref("bool_col")),
+        ops.ToJSON().as_expr(
             # Use a const since "str_col" has special chars.
             expression.const('"hello world"', bigframes.dtypes.STRING_DTYPE)
         ),
