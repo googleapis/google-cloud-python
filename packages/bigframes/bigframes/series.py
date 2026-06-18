@@ -2067,6 +2067,10 @@ class Series:
 
         from bigframes._config import options
 
+        bf_op = python_ops.python_callable_to_op(func)
+        if bf_op and isinstance(bf_op, ops.UnaryOp):
+            return self._apply_unary_op(bf_op)
+
         if isinstance(func, bigframes.functions.Udf) or (
             options.experiments.enable_python_transpiler and callable(func)
         ):
@@ -2077,10 +2081,6 @@ class Series:
             result_series.name = self.name
 
             return result_series
-
-        bf_op = python_ops.python_callable_to_op(func)
-        if bf_op and isinstance(bf_op, ops.UnaryOp):
-            return self._apply_unary_op(bf_op)
 
         # It is neither a remote function nor a managed function.
         # Then it must be a vectorized function that applies to the Series

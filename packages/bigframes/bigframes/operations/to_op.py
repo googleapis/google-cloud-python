@@ -68,10 +68,6 @@ class ArgumentSpec:
     def is_varargs(self) -> bool:
         return self.is_var_positional
 
-    def __post_init__(self):
-        if self.argkind == "positional_only" and self.default_value is not None:
-            raise ValueError("positional-only arguments cannot have default values")
-
 
 @dataclasses.dataclass(frozen=True)
 class CallableExpression:
