@@ -9,6 +9,22 @@ import importlib.util
 import csv
 import os
 import logging
+import shutil
+import pathlib
+
+def clean_bytecode():
+    """Recursively deletes all __pycache__ directories and .pyc files to ensure disk-level cold starts."""
+    print("Sweeping directory to delete __pycache__ and force bytecode recompilation...")
+    count = 0
+    for p in pathlib.Path('.').rglob('__pycache__'):
+        if p.is_dir():
+            shutil.rmtree(p)
+            count += 1
+    for p in pathlib.Path('.').rglob('*.pyc'):
+        if p.is_file():
+            p.unlink()
+            count += 1
+    print(f"Cleared {count} cached bytecode locations.")
 
 def get_rss_mb():
     """Gets current Resident Set Size (physical memory) in MB. Linux only."""
@@ -93,7 +109,7 @@ def _run_worker_and_parse(cmd):
         print(f"Worker stderr:\n{result.stderr}", file=sys.stderr)
         raise parse_err
 
-def run_master(iterations, target_module, cpu="0", csv_path=None):
+def run_master(iterations, target_module, cpu="0", csv_path=None, clear_cache=False):
     """Orchestrates the benchmark."""
     if iterations < 1:
         raise ValueError("Number of iterations must be at least 1.")
@@ -101,6 +117,13 @@ def run_master(iterations, target_module, cpu="0", csv_path=None):
     loaded_modules_val, loaded_lines_val = 0, 0
     
     print(f"Profiling start... Running {iterations} cold-start iterations for {target_module}.")
+    
+    if clear_cache:
+        clean_bytecode()
+        python_exe = [sys.executable, "-B"] # -B prevents writing .pyc files so every iteration reads raw .py
+    else:
+        python_exe = [sys.executable]
+        
     if cpu.lower() != "none":
         print(f"CPU Pinning enabled: Pinning processes to core {cpu} using taskset.")
     else:
@@ -112,7 +135,7 @@ def run_master(iterations, target_module, cpu="0", csv_path=None):
         if cpu.lower() != "none":
             cmd += ["taskset", "-c", cpu]
         
-        cmd += [sys.executable, __file__, "--worker", f"--module={target_module}"]
+        cmd += python_exe + [__file__, "--worker", f"--module={target_module}"]
         
         try:
             data = _run_worker_and_parse(cmd)
@@ -125,7 +148,7 @@ def run_master(iterations, target_module, cpu="0", csv_path=None):
             if cpu.lower() != "none" and i == 0:
                 print("WARNING: taskset CPU pinning is not available. Falling back to unpinned execution...")
                 cpu = "none"
-                cmd = [sys.executable, __file__, "--worker", f"--module={target_module}"]
+                cmd = python_exe + [__file__, "--worker", f"--module={target_module}"]
                 try:
                     data = _run_worker_and_parse(cmd)
                     times.append(data["time_ms"])
@@ -283,6 +306,7 @@ if __name__ == "__main__":
     parser.add_argument("--trace", action="store_true", help="Generate importtime trace log")
     parser.add_argument("--cprofile", action="store_true", help="Run cProfile")
     parser.add_argument("--mprofile", action="store_true", help="Run tracemalloc memory snapshot")
+    parser.add_argument("--clear-pycache", action="store_true", help="Delete all __pycache__ to force full disk cold-start")
     parser.add_argument("--worker", action="store_true", help=argparse.SUPPRESS)
     
     args = parser.parse_args()
@@ -294,6 +318,7 @@ if __name__ == "__main__":
     elif args.cprofile:
         run_cprofile(args.module)
     elif args.mprofile:
+        if args.clear_pycache: clean_bytecode()
         run_mprofile(args.module)
     else:
-        run_master(args.iterations, args.module, args.cpu, args.csv)
+        run_master(args.iterations, args.module, args.cpu, args.csv, args.clear_pycache)
