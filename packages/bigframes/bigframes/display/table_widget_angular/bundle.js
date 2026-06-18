@@ -40,6 +40,7 @@ esbuild.build({
   outfile: path.resolve(__dirname, '../table_widget_angular.js'),
   format: 'esm',
   logLevel: 'info',
+  minify: true,
   banner: {
     js: banner,
   },
