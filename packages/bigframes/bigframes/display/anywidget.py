@@ -163,9 +163,9 @@ class TableWidget(_WIDGET_BASE):
                 loop = asyncio.get_running_loop()
             except RuntimeError:
                 try:
-                    import tornado.ioloop
+                    import tornado.ioloop  # type: ignore[import-not-found]
 
-                    loop = tornado.ioloop.IOLoop.current().asyncio_loop
+                    loop = tornado.ioloop.IOLoop.current().asyncio_loop  # type: ignore[attr-defined]
                 except Exception:
                     loop = None
 
