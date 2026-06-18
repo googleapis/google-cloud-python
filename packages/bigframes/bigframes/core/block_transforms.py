@@ -16,7 +16,7 @@ from __future__ import annotations
 import functools
 import inspect
 import typing
-from typing import Callable, Optional, Sequence
+from typing import Callable, Hashable, Optional, Sequence
 
 import bigframes_vendored.constants as constants
 import pandas as pd
@@ -46,7 +46,7 @@ def apply_to_block_rows(
     expr = bytecode._compile_bytecode_to_py_expr(func)
     sig = inspect.signature(func)
 
-    bindings: dict[str, ex.Expression] = {}
+    bindings: dict[Hashable, ex.Expression] = {}
 
     bound_args = sig.bind(*(None, *args), **kwargs)
     bound_args.apply_defaults()
@@ -58,7 +58,9 @@ def apply_to_block_rows(
         expr,
         series_arg=next(iter(sig.parameters.keys())),
         series_attrs={
-            label: block.resolve_label_exact(label) for label in block.column_labels
+            label: col_id
+            for label in block.column_labels
+            if (col_id := block.resolve_label_exact(label)) is not None
         },
     )
     expr = expr.bind_variables(bindings)

@@ -23,7 +23,15 @@ from bigframes.functions import Udf
 from bigframes.functions.udf_def import BigqueryUdf, PythonUdf
 from bigframes.operations import base_ops, remote_function_ops
 
-_ARGKIND_MAP = {
+ArgKind = typing.Literal[
+    "positional_only",
+    "positional_or_keyword",
+    "keyword_only",
+    "var_positional",
+    "var_keyword",
+]
+
+_ARGKIND_MAP: dict[inspect._ParameterKind, ArgKind] = {
     inspect.Parameter.POSITIONAL_ONLY: "positional_only",
     inspect.Parameter.POSITIONAL_OR_KEYWORD: "positional_or_keyword",
     inspect.Parameter.VAR_POSITIONAL: "var_positional",
@@ -40,13 +48,7 @@ class ArgumentSpec:
 
     name: str
     default_value: typing.Any
-    argkind: typing.Literal[
-        "positional_only",
-        "positional_or_keyword",
-        "keyword_only",
-        "var_positional",
-        "var_keyword",
-    ]
+    argkind: ArgKind
 
     @property
     def is_positional(self) -> bool:

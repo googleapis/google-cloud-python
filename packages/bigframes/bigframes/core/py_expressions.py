@@ -314,7 +314,7 @@ class Call(Expression):
 def resolve_py_exprs(
     expression: Expression,
     series_arg: Optional[str] = None,
-    series_attrs: Mapping[str, identifiers.ColumnId] | None = None,
+    series_attrs: Mapping[Hashable, str] | None = None,
 ) -> Expression:
     """Replace all PyObject, attribute, call expressions. Bottom-up."""
 
@@ -333,8 +333,10 @@ def resolve_py_exprs(
             # TODO: Resolve some series methods
             if (
                 series_arg is not None
+                and series_attrs is not None
                 and isinstance(expression.input, UnboundVariableExpression)
                 and expression.input.id == series_arg
+                and expression.attr in series_attrs
             ):
                 return deref(series_attrs[expression.attr])
         return expression
