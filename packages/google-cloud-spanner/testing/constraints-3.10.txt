@@ -21,4 +21,4 @@ opentelemetry-resourcedetector-gcp==1.8.0a0
 google-cloud-monitoring==2.28.0
 mmh3==4.1.0
 libcst==0.2.5
-googleapis-common-protos==1.60.0
+googleapis-common-protos==1.69.2

@@ -1410,7 +1410,7 @@ replacements:
       google-cloud-monitoring==2.28.0
       mmh3==4.1.0
       libcst==0.2.5
-      googleapis-common-protos==1.60.0
+      googleapis-common-protos==1.69.2
     count: 1
   - paths: [
       packages/google-cloud-spanner/noxfile.py
