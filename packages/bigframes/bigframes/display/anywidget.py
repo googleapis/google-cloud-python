@@ -173,12 +173,12 @@ class TableWidget(_WIDGET_BASE):
                                     f"Unexpected result type: {type(result)}"
                                 )
                             self._dataframe, _ = df._process_display_df()
-                            self._initialize_from_dataframe()
                             self.is_deferred_mode = False
+                            self._initialize_from_dataframe()
                         elif self._dataframe is not None:
                             self._dataframe, _ = self._dataframe._process_display_df()
-                            self._initialize_from_dataframe()
                             self.is_deferred_mode = False
+                            self._initialize_from_dataframe()
                     elif not self.is_deferred_mode and self._dataframe is not None:
                         self._initial_load()
                 except Exception as e:
