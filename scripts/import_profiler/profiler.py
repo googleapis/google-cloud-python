@@ -109,7 +109,7 @@ def _run_worker_and_parse(cmd):
         print(f"Worker stderr:\n{result.stderr}", file=sys.stderr)
         raise parse_err
 
-def run_master(iterations, target_module, cpu="0", csv_path=None, clear_cache=False):
+def run_master(iterations, target_module, cpu="0", csv_path=None, clear_cache=True):
     """Orchestrates the benchmark."""
     if iterations < 1:
         raise ValueError("Number of iterations must be at least 1.")
@@ -306,7 +306,7 @@ if __name__ == "__main__":
     parser.add_argument("--trace", action="store_true", help="Generate importtime trace log")
     parser.add_argument("--cprofile", action="store_true", help="Run cProfile")
     parser.add_argument("--mprofile", action="store_true", help="Run tracemalloc memory snapshot")
-    parser.add_argument("--clear-pycache", action="store_true", help="Delete all __pycache__ to force full disk cold-start")
+    parser.add_argument("--keep-pycache", action="store_true", help="Preserve __pycache__ and allow bytecode execution (Default: False, script automatically sweeps __pycache__ for true cold-starts)")
     parser.add_argument("--worker", action="store_true", help=argparse.SUPPRESS)
     
     args = parser.parse_args()
@@ -318,7 +318,7 @@ if __name__ == "__main__":
     elif args.cprofile:
         run_cprofile(args.module)
     elif args.mprofile:
-        if args.clear_pycache: clean_bytecode()
+        if not args.keep_pycache: clean_bytecode()
         run_mprofile(args.module)
     else:
-        run_master(args.iterations, args.module, args.cpu, args.csv, args.clear_pycache)
+        run_master(args.iterations, args.module, args.cpu, args.csv, not args.keep_pycache)
