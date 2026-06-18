@@ -154,7 +154,10 @@ class _X509Supplier(SubjectTokenSupplier):
     def get_subject_token(self, context, request):
         from cryptography import x509
 
-        leaf_cert = x509.load_pem_x509_certificate(self._leaf_cert_callback())
+        leaf_cert_data = self._leaf_cert_callback()
+        if isinstance(leaf_cert_data, str):
+            leaf_cert_data = leaf_cert_data.encode("utf-8")
+        leaf_cert = x509.load_pem_x509_certificate(leaf_cert_data)
         trust_chain = self._read_trust_chain()
         cert_chain = []
 

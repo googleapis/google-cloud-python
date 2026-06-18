@@ -17,9 +17,12 @@
 import contextlib
 import json
 import logging
+import os
 from os import environ, getenv, path
 import re
 import subprocess
+import sys
+import tempfile
 from typing import cast, Generator, Optional, Tuple, Union
 
 from google.auth import _agent_identity_utils
@@ -97,9 +100,6 @@ def secure_cert_key_paths(
             the passphrase needed to load the key (either the user's original,
             or the newly generated one if Tier 3 had to encrypt the key).
     """
-    import os
-    import sys
-
     # Tier 1: Pass-through (No-op). If the caller already provided file paths,
     # we yield them directly to avoid any unnecessary file creation.
     if isinstance(cert, str) and isinstance(key, str):
@@ -129,12 +129,7 @@ def secure_cert_key_paths(
                     ), passphrase
                     return
             finally:
-                import sys
-
-                exc_info = sys.exc_info()
-                cm.__exit__(
-                    *(exc_info if exc_info[0] is not None else (None, None, None))
-                )
+                cm.__exit__(*sys.exc_info())
             # If verification failed, fall through to Tier 3.
 
     # Tier 3: Fallback Encrypted Temp Files. If in-memory files are not supported
@@ -216,8 +211,6 @@ def _memfd_cert_key_paths(
         Tuple[Optional[str], Optional[str]]: In-memory file paths pointing to
             the active descriptors (e.g., '/proc/self/fd/3').
     """
-    import os
-
     cleanup_fds = []
     cert_path, key_path = None, None
 
@@ -259,11 +252,12 @@ def _tempfile_cert_key_paths(
         Tuple[Optional[str], Optional[str], Optional[bytes]]: The temporary file
             paths and the passphrase needed to load the key.
     """
-    import os
-    import tempfile
-
     # Prioritize RAM-backed /dev/shm to avoid writing secrets to physical storage.
-    tmp_dir = "/dev/shm" if os.path.isdir("/dev/shm") else None
+    tmp_dir = (
+        "/dev/shm"
+        if os.path.isdir("/dev/shm") and os.access("/dev/shm", os.W_OK)
+        else None
+    )
     cert_path, key_path = None, None
     cleanup_files = []
     new_passphrase = passphrase
