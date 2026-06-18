@@ -13,6 +13,11 @@ import logging
 def run_worker(target_module):
     """Performs ONE import and returns metrics."""
     tracemalloc.start()
+    importlib.invalidate_caches()
+    sys.path_importer_cache.clear()
+    # We start the high-resolution timer from *inside* the already-booted worker process.
+    # This explicitly isolates the pure import latency and entirely omits the 
+    # 10ms-50ms Python VM interpreter startup overhead that would skew the metrics.
     start_time = time.perf_counter()
     
     modules_before = set(sys.modules.keys())
@@ -239,7 +244,7 @@ def run_mprofile(target_module):
 if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser(description="Python SDK Import Profiler")
-    parser.add_argument("--module", default="google.cloud.compute", help="Target module to profile")
+    parser.add_argument("--module", default="google.cloud.compute_v1", help="Target module to profile")
     parser.add_argument("--iterations", type=int, default=50, help="Number of iterations")
     default_cpu = "0" if sys.platform.startswith("linux") else "none"
     parser.add_argument("--cpu", default=default_cpu, help="CPU core to pin to (or 'none')")
