@@ -33,8 +33,8 @@ from google.cloud.firestore_v1.watch import Watch
 if TYPE_CHECKING:  # pragma: NO COVER
     import datetime
 
-    from google.cloud.firestore_v1.document import DocumentReference
     from google.cloud.firestore_v1.base_document import DocumentSnapshot
+    from google.cloud.firestore_v1.document import DocumentReference
     from google.cloud.firestore_v1.query_profile import ExplainOptions
     from google.cloud.firestore_v1.stream_generator import StreamGenerator
 
@@ -135,7 +135,6 @@ class CollectionReference(BaseCollectionReference[query_mod.Query]):
         write_result = document_ref.create(document_data, **kwargs)
         return write_result.update_time, document_ref
 
-
     def document(self, document_id: Union[str, None] = None) -> "DocumentReference":
         """Create a sub-document underneath the current collection.
 
@@ -151,7 +150,7 @@ class CollectionReference(BaseCollectionReference[query_mod.Query]):
         """
         doc = super().document(document_id)
         return cast("DocumentReference", doc)
-    
+
     def list_documents(
         self,
         page_size: Union[int, None] = None,
