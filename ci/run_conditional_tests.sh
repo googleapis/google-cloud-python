@@ -111,6 +111,13 @@ for subdir in ${subdirs[@]}; do
             ${test_script}
             ret=$?
             set -e
+            
+            # Extract the package name from the directory path (e.g., packages/bigframes/ -> bigframes)
+            pkg_name=$(basename "${d}")
+            echo "========================================================================"
+            echo " Finished session loop for package: ${pkg_name} (Exit code: ${ret})"
+            echo "========================================================================"
+
             if [ ${ret} -ne 0 ]; then
                 RETVAL=${ret}
             fi
