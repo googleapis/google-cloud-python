@@ -32,10 +32,4 @@ NOX_FILE_ARG=""
 
 [[ -z "${NOX_FILE}" ]] || NOX_FILE_ARG="-f ${NOX_FILE}"
 
-NOX_ARGS=()
-if [[ -n "${XML_OUTPUT_FILE}" ]]; then
-  # Pass --junitxml as a positional argument to the underlying pytest call
-  NOX_ARGS+=("--junitxml=${XML_OUTPUT_FILE}")
-fi
-
-python3 -m nox ${NOX_SESSION_ARG} $NOX_FILE_ARG -- "${NOX_ARGS[@]}"
+python3 -m nox ${NOX_SESSION_ARG} $NOX_FILE_ARG

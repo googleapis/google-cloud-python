@@ -38,18 +38,7 @@ pwd
 run_package_test() {
   local package_name=$1
   local package_path="packages/${package_name}"
-
-  # Create a dedicated directory for this package's artifacts
-  local artifact_dir="${KOKORO_ARTIFACTS_DIR}/${package_name}"
-  mkdir -p "${artifact_dir}"
-
-  # Define standard output paths for logs and XML results
-  export XML_OUTPUT_FILE="${artifact_dir}/sponge_log.xml"
-  local log_file="${artifact_dir}/sponge_log.log"
-
-  # Isolate gcloud config for parallel execution
-  export CLOUDSDK_CONFIG=$(mktemp -d)
-
+  
   # Declare local overrides to prevent bleeding into the next loop iteration
   local PROJECT_ID
   local GOOGLE_APPLICATION_CREDENTIALS
@@ -59,8 +48,6 @@ run_package_test() {
 
   echo "------------------------------------------------------------"
   echo "Configuring environment for: ${package_name}"
-  echo "Log file: ${log_file}"
-  echo "XML results: ${XML_OUTPUT_FILE}"
   echo "------------------------------------------------------------"
 
   case "${package_name}" in
@@ -95,86 +82,17 @@ run_package_test() {
   # Run the actual test
   pushd "${package_path}" > /dev/null
   set +e
-  # *** CRITICAL: system-single.sh MUST use XML_OUTPUT_FILE to generate the JUnit XML ***
-  "${system_test_script}" > "${log_file}" 2>&1
+  "${system_test_script}"
   local res=$?
   set -e
   popd > /dev/null
-
-  # Clean up isolated gcloud config
-  rm -rf "${CLOUDSDK_CONFIG}"
-
+  
   return $res
 }
 
 # A file for running system tests
 system_test_script="${PROJECT_ROOT}/.kokoro/system-single.sh"
-# Ensure KOKORO_ARTIFACTS_DIR is set, fallback to a local directory
-export KOKORO_ARTIFACTS_DIR="${KOKORO_ARTIFACTS_DIR:-${PROJECT_ROOT}/.artifacts}"
 
-# Parallel execution settings
-MAX_PARALLEL=4
-running_pids=()
-declare -A pid_to_pkg
-declare -A pid_to_resfile
-
-# Array to keep track of results for the final summary
-results=()
-handle_finished_job() {
-  local pid=$1
-  local pkg=${pid_to_pkg[$pid]}
-  local resfile=${pid_to_resfile[$pid]}
-  local pkg_log="${KOKORO_ARTIFACTS_DIR}/${pkg}/sponge_log.log"
-
-  # wait $pid might fail if it was already reaped by wait -n, 
-  # so we ignore its exit code and use the resfile.
-  wait "$pid" 2>/dev/null || true
-
-  local res=1
-  if [ -s "$resfile" ]; then
-    res=$(cat "$resfile")
-    rm "$resfile"
-  else
-    # If the file is empty or missing, the subshell crashed early
-    res=1
-  fi
-
-  echo "============================================================"
-  echo "System tests for ${pkg} finished (Exit code: ${res})"
-  echo "Artifacts in: ${KOKORO_ARTIFACTS_DIR}/${pkg}"
-  echo "============================================================"
-
-  # Print the package log to the console
-  if [ -f "${pkg_log}" ]; then
-    echo "--- Start of Logs for ${pkg} ---"
-    cat "${pkg_log}"
-    echo "--- End of Logs for ${pkg} ---"
-  else
-    echo "Console Fallback Warning: Log file not found at ${pkg_log}"
-  fi
-  echo ""
-
-  if [ -z "${res}" ] || [ "${res}" -ne 0 ]; then
-    echo "============================================================"
-    echo "FAIL-FAST: System tests for ${pkg} failed!"
-    echo "Cancelling all remaining running background jobs..."
-    echo "============================================================"
-    
-    # Kill all other active background processes
-    for active_pid in "${running_pids[@]}"; do
-      if [ "$active_pid" != "$pid" ] && kill -0 "$active_pid" 2>/dev/null; then
-        pkg_to_cancel=${pid_to_pkg[$active_pid]}
-        echo "Cancelling active system tests for ${pkg_to_cancel} (PID: ${active_pid})..."
-        # Send SIGTERM to allow graceful cleanup of resources if possible, or SIGKILL
-        kill -9 "$active_pid" 2>/dev/null || true
-      fi
-    done
-    
-    exit "${res}"
-  else
-    results+=("${pkg}: PASSED")
-  fi
-}
 # Run system tests for each package with directory packages/*/tests/system
 for path in `find 'packages' \
   \( -type d -wholename 'packages/*/tests/system' \) -o \
@@ -222,55 +140,10 @@ for path in `find 'packages' \
   set -e
 
   if [[ "${package_modified}" -gt 0 || "$KOKORO_BUILD_ARTIFACTS_SUBDIR" == *"continuous"* ]]; then
-      # Wait if we have reached MAX_PARALLEL
-      while [[ ${#running_pids[@]} -ge $MAX_PARALLEL ]]; do
-        set +e
-        wait -n
-        set -e
-        # Find which job finished
-        new_pids=()
-        for pid in "${running_pids[@]}"; do
-          if kill -0 "$pid" 2>/dev/null; then
-            new_pids+=("$pid")
-          else
-            handle_finished_job "$pid"
-          fi
-        done
-        running_pids=("${new_pids[@]}")
-      done
-
-      # Start the next test in the background
-      res_file=$(mktemp)
-      (
-        if run_package_test "$package_name"; then
-          echo 0 > "$res_file"
-        else
-          res=$?
-          echo $res > "$res_file"
-        fi
-      ) &
-      pid=$!
-      running_pids+=($pid)
-      pid_to_pkg[$pid]=$package_name
-      pid_to_resfile[$pid]=$res_file
-      echo "Started system tests for ${package_name} (PID: ${pid})"
+      # Call the function - its internal exports won't affect the next loop
+      run_package_test "$package_name" || RETVAL=$?
   else
       echo "No changes in ${package_name} and not a continuous build, skipping."
   fi
 done
-
-# Wait for all remaining jobs
-for pid in "${running_pids[@]}"; do
-  handle_finished_job "$pid"
-done
-
-echo "------------------------------------------------------------"
-echo "System Test Summary"
-echo "------------------------------------------------------------"
-for res in "${results[@]}"; do
-  echo "$res"
-done
-echo "------------------------------------------------------------"
-
 exit ${RETVAL}
-
