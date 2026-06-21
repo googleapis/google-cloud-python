@@ -103,6 +103,15 @@ class TableWidget(_WIDGET_BASE):
                 "`pip install 'bigframes[anywidget]'` to use TableWidget."
             )
 
+        # Enable third-party widgets manager in Google Colab environment.
+        try:
+            import sys
+            if "google.colab" in sys.modules:
+                from google.colab import output
+                output.enable_custom_widget_manager()
+        except Exception:
+            pass
+
         from bigframes.session import deferred
 
         is_deferred = False
