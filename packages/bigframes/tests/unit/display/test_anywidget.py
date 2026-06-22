@@ -512,3 +512,31 @@ def test_deferred_mode_execution_does_not_reset_page_on_navigation(
         assert widget.page == 0
         widget.page = 1
         assert widget.page == 1
+
+
+def test_deferred_mode_execution_in_colab(mock_deferred_df, mock_df_deferred):
+    import sys
+
+    from bigframes.display.anywidget import TableWidget
+
+    mock_deferred_df.execute.return_value = mock_df_deferred
+
+    batches = mock.MagicMock()
+    batch_df = pd.DataFrame({"A": [1], "B": ["a"], "C": [1.0], "D": [True]})
+    batches.__iter__.return_value = iter([batch_df])
+    batches.total_rows = 1
+    mock_df_deferred.to_pandas_batches.return_value = batches
+
+    with mock.patch.dict(sys.modules, {"google.colab": mock.MagicMock()}):
+        with bigframes.option_context("display.render_mode", "anywidget"):
+            widget = TableWidget(mock_deferred_df)
+            widget.is_deferred_mode = True
+
+            widget.start_execution = True
+
+            thread = getattr(widget, "_execution_thread", None)
+            if thread is not None:
+                thread.join(timeout=5)
+
+            assert widget.is_deferred_mode is False
+            assert widget.table_html != ""

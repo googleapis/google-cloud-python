@@ -262,7 +262,11 @@ class TableWidget(_WIDGET_BASE):
                             self.is_deferred_mode = False
                             self.start_execution = False
 
-                    if loop is not None and loop.is_running():
+                    import sys
+
+                    is_colab = "google.colab" in sys.modules
+
+                    if loop is not None and loop.is_running() and not is_colab:
                         loop.call_soon_threadsafe(update_ui)
                     else:
                         update_ui()
@@ -275,7 +279,11 @@ class TableWidget(_WIDGET_BASE):
                             self._error_message = err_msg
                             self.start_execution = False
 
-                    if loop is not None and loop.is_running():
+                    import sys
+
+                    is_colab = "google.colab" in sys.modules
+
+                    if loop is not None and loop.is_running() and not is_colab:
                         loop.call_soon_threadsafe(set_error)
                     else:
                         set_error()
