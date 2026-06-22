@@ -636,6 +636,7 @@ libraries:
     apis:
       - path: google/bigtable/v2
       - path: google/bigtable/admin/v2
+    skip_generate: true
     skip_release: true
     python:
       library_type: GAPIC_COMBO
