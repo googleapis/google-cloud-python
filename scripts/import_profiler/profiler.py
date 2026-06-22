@@ -11,6 +11,7 @@ import os
 import logging
 import shutil
 import pathlib
+import multiprocessing
 
 NO_CPU_PINNING = -1
 
@@ -265,27 +266,29 @@ def run_cprofile(target_module):
     ps = pstats.Stats(prof_file).sort_stats(pstats.SortKey.CUMULATIVE)
     ps.print_stats(15)
 
+def _mprofile_worker(target_module):
+    import tracemalloc
+    tracemalloc.start()
+    importlib.import_module(target_module)
+    snapshot = tracemalloc.take_snapshot()
+    tracemalloc.stop()
+    top_stats = snapshot.statistics('lineno')
+    print("\n--- Top 15 memory allocations by line ---")
+    for stat in top_stats[:15]:
+        print(stat)
+
 def run_mprofile(target_module):
     """Runs tracemalloc snapshot in a clean subprocess to see where memory is allocated."""
     print(f"Generating tracemalloc memory snapshot for {target_module}...")
     
-    code = (
-        "import tracemalloc\n"
-        "import importlib\n"
-        "tracemalloc.start()\n"
-        f"importlib.import_module({json.dumps(target_module)})\n"
-        "snapshot = tracemalloc.take_snapshot()\n"
-        "tracemalloc.stop()\n"
-        "top_stats = snapshot.statistics('lineno')\n"
-        "for stat in top_stats[:15]:\n"
-        "    print(stat)\n"
-    )
-    result = subprocess.run([sys.executable, "-c", code], capture_output=True, text=True)
-    if result.returncode != 0:
-        print(f"Error generating memory snapshot:\n{result.stderr}", file=sys.stderr)
-    else:
-        print("\n--- Top 15 memory allocations by line ---")
-        print(result.stdout, end="")
+    # Use 'spawn' to ensure a completely clean python process without inherited module caches
+    ctx = multiprocessing.get_context("spawn")
+    p = ctx.Process(target=_mprofile_worker, args=(target_module,))
+    p.start()
+    p.join()
+    
+    if p.exitcode != 0:
+        print(f"Error generating memory snapshot, process exited with code {p.exitcode}", file=sys.stderr)
 
 if __name__ == "__main__":
     import argparse
