@@ -47,6 +47,8 @@ DEFAULT_PYTHON_VERSION = "3.14"
 PREVIEW_PYTHON_VERSION = "3.14"
 
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
+# Path to the centralized mypy configuration file at the repository root.
+MYPY_CONFIG_FILE = str(CURRENT_DIRECTORY.parent.parent / "mypy.ini")
 
 LOWER_BOUND_CONSTRAINTS_FILE = CURRENT_DIRECTORY / "constraints.txt"
 PACKAGE_NAME = "google-cloud-eventarc"
@@ -103,6 +105,7 @@ def mypy(session):
     session.install(".")
     session.run(
         "mypy",
+        f"--config-file={MYPY_CONFIG_FILE}",
         "-p",
         "google",
         "--check-untyped-defs",
