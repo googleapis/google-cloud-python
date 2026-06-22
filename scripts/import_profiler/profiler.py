@@ -12,6 +12,8 @@ import logging
 import shutil
 import pathlib
 
+NO_CPU_PINNING = -1
+
 def clean_bytecode():
     """Recursively deletes all __pycache__ directories and .pyc files to ensure disk-level cold starts."""
     print("Sweeping directory to delete __pycache__ and force bytecode recompilation...")
@@ -119,7 +121,7 @@ def _run_worker_and_parse(cmd):
         print(f"Worker stderr:\n{result.stderr}", file=sys.stderr)
         raise parse_err
 
-def run_master(iterations, target_module, cpu="0", csv_path=None, clear_cache=True):
+def run_master(iterations, target_module, cpu=0, csv_path=None, clear_cache=True):
     """Orchestrates the benchmark."""
     if iterations < 1:
         raise ValueError("Number of iterations must be at least 1.")
@@ -134,7 +136,7 @@ def run_master(iterations, target_module, cpu="0", csv_path=None, clear_cache=Tr
     else:
         python_exe = [sys.executable]
         
-    if cpu.lower() != "none":
+    if cpu != NO_CPU_PINNING:
         print(f"CPU Pinning enabled: Pinning processes to core {cpu} using taskset.")
     else:
         print("CPU Pinning disabled.")
@@ -142,8 +144,8 @@ def run_master(iterations, target_module, cpu="0", csv_path=None, clear_cache=Tr
     for i in range(iterations):
         # Build command line
         cmd = []
-        if cpu.lower() != "none":
-            cmd += ["taskset", "-c", cpu]
+        if cpu != NO_CPU_PINNING:
+            cmd += ["taskset", "-c", str(cpu)]
         
         cmd += python_exe + [__file__, "--worker", f"--module={target_module}"]
         
@@ -155,9 +157,9 @@ def run_master(iterations, target_module, cpu="0", csv_path=None, clear_cache=Tr
             loaded_modules_val = data["loaded_modules"]
             loaded_lines_val = data["loaded_lines"]
         except FileNotFoundError as e:
-            if cpu.lower() != "none" and i == 0:
+            if cpu != NO_CPU_PINNING and i == 0:
                 print("WARNING: taskset CPU pinning is not available. Falling back to unpinned execution...")
-                cpu = "none"
+                cpu = NO_CPU_PINNING
                 cmd = python_exe + [__file__, "--worker", f"--module={target_module}"]
                 try:
                     data = _run_worker_and_parse(cmd)
@@ -310,8 +312,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Python SDK Import Profiler")
     parser.add_argument("--module", default="google.cloud.compute_v1", help="Target module to profile")
     parser.add_argument("--iterations", type=int, default=50, help="Number of iterations")
-    default_cpu = "0" if sys.platform.startswith("linux") else "none"
-    parser.add_argument("--cpu", default=default_cpu, help="CPU core to pin to (or 'none')")
+    default_cpu = 0 if sys.platform.startswith("linux") else NO_CPU_PINNING
+    parser.add_argument("--cpu", type=int, default=default_cpu, help="CPU core to pin to (or -1 for no pinning)")
     parser.add_argument("--csv", help="Path to export CSV results")
     parser.add_argument("--trace", action="store_true", help="Generate importtime trace log")
     parser.add_argument("--cprofile", action="store_true", help="Run cProfile")
