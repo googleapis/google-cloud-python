@@ -65,7 +65,6 @@ run_package_test() {
         NOX_SESSION=""
       else
         NOX_FILE="noxfile.py"
-        NOX_SESSION="${NOX_SESSION}"
       fi
       ;;
     *)
