@@ -129,6 +129,26 @@ def _calculate_percentiles(data_list):
     val = data_list[0] if data_list else 0.0
     return val, val, val
 
+def _print_outputs(target_module, iterations, loaded_modules_val, loaded_lines_val,
+                   times, p50_time, p90_time, p99_time,
+                   memories, p50_mem, p90_mem, p99_mem,
+                   rss_memories, p50_rss, p90_rss, p99_rss):
+    """Helper method to format and print the final benchmark results."""
+    def _format_stats(title, data, p50, p90, p99, fmt):
+        if not data: return ""
+        std_str = f"  StdDev:       {statistics.stdev(data):{fmt}}\n" if len(data) > 1 else ""
+        return f"{title}:\n  P50 (Median): {p50:{fmt}}\n  P90:          {p90:{fmt}}\n  P99:          {p99:{fmt}}\n  Mean:         {statistics.mean(data):{fmt}}\n  Min:          {min(data):{fmt}}\n  Max:          {max(data):{fmt}}\n{std_str}"
+
+    final_output = f"""
+--- Results for {target_module} ({iterations} iterations) ---
+Code Volume (Deterministic):
+  Loaded Modules: {loaded_modules_val}
+  Loaded Lines:   {loaded_lines_val}
+{_format_stats("Time (ms)", times, p50_time, p90_time, p99_time, ".2f")}
+{_format_stats("Tracemalloc RAM (MB)", memories, p50_mem, p90_mem, p99_mem, ".4f")}
+{_format_stats("Physical RSS RAM (MB)", rss_memories, p50_rss, p90_rss, p99_rss, ".4f")}"""
+    print(final_output.strip())
+
 def run_master(iterations, target_module, cpu=0, csv_path=None, clear_cache=True):
     """Orchestrates the benchmark."""
     if iterations < 1:
@@ -162,6 +182,11 @@ def run_master(iterations, target_module, cpu=0, csv_path=None, clear_cache=True
             times.append(data["time_ms"])
             memories.append(data["peak_ram_mb"])
             rss_memories.append(data["rss_ram_mb"])
+            if i > 0 and loaded_modules_val != data["loaded_modules"]:
+                print(f"WARNING: Non-deterministic import behavior! Iteration {i+1} loaded {data['loaded_modules']} modules (expected {loaded_modules_val}).", file=sys.stderr)
+            if i > 0 and loaded_lines_val != data["loaded_lines"]:
+                print(f"WARNING: Non-deterministic import behavior! Iteration {i+1} loaded {data['loaded_lines']} lines (expected {loaded_lines_val}).", file=sys.stderr)
+            
             loaded_modules_val = data["loaded_modules"]
             loaded_lines_val = data["loaded_lines"]
         except FileNotFoundError as e:
@@ -188,39 +213,12 @@ def run_master(iterations, target_module, cpu=0, csv_path=None, clear_cache=True
     p50_mem, p90_mem, p99_mem = _calculate_percentiles(memories)
     p50_rss, p90_rss, p99_rss = _calculate_percentiles(rss_memories)
 
-    print(f"\n--- Results for {target_module} ({iterations} iterations) ---")
-    print(f"Code Volume (Deterministic):")
-    print(f"  Loaded Modules: {loaded_modules_val}")
-    print(f"  Loaded Lines:   {loaded_lines_val}")
-    print(f"Time (ms):")
-    print(f"  P50 (Median): {p50_time:.2f}")
-    print(f"  P90:          {p90_time:.2f}")
-    print(f"  P99:          {p99_time:.2f}")
-    print(f"  Mean:         {statistics.mean(times):.2f}")
-    print(f"  Min:          {min(times):.2f}")
-    print(f"  Max:          {max(times):.2f}")
-    if len(times) > 1:
-        print(f"  StdDev:       {statistics.stdev(times):.2f}")
-        
-    print(f"Tracemalloc RAM (MB):")
-    print(f"  P50 (Median): {p50_mem:.4f}")
-    print(f"  P90:          {p90_mem:.4f}")
-    print(f"  P99:          {p99_mem:.4f}")
-    print(f"  Mean:         {statistics.mean(memories):.4f}")
-    print(f"  Min:          {min(memories):.4f}")
-    print(f"  Max:          {max(memories):.4f}")
-    if len(memories) > 1:
-        print(f"  StdDev:       {statistics.stdev(memories):.4f}")
-
-    print(f"Physical RSS RAM (MB):")
-    print(f"  P50 (Median): {p50_rss:.4f}")
-    print(f"  P90:          {p90_rss:.4f}")
-    print(f"  P99:          {p99_rss:.4f}")
-    print(f"  Mean:         {statistics.mean(rss_memories):.4f}")
-    print(f"  Min:          {min(rss_memories):.4f}")
-    print(f"  Max:          {max(rss_memories):.4f}")
-    if len(rss_memories) > 1:
-        print(f"  StdDev:       {statistics.stdev(rss_memories):.4f}")
+    _print_outputs(
+        target_module, iterations, loaded_modules_val, loaded_lines_val,
+        times, p50_time, p90_time, p99_time,
+        memories, p50_mem, p90_mem, p99_mem,
+        rss_memories, p50_rss, p90_rss, p99_rss
+    )
 
 def run_trace(target_module):
     """Generates importtime trace log and writes it to a file."""
