@@ -121,6 +121,14 @@ def _run_worker_and_parse(cmd):
         print(f"Worker stderr:\n{result.stderr}", file=sys.stderr)
         raise parse_err
 
+def _calculate_percentiles(data_list):
+    """Helper method to calculate P50, P90, P99 from a list of numbers."""
+    if len(data_list) > 1:
+        q = statistics.quantiles(data_list, n=100)
+        return q[49], q[89], q[98]
+    val = data_list[0] if data_list else 0.0
+    return val, val, val
+
 def run_master(iterations, target_module, cpu=0, csv_path=None, clear_cache=True):
     """Orchestrates the benchmark."""
     if iterations < 1:
@@ -176,23 +184,9 @@ def run_master(iterations, target_module, cpu=0, csv_path=None, clear_cache=True
 
     # Compute percentiles (P50, P90, P99)
     # statistics.quantiles returns 99 cut points for n=100
-    if len(times) > 1:
-        q_time = statistics.quantiles(times, n=100)
-        p50_time, p90_time, p99_time = q_time[49], q_time[89], q_time[98]
-    else:
-        p50_time = p90_time = p99_time = times[0] if times else 0.0
-
-    if len(memories) > 1:
-        q_mem = statistics.quantiles(memories, n=100)
-        p50_mem, p90_mem, p99_mem = q_mem[49], q_mem[89], q_mem[98]
-    else:
-        p50_mem = p90_mem = p99_mem = memories[0] if memories else 0.0
-
-    if len(rss_memories) > 1:
-        q_rss = statistics.quantiles(rss_memories, n=100)
-        p50_rss, p90_rss, p99_rss = q_rss[49], q_rss[89], q_rss[98]
-    else:
-        p50_rss = p90_rss = p99_rss = rss_memories[0] if rss_memories else 0.0
+    p50_time, p90_time, p99_time = _calculate_percentiles(times)
+    p50_mem, p90_mem, p99_mem = _calculate_percentiles(memories)
+    p50_rss, p90_rss, p99_rss = _calculate_percentiles(rss_memories)
 
     print(f"\n--- Results for {target_module} ({iterations} iterations) ---")
     print(f"Code Volume (Deterministic):")
