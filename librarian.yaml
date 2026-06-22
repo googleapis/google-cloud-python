@@ -766,6 +766,8 @@ libraries:
     python:
       metadata_name_override: compute
       default_version: v1
+    skip_generate: true
+    skip_release: true
   - name: google-cloud-compute-v1beta
     version: 0.12.0
     apis:
