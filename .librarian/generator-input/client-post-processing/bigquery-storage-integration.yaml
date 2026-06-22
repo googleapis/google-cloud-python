@@ -32,6 +32,15 @@ replacements:
       packages/google-cloud-bigquery-storage/noxfile.py,
     ]
     before: |
+      \    # Install all dependencies\n    session.install\("-e", "\."\)
+    after: |
+          # Install all dependencies
+          session.install("-e", f".[{','.join(UNIT_TEST_EXTRAS)}]")
+    count: 2
+  - paths: [
+      packages/google-cloud-bigquery-storage/noxfile.py,
+    ]
+    before: |
       SYSTEM_TEST_EXTERNAL_DEPENDENCIES: List\[str\] = \[\]
     after: |
       SYSTEM_TEST_EXTERNAL_DEPENDENCIES: List[str] = [
