@@ -37,14 +37,12 @@ ALL_PYTHON = [
     "3.12",
     "3.13",
     "3.14",
+    "3.15",
 ]
 
 DEFAULT_PYTHON_VERSION = "3.14"
 
-# TODO(https://github.com/googleapis/gapic-generator-python/issues/2450):
-# Switch this to Python 3.15 alpha1
-# https://peps.python.org/pep-0790/
-PREVIEW_PYTHON_VERSION = "3.14"
+PREVIEW_PYTHON_VERSION = "3.15"
 
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
@@ -559,7 +557,7 @@ def prerelease_deps(session, protobuf_implementation):
     )
 
 
-@nox.session(python=DEFAULT_PYTHON_VERSION)
+@nox.session(python=PREVIEW_PYTHON_VERSION)
 @nox.parametrize(
     "protobuf_implementation",
     ["python", "upb"],
