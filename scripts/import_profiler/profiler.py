@@ -70,6 +70,10 @@ def run_worker(target_module):
                 try:
                     file_path = importlib.util.source_from_cache(file_path)
                 except ValueError:
+                    # Raised if the .pyc path does not follow standard PEP 3147/488 conventions.
+                    # We pass silently because the unresolved file_path will still end in '.pyc', 
+                    # meaning the subsequent '.endswith('.py')' check will fail and safely skip 
+                    # trying to count lines in a binary file.
                     pass
             if file_path.endswith('.py'):
                 try:
