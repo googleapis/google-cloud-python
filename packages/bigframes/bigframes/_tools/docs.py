@@ -31,13 +31,22 @@ def inherit_docs(source_class):
                     if hasattr(source_item, "__doc__") and source_item.__doc__:
                         try:
                             target_item.__doc__ = source_item.__doc__
-                            if isinstance(target_item, property) and target_item.fget:
-                                try:
-                                    target_item.fget.__doc__ = source_item.__doc__
-                                except AttributeError:
-                                    pass
                         except AttributeError:
                             pass
+
+                        underlying = None
+                        if isinstance(target_item, property):
+                            underlying = target_item.fget
+                        elif hasattr(target_item, "__func__"):
+                            underlying = target_item.__func__
+                        elif hasattr(target_item, "func"):
+                            underlying = getattr(target_item, "func", None)
+
+                        if underlying is not None:
+                            try:
+                                underlying.__doc__ = source_item.__doc__
+                            except AttributeError:
+                                pass
 
         return target_class
 
