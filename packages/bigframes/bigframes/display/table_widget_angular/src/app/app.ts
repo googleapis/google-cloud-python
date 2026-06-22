@@ -656,10 +656,10 @@ export class App {
     if (!container) return;
 
     const table = container.querySelector('table');
-    if (table) {
-      const tableHeight = (table as HTMLElement).offsetHeight;
-      if (tableHeight > 0) {
-        container.style.height = `${tableHeight + 2}px`;
+    if (table && (table as HTMLElement).offsetHeight > 0) {
+      const currentHeight = container.offsetHeight;
+      if (currentHeight > 0) {
+        container.style.height = `${currentHeight}px`;
         this.isHeightInitialized = true;
       }
     }
