@@ -636,3 +636,4 @@ def core_deps_from_source(session, protobuf_implementation):
             "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
         },
     )
+

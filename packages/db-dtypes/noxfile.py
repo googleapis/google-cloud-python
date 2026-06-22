@@ -547,3 +547,4 @@ def mypy(session):
         "--ignore-missing-imports",
         *session.posargs,
     )
+

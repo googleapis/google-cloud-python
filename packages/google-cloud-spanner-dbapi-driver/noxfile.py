@@ -604,3 +604,4 @@ def install(session):
     Install locally
     """
     session.install("-e", ".")
+

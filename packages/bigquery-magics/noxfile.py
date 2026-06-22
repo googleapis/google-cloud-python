@@ -546,3 +546,4 @@ def mypy(session):
     # TODO(https://github.com/googleapis/google-cloud-python/issues/16014):
     # Add mypy tests
     session.skip("mypy tests are not yet supported")
+
