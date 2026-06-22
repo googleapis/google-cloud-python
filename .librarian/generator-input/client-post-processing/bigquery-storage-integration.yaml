@@ -33,7 +33,7 @@ replacements:
     ]
     before: |
       \    # Install all dependencies\n    session.install\("-e", "\."\)
-    after: |
+    after: |2
           # Install all dependencies
           session.install("-e", f".[{','.join(UNIT_TEST_EXTRAS)}]")
     count: 2
