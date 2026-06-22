@@ -157,22 +157,10 @@ def run_master(iterations, target_module, cpu=0, csv_path=None, clear_cache=True
             loaded_modules_val = data["loaded_modules"]
             loaded_lines_val = data["loaded_lines"]
         except FileNotFoundError as e:
-            if cpu != NO_CPU_PINNING and i == 0:
-                print("WARNING: taskset CPU pinning is not available. Falling back to unpinned execution...")
-                cpu = NO_CPU_PINNING
-                cmd = python_exe + [__file__, "--worker", f"--module={target_module}"]
-                try:
-                    data = _run_worker_and_parse(cmd)
-                    times.append(data["time_ms"])
-                    memories.append(data["peak_ram_mb"])
-                    rss_memories.append(data["rss_ram_mb"])
-                    loaded_modules_val = data["loaded_modules"]
-                    loaded_lines_val = data["loaded_lines"]
-                except subprocess.CalledProcessError as err:
-                    print(f"Error in worker process:\n{err.stderr}", file=sys.stderr)
-                    raise err
-            else:
-                raise e
+            if cpu != NO_CPU_PINNING and cmd and cmd[0] == "taskset":
+                print("ERROR: 'taskset' command not found. CPU pinning is enabled but taskset is not installed. "
+                      "Install taskset or disable pinning by passing --cpu=-1.", file=sys.stderr)
+            raise e
         except subprocess.CalledProcessError as e:
             print(f"Error in worker process:\n{e.stderr}", file=sys.stderr)
             raise e
