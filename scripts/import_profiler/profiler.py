@@ -63,9 +63,11 @@ def run_worker(target_module):
     
     loaded_lines = 0
     for m in new_modules:
-        mod = sys.modules.get(m)
-        if mod and getattr(mod, '__file__', None):
-            file_path = mod.__file__
+        try:
+            file_path = sys.modules[m].__file__
+            if not file_path:
+                continue
+
             if file_path.endswith('.pyc'):
                 try:
                     file_path = importlib.util.source_from_cache(file_path)
@@ -81,6 +83,10 @@ def run_worker(target_module):
                         loaded_lines += sum(1 for _ in f)
                 except OSError as e:
                     logging.warning(f"Failed to read lines from {file_path}: {e}")
+        except KeyError:
+            logging.debug(f"Module {m} disappeared from sys.modules during execution.")
+        except AttributeError:
+            logging.debug(f"Module {m} has no __file__ attribute (likely a C-extension or built-in). Skipping.")
     
     # Output to stdout for the Master to capture
     metrics = {
