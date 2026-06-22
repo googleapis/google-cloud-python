@@ -623,4 +623,3 @@ def prerelease_deps(session, protobuf_implementation):
 def core_deps_from_source(session, protobuf_implementation):
     """Skipping until Pub/Sub migration is complete."""
     session.skip("Skipping core_deps_from_source for google-cloud-pubsub.")
-

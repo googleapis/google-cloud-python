@@ -564,4 +564,3 @@ def format(session: nox.sessions.Session) -> None:
     # See https://pycqa.github.io/isort/docs/configuration/options.html#force-sort-within-sections
     session.run("isort", "--fss", *python_files)
     session.run("black", *python_files)
-

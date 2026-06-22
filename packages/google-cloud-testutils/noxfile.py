@@ -383,4 +383,3 @@ def core_deps_from_source(session):
         "py.test",
         "tests/unit",
     )
-

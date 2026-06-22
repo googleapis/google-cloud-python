@@ -491,4 +491,3 @@ def format(session: nox.sessions.Session) -> None:
         "--line-length=88",  # Standard Black line length
         *LINT_PATHS,
     )
-

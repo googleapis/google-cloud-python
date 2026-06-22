@@ -184,4 +184,3 @@ def docs(session):
 def docfx(session):
     """Run all docfx tests."""
     session.skip("Docfx tests are not supported")
-

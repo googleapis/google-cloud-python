@@ -352,4 +352,3 @@ def format(session):
         "--line-length=88",
         *LINT_PATHS,
     )
-
