@@ -41,13 +41,13 @@ def run_worker(target_module):
     tracemalloc.start()
     importlib.invalidate_caches()
     sys.path_importer_cache.clear()
+    rss_before = get_rss_mb()
+    modules_before = set(sys.modules.keys())
+    
     # We start the high-resolution timer from *inside* the already-booted worker process.
     # This explicitly isolates the pure import latency and entirely omits the 
     # 10ms-50ms Python VM interpreter startup overhead that would skew the metrics.
     start_time = time.perf_counter()
-    rss_before = get_rss_mb()
-    
-    modules_before = set(sys.modules.keys())
     
     # --- TARGET IMPORT ---
     importlib.import_module(target_module)
