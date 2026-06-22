@@ -763,11 +763,11 @@ libraries:
     version: 1.48.0
     apis:
       - path: google/cloud/compute/v1
+    skip_generate: true
+    skip_release: true
     python:
       metadata_name_override: compute
       default_version: v1
-    skip_generate: true
-    skip_release: true
   - name: google-cloud-compute-v1beta
     version: 0.12.0
     apis:
@@ -1936,6 +1936,8 @@ libraries:
       - docs/spanner_v1/table.rst
       - docs/spanner_v1/transaction.rst
       - tests/unit/gapic/conftest.py
+    skip_generate: true
+    skip_release: true
     python:
       library_type: GAPIC_COMBO
       opt_args_by_api:
@@ -1950,8 +1952,6 @@ libraries:
           - python-gapic-name=spanner
       metadata_name_override: spanner
       default_version: v1
-    skip_generate: true
-    skip_release: true
   - name: google-cloud-speech
     version: 2.40.0
     apis:
