@@ -75,6 +75,9 @@ class Generator:
         self._env.tests["str_field_pb"] = utils.is_str_field_pb
         self._env.tests["msg_field_pb"] = utils.is_msg_field_pb
 
+        # Add global variables.
+        self._env.globals["uuid4_re"] = utils.UUID4_RE
+
         self._sample_configs = opts.sample_configs
 
     def get_response(self, api_schema: api.API, opts: Options) -> CodeGeneratorResponse:

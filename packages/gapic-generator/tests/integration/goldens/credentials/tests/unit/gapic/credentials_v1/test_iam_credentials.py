@@ -14,6 +14,7 @@
 # limitations under the License.
 #
 import os
+import asyncio
 from unittest import mock
 from unittest.mock import AsyncMock
 
@@ -93,6 +94,21 @@ def modify_default_endpoint(client):
 # mtls endpoint for endpoint testing purposes.
 def modify_default_endpoint_template(client):
     return "test.{UNIVERSE_DOMAIN}" if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE) else client._DEFAULT_ENDPOINT_TEMPLATE
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -955,8 +971,8 @@ def test_iam_credentials_client_create_channel_credentials_file(client_class, tr
 
 
 @pytest.mark.parametrize("request_type", [
-  common.GenerateAccessTokenRequest,
-  dict,
+  common.GenerateAccessTokenRequest(),
+  {},
 ])
 def test_generate_access_token(request_type, transport: str = 'grpc'):
     client = IAMCredentialsClient(
@@ -966,7 +982,7 @@ def test_generate_access_token(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1012,9 +1028,10 @@ def test_generate_access_token_non_empty_request_with_auto_populated_field():
         client.generate_access_token(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == common.GenerateAccessTokenRequest(
+        request_msg = common.GenerateAccessTokenRequest(
             name='name_value',
         )
+        assert args[0] == request_msg
 
 def test_generate_access_token_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -1083,7 +1100,11 @@ async def test_generate_access_token_async_use_cached_wrapped_rpc(transport: str
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-async def test_generate_access_token_async(transport: str = 'grpc_asyncio', request_type=common.GenerateAccessTokenRequest):
+@pytest.mark.parametrize("request_type", [
+  common.GenerateAccessTokenRequest(),
+  {},
+])
+async def test_generate_access_token_async(request_type, transport: str = 'grpc_asyncio'):
     client = IAMCredentialsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1091,7 +1112,7 @@ async def test_generate_access_token_async(transport: str = 'grpc_asyncio', requ
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1112,11 +1133,6 @@ async def test_generate_access_token_async(transport: str = 'grpc_asyncio', requ
     # Establish that the response is the type that we expect.
     assert isinstance(response, common.GenerateAccessTokenResponse)
     assert response.access_token == 'access_token_value'
-
-
-@pytest.mark.asyncio
-async def test_generate_access_token_async_from_dict():
-    await test_generate_access_token_async(request_type=dict)
 
 def test_generate_access_token_field_headers():
     client = IAMCredentialsClient(
@@ -1290,8 +1306,8 @@ async def test_generate_access_token_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  common.GenerateIdTokenRequest,
-  dict,
+  common.GenerateIdTokenRequest(),
+  {},
 ])
 def test_generate_id_token(request_type, transport: str = 'grpc'):
     client = IAMCredentialsClient(
@@ -1301,7 +1317,7 @@ def test_generate_id_token(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1348,10 +1364,11 @@ def test_generate_id_token_non_empty_request_with_auto_populated_field():
         client.generate_id_token(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == common.GenerateIdTokenRequest(
+        request_msg = common.GenerateIdTokenRequest(
             name='name_value',
             audience='audience_value',
         )
+        assert args[0] == request_msg
 
 def test_generate_id_token_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -1420,7 +1437,11 @@ async def test_generate_id_token_async_use_cached_wrapped_rpc(transport: str = "
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-async def test_generate_id_token_async(transport: str = 'grpc_asyncio', request_type=common.GenerateIdTokenRequest):
+@pytest.mark.parametrize("request_type", [
+  common.GenerateIdTokenRequest(),
+  {},
+])
+async def test_generate_id_token_async(request_type, transport: str = 'grpc_asyncio'):
     client = IAMCredentialsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1428,7 +1449,7 @@ async def test_generate_id_token_async(transport: str = 'grpc_asyncio', request_
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1449,11 +1470,6 @@ async def test_generate_id_token_async(transport: str = 'grpc_asyncio', request_
     # Establish that the response is the type that we expect.
     assert isinstance(response, common.GenerateIdTokenResponse)
     assert response.token == 'token_value'
-
-
-@pytest.mark.asyncio
-async def test_generate_id_token_async_from_dict():
-    await test_generate_id_token_async(request_type=dict)
 
 def test_generate_id_token_field_headers():
     client = IAMCredentialsClient(
@@ -1631,8 +1647,8 @@ async def test_generate_id_token_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  common.SignBlobRequest,
-  dict,
+  common.SignBlobRequest(),
+  {},
 ])
 def test_sign_blob(request_type, transport: str = 'grpc'):
     client = IAMCredentialsClient(
@@ -1642,7 +1658,7 @@ def test_sign_blob(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1690,9 +1706,10 @@ def test_sign_blob_non_empty_request_with_auto_populated_field():
         client.sign_blob(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == common.SignBlobRequest(
+        request_msg = common.SignBlobRequest(
             name='name_value',
         )
+        assert args[0] == request_msg
 
 def test_sign_blob_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -1761,7 +1778,11 @@ async def test_sign_blob_async_use_cached_wrapped_rpc(transport: str = "grpc_asy
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-async def test_sign_blob_async(transport: str = 'grpc_asyncio', request_type=common.SignBlobRequest):
+@pytest.mark.parametrize("request_type", [
+  common.SignBlobRequest(),
+  {},
+])
+async def test_sign_blob_async(request_type, transport: str = 'grpc_asyncio'):
     client = IAMCredentialsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1769,7 +1790,7 @@ async def test_sign_blob_async(transport: str = 'grpc_asyncio', request_type=com
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1792,11 +1813,6 @@ async def test_sign_blob_async(transport: str = 'grpc_asyncio', request_type=com
     assert isinstance(response, common.SignBlobResponse)
     assert response.key_id == 'key_id_value'
     assert response.signed_blob == b'signed_blob_blob'
-
-
-@pytest.mark.asyncio
-async def test_sign_blob_async_from_dict():
-    await test_sign_blob_async(request_type=dict)
 
 def test_sign_blob_field_headers():
     client = IAMCredentialsClient(
@@ -1964,8 +1980,8 @@ async def test_sign_blob_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  common.SignJwtRequest,
-  dict,
+  common.SignJwtRequest(),
+  {},
 ])
 def test_sign_jwt(request_type, transport: str = 'grpc'):
     client = IAMCredentialsClient(
@@ -1975,7 +1991,7 @@ def test_sign_jwt(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2024,10 +2040,11 @@ def test_sign_jwt_non_empty_request_with_auto_populated_field():
         client.sign_jwt(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == common.SignJwtRequest(
+        request_msg = common.SignJwtRequest(
             name='name_value',
             payload='payload_value',
         )
+        assert args[0] == request_msg
 
 def test_sign_jwt_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -2096,7 +2113,11 @@ async def test_sign_jwt_async_use_cached_wrapped_rpc(transport: str = "grpc_asyn
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-async def test_sign_jwt_async(transport: str = 'grpc_asyncio', request_type=common.SignJwtRequest):
+@pytest.mark.parametrize("request_type", [
+  common.SignJwtRequest(),
+  {},
+])
+async def test_sign_jwt_async(request_type, transport: str = 'grpc_asyncio'):
     client = IAMCredentialsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2104,7 +2125,7 @@ async def test_sign_jwt_async(transport: str = 'grpc_asyncio', request_type=comm
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2127,11 +2148,6 @@ async def test_sign_jwt_async(transport: str = 'grpc_asyncio', request_type=comm
     assert isinstance(response, common.SignJwtResponse)
     assert response.key_id == 'key_id_value'
     assert response.signed_jwt == 'signed_jwt_value'
-
-
-@pytest.mark.asyncio
-async def test_sign_jwt_async_from_dict():
-    await test_sign_jwt_async(request_type=dict)
 
 def test_sign_jwt_field_headers():
     client = IAMCredentialsClient(
@@ -3123,7 +3139,6 @@ def test_generate_access_token_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = common.GenerateAccessTokenRequest()
-
         assert args[0] == request_msg
 
 
@@ -3146,7 +3161,6 @@ def test_generate_id_token_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = common.GenerateIdTokenRequest()
-
         assert args[0] == request_msg
 
 
@@ -3169,7 +3183,6 @@ def test_sign_blob_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = common.SignBlobRequest()
-
         assert args[0] == request_msg
 
 
@@ -3192,7 +3205,6 @@ def test_sign_jwt_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = common.SignJwtRequest()
-
         assert args[0] == request_msg
 
 
@@ -3234,7 +3246,6 @@ async def test_generate_access_token_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = common.GenerateAccessTokenRequest()
-
         assert args[0] == request_msg
 
 
@@ -3261,7 +3272,6 @@ async def test_generate_id_token_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = common.GenerateIdTokenRequest()
-
         assert args[0] == request_msg
 
 
@@ -3289,7 +3299,6 @@ async def test_sign_blob_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = common.SignBlobRequest()
-
         assert args[0] == request_msg
 
 
@@ -3317,7 +3326,6 @@ async def test_sign_jwt_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = common.SignJwtRequest()
-
         assert args[0] == request_msg
 
 
@@ -3781,7 +3789,6 @@ def test_generate_access_token_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = common.GenerateAccessTokenRequest()
-
         assert args[0] == request_msg
 
 
@@ -3803,7 +3810,6 @@ def test_generate_id_token_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = common.GenerateIdTokenRequest()
-
         assert args[0] == request_msg
 
 
@@ -3825,7 +3831,6 @@ def test_sign_blob_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = common.SignBlobRequest()
-
         assert args[0] == request_msg
 
 
@@ -3847,7 +3852,6 @@ def test_sign_jwt_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = common.SignJwtRequest()
-
         assert args[0] == request_msg
 
 
