@@ -485,3 +485,30 @@ def test_deferred_mode_execution_error(mock_deferred_df):
 
         assert widget.is_deferred_mode is True
         assert widget._error_message == "Query Failed"
+
+
+def test_deferred_mode_execution_does_not_reset_page_on_navigation(
+    mock_deferred_df, mock_df_deferred
+):
+    from bigframes.display.anywidget import TableWidget
+
+    mock_deferred_df.execute.return_value = mock_df_deferred
+
+    batches = mock.MagicMock()
+    batch_df = pd.DataFrame({"A": [1], "B": ["a"], "C": [1.0], "D": [True]})
+    batches.__iter__.return_value = iter([batch_df])
+    batches.total_rows = 50
+    mock_df_deferred.to_pandas_batches.return_value = batches
+
+    with bigframes.option_context("display.render_mode", "anywidget"):
+        widget = TableWidget(mock_deferred_df)
+        widget.page_size = 10
+        widget.start_execution = True
+
+        thread = getattr(widget, "_execution_thread", None)
+        if thread is not None:
+            thread.join(timeout=5)
+
+        assert widget.page == 0
+        widget.page = 1
+        assert widget.page == 1

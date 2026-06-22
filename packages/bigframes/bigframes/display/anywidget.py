@@ -256,6 +256,7 @@ class TableWidget(_WIDGET_BASE):
                             self._batch_iter = batch_iter
                             self._cached_batches = cached_batches
                             self._all_data_loaded = all_data_loaded
+                            self._last_sort_state = _SortState((), ())
                             self.row_count = total_rows
                             self.table_html = initial_html
                             self.is_deferred_mode = False

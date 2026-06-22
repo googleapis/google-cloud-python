@@ -141,6 +141,7 @@ describe('TableWidgetAngular', () => {
 
       // Act (Click Run Query)
       runButton.click();
+      await new Promise((resolve) => setTimeout(resolve, 50));
 
       // Assert (Execution requested)
       expect(model.set).toHaveBeenCalledWith('start_execution', true);
