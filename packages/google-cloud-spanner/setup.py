@@ -29,10 +29,7 @@ description = "Google Cloud Spanner API client library"
 version = None
 
 with open(os.path.join(package_root, "google/cloud/spanner/gapic_version.py")) as fp:
-    version_candidates = re.findall(
-        r"(?<=\")\d+\.\d+\.\d+[^\"\s]*(?=\")",
-        fp.read(),
-    )
+    version_candidates = re.findall(r"(?<=\")\d+.\d+.\d+(?=\")", fp.read())
     assert len(version_candidates) == 1
     version = version_candidates[0]
 
@@ -42,16 +39,17 @@ else:
     release_status = "Development Status :: 5 - Production/Stable"
 
 dependencies = [
-    "google-api-core[grpc] >= 2.24.2, <3.0.0",
+    "google-api-core[grpc] >= 2.17.1, <3.0.0",
     # Exclude incompatible versions of `google-auth`
     # See https://github.com/googleapis/google-cloud-python/issues/12364
     "google-auth >= 2.14.1, <3.0.0,!=2.24.0,!=2.25.0",
     "google-cloud-core >= 2.0.0, < 3.0.0",
     "grpcio >= 1.49.1, < 2.0.0",
     "grpcio >= 1.75.1, < 2.0.0; python_version >= '3.14'",
-    "grpc-google-iam-v1 >= 0.14.2, <1.0.0",
-    "proto-plus >= 1.26.1, <2.0.0",
-    "protobuf >= 6.33.5, < 8.0.0",
+    "grpc-google-iam-v1 >= 0.12.4, <1.0.0",
+    "proto-plus >= 1.22.3, <2.0.0",
+    "proto-plus >= 1.25.0, <2.0.0; python_version >= '3.13'",
+    "protobuf >= 4.25.8, < 8.0.0",
     "grpc-interceptor >= 0.15.4",
     "sqlparse >= 0.4.4",
     # Make OpenTelemetry a core dependency
@@ -59,7 +57,7 @@ dependencies = [
     "opentelemetry-sdk >= 1.22.0",
     "opentelemetry-semantic-conventions >= 0.43b0",
     "opentelemetry-resourcedetector-gcp >= 1.8.0a0",
-    "google-cloud-monitoring >= 2.28.0",
+    "google-cloud-monitoring >= 2.16.0",
     "mmh3 >= 4.1.0",
 ]
 extras = {

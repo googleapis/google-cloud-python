@@ -1950,6 +1950,8 @@ libraries:
           - python-gapic-name=spanner
       metadata_name_override: spanner
       default_version: v1
+    skip_generate: true
+    skip_release: true
   - name: google-cloud-speech
     version: 2.40.0
     apis:
