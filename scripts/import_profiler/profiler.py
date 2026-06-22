@@ -75,7 +75,7 @@ def run_worker(target_module):
                 try:
                     with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
                         loaded_lines += sum(1 for _ in f)
-                except Exception as e:
+                except OSError as e:
                     logging.warning(f"Failed to read lines from {file_path}: {e}")
     
     # Output to stdout for the Master to capture
