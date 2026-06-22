@@ -455,12 +455,8 @@ def prerelease_deps(session, protobuf_implementation):
     `pip install --pre <package>`.
     """
 
-    # Install all dependencies
-    session.install("-e", ".")
-
-    # Install dependencies for the unit test environment
-    unit_deps_all = UNIT_TEST_STANDARD_DEPENDENCIES + UNIT_TEST_EXTERNAL_DEPENDENCIES
-    session.install(*unit_deps_all)
+    # Install all dependencies and unit test environment
+    install_unittest_dependencies(session)
 
     # Because we test minimum dependency versions on the minimum Python
     # version, the first version we test with in the unit tests sessions has a
@@ -567,12 +563,8 @@ def core_deps_from_source(session, protobuf_implementation):
     rather than pulling the dependencies from PyPI.
     """
 
-    # Install all dependencies
-    session.install("-e", ".")
-
-    # Install dependencies for the unit test environment
-    unit_deps_all = UNIT_TEST_STANDARD_DEPENDENCIES + UNIT_TEST_EXTERNAL_DEPENDENCIES
-    session.install(*unit_deps_all)
+    # Install all dependencies and unit test environment
+    install_unittest_dependencies(session)
 
     # Because we test minimum dependency versions on the minimum Python
     # version, the first version we test with in the unit tests sessions has a
