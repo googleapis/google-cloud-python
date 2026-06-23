@@ -1,5 +1,6 @@
 [run]
 branch = True
+parallel = True
 plugins =
     gapic.jinja_coverage
 source =

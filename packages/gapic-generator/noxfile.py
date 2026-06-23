@@ -857,7 +857,7 @@ def core_deps_from_source(session, protobuf_implementation):
     session.skip("core_deps_from_source session is not yet implemented for gapic-generator-python.")
 
 
-@nox.session(python=NEWEST_PYTHON)
+@nox.session(python=ALL_PYTHON)
 def template_coverage(session):
     """Measure coverage of the Jinja templates."""
     session.install(
@@ -868,14 +868,48 @@ def template_coverage(session):
         "pyfakefs",
         "grpcio-status",
         "proto-plus",
+        "grpcio-tools",
     )
     session.install("-e", ".")
 
+    # Robustly locate gapic-showcase and googleapis schemas across local dev and CI environments.
+    import glob
+    showcase_dir = None
+    for candidate in ["../../../gapic-showcase", "../../gapic-showcase", "../gapic-showcase", "gapic-showcase"]:
+        if path.exists(path.join(candidate, "schema", "google", "showcase", "v1beta1")):
+            showcase_dir = candidate
+            break
 
+    googleapis_dir = None
+    for candidate in ["../../../googleapis", "../../googleapis", "../googleapis", "googleapis"]:
+        if path.exists(path.join(candidate, "google", "api")):
+            googleapis_dir = candidate
+            break
+
+    if not showcase_dir or not googleapis_dir:
+        session.error("Could not locate gapic-showcase or googleapis schemas. Ensure they are cloned nearby.")
+
+    proto_files = glob.glob(path.join(showcase_dir, "schema", "google", "showcase", "v1beta1", "*.proto"))
+    desc_path = "/tmp/showcase.desc"
+
+    session.run(
+        "python",
+        "-m",
+        "grpc_tools.protoc",
+        "--experimental_allow_proto3_optional",
+        "--include_imports",
+        "--include_source_info",
+        f"--descriptor_set_out={desc_path}",
+        f"-I{path.join(showcase_dir, 'schema')}",
+        f"-I{googleapis_dir}",
+        *proto_files,
+    )
 
     session.run(
         "py.test",
         "-vv",
+        "-n",
+        "auto",
         "--cov=gapic",
         "--cov-config=.coveragerc-templates",
         "--cov-report=html",
@@ -883,7 +917,8 @@ def template_coverage(session):
         *session.posargs,
         env={
             "COVERAGE_CORE": "ctrace",
-            "SHOWCASE_DESC_PATH": "/tmp/showcase.desc",
+            "SHOWCASE_DESC_PATH": desc_path,
+            "SHOWCASE_GRPC_SERVICE_CONFIG": path.join(showcase_dir, "schema", "google", "showcase", "v1beta1", "showcase_grpc_service_config.json"),
         },
     )
 

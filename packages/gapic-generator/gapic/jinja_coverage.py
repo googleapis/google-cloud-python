@@ -33,7 +33,7 @@ class JinjaPlugin(coverage.plugin.CoveragePlugin):
             abs_filename = os.path.abspath(filename)
             # Check if template_directory is a prefix of filename
             if abs_filename.startswith(self.template_directory + os.path.sep):
-                return FileTracer(filename)
+                return FileTracer(filename, self.environment)
         except Exception:
             pass
 
@@ -47,8 +47,9 @@ class JinjaPlugin(coverage.plugin.CoveragePlugin):
 
 
 class FileTracer(coverage.plugin.FileTracer):
-    def __init__(self, filename):
+    def __init__(self, filename, environment):
         self.metadata = {'filename': filename}
+        self.plugin_env = environment
 
     def source_filename(self):
         return self.metadata["filename"]
@@ -56,7 +57,16 @@ class FileTracer(coverage.plugin.FileTracer):
     def line_number_range(self, frame):
         lineno = -1
         env = frame.f_locals.get('environment')
-        if env and env.loader:
+        if not env:
+            context = frame.f_locals.get('context')
+            if context and hasattr(context, 'environment'):
+                env = context.environment
+        if not env:
+            env = frame.f_globals.get('environment')
+        if not env:
+            env = self.plugin_env
+
+        if env and getattr(env, 'loader', None):
             try:
                 co_filename = frame.f_code.co_filename
                 for search_path in env.loader.searchpath:
@@ -92,11 +102,27 @@ class FileReporter(coverage.plugin.FileReporter):
     def lines(self):
         source_lines = set()
         try:
-            tokens = self.environment._tokenize(self.source(), self.filename)
-            for token in tokens:
-                source_lines.add(token.lineno)
+            for search_path in self.environment.loader.searchpath:
+                try:
+                    rel_path = os.path.relpath(self.filename, search_path)
+                    if not rel_path.startswith(".."):
+                        template = self.environment.get_template(rel_path)
+                        for _, template_lineno in template.debug_info:
+                            source_lines.add(template_lineno)
+                        break
+                except Exception:
+                    pass
         except Exception:
             pass
+
+        if not source_lines:
+            try:
+                tokens = self.environment._tokenize(self.source(), self.filename)
+                for token in tokens:
+                    source_lines.add(token.lineno)
+            except Exception:
+                pass
+
         return source_lines - self.excluded_lines()
 
     def excluded_lines(self):
@@ -112,7 +138,9 @@ class FileReporter(coverage.plugin.FileReporter):
             r"\{%.*endwith.*%\}",
             r"\{%.*endblock.*%\}",
             r"\{%.*endmacro.*%\}",
-            r"\{\{-?\s*'\s*'\s*-?\}\}"
+            r"\{%.*endfilter.*%\}",
+            r"\{\{-?\s*'\s*'\s*-?\}\}",
+            r"\{\{-?\s*[\"']\\n[\"']\s*-?\}\}"
         ]
         compiled = [re.compile(p) for p in patterns]
         in_multiline_set = False
@@ -140,33 +168,6 @@ class FileReporter(coverage.plugin.FileReporter):
                 if c.search(line):
                     excluded.add(i)
                     break
-        
-        if self.filename.endswith("test_macros.j2"):
-            excluded.update([59, 150, 319, 320, 321, 493, 561, 619, 620, 621, 658, 1191, 1207, 1217, 1312, 1419, 1540, 1541, 1542, 1576, 1607, 1608, 1609, 1610, 1611, 1612, 1613, 1614, 1679, 1715, 1716, 1717, 1786, 1787, 1788, 1789, 1790, 1791, 1792, 1793, 2024, 2025, 2040])
-        if self.filename.endswith("_client_macros.j2"):
-            excluded.update([43, 65, 84, 133, 134, 137, 194, 199, 220, 222])
-        if self.filename.endswith("client.py.j2"):
-            excluded.update([71, 680, 681])
-        if self.filename.endswith("async_client.py.j2"):
-            excluded.update([52, 321, 442])
-        if self.filename.endswith("transports/base.py.j2"):
-            excluded.update([46, 51, 164, 170, 174, 175, 292])
-        if self.filename.endswith("transports/grpc.py.j2"):
-            excluded.update([50, 340])
-        if self.filename.endswith("transports/grpc_asyncio.py.j2"):
-            excluded.update([54, 345])
-        if self.filename.endswith("transports/_mixins.py.j2"):
-            excluded.update([172, 199])
-        if self.filename.endswith("services/%service/_mixins.py.j2"):
-            excluded.update([291, 298, 301, 308, 311, 321, 412, 419, 426, 433, 447, 534, 541, 552, 559])
-        if self.filename.endswith("services/%service/_async_mixins.py.j2"):
-            excluded.update([291, 298, 301, 308, 311, 321, 412, 419, 426, 433, 447, 534, 541, 552, 559])
-        if self.filename.endswith("services/%service/_shared_macros.j2"):
-            excluded.update([27, 106, 133, 159, 172, 177, 313, 314, 316, 317, 319, 320, 323, 324])
-        if self.filename.endswith("services/%service/pagers.py.j2"):
-            excluded.update([30])
-        if self.filename.endswith("services/%service/transports/rest_asyncio.py.j2"):
-            excluded.update([188])
 
         return excluded
 
