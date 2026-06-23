@@ -65,7 +65,7 @@ def _safe_read_file(
         else:
             print(f"Warning: Permission denied reading {description}: {file_path}", file=sys.stderr)
             return None
-    except IOError as e:
+    except (IOError, ValueError) as e:
         if required:
             print(f"Error reading {description} {file_path}: {e}", file=sys.stderr)
             sys.exit(1)
@@ -646,11 +646,14 @@ def parse_matrix_file(file_path: str) -> List[Tuple[str, str]]:
                 if v is None or isinstance(v, (dict, list)):
                     print(f"Error: Invalid version '{v}' for dependency '{dep}'", file=sys.stderr)
                     sys.exit(1)
-                targets.append((str(dep), str(v)))
-        elif versions is not None and not isinstance(versions, dict):
-            targets.append((str(dep), str(versions)))
+                if not isinstance(v, str):
+                    print(f"Error: Version '{v}' for dependency '{dep}' must be specified as a quoted string to prevent YAML parsing issues (e.g., 3.10 parsed as 3.1).", file=sys.stderr)
+                    sys.exit(1)
+                targets.append((str(dep), v))
+        elif isinstance(versions, str):
+            targets.append((str(dep), versions))
         else:
-            print(f"Error: Invalid version '{versions}' for dependency '{dep}'", file=sys.stderr)
+            print(f"Error: Invalid version '{versions}' for dependency '{dep}'. Versions must be specified as quoted strings.", file=sys.stderr)
             sys.exit(1)
             
     return targets
@@ -743,13 +746,13 @@ def main():
     args = parser.parse_args()
     
     # Validation of required inputs
-    has_single_target = bool(args.dependency and args.version)
     has_matrix_file = bool(args.matrix_file)
-    
-    if not (has_single_target or has_matrix_file):
-        parser.error("Must specify either (-d/--dependency AND -v/--version) OR (-m/--matrix-file)")
-    if has_single_target and has_matrix_file:
-        parser.error("Cannot specify both single target (-d/-v) and matrix file (-m/--matrix-file)")
+    if has_matrix_file:
+        if args.dependency or args.version:
+            parser.error("Cannot specify -d/--dependency or -v/--version when using -m/--matrix-file")
+    else:
+        if not (args.dependency and args.version):
+            parser.error("Must specify both -d/--dependency and -v/--version when not using -m/--matrix-file")
         
     targets = []
     if has_matrix_file:
