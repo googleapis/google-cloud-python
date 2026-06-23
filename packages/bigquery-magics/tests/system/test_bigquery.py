@@ -14,7 +14,10 @@
 
 """System tests for Jupyter/IPython connector."""
 
+import contextlib
+import gc
 import re
+import time
 
 import pandas
 import psutil
@@ -22,28 +25,66 @@ from IPython.testing import globalipapp
 from IPython.utils import io
 
 
+@contextlib.contextmanager
+def patch_tracked_requests():
+    """Context manager to patch google-auth requests and track/close their HTTP sessions.
+
+    This prevents socket leaks in system tests that use Workload Identity or metadata server auth.
+    """
+    import google.auth.transport.requests
+
+    original_init = google.auth.transport.requests.Request.__init__
+    tracked_requests = []
+
+    def patched_init(self, session=None):
+        original_init(self, session=session)
+        if session is None:
+            tracked_requests.append(self)
+
+    google.auth.transport.requests.Request.__init__ = patched_init
+    try:
+        yield tracked_requests
+    finally:
+        google.auth.transport.requests.Request.__init__ = original_init
+        for req in tracked_requests:
+            if hasattr(req, "session") and req.session is not None:
+                req.session.close()
+
+
 def test_bigquery_magic():
     globalipapp.start_ipython()
     ip = globalipapp.get_ipython()
     current_process = psutil.Process()
+
+    # GC to ensure clean starting state
+    gc.collect()
     conn_count_start = len(current_process.net_connections())
 
-    ip.extension_manager.load_extension("bigquery_magics")
-    sql = """
-        SELECT
-            CONCAT(
-            'https://stackoverflow.com/questions/',
-            CAST(id as STRING)) as url,
-            view_count
-        FROM `bigquery-public-data.stackoverflow.posts_questions`
-        WHERE tags like '%google-bigquery%'
-        ORDER BY view_count DESC
-        LIMIT 10
-    """
-    with io.capture_output() as captured:
-        result = ip.run_cell_magic("bigquery", "--use_rest_api", sql)
+    with patch_tracked_requests():
+        ip.extension_manager.load_extension("bigquery_magics")
+        sql = """
+            SELECT
+                CONCAT(
+                'https://stackoverflow.com/questions/',
+                CAST(id as STRING)) as url,
+                view_count
+            FROM `bigquery-public-data.stackoverflow.posts_questions`
+            WHERE tags like '%google-bigquery%'
+            ORDER BY view_count DESC
+            LIMIT 10
+        """
+        with io.capture_output() as captured:
+            result = ip.run_cell_magic("bigquery", "--use_rest_api", sql)
 
-    conn_count_end = len(current_process.net_connections())
+    # Force garbage collection to sweep unreferenced socket objects
+    gc.collect()
+
+    # Wait a bit for the asynchronous channel teardown to complete and the socket to be closed.
+    for _ in range(30):
+        conn_count_end = len(current_process.net_connections())
+        if conn_count_end <= conn_count_start:
+            break
+        time.sleep(0.1)
 
     lines = re.split("\n|\r", captured.stdout)
     # Removes blanks & terminal code (result of display clearing)
