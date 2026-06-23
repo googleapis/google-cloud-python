@@ -39,8 +39,9 @@ eval "$(pyenv init --path)"
 
 install_python_pyenv() {
     version=$1
+    escaped_version="${version//./\.}"
 
-    if [ -z "$(pyenv versions --bare | grep $version)" ]; then
+    if [ -z "$(pyenv versions --bare | grep "^${escaped_version}\b")" ]; then
         echo "Python $version is not installed. Installing..."
         pyenv install $version
         echo "Python $version installed."
