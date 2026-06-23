@@ -204,7 +204,6 @@ def test_date_trunc_expression():
     result = bbq.date_trunc(
         bpd.col("date_value"),
         bpd.col("granularity"),
-        bpd.col("time_zone"),
     )
 
     # Verify result is a col Expression
@@ -216,13 +215,11 @@ def test_date_trunc_expression():
     assert expr.op == date_op._DATE_TRUNC_OP
 
     # Verify arguments are free variables matching the names
-    assert len(expr.inputs) == 3
+    assert len(expr.inputs) == 2
     assert isinstance(expr.inputs[0], ex.UnboundVariableExpression)
     assert expr.inputs[0].id == "date_value"
     assert isinstance(expr.inputs[1], ex.UnboundVariableExpression)
     assert expr.inputs[1].id == "granularity"
-    assert isinstance(expr.inputs[2], ex.UnboundVariableExpression)
-    assert expr.inputs[2].id == "time_zone"
 
 
 def test_extract_expression():

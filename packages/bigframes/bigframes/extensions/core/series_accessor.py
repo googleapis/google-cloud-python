@@ -867,11 +867,7 @@ class BigQuerySeriesAccessor(AbstractBigQuerySeriesAccessor[S]):
         bucket_origin: Union[
             series.Series,
             bigframes.core.col.Expression,
-            Union[
-                Literal[sentinels.Sentinel.ARGUMENT_DEFAULT],
-                datetime.date,
-                datetime.datetime,
-            ],
+            Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], datetime.date],
         ] = sentinels.Sentinel.ARGUMENT_DEFAULT,
         *,
         session: Optional[bigframes.session.Session] = None,
@@ -999,11 +995,6 @@ class BigQuerySeriesAccessor(AbstractBigQuerySeriesAccessor[S]):
             bigframes.core.col.Expression,
             Union[Any, Literal[sentinels.Sentinel.ARGUMENT_DEFAULT]],
         ],
-        time_zone: Union[
-            series.Series,
-            bigframes.core.col.Expression,
-            Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], str],
-        ] = sentinels.Sentinel.ARGUMENT_DEFAULT,
         *,
         session: Optional[bigframes.session.Session] = None,
     ) -> S:
@@ -1018,14 +1009,12 @@ class BigQuerySeriesAccessor(AbstractBigQuerySeriesAccessor[S]):
 
             session = googlesql._find_session(
                 granularity,
-                time_zone,
             )
 
         bf_series = self._bf_from_series(session)
         result = date_trunc_impl(
             bf_series,
             granularity,
-            time_zone,
         )
         return self._to_series(cast(series.Series, result))
 

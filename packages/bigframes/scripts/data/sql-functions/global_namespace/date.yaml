@@ -80,21 +80,6 @@ scalar_functions:
             optional: false
             keyword_only: false
         return: date
-      # Signature: date_add:pts_i64_any
-      - args:
-          - name: "date_expression"
-            value: timestamp
-            optional: false
-            keyword_only: false
-          - name: "int64_expression"
-            value: i64
-            optional: false
-            keyword_only: false
-          - name: "date_part"
-            value: any1
-            optional: false
-            keyword_only: false
-        return: timestamp
   - name: "date_bucket"
     description: "Gets the lower bound of the date bucket that contains a date."
     series_accessor_arg: date_in_bucket
@@ -114,21 +99,6 @@ scalar_functions:
             optional: true
             keyword_only: false
         return: date
-      # Signature: date_bucket:pts_iday_pts
-      - args:
-          - name: "date_in_bucket"
-            value: timestamp
-            optional: false
-            keyword_only: false
-          - name: "bucket_width"
-            value: interval_day
-            optional: false
-            keyword_only: false
-          - name: "bucket_origin"
-            value: timestamp
-            optional: true
-            keyword_only: false
-        return: timestamp
   - name: "date_diff"
     description: "Gets the number of unit boundaries between two DATE values (end_date - start_date) at a particular time granularity."
     series_accessor_arg: end_date
@@ -193,21 +163,6 @@ scalar_functions:
             optional: false
             keyword_only: false
         return: date
-      # Signature: date_sub:pts_i64_any
-      - args:
-          - name: "date_expression"
-            value: timestamp
-            optional: false
-            keyword_only: false
-          - name: "int64_expression"
-            value: i64
-            optional: false
-            keyword_only: false
-          - name: "date_part"
-            value: any1
-            optional: false
-            keyword_only: false
-        return: timestamp
   - name: "date_trunc"
     description: "Truncates a DATE, DATETIME, or TIMESTAMP value at a particular granularity."
     series_accessor_arg: date_value
@@ -223,32 +178,6 @@ scalar_functions:
             optional: false
             keyword_only: false
         return: date
-      # Signature: date_trunc:pts_any
-      - args:
-          - name: "date_value"
-            value: timestamp
-            optional: false
-            keyword_only: false
-          - name: "granularity"
-            value: any1
-            optional: false
-            keyword_only: false
-        return: timestamp
-      # Signature: date_trunc:pts_any_str
-      - args:
-          - name: "date_value"
-            value: timestamp
-            optional: false
-            keyword_only: false
-          - name: "granularity"
-            value: any1
-            optional: false
-            keyword_only: false
-          - name: "time_zone"
-            value: string
-            optional: true
-            keyword_only: false
-        return: timestamp
   - name: "extract"
     description: "Returns the value corresponding to the specified date part."
     series_accessor_arg: date_expression

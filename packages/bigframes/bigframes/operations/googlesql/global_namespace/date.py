@@ -44,148 +44,15 @@ _DATE_OP = googlesql.GoogleSqlScalarOp(
     ),
     signature=lambda *args: dtypes.DATE_DTYPE,
 )
-
-
-def _DATE_ADD_SIG(*args):
-    # Pad args with None to match max expected args
-    args = args + (None,) * (3 - len(args))
-    # Try matching impl 0
-    any1_val = None
-    match_ok = True
-    if match_ok and args[0] is not None:
-        try:
-            if dtypes.coerce_to_common(args[0], dtypes.DATE_DTYPE) != dtypes.DATE_DTYPE:
-                match_ok = False
-        except TypeError:
-            match_ok = False
-    if match_ok and args[1] is not None:
-        try:
-            if dtypes.coerce_to_common(args[1], dtypes.INT_DTYPE) != dtypes.INT_DTYPE:
-                match_ok = False
-        except TypeError:
-            match_ok = False
-    if match_ok and args[2] is not None:
-        if any1_val is not None:
-            try:
-                any1_val = dtypes.coerce_to_common(any1_val, args[2])
-            except TypeError:
-                match_ok = False
-        else:
-            any1_val = args[2]
-    if match_ok:
-        return dtypes.DATE_DTYPE
-
-    # Try matching impl 1
-    any1_val = None
-    match_ok = True
-    if match_ok and args[0] is not None:
-        try:
-            if (
-                dtypes.coerce_to_common(args[0], dtypes.TIMESTAMP_DTYPE)
-                != dtypes.TIMESTAMP_DTYPE
-            ):
-                match_ok = False
-        except TypeError:
-            match_ok = False
-    if match_ok and args[1] is not None:
-        try:
-            if dtypes.coerce_to_common(args[1], dtypes.INT_DTYPE) != dtypes.INT_DTYPE:
-                match_ok = False
-        except TypeError:
-            match_ok = False
-    if match_ok and args[2] is not None:
-        if any1_val is not None:
-            try:
-                any1_val = dtypes.coerce_to_common(any1_val, args[2])
-            except TypeError:
-                match_ok = False
-        else:
-            any1_val = args[2]
-    if match_ok:
-        return dtypes.TIMESTAMP_DTYPE
-
-    raise TypeError(
-        f"Could not find matching signature for date_add with argument types: {[str(t) for t in args]}"
-    )
-
-
 _DATE_ADD_OP = googlesql.GoogleSqlScalarOp(
     "DATE_ADD",
     args=(googlesql.ArgSpec(), googlesql.ArgSpec(), googlesql.ArgSpec()),
-    signature=_DATE_ADD_SIG,
+    signature=lambda *args: dtypes.DATE_DTYPE,
 )
-
-
-def _DATE_BUCKET_SIG(*args):
-    # Pad args with None to match max expected args
-    args = args + (None,) * (3 - len(args))
-    # Try matching impl 0
-    match_ok = True
-    if match_ok and args[0] is not None:
-        try:
-            if dtypes.coerce_to_common(args[0], dtypes.DATE_DTYPE) != dtypes.DATE_DTYPE:
-                match_ok = False
-        except TypeError:
-            match_ok = False
-    if match_ok and args[1] is not None:
-        try:
-            if (
-                dtypes.coerce_to_common(args[1], dtypes.TIMEDELTA_DTYPE)
-                != dtypes.TIMEDELTA_DTYPE
-            ):
-                match_ok = False
-        except TypeError:
-            match_ok = False
-    if match_ok and args[2] is not None:
-        try:
-            if dtypes.coerce_to_common(args[2], dtypes.DATE_DTYPE) != dtypes.DATE_DTYPE:
-                match_ok = False
-        except TypeError:
-            match_ok = False
-    if match_ok:
-        return dtypes.DATE_DTYPE
-
-    # Try matching impl 1
-    match_ok = True
-    if match_ok and args[0] is not None:
-        try:
-            if (
-                dtypes.coerce_to_common(args[0], dtypes.TIMESTAMP_DTYPE)
-                != dtypes.TIMESTAMP_DTYPE
-            ):
-                match_ok = False
-        except TypeError:
-            match_ok = False
-    if match_ok and args[1] is not None:
-        try:
-            if (
-                dtypes.coerce_to_common(args[1], dtypes.TIMEDELTA_DTYPE)
-                != dtypes.TIMEDELTA_DTYPE
-            ):
-                match_ok = False
-        except TypeError:
-            match_ok = False
-    if match_ok and args[2] is not None:
-        try:
-            if (
-                dtypes.coerce_to_common(args[2], dtypes.TIMESTAMP_DTYPE)
-                != dtypes.TIMESTAMP_DTYPE
-            ):
-                match_ok = False
-        except TypeError:
-            match_ok = False
-    if match_ok:
-        return dtypes.TIMESTAMP_DTYPE
-
-    raise TypeError(
-        f"Could not find matching signature for date_bucket with argument types: {[str(t) for t in args]}"
-    )
-
-
 _DATE_BUCKET_OP = googlesql.GoogleSqlScalarOp(
     "DATE_BUCKET",
     args=(googlesql.ArgSpec(), googlesql.ArgSpec(), googlesql.ArgSpec(optional=True)),
-    signature=_DATE_BUCKET_SIG,
+    signature=lambda *args: dtypes.DATE_DTYPE,
 )
 _DATE_DIFF_OP = googlesql.GoogleSqlScalarOp(
     "DATE_DIFF",
@@ -197,165 +64,15 @@ _DATE_FROM_UNIX_DATE_OP = googlesql.GoogleSqlScalarOp(
     args=(googlesql.ArgSpec(),),
     signature=lambda *args: dtypes.DATE_DTYPE,
 )
-
-
-def _DATE_SUB_SIG(*args):
-    # Pad args with None to match max expected args
-    args = args + (None,) * (3 - len(args))
-    # Try matching impl 0
-    any1_val = None
-    match_ok = True
-    if match_ok and args[0] is not None:
-        try:
-            if dtypes.coerce_to_common(args[0], dtypes.DATE_DTYPE) != dtypes.DATE_DTYPE:
-                match_ok = False
-        except TypeError:
-            match_ok = False
-    if match_ok and args[1] is not None:
-        try:
-            if dtypes.coerce_to_common(args[1], dtypes.INT_DTYPE) != dtypes.INT_DTYPE:
-                match_ok = False
-        except TypeError:
-            match_ok = False
-    if match_ok and args[2] is not None:
-        if any1_val is not None:
-            try:
-                any1_val = dtypes.coerce_to_common(any1_val, args[2])
-            except TypeError:
-                match_ok = False
-        else:
-            any1_val = args[2]
-    if match_ok:
-        return dtypes.DATE_DTYPE
-
-    # Try matching impl 1
-    any1_val = None
-    match_ok = True
-    if match_ok and args[0] is not None:
-        try:
-            if (
-                dtypes.coerce_to_common(args[0], dtypes.TIMESTAMP_DTYPE)
-                != dtypes.TIMESTAMP_DTYPE
-            ):
-                match_ok = False
-        except TypeError:
-            match_ok = False
-    if match_ok and args[1] is not None:
-        try:
-            if dtypes.coerce_to_common(args[1], dtypes.INT_DTYPE) != dtypes.INT_DTYPE:
-                match_ok = False
-        except TypeError:
-            match_ok = False
-    if match_ok and args[2] is not None:
-        if any1_val is not None:
-            try:
-                any1_val = dtypes.coerce_to_common(any1_val, args[2])
-            except TypeError:
-                match_ok = False
-        else:
-            any1_val = args[2]
-    if match_ok:
-        return dtypes.TIMESTAMP_DTYPE
-
-    raise TypeError(
-        f"Could not find matching signature for date_sub with argument types: {[str(t) for t in args]}"
-    )
-
-
 _DATE_SUB_OP = googlesql.GoogleSqlScalarOp(
     "DATE_SUB",
     args=(googlesql.ArgSpec(), googlesql.ArgSpec(), googlesql.ArgSpec()),
-    signature=_DATE_SUB_SIG,
+    signature=lambda *args: dtypes.DATE_DTYPE,
 )
-
-
-def _DATE_TRUNC_SIG(*args):
-    # Pad args with None to match max expected args
-    args = args + (None,) * (3 - len(args))
-    # Try matching impl 0
-    any1_val = None
-    match_ok = True
-    if match_ok and args[0] is not None:
-        try:
-            if dtypes.coerce_to_common(args[0], dtypes.DATE_DTYPE) != dtypes.DATE_DTYPE:
-                match_ok = False
-        except TypeError:
-            match_ok = False
-    if match_ok and args[1] is not None:
-        if any1_val is not None:
-            try:
-                any1_val = dtypes.coerce_to_common(any1_val, args[1])
-            except TypeError:
-                match_ok = False
-        else:
-            any1_val = args[1]
-    if match_ok:
-        return dtypes.DATE_DTYPE
-
-    # Try matching impl 1
-    any1_val = None
-    match_ok = True
-    if match_ok and args[0] is not None:
-        try:
-            if (
-                dtypes.coerce_to_common(args[0], dtypes.TIMESTAMP_DTYPE)
-                != dtypes.TIMESTAMP_DTYPE
-            ):
-                match_ok = False
-        except TypeError:
-            match_ok = False
-    if match_ok and args[1] is not None:
-        if any1_val is not None:
-            try:
-                any1_val = dtypes.coerce_to_common(any1_val, args[1])
-            except TypeError:
-                match_ok = False
-        else:
-            any1_val = args[1]
-    if match_ok:
-        return dtypes.TIMESTAMP_DTYPE
-
-    # Try matching impl 2
-    any1_val = None
-    match_ok = True
-    if match_ok and args[0] is not None:
-        try:
-            if (
-                dtypes.coerce_to_common(args[0], dtypes.TIMESTAMP_DTYPE)
-                != dtypes.TIMESTAMP_DTYPE
-            ):
-                match_ok = False
-        except TypeError:
-            match_ok = False
-    if match_ok and args[1] is not None:
-        if any1_val is not None:
-            try:
-                any1_val = dtypes.coerce_to_common(any1_val, args[1])
-            except TypeError:
-                match_ok = False
-        else:
-            any1_val = args[1]
-    if match_ok and args[2] is not None:
-        try:
-            if (
-                dtypes.coerce_to_common(args[2], dtypes.STRING_DTYPE)
-                != dtypes.STRING_DTYPE
-            ):
-                match_ok = False
-        except TypeError:
-            match_ok = False
-    if match_ok:
-        return dtypes.TIMESTAMP_DTYPE
-
-    raise TypeError(
-        f"Could not find matching signature for date_trunc with argument types: {[str(t) for t in args]}"
-    )
-
-
 _DATE_TRUNC_OP = googlesql.GoogleSqlScalarOp(
     "DATE_TRUNC",
-    args=(googlesql.ArgSpec(), googlesql.ArgSpec(), googlesql.ArgSpec(optional=True)),
-    signature=_DATE_TRUNC_SIG,
+    args=(googlesql.ArgSpec(), googlesql.ArgSpec()),
+    signature=lambda *args: dtypes.DATE_DTYPE,
 )
 
 
@@ -624,11 +341,7 @@ def date_add(
     date_expression: Union[
         series.Series,
         bigframes.core.col.Expression,
-        Union[
-            Literal[sentinels.Sentinel.ARGUMENT_DEFAULT],
-            datetime.date,
-            datetime.datetime,
-        ],
+        Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], datetime.date],
     ],
     int64_expression: Union[
         series.Series,
@@ -654,11 +367,7 @@ def date_bucket(
     date_in_bucket: Union[
         series.Series,
         bigframes.core.col.Expression,
-        Union[
-            Literal[sentinels.Sentinel.ARGUMENT_DEFAULT],
-            datetime.date,
-            datetime.datetime,
-        ],
+        Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], datetime.date],
     ],
     bucket_width: Union[
         series.Series,
@@ -668,11 +377,7 @@ def date_bucket(
     bucket_origin: Union[
         series.Series,
         bigframes.core.col.Expression,
-        Union[
-            Literal[sentinels.Sentinel.ARGUMENT_DEFAULT],
-            datetime.date,
-            datetime.datetime,
-        ],
+        Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], datetime.date],
     ] = sentinels.Sentinel.ARGUMENT_DEFAULT,
 ) -> Union[series.Series, bigframes.core.col.Expression]:
     """Gets the lower bound of the date bucket that contains a date."""
@@ -736,11 +441,7 @@ def date_sub(
     date_expression: Union[
         series.Series,
         bigframes.core.col.Expression,
-        Union[
-            Literal[sentinels.Sentinel.ARGUMENT_DEFAULT],
-            datetime.date,
-            datetime.datetime,
-        ],
+        Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], datetime.date],
     ],
     int64_expression: Union[
         series.Series,
@@ -766,29 +467,19 @@ def date_trunc(
     date_value: Union[
         series.Series,
         bigframes.core.col.Expression,
-        Union[
-            Literal[sentinels.Sentinel.ARGUMENT_DEFAULT],
-            datetime.date,
-            datetime.datetime,
-        ],
+        Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], datetime.date],
     ],
     granularity: Union[
         series.Series,
         bigframes.core.col.Expression,
         Union[Any, Literal[sentinels.Sentinel.ARGUMENT_DEFAULT]],
     ],
-    time_zone: Union[
-        series.Series,
-        bigframes.core.col.Expression,
-        Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], str],
-    ] = sentinels.Sentinel.ARGUMENT_DEFAULT,
 ) -> Union[series.Series, bigframes.core.col.Expression]:
     """Truncates a DATE, DATETIME, or TIMESTAMP value at a particular granularity."""
     return bigframes.core.googlesql.apply_googlesql_scalar_op(
         _DATE_TRUNC_OP,
         date_value,
         granularity,
-        time_zone,
     )
 
 
