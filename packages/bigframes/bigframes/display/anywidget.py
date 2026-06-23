@@ -218,7 +218,7 @@ class TableWidget(_WIDGET_BASE):
                     if df is None:
                         raise ValueError("No DataFrame to execute.")
 
-                    df_to_set, _ = df._process_display_df()
+                    df_to_set = df._prepare_display_df()
                     orderable_cols = self._get_orderable_columns(df_to_set)
 
                     with bigframes.option_context("display.progress_bar", None):

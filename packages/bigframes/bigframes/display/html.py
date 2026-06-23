@@ -251,7 +251,7 @@ def get_anywidget_bundle(
         not isinstance(df, deferred.DeferredBigQueryDataFrame)
         and bigframes.options.display.repr_mode != "deferred"
     ):
-        display_df, _ = df._process_display_df()
+        display_df = df._prepare_display_df()
     else:
         display_df = df
 
@@ -312,7 +312,7 @@ def repr_mimebundle_head(
     else:
         df = obj
 
-    df, _ = df._process_display_df()
+    df = df._prepare_display_df()
     pandas_df, row_count, query_job = df._block.retrieve_repr_request_results(
         opts.max_rows
     )
