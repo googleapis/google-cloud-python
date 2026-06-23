@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -39,14 +39,17 @@ class PeerInfo(proto.Message):
         application_frontend_id (int):
             An opaque identifier for the application
             frontend which serviced this request.
+        application_frontend_region (str):
+            The Cloud region of the application frontend
+            that served this request.
         application_frontend_zone (str):
             The Cloud zone of the application frontend
             that served this request.
         application_frontend_subzone (str):
             The subzone of the application frontend that
             served this request, e.g. an identifier for
-            where within the zone the application frontend
-            is.
+            where within a zone (within the reported region)
+            the application frontend is.
         transport_type (google.cloud.bigtable_v2.types.PeerInfo.TransportType):
 
     """
@@ -99,6 +102,10 @@ class PeerInfo(proto.Message):
     application_frontend_id: int = proto.Field(
         proto.INT64,
         number=2,
+    )
+    application_frontend_region: str = proto.Field(
+        proto.STRING,
+        number=6,
     )
     application_frontend_zone: str = proto.Field(
         proto.STRING,

@@ -4,6 +4,28 @@
 
 [1]: https://pypi.org/project/gapic-generator/#history
 
+## [1.35.0](https://github.com/googleapis/google-cloud-python/compare/gapic-generator-v1.34.1...gapic-generator-v1.35.0) (2026-06-11)
+
+
+### Features
+
+* setup.py matches prerelease versions (#17370) ([25b857e1bc196da5b56cf599ec346967c6559922](https://github.com/googleapis/google-cloud-python/commit/25b857e1bc196da5b56cf599ec346967c6559922))
+
+
+### Bug Fixes
+
+* require protobuf 6.33.5 to address CVE-2026-0994 (#17349) ([66422636633e980324877f2ff3805a284001ad38](https://github.com/googleapis/google-cloud-python/commit/66422636633e980324877f2ff3805a284001ad38))
+
+## [1.34.1](https://github.com/googleapis/google-cloud-python/compare/gapic-generator-v1.34.0...gapic-generator-v1.34.1) (2026-05-27)
+
+## [1.34.0](https://github.com/googleapis/google-cloud-python/compare/gapic-generator-v1.33.0...gapic-generator-v1.34.0) (2026-05-27)
+
+
+### Bug Fixes
+
+* add pragma to `constants.py` to resolve coverage failure and correct `if` block (#17268) ([1436a23c923e799f9909d039e1f418435845565d](https://github.com/googleapis/google-cloud-python/commit/1436a23c923e799f9909d039e1f418435845565d))
+* update incorrect urls in setup.py to point at monorepo vs splitrepo (#17237) ([eaed04baf3cd356c3811c66e64c277c8841c7563](https://github.com/googleapis/google-cloud-python/commit/eaed04baf3cd356c3811c66e64c277c8841c7563))
+
 ## [1.33.0](https://github.com/googleapis/google-cloud-python/compare/gapic-generator-v1.32.0...gapic-generator-v1.33.0) (2026-05-21)
 
 

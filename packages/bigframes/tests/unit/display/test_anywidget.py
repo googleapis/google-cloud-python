@@ -177,6 +177,22 @@ def test_page_size_change_resets_sort(mock_df):
     assert mock_df.to_pandas_batches.call_count >= 2
 
 
+def test_cell_execution_count_propagation(mock_df):
+    """Test that the captured cell_execution_count is propagated to to_pandas_batches."""
+    with mock.patch(
+        "bigframes.core.utils.get_ipython_execution_count", return_value=42
+    ):
+        with bigframes.option_context("display.render_mode", "anywidget"):
+            widget = TableWidget(mock_df)
+
+    assert widget._cell_execution_count == 42
+
+    mock_df.to_pandas_batches.assert_called_with(
+        page_size=widget.page_size,
+        cell_execution_count=42,
+    )
+
+
 def test_json_column_converted_to_string_for_display():
     mock_block = mock.Mock(spec=Block)
     mock_block.column_labels = pd.Index(["col_json"])
@@ -190,7 +206,7 @@ def test_json_column_converted_to_string_for_display():
 
     with mock.patch.object(DataFrame, "__getitem__", return_value=mock_series):
         with mock.patch.object(DataFrame, "assign") as mock_assign:
-            df._get_display_df()
+            df._prepare_display_df()
 
             mock_assign.assert_called_once()
             _, kwargs = mock_assign.call_args
@@ -220,7 +236,7 @@ def test_struct_column_with_nested_json_converted_to_string_for_display():
 
     with mock.patch.object(DataFrame, "__getitem__", return_value=mock_series):
         with mock.patch.object(DataFrame, "assign") as mock_assign:
-            df._get_display_df()
+            df._prepare_display_df()
 
             mock_assign.assert_called_once()
             _, kwargs = mock_assign.call_args

@@ -138,11 +138,20 @@ if polars_installed:
         Should be extended to dispatch based on bigframes schema types.
         """
 
-        @functools.singledispatchmethod
+        _expr_types: dict[int, bigframes.dtypes.ExpressionType] = dataclasses.field(
+            default_factory=dict, init=False, compare=False
+        )
+
         def compile_expression(self, expression: ex.Expression) -> pl.Expr:
+            res = self._compile_expression(expression)
+            self._expr_types[id(res)] = expression.output_type
+            return res
+
+        @functools.singledispatchmethod
+        def _compile_expression(self, expression: ex.Expression) -> pl.Expr:
             raise NotImplementedError(f"Cannot compile expression: {expression}")
 
-        @compile_expression.register
+        @_compile_expression.register
         def _(
             self,
             expression: ex.ScalarConstantExpression,
@@ -159,27 +168,78 @@ if polars_installed:
 
             return pl.lit(value, _bigframes_dtype_to_polars_dtype(expression.dtype))
 
-        @compile_expression.register
+        @_compile_expression.register
         def _(
             self,
             expression: ex.DerefOp,
         ) -> pl.Expr:
             return pl.col(expression.id.sql)
 
-        @compile_expression.register
+        @_compile_expression.register
         def _(
             self,
             expression: ex.ResolvedDerefOp,
         ) -> pl.Expr:
             return pl.col(expression.id.sql)
 
-        @compile_expression.register
+        @_compile_expression.register
         def _(
             self,
             expression: ex.OpExpression,
         ) -> pl.Expr:
-            # TODO: Complete the implementation
+            import datetime
+
+            import pyarrow as pa
+
             op = expression.op
+
+            # Polars panics on nulls from pandas objects in timezone-aware
+            # datetimes for certain ops. Convert to timezone-naive temporarily
+            # to avoid this issue.
+            # TODO(tswast): Remove workaround when
+            # https://github.com/pola-rs/polars/issues/27862 has been fixed.
+            is_problematic_op = type(op) in (
+                date_ops.YearOp,
+                date_ops.QuarterOp,
+                date_ops.MonthOp,
+                date_ops.DayOp,
+                date_ops.IsoWeekOp,
+            )
+
+            if is_problematic_op and len(expression.inputs) == 1:
+                input_expr = expression.inputs[0]
+                if (
+                    input_expr.is_resolved
+                    and isinstance(input_expr.output_type, pd.ArrowDtype)
+                    and isinstance(
+                        input_expr.output_type.pyarrow_dtype, pa.TimestampType
+                    )
+                    and input_expr.output_type.pyarrow_dtype.tz is not None
+                ):
+                    tz_str = input_expr.output_type.pyarrow_dtype.tz
+                    if tz_str == "UTC":
+                        dummy_tz = datetime.timezone.utc
+                    else:
+                        try:
+                            from zoneinfo import ZoneInfo
+
+                            dummy_tz = ZoneInfo(tz_str)  # type: ignore
+                        except Exception:
+                            dummy_tz = datetime.timezone.utc
+
+                    dummy_val = datetime.datetime(1970, 1, 1, tzinfo=dummy_tz)
+
+                    compiled_input = self.compile_expression(input_expr)
+                    filled_input = compiled_input.fill_null(dummy_val)
+                    compiled_op_with_fill = self.compile_op(op, filled_input)
+
+                    return (
+                        pl.when(compiled_input.is_null())
+                        .then(None)
+                        .otherwise(compiled_op_with_fill)
+                    )
+
+            # TODO: Complete the implementation
             args = tuple(map(self.compile_expression, expression.inputs))
             return self.compile_op(op, *args)
 
@@ -427,9 +487,20 @@ if polars_installed:
             )
 
         @compile_op.register(json_ops.JSONDecode)
-        def _(self, op: ops.ScalarOp, input: pl.Expr) -> pl.Expr:
+        def _(self, op: json_ops.JSONDecode, input: pl.Expr) -> pl.Expr:
             assert isinstance(op, json_ops.JSONDecode)
             return input.str.json_decode(_DTYPE_MAPPING[op.to_type])
+
+        @compile_op.register(json_ops.ToJSON)
+        def _(self, op: json_ops.ToJSON, input: pl.Expr) -> pl.Expr:
+            from_type = self._expr_types.get(id(input))
+            if from_type in (
+                bigframes.dtypes.STRING_DTYPE,
+                bigframes.dtypes.JSON_DTYPE,
+            ):
+                return input
+            else:
+                return input.cast(pl.String())
 
         @compile_op.register(arr_ops.ToArrayOp)
         def _(self, op: ops.ToArrayOp, *inputs: pl.Expr) -> pl.Expr:

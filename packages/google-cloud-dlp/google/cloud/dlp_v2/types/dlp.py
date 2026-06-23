@@ -66,12 +66,18 @@ __protobuf__ = proto.module(
         "ByteContentItem",
         "ContentItem",
         "ContentMetadata",
+        "Conversation",
+        "ConversationMessage",
+        "BatchContentItem",
+        "StringValueBatch",
         "Table",
         "KeyValueMetadataProperty",
         "InspectResult",
         "Finding",
         "Location",
         "ContentLocation",
+        "ConversationLocation",
+        "BatchContentLocation",
         "MetadataLocation",
         "StorageMetadataLabel",
         "KeyValueMetadataLabel",
@@ -337,22 +343,22 @@ class TransformationResultStatusType(proto.Enum):
         STATE_TYPE_UNSPECIFIED (0):
             Unused.
         INVALID_TRANSFORM (1):
-            This will be set when a finding could not be
+            This is set when a finding cannot be
             transformed (i.e. outside user set bucket
             range).
         BIGQUERY_MAX_ROW_SIZE_EXCEEDED (2):
-            This will be set when a BigQuery
-            transformation was successful but could not be
-            stored back in BigQuery because the transformed
-            row exceeds BigQuery's max row size.
+            This is set when a transformation is
+            successful but cannot be stored in BigQuery
+            because the transformed row exceeds BigQuery's
+            max row size.
         METADATA_UNRETRIEVABLE (3):
-            This will be set when there is a finding in
-            the custom metadata of a file, but at the write
-            time of the transformed file, this key / value
-            pair is unretrievable.
+            This is set when there is a finding in the
+            custom metadata of a file, but at the write time
+            of the transformed file, this key / value pair
+            is unretrievable.
         SUCCESS (4):
-            This will be set when the transformation and
-            storing of it is successful.
+            This is set when the transformation and its
+            storage are successful.
     """
 
     STATE_TYPE_UNSPECIFIED = 0
@@ -1635,6 +1641,17 @@ class ContentItem(proto.Message):
             ``data``.
 
             This field is a member of `oneof`_ ``data_item``.
+        conversation (google.cloud.dlp_v2.types.Conversation):
+            Represents a conversation (either complete or
+            a slice). It is assumed that all included
+            messages are contiguous and ordered in
+            chronological order.
+
+            This field is a member of `oneof`_ ``data_item``.
+        batch_content_item (google.cloud.dlp_v2.types.BatchContentItem):
+            Represents a batch of items to inspect.
+
+            This field is a member of `oneof`_ ``data_item``.
         content_metadata (google.cloud.dlp_v2.types.ContentMetadata):
             User provided metadata for the content.
     """
@@ -1656,6 +1673,18 @@ class ContentItem(proto.Message):
         oneof="data_item",
         message="ByteContentItem",
     )
+    conversation: "Conversation" = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        oneof="data_item",
+        message="Conversation",
+    )
+    batch_content_item: "BatchContentItem" = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        oneof="data_item",
+        message="BatchContentItem",
+    )
     content_metadata: "ContentMetadata" = proto.Field(
         proto.MESSAGE,
         number=6,
@@ -1676,6 +1705,114 @@ class ContentMetadata(proto.Message):
         proto.MESSAGE,
         number=2,
         message="KeyValueMetadataProperty",
+    )
+
+
+class Conversation(proto.Message):
+    r"""Complete conversation or slice of a conversation.
+    It is assumed that all included messages are contiguous and
+    ordered in chronological order.
+
+    Attributes:
+        messages (MutableSequence[google.cloud.dlp_v2.types.ConversationMessage]):
+            Messages exchanged within this conversation.
+            The maximum number of messages allowed is 50k.
+            The order of the messages is assumed to be
+            chronological and will be used to index findings
+            in the response.
+    """
+
+    messages: MutableSequence["ConversationMessage"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="ConversationMessage",
+    )
+
+
+class ConversationMessage(proto.Message):
+    r"""Single message in a conversation.
+
+    Attributes:
+        content (str):
+            The contents of this message.
+        message_type (google.cloud.dlp_v2.types.ConversationMessage.MessageType):
+            The type of message.
+        participant_id (str):
+            Optional. The identifier of the participant, for example
+            'test-user' or 'gemini'. The participant ID can contain
+            lowercase letters, numbers, and hyphens; that is, it must
+            match the regular expression:
+            ``^[a-z]([a-z0-9-]{0,61}[a-z0-9])?$``. The maximum length is
+            63 characters.
+    """
+
+    class MessageType(proto.Enum):
+        r"""The type of message.
+        New values may be added in the future.
+
+        Values:
+            MESSAGE_TYPE_UNSPECIFIED (0):
+                Unused.
+            CONTENT (1):
+                Message contains content to be inspected.
+            CONTEXT (2):
+                Message contains context only and will not
+                have findings reported from it during inspection
+                or redacted from it during de-identification.
+        """
+
+        MESSAGE_TYPE_UNSPECIFIED = 0
+        CONTENT = 1
+        CONTEXT = 2
+
+    content: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    message_type: MessageType = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=MessageType,
+    )
+    participant_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class BatchContentItem(proto.Message):
+    r"""Represents a batch of content to inspect or redact.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        string_value_batch (google.cloud.dlp_v2.types.StringValueBatch):
+            Optional. Represents a batch of string values
+            to inspect or redact.
+
+            This field is a member of `oneof`_ ``batch``.
+    """
+
+    string_value_batch: "StringValueBatch" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="batch",
+        message="StringValueBatch",
+    )
+
+
+class StringValueBatch(proto.Message):
+    r"""Represents a batch of string values to inspect or redact.
+
+    Attributes:
+        values (MutableSequence[str]):
+            Optional. Represents string data to inspect
+            or redact.
+    """
+
+    values: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=1,
     )
 
 
@@ -1978,6 +2115,14 @@ class ContentLocation(proto.Message):
             content.
 
             This field is a member of `oneof`_ ``location``.
+        conversation_location (google.cloud.dlp_v2.types.ConversationLocation):
+            Location within a conversation.
+
+            This field is a member of `oneof`_ ``location``.
+        batch_content_location (google.cloud.dlp_v2.types.BatchContentLocation):
+            Location within a batch of content.
+
+            This field is a member of `oneof`_ ``location``.
         container_timestamp (google.protobuf.timestamp_pb2.Timestamp):
             Finding container modification timestamp, if applicable. For
             Cloud Storage, this field contains the last file
@@ -2017,6 +2162,18 @@ class ContentLocation(proto.Message):
         oneof="location",
         message="MetadataLocation",
     )
+    conversation_location: "ConversationLocation" = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        oneof="location",
+        message="ConversationLocation",
+    )
+    batch_content_location: "BatchContentLocation" = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        oneof="location",
+        message="BatchContentLocation",
+    )
     container_timestamp: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=6,
@@ -2025,6 +2182,63 @@ class ContentLocation(proto.Message):
     container_version: str = proto.Field(
         proto.STRING,
         number=7,
+    )
+
+
+class ConversationLocation(proto.Message):
+    r"""Location within a conversation.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        message_index (int):
+            Matches an index of a message in the
+            conversation provided in the request.
+
+            This field is a member of `oneof`_ ``location``.
+        all_messages (google.cloud.dlp_v2.types.ConversationLocation.AllMessages):
+            If set, indicates that the finding applies to
+            all messages in the conversation.
+
+            This field is a member of `oneof`_ ``location``.
+    """
+
+    class AllMessages(proto.Message):
+        r"""If set, indicates that the finding applies to all messages in
+        the conversation.
+
+        """
+
+    message_index: int = proto.Field(
+        proto.INT32,
+        number=1,
+        oneof="location",
+    )
+    all_messages: AllMessages = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="location",
+        message=AllMessages,
+    )
+
+
+class BatchContentLocation(proto.Message):
+    r"""Location within a batch of content.
+
+    Attributes:
+        item_index (int):
+            Matches an index of a batch item in the batch
+            provided in the request.
+    """
+
+    item_index: int = proto.Field(
+        proto.INT32,
+        number=1,
     )
 
 
@@ -8555,7 +8769,7 @@ class DataProfileAction(proto.Message):
                   receives the Pub/Sub notification.
                 - The best practice is to use the same table for an entire
                   organization so that you can take advantage of the
-                  `provided Looker
+                  `provided Data Studio
                   reports <https://cloud.google.com/sensitive-data-protection/docs/analyze-data-profiles#use_a_premade_report>`__.
                   If you use VPC Service Controls to define security
                   perimeters, then you must use a separate table for each

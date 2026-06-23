@@ -251,6 +251,7 @@ from google.cloud.dialogflow_v2.types.conversation_profile import (
     NotificationConfig,
     SetSuggestionFeatureConfigOperationMetadata,
     SetSuggestionFeatureConfigRequest,
+    SipConfig,
     SuggestionFeature,
     UpdateConversationProfileRequest,
 )
@@ -646,6 +647,7 @@ __all__ = (
     "NotificationConfig",
     "SetSuggestionFeatureConfigOperationMetadata",
     "SetSuggestionFeatureConfigRequest",
+    "SipConfig",
     "SuggestionFeature",
     "UpdateConversationProfileRequest",
     "CreateDocumentRequest",

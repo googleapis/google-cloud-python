@@ -13,11 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-except ImportError:  # pragma: NO COVER
-    import mock
+from unittest import mock
 
 import pytest
 

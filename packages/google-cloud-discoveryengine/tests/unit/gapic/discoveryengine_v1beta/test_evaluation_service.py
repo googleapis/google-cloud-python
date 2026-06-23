@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -43,6 +44,7 @@ import google.protobuf.any_pb2 as any_pb2  # type: ignore
 import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import google.rpc.status_pb2 as status_pb2  # type: ignore
+import google.type.latlng_pb2 as latlng_pb2  # type: ignore
 from google.api_core import (
     client_options,
     future,
@@ -121,6 +123,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1350,7 +1367,12 @@ def test_evaluation_service_client_create_channel_credentials_file(
             credentials=file_creds,
             credentials_file=None,
             quota_project_id=None,
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/discoveryengine.assist.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.serving.readwrite",
+            ),
             scopes=None,
             default_host="discoveryengine.googleapis.com",
             ssl_credentials=None,
@@ -1364,8 +1386,8 @@ def test_evaluation_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        evaluation_service.GetEvaluationRequest,
-        dict,
+        evaluation_service.GetEvaluationRequest(),
+        {},
     ],
 )
 def test_get_evaluation(request_type, transport: str = "grpc"):
@@ -1376,7 +1398,7 @@ def test_get_evaluation(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_evaluation), "__call__") as call:
@@ -1422,9 +1444,10 @@ def test_get_evaluation_non_empty_request_with_auto_populated_field():
         client.get_evaluation(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == evaluation_service.GetEvaluationRequest(
+        request_msg = evaluation_service.GetEvaluationRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_evaluation_use_cached_wrapped_rpc():
@@ -1505,10 +1528,14 @@ async def test_get_evaluation_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_evaluation_async(
-    transport: str = "grpc_asyncio",
-    request_type=evaluation_service.GetEvaluationRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        evaluation_service.GetEvaluationRequest(),
+        {},
+    ],
+)
+async def test_get_evaluation_async(request_type, transport: str = "grpc_asyncio"):
     client = EvaluationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1516,7 +1543,7 @@ async def test_get_evaluation_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_evaluation), "__call__") as call:
@@ -1539,11 +1566,6 @@ async def test_get_evaluation_async(
     assert isinstance(response, evaluation.Evaluation)
     assert response.name == "name_value"
     assert response.state == evaluation.Evaluation.State.PENDING
-
-
-@pytest.mark.asyncio
-async def test_get_evaluation_async_from_dict():
-    await test_get_evaluation_async(request_type=dict)
 
 
 def test_get_evaluation_field_headers():
@@ -1692,8 +1714,8 @@ async def test_get_evaluation_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        evaluation_service.ListEvaluationsRequest,
-        dict,
+        evaluation_service.ListEvaluationsRequest(),
+        {},
     ],
 )
 def test_list_evaluations(request_type, transport: str = "grpc"):
@@ -1704,7 +1726,7 @@ def test_list_evaluations(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_evaluations), "__call__") as call:
@@ -1749,10 +1771,11 @@ def test_list_evaluations_non_empty_request_with_auto_populated_field():
         client.list_evaluations(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == evaluation_service.ListEvaluationsRequest(
+        request_msg = evaluation_service.ListEvaluationsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_evaluations_use_cached_wrapped_rpc():
@@ -1835,10 +1858,14 @@ async def test_list_evaluations_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_evaluations_async(
-    transport: str = "grpc_asyncio",
-    request_type=evaluation_service.ListEvaluationsRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        evaluation_service.ListEvaluationsRequest(),
+        {},
+    ],
+)
+async def test_list_evaluations_async(request_type, transport: str = "grpc_asyncio"):
     client = EvaluationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1846,7 +1873,7 @@ async def test_list_evaluations_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_evaluations), "__call__") as call:
@@ -1867,11 +1894,6 @@ async def test_list_evaluations_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListEvaluationsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_evaluations_async_from_dict():
-    await test_list_evaluations_async(request_type=dict)
 
 
 def test_list_evaluations_field_headers():
@@ -2210,8 +2232,8 @@ async def test_list_evaluations_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        evaluation_service.CreateEvaluationRequest,
-        dict,
+        evaluation_service.CreateEvaluationRequest(),
+        {},
     ],
 )
 def test_create_evaluation(request_type, transport: str = "grpc"):
@@ -2222,7 +2244,7 @@ def test_create_evaluation(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2267,9 +2289,10 @@ def test_create_evaluation_non_empty_request_with_auto_populated_field():
         client.create_evaluation(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == evaluation_service.CreateEvaluationRequest(
+        request_msg = evaluation_service.CreateEvaluationRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_evaluation_use_cached_wrapped_rpc():
@@ -2362,10 +2385,14 @@ async def test_create_evaluation_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_evaluation_async(
-    transport: str = "grpc_asyncio",
-    request_type=evaluation_service.CreateEvaluationRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        evaluation_service.CreateEvaluationRequest(),
+        {},
+    ],
+)
+async def test_create_evaluation_async(request_type, transport: str = "grpc_asyncio"):
     client = EvaluationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2373,7 +2400,7 @@ async def test_create_evaluation_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2393,11 +2420,6 @@ async def test_create_evaluation_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_evaluation_async_from_dict():
-    await test_create_evaluation_async(request_type=dict)
 
 
 def test_create_evaluation_field_headers():
@@ -2564,8 +2586,8 @@ async def test_create_evaluation_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        evaluation_service.ListEvaluationResultsRequest,
-        dict,
+        evaluation_service.ListEvaluationResultsRequest(),
+        {},
     ],
 )
 def test_list_evaluation_results(request_type, transport: str = "grpc"):
@@ -2576,7 +2598,7 @@ def test_list_evaluation_results(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2625,10 +2647,11 @@ def test_list_evaluation_results_non_empty_request_with_auto_populated_field():
         client.list_evaluation_results(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == evaluation_service.ListEvaluationResultsRequest(
+        request_msg = evaluation_service.ListEvaluationResultsRequest(
             evaluation="evaluation_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_evaluation_results_use_cached_wrapped_rpc():
@@ -2714,9 +2737,15 @@ async def test_list_evaluation_results_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        evaluation_service.ListEvaluationResultsRequest(),
+        {},
+    ],
+)
 async def test_list_evaluation_results_async(
-    transport: str = "grpc_asyncio",
-    request_type=evaluation_service.ListEvaluationResultsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = EvaluationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2725,7 +2754,7 @@ async def test_list_evaluation_results_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2748,11 +2777,6 @@ async def test_list_evaluation_results_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListEvaluationResultsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_evaluation_results_async_from_dict():
-    await test_list_evaluation_results_async(request_type=dict)
 
 
 def test_list_evaluation_results_field_headers():
@@ -4138,7 +4162,6 @@ def test_get_evaluation_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.GetEvaluationRequest()
-
         assert args[0] == request_msg
 
 
@@ -4159,7 +4182,6 @@ def test_list_evaluations_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.ListEvaluationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -4182,7 +4204,6 @@ def test_create_evaluation_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.CreateEvaluationRequest()
-
         assert args[0] == request_msg
 
 
@@ -4205,7 +4226,6 @@ def test_list_evaluation_results_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.ListEvaluationResultsRequest()
-
         assert args[0] == request_msg
 
 
@@ -4247,7 +4267,6 @@ async def test_get_evaluation_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.GetEvaluationRequest()
-
         assert args[0] == request_msg
 
 
@@ -4274,7 +4293,6 @@ async def test_list_evaluations_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.ListEvaluationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -4301,7 +4319,6 @@ async def test_create_evaluation_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.CreateEvaluationRequest()
-
         assert args[0] == request_msg
 
 
@@ -4330,7 +4347,6 @@ async def test_list_evaluation_results_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.ListEvaluationResultsRequest()
-
         assert args[0] == request_msg
 
 
@@ -4657,6 +4673,7 @@ def test_create_evaluation_rest_call_success(request_type):
                 "serving_config": "serving_config_value",
                 "branch": "branch_value",
                 "query": "query_value",
+                "page_categories": ["page_categories_value1", "page_categories_value2"],
                 "image_query": {"image_bytes": "image_bytes_value"},
                 "page_size": 951,
                 "page_token": "page_token_value",
@@ -4685,14 +4702,22 @@ def test_create_evaluation_rest_call_success(request_type):
                                 }
                             ]
                         },
+                        "custom_search_operators": "custom_search_operators_value",
+                        "num_results": 1217,
                     }
                 ],
+                "num_results_per_data_store": 2796,
                 "filter": "filter_value",
                 "canonical_filter": "canonical_filter_value",
                 "order_by": "order_by_value",
                 "user_info": {
                     "user_id": "user_id_value",
                     "user_agent": "user_agent_value",
+                    "time_zone": "time_zone_value",
+                    "precise_location": {
+                        "point": {"latitude": 0.86, "longitude": 0.971},
+                        "address": "address_value",
+                    },
                 },
                 "language_code": "language_code_value",
                 "region_code": "region_code_value",
@@ -4746,6 +4771,7 @@ def test_create_evaluation_rest_call_success(request_type):
                         "ignore_non_summary_seeking_query": True,
                         "ignore_low_relevant_content": True,
                         "ignore_jail_breaking_query": True,
+                        "multimodal_spec": {"image_source": 1},
                         "model_prompt_spec": {"preamble": "preamble_value"},
                         "language_code": "language_code_value",
                         "model_spec": {"version": "version_value"},
@@ -4770,7 +4796,7 @@ def test_create_evaluation_rest_call_success(request_type):
                     ]
                 },
                 "ranking_expression": "ranking_expression_value",
-                "ranking_expression_backend": 3,
+                "ranking_expression_backend": 1,
                 "safe_search": True,
                 "user_labels": {},
                 "natural_language_query_understanding_spec": {
@@ -4779,15 +4805,44 @@ def test_create_evaluation_rest_call_success(request_type):
                         "geo_search_query_detection_field_names_value1",
                         "geo_search_query_detection_field_names_value2",
                     ],
+                    "extracted_filter_behavior": 1,
+                    "allowed_field_names": [
+                        "allowed_field_names_value1",
+                        "allowed_field_names_value2",
+                    ],
                 },
                 "search_as_you_type_spec": {"condition": 1},
+                "display_spec": {"match_highlighting_condition": 1},
+                "crowding_specs": [
+                    {"field": "field_value", "max_count": 974, "mode": 1}
+                ],
                 "session": "session_value",
                 "session_spec": {
                     "query_id": "query_id_value",
                     "search_result_persistence_count": 3328,
                 },
                 "relevance_threshold": 1,
+                "relevance_filter_spec": {
+                    "keyword_search_threshold": {
+                        "relevance_threshold": 1,
+                        "semantic_relevance_threshold": 0.2964,
+                    },
+                    "semantic_search_threshold": {},
+                },
                 "personalization_spec": {"mode": 1},
+                "relevance_score_spec": {"return_relevance_score": True},
+                "search_addon_spec": {
+                    "disable_semantic_add_on": True,
+                    "disable_kpi_personalization_add_on": True,
+                    "disable_generative_answer_add_on": True,
+                },
+                "custom_ranking_params": {
+                    "expressions_to_precompute": [
+                        "expressions_to_precompute_value1",
+                        "expressions_to_precompute_value2",
+                    ]
+                },
+                "entity": "entity_value",
             },
             "query_set_spec": {"sample_query_set": "sample_query_set_value"},
         },
@@ -5338,7 +5393,6 @@ def test_get_evaluation_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.GetEvaluationRequest()
-
         assert args[0] == request_msg
 
 
@@ -5358,7 +5412,6 @@ def test_list_evaluations_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.ListEvaluationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5380,7 +5433,6 @@ def test_create_evaluation_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.CreateEvaluationRequest()
-
         assert args[0] == request_msg
 
 
@@ -5402,7 +5454,6 @@ def test_list_evaluation_results_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = evaluation_service.ListEvaluationResultsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5504,7 +5555,12 @@ def test_evaluation_service_base_transport_with_credentials_file():
         load_creds.assert_called_once_with(
             "credentials.json",
             scopes=None,
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/discoveryengine.assist.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.serving.readwrite",
+            ),
             quota_project_id="octopus",
         )
 
@@ -5530,7 +5586,12 @@ def test_evaluation_service_auth_adc():
         EvaluationServiceClient()
         adc.assert_called_once_with(
             scopes=None,
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/discoveryengine.assist.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.serving.readwrite",
+            ),
             quota_project_id=None,
         )
 
@@ -5550,7 +5611,12 @@ def test_evaluation_service_transport_auth_adc(transport_class):
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
         adc.assert_called_once_with(
             scopes=["1", "2"],
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/discoveryengine.assist.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.serving.readwrite",
+            ),
             quota_project_id="octopus",
         )
 
@@ -5603,7 +5669,12 @@ def test_evaluation_service_transport_create_channel(transport_class, grpc_helpe
             credentials=creds,
             credentials_file=None,
             quota_project_id="octopus",
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/discoveryengine.assist.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.serving.readwrite",
+            ),
             scopes=["1", "2"],
             default_host="discoveryengine.googleapis.com",
             ssl_credentials=None,

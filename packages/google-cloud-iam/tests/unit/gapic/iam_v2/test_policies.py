@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -113,6 +114,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1259,8 +1275,8 @@ def test_policies_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        policy.ListPoliciesRequest,
-        dict,
+        policy.ListPoliciesRequest(),
+        {},
     ],
 )
 def test_list_policies(request_type, transport: str = "grpc"):
@@ -1271,7 +1287,7 @@ def test_list_policies(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_policies), "__call__") as call:
@@ -1316,10 +1332,11 @@ def test_list_policies_non_empty_request_with_auto_populated_field():
         client.list_policies(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == policy.ListPoliciesRequest(
+        request_msg = policy.ListPoliciesRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_policies_use_cached_wrapped_rpc():
@@ -1400,9 +1417,14 @@ async def test_list_policies_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_policies_async(
-    transport: str = "grpc_asyncio", request_type=policy.ListPoliciesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        policy.ListPoliciesRequest(),
+        {},
+    ],
+)
+async def test_list_policies_async(request_type, transport: str = "grpc_asyncio"):
     client = PoliciesAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1410,7 +1432,7 @@ async def test_list_policies_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_policies), "__call__") as call:
@@ -1431,11 +1453,6 @@ async def test_list_policies_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListPoliciesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_policies_async_from_dict():
-    await test_list_policies_async(request_type=dict)
 
 
 def test_list_policies_field_headers():
@@ -1774,8 +1791,8 @@ async def test_list_policies_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        policy.GetPolicyRequest,
-        dict,
+        policy.GetPolicyRequest(),
+        {},
     ],
 )
 def test_get_policy(request_type, transport: str = "grpc"):
@@ -1786,7 +1803,7 @@ def test_get_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_policy), "__call__") as call:
@@ -1840,9 +1857,10 @@ def test_get_policy_non_empty_request_with_auto_populated_field():
         client.get_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == policy.GetPolicyRequest(
+        request_msg = policy.GetPolicyRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_policy_use_cached_wrapped_rpc():
@@ -1921,9 +1939,14 @@ async def test_get_policy_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_get_policy_async(
-    transport: str = "grpc_asyncio", request_type=policy.GetPolicyRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        policy.GetPolicyRequest(),
+        {},
+    ],
+)
+async def test_get_policy_async(request_type, transport: str = "grpc_asyncio"):
     client = PoliciesAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1931,7 +1954,7 @@ async def test_get_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_policy), "__call__") as call:
@@ -1962,11 +1985,6 @@ async def test_get_policy_async(
     assert response.display_name == "display_name_value"
     assert response.etag == "etag_value"
     assert response.managing_authority == "managing_authority_value"
-
-
-@pytest.mark.asyncio
-async def test_get_policy_async_from_dict():
-    await test_get_policy_async(request_type=dict)
 
 
 def test_get_policy_field_headers():
@@ -2111,8 +2129,8 @@ async def test_get_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gi_policy.CreatePolicyRequest,
-        dict,
+        gi_policy.CreatePolicyRequest(),
+        {},
     ],
 )
 def test_create_policy(request_type, transport: str = "grpc"):
@@ -2123,7 +2141,7 @@ def test_create_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_policy), "__call__") as call:
@@ -2165,10 +2183,11 @@ def test_create_policy_non_empty_request_with_auto_populated_field():
         client.create_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gi_policy.CreatePolicyRequest(
+        request_msg = gi_policy.CreatePolicyRequest(
             parent="parent_value",
             policy_id="policy_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_policy_use_cached_wrapped_rpc():
@@ -2259,9 +2278,14 @@ async def test_create_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_policy_async(
-    transport: str = "grpc_asyncio", request_type=gi_policy.CreatePolicyRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gi_policy.CreatePolicyRequest(),
+        {},
+    ],
+)
+async def test_create_policy_async(request_type, transport: str = "grpc_asyncio"):
     client = PoliciesAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2269,7 +2293,7 @@ async def test_create_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_policy), "__call__") as call:
@@ -2287,11 +2311,6 @@ async def test_create_policy_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_policy_async_from_dict():
-    await test_create_policy_async(request_type=dict)
 
 
 def test_create_policy_field_headers():
@@ -2460,8 +2479,8 @@ async def test_create_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        policy.UpdatePolicyRequest,
-        dict,
+        policy.UpdatePolicyRequest(),
+        {},
     ],
 )
 def test_update_policy(request_type, transport: str = "grpc"):
@@ -2472,7 +2491,7 @@ def test_update_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_policy), "__call__") as call:
@@ -2511,7 +2530,8 @@ def test_update_policy_non_empty_request_with_auto_populated_field():
         client.update_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == policy.UpdatePolicyRequest()
+        request_msg = policy.UpdatePolicyRequest()
+        assert args[0] == request_msg
 
 
 def test_update_policy_use_cached_wrapped_rpc():
@@ -2602,9 +2622,14 @@ async def test_update_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_policy_async(
-    transport: str = "grpc_asyncio", request_type=policy.UpdatePolicyRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        policy.UpdatePolicyRequest(),
+        {},
+    ],
+)
+async def test_update_policy_async(request_type, transport: str = "grpc_asyncio"):
     client = PoliciesAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2612,7 +2637,7 @@ async def test_update_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_policy), "__call__") as call:
@@ -2630,11 +2655,6 @@ async def test_update_policy_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_policy_async_from_dict():
-    await test_update_policy_async(request_type=dict)
 
 
 def test_update_policy_field_headers():
@@ -2701,8 +2721,8 @@ async def test_update_policy_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        policy.DeletePolicyRequest,
-        dict,
+        policy.DeletePolicyRequest(),
+        {},
     ],
 )
 def test_delete_policy(request_type, transport: str = "grpc"):
@@ -2713,7 +2733,7 @@ def test_delete_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_policy), "__call__") as call:
@@ -2755,10 +2775,11 @@ def test_delete_policy_non_empty_request_with_auto_populated_field():
         client.delete_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == policy.DeletePolicyRequest(
+        request_msg = policy.DeletePolicyRequest(
             name="name_value",
             etag="etag_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_policy_use_cached_wrapped_rpc():
@@ -2849,9 +2870,14 @@ async def test_delete_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_policy_async(
-    transport: str = "grpc_asyncio", request_type=policy.DeletePolicyRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        policy.DeletePolicyRequest(),
+        {},
+    ],
+)
+async def test_delete_policy_async(request_type, transport: str = "grpc_asyncio"):
     client = PoliciesAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2859,7 +2885,7 @@ async def test_delete_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_policy), "__call__") as call:
@@ -2877,11 +2903,6 @@ async def test_delete_policy_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_policy_async_from_dict():
-    await test_delete_policy_async(request_type=dict)
 
 
 def test_delete_policy_field_headers():
@@ -4052,7 +4073,6 @@ def test_list_policies_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = policy.ListPoliciesRequest()
-
         assert args[0] == request_msg
 
 
@@ -4073,7 +4093,6 @@ def test_get_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = policy.GetPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -4094,7 +4113,6 @@ def test_create_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gi_policy.CreatePolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -4115,7 +4133,6 @@ def test_update_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = policy.UpdatePolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -4136,7 +4153,6 @@ def test_delete_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = policy.DeletePolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -4177,7 +4193,6 @@ async def test_list_policies_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = policy.ListPoliciesRequest()
-
         assert args[0] == request_msg
 
 
@@ -4209,7 +4224,6 @@ async def test_get_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = policy.GetPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -4234,7 +4248,6 @@ async def test_create_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gi_policy.CreatePolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -4259,7 +4272,6 @@ async def test_update_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = policy.UpdatePolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -4284,7 +4296,6 @@ async def test_delete_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = policy.DeletePolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -5212,7 +5223,6 @@ def test_list_policies_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = policy.ListPoliciesRequest()
-
         assert args[0] == request_msg
 
 
@@ -5232,7 +5242,6 @@ def test_get_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = policy.GetPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -5252,7 +5261,6 @@ def test_create_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gi_policy.CreatePolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -5272,7 +5280,6 @@ def test_update_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = policy.UpdatePolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -5292,7 +5299,6 @@ def test_delete_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = policy.DeletePolicyRequest()
-
         assert args[0] == request_msg
 
 

@@ -29,7 +29,10 @@ description = "Google Cloud Storage API client library"
 version = None
 
 with open(os.path.join(package_root, "google/cloud/_storage/gapic_version.py")) as fp:
-    version_candidates = re.findall(r"(?<=\")\d+.\d+.\d+(?=\")", fp.read())
+    version_candidates = re.findall(
+        r"(?<=\")\d+\.\d+\.\d+[^\"\s]*(?=\")",
+        fp.read(),
+    )
     assert len(version_candidates) == 1
     version = version_candidates[0]
 
@@ -58,9 +61,9 @@ extras = {
     # experimental in this SDK. More info in b/465352227
     "grpc": [
         "google-api-core[grpc] >= 2.27.0, < 3.0.0",
-        "grpcio >= 1.44.0, < 2.0.0; python_version < '3.14'",
+        "grpcio >= 1.59.0, < 2.0.0; python_version < '3.14'",
         "grpcio >= 1.75.1, < 2.0.0; python_version >= '3.14'",
-        "grpcio-status >= 1.44.0, < 2.0.0; python_version < '3.14'",
+        "grpcio-status >= 1.59.0, < 2.0.0; python_version < '3.14'",
         "grpcio-status >= 1.75.1, < 2.0.0; python_version >= '3.14'",
         "proto-plus >= 1.22.3, <2.0.0; python_version < '3.13'",
         "proto-plus >= 1.25.0, <2.0.0; python_version >= '3.13'",

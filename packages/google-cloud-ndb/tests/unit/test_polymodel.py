@@ -15,12 +15,10 @@
 from unittest import mock
 
 import pytest
+from google.cloud.datastore import helpers
 
 from google.cloud import datastore
-from google.cloud.datastore import helpers
-from google.cloud.ndb import model
-from google.cloud.ndb import polymodel
-from google.cloud.ndb import query
+from google.cloud.ndb import model, polymodel, query
 
 from . import utils
 

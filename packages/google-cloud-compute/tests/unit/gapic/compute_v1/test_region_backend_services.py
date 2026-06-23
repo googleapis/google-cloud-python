@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -106,6 +107,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -8095,7 +8111,6 @@ def test_delete_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.DeleteRegionBackendServiceRequest()
-
         assert args[0] == request_msg
 
 
@@ -8115,7 +8130,6 @@ def test_get_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.GetRegionBackendServiceRequest()
-
         assert args[0] == request_msg
 
 
@@ -8135,7 +8149,6 @@ def test_get_health_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.GetHealthRegionBackendServiceRequest()
-
         assert args[0] == request_msg
 
 
@@ -8155,7 +8168,6 @@ def test_get_iam_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.GetIamPolicyRegionBackendServiceRequest()
-
         assert args[0] == request_msg
 
 
@@ -8175,7 +8187,6 @@ def test_insert_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.InsertRegionBackendServiceRequest()
-
         assert args[0] == request_msg
 
 
@@ -8195,7 +8206,6 @@ def test_list_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.ListRegionBackendServicesRequest()
-
         assert args[0] == request_msg
 
 
@@ -8215,7 +8225,6 @@ def test_list_usable_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.ListUsableRegionBackendServicesRequest()
-
         assert args[0] == request_msg
 
 
@@ -8235,7 +8244,6 @@ def test_patch_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.PatchRegionBackendServiceRequest()
-
         assert args[0] == request_msg
 
 
@@ -8255,7 +8263,6 @@ def test_set_iam_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.SetIamPolicyRegionBackendServiceRequest()
-
         assert args[0] == request_msg
 
 
@@ -8277,7 +8284,6 @@ def test_set_security_policy_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.SetSecurityPolicyRegionBackendServiceRequest()
-
         assert args[0] == request_msg
 
 
@@ -8299,7 +8305,6 @@ def test_test_iam_permissions_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.TestIamPermissionsRegionBackendServiceRequest()
-
         assert args[0] == request_msg
 
 
@@ -8319,7 +8324,6 @@ def test_update_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.UpdateRegionBackendServiceRequest()
-
         assert args[0] == request_msg
 
 

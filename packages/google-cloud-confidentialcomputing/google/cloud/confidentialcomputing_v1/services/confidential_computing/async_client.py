@@ -80,6 +80,8 @@ class ConfidentialComputingAsyncClient:
     parse_challenge_path = staticmethod(
         ConfidentialComputingClient.parse_challenge_path
     )
+    instance_path = staticmethod(ConfidentialComputingClient.instance_path)
+    parse_instance_path = staticmethod(ConfidentialComputingClient.parse_instance_path)
     common_billing_account_path = staticmethod(
         ConfidentialComputingClient.common_billing_account_path
     )

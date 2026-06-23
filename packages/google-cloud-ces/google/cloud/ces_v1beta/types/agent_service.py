@@ -2132,6 +2132,11 @@ class GenerateAppResourceRequest(proto.Message):
             toolset.
 
             This field is a member of `oneof`_ ``resource``.
+        app_version_context (google.cloud.ces_v1beta.types.GenerateAppResourceRequest.AppVersionContext):
+            The app version context specifying the base
+            snapshot and target agent.
+
+            This field is a member of `oneof`_ ``resource``.
         parent (str):
             Required. The resource name of the app to
             generate the resource for.
@@ -2157,6 +2162,30 @@ class GenerateAppResourceRequest(proto.Message):
             Optional. The configuration to be used for
             hill climbing fixes.
     """
+
+    class AppVersionContext(proto.Message):
+        r"""The app version context specifying the base snapshot and
+        target agent.
+
+        Attributes:
+            app_version (str):
+                The resource name of the app version to be used by the LLM
+                assistant. Format:
+                ``projects/{project}/locations/{location}/apps/{app}/versions/{version}``
+            agent_resource_name (str):
+                The resource name of the target agent to be used by the LLM
+                assistant. Format:
+                ``projects/{project}/locations/{location}/apps/{app}/agents/{agent}``
+        """
+
+        app_version: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        agent_resource_name: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
 
     class RefineInstructions(proto.Message):
         r"""The instructions to be used to refine a part of the resource.
@@ -2409,6 +2438,12 @@ class GenerateAppResourceRequest(proto.Message):
         number=6,
         oneof="resource",
         message=gcc_toolset.Toolset,
+    )
+    app_version_context: AppVersionContext = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        oneof="resource",
+        message=AppVersionContext,
     )
     parent: str = proto.Field(
         proto.STRING,

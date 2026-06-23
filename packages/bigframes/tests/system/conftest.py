@@ -1325,6 +1325,14 @@ def usa_names_grouped_table(
         return session.bqclient.get_table(table_id)
 
 
+@pytest.fixture(scope="session", autouse=True)
+def use_sqlglot_compiler():
+    original_setting = bigframes.options.experiments.sql_compiler
+    bigframes.options.experiments.sql_compiler = "experimental"
+    yield
+    bigframes.options.experiments.sql_compiler = original_setting
+
+
 @pytest.fixture()
 def restore_sampling_settings():
     enable_downsampling = bigframes.options.sampling.enable_downsampling

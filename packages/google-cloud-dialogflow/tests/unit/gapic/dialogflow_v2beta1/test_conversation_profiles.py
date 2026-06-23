@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -122,6 +123,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1390,8 +1406,8 @@ def test_conversation_profiles_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        conversation_profile.ListConversationProfilesRequest,
-        dict,
+        conversation_profile.ListConversationProfilesRequest(),
+        {},
     ],
 )
 def test_list_conversation_profiles(request_type, transport: str = "grpc"):
@@ -1402,7 +1418,7 @@ def test_list_conversation_profiles(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1451,10 +1467,11 @@ def test_list_conversation_profiles_non_empty_request_with_auto_populated_field(
         client.list_conversation_profiles(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == conversation_profile.ListConversationProfilesRequest(
+        request_msg = conversation_profile.ListConversationProfilesRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_conversation_profiles_use_cached_wrapped_rpc():
@@ -1540,9 +1557,15 @@ async def test_list_conversation_profiles_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        conversation_profile.ListConversationProfilesRequest(),
+        {},
+    ],
+)
 async def test_list_conversation_profiles_async(
-    transport: str = "grpc_asyncio",
-    request_type=conversation_profile.ListConversationProfilesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ConversationProfilesAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1551,7 +1574,7 @@ async def test_list_conversation_profiles_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1574,11 +1597,6 @@ async def test_list_conversation_profiles_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListConversationProfilesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_conversation_profiles_async_from_dict():
-    await test_list_conversation_profiles_async(request_type=dict)
 
 
 def test_list_conversation_profiles_field_headers():
@@ -1939,8 +1957,8 @@ async def test_list_conversation_profiles_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        conversation_profile.GetConversationProfileRequest,
-        dict,
+        conversation_profile.GetConversationProfileRequest(),
+        {},
     ],
 )
 def test_get_conversation_profile(request_type, transport: str = "grpc"):
@@ -1951,7 +1969,7 @@ def test_get_conversation_profile(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2009,9 +2027,10 @@ def test_get_conversation_profile_non_empty_request_with_auto_populated_field():
         client.get_conversation_profile(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == conversation_profile.GetConversationProfileRequest(
+        request_msg = conversation_profile.GetConversationProfileRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_conversation_profile_use_cached_wrapped_rpc():
@@ -2097,9 +2116,15 @@ async def test_get_conversation_profile_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        conversation_profile.GetConversationProfileRequest(),
+        {},
+    ],
+)
 async def test_get_conversation_profile_async(
-    transport: str = "grpc_asyncio",
-    request_type=conversation_profile.GetConversationProfileRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ConversationProfilesAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2108,7 +2133,7 @@ async def test_get_conversation_profile_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2141,11 +2166,6 @@ async def test_get_conversation_profile_async(
     assert response.language_code == "language_code_value"
     assert response.time_zone == "time_zone_value"
     assert response.security_settings == "security_settings_value"
-
-
-@pytest.mark.asyncio
-async def test_get_conversation_profile_async_from_dict():
-    await test_get_conversation_profile_async(request_type=dict)
 
 
 def test_get_conversation_profile_field_headers():
@@ -2302,8 +2322,8 @@ async def test_get_conversation_profile_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcd_conversation_profile.CreateConversationProfileRequest,
-        dict,
+        gcd_conversation_profile.CreateConversationProfileRequest(),
+        {},
     ],
 )
 def test_create_conversation_profile(request_type, transport: str = "grpc"):
@@ -2314,7 +2334,7 @@ def test_create_conversation_profile(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2372,9 +2392,10 @@ def test_create_conversation_profile_non_empty_request_with_auto_populated_field
         client.create_conversation_profile(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcd_conversation_profile.CreateConversationProfileRequest(
+        request_msg = gcd_conversation_profile.CreateConversationProfileRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_conversation_profile_use_cached_wrapped_rpc():
@@ -2460,9 +2481,15 @@ async def test_create_conversation_profile_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcd_conversation_profile.CreateConversationProfileRequest(),
+        {},
+    ],
+)
 async def test_create_conversation_profile_async(
-    transport: str = "grpc_asyncio",
-    request_type=gcd_conversation_profile.CreateConversationProfileRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ConversationProfilesAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2471,7 +2498,7 @@ async def test_create_conversation_profile_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2504,11 +2531,6 @@ async def test_create_conversation_profile_async(
     assert response.language_code == "language_code_value"
     assert response.time_zone == "time_zone_value"
     assert response.security_settings == "security_settings_value"
-
-
-@pytest.mark.asyncio
-async def test_create_conversation_profile_async_from_dict():
-    await test_create_conversation_profile_async(request_type=dict)
 
 
 def test_create_conversation_profile_field_headers():
@@ -2683,8 +2705,8 @@ async def test_create_conversation_profile_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcd_conversation_profile.UpdateConversationProfileRequest,
-        dict,
+        gcd_conversation_profile.UpdateConversationProfileRequest(),
+        {},
     ],
 )
 def test_update_conversation_profile(request_type, transport: str = "grpc"):
@@ -2695,7 +2717,7 @@ def test_update_conversation_profile(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2751,7 +2773,8 @@ def test_update_conversation_profile_non_empty_request_with_auto_populated_field
         client.update_conversation_profile(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcd_conversation_profile.UpdateConversationProfileRequest()
+        request_msg = gcd_conversation_profile.UpdateConversationProfileRequest()
+        assert args[0] == request_msg
 
 
 def test_update_conversation_profile_use_cached_wrapped_rpc():
@@ -2837,9 +2860,15 @@ async def test_update_conversation_profile_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcd_conversation_profile.UpdateConversationProfileRequest(),
+        {},
+    ],
+)
 async def test_update_conversation_profile_async(
-    transport: str = "grpc_asyncio",
-    request_type=gcd_conversation_profile.UpdateConversationProfileRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ConversationProfilesAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2848,7 +2877,7 @@ async def test_update_conversation_profile_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2881,11 +2910,6 @@ async def test_update_conversation_profile_async(
     assert response.language_code == "language_code_value"
     assert response.time_zone == "time_zone_value"
     assert response.security_settings == "security_settings_value"
-
-
-@pytest.mark.asyncio
-async def test_update_conversation_profile_async_from_dict():
-    await test_update_conversation_profile_async(request_type=dict)
 
 
 def test_update_conversation_profile_field_headers():
@@ -3060,8 +3084,8 @@ async def test_update_conversation_profile_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        conversation_profile.DeleteConversationProfileRequest,
-        dict,
+        conversation_profile.DeleteConversationProfileRequest(),
+        {},
     ],
 )
 def test_delete_conversation_profile(request_type, transport: str = "grpc"):
@@ -3072,7 +3096,7 @@ def test_delete_conversation_profile(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3117,9 +3141,10 @@ def test_delete_conversation_profile_non_empty_request_with_auto_populated_field
         client.delete_conversation_profile(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == conversation_profile.DeleteConversationProfileRequest(
+        request_msg = conversation_profile.DeleteConversationProfileRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_conversation_profile_use_cached_wrapped_rpc():
@@ -3205,9 +3230,15 @@ async def test_delete_conversation_profile_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        conversation_profile.DeleteConversationProfileRequest(),
+        {},
+    ],
+)
 async def test_delete_conversation_profile_async(
-    transport: str = "grpc_asyncio",
-    request_type=conversation_profile.DeleteConversationProfileRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ConversationProfilesAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3216,7 +3247,7 @@ async def test_delete_conversation_profile_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3234,11 +3265,6 @@ async def test_delete_conversation_profile_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_conversation_profile_async_from_dict():
-    await test_delete_conversation_profile_async(request_type=dict)
 
 
 def test_delete_conversation_profile_field_headers():
@@ -3391,8 +3417,8 @@ async def test_delete_conversation_profile_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcd_conversation_profile.SetSuggestionFeatureConfigRequest,
-        dict,
+        gcd_conversation_profile.SetSuggestionFeatureConfigRequest(),
+        {},
     ],
 )
 def test_set_suggestion_feature_config(request_type, transport: str = "grpc"):
@@ -3403,7 +3429,7 @@ def test_set_suggestion_feature_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3448,9 +3474,10 @@ def test_set_suggestion_feature_config_non_empty_request_with_auto_populated_fie
         client.set_suggestion_feature_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcd_conversation_profile.SetSuggestionFeatureConfigRequest(
+        request_msg = gcd_conversation_profile.SetSuggestionFeatureConfigRequest(
             conversation_profile="conversation_profile_value",
         )
+        assert args[0] == request_msg
 
 
 def test_set_suggestion_feature_config_use_cached_wrapped_rpc():
@@ -3546,9 +3573,15 @@ async def test_set_suggestion_feature_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcd_conversation_profile.SetSuggestionFeatureConfigRequest(),
+        {},
+    ],
+)
 async def test_set_suggestion_feature_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=gcd_conversation_profile.SetSuggestionFeatureConfigRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ConversationProfilesAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3557,7 +3590,7 @@ async def test_set_suggestion_feature_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3577,11 +3610,6 @@ async def test_set_suggestion_feature_config_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_set_suggestion_feature_config_async_from_dict():
-    await test_set_suggestion_feature_config_async(request_type=dict)
 
 
 def test_set_suggestion_feature_config_field_headers():
@@ -3786,8 +3814,8 @@ async def test_set_suggestion_feature_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcd_conversation_profile.ClearSuggestionFeatureConfigRequest,
-        dict,
+        gcd_conversation_profile.ClearSuggestionFeatureConfigRequest(),
+        {},
     ],
 )
 def test_clear_suggestion_feature_config(request_type, transport: str = "grpc"):
@@ -3798,7 +3826,7 @@ def test_clear_suggestion_feature_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3843,9 +3871,10 @@ def test_clear_suggestion_feature_config_non_empty_request_with_auto_populated_f
         client.clear_suggestion_feature_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcd_conversation_profile.ClearSuggestionFeatureConfigRequest(
+        request_msg = gcd_conversation_profile.ClearSuggestionFeatureConfigRequest(
             conversation_profile="conversation_profile_value",
         )
+        assert args[0] == request_msg
 
 
 def test_clear_suggestion_feature_config_use_cached_wrapped_rpc():
@@ -3941,9 +3970,15 @@ async def test_clear_suggestion_feature_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcd_conversation_profile.ClearSuggestionFeatureConfigRequest(),
+        {},
+    ],
+)
 async def test_clear_suggestion_feature_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=gcd_conversation_profile.ClearSuggestionFeatureConfigRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ConversationProfilesAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3952,7 +3987,7 @@ async def test_clear_suggestion_feature_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3972,11 +4007,6 @@ async def test_clear_suggestion_feature_config_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_clear_suggestion_feature_config_async_from_dict():
-    await test_clear_suggestion_feature_config_async(request_type=dict)
 
 
 def test_clear_suggestion_feature_config_field_headers():
@@ -5709,7 +5739,6 @@ def test_list_conversation_profiles_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversation_profile.ListConversationProfilesRequest()
-
         assert args[0] == request_msg
 
 
@@ -5732,7 +5761,6 @@ def test_get_conversation_profile_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversation_profile.GetConversationProfileRequest()
-
         assert args[0] == request_msg
 
 
@@ -5755,7 +5783,6 @@ def test_create_conversation_profile_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcd_conversation_profile.CreateConversationProfileRequest()
-
         assert args[0] == request_msg
 
 
@@ -5778,7 +5805,6 @@ def test_update_conversation_profile_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcd_conversation_profile.UpdateConversationProfileRequest()
-
         assert args[0] == request_msg
 
 
@@ -5801,7 +5827,6 @@ def test_delete_conversation_profile_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversation_profile.DeleteConversationProfileRequest()
-
         assert args[0] == request_msg
 
 
@@ -5824,7 +5849,6 @@ def test_set_suggestion_feature_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcd_conversation_profile.SetSuggestionFeatureConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -5847,7 +5871,6 @@ def test_clear_suggestion_feature_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcd_conversation_profile.ClearSuggestionFeatureConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -5890,7 +5913,6 @@ async def test_list_conversation_profiles_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversation_profile.ListConversationProfilesRequest()
-
         assert args[0] == request_msg
 
 
@@ -5924,7 +5946,6 @@ async def test_get_conversation_profile_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversation_profile.GetConversationProfileRequest()
-
         assert args[0] == request_msg
 
 
@@ -5958,7 +5979,6 @@ async def test_create_conversation_profile_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcd_conversation_profile.CreateConversationProfileRequest()
-
         assert args[0] == request_msg
 
 
@@ -5992,7 +6012,6 @@ async def test_update_conversation_profile_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcd_conversation_profile.UpdateConversationProfileRequest()
-
         assert args[0] == request_msg
 
 
@@ -6017,7 +6036,6 @@ async def test_delete_conversation_profile_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversation_profile.DeleteConversationProfileRequest()
-
         assert args[0] == request_msg
 
 
@@ -6044,7 +6062,6 @@ async def test_set_suggestion_feature_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcd_conversation_profile.SetSuggestionFeatureConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -6071,7 +6088,6 @@ async def test_clear_suggestion_feature_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcd_conversation_profile.ClearSuggestionFeatureConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -6437,6 +6453,8 @@ def test_create_conversation_profile_rest_call_success(request_type):
                                 {"category": 1, "sensitivity_level": 1}
                             ]
                         },
+                        "suggestion_trigger_event": 1,
+                        "disable_query_search_context": True,
                         "suggestion_trigger_settings": {
                             "no_small_talk": True,
                             "only_end_user": True,
@@ -6464,10 +6482,6 @@ def test_create_conversation_profile_rest_call_success(request_type):
                             },
                             "sections": {"section_types": [1]},
                             "context_size": 1311,
-                        },
-                        "conversation_model_config": {
-                            "model": "model_value",
-                            "baseline_model_version": "baseline_model_version_value",
                         },
                         "conversation_process_config": {"recent_sentences_count": 2352},
                     }
@@ -6510,6 +6524,18 @@ def test_create_conversation_profile_rest_call_success(request_type):
             "use_timeout_based_endpointing": True,
         },
         "language_code": "language_code_value",
+        "sip_config": {
+            "create_conversation_on_the_fly": True,
+            "inactive_start": True,
+            "max_audio_recording_duration": {},
+            "allow_virtual_agent_interaction": True,
+            "keep_conversation_running": True,
+            "copy_inbound_call_leg_headers": [
+                "copy_inbound_call_leg_headers_value1",
+                "copy_inbound_call_leg_headers_value2",
+            ],
+            "ignore_reinvite_media_direction": True,
+        },
         "time_zone": "time_zone_value",
         "security_settings": "security_settings_value",
         "tts_config": {
@@ -6784,6 +6810,8 @@ def test_update_conversation_profile_rest_call_success(request_type):
                                 {"category": 1, "sensitivity_level": 1}
                             ]
                         },
+                        "suggestion_trigger_event": 1,
+                        "disable_query_search_context": True,
                         "suggestion_trigger_settings": {
                             "no_small_talk": True,
                             "only_end_user": True,
@@ -6811,10 +6839,6 @@ def test_update_conversation_profile_rest_call_success(request_type):
                             },
                             "sections": {"section_types": [1]},
                             "context_size": 1311,
-                        },
-                        "conversation_model_config": {
-                            "model": "model_value",
-                            "baseline_model_version": "baseline_model_version_value",
                         },
                         "conversation_process_config": {"recent_sentences_count": 2352},
                     }
@@ -6857,6 +6881,18 @@ def test_update_conversation_profile_rest_call_success(request_type):
             "use_timeout_based_endpointing": True,
         },
         "language_code": "language_code_value",
+        "sip_config": {
+            "create_conversation_on_the_fly": True,
+            "inactive_start": True,
+            "max_audio_recording_duration": {},
+            "allow_virtual_agent_interaction": True,
+            "keep_conversation_running": True,
+            "copy_inbound_call_leg_headers": [
+                "copy_inbound_call_leg_headers_value1",
+                "copy_inbound_call_leg_headers_value2",
+            ],
+            "ignore_reinvite_media_direction": True,
+        },
         "time_zone": "time_zone_value",
         "security_settings": "security_settings_value",
         "tts_config": {
@@ -7765,7 +7801,6 @@ def test_list_conversation_profiles_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversation_profile.ListConversationProfilesRequest()
-
         assert args[0] == request_msg
 
 
@@ -7787,7 +7822,6 @@ def test_get_conversation_profile_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversation_profile.GetConversationProfileRequest()
-
         assert args[0] == request_msg
 
 
@@ -7809,7 +7843,6 @@ def test_create_conversation_profile_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcd_conversation_profile.CreateConversationProfileRequest()
-
         assert args[0] == request_msg
 
 
@@ -7831,7 +7864,6 @@ def test_update_conversation_profile_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcd_conversation_profile.UpdateConversationProfileRequest()
-
         assert args[0] == request_msg
 
 
@@ -7853,7 +7885,6 @@ def test_delete_conversation_profile_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversation_profile.DeleteConversationProfileRequest()
-
         assert args[0] == request_msg
 
 
@@ -7875,7 +7906,6 @@ def test_set_suggestion_feature_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcd_conversation_profile.SetSuggestionFeatureConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -7897,7 +7927,6 @@ def test_clear_suggestion_feature_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcd_conversation_profile.ClearSuggestionFeatureConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -8451,37 +8480,9 @@ def test_parse_agent_path():
     assert expected == actual
 
 
-def test_conversation_model_path():
-    project = "whelk"
-    location = "octopus"
-    conversation_model = "oyster"
-    expected = "projects/{project}/locations/{location}/conversationModels/{conversation_model}".format(
-        project=project,
-        location=location,
-        conversation_model=conversation_model,
-    )
-    actual = ConversationProfilesClient.conversation_model_path(
-        project, location, conversation_model
-    )
-    assert expected == actual
-
-
-def test_parse_conversation_model_path():
-    expected = {
-        "project": "nudibranch",
-        "location": "cuttlefish",
-        "conversation_model": "mussel",
-    }
-    path = ConversationProfilesClient.conversation_model_path(**expected)
-
-    # Check that the path construction is reversible.
-    actual = ConversationProfilesClient.parse_conversation_model_path(path)
-    assert expected == actual
-
-
 def test_conversation_profile_path():
-    project = "winkle"
-    conversation_profile = "nautilus"
+    project = "whelk"
+    conversation_profile = "octopus"
     expected = "projects/{project}/conversationProfiles/{conversation_profile}".format(
         project=project,
         conversation_profile=conversation_profile,
@@ -8494,8 +8495,8 @@ def test_conversation_profile_path():
 
 def test_parse_conversation_profile_path():
     expected = {
-        "project": "scallop",
-        "conversation_profile": "abalone",
+        "project": "oyster",
+        "conversation_profile": "nudibranch",
     }
     path = ConversationProfilesClient.conversation_profile_path(**expected)
 
@@ -8505,9 +8506,9 @@ def test_parse_conversation_profile_path():
 
 
 def test_cx_security_settings_path():
-    project = "squid"
-    location = "clam"
-    security_settings = "whelk"
+    project = "cuttlefish"
+    location = "mussel"
+    security_settings = "winkle"
     expected = "projects/{project}/locations/{location}/securitySettings/{security_settings}".format(
         project=project,
         location=location,
@@ -8521,9 +8522,9 @@ def test_cx_security_settings_path():
 
 def test_parse_cx_security_settings_path():
     expected = {
-        "project": "octopus",
-        "location": "oyster",
-        "security_settings": "nudibranch",
+        "project": "nautilus",
+        "location": "scallop",
+        "security_settings": "abalone",
     }
     path = ConversationProfilesClient.cx_security_settings_path(**expected)
 
@@ -8533,9 +8534,9 @@ def test_parse_cx_security_settings_path():
 
 
 def test_document_path():
-    project = "cuttlefish"
-    knowledge_base = "mussel"
-    document = "winkle"
+    project = "squid"
+    knowledge_base = "clam"
+    document = "whelk"
     expected = "projects/{project}/knowledgeBases/{knowledge_base}/documents/{document}".format(
         project=project,
         knowledge_base=knowledge_base,
@@ -8547,9 +8548,9 @@ def test_document_path():
 
 def test_parse_document_path():
     expected = {
-        "project": "nautilus",
-        "knowledge_base": "scallop",
-        "document": "abalone",
+        "project": "octopus",
+        "knowledge_base": "oyster",
+        "document": "nudibranch",
     }
     path = ConversationProfilesClient.document_path(**expected)
 
@@ -8559,9 +8560,9 @@ def test_parse_document_path():
 
 
 def test_generator_path():
-    project = "squid"
-    location = "clam"
-    generator = "whelk"
+    project = "cuttlefish"
+    location = "mussel"
+    generator = "winkle"
     expected = "projects/{project}/locations/{location}/generators/{generator}".format(
         project=project,
         location=location,
@@ -8573,9 +8574,9 @@ def test_generator_path():
 
 def test_parse_generator_path():
     expected = {
-        "project": "octopus",
-        "location": "oyster",
-        "generator": "nudibranch",
+        "project": "nautilus",
+        "location": "scallop",
+        "generator": "abalone",
     }
     path = ConversationProfilesClient.generator_path(**expected)
 
@@ -8585,8 +8586,8 @@ def test_parse_generator_path():
 
 
 def test_knowledge_base_path():
-    project = "cuttlefish"
-    knowledge_base = "mussel"
+    project = "squid"
+    knowledge_base = "clam"
     expected = "projects/{project}/knowledgeBases/{knowledge_base}".format(
         project=project,
         knowledge_base=knowledge_base,
@@ -8597,8 +8598,8 @@ def test_knowledge_base_path():
 
 def test_parse_knowledge_base_path():
     expected = {
-        "project": "winkle",
-        "knowledge_base": "nautilus",
+        "project": "whelk",
+        "knowledge_base": "octopus",
     }
     path = ConversationProfilesClient.knowledge_base_path(**expected)
 
@@ -8608,9 +8609,9 @@ def test_parse_knowledge_base_path():
 
 
 def test_phrase_set_path():
-    project = "scallop"
-    location = "abalone"
-    phrase_set = "squid"
+    project = "oyster"
+    location = "nudibranch"
+    phrase_set = "cuttlefish"
     expected = "projects/{project}/locations/{location}/phraseSets/{phrase_set}".format(
         project=project,
         location=location,
@@ -8622,9 +8623,9 @@ def test_phrase_set_path():
 
 def test_parse_phrase_set_path():
     expected = {
-        "project": "clam",
-        "location": "whelk",
-        "phrase_set": "octopus",
+        "project": "mussel",
+        "location": "winkle",
+        "phrase_set": "nautilus",
     }
     path = ConversationProfilesClient.phrase_set_path(**expected)
 
@@ -8634,7 +8635,7 @@ def test_parse_phrase_set_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "oyster"
+    billing_account = "scallop"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -8644,7 +8645,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "nudibranch",
+        "billing_account": "abalone",
     }
     path = ConversationProfilesClient.common_billing_account_path(**expected)
 
@@ -8654,7 +8655,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "cuttlefish"
+    folder = "squid"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -8664,7 +8665,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "mussel",
+        "folder": "clam",
     }
     path = ConversationProfilesClient.common_folder_path(**expected)
 
@@ -8674,7 +8675,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "winkle"
+    organization = "whelk"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -8684,7 +8685,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nautilus",
+        "organization": "octopus",
     }
     path = ConversationProfilesClient.common_organization_path(**expected)
 
@@ -8694,7 +8695,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "scallop"
+    project = "oyster"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -8704,7 +8705,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "abalone",
+        "project": "nudibranch",
     }
     path = ConversationProfilesClient.common_project_path(**expected)
 
@@ -8714,8 +8715,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "squid"
-    location = "clam"
+    project = "cuttlefish"
+    location = "mussel"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -8726,8 +8727,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "whelk",
-        "location": "octopus",
+        "project": "winkle",
+        "location": "nautilus",
     }
     path = ConversationProfilesClient.common_location_path(**expected)
 

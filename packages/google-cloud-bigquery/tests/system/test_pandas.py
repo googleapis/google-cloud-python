@@ -17,8 +17,8 @@
 import collections
 import datetime
 import decimal
-import json
 import io
+import json
 import operator
 import warnings
 
@@ -31,11 +31,9 @@ except ImportError:
     import importlib_metadata as metadata
 
 from google.cloud import bigquery
-
 from google.cloud.bigquery import enums
 
 from . import helpers
-
 
 pandas = pytest.importorskip("pandas", minversion="0.23.0")
 pyarrow = pytest.importorskip("pyarrow")
@@ -957,8 +955,7 @@ def test_insert_rows_from_dataframe(bigquery_client, dataset_id):
 
 
 def test_nested_table_to_dataframe(bigquery_client, dataset_id):
-    from google.cloud.bigquery.job import SourceFormat
-    from google.cloud.bigquery.job import WriteDisposition
+    from google.cloud.bigquery.job import SourceFormat, WriteDisposition
 
     SF = bigquery.SchemaField
     schema = [
@@ -1085,10 +1082,13 @@ def test_list_rows_nullable_scalars_dtypes(bigquery_client, scalars_table, max_r
     ).to_dataframe()
 
     assert df.dtypes["bool_col"].name == "boolean"
-    assert df.dtypes["datetime_col"].name == "datetime64[ns]"
+    assert df.dtypes["datetime_col"].name in ("datetime64[us]", "datetime64[ns]")
     assert df.dtypes["float64_col"].name == "float64"
     assert df.dtypes["int64_col"].name == "Int64"
-    assert df.dtypes["timestamp_col"].name == "datetime64[ns, UTC]"
+    assert df.dtypes["timestamp_col"].name in (
+        "datetime64[us, UTC]",
+        "datetime64[ns, UTC]",
+    )
     assert df.dtypes["date_col"].name == "dbdate"
     assert df.dtypes["time_col"].name == "dbtime"
 
@@ -1098,7 +1098,7 @@ def test_list_rows_nullable_scalars_dtypes(bigquery_client, scalars_table, max_r
 
     # pandas uses Python string and bytes objects.
     assert df.dtypes["bytes_col"].name == "object"
-    assert df.dtypes["string_col"].name == "object"
+    assert df.dtypes["string_col"].name in ("str", "string", "object")
 
 
 @pytest.mark.parametrize(
@@ -1389,8 +1389,8 @@ def test_to_geodataframe(bigquery_client, dataset_id):
 def test_load_geodataframe(bigquery_client, dataset_id):
     geopandas = pytest.importorskip("geopandas")
     import pandas
-    from shapely import wkt
     from google.cloud.bigquery.schema import SchemaField
+    from shapely import wkt
 
     df = geopandas.GeoDataFrame(
         pandas.DataFrame(
@@ -1450,8 +1450,8 @@ def test_load_dataframe_w_shapely(bigquery_client, dataset_id):
 
 def test_load_dataframe_w_wkb(bigquery_client, dataset_id):
     wkt = pytest.importorskip("shapely.wkt")
-    from shapely import wkb
     from google.cloud.bigquery.schema import SchemaField
+    from shapely import wkb
 
     df = pandas.DataFrame(
         dict(name=["foo", "bar"], geo=[None, wkb.dumps(wkt.loads("Point(1 1)"))])

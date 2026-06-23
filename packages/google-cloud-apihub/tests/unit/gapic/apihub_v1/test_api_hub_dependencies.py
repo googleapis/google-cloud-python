@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -109,6 +110,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1356,8 +1372,8 @@ def test_api_hub_dependencies_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        apihub_service.CreateDependencyRequest,
-        dict,
+        apihub_service.CreateDependencyRequest(),
+        {},
     ],
 )
 def test_create_dependency(request_type, transport: str = "grpc"):
@@ -1368,7 +1384,7 @@ def test_create_dependency(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1423,10 +1439,11 @@ def test_create_dependency_non_empty_request_with_auto_populated_field():
         client.create_dependency(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apihub_service.CreateDependencyRequest(
+        request_msg = apihub_service.CreateDependencyRequest(
             parent="parent_value",
             dependency_id="dependency_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_dependency_use_cached_wrapped_rpc():
@@ -1509,9 +1526,14 @@ async def test_create_dependency_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_dependency_async(
-    transport: str = "grpc_asyncio", request_type=apihub_service.CreateDependencyRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apihub_service.CreateDependencyRequest(),
+        {},
+    ],
+)
+async def test_create_dependency_async(request_type, transport: str = "grpc_asyncio"):
     client = ApiHubDependenciesAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1519,7 +1541,7 @@ async def test_create_dependency_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1548,11 +1570,6 @@ async def test_create_dependency_async(
     assert response.state == common_fields.Dependency.State.PROPOSED
     assert response.description == "description_value"
     assert response.discovery_mode == common_fields.Dependency.DiscoveryMode.MANUAL
-
-
-@pytest.mark.asyncio
-async def test_create_dependency_async_from_dict():
-    await test_create_dependency_async(request_type=dict)
 
 
 def test_create_dependency_field_headers():
@@ -1729,8 +1746,8 @@ async def test_create_dependency_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        apihub_service.GetDependencyRequest,
-        dict,
+        apihub_service.GetDependencyRequest(),
+        {},
     ],
 )
 def test_get_dependency(request_type, transport: str = "grpc"):
@@ -1741,7 +1758,7 @@ def test_get_dependency(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_dependency), "__call__") as call:
@@ -1791,9 +1808,10 @@ def test_get_dependency_non_empty_request_with_auto_populated_field():
         client.get_dependency(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apihub_service.GetDependencyRequest(
+        request_msg = apihub_service.GetDependencyRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_dependency_use_cached_wrapped_rpc():
@@ -1874,9 +1892,14 @@ async def test_get_dependency_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_dependency_async(
-    transport: str = "grpc_asyncio", request_type=apihub_service.GetDependencyRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apihub_service.GetDependencyRequest(),
+        {},
+    ],
+)
+async def test_get_dependency_async(request_type, transport: str = "grpc_asyncio"):
     client = ApiHubDependenciesAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1884,7 +1907,7 @@ async def test_get_dependency_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_dependency), "__call__") as call:
@@ -1911,11 +1934,6 @@ async def test_get_dependency_async(
     assert response.state == common_fields.Dependency.State.PROPOSED
     assert response.description == "description_value"
     assert response.discovery_mode == common_fields.Dependency.DiscoveryMode.MANUAL
-
-
-@pytest.mark.asyncio
-async def test_get_dependency_async_from_dict():
-    await test_get_dependency_async(request_type=dict)
 
 
 def test_get_dependency_field_headers():
@@ -2064,8 +2082,8 @@ async def test_get_dependency_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        apihub_service.UpdateDependencyRequest,
-        dict,
+        apihub_service.UpdateDependencyRequest(),
+        {},
     ],
 )
 def test_update_dependency(request_type, transport: str = "grpc"):
@@ -2076,7 +2094,7 @@ def test_update_dependency(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2128,7 +2146,8 @@ def test_update_dependency_non_empty_request_with_auto_populated_field():
         client.update_dependency(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apihub_service.UpdateDependencyRequest()
+        request_msg = apihub_service.UpdateDependencyRequest()
+        assert args[0] == request_msg
 
 
 def test_update_dependency_use_cached_wrapped_rpc():
@@ -2211,9 +2230,14 @@ async def test_update_dependency_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_dependency_async(
-    transport: str = "grpc_asyncio", request_type=apihub_service.UpdateDependencyRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apihub_service.UpdateDependencyRequest(),
+        {},
+    ],
+)
+async def test_update_dependency_async(request_type, transport: str = "grpc_asyncio"):
     client = ApiHubDependenciesAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2221,7 +2245,7 @@ async def test_update_dependency_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2250,11 +2274,6 @@ async def test_update_dependency_async(
     assert response.state == common_fields.Dependency.State.PROPOSED
     assert response.description == "description_value"
     assert response.discovery_mode == common_fields.Dependency.DiscoveryMode.MANUAL
-
-
-@pytest.mark.asyncio
-async def test_update_dependency_async_from_dict():
-    await test_update_dependency_async(request_type=dict)
 
 
 def test_update_dependency_field_headers():
@@ -2421,8 +2440,8 @@ async def test_update_dependency_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        apihub_service.DeleteDependencyRequest,
-        dict,
+        apihub_service.DeleteDependencyRequest(),
+        {},
     ],
 )
 def test_delete_dependency(request_type, transport: str = "grpc"):
@@ -2433,7 +2452,7 @@ def test_delete_dependency(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2478,9 +2497,10 @@ def test_delete_dependency_non_empty_request_with_auto_populated_field():
         client.delete_dependency(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apihub_service.DeleteDependencyRequest(
+        request_msg = apihub_service.DeleteDependencyRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_dependency_use_cached_wrapped_rpc():
@@ -2563,9 +2583,14 @@ async def test_delete_dependency_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_dependency_async(
-    transport: str = "grpc_asyncio", request_type=apihub_service.DeleteDependencyRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apihub_service.DeleteDependencyRequest(),
+        {},
+    ],
+)
+async def test_delete_dependency_async(request_type, transport: str = "grpc_asyncio"):
     client = ApiHubDependenciesAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2573,7 +2598,7 @@ async def test_delete_dependency_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2591,11 +2616,6 @@ async def test_delete_dependency_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_dependency_async_from_dict():
-    await test_delete_dependency_async(request_type=dict)
 
 
 def test_delete_dependency_field_headers():
@@ -2748,8 +2768,8 @@ async def test_delete_dependency_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        apihub_service.ListDependenciesRequest,
-        dict,
+        apihub_service.ListDependenciesRequest(),
+        {},
     ],
 )
 def test_list_dependencies(request_type, transport: str = "grpc"):
@@ -2760,7 +2780,7 @@ def test_list_dependencies(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2810,11 +2830,12 @@ def test_list_dependencies_non_empty_request_with_auto_populated_field():
         client.list_dependencies(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == apihub_service.ListDependenciesRequest(
+        request_msg = apihub_service.ListDependenciesRequest(
             parent="parent_value",
             filter="filter_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_dependencies_use_cached_wrapped_rpc():
@@ -2897,9 +2918,14 @@ async def test_list_dependencies_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_dependencies_async(
-    transport: str = "grpc_asyncio", request_type=apihub_service.ListDependenciesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apihub_service.ListDependenciesRequest(),
+        {},
+    ],
+)
+async def test_list_dependencies_async(request_type, transport: str = "grpc_asyncio"):
     client = ApiHubDependenciesAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2907,7 +2933,7 @@ async def test_list_dependencies_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2930,11 +2956,6 @@ async def test_list_dependencies_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDependenciesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_dependencies_async_from_dict():
-    await test_list_dependencies_async(request_type=dict)
 
 
 def test_list_dependencies_field_headers():
@@ -4415,7 +4436,6 @@ def test_create_dependency_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apihub_service.CreateDependencyRequest()
-
         assert args[0] == request_msg
 
 
@@ -4436,7 +4456,6 @@ def test_get_dependency_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apihub_service.GetDependencyRequest()
-
         assert args[0] == request_msg
 
 
@@ -4459,7 +4478,6 @@ def test_update_dependency_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apihub_service.UpdateDependencyRequest()
-
         assert args[0] == request_msg
 
 
@@ -4482,7 +4500,6 @@ def test_delete_dependency_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apihub_service.DeleteDependencyRequest()
-
         assert args[0] == request_msg
 
 
@@ -4505,7 +4522,6 @@ def test_list_dependencies_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apihub_service.ListDependenciesRequest()
-
         assert args[0] == request_msg
 
 
@@ -4551,7 +4567,6 @@ async def test_create_dependency_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apihub_service.CreateDependencyRequest()
-
         assert args[0] == request_msg
 
 
@@ -4581,7 +4596,6 @@ async def test_get_dependency_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apihub_service.GetDependencyRequest()
-
         assert args[0] == request_msg
 
 
@@ -4613,7 +4627,6 @@ async def test_update_dependency_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apihub_service.UpdateDependencyRequest()
-
         assert args[0] == request_msg
 
 
@@ -4638,7 +4651,6 @@ async def test_delete_dependency_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apihub_service.DeleteDependencyRequest()
-
         assert args[0] == request_msg
 
 
@@ -4667,7 +4679,6 @@ async def test_list_dependencies_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apihub_service.ListDependenciesRequest()
-
         assert args[0] == request_msg
 
 
@@ -5908,7 +5919,6 @@ def test_create_dependency_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apihub_service.CreateDependencyRequest()
-
         assert args[0] == request_msg
 
 
@@ -5928,7 +5938,6 @@ def test_get_dependency_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apihub_service.GetDependencyRequest()
-
         assert args[0] == request_msg
 
 
@@ -5950,7 +5959,6 @@ def test_update_dependency_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apihub_service.UpdateDependencyRequest()
-
         assert args[0] == request_msg
 
 
@@ -5972,7 +5980,6 @@ def test_delete_dependency_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apihub_service.DeleteDependencyRequest()
-
         assert args[0] == request_msg
 
 
@@ -5994,7 +6001,6 @@ def test_list_dependencies_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = apihub_service.ListDependenciesRequest()
-
         assert args[0] == request_msg
 
 

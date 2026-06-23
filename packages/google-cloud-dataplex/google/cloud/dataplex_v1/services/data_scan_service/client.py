@@ -365,6 +365,30 @@ class DataScanServiceClient(metaclass=DataScanServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def entry_path(
+        project: str,
+        location: str,
+        entry_group: str,
+        entry: str,
+    ) -> str:
+        """Returns a fully-qualified entry string."""
+        return "projects/{project}/locations/{location}/entryGroups/{entry_group}/entries/{entry}".format(
+            project=project,
+            location=location,
+            entry_group=entry_group,
+            entry=entry,
+        )
+
+    @staticmethod
+    def parse_entry_path(path: str) -> Dict[str, str]:
+        """Parses a entry path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/entryGroups/(?P<entry_group>.+?)/entries/(?P<entry>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def common_billing_account_path(
         billing_account: str,
     ) -> str:
@@ -880,7 +904,6 @@ class DataScanServiceClient(metaclass=DataScanServiceClientMeta):
                 request = dataplex_v1.CreateDataScanRequest(
                     parent="parent_value",
                     data_scan=data_scan,
-                    data_scan_id="data_scan_id_value",
                 )
 
                 # Make the request
@@ -911,7 +934,8 @@ class DataScanServiceClient(metaclass=DataScanServiceClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             data_scan_id (str):
-                Required. DataScan identifier.
+                Optional. DataScan identifier. If not provided, a unique
+                ID will be generated with the prefix "data-scan-".
 
                 - Must contain only lowercase letters, numbers and
                   hyphens.
@@ -956,12 +980,14 @@ class DataScanServiceClient(metaclass=DataScanServiceClientMeta):
                      information, see [Discover and catalog Cloud
                      Storage
                      data](https://cloud.google.com/bigquery/docs/automatic-discovery).
-
-                   \* Data documentation: analyzes the table details and
-                   generates insights including descriptions and sample
-                   SQL queries for the table. For more information, see
-                   [Generate data insights in
-                   BigQuery](https://cloud.google.com/bigquery/docs/data-insights).
+                   - Data documentation: analyzes the table or dataset
+                     metadata and generates insights. For tables,
+                     insights include descriptions and sample SQL
+                     queries. For datasets, insights include
+                     descriptions, schema relationships and sample SQL
+                     queries. For more information, see [Generate data
+                     insights in
+                     BigQuery](https://cloud.google.com/bigquery/docs/data-insights).
 
         """
         # Create or coerce a protobuf request object.
@@ -1116,12 +1142,14 @@ class DataScanServiceClient(metaclass=DataScanServiceClientMeta):
                      information, see [Discover and catalog Cloud
                      Storage
                      data](https://cloud.google.com/bigquery/docs/automatic-discovery).
-
-                   \* Data documentation: analyzes the table details and
-                   generates insights including descriptions and sample
-                   SQL queries for the table. For more information, see
-                   [Generate data insights in
-                   BigQuery](https://cloud.google.com/bigquery/docs/data-insights).
+                   - Data documentation: analyzes the table or dataset
+                     metadata and generates insights. For tables,
+                     insights include descriptions and sample SQL
+                     queries. For datasets, insights include
+                     descriptions, schema relationships and sample SQL
+                     queries. For more information, see [Generate data
+                     insights in
+                     BigQuery](https://cloud.google.com/bigquery/docs/data-insights).
 
         """
         # Create or coerce a protobuf request object.
@@ -1395,12 +1423,14 @@ class DataScanServiceClient(metaclass=DataScanServiceClientMeta):
                      information, see [Discover and catalog Cloud
                      Storage
                      data](https://cloud.google.com/bigquery/docs/automatic-discovery).
-
-                   \* Data documentation: analyzes the table details and
-                   generates insights including descriptions and sample
-                   SQL queries for the table. For more information, see
-                   [Generate data insights in
-                   BigQuery](https://cloud.google.com/bigquery/docs/data-insights).
+                   - Data documentation: analyzes the table or dataset
+                     metadata and generates insights. For tables,
+                     insights include descriptions and sample SQL
+                     queries. For datasets, insights include
+                     descriptions, schema relationships and sample SQL
+                     queries. For more information, see [Generate data
+                     insights in
+                     BigQuery](https://cloud.google.com/bigquery/docs/data-insights).
 
         """
         # Create or coerce a protobuf request object.
@@ -1910,6 +1940,114 @@ class DataScanServiceClient(metaclass=DataScanServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def cancel_data_scan_job(
+        self,
+        request: Optional[Union[datascans.CancelDataScanJobRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> datascans.CancelDataScanJobResponse:
+        r"""Cancels a running/pending DataScan job.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dataplex_v1
+
+            def sample_cancel_data_scan_job():
+                # Create a client
+                client = dataplex_v1.DataScanServiceClient()
+
+                # Initialize request argument(s)
+                request = dataplex_v1.CancelDataScanJobRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.cancel_data_scan_job(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.dataplex_v1.types.CancelDataScanJobRequest, dict]):
+                The request object. Request message for the ``CancelDataScanJob`` method.
+            name (str):
+                Required. The resource name of the DataScanJob:
+                ``projects/{project_id_or_number}/locations/{location_id}/dataScans/{data_scan_id}/jobs/{data_scan_job_id}``
+                where ``project_id_or_number`` refers to a *project_id*
+                or *project_number* and ``location_id`` refers to a
+                Google Cloud region.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.dataplex_v1.types.CancelDataScanJobResponse:
+                Response message for the CancelDataScanJob method.
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, datascans.CancelDataScanJobRequest):
+            request = datascans.CancelDataScanJobRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.cancel_data_scan_job]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
             retry=retry,
             timeout=timeout,
             metadata=metadata,

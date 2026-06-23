@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -114,6 +115,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1343,8 +1359,8 @@ def test_telco_automation_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        telcoautomation.ListOrchestrationClustersRequest,
-        dict,
+        telcoautomation.ListOrchestrationClustersRequest(),
+        {},
     ],
 )
 def test_list_orchestration_clusters(request_type, transport: str = "grpc"):
@@ -1355,7 +1371,7 @@ def test_list_orchestration_clusters(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1408,12 +1424,13 @@ def test_list_orchestration_clusters_non_empty_request_with_auto_populated_field
         client.list_orchestration_clusters(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.ListOrchestrationClustersRequest(
+        request_msg = telcoautomation.ListOrchestrationClustersRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_orchestration_clusters_use_cached_wrapped_rpc():
@@ -1499,9 +1516,15 @@ async def test_list_orchestration_clusters_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        telcoautomation.ListOrchestrationClustersRequest(),
+        {},
+    ],
+)
 async def test_list_orchestration_clusters_async(
-    transport: str = "grpc_asyncio",
-    request_type=telcoautomation.ListOrchestrationClustersRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = TelcoAutomationAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1510,7 +1533,7 @@ async def test_list_orchestration_clusters_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1535,11 +1558,6 @@ async def test_list_orchestration_clusters_async(
     assert isinstance(response, pagers.ListOrchestrationClustersAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_orchestration_clusters_async_from_dict():
-    await test_list_orchestration_clusters_async(request_type=dict)
 
 
 def test_list_orchestration_clusters_field_headers():
@@ -1898,8 +1916,8 @@ async def test_list_orchestration_clusters_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        telcoautomation.GetOrchestrationClusterRequest,
-        dict,
+        telcoautomation.GetOrchestrationClusterRequest(),
+        {},
     ],
 )
 def test_get_orchestration_cluster(request_type, transport: str = "grpc"):
@@ -1910,7 +1928,7 @@ def test_get_orchestration_cluster(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1962,9 +1980,10 @@ def test_get_orchestration_cluster_non_empty_request_with_auto_populated_field()
         client.get_orchestration_cluster(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.GetOrchestrationClusterRequest(
+        request_msg = telcoautomation.GetOrchestrationClusterRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_orchestration_cluster_use_cached_wrapped_rpc():
@@ -2050,9 +2069,15 @@ async def test_get_orchestration_cluster_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        telcoautomation.GetOrchestrationClusterRequest(),
+        {},
+    ],
+)
 async def test_get_orchestration_cluster_async(
-    transport: str = "grpc_asyncio",
-    request_type=telcoautomation.GetOrchestrationClusterRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = TelcoAutomationAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2061,7 +2086,7 @@ async def test_get_orchestration_cluster_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2088,11 +2113,6 @@ async def test_get_orchestration_cluster_async(
     assert response.name == "name_value"
     assert response.tna_version == "tna_version_value"
     assert response.state == telcoautomation.OrchestrationCluster.State.CREATING
-
-
-@pytest.mark.asyncio
-async def test_get_orchestration_cluster_async_from_dict():
-    await test_get_orchestration_cluster_async(request_type=dict)
 
 
 def test_get_orchestration_cluster_field_headers():
@@ -2249,8 +2269,8 @@ async def test_get_orchestration_cluster_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        telcoautomation.CreateOrchestrationClusterRequest,
-        dict,
+        telcoautomation.CreateOrchestrationClusterRequest(),
+        {},
     ],
 )
 def test_create_orchestration_cluster(request_type, transport: str = "grpc"):
@@ -2261,7 +2281,7 @@ def test_create_orchestration_cluster(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2308,11 +2328,12 @@ def test_create_orchestration_cluster_non_empty_request_with_auto_populated_fiel
         client.create_orchestration_cluster(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.CreateOrchestrationClusterRequest(
+        request_msg = telcoautomation.CreateOrchestrationClusterRequest(
             parent="parent_value",
             orchestration_cluster_id="orchestration_cluster_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_orchestration_cluster_use_cached_wrapped_rpc():
@@ -2408,9 +2429,15 @@ async def test_create_orchestration_cluster_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        telcoautomation.CreateOrchestrationClusterRequest(),
+        {},
+    ],
+)
 async def test_create_orchestration_cluster_async(
-    transport: str = "grpc_asyncio",
-    request_type=telcoautomation.CreateOrchestrationClusterRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = TelcoAutomationAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2419,7 +2446,7 @@ async def test_create_orchestration_cluster_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2439,11 +2466,6 @@ async def test_create_orchestration_cluster_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_orchestration_cluster_async_from_dict():
-    await test_create_orchestration_cluster_async(request_type=dict)
 
 
 def test_create_orchestration_cluster_field_headers():
@@ -2628,8 +2650,8 @@ async def test_create_orchestration_cluster_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        telcoautomation.DeleteOrchestrationClusterRequest,
-        dict,
+        telcoautomation.DeleteOrchestrationClusterRequest(),
+        {},
     ],
 )
 def test_delete_orchestration_cluster(request_type, transport: str = "grpc"):
@@ -2640,7 +2662,7 @@ def test_delete_orchestration_cluster(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2686,10 +2708,11 @@ def test_delete_orchestration_cluster_non_empty_request_with_auto_populated_fiel
         client.delete_orchestration_cluster(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.DeleteOrchestrationClusterRequest(
+        request_msg = telcoautomation.DeleteOrchestrationClusterRequest(
             name="name_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_orchestration_cluster_use_cached_wrapped_rpc():
@@ -2785,9 +2808,15 @@ async def test_delete_orchestration_cluster_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        telcoautomation.DeleteOrchestrationClusterRequest(),
+        {},
+    ],
+)
 async def test_delete_orchestration_cluster_async(
-    transport: str = "grpc_asyncio",
-    request_type=telcoautomation.DeleteOrchestrationClusterRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = TelcoAutomationAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2796,7 +2825,7 @@ async def test_delete_orchestration_cluster_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2816,11 +2845,6 @@ async def test_delete_orchestration_cluster_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_orchestration_cluster_async_from_dict():
-    await test_delete_orchestration_cluster_async(request_type=dict)
 
 
 def test_delete_orchestration_cluster_field_headers():
@@ -2977,8 +3001,8 @@ async def test_delete_orchestration_cluster_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        telcoautomation.ListEdgeSlmsRequest,
-        dict,
+        telcoautomation.ListEdgeSlmsRequest(),
+        {},
     ],
 )
 def test_list_edge_slms(request_type, transport: str = "grpc"):
@@ -2989,7 +3013,7 @@ def test_list_edge_slms(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_edge_slms), "__call__") as call:
@@ -3038,12 +3062,13 @@ def test_list_edge_slms_non_empty_request_with_auto_populated_field():
         client.list_edge_slms(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.ListEdgeSlmsRequest(
+        request_msg = telcoautomation.ListEdgeSlmsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_edge_slms_use_cached_wrapped_rpc():
@@ -3124,9 +3149,14 @@ async def test_list_edge_slms_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_edge_slms_async(
-    transport: str = "grpc_asyncio", request_type=telcoautomation.ListEdgeSlmsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        telcoautomation.ListEdgeSlmsRequest(),
+        {},
+    ],
+)
+async def test_list_edge_slms_async(request_type, transport: str = "grpc_asyncio"):
     client = TelcoAutomationAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3134,7 +3164,7 @@ async def test_list_edge_slms_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_edge_slms), "__call__") as call:
@@ -3157,11 +3187,6 @@ async def test_list_edge_slms_async(
     assert isinstance(response, pagers.ListEdgeSlmsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_edge_slms_async_from_dict():
-    await test_list_edge_slms_async(request_type=dict)
 
 
 def test_list_edge_slms_field_headers():
@@ -3500,8 +3525,8 @@ async def test_list_edge_slms_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        telcoautomation.GetEdgeSlmRequest,
-        dict,
+        telcoautomation.GetEdgeSlmRequest(),
+        {},
     ],
 )
 def test_get_edge_slm(request_type, transport: str = "grpc"):
@@ -3512,7 +3537,7 @@ def test_get_edge_slm(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_edge_slm), "__call__") as call:
@@ -3567,9 +3592,10 @@ def test_get_edge_slm_non_empty_request_with_auto_populated_field():
         client.get_edge_slm(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.GetEdgeSlmRequest(
+        request_msg = telcoautomation.GetEdgeSlmRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_edge_slm_use_cached_wrapped_rpc():
@@ -3650,9 +3676,14 @@ async def test_get_edge_slm_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_edge_slm_async(
-    transport: str = "grpc_asyncio", request_type=telcoautomation.GetEdgeSlmRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        telcoautomation.GetEdgeSlmRequest(),
+        {},
+    ],
+)
+async def test_get_edge_slm_async(request_type, transport: str = "grpc_asyncio"):
     client = TelcoAutomationAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3660,7 +3691,7 @@ async def test_get_edge_slm_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_edge_slm), "__call__") as call:
@@ -3692,11 +3723,6 @@ async def test_get_edge_slm_async(
         response.workload_cluster_type
         == telcoautomation.EdgeSlm.WorkloadClusterType.GDCE
     )
-
-
-@pytest.mark.asyncio
-async def test_get_edge_slm_async_from_dict():
-    await test_get_edge_slm_async(request_type=dict)
 
 
 def test_get_edge_slm_field_headers():
@@ -3845,8 +3871,8 @@ async def test_get_edge_slm_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        telcoautomation.CreateEdgeSlmRequest,
-        dict,
+        telcoautomation.CreateEdgeSlmRequest(),
+        {},
     ],
 )
 def test_create_edge_slm(request_type, transport: str = "grpc"):
@@ -3857,7 +3883,7 @@ def test_create_edge_slm(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_edge_slm), "__call__") as call:
@@ -3900,11 +3926,12 @@ def test_create_edge_slm_non_empty_request_with_auto_populated_field():
         client.create_edge_slm(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.CreateEdgeSlmRequest(
+        request_msg = telcoautomation.CreateEdgeSlmRequest(
             parent="parent_value",
             edge_slm_id="edge_slm_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_edge_slm_use_cached_wrapped_rpc():
@@ -3995,9 +4022,14 @@ async def test_create_edge_slm_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_edge_slm_async(
-    transport: str = "grpc_asyncio", request_type=telcoautomation.CreateEdgeSlmRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        telcoautomation.CreateEdgeSlmRequest(),
+        {},
+    ],
+)
+async def test_create_edge_slm_async(request_type, transport: str = "grpc_asyncio"):
     client = TelcoAutomationAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4005,7 +4037,7 @@ async def test_create_edge_slm_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_edge_slm), "__call__") as call:
@@ -4023,11 +4055,6 @@ async def test_create_edge_slm_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_edge_slm_async_from_dict():
-    await test_create_edge_slm_async(request_type=dict)
 
 
 def test_create_edge_slm_field_headers():
@@ -4196,8 +4223,8 @@ async def test_create_edge_slm_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        telcoautomation.DeleteEdgeSlmRequest,
-        dict,
+        telcoautomation.DeleteEdgeSlmRequest(),
+        {},
     ],
 )
 def test_delete_edge_slm(request_type, transport: str = "grpc"):
@@ -4208,7 +4235,7 @@ def test_delete_edge_slm(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_edge_slm), "__call__") as call:
@@ -4250,10 +4277,11 @@ def test_delete_edge_slm_non_empty_request_with_auto_populated_field():
         client.delete_edge_slm(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.DeleteEdgeSlmRequest(
+        request_msg = telcoautomation.DeleteEdgeSlmRequest(
             name="name_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_edge_slm_use_cached_wrapped_rpc():
@@ -4344,9 +4372,14 @@ async def test_delete_edge_slm_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_edge_slm_async(
-    transport: str = "grpc_asyncio", request_type=telcoautomation.DeleteEdgeSlmRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        telcoautomation.DeleteEdgeSlmRequest(),
+        {},
+    ],
+)
+async def test_delete_edge_slm_async(request_type, transport: str = "grpc_asyncio"):
     client = TelcoAutomationAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4354,7 +4387,7 @@ async def test_delete_edge_slm_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_edge_slm), "__call__") as call:
@@ -4372,11 +4405,6 @@ async def test_delete_edge_slm_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_edge_slm_async_from_dict():
-    await test_delete_edge_slm_async(request_type=dict)
 
 
 def test_delete_edge_slm_field_headers():
@@ -4525,8 +4553,8 @@ async def test_delete_edge_slm_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        telcoautomation.CreateBlueprintRequest,
-        dict,
+        telcoautomation.CreateBlueprintRequest(),
+        {},
     ],
 )
 def test_create_blueprint(request_type, transport: str = "grpc"):
@@ -4537,7 +4565,7 @@ def test_create_blueprint(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_blueprint), "__call__") as call:
@@ -4598,10 +4626,11 @@ def test_create_blueprint_non_empty_request_with_auto_populated_field():
         client.create_blueprint(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.CreateBlueprintRequest(
+        request_msg = telcoautomation.CreateBlueprintRequest(
             parent="parent_value",
             blueprint_id="blueprint_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_blueprint_use_cached_wrapped_rpc():
@@ -4684,9 +4713,14 @@ async def test_create_blueprint_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_blueprint_async(
-    transport: str = "grpc_asyncio", request_type=telcoautomation.CreateBlueprintRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        telcoautomation.CreateBlueprintRequest(),
+        {},
+    ],
+)
+async def test_create_blueprint_async(request_type, transport: str = "grpc_asyncio"):
     client = TelcoAutomationAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4694,7 +4728,7 @@ async def test_create_blueprint_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_blueprint), "__call__") as call:
@@ -4731,11 +4765,6 @@ async def test_create_blueprint_async(
     assert response.source_provider == "source_provider_value"
     assert response.deployment_level == telcoautomation.DeploymentLevel.HYDRATION
     assert response.rollback_support is True
-
-
-@pytest.mark.asyncio
-async def test_create_blueprint_async_from_dict():
-    await test_create_blueprint_async(request_type=dict)
 
 
 def test_create_blueprint_field_headers():
@@ -4904,8 +4933,8 @@ async def test_create_blueprint_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        telcoautomation.UpdateBlueprintRequest,
-        dict,
+        telcoautomation.UpdateBlueprintRequest(),
+        {},
     ],
 )
 def test_update_blueprint(request_type, transport: str = "grpc"):
@@ -4916,7 +4945,7 @@ def test_update_blueprint(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_blueprint), "__call__") as call:
@@ -4974,7 +5003,8 @@ def test_update_blueprint_non_empty_request_with_auto_populated_field():
         client.update_blueprint(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.UpdateBlueprintRequest()
+        request_msg = telcoautomation.UpdateBlueprintRequest()
+        assert args[0] == request_msg
 
 
 def test_update_blueprint_use_cached_wrapped_rpc():
@@ -5057,9 +5087,14 @@ async def test_update_blueprint_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_blueprint_async(
-    transport: str = "grpc_asyncio", request_type=telcoautomation.UpdateBlueprintRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        telcoautomation.UpdateBlueprintRequest(),
+        {},
+    ],
+)
+async def test_update_blueprint_async(request_type, transport: str = "grpc_asyncio"):
     client = TelcoAutomationAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5067,7 +5102,7 @@ async def test_update_blueprint_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_blueprint), "__call__") as call:
@@ -5104,11 +5139,6 @@ async def test_update_blueprint_async(
     assert response.source_provider == "source_provider_value"
     assert response.deployment_level == telcoautomation.DeploymentLevel.HYDRATION
     assert response.rollback_support is True
-
-
-@pytest.mark.asyncio
-async def test_update_blueprint_async_from_dict():
-    await test_update_blueprint_async(request_type=dict)
 
 
 def test_update_blueprint_field_headers():
@@ -5267,8 +5297,8 @@ async def test_update_blueprint_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        telcoautomation.GetBlueprintRequest,
-        dict,
+        telcoautomation.GetBlueprintRequest(),
+        {},
     ],
 )
 def test_get_blueprint(request_type, transport: str = "grpc"):
@@ -5279,7 +5309,7 @@ def test_get_blueprint(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_blueprint), "__call__") as call:
@@ -5339,9 +5369,10 @@ def test_get_blueprint_non_empty_request_with_auto_populated_field():
         client.get_blueprint(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.GetBlueprintRequest(
+        request_msg = telcoautomation.GetBlueprintRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_blueprint_use_cached_wrapped_rpc():
@@ -5422,9 +5453,14 @@ async def test_get_blueprint_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_blueprint_async(
-    transport: str = "grpc_asyncio", request_type=telcoautomation.GetBlueprintRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        telcoautomation.GetBlueprintRequest(),
+        {},
+    ],
+)
+async def test_get_blueprint_async(request_type, transport: str = "grpc_asyncio"):
     client = TelcoAutomationAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5432,7 +5468,7 @@ async def test_get_blueprint_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_blueprint), "__call__") as call:
@@ -5469,11 +5505,6 @@ async def test_get_blueprint_async(
     assert response.source_provider == "source_provider_value"
     assert response.deployment_level == telcoautomation.DeploymentLevel.HYDRATION
     assert response.rollback_support is True
-
-
-@pytest.mark.asyncio
-async def test_get_blueprint_async_from_dict():
-    await test_get_blueprint_async(request_type=dict)
 
 
 def test_get_blueprint_field_headers():
@@ -5622,8 +5653,8 @@ async def test_get_blueprint_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        telcoautomation.DeleteBlueprintRequest,
-        dict,
+        telcoautomation.DeleteBlueprintRequest(),
+        {},
     ],
 )
 def test_delete_blueprint(request_type, transport: str = "grpc"):
@@ -5634,7 +5665,7 @@ def test_delete_blueprint(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_blueprint), "__call__") as call:
@@ -5675,9 +5706,10 @@ def test_delete_blueprint_non_empty_request_with_auto_populated_field():
         client.delete_blueprint(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.DeleteBlueprintRequest(
+        request_msg = telcoautomation.DeleteBlueprintRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_blueprint_use_cached_wrapped_rpc():
@@ -5760,9 +5792,14 @@ async def test_delete_blueprint_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_blueprint_async(
-    transport: str = "grpc_asyncio", request_type=telcoautomation.DeleteBlueprintRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        telcoautomation.DeleteBlueprintRequest(),
+        {},
+    ],
+)
+async def test_delete_blueprint_async(request_type, transport: str = "grpc_asyncio"):
     client = TelcoAutomationAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5770,7 +5807,7 @@ async def test_delete_blueprint_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_blueprint), "__call__") as call:
@@ -5786,11 +5823,6 @@ async def test_delete_blueprint_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_blueprint_async_from_dict():
-    await test_delete_blueprint_async(request_type=dict)
 
 
 def test_delete_blueprint_field_headers():
@@ -5935,8 +5967,8 @@ async def test_delete_blueprint_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        telcoautomation.ListBlueprintsRequest,
-        dict,
+        telcoautomation.ListBlueprintsRequest(),
+        {},
     ],
 )
 def test_list_blueprints(request_type, transport: str = "grpc"):
@@ -5947,7 +5979,7 @@ def test_list_blueprints(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_blueprints), "__call__") as call:
@@ -5993,11 +6025,12 @@ def test_list_blueprints_non_empty_request_with_auto_populated_field():
         client.list_blueprints(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.ListBlueprintsRequest(
+        request_msg = telcoautomation.ListBlueprintsRequest(
             parent="parent_value",
             filter="filter_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_blueprints_use_cached_wrapped_rpc():
@@ -6078,9 +6111,14 @@ async def test_list_blueprints_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_blueprints_async(
-    transport: str = "grpc_asyncio", request_type=telcoautomation.ListBlueprintsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        telcoautomation.ListBlueprintsRequest(),
+        {},
+    ],
+)
+async def test_list_blueprints_async(request_type, transport: str = "grpc_asyncio"):
     client = TelcoAutomationAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6088,7 +6126,7 @@ async def test_list_blueprints_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_blueprints), "__call__") as call:
@@ -6109,11 +6147,6 @@ async def test_list_blueprints_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListBlueprintsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_blueprints_async_from_dict():
-    await test_list_blueprints_async(request_type=dict)
 
 
 def test_list_blueprints_field_headers():
@@ -6452,8 +6485,8 @@ async def test_list_blueprints_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        telcoautomation.ApproveBlueprintRequest,
-        dict,
+        telcoautomation.ApproveBlueprintRequest(),
+        {},
     ],
 )
 def test_approve_blueprint(request_type, transport: str = "grpc"):
@@ -6464,7 +6497,7 @@ def test_approve_blueprint(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6528,9 +6561,10 @@ def test_approve_blueprint_non_empty_request_with_auto_populated_field():
         client.approve_blueprint(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.ApproveBlueprintRequest(
+        request_msg = telcoautomation.ApproveBlueprintRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_approve_blueprint_use_cached_wrapped_rpc():
@@ -6613,10 +6647,14 @@ async def test_approve_blueprint_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_approve_blueprint_async(
-    transport: str = "grpc_asyncio",
-    request_type=telcoautomation.ApproveBlueprintRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        telcoautomation.ApproveBlueprintRequest(),
+        {},
+    ],
+)
+async def test_approve_blueprint_async(request_type, transport: str = "grpc_asyncio"):
     client = TelcoAutomationAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6624,7 +6662,7 @@ async def test_approve_blueprint_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6663,11 +6701,6 @@ async def test_approve_blueprint_async(
     assert response.source_provider == "source_provider_value"
     assert response.deployment_level == telcoautomation.DeploymentLevel.HYDRATION
     assert response.rollback_support is True
-
-
-@pytest.mark.asyncio
-async def test_approve_blueprint_async_from_dict():
-    await test_approve_blueprint_async(request_type=dict)
 
 
 def test_approve_blueprint_field_headers():
@@ -6824,8 +6857,8 @@ async def test_approve_blueprint_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        telcoautomation.ProposeBlueprintRequest,
-        dict,
+        telcoautomation.ProposeBlueprintRequest(),
+        {},
     ],
 )
 def test_propose_blueprint(request_type, transport: str = "grpc"):
@@ -6836,7 +6869,7 @@ def test_propose_blueprint(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6900,9 +6933,10 @@ def test_propose_blueprint_non_empty_request_with_auto_populated_field():
         client.propose_blueprint(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.ProposeBlueprintRequest(
+        request_msg = telcoautomation.ProposeBlueprintRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_propose_blueprint_use_cached_wrapped_rpc():
@@ -6985,10 +7019,14 @@ async def test_propose_blueprint_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_propose_blueprint_async(
-    transport: str = "grpc_asyncio",
-    request_type=telcoautomation.ProposeBlueprintRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        telcoautomation.ProposeBlueprintRequest(),
+        {},
+    ],
+)
+async def test_propose_blueprint_async(request_type, transport: str = "grpc_asyncio"):
     client = TelcoAutomationAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6996,7 +7034,7 @@ async def test_propose_blueprint_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7035,11 +7073,6 @@ async def test_propose_blueprint_async(
     assert response.source_provider == "source_provider_value"
     assert response.deployment_level == telcoautomation.DeploymentLevel.HYDRATION
     assert response.rollback_support is True
-
-
-@pytest.mark.asyncio
-async def test_propose_blueprint_async_from_dict():
-    await test_propose_blueprint_async(request_type=dict)
 
 
 def test_propose_blueprint_field_headers():
@@ -7196,8 +7229,8 @@ async def test_propose_blueprint_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        telcoautomation.RejectBlueprintRequest,
-        dict,
+        telcoautomation.RejectBlueprintRequest(),
+        {},
     ],
 )
 def test_reject_blueprint(request_type, transport: str = "grpc"):
@@ -7208,7 +7241,7 @@ def test_reject_blueprint(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.reject_blueprint), "__call__") as call:
@@ -7268,9 +7301,10 @@ def test_reject_blueprint_non_empty_request_with_auto_populated_field():
         client.reject_blueprint(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.RejectBlueprintRequest(
+        request_msg = telcoautomation.RejectBlueprintRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_reject_blueprint_use_cached_wrapped_rpc():
@@ -7353,9 +7387,14 @@ async def test_reject_blueprint_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_reject_blueprint_async(
-    transport: str = "grpc_asyncio", request_type=telcoautomation.RejectBlueprintRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        telcoautomation.RejectBlueprintRequest(),
+        {},
+    ],
+)
+async def test_reject_blueprint_async(request_type, transport: str = "grpc_asyncio"):
     client = TelcoAutomationAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7363,7 +7402,7 @@ async def test_reject_blueprint_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.reject_blueprint), "__call__") as call:
@@ -7400,11 +7439,6 @@ async def test_reject_blueprint_async(
     assert response.source_provider == "source_provider_value"
     assert response.deployment_level == telcoautomation.DeploymentLevel.HYDRATION
     assert response.rollback_support is True
-
-
-@pytest.mark.asyncio
-async def test_reject_blueprint_async_from_dict():
-    await test_reject_blueprint_async(request_type=dict)
 
 
 def test_reject_blueprint_field_headers():
@@ -7553,8 +7587,8 @@ async def test_reject_blueprint_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        telcoautomation.ListBlueprintRevisionsRequest,
-        dict,
+        telcoautomation.ListBlueprintRevisionsRequest(),
+        {},
     ],
 )
 def test_list_blueprint_revisions(request_type, transport: str = "grpc"):
@@ -7565,7 +7599,7 @@ def test_list_blueprint_revisions(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7614,10 +7648,11 @@ def test_list_blueprint_revisions_non_empty_request_with_auto_populated_field():
         client.list_blueprint_revisions(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.ListBlueprintRevisionsRequest(
+        request_msg = telcoautomation.ListBlueprintRevisionsRequest(
             name="name_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_blueprint_revisions_use_cached_wrapped_rpc():
@@ -7703,9 +7738,15 @@ async def test_list_blueprint_revisions_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        telcoautomation.ListBlueprintRevisionsRequest(),
+        {},
+    ],
+)
 async def test_list_blueprint_revisions_async(
-    transport: str = "grpc_asyncio",
-    request_type=telcoautomation.ListBlueprintRevisionsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = TelcoAutomationAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -7714,7 +7755,7 @@ async def test_list_blueprint_revisions_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7737,11 +7778,6 @@ async def test_list_blueprint_revisions_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListBlueprintRevisionsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_blueprint_revisions_async_from_dict():
-    await test_list_blueprint_revisions_async(request_type=dict)
 
 
 def test_list_blueprint_revisions_field_headers():
@@ -8098,8 +8134,8 @@ async def test_list_blueprint_revisions_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        telcoautomation.SearchBlueprintRevisionsRequest,
-        dict,
+        telcoautomation.SearchBlueprintRevisionsRequest(),
+        {},
     ],
 )
 def test_search_blueprint_revisions(request_type, transport: str = "grpc"):
@@ -8110,7 +8146,7 @@ def test_search_blueprint_revisions(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8160,11 +8196,12 @@ def test_search_blueprint_revisions_non_empty_request_with_auto_populated_field(
         client.search_blueprint_revisions(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.SearchBlueprintRevisionsRequest(
+        request_msg = telcoautomation.SearchBlueprintRevisionsRequest(
             parent="parent_value",
             query="query_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_search_blueprint_revisions_use_cached_wrapped_rpc():
@@ -8250,9 +8287,15 @@ async def test_search_blueprint_revisions_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        telcoautomation.SearchBlueprintRevisionsRequest(),
+        {},
+    ],
+)
 async def test_search_blueprint_revisions_async(
-    transport: str = "grpc_asyncio",
-    request_type=telcoautomation.SearchBlueprintRevisionsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = TelcoAutomationAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -8261,7 +8304,7 @@ async def test_search_blueprint_revisions_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8284,11 +8327,6 @@ async def test_search_blueprint_revisions_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.SearchBlueprintRevisionsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_search_blueprint_revisions_async_from_dict():
-    await test_search_blueprint_revisions_async(request_type=dict)
 
 
 def test_search_blueprint_revisions_field_headers():
@@ -8655,8 +8693,8 @@ async def test_search_blueprint_revisions_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        telcoautomation.SearchDeploymentRevisionsRequest,
-        dict,
+        telcoautomation.SearchDeploymentRevisionsRequest(),
+        {},
     ],
 )
 def test_search_deployment_revisions(request_type, transport: str = "grpc"):
@@ -8667,7 +8705,7 @@ def test_search_deployment_revisions(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8717,11 +8755,12 @@ def test_search_deployment_revisions_non_empty_request_with_auto_populated_field
         client.search_deployment_revisions(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.SearchDeploymentRevisionsRequest(
+        request_msg = telcoautomation.SearchDeploymentRevisionsRequest(
             parent="parent_value",
             query="query_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_search_deployment_revisions_use_cached_wrapped_rpc():
@@ -8807,9 +8846,15 @@ async def test_search_deployment_revisions_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        telcoautomation.SearchDeploymentRevisionsRequest(),
+        {},
+    ],
+)
 async def test_search_deployment_revisions_async(
-    transport: str = "grpc_asyncio",
-    request_type=telcoautomation.SearchDeploymentRevisionsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = TelcoAutomationAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -8818,7 +8863,7 @@ async def test_search_deployment_revisions_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8841,11 +8886,6 @@ async def test_search_deployment_revisions_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.SearchDeploymentRevisionsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_search_deployment_revisions_async_from_dict():
-    await test_search_deployment_revisions_async(request_type=dict)
 
 
 def test_search_deployment_revisions_field_headers():
@@ -9212,8 +9252,8 @@ async def test_search_deployment_revisions_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        telcoautomation.DiscardBlueprintChangesRequest,
-        dict,
+        telcoautomation.DiscardBlueprintChangesRequest(),
+        {},
     ],
 )
 def test_discard_blueprint_changes(request_type, transport: str = "grpc"):
@@ -9224,7 +9264,7 @@ def test_discard_blueprint_changes(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9269,9 +9309,10 @@ def test_discard_blueprint_changes_non_empty_request_with_auto_populated_field()
         client.discard_blueprint_changes(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.DiscardBlueprintChangesRequest(
+        request_msg = telcoautomation.DiscardBlueprintChangesRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_discard_blueprint_changes_use_cached_wrapped_rpc():
@@ -9357,9 +9398,15 @@ async def test_discard_blueprint_changes_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        telcoautomation.DiscardBlueprintChangesRequest(),
+        {},
+    ],
+)
 async def test_discard_blueprint_changes_async(
-    transport: str = "grpc_asyncio",
-    request_type=telcoautomation.DiscardBlueprintChangesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = TelcoAutomationAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -9368,7 +9415,7 @@ async def test_discard_blueprint_changes_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9388,11 +9435,6 @@ async def test_discard_blueprint_changes_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, telcoautomation.DiscardBlueprintChangesResponse)
-
-
-@pytest.mark.asyncio
-async def test_discard_blueprint_changes_async_from_dict():
-    await test_discard_blueprint_changes_async(request_type=dict)
 
 
 def test_discard_blueprint_changes_field_headers():
@@ -9549,8 +9591,8 @@ async def test_discard_blueprint_changes_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        telcoautomation.ListPublicBlueprintsRequest,
-        dict,
+        telcoautomation.ListPublicBlueprintsRequest(),
+        {},
     ],
 )
 def test_list_public_blueprints(request_type, transport: str = "grpc"):
@@ -9561,7 +9603,7 @@ def test_list_public_blueprints(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9610,10 +9652,11 @@ def test_list_public_blueprints_non_empty_request_with_auto_populated_field():
         client.list_public_blueprints(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.ListPublicBlueprintsRequest(
+        request_msg = telcoautomation.ListPublicBlueprintsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_public_blueprints_use_cached_wrapped_rpc():
@@ -9699,9 +9742,15 @@ async def test_list_public_blueprints_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        telcoautomation.ListPublicBlueprintsRequest(),
+        {},
+    ],
+)
 async def test_list_public_blueprints_async(
-    transport: str = "grpc_asyncio",
-    request_type=telcoautomation.ListPublicBlueprintsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = TelcoAutomationAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -9710,7 +9759,7 @@ async def test_list_public_blueprints_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9733,11 +9782,6 @@ async def test_list_public_blueprints_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListPublicBlueprintsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_public_blueprints_async_from_dict():
-    await test_list_public_blueprints_async(request_type=dict)
 
 
 def test_list_public_blueprints_field_headers():
@@ -10092,8 +10136,8 @@ async def test_list_public_blueprints_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        telcoautomation.GetPublicBlueprintRequest,
-        dict,
+        telcoautomation.GetPublicBlueprintRequest(),
+        {},
     ],
 )
 def test_get_public_blueprint(request_type, transport: str = "grpc"):
@@ -10104,7 +10148,7 @@ def test_get_public_blueprint(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10162,9 +10206,10 @@ def test_get_public_blueprint_non_empty_request_with_auto_populated_field():
         client.get_public_blueprint(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.GetPublicBlueprintRequest(
+        request_msg = telcoautomation.GetPublicBlueprintRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_public_blueprint_use_cached_wrapped_rpc():
@@ -10249,9 +10294,15 @@ async def test_get_public_blueprint_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        telcoautomation.GetPublicBlueprintRequest(),
+        {},
+    ],
+)
 async def test_get_public_blueprint_async(
-    transport: str = "grpc_asyncio",
-    request_type=telcoautomation.GetPublicBlueprintRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = TelcoAutomationAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -10260,7 +10311,7 @@ async def test_get_public_blueprint_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10293,11 +10344,6 @@ async def test_get_public_blueprint_async(
     assert response.deployment_level == telcoautomation.DeploymentLevel.HYDRATION
     assert response.source_provider == "source_provider_value"
     assert response.rollback_support is True
-
-
-@pytest.mark.asyncio
-async def test_get_public_blueprint_async_from_dict():
-    await test_get_public_blueprint_async(request_type=dict)
 
 
 def test_get_public_blueprint_field_headers():
@@ -10454,8 +10500,8 @@ async def test_get_public_blueprint_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        telcoautomation.CreateDeploymentRequest,
-        dict,
+        telcoautomation.CreateDeploymentRequest(),
+        {},
     ],
 )
 def test_create_deployment(request_type, transport: str = "grpc"):
@@ -10466,7 +10512,7 @@ def test_create_deployment(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10533,10 +10579,11 @@ def test_create_deployment_non_empty_request_with_auto_populated_field():
         client.create_deployment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.CreateDeploymentRequest(
+        request_msg = telcoautomation.CreateDeploymentRequest(
             parent="parent_value",
             deployment_id="deployment_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_deployment_use_cached_wrapped_rpc():
@@ -10619,10 +10666,14 @@ async def test_create_deployment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_deployment_async(
-    transport: str = "grpc_asyncio",
-    request_type=telcoautomation.CreateDeploymentRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        telcoautomation.CreateDeploymentRequest(),
+        {},
+    ],
+)
+async def test_create_deployment_async(request_type, transport: str = "grpc_asyncio"):
     client = TelcoAutomationAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -10630,7 +10681,7 @@ async def test_create_deployment_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10671,11 +10722,6 @@ async def test_create_deployment_async(
     assert response.workload_cluster == "workload_cluster_value"
     assert response.deployment_level == telcoautomation.DeploymentLevel.HYDRATION
     assert response.rollback_support is True
-
-
-@pytest.mark.asyncio
-async def test_create_deployment_async_from_dict():
-    await test_create_deployment_async(request_type=dict)
 
 
 def test_create_deployment_field_headers():
@@ -10852,8 +10898,8 @@ async def test_create_deployment_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        telcoautomation.UpdateDeploymentRequest,
-        dict,
+        telcoautomation.UpdateDeploymentRequest(),
+        {},
     ],
 )
 def test_update_deployment(request_type, transport: str = "grpc"):
@@ -10864,7 +10910,7 @@ def test_update_deployment(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10928,7 +10974,8 @@ def test_update_deployment_non_empty_request_with_auto_populated_field():
         client.update_deployment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.UpdateDeploymentRequest()
+        request_msg = telcoautomation.UpdateDeploymentRequest()
+        assert args[0] == request_msg
 
 
 def test_update_deployment_use_cached_wrapped_rpc():
@@ -11011,10 +11058,14 @@ async def test_update_deployment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_deployment_async(
-    transport: str = "grpc_asyncio",
-    request_type=telcoautomation.UpdateDeploymentRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        telcoautomation.UpdateDeploymentRequest(),
+        {},
+    ],
+)
+async def test_update_deployment_async(request_type, transport: str = "grpc_asyncio"):
     client = TelcoAutomationAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -11022,7 +11073,7 @@ async def test_update_deployment_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11063,11 +11114,6 @@ async def test_update_deployment_async(
     assert response.workload_cluster == "workload_cluster_value"
     assert response.deployment_level == telcoautomation.DeploymentLevel.HYDRATION
     assert response.rollback_support is True
-
-
-@pytest.mark.asyncio
-async def test_update_deployment_async_from_dict():
-    await test_update_deployment_async(request_type=dict)
 
 
 def test_update_deployment_field_headers():
@@ -11234,8 +11280,8 @@ async def test_update_deployment_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        telcoautomation.GetDeploymentRequest,
-        dict,
+        telcoautomation.GetDeploymentRequest(),
+        {},
     ],
 )
 def test_get_deployment(request_type, transport: str = "grpc"):
@@ -11246,7 +11292,7 @@ def test_get_deployment(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_deployment), "__call__") as call:
@@ -11308,9 +11354,10 @@ def test_get_deployment_non_empty_request_with_auto_populated_field():
         client.get_deployment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.GetDeploymentRequest(
+        request_msg = telcoautomation.GetDeploymentRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_deployment_use_cached_wrapped_rpc():
@@ -11391,9 +11438,14 @@ async def test_get_deployment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_deployment_async(
-    transport: str = "grpc_asyncio", request_type=telcoautomation.GetDeploymentRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        telcoautomation.GetDeploymentRequest(),
+        {},
+    ],
+)
+async def test_get_deployment_async(request_type, transport: str = "grpc_asyncio"):
     client = TelcoAutomationAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -11401,7 +11453,7 @@ async def test_get_deployment_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_deployment), "__call__") as call:
@@ -11440,11 +11492,6 @@ async def test_get_deployment_async(
     assert response.workload_cluster == "workload_cluster_value"
     assert response.deployment_level == telcoautomation.DeploymentLevel.HYDRATION
     assert response.rollback_support is True
-
-
-@pytest.mark.asyncio
-async def test_get_deployment_async_from_dict():
-    await test_get_deployment_async(request_type=dict)
 
 
 def test_get_deployment_field_headers():
@@ -11593,8 +11640,8 @@ async def test_get_deployment_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        telcoautomation.RemoveDeploymentRequest,
-        dict,
+        telcoautomation.RemoveDeploymentRequest(),
+        {},
     ],
 )
 def test_remove_deployment(request_type, transport: str = "grpc"):
@@ -11605,7 +11652,7 @@ def test_remove_deployment(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11650,9 +11697,10 @@ def test_remove_deployment_non_empty_request_with_auto_populated_field():
         client.remove_deployment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.RemoveDeploymentRequest(
+        request_msg = telcoautomation.RemoveDeploymentRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_remove_deployment_use_cached_wrapped_rpc():
@@ -11735,10 +11783,14 @@ async def test_remove_deployment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_remove_deployment_async(
-    transport: str = "grpc_asyncio",
-    request_type=telcoautomation.RemoveDeploymentRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        telcoautomation.RemoveDeploymentRequest(),
+        {},
+    ],
+)
+async def test_remove_deployment_async(request_type, transport: str = "grpc_asyncio"):
     client = TelcoAutomationAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -11746,7 +11798,7 @@ async def test_remove_deployment_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11764,11 +11816,6 @@ async def test_remove_deployment_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_remove_deployment_async_from_dict():
-    await test_remove_deployment_async(request_type=dict)
 
 
 def test_remove_deployment_field_headers():
@@ -11921,8 +11968,8 @@ async def test_remove_deployment_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        telcoautomation.ListDeploymentsRequest,
-        dict,
+        telcoautomation.ListDeploymentsRequest(),
+        {},
     ],
 )
 def test_list_deployments(request_type, transport: str = "grpc"):
@@ -11933,7 +11980,7 @@ def test_list_deployments(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_deployments), "__call__") as call:
@@ -11979,11 +12026,12 @@ def test_list_deployments_non_empty_request_with_auto_populated_field():
         client.list_deployments(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.ListDeploymentsRequest(
+        request_msg = telcoautomation.ListDeploymentsRequest(
             parent="parent_value",
             filter="filter_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_deployments_use_cached_wrapped_rpc():
@@ -12066,9 +12114,14 @@ async def test_list_deployments_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_deployments_async(
-    transport: str = "grpc_asyncio", request_type=telcoautomation.ListDeploymentsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        telcoautomation.ListDeploymentsRequest(),
+        {},
+    ],
+)
+async def test_list_deployments_async(request_type, transport: str = "grpc_asyncio"):
     client = TelcoAutomationAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -12076,7 +12129,7 @@ async def test_list_deployments_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_deployments), "__call__") as call:
@@ -12097,11 +12150,6 @@ async def test_list_deployments_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDeploymentsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_deployments_async_from_dict():
-    await test_list_deployments_async(request_type=dict)
 
 
 def test_list_deployments_field_headers():
@@ -12440,8 +12488,8 @@ async def test_list_deployments_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        telcoautomation.ListDeploymentRevisionsRequest,
-        dict,
+        telcoautomation.ListDeploymentRevisionsRequest(),
+        {},
     ],
 )
 def test_list_deployment_revisions(request_type, transport: str = "grpc"):
@@ -12452,7 +12500,7 @@ def test_list_deployment_revisions(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12501,10 +12549,11 @@ def test_list_deployment_revisions_non_empty_request_with_auto_populated_field()
         client.list_deployment_revisions(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.ListDeploymentRevisionsRequest(
+        request_msg = telcoautomation.ListDeploymentRevisionsRequest(
             name="name_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_deployment_revisions_use_cached_wrapped_rpc():
@@ -12590,9 +12639,15 @@ async def test_list_deployment_revisions_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        telcoautomation.ListDeploymentRevisionsRequest(),
+        {},
+    ],
+)
 async def test_list_deployment_revisions_async(
-    transport: str = "grpc_asyncio",
-    request_type=telcoautomation.ListDeploymentRevisionsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = TelcoAutomationAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -12601,7 +12656,7 @@ async def test_list_deployment_revisions_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12624,11 +12679,6 @@ async def test_list_deployment_revisions_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDeploymentRevisionsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_deployment_revisions_async_from_dict():
-    await test_list_deployment_revisions_async(request_type=dict)
 
 
 def test_list_deployment_revisions_field_headers():
@@ -12985,8 +13035,8 @@ async def test_list_deployment_revisions_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        telcoautomation.DiscardDeploymentChangesRequest,
-        dict,
+        telcoautomation.DiscardDeploymentChangesRequest(),
+        {},
     ],
 )
 def test_discard_deployment_changes(request_type, transport: str = "grpc"):
@@ -12997,7 +13047,7 @@ def test_discard_deployment_changes(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -13042,9 +13092,10 @@ def test_discard_deployment_changes_non_empty_request_with_auto_populated_field(
         client.discard_deployment_changes(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.DiscardDeploymentChangesRequest(
+        request_msg = telcoautomation.DiscardDeploymentChangesRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_discard_deployment_changes_use_cached_wrapped_rpc():
@@ -13130,9 +13181,15 @@ async def test_discard_deployment_changes_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        telcoautomation.DiscardDeploymentChangesRequest(),
+        {},
+    ],
+)
 async def test_discard_deployment_changes_async(
-    transport: str = "grpc_asyncio",
-    request_type=telcoautomation.DiscardDeploymentChangesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = TelcoAutomationAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -13141,7 +13198,7 @@ async def test_discard_deployment_changes_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -13161,11 +13218,6 @@ async def test_discard_deployment_changes_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, telcoautomation.DiscardDeploymentChangesResponse)
-
-
-@pytest.mark.asyncio
-async def test_discard_deployment_changes_async_from_dict():
-    await test_discard_deployment_changes_async(request_type=dict)
 
 
 def test_discard_deployment_changes_field_headers():
@@ -13322,8 +13374,8 @@ async def test_discard_deployment_changes_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        telcoautomation.ApplyDeploymentRequest,
-        dict,
+        telcoautomation.ApplyDeploymentRequest(),
+        {},
     ],
 )
 def test_apply_deployment(request_type, transport: str = "grpc"):
@@ -13334,7 +13386,7 @@ def test_apply_deployment(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.apply_deployment), "__call__") as call:
@@ -13396,9 +13448,10 @@ def test_apply_deployment_non_empty_request_with_auto_populated_field():
         client.apply_deployment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.ApplyDeploymentRequest(
+        request_msg = telcoautomation.ApplyDeploymentRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_apply_deployment_use_cached_wrapped_rpc():
@@ -13481,9 +13534,14 @@ async def test_apply_deployment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_apply_deployment_async(
-    transport: str = "grpc_asyncio", request_type=telcoautomation.ApplyDeploymentRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        telcoautomation.ApplyDeploymentRequest(),
+        {},
+    ],
+)
+async def test_apply_deployment_async(request_type, transport: str = "grpc_asyncio"):
     client = TelcoAutomationAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -13491,7 +13549,7 @@ async def test_apply_deployment_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.apply_deployment), "__call__") as call:
@@ -13530,11 +13588,6 @@ async def test_apply_deployment_async(
     assert response.workload_cluster == "workload_cluster_value"
     assert response.deployment_level == telcoautomation.DeploymentLevel.HYDRATION
     assert response.rollback_support is True
-
-
-@pytest.mark.asyncio
-async def test_apply_deployment_async_from_dict():
-    await test_apply_deployment_async(request_type=dict)
 
 
 def test_apply_deployment_field_headers():
@@ -13683,8 +13736,8 @@ async def test_apply_deployment_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        telcoautomation.ComputeDeploymentStatusRequest,
-        dict,
+        telcoautomation.ComputeDeploymentStatusRequest(),
+        {},
     ],
 )
 def test_compute_deployment_status(request_type, transport: str = "grpc"):
@@ -13695,7 +13748,7 @@ def test_compute_deployment_status(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -13745,9 +13798,10 @@ def test_compute_deployment_status_non_empty_request_with_auto_populated_field()
         client.compute_deployment_status(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.ComputeDeploymentStatusRequest(
+        request_msg = telcoautomation.ComputeDeploymentStatusRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_compute_deployment_status_use_cached_wrapped_rpc():
@@ -13833,9 +13887,15 @@ async def test_compute_deployment_status_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        telcoautomation.ComputeDeploymentStatusRequest(),
+        {},
+    ],
+)
 async def test_compute_deployment_status_async(
-    transport: str = "grpc_asyncio",
-    request_type=telcoautomation.ComputeDeploymentStatusRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = TelcoAutomationAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -13844,7 +13904,7 @@ async def test_compute_deployment_status_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -13869,11 +13929,6 @@ async def test_compute_deployment_status_async(
     assert isinstance(response, telcoautomation.ComputeDeploymentStatusResponse)
     assert response.name == "name_value"
     assert response.aggregated_status == telcoautomation.Status.STATUS_IN_PROGRESS
-
-
-@pytest.mark.asyncio
-async def test_compute_deployment_status_async_from_dict():
-    await test_compute_deployment_status_async(request_type=dict)
 
 
 def test_compute_deployment_status_field_headers():
@@ -14030,8 +14085,8 @@ async def test_compute_deployment_status_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        telcoautomation.RollbackDeploymentRequest,
-        dict,
+        telcoautomation.RollbackDeploymentRequest(),
+        {},
     ],
 )
 def test_rollback_deployment(request_type, transport: str = "grpc"):
@@ -14042,7 +14097,7 @@ def test_rollback_deployment(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -14109,10 +14164,11 @@ def test_rollback_deployment_non_empty_request_with_auto_populated_field():
         client.rollback_deployment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.RollbackDeploymentRequest(
+        request_msg = telcoautomation.RollbackDeploymentRequest(
             name="name_value",
             revision_id="revision_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_rollback_deployment_use_cached_wrapped_rpc():
@@ -14197,10 +14253,14 @@ async def test_rollback_deployment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_rollback_deployment_async(
-    transport: str = "grpc_asyncio",
-    request_type=telcoautomation.RollbackDeploymentRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        telcoautomation.RollbackDeploymentRequest(),
+        {},
+    ],
+)
+async def test_rollback_deployment_async(request_type, transport: str = "grpc_asyncio"):
     client = TelcoAutomationAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -14208,7 +14268,7 @@ async def test_rollback_deployment_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -14249,11 +14309,6 @@ async def test_rollback_deployment_async(
     assert response.workload_cluster == "workload_cluster_value"
     assert response.deployment_level == telcoautomation.DeploymentLevel.HYDRATION
     assert response.rollback_support is True
-
-
-@pytest.mark.asyncio
-async def test_rollback_deployment_async_from_dict():
-    await test_rollback_deployment_async(request_type=dict)
 
 
 def test_rollback_deployment_field_headers():
@@ -14420,8 +14475,8 @@ async def test_rollback_deployment_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        telcoautomation.GetHydratedDeploymentRequest,
-        dict,
+        telcoautomation.GetHydratedDeploymentRequest(),
+        {},
     ],
 )
 def test_get_hydrated_deployment(request_type, transport: str = "grpc"):
@@ -14432,7 +14487,7 @@ def test_get_hydrated_deployment(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -14484,9 +14539,10 @@ def test_get_hydrated_deployment_non_empty_request_with_auto_populated_field():
         client.get_hydrated_deployment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.GetHydratedDeploymentRequest(
+        request_msg = telcoautomation.GetHydratedDeploymentRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_hydrated_deployment_use_cached_wrapped_rpc():
@@ -14572,9 +14628,15 @@ async def test_get_hydrated_deployment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        telcoautomation.GetHydratedDeploymentRequest(),
+        {},
+    ],
+)
 async def test_get_hydrated_deployment_async(
-    transport: str = "grpc_asyncio",
-    request_type=telcoautomation.GetHydratedDeploymentRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = TelcoAutomationAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -14583,7 +14645,7 @@ async def test_get_hydrated_deployment_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -14610,11 +14672,6 @@ async def test_get_hydrated_deployment_async(
     assert response.name == "name_value"
     assert response.state == telcoautomation.HydratedDeployment.State.DRAFT
     assert response.workload_cluster == "workload_cluster_value"
-
-
-@pytest.mark.asyncio
-async def test_get_hydrated_deployment_async_from_dict():
-    await test_get_hydrated_deployment_async(request_type=dict)
 
 
 def test_get_hydrated_deployment_field_headers():
@@ -14771,8 +14828,8 @@ async def test_get_hydrated_deployment_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        telcoautomation.ListHydratedDeploymentsRequest,
-        dict,
+        telcoautomation.ListHydratedDeploymentsRequest(),
+        {},
     ],
 )
 def test_list_hydrated_deployments(request_type, transport: str = "grpc"):
@@ -14783,7 +14840,7 @@ def test_list_hydrated_deployments(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -14832,10 +14889,11 @@ def test_list_hydrated_deployments_non_empty_request_with_auto_populated_field()
         client.list_hydrated_deployments(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.ListHydratedDeploymentsRequest(
+        request_msg = telcoautomation.ListHydratedDeploymentsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_hydrated_deployments_use_cached_wrapped_rpc():
@@ -14921,9 +14979,15 @@ async def test_list_hydrated_deployments_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        telcoautomation.ListHydratedDeploymentsRequest(),
+        {},
+    ],
+)
 async def test_list_hydrated_deployments_async(
-    transport: str = "grpc_asyncio",
-    request_type=telcoautomation.ListHydratedDeploymentsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = TelcoAutomationAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -14932,7 +14996,7 @@ async def test_list_hydrated_deployments_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -14955,11 +15019,6 @@ async def test_list_hydrated_deployments_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListHydratedDeploymentsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_hydrated_deployments_async_from_dict():
-    await test_list_hydrated_deployments_async(request_type=dict)
 
 
 def test_list_hydrated_deployments_field_headers():
@@ -15316,8 +15375,8 @@ async def test_list_hydrated_deployments_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        telcoautomation.UpdateHydratedDeploymentRequest,
-        dict,
+        telcoautomation.UpdateHydratedDeploymentRequest(),
+        {},
     ],
 )
 def test_update_hydrated_deployment(request_type, transport: str = "grpc"):
@@ -15328,7 +15387,7 @@ def test_update_hydrated_deployment(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -15378,7 +15437,8 @@ def test_update_hydrated_deployment_non_empty_request_with_auto_populated_field(
         client.update_hydrated_deployment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.UpdateHydratedDeploymentRequest()
+        request_msg = telcoautomation.UpdateHydratedDeploymentRequest()
+        assert args[0] == request_msg
 
 
 def test_update_hydrated_deployment_use_cached_wrapped_rpc():
@@ -15464,9 +15524,15 @@ async def test_update_hydrated_deployment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        telcoautomation.UpdateHydratedDeploymentRequest(),
+        {},
+    ],
+)
 async def test_update_hydrated_deployment_async(
-    transport: str = "grpc_asyncio",
-    request_type=telcoautomation.UpdateHydratedDeploymentRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = TelcoAutomationAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -15475,7 +15541,7 @@ async def test_update_hydrated_deployment_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -15502,11 +15568,6 @@ async def test_update_hydrated_deployment_async(
     assert response.name == "name_value"
     assert response.state == telcoautomation.HydratedDeployment.State.DRAFT
     assert response.workload_cluster == "workload_cluster_value"
-
-
-@pytest.mark.asyncio
-async def test_update_hydrated_deployment_async_from_dict():
-    await test_update_hydrated_deployment_async(request_type=dict)
 
 
 def test_update_hydrated_deployment_field_headers():
@@ -15673,8 +15734,8 @@ async def test_update_hydrated_deployment_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        telcoautomation.ApplyHydratedDeploymentRequest,
-        dict,
+        telcoautomation.ApplyHydratedDeploymentRequest(),
+        {},
     ],
 )
 def test_apply_hydrated_deployment(request_type, transport: str = "grpc"):
@@ -15685,7 +15746,7 @@ def test_apply_hydrated_deployment(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -15737,9 +15798,10 @@ def test_apply_hydrated_deployment_non_empty_request_with_auto_populated_field()
         client.apply_hydrated_deployment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.ApplyHydratedDeploymentRequest(
+        request_msg = telcoautomation.ApplyHydratedDeploymentRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_apply_hydrated_deployment_use_cached_wrapped_rpc():
@@ -15825,9 +15887,15 @@ async def test_apply_hydrated_deployment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        telcoautomation.ApplyHydratedDeploymentRequest(),
+        {},
+    ],
+)
 async def test_apply_hydrated_deployment_async(
-    transport: str = "grpc_asyncio",
-    request_type=telcoautomation.ApplyHydratedDeploymentRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = TelcoAutomationAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -15836,7 +15904,7 @@ async def test_apply_hydrated_deployment_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -15863,11 +15931,6 @@ async def test_apply_hydrated_deployment_async(
     assert response.name == "name_value"
     assert response.state == telcoautomation.HydratedDeployment.State.DRAFT
     assert response.workload_cluster == "workload_cluster_value"
-
-
-@pytest.mark.asyncio
-async def test_apply_hydrated_deployment_async_from_dict():
-    await test_apply_hydrated_deployment_async(request_type=dict)
 
 
 def test_apply_hydrated_deployment_field_headers():
@@ -23757,7 +23820,6 @@ def test_list_orchestration_clusters_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.ListOrchestrationClustersRequest()
-
         assert args[0] == request_msg
 
 
@@ -23780,7 +23842,6 @@ def test_get_orchestration_cluster_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.GetOrchestrationClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -23803,7 +23864,6 @@ def test_create_orchestration_cluster_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.CreateOrchestrationClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -23826,7 +23886,6 @@ def test_delete_orchestration_cluster_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.DeleteOrchestrationClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -23847,7 +23906,6 @@ def test_list_edge_slms_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.ListEdgeSlmsRequest()
-
         assert args[0] == request_msg
 
 
@@ -23868,7 +23926,6 @@ def test_get_edge_slm_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.GetEdgeSlmRequest()
-
         assert args[0] == request_msg
 
 
@@ -23889,7 +23946,6 @@ def test_create_edge_slm_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.CreateEdgeSlmRequest()
-
         assert args[0] == request_msg
 
 
@@ -23910,7 +23966,6 @@ def test_delete_edge_slm_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.DeleteEdgeSlmRequest()
-
         assert args[0] == request_msg
 
 
@@ -23931,7 +23986,6 @@ def test_create_blueprint_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.CreateBlueprintRequest()
-
         assert args[0] == request_msg
 
 
@@ -23952,7 +24006,6 @@ def test_update_blueprint_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.UpdateBlueprintRequest()
-
         assert args[0] == request_msg
 
 
@@ -23973,7 +24026,6 @@ def test_get_blueprint_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.GetBlueprintRequest()
-
         assert args[0] == request_msg
 
 
@@ -23994,7 +24046,6 @@ def test_delete_blueprint_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.DeleteBlueprintRequest()
-
         assert args[0] == request_msg
 
 
@@ -24015,7 +24066,6 @@ def test_list_blueprints_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.ListBlueprintsRequest()
-
         assert args[0] == request_msg
 
 
@@ -24038,7 +24088,6 @@ def test_approve_blueprint_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.ApproveBlueprintRequest()
-
         assert args[0] == request_msg
 
 
@@ -24061,7 +24110,6 @@ def test_propose_blueprint_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.ProposeBlueprintRequest()
-
         assert args[0] == request_msg
 
 
@@ -24082,7 +24130,6 @@ def test_reject_blueprint_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.RejectBlueprintRequest()
-
         assert args[0] == request_msg
 
 
@@ -24105,7 +24152,6 @@ def test_list_blueprint_revisions_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.ListBlueprintRevisionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -24128,7 +24174,6 @@ def test_search_blueprint_revisions_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.SearchBlueprintRevisionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -24151,7 +24196,6 @@ def test_search_deployment_revisions_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.SearchDeploymentRevisionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -24174,7 +24218,6 @@ def test_discard_blueprint_changes_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.DiscardBlueprintChangesRequest()
-
         assert args[0] == request_msg
 
 
@@ -24197,7 +24240,6 @@ def test_list_public_blueprints_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.ListPublicBlueprintsRequest()
-
         assert args[0] == request_msg
 
 
@@ -24220,7 +24262,6 @@ def test_get_public_blueprint_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.GetPublicBlueprintRequest()
-
         assert args[0] == request_msg
 
 
@@ -24243,7 +24284,6 @@ def test_create_deployment_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.CreateDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -24266,7 +24306,6 @@ def test_update_deployment_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.UpdateDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -24287,7 +24326,6 @@ def test_get_deployment_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.GetDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -24310,7 +24348,6 @@ def test_remove_deployment_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.RemoveDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -24331,7 +24368,6 @@ def test_list_deployments_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.ListDeploymentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -24354,7 +24390,6 @@ def test_list_deployment_revisions_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.ListDeploymentRevisionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -24377,7 +24412,6 @@ def test_discard_deployment_changes_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.DiscardDeploymentChangesRequest()
-
         assert args[0] == request_msg
 
 
@@ -24398,7 +24432,6 @@ def test_apply_deployment_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.ApplyDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -24421,7 +24454,6 @@ def test_compute_deployment_status_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.ComputeDeploymentStatusRequest()
-
         assert args[0] == request_msg
 
 
@@ -24444,7 +24476,6 @@ def test_rollback_deployment_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.RollbackDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -24467,7 +24498,6 @@ def test_get_hydrated_deployment_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.GetHydratedDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -24490,7 +24520,6 @@ def test_list_hydrated_deployments_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.ListHydratedDeploymentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -24513,7 +24542,6 @@ def test_update_hydrated_deployment_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.UpdateHydratedDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -24536,7 +24564,6 @@ def test_apply_hydrated_deployment_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.ApplyHydratedDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -24580,7 +24607,6 @@ async def test_list_orchestration_clusters_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.ListOrchestrationClustersRequest()
-
         assert args[0] == request_msg
 
 
@@ -24611,7 +24637,6 @@ async def test_get_orchestration_cluster_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.GetOrchestrationClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -24638,7 +24663,6 @@ async def test_create_orchestration_cluster_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.CreateOrchestrationClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -24665,7 +24689,6 @@ async def test_delete_orchestration_cluster_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.DeleteOrchestrationClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -24693,7 +24716,6 @@ async def test_list_edge_slms_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.ListEdgeSlmsRequest()
-
         assert args[0] == request_msg
 
 
@@ -24724,7 +24746,6 @@ async def test_get_edge_slm_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.GetEdgeSlmRequest()
-
         assert args[0] == request_msg
 
 
@@ -24749,7 +24770,6 @@ async def test_create_edge_slm_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.CreateEdgeSlmRequest()
-
         assert args[0] == request_msg
 
 
@@ -24774,7 +24794,6 @@ async def test_delete_edge_slm_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.DeleteEdgeSlmRequest()
-
         assert args[0] == request_msg
 
 
@@ -24809,7 +24828,6 @@ async def test_create_blueprint_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.CreateBlueprintRequest()
-
         assert args[0] == request_msg
 
 
@@ -24844,7 +24862,6 @@ async def test_update_blueprint_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.UpdateBlueprintRequest()
-
         assert args[0] == request_msg
 
 
@@ -24879,7 +24896,6 @@ async def test_get_blueprint_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.GetBlueprintRequest()
-
         assert args[0] == request_msg
 
 
@@ -24902,7 +24918,6 @@ async def test_delete_blueprint_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.DeleteBlueprintRequest()
-
         assert args[0] == request_msg
 
 
@@ -24929,7 +24944,6 @@ async def test_list_blueprints_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.ListBlueprintsRequest()
-
         assert args[0] == request_msg
 
 
@@ -24966,7 +24980,6 @@ async def test_approve_blueprint_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.ApproveBlueprintRequest()
-
         assert args[0] == request_msg
 
 
@@ -25003,7 +25016,6 @@ async def test_propose_blueprint_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.ProposeBlueprintRequest()
-
         assert args[0] == request_msg
 
 
@@ -25038,7 +25050,6 @@ async def test_reject_blueprint_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.RejectBlueprintRequest()
-
         assert args[0] == request_msg
 
 
@@ -25067,7 +25078,6 @@ async def test_list_blueprint_revisions_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.ListBlueprintRevisionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -25096,7 +25106,6 @@ async def test_search_blueprint_revisions_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.SearchBlueprintRevisionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -25125,7 +25134,6 @@ async def test_search_deployment_revisions_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.SearchDeploymentRevisionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -25152,7 +25160,6 @@ async def test_discard_blueprint_changes_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.DiscardBlueprintChangesRequest()
-
         assert args[0] == request_msg
 
 
@@ -25181,7 +25188,6 @@ async def test_list_public_blueprints_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.ListPublicBlueprintsRequest()
-
         assert args[0] == request_msg
 
 
@@ -25215,7 +25221,6 @@ async def test_get_public_blueprint_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.GetPublicBlueprintRequest()
-
         assert args[0] == request_msg
 
 
@@ -25253,7 +25258,6 @@ async def test_create_deployment_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.CreateDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -25291,7 +25295,6 @@ async def test_update_deployment_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.UpdateDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -25327,7 +25330,6 @@ async def test_get_deployment_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.GetDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -25352,7 +25354,6 @@ async def test_remove_deployment_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.RemoveDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -25379,7 +25380,6 @@ async def test_list_deployments_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.ListDeploymentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -25408,7 +25408,6 @@ async def test_list_deployment_revisions_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.ListDeploymentRevisionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -25435,7 +25434,6 @@ async def test_discard_deployment_changes_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.DiscardDeploymentChangesRequest()
-
         assert args[0] == request_msg
 
 
@@ -25471,7 +25469,6 @@ async def test_apply_deployment_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.ApplyDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -25501,7 +25498,6 @@ async def test_compute_deployment_status_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.ComputeDeploymentStatusRequest()
-
         assert args[0] == request_msg
 
 
@@ -25539,7 +25535,6 @@ async def test_rollback_deployment_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.RollbackDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -25570,7 +25565,6 @@ async def test_get_hydrated_deployment_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.GetHydratedDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -25599,7 +25593,6 @@ async def test_list_hydrated_deployments_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.ListHydratedDeploymentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -25630,7 +25623,6 @@ async def test_update_hydrated_deployment_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.UpdateHydratedDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -25661,7 +25653,6 @@ async def test_apply_hydrated_deployment_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.ApplyHydratedDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -31790,7 +31781,6 @@ def test_list_orchestration_clusters_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.ListOrchestrationClustersRequest()
-
         assert args[0] == request_msg
 
 
@@ -31812,7 +31802,6 @@ def test_get_orchestration_cluster_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.GetOrchestrationClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -31834,7 +31823,6 @@ def test_create_orchestration_cluster_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.CreateOrchestrationClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -31856,7 +31844,6 @@ def test_delete_orchestration_cluster_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.DeleteOrchestrationClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -31876,7 +31863,6 @@ def test_list_edge_slms_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.ListEdgeSlmsRequest()
-
         assert args[0] == request_msg
 
 
@@ -31896,7 +31882,6 @@ def test_get_edge_slm_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.GetEdgeSlmRequest()
-
         assert args[0] == request_msg
 
 
@@ -31916,7 +31901,6 @@ def test_create_edge_slm_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.CreateEdgeSlmRequest()
-
         assert args[0] == request_msg
 
 
@@ -31936,7 +31920,6 @@ def test_delete_edge_slm_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.DeleteEdgeSlmRequest()
-
         assert args[0] == request_msg
 
 
@@ -31956,7 +31939,6 @@ def test_create_blueprint_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.CreateBlueprintRequest()
-
         assert args[0] == request_msg
 
 
@@ -31976,7 +31958,6 @@ def test_update_blueprint_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.UpdateBlueprintRequest()
-
         assert args[0] == request_msg
 
 
@@ -31996,7 +31977,6 @@ def test_get_blueprint_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.GetBlueprintRequest()
-
         assert args[0] == request_msg
 
 
@@ -32016,7 +31996,6 @@ def test_delete_blueprint_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.DeleteBlueprintRequest()
-
         assert args[0] == request_msg
 
 
@@ -32036,7 +32015,6 @@ def test_list_blueprints_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.ListBlueprintsRequest()
-
         assert args[0] == request_msg
 
 
@@ -32058,7 +32036,6 @@ def test_approve_blueprint_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.ApproveBlueprintRequest()
-
         assert args[0] == request_msg
 
 
@@ -32080,7 +32057,6 @@ def test_propose_blueprint_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.ProposeBlueprintRequest()
-
         assert args[0] == request_msg
 
 
@@ -32100,7 +32076,6 @@ def test_reject_blueprint_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.RejectBlueprintRequest()
-
         assert args[0] == request_msg
 
 
@@ -32122,7 +32097,6 @@ def test_list_blueprint_revisions_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.ListBlueprintRevisionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -32144,7 +32118,6 @@ def test_search_blueprint_revisions_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.SearchBlueprintRevisionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -32166,7 +32139,6 @@ def test_search_deployment_revisions_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.SearchDeploymentRevisionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -32188,7 +32160,6 @@ def test_discard_blueprint_changes_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.DiscardBlueprintChangesRequest()
-
         assert args[0] == request_msg
 
 
@@ -32210,7 +32181,6 @@ def test_list_public_blueprints_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.ListPublicBlueprintsRequest()
-
         assert args[0] == request_msg
 
 
@@ -32232,7 +32202,6 @@ def test_get_public_blueprint_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.GetPublicBlueprintRequest()
-
         assert args[0] == request_msg
 
 
@@ -32254,7 +32223,6 @@ def test_create_deployment_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.CreateDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -32276,7 +32244,6 @@ def test_update_deployment_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.UpdateDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -32296,7 +32263,6 @@ def test_get_deployment_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.GetDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -32318,7 +32284,6 @@ def test_remove_deployment_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.RemoveDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -32338,7 +32303,6 @@ def test_list_deployments_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.ListDeploymentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -32360,7 +32324,6 @@ def test_list_deployment_revisions_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.ListDeploymentRevisionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -32382,7 +32345,6 @@ def test_discard_deployment_changes_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.DiscardDeploymentChangesRequest()
-
         assert args[0] == request_msg
 
 
@@ -32402,7 +32364,6 @@ def test_apply_deployment_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.ApplyDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -32424,7 +32385,6 @@ def test_compute_deployment_status_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.ComputeDeploymentStatusRequest()
-
         assert args[0] == request_msg
 
 
@@ -32446,7 +32406,6 @@ def test_rollback_deployment_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.RollbackDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -32468,7 +32427,6 @@ def test_get_hydrated_deployment_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.GetHydratedDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -32490,7 +32448,6 @@ def test_list_hydrated_deployments_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.ListHydratedDeploymentsRequest()
-
         assert args[0] == request_msg
 
 
@@ -32512,7 +32469,6 @@ def test_update_hydrated_deployment_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.UpdateHydratedDeploymentRequest()
-
         assert args[0] == request_msg
 
 
@@ -32534,7 +32490,6 @@ def test_apply_hydrated_deployment_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = telcoautomation.ApplyHydratedDeploymentRequest()
-
         assert args[0] == request_msg
 
 

@@ -14,6 +14,7 @@
 # limitations under the License.
 #
 import os
+import asyncio
 from unittest import mock
 from unittest.mock import AsyncMock
 
@@ -93,6 +94,21 @@ def modify_default_endpoint(client):
 # mtls endpoint for endpoint testing purposes.
 def modify_default_endpoint_template(client):
     return "test.{UNIVERSE_DOMAIN}" if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE) else client._DEFAULT_ENDPOINT_TEMPLATE
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -944,8 +960,8 @@ def test_base_metrics_service_v2_client_create_channel_credentials_file(client_c
 
 
 @pytest.mark.parametrize("request_type", [
-  logging_metrics.ListLogMetricsRequest,
-  dict,
+  logging_metrics.ListLogMetricsRequest(),
+  {},
 ])
 def test__list_log_metrics(request_type, transport: str = 'grpc'):
     client = BaseMetricsServiceV2Client(
@@ -955,7 +971,7 @@ def test__list_log_metrics(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1002,10 +1018,11 @@ def test__list_log_metrics_non_empty_request_with_auto_populated_field():
         client._list_log_metrics(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_metrics.ListLogMetricsRequest(
+        request_msg = logging_metrics.ListLogMetricsRequest(
             parent='parent_value',
             page_token='page_token_value',
         )
+        assert args[0] == request_msg
 
 def test__list_log_metrics_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -1074,7 +1091,11 @@ async def test__list_log_metrics_async_use_cached_wrapped_rpc(transport: str = "
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-async def test__list_log_metrics_async(transport: str = 'grpc_asyncio', request_type=logging_metrics.ListLogMetricsRequest):
+@pytest.mark.parametrize("request_type", [
+  logging_metrics.ListLogMetricsRequest(),
+  {},
+])
+async def test__list_log_metrics_async(request_type, transport: str = 'grpc_asyncio'):
     client = BaseMetricsServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1082,7 +1103,7 @@ async def test__list_log_metrics_async(transport: str = 'grpc_asyncio', request_
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1103,11 +1124,6 @@ async def test__list_log_metrics_async(transport: str = 'grpc_asyncio', request_
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListLogMetricsAsyncPager)
     assert response.next_page_token == 'next_page_token_value'
-
-
-@pytest.mark.asyncio
-async def test__list_log_metrics_async_from_dict():
-    await test__list_log_metrics_async(request_type=dict)
 
 def test__list_log_metrics_field_headers():
     client = BaseMetricsServiceV2Client(
@@ -1307,6 +1323,9 @@ def test__list_log_metrics_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == 'abc'
+        assert str(pager).startswith(f'{pager.__class__.__name__}<')
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, logging_metrics.LogMetric)
@@ -1393,6 +1412,8 @@ async def test__list_log_metrics_async_pager():
         )
         async_pager = await client._list_log_metrics(request={},)
         assert async_pager.next_page_token == 'abc'
+        assert str(async_pager).startswith(f'{async_pager.__class__.__name__}<')
+
         responses = []
         async for response in async_pager: # pragma: no branch
             responses.append(response)
@@ -1449,8 +1470,8 @@ async def test__list_log_metrics_async_pages():
             assert page_.raw_page.next_page_token == token
 
 @pytest.mark.parametrize("request_type", [
-  logging_metrics.GetLogMetricRequest,
-  dict,
+  logging_metrics.GetLogMetricRequest(),
+  {},
 ])
 def test__get_log_metric(request_type, transport: str = 'grpc'):
     client = BaseMetricsServiceV2Client(
@@ -1460,7 +1481,7 @@ def test__get_log_metric(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1518,9 +1539,10 @@ def test__get_log_metric_non_empty_request_with_auto_populated_field():
         client._get_log_metric(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_metrics.GetLogMetricRequest(
+        request_msg = logging_metrics.GetLogMetricRequest(
             metric_name='metric_name_value',
         )
+        assert args[0] == request_msg
 
 def test__get_log_metric_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -1589,7 +1611,11 @@ async def test__get_log_metric_async_use_cached_wrapped_rpc(transport: str = "gr
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-async def test__get_log_metric_async(transport: str = 'grpc_asyncio', request_type=logging_metrics.GetLogMetricRequest):
+@pytest.mark.parametrize("request_type", [
+  logging_metrics.GetLogMetricRequest(),
+  {},
+])
+async def test__get_log_metric_async(request_type, transport: str = 'grpc_asyncio'):
     client = BaseMetricsServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1597,7 +1623,7 @@ async def test__get_log_metric_async(transport: str = 'grpc_asyncio', request_ty
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1630,11 +1656,6 @@ async def test__get_log_metric_async(transport: str = 'grpc_asyncio', request_ty
     assert response.disabled is True
     assert response.value_extractor == 'value_extractor_value'
     assert response.version == logging_metrics.LogMetric.ApiVersion.V1
-
-
-@pytest.mark.asyncio
-async def test__get_log_metric_async_from_dict():
-    await test__get_log_metric_async(request_type=dict)
 
 def test__get_log_metric_field_headers():
     client = BaseMetricsServiceV2Client(
@@ -1782,8 +1803,8 @@ async def test__get_log_metric_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  logging_metrics.CreateLogMetricRequest,
-  dict,
+  logging_metrics.CreateLogMetricRequest(),
+  {},
 ])
 def test__create_log_metric(request_type, transport: str = 'grpc'):
     client = BaseMetricsServiceV2Client(
@@ -1793,7 +1814,7 @@ def test__create_log_metric(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1851,9 +1872,10 @@ def test__create_log_metric_non_empty_request_with_auto_populated_field():
         client._create_log_metric(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_metrics.CreateLogMetricRequest(
+        request_msg = logging_metrics.CreateLogMetricRequest(
             parent='parent_value',
         )
+        assert args[0] == request_msg
 
 def test__create_log_metric_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -1922,7 +1944,11 @@ async def test__create_log_metric_async_use_cached_wrapped_rpc(transport: str = 
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-async def test__create_log_metric_async(transport: str = 'grpc_asyncio', request_type=logging_metrics.CreateLogMetricRequest):
+@pytest.mark.parametrize("request_type", [
+  logging_metrics.CreateLogMetricRequest(),
+  {},
+])
+async def test__create_log_metric_async(request_type, transport: str = 'grpc_asyncio'):
     client = BaseMetricsServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1930,7 +1956,7 @@ async def test__create_log_metric_async(transport: str = 'grpc_asyncio', request
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1963,11 +1989,6 @@ async def test__create_log_metric_async(transport: str = 'grpc_asyncio', request
     assert response.disabled is True
     assert response.value_extractor == 'value_extractor_value'
     assert response.version == logging_metrics.LogMetric.ApiVersion.V1
-
-
-@pytest.mark.asyncio
-async def test__create_log_metric_async_from_dict():
-    await test__create_log_metric_async(request_type=dict)
 
 def test__create_log_metric_field_headers():
     client = BaseMetricsServiceV2Client(
@@ -2125,8 +2146,8 @@ async def test__create_log_metric_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  logging_metrics.UpdateLogMetricRequest,
-  dict,
+  logging_metrics.UpdateLogMetricRequest(),
+  {},
 ])
 def test__update_log_metric(request_type, transport: str = 'grpc'):
     client = BaseMetricsServiceV2Client(
@@ -2136,7 +2157,7 @@ def test__update_log_metric(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2194,9 +2215,10 @@ def test__update_log_metric_non_empty_request_with_auto_populated_field():
         client._update_log_metric(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_metrics.UpdateLogMetricRequest(
+        request_msg = logging_metrics.UpdateLogMetricRequest(
             metric_name='metric_name_value',
         )
+        assert args[0] == request_msg
 
 def test__update_log_metric_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -2265,7 +2287,11 @@ async def test__update_log_metric_async_use_cached_wrapped_rpc(transport: str = 
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-async def test__update_log_metric_async(transport: str = 'grpc_asyncio', request_type=logging_metrics.UpdateLogMetricRequest):
+@pytest.mark.parametrize("request_type", [
+  logging_metrics.UpdateLogMetricRequest(),
+  {},
+])
+async def test__update_log_metric_async(request_type, transport: str = 'grpc_asyncio'):
     client = BaseMetricsServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2273,7 +2299,7 @@ async def test__update_log_metric_async(transport: str = 'grpc_asyncio', request
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2306,11 +2332,6 @@ async def test__update_log_metric_async(transport: str = 'grpc_asyncio', request
     assert response.disabled is True
     assert response.value_extractor == 'value_extractor_value'
     assert response.version == logging_metrics.LogMetric.ApiVersion.V1
-
-
-@pytest.mark.asyncio
-async def test__update_log_metric_async_from_dict():
-    await test__update_log_metric_async(request_type=dict)
 
 def test__update_log_metric_field_headers():
     client = BaseMetricsServiceV2Client(
@@ -2468,8 +2489,8 @@ async def test__update_log_metric_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
-  logging_metrics.DeleteLogMetricRequest,
-  dict,
+  logging_metrics.DeleteLogMetricRequest(),
+  {},
 ])
 def test__delete_log_metric(request_type, transport: str = 'grpc'):
     client = BaseMetricsServiceV2Client(
@@ -2479,7 +2500,7 @@ def test__delete_log_metric(request_type, transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2522,9 +2543,10 @@ def test__delete_log_metric_non_empty_request_with_auto_populated_field():
         client._delete_log_metric(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == logging_metrics.DeleteLogMetricRequest(
+        request_msg = logging_metrics.DeleteLogMetricRequest(
             metric_name='metric_name_value',
         )
+        assert args[0] == request_msg
 
 def test__delete_log_metric_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -2593,7 +2615,11 @@ async def test__delete_log_metric_async_use_cached_wrapped_rpc(transport: str = 
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-async def test__delete_log_metric_async(transport: str = 'grpc_asyncio', request_type=logging_metrics.DeleteLogMetricRequest):
+@pytest.mark.parametrize("request_type", [
+  logging_metrics.DeleteLogMetricRequest(),
+  {},
+])
+async def test__delete_log_metric_async(request_type, transport: str = 'grpc_asyncio'):
     client = BaseMetricsServiceV2AsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2601,7 +2627,7 @@ async def test__delete_log_metric_async(transport: str = 'grpc_asyncio', request
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2619,11 +2645,6 @@ async def test__delete_log_metric_async(transport: str = 'grpc_asyncio', request
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test__delete_log_metric_async_from_dict():
-    await test__delete_log_metric_async(request_type=dict)
 
 def test__delete_log_metric_field_headers():
     client = BaseMetricsServiceV2Client(
@@ -2890,7 +2911,6 @@ def test__list_log_metrics_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_metrics.ListLogMetricsRequest()
-
         assert args[0] == request_msg
 
 
@@ -2913,7 +2933,6 @@ def test__get_log_metric_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_metrics.GetLogMetricRequest()
-
         assert args[0] == request_msg
 
 
@@ -2936,7 +2955,6 @@ def test__create_log_metric_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_metrics.CreateLogMetricRequest()
-
         assert args[0] == request_msg
 
 
@@ -2959,7 +2977,6 @@ def test__update_log_metric_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_metrics.UpdateLogMetricRequest()
-
         assert args[0] == request_msg
 
 
@@ -2982,7 +2999,6 @@ def test__delete_log_metric_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_metrics.DeleteLogMetricRequest()
-
         assert args[0] == request_msg
 
 
@@ -3024,7 +3040,6 @@ async def test__list_log_metrics_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_metrics.ListLogMetricsRequest()
-
         assert args[0] == request_msg
 
 
@@ -3057,7 +3072,6 @@ async def test__get_log_metric_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_metrics.GetLogMetricRequest()
-
         assert args[0] == request_msg
 
 
@@ -3090,7 +3104,6 @@ async def test__create_log_metric_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_metrics.CreateLogMetricRequest()
-
         assert args[0] == request_msg
 
 
@@ -3123,7 +3136,6 @@ async def test__update_log_metric_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_metrics.UpdateLogMetricRequest()
-
         assert args[0] == request_msg
 
 
@@ -3148,7 +3160,6 @@ async def test__delete_log_metric_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = logging_metrics.DeleteLogMetricRequest()
-
         assert args[0] == request_msg
 
 

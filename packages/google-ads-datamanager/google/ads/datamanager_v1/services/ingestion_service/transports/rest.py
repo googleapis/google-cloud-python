@@ -72,6 +72,14 @@ class IngestionServiceRestInterceptor:
 
     .. code-block:: python
         class MyCustomIngestionServiceInterceptor(IngestionServiceRestInterceptor):
+            def pre_ingest_ad_events(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_ingest_ad_events(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_ingest_audience_members(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -109,6 +117,57 @@ class IngestionServiceRestInterceptor:
 
 
     """
+
+    def pre_ingest_ad_events(
+        self,
+        request: ingestion_service.IngestAdEventsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        ingestion_service.IngestAdEventsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for ingest_ad_events
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the IngestionService server.
+        """
+        return request, metadata
+
+    def post_ingest_ad_events(
+        self, response: ingestion_service.IngestAdEventsResponse
+    ) -> ingestion_service.IngestAdEventsResponse:
+        """Post-rpc interceptor for ingest_ad_events
+
+        DEPRECATED. Please use the `post_ingest_ad_events_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the IngestionService server but before
+        it is returned to user code. This `post_ingest_ad_events` interceptor runs
+        before the `post_ingest_ad_events_with_metadata` interceptor.
+        """
+        return response
+
+    def post_ingest_ad_events_with_metadata(
+        self,
+        response: ingestion_service.IngestAdEventsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        ingestion_service.IngestAdEventsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for ingest_ad_events
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the IngestionService server but before it is returned to user code.
+
+        We recommend only using this `post_ingest_ad_events_with_metadata`
+        interceptor in new development instead of the `post_ingest_ad_events` interceptor.
+        When both interceptors are used, this `post_ingest_ad_events_with_metadata` interceptor runs after the
+        `post_ingest_ad_events` interceptor. The (possibly modified) response returned by
+        `post_ingest_ad_events` will be passed to
+        `post_ingest_ad_events_with_metadata`.
+        """
+        return response, metadata
 
     def pre_ingest_audience_members(
         self,
@@ -409,6 +468,160 @@ class IngestionServiceRestTransport(_BaseIngestionServiceRestTransport):
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or IngestionServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
+
+    class _IngestAdEvents(
+        _BaseIngestionServiceRestTransport._BaseIngestAdEvents, IngestionServiceRestStub
+    ):
+        def __hash__(self):
+            return hash("IngestionServiceRestTransport.IngestAdEvents")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: ingestion_service.IngestAdEventsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> ingestion_service.IngestAdEventsResponse:
+            r"""Call the ingest ad events method over HTTP.
+
+            Args:
+                request (~.ingestion_service.IngestAdEventsRequest):
+                    The request object. Request to upload ad events.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.ingestion_service.IngestAdEventsResponse:
+                    Response from an ad event ingestion
+                operation.
+
+            """
+
+            http_options = _BaseIngestionServiceRestTransport._BaseIngestAdEvents._get_http_options()
+
+            request, metadata = self._interceptor.pre_ingest_ad_events(
+                request, metadata
+            )
+            transcoded_request = _BaseIngestionServiceRestTransport._BaseIngestAdEvents._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseIngestionServiceRestTransport._BaseIngestAdEvents._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseIngestionServiceRestTransport._BaseIngestAdEvents._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.ads.datamanager_v1.IngestionServiceClient.IngestAdEvents",
+                    extra={
+                        "serviceName": "google.ads.datamanager.v1.IngestionService",
+                        "rpcName": "IngestAdEvents",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = IngestionServiceRestTransport._IngestAdEvents._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = ingestion_service.IngestAdEventsResponse()
+            pb_resp = ingestion_service.IngestAdEventsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_ingest_ad_events(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_ingest_ad_events_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = ingestion_service.IngestAdEventsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.ads.datamanager_v1.IngestionServiceClient.ingest_ad_events",
+                    extra={
+                        "serviceName": "google.ads.datamanager.v1.IngestionService",
+                        "rpcName": "IngestAdEvents",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
 
     class _IngestAudienceMembers(
         _BaseIngestionServiceRestTransport._BaseIngestAudienceMembers,
@@ -1042,6 +1255,17 @@ class IngestionServiceRestTransport(_BaseIngestionServiceRestTransport):
                     },
                 )
             return resp
+
+    @property
+    def ingest_ad_events(
+        self,
+    ) -> Callable[
+        [ingestion_service.IngestAdEventsRequest],
+        ingestion_service.IngestAdEventsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._IngestAdEvents(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def ingest_audience_members(

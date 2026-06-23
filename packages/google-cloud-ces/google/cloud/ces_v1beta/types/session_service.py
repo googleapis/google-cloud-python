@@ -361,6 +361,9 @@ class Citations(proto.Message):
                 Title of the cited document.
             text (str):
                 Text used for citation.
+            requires_attribution (bool):
+                Whether this citation requires attribution to
+                be shown to the end users.
         """
 
         uri: str = proto.Field(
@@ -374,6 +377,10 @@ class Citations(proto.Message):
         text: str = proto.Field(
             proto.STRING,
             number=3,
+        )
+        requires_attribution: bool = proto.Field(
+            proto.BOOL,
+            number=4,
         )
 
     cited_chunks: MutableSequence[CitedChunk] = proto.RepeatedField(

@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -115,6 +116,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1297,8 +1313,8 @@ def test_batch_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        batch.CreateJobRequest,
-        dict,
+        batch.CreateJobRequest(),
+        {},
     ],
 )
 def test_create_job(request_type, transport: str = "grpc"):
@@ -1309,7 +1325,7 @@ def test_create_job(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_job), "__call__") as call:
@@ -1359,11 +1375,12 @@ def test_create_job_non_empty_request_with_auto_populated_field():
         client.create_job(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == batch.CreateJobRequest(
+        request_msg = batch.CreateJobRequest(
             parent="parent_value",
             job_id="job_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_job_use_cached_wrapped_rpc():
@@ -1442,9 +1459,14 @@ async def test_create_job_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_create_job_async(
-    transport: str = "grpc_asyncio", request_type=batch.CreateJobRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        batch.CreateJobRequest(),
+        {},
+    ],
+)
+async def test_create_job_async(request_type, transport: str = "grpc_asyncio"):
     client = BatchServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1452,7 +1474,7 @@ async def test_create_job_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_job), "__call__") as call:
@@ -1477,11 +1499,6 @@ async def test_create_job_async(
     assert response.name == "name_value"
     assert response.uid == "uid_value"
     assert response.priority == 898
-
-
-@pytest.mark.asyncio
-async def test_create_job_async_from_dict():
-    await test_create_job_async(request_type=dict)
 
 
 def test_create_job_field_headers():
@@ -1646,8 +1663,8 @@ async def test_create_job_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        batch.GetJobRequest,
-        dict,
+        batch.GetJobRequest(),
+        {},
     ],
 )
 def test_get_job(request_type, transport: str = "grpc"):
@@ -1658,7 +1675,7 @@ def test_get_job(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_job), "__call__") as call:
@@ -1706,9 +1723,10 @@ def test_get_job_non_empty_request_with_auto_populated_field():
         client.get_job(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == batch.GetJobRequest(
+        request_msg = batch.GetJobRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_job_use_cached_wrapped_rpc():
@@ -1787,9 +1805,14 @@ async def test_get_job_async_use_cached_wrapped_rpc(transport: str = "grpc_async
 
 
 @pytest.mark.asyncio
-async def test_get_job_async(
-    transport: str = "grpc_asyncio", request_type=batch.GetJobRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        batch.GetJobRequest(),
+        {},
+    ],
+)
+async def test_get_job_async(request_type, transport: str = "grpc_asyncio"):
     client = BatchServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1797,7 +1820,7 @@ async def test_get_job_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_job), "__call__") as call:
@@ -1822,11 +1845,6 @@ async def test_get_job_async(
     assert response.name == "name_value"
     assert response.uid == "uid_value"
     assert response.priority == 898
-
-
-@pytest.mark.asyncio
-async def test_get_job_async_from_dict():
-    await test_get_job_async(request_type=dict)
 
 
 def test_get_job_field_headers():
@@ -1971,8 +1989,8 @@ async def test_get_job_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        batch.DeleteJobRequest,
-        dict,
+        batch.DeleteJobRequest(),
+        {},
     ],
 )
 def test_delete_job(request_type, transport: str = "grpc"):
@@ -1983,7 +2001,7 @@ def test_delete_job(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_job), "__call__") as call:
@@ -2026,11 +2044,12 @@ def test_delete_job_non_empty_request_with_auto_populated_field():
         client.delete_job(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == batch.DeleteJobRequest(
+        request_msg = batch.DeleteJobRequest(
             name="name_value",
             reason="reason_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_job_use_cached_wrapped_rpc():
@@ -2119,9 +2138,14 @@ async def test_delete_job_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_delete_job_async(
-    transport: str = "grpc_asyncio", request_type=batch.DeleteJobRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        batch.DeleteJobRequest(),
+        {},
+    ],
+)
+async def test_delete_job_async(request_type, transport: str = "grpc_asyncio"):
     client = BatchServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2129,7 +2153,7 @@ async def test_delete_job_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_job), "__call__") as call:
@@ -2147,11 +2171,6 @@ async def test_delete_job_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_job_async_from_dict():
-    await test_delete_job_async(request_type=dict)
 
 
 def test_delete_job_field_headers():
@@ -2300,8 +2319,8 @@ async def test_delete_job_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        batch.CancelJobRequest,
-        dict,
+        batch.CancelJobRequest(),
+        {},
     ],
 )
 def test_cancel_job(request_type, transport: str = "grpc"):
@@ -2312,7 +2331,7 @@ def test_cancel_job(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.cancel_job), "__call__") as call:
@@ -2353,9 +2372,10 @@ def test_cancel_job_non_empty_request_with_auto_populated_field():
         client.cancel_job(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == batch.CancelJobRequest(
+        request_msg = batch.CancelJobRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_cancel_job_use_cached_wrapped_rpc():
@@ -2444,9 +2464,14 @@ async def test_cancel_job_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_cancel_job_async(
-    transport: str = "grpc_asyncio", request_type=batch.CancelJobRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        batch.CancelJobRequest(),
+        {},
+    ],
+)
+async def test_cancel_job_async(request_type, transport: str = "grpc_asyncio"):
     client = BatchServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2454,7 +2479,7 @@ async def test_cancel_job_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.cancel_job), "__call__") as call:
@@ -2472,11 +2497,6 @@ async def test_cancel_job_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_cancel_job_async_from_dict():
-    await test_cancel_job_async(request_type=dict)
 
 
 def test_cancel_job_field_headers():
@@ -2625,8 +2645,8 @@ async def test_cancel_job_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        batch.ListJobsRequest,
-        dict,
+        batch.ListJobsRequest(),
+        {},
     ],
 )
 def test_list_jobs(request_type, transport: str = "grpc"):
@@ -2637,7 +2657,7 @@ def test_list_jobs(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_jobs), "__call__") as call:
@@ -2686,12 +2706,13 @@ def test_list_jobs_non_empty_request_with_auto_populated_field():
         client.list_jobs(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == batch.ListJobsRequest(
+        request_msg = batch.ListJobsRequest(
             parent="parent_value",
             filter="filter_value",
             order_by="order_by_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_jobs_use_cached_wrapped_rpc():
@@ -2770,9 +2791,14 @@ async def test_list_jobs_async_use_cached_wrapped_rpc(transport: str = "grpc_asy
 
 
 @pytest.mark.asyncio
-async def test_list_jobs_async(
-    transport: str = "grpc_asyncio", request_type=batch.ListJobsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        batch.ListJobsRequest(),
+        {},
+    ],
+)
+async def test_list_jobs_async(request_type, transport: str = "grpc_asyncio"):
     client = BatchServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2780,7 +2806,7 @@ async def test_list_jobs_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_jobs), "__call__") as call:
@@ -2803,11 +2829,6 @@ async def test_list_jobs_async(
     assert isinstance(response, pagers.ListJobsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_jobs_async_from_dict():
-    await test_list_jobs_async(request_type=dict)
 
 
 def test_list_jobs_field_headers():
@@ -3146,8 +3167,8 @@ async def test_list_jobs_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        batch.GetTaskRequest,
-        dict,
+        batch.GetTaskRequest(),
+        {},
     ],
 )
 def test_get_task(request_type, transport: str = "grpc"):
@@ -3158,7 +3179,7 @@ def test_get_task(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_task), "__call__") as call:
@@ -3202,9 +3223,10 @@ def test_get_task_non_empty_request_with_auto_populated_field():
         client.get_task(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == batch.GetTaskRequest(
+        request_msg = batch.GetTaskRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_task_use_cached_wrapped_rpc():
@@ -3283,9 +3305,14 @@ async def test_get_task_async_use_cached_wrapped_rpc(transport: str = "grpc_asyn
 
 
 @pytest.mark.asyncio
-async def test_get_task_async(
-    transport: str = "grpc_asyncio", request_type=batch.GetTaskRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        batch.GetTaskRequest(),
+        {},
+    ],
+)
+async def test_get_task_async(request_type, transport: str = "grpc_asyncio"):
     client = BatchServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3293,7 +3320,7 @@ async def test_get_task_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_task), "__call__") as call:
@@ -3314,11 +3341,6 @@ async def test_get_task_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, task.Task)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_get_task_async_from_dict():
-    await test_get_task_async(request_type=dict)
 
 
 def test_get_task_field_headers():
@@ -3463,8 +3485,8 @@ async def test_get_task_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        batch.ListTasksRequest,
-        dict,
+        batch.ListTasksRequest(),
+        {},
     ],
 )
 def test_list_tasks(request_type, transport: str = "grpc"):
@@ -3475,7 +3497,7 @@ def test_list_tasks(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_tasks), "__call__") as call:
@@ -3523,11 +3545,12 @@ def test_list_tasks_non_empty_request_with_auto_populated_field():
         client.list_tasks(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == batch.ListTasksRequest(
+        request_msg = batch.ListTasksRequest(
             parent="parent_value",
             filter="filter_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_tasks_use_cached_wrapped_rpc():
@@ -3606,9 +3629,14 @@ async def test_list_tasks_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_list_tasks_async(
-    transport: str = "grpc_asyncio", request_type=batch.ListTasksRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        batch.ListTasksRequest(),
+        {},
+    ],
+)
+async def test_list_tasks_async(request_type, transport: str = "grpc_asyncio"):
     client = BatchServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3616,7 +3644,7 @@ async def test_list_tasks_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_tasks), "__call__") as call:
@@ -3639,11 +3667,6 @@ async def test_list_tasks_async(
     assert isinstance(response, pagers.ListTasksAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_tasks_async_from_dict():
-    await test_list_tasks_async(request_type=dict)
 
 
 def test_list_tasks_field_headers():
@@ -5338,7 +5361,6 @@ def test_create_job_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = batch.CreateJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -5359,7 +5381,6 @@ def test_get_job_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = batch.GetJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -5380,7 +5401,6 @@ def test_delete_job_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = batch.DeleteJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -5401,7 +5421,6 @@ def test_cancel_job_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = batch.CancelJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -5422,7 +5441,6 @@ def test_list_jobs_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = batch.ListJobsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5443,7 +5461,6 @@ def test_get_task_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = batch.GetTaskRequest()
-
         assert args[0] == request_msg
 
 
@@ -5464,7 +5481,6 @@ def test_list_tasks_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = batch.ListTasksRequest()
-
         assert args[0] == request_msg
 
 
@@ -5507,7 +5523,6 @@ async def test_create_job_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = batch.CreateJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -5536,7 +5551,6 @@ async def test_get_job_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = batch.GetJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -5561,7 +5575,6 @@ async def test_delete_job_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = batch.DeleteJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -5586,7 +5599,6 @@ async def test_cancel_job_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = batch.CancelJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -5614,7 +5626,6 @@ async def test_list_jobs_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = batch.ListJobsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5641,7 +5652,6 @@ async def test_get_task_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = batch.GetTaskRequest()
-
         assert args[0] == request_msg
 
 
@@ -5669,7 +5679,6 @@ async def test_list_tasks_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = batch.ListTasksRequest()
-
         assert args[0] == request_msg
 
 
@@ -7200,7 +7209,6 @@ def test_create_job_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = batch.CreateJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -7220,7 +7228,6 @@ def test_get_job_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = batch.GetJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -7240,7 +7247,6 @@ def test_delete_job_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = batch.DeleteJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -7260,7 +7266,6 @@ def test_cancel_job_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = batch.CancelJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -7280,7 +7285,6 @@ def test_list_jobs_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = batch.ListJobsRequest()
-
         assert args[0] == request_msg
 
 
@@ -7300,7 +7304,6 @@ def test_get_task_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = batch.GetTaskRequest()
-
         assert args[0] == request_msg
 
 
@@ -7320,7 +7323,6 @@ def test_list_tasks_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = batch.ListTasksRequest()
-
         assert args[0] == request_msg
 
 

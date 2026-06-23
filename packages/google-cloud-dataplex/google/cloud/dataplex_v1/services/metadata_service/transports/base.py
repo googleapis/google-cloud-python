@@ -46,7 +46,10 @@ if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
 class MetadataServiceTransport(abc.ABC):
     """Abstract transport class for MetadataService."""
 
-    AUTH_SCOPES = ("https://www.googleapis.com/auth/cloud-platform",)
+    AUTH_SCOPES = (
+        "https://www.googleapis.com/auth/cloud-platform",
+        "https://www.googleapis.com/auth/dataplex.read-write",
+    )
 
     DEFAULT_HOST: str = "dataplex.googleapis.com"
 

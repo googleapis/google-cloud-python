@@ -60,7 +60,8 @@ class SecurityProfileGroup(proto.Message):
             proceeding.
         data_path_id (int):
             Output only. Identifier used by the
-            data-path. Unique within {container, location}.
+            data-path. Unique within \{container,
+            location\}.
         labels (MutableMapping[str, str]):
             Optional. Labels as key value pairs.
         threat_prevention_profile (str):

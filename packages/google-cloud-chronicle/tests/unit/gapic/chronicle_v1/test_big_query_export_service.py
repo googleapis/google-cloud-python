@@ -13,10 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
-import re
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
 from unittest import mock
 from unittest.mock import AsyncMock
@@ -109,6 +109,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1382,8 +1397,8 @@ def test_big_query_export_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        big_query_export.GetBigQueryExportRequest,
-        dict,
+        big_query_export.GetBigQueryExportRequest(),
+        {},
     ],
 )
 def test_get_big_query_export(request_type, transport: str = "grpc"):
@@ -1394,7 +1409,7 @@ def test_get_big_query_export(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1449,9 +1464,10 @@ def test_get_big_query_export_non_empty_request_with_auto_populated_field():
         client.get_big_query_export(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == big_query_export.GetBigQueryExportRequest(
+        request_msg = big_query_export.GetBigQueryExportRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_big_query_export_use_cached_wrapped_rpc():
@@ -1536,9 +1552,15 @@ async def test_get_big_query_export_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        big_query_export.GetBigQueryExportRequest(),
+        {},
+    ],
+)
 async def test_get_big_query_export_async(
-    transport: str = "grpc_asyncio",
-    request_type=big_query_export.GetBigQueryExportRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = BigQueryExportServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1547,7 +1569,7 @@ async def test_get_big_query_export_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1577,11 +1599,6 @@ async def test_get_big_query_export_async(
         response.big_query_export_package
         == big_query_export.BigQueryExportPackage.BIG_QUERY_EXPORT_PACKAGE_BYOBQ
     )
-
-
-@pytest.mark.asyncio
-async def test_get_big_query_export_async_from_dict():
-    await test_get_big_query_export_async(request_type=dict)
 
 
 def test_get_big_query_export_field_headers():
@@ -1738,8 +1755,8 @@ async def test_get_big_query_export_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcc_big_query_export.UpdateBigQueryExportRequest,
-        dict,
+        gcc_big_query_export.UpdateBigQueryExportRequest(),
+        {},
     ],
 )
 def test_update_big_query_export(request_type, transport: str = "grpc"):
@@ -1750,7 +1767,7 @@ def test_update_big_query_export(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1803,7 +1820,8 @@ def test_update_big_query_export_non_empty_request_with_auto_populated_field():
         client.update_big_query_export(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcc_big_query_export.UpdateBigQueryExportRequest()
+        request_msg = gcc_big_query_export.UpdateBigQueryExportRequest()
+        assert args[0] == request_msg
 
 
 def test_update_big_query_export_use_cached_wrapped_rpc():
@@ -1889,9 +1907,15 @@ async def test_update_big_query_export_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcc_big_query_export.UpdateBigQueryExportRequest(),
+        {},
+    ],
+)
 async def test_update_big_query_export_async(
-    transport: str = "grpc_asyncio",
-    request_type=gcc_big_query_export.UpdateBigQueryExportRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = BigQueryExportServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1900,7 +1924,7 @@ async def test_update_big_query_export_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1930,11 +1954,6 @@ async def test_update_big_query_export_async(
         response.big_query_export_package
         == gcc_big_query_export.BigQueryExportPackage.BIG_QUERY_EXPORT_PACKAGE_BYOBQ
     )
-
-
-@pytest.mark.asyncio
-async def test_update_big_query_export_async_from_dict():
-    await test_update_big_query_export_async(request_type=dict)
 
 
 def test_update_big_query_export_field_headers():
@@ -2101,8 +2120,8 @@ async def test_update_big_query_export_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        big_query_export.ProvisionBigQueryExportRequest,
-        dict,
+        big_query_export.ProvisionBigQueryExportRequest(),
+        {},
     ],
 )
 def test_provision_big_query_export(request_type, transport: str = "grpc"):
@@ -2113,7 +2132,7 @@ def test_provision_big_query_export(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2168,9 +2187,10 @@ def test_provision_big_query_export_non_empty_request_with_auto_populated_field(
         client.provision_big_query_export(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == big_query_export.ProvisionBigQueryExportRequest(
+        request_msg = big_query_export.ProvisionBigQueryExportRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_provision_big_query_export_use_cached_wrapped_rpc():
@@ -2256,9 +2276,15 @@ async def test_provision_big_query_export_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        big_query_export.ProvisionBigQueryExportRequest(),
+        {},
+    ],
+)
 async def test_provision_big_query_export_async(
-    transport: str = "grpc_asyncio",
-    request_type=big_query_export.ProvisionBigQueryExportRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = BigQueryExportServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2267,7 +2293,7 @@ async def test_provision_big_query_export_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2297,11 +2323,6 @@ async def test_provision_big_query_export_async(
         response.big_query_export_package
         == big_query_export.BigQueryExportPackage.BIG_QUERY_EXPORT_PACKAGE_BYOBQ
     )
-
-
-@pytest.mark.asyncio
-async def test_provision_big_query_export_async_from_dict():
-    await test_provision_big_query_export_async(request_type=dict)
 
 
 def test_provision_big_query_export_field_headers():
@@ -3137,7 +3158,6 @@ def test_get_big_query_export_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = big_query_export.GetBigQueryExportRequest()
-
         assert args[0] == request_msg
 
 
@@ -3160,7 +3180,6 @@ def test_update_big_query_export_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcc_big_query_export.UpdateBigQueryExportRequest()
-
         assert args[0] == request_msg
 
 
@@ -3183,7 +3202,6 @@ def test_provision_big_query_export_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = big_query_export.ProvisionBigQueryExportRequest()
-
         assert args[0] == request_msg
 
 
@@ -3228,7 +3246,6 @@ async def test_get_big_query_export_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = big_query_export.GetBigQueryExportRequest()
-
         assert args[0] == request_msg
 
 
@@ -3259,7 +3276,6 @@ async def test_update_big_query_export_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcc_big_query_export.UpdateBigQueryExportRequest()
-
         assert args[0] == request_msg
 
 
@@ -3290,7 +3306,6 @@ async def test_provision_big_query_export_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = big_query_export.ProvisionBigQueryExportRequest()
-
         assert args[0] == request_msg
 
 
@@ -4117,7 +4132,6 @@ def test_get_big_query_export_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = big_query_export.GetBigQueryExportRequest()
-
         assert args[0] == request_msg
 
 
@@ -4139,7 +4153,6 @@ def test_update_big_query_export_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcc_big_query_export.UpdateBigQueryExportRequest()
-
         assert args[0] == request_msg
 
 
@@ -4161,7 +4174,6 @@ def test_provision_big_query_export_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = big_query_export.ProvisionBigQueryExportRequest()
-
         assert args[0] == request_msg
 
 

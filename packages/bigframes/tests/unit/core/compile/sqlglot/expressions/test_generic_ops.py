@@ -60,7 +60,7 @@ def test_astype_float(scalar_types_df: bpd.DataFrame, snapshot):
         "bool_w_safe": ops.AsTypeOp(to_type=to_type, safe=True).as_expr("bool_col"),
     }
     sql = utils._apply_ops_to_sql(bf_df, list(ops_map.values()), list(ops_map.keys()))
-    snapshot.assert_match(sql, "out.sql")
+    snapshot.assert_match(sql + "\n", "out.sql")
 
 
 def test_astype_bool(scalar_types_df: bpd.DataFrame, snapshot):
@@ -107,23 +107,19 @@ def test_astype_string(scalar_types_df: bpd.DataFrame, snapshot):
         "bool_w_safe": ops.AsTypeOp(to_type=to_type, safe=True).as_expr("bool_col"),
     }
     sql = utils._apply_ops_to_sql(bf_df, list(ops_map.values()), list(ops_map.keys()))
-    snapshot.assert_match(sql, "out.sql")
+    snapshot.assert_match(sql + "\n", "out.sql")
 
 
-def test_astype_json(scalar_types_df: bpd.DataFrame, snapshot):
+def test_to_json(scalar_types_df: bpd.DataFrame, snapshot):
     bf_df = scalar_types_df
 
     ops_map = {
-        "int64_col": ops.AsTypeOp(to_type=dtypes.JSON_DTYPE).as_expr("int64_col"),
-        "float64_col": ops.AsTypeOp(to_type=dtypes.JSON_DTYPE).as_expr("float64_col"),
-        "bool_col": ops.AsTypeOp(to_type=dtypes.JSON_DTYPE).as_expr("bool_col"),
-        "string_col": ops.AsTypeOp(to_type=dtypes.JSON_DTYPE).as_expr("string_col"),
-        "bool_w_safe": ops.AsTypeOp(to_type=dtypes.JSON_DTYPE, safe=True).as_expr(
-            "bool_col"
-        ),
-        "string_w_safe": ops.AsTypeOp(to_type=dtypes.JSON_DTYPE, safe=True).as_expr(
-            "string_col"
-        ),
+        "int64_col": ops.ToJSON().as_expr("int64_col"),
+        "float64_col": ops.ToJSON().as_expr("float64_col"),
+        "bool_col": ops.ToJSON().as_expr("bool_col"),
+        "string_col": ops.ToJSON().as_expr("string_col"),
+        "bool_w_safe": ops.ToJSON(safe=True).as_expr("bool_col"),
+        "string_w_safe": ops.ToJSON(safe=True).as_expr("string_col"),
     }
     sql = utils._apply_ops_to_sql(bf_df, list(ops_map.values()), list(ops_map.keys()))
     snapshot.assert_match(sql, "out.sql")
@@ -133,11 +129,11 @@ def test_astype_from_json(json_types_df: bpd.DataFrame, snapshot):
     bf_df = json_types_df
 
     ops_map = {
-        "int64_col": ops.AsTypeOp(to_type=dtypes.INT_DTYPE).as_expr("json_col"),
-        "float64_col": ops.AsTypeOp(to_type=dtypes.FLOAT_DTYPE).as_expr("json_col"),
-        "bool_col": ops.AsTypeOp(to_type=dtypes.BOOL_DTYPE).as_expr("json_col"),
-        "string_col": ops.AsTypeOp(to_type=dtypes.STRING_DTYPE).as_expr("json_col"),
-        "int64_w_safe": ops.AsTypeOp(to_type=dtypes.INT_DTYPE, safe=True).as_expr(
+        "int64_col": ops.JSONDecode(to_type=dtypes.INT_DTYPE).as_expr("json_col"),
+        "float64_col": ops.JSONDecode(to_type=dtypes.FLOAT_DTYPE).as_expr("json_col"),
+        "bool_col": ops.JSONDecode(to_type=dtypes.BOOL_DTYPE).as_expr("json_col"),
+        "string_col": ops.JSONDecode(to_type=dtypes.STRING_DTYPE).as_expr("json_col"),
+        "int64_w_safe": ops.JSONDecode(to_type=dtypes.INT_DTYPE, safe=True).as_expr(
             "json_col"
         ),
     }
@@ -145,24 +141,20 @@ def test_astype_from_json(json_types_df: bpd.DataFrame, snapshot):
     snapshot.assert_match(sql, "out.sql")
 
 
-def test_astype_json_invalid(
-    scalar_types_df: bpd.DataFrame, json_types_df: bpd.DataFrame
-):
+def test_tojson_invalid(scalar_types_df: bpd.DataFrame, json_types_df: bpd.DataFrame):
     # Test invalid cast to JSON
-    with pytest.raises(TypeError, match="Cannot cast timestamp.* to .*json.*"):
+    with pytest.raises(TypeError):
         ops_map_to = {
-            "datetime_to_json": ops.AsTypeOp(to_type=dtypes.JSON_DTYPE).as_expr(
-                "datetime_col"
-            ),
+            "datetime_to_json": ops.ToJSON().as_expr("datetime_col"),
         }
         utils._apply_ops_to_sql(
             scalar_types_df, list(ops_map_to.values()), list(ops_map_to.keys())
         )
 
     # Test invalid cast from JSON
-    with pytest.raises(TypeError, match="Cannot cast .*json.* to timestamp.*"):
+    with pytest.raises(TypeError):
         ops_map_from = {
-            "json_to_datetime": ops.AsTypeOp(to_type=dtypes.DATETIME_DTYPE).as_expr(
+            "json_to_datetime": ops.JSONDecode(to_type=dtypes.DATETIME_DTYPE).as_expr(
                 "json_col"
             ),
         }
@@ -172,63 +164,8 @@ def test_astype_json_invalid(
 
 
 def test_remote_function_op(scalar_types_df: bpd.DataFrame, snapshot):
-    bf_df = scalar_types_df[["int64_col"]]
-    function_def = udf_def.BigqueryUdf(
-        routine_ref=bigquery.RoutineReference.from_string(
-            "my_project.my_dataset.my_routine"
-        ),
-        signature=udf_def.UdfSignature(
-            inputs=(
-                udf_def.UdfArg(
-                    "x",
-                    udf_def.DirectScalarType(int),
-                ),
-            ),
-            output=udf_def.DirectScalarType(float),
-        ),
-    )
-    ops_map = {
-        "apply_on_null_true": ops.RemoteFunctionOp(
-            function_def=function_def, apply_on_null=True
-        ).as_expr("int64_col"),
-        "apply_on_null_false": ops.RemoteFunctionOp(
-            function_def=function_def, apply_on_null=False
-        ).as_expr("int64_col"),
-    }
-    sql = utils._apply_ops_to_sql(bf_df, list(ops_map.values()), list(ops_map.keys()))
-    snapshot.assert_match(sql, "out.sql")
-
-
-def test_binary_remote_function_op(scalar_types_df: bpd.DataFrame, snapshot):
-    bf_df = scalar_types_df[["int64_col", "float64_col"]]
-    op = ops.BinaryRemoteFunctionOp(
-        function_def=udf_def.BigqueryUdf(
-            routine_ref=bigquery.RoutineReference.from_string(
-                "my_project.my_dataset.my_routine"
-            ),
-            signature=udf_def.UdfSignature(
-                inputs=(
-                    udf_def.UdfArg(
-                        "x",
-                        udf_def.DirectScalarType(int),
-                    ),
-                    udf_def.UdfArg(
-                        "y",
-                        udf_def.DirectScalarType(float),
-                    ),
-                ),
-                output=udf_def.DirectScalarType(float),
-            ),
-        )
-    )
-    sql = utils._apply_binary_op(bf_df, op, "int64_col", "float64_col")
-
-    snapshot.assert_match(sql, "out.sql")
-
-
-def test_nary_remote_function_op(scalar_types_df: bpd.DataFrame, snapshot):
     bf_df = scalar_types_df[["int64_col", "float64_col", "string_col"]]
-    op = ops.NaryRemoteFunctionOp(
+    op = ops.RemoteFunctionOp(
         function_def=udf_def.BigqueryUdf(
             routine_ref=bigquery.RoutineReference.from_string(
                 "my_project.my_dataset.my_routine"

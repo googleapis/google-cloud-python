@@ -67,21 +67,21 @@ async def _retry(
             retries += 1
 
 
-def _create_experimental_host_transport(
+def _create_spanner_omni_transport(
     transport_factory,
-    experimental_host,
+    host,
     use_plain_text,
     ca_certificate,
     client_certificate,
     client_key,
     interceptors=None,
 ):
-    """Creates an experimental host transport for Spanner in async mode.
+    """Creates a Spanner Omni transport in async mode.
 
     Args:
         transport_factory (type): The transport class to instantiate (e.g.
             `SpannerGrpcAsyncIOTransport`).
-        experimental_host (str): The endpoint for the experimental host.
+        host (str): The endpoint for Spanner Omni.
         use_plain_text (bool): Whether to use a plain text (insecure) connection.
         ca_certificate (str): Path to the CA certificate file for TLS.
         client_certificate (str): Path to the client certificate file for mTLS.
@@ -99,9 +99,7 @@ def _create_experimental_host_transport(
 
     channel = None
     if use_plain_text:
-        channel = grpc.aio.insecure_channel(
-            target=experimental_host, interceptors=interceptors
-        )
+        channel = grpc.aio.insecure_channel(target=host, interceptors=interceptors)
     elif ca_certificate:
         with open(ca_certificate, "rb") as f:
             ca_cert = f.read()
@@ -121,11 +119,37 @@ def _create_experimental_host_transport(
             )
         else:
             ssl_creds = grpc.ssl_channel_credentials(root_certificates=ca_cert)
-        channel = grpc.aio.secure_channel(
-            experimental_host, ssl_creds, interceptors=interceptors
-        )
+        channel = grpc.aio.secure_channel(host, ssl_creds, interceptors=interceptors)
     else:
         raise ValueError(
-            "TLS/mTLS connection requires ca_certificate to be set for experimental_host"
+            "TLS/mTLS connection requires ca_certificate to be set for Spanner Omni"
         )
     return transport_factory(channel=channel, credentials=AnonymousCredentials())
+
+
+def _create_experimental_host_transport(
+    transport_factory,
+    experimental_host,
+    use_plain_text,
+    ca_certificate,
+    client_certificate,
+    client_key,
+    interceptors=None,
+):
+    """Deprecated alias for _create_spanner_omni_transport."""
+    import warnings
+
+    warnings.warn(
+        "_create_experimental_host_transport is deprecated. Please use _create_spanner_omni_transport instead.",
+        DeprecationWarning,
+        stacklevel=2,
+    )
+    return _create_spanner_omni_transport(
+        transport_factory,
+        experimental_host,
+        use_plain_text,
+        ca_certificate,
+        client_certificate,
+        client_key,
+        interceptors=interceptors,
+    )

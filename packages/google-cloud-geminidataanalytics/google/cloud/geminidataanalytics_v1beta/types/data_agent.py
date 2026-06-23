@@ -84,6 +84,14 @@ class DataAgent(proto.Message):
             Output only. Timestamp in UTC of when this data agent is
             considered expired. This is *always* provided on output,
             regardless of what was sent on input.
+        kms_key (str):
+            Optional. Customer managed encryption key (CMEK) to use for
+            encrypting the DataAgent resources. Cloud KMS CryptoKeys
+            must reside in the same location as the DataAgent. The
+            expected format is
+            ``projects/*/locations/*/keyRings/*/cryptoKeys/*``.
+
+            This field is a member of `oneof`_ ``_kms_key``.
     """
 
     data_analytics_agent: gcg_data_analytics_agent.DataAnalyticsAgent = proto.Field(
@@ -128,6 +136,11 @@ class DataAgent(proto.Message):
         proto.MESSAGE,
         number=13,
         message=timestamp_pb2.Timestamp,
+    )
+    kms_key: str = proto.Field(
+        proto.STRING,
+        number=14,
+        optional=True,
     )
 
 

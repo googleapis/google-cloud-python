@@ -123,9 +123,7 @@ nox.options.sessions = [
     # TODO(tswast): Consider removing this when unit_noextras and cover is run
     # from GitHub actions.
     "unit_noextras",
-    "system-3.10",  # No extras.
     "system-3.12",  # No extras.
-    f"system-{DEFAULT_PYTHON_VERSION}",  # All extras.
     "cover",
     # TODO(b/401609005): remove
     "cleanup",
@@ -149,7 +147,7 @@ def lint(session):
         "ruff",
         "check",
         "--select",
-        "I",
+        "I,F",
         f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
         "--line-length=88",  # Standard Black line length
         *LINT_PATHS,
@@ -201,7 +199,7 @@ def format(session):
         "ruff",
         "check",
         "--select",
-        "I",
+        "I,F",
         "--fix",
         f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
         "--line-length=88",  # Standard Black line length
@@ -356,6 +354,7 @@ def run_system(
         "py.test",
         "-v",
         f"-n={num_workers}",
+        "--dist=worksteal",
         # Any individual test taking longer than 15 mins will be terminated.
         f"--timeout={timeout_seconds}",
         # Log 20 slowest tests
@@ -428,6 +427,16 @@ def doctest(session: nox.sessions.Session):
             "bigframes/display/anywidget.py",
             "--ignore",
             "bigframes/bigquery/_operations/ai.py",
+            "--ignore",
+            "bigframes/bigquery/ai.py",
+            "--ignore",
+            "bigframes/ml",
+            "--ignore",
+            "bigframes/operations/ai.py",
+            "--ignore",
+            "bigframes/operations/semantics.py",
+            "--ignore",
+            "third_party/bigframes_vendored/sklearn",
         ),
         test_folder="bigframes",
         check_cov=True,

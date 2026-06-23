@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -41,6 +42,7 @@ import google.auth
 import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
 import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.type.latlng_pb2 as latlng_pb2  # type: ignore
 from google.api_core import (
     client_options,
     gapic_v1,
@@ -63,7 +65,9 @@ from google.cloud.discoveryengine_v1beta.services.recommendation_service import 
 )
 from google.cloud.discoveryengine_v1beta.types import (
     common,
+    feedback,
     recommendation_service,
+    session,
     user_event,
 )
 
@@ -113,6 +117,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1366,7 +1385,11 @@ def test_recommendation_service_client_create_channel_credentials_file(
             credentials=file_creds,
             credentials_file=None,
             quota_project_id=None,
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/discoveryengine.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.serving.readwrite",
+            ),
             scopes=None,
             default_host="discoveryengine.googleapis.com",
             ssl_credentials=None,
@@ -1380,8 +1403,8 @@ def test_recommendation_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        recommendation_service.RecommendRequest,
-        dict,
+        recommendation_service.RecommendRequest(),
+        {},
     ],
 )
 def test_recommend(request_type, transport: str = "grpc"):
@@ -1392,7 +1415,7 @@ def test_recommend(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.recommend), "__call__") as call:
@@ -1441,10 +1464,11 @@ def test_recommend_non_empty_request_with_auto_populated_field():
         client.recommend(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == recommendation_service.RecommendRequest(
+        request_msg = recommendation_service.RecommendRequest(
             serving_config="serving_config_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_recommend_use_cached_wrapped_rpc():
@@ -1523,10 +1547,14 @@ async def test_recommend_async_use_cached_wrapped_rpc(transport: str = "grpc_asy
 
 
 @pytest.mark.asyncio
-async def test_recommend_async(
-    transport: str = "grpc_asyncio",
-    request_type=recommendation_service.RecommendRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        recommendation_service.RecommendRequest(),
+        {},
+    ],
+)
+async def test_recommend_async(request_type, transport: str = "grpc_asyncio"):
     client = RecommendationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1534,7 +1562,7 @@ async def test_recommend_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.recommend), "__call__") as call:
@@ -1559,11 +1587,6 @@ async def test_recommend_async(
     assert response.attribution_token == "attribution_token_value"
     assert response.missing_ids == ["missing_ids_value"]
     assert response.validate_only is True
-
-
-@pytest.mark.asyncio
-async def test_recommend_async_from_dict():
-    await test_recommend_async(request_type=dict)
 
 
 def test_recommend_field_headers():
@@ -1879,7 +1902,6 @@ def test_recommend_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = recommendation_service.RecommendRequest()
-
         assert args[0] == request_msg
 
 
@@ -1922,7 +1944,6 @@ async def test_recommend_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = recommendation_service.RecommendRequest()
-
         assert args[0] == request_msg
 
 
@@ -2304,7 +2325,6 @@ def test_recommend_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = recommendation_service.RecommendRequest()
-
         assert args[0] == request_msg
 
 
@@ -2381,7 +2401,11 @@ def test_recommendation_service_base_transport_with_credentials_file():
         load_creds.assert_called_once_with(
             "credentials.json",
             scopes=None,
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/discoveryengine.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.serving.readwrite",
+            ),
             quota_project_id="octopus",
         )
 
@@ -2407,7 +2431,11 @@ def test_recommendation_service_auth_adc():
         RecommendationServiceClient()
         adc.assert_called_once_with(
             scopes=None,
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/discoveryengine.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.serving.readwrite",
+            ),
             quota_project_id=None,
         )
 
@@ -2427,7 +2455,11 @@ def test_recommendation_service_transport_auth_adc(transport_class):
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
         adc.assert_called_once_with(
             scopes=["1", "2"],
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/discoveryengine.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.serving.readwrite",
+            ),
             quota_project_id="octopus",
         )
 
@@ -2480,7 +2512,11 @@ def test_recommendation_service_transport_create_channel(transport_class, grpc_h
             credentials=creds,
             credentials_file=None,
             quota_project_id="octopus",
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/discoveryengine.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.serving.readwrite",
+            ),
             scopes=["1", "2"],
             default_host="discoveryengine.googleapis.com",
             ssl_credentials=None,

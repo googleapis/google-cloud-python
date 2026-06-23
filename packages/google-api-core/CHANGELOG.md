@@ -4,6 +4,22 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## [2.31.0](https://github.com/googleapis/google-cloud-python/compare/google-api-core-v2.30.3...google-api-core-v2.31.0) (2026-06-02)
+
+
+### Documentation
+
+* fix FAQ grammar in httplib2 example</li> <li><a href="https://github.com/psf/requests/commit/774a0b837a194ee885d4fdd9ca947900cc3daf71"><code>774a0b8</code></a> ([b79b3ea0c28e4b2d16aef8da14ad87c5735b1328](https://github.com/googleapis/google-cloud-python/commit/b79b3ea0c28e4b2d16aef8da14ad87c5735b1328))
+* same block as other sections</li> <li><a href="https://github.com/psf/requests/commit/9c72a41bec8597f948c9d8caa5dc3f12273b3303"><code>9c72a41</code></a> Bump github/codeql-action from 4.33.0 to 4.34.1</li> <li><a href="https://github.com/psf/requests/commit/ebf71906798ec82f34e07d3168f8b8aecaf8a3be"><code>ebf7190</code></a> Bump github/codeql-action from 4.32.0 to 4.33.0</li> <li><a href="https://github.com/psf/requests/commit/0e4ae38f0c93d4f92a96c774bd52c069d12a4798"><code>0e4ae38</code></a> ([b79b3ea0c28e4b2d16aef8da14ad87c5735b1328](https://github.com/googleapis/google-cloud-python/commit/b79b3ea0c28e4b2d16aef8da14ad87c5735b1328))
+* exclude Response.is_permanent_redirect from API docs (<a href="https://redirect.github.com/psf/requests/issues/7244">#7244</a>)</li> <li><a href="https://github.com/psf/requests/commit/d568f47278492e630cc990a259047c67991d007a"><code>d568f47</code></a> ([b79b3ea0c28e4b2d16aef8da14ad87c5735b1328](https://github.com/googleapis/google-cloud-python/commit/b79b3ea0c28e4b2d16aef8da14ad87c5735b1328))
+* clarify Quickstart POST example (<a href="https://redirect.github.com/psf/requests/issues/6960">#6960</a>)</li> <li>Additional commits viewable in <a href="https://github.com/psf/requests/compare/v2.25.0...v2.33.0">compare view</a></li> </ul> </details> <br /> ([b79b3ea0c28e4b2d16aef8da14ad87c5735b1328](https://github.com/googleapis/google-cloud-python/commit/b79b3ea0c28e4b2d16aef8da14ad87c5735b1328))
+
+
+### Bug Fixes
+
+* bump protobuf from 4.25.8 to 5.29.6 (#17021) ([8f52e9ad30b58436480e35d462e9367172bd6656](https://github.com/googleapis/google-cloud-python/commit/8f52e9ad30b58436480e35d462e9367172bd6656))
+* drop support for Python 3.9 (#16980) ([e5ed47205cb478a4b6ba8f602b7c7198911d086e](https://github.com/googleapis/google-cloud-python/commit/e5ed47205cb478a4b6ba8f602b7c7198911d086e))
+
 ## [2.30.3](https://github.com/googleapis/google-cloud-python/compare/google-api-core-v2.30.2...google-api-core-v2.30.3) (2026-04-09)
 
 

@@ -15,24 +15,21 @@
 """A client for NDB which manages credentials, project, namespace, and database."""
 
 import contextlib
-import grpc
 import os
-import requests
 
 import google.api_core.client_options
-
+import grpc
+import requests
 from google.api_core.gapic_v1 import client_info
-from google.cloud import environment_vars
-from google.cloud import _helpers
-from google.cloud import client as google_client
 from google.cloud.datastore_v1.services.datastore.transports import (
     grpc as datastore_grpc,
 )
 
+from google.cloud import _helpers, environment_vars
+from google.cloud import client as google_client
 from google.cloud.ndb import __version__
 from google.cloud.ndb import context as context_module
 from google.cloud.ndb import key as key_module
-
 
 _CLIENT_INFO = client_info.ClientInfo(
     user_agent="google-cloud-ndb/{}".format(__version__)

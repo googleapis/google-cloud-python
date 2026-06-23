@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -107,6 +108,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1380,8 +1396,8 @@ def test_authorized_certificates_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        appengine.ListAuthorizedCertificatesRequest,
-        dict,
+        appengine.ListAuthorizedCertificatesRequest(),
+        {},
     ],
 )
 def test_list_authorized_certificates(request_type, transport: str = "grpc"):
@@ -1392,7 +1408,7 @@ def test_list_authorized_certificates(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1441,10 +1457,11 @@ def test_list_authorized_certificates_non_empty_request_with_auto_populated_fiel
         client.list_authorized_certificates(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == appengine.ListAuthorizedCertificatesRequest(
+        request_msg = appengine.ListAuthorizedCertificatesRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_authorized_certificates_use_cached_wrapped_rpc():
@@ -1530,9 +1547,15 @@ async def test_list_authorized_certificates_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        appengine.ListAuthorizedCertificatesRequest(),
+        {},
+    ],
+)
 async def test_list_authorized_certificates_async(
-    transport: str = "grpc_asyncio",
-    request_type=appengine.ListAuthorizedCertificatesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AuthorizedCertificatesAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1541,7 +1564,7 @@ async def test_list_authorized_certificates_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1564,11 +1587,6 @@ async def test_list_authorized_certificates_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAuthorizedCertificatesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_authorized_certificates_async_from_dict():
-    await test_list_authorized_certificates_async(request_type=dict)
 
 
 def test_list_authorized_certificates_field_headers():
@@ -1841,8 +1859,8 @@ async def test_list_authorized_certificates_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        appengine.GetAuthorizedCertificateRequest,
-        dict,
+        appengine.GetAuthorizedCertificateRequest(),
+        {},
     ],
 )
 def test_get_authorized_certificate(request_type, transport: str = "grpc"):
@@ -1853,7 +1871,7 @@ def test_get_authorized_certificate(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1911,9 +1929,10 @@ def test_get_authorized_certificate_non_empty_request_with_auto_populated_field(
         client.get_authorized_certificate(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == appengine.GetAuthorizedCertificateRequest(
+        request_msg = appengine.GetAuthorizedCertificateRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_authorized_certificate_use_cached_wrapped_rpc():
@@ -1999,9 +2018,15 @@ async def test_get_authorized_certificate_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        appengine.GetAuthorizedCertificateRequest(),
+        {},
+    ],
+)
 async def test_get_authorized_certificate_async(
-    transport: str = "grpc_asyncio",
-    request_type=appengine.GetAuthorizedCertificateRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AuthorizedCertificatesAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2010,7 +2035,7 @@ async def test_get_authorized_certificate_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2043,11 +2068,6 @@ async def test_get_authorized_certificate_async(
     assert response.domain_names == ["domain_names_value"]
     assert response.visible_domain_mappings == ["visible_domain_mappings_value"]
     assert response.domain_mappings_count == 2238
-
-
-@pytest.mark.asyncio
-async def test_get_authorized_certificate_async_from_dict():
-    await test_get_authorized_certificate_async(request_type=dict)
 
 
 def test_get_authorized_certificate_field_headers():
@@ -2118,8 +2138,8 @@ async def test_get_authorized_certificate_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        appengine.CreateAuthorizedCertificateRequest,
-        dict,
+        appengine.CreateAuthorizedCertificateRequest(),
+        {},
     ],
 )
 def test_create_authorized_certificate(request_type, transport: str = "grpc"):
@@ -2130,7 +2150,7 @@ def test_create_authorized_certificate(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2188,9 +2208,10 @@ def test_create_authorized_certificate_non_empty_request_with_auto_populated_fie
         client.create_authorized_certificate(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == appengine.CreateAuthorizedCertificateRequest(
+        request_msg = appengine.CreateAuthorizedCertificateRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_authorized_certificate_use_cached_wrapped_rpc():
@@ -2276,9 +2297,15 @@ async def test_create_authorized_certificate_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        appengine.CreateAuthorizedCertificateRequest(),
+        {},
+    ],
+)
 async def test_create_authorized_certificate_async(
-    transport: str = "grpc_asyncio",
-    request_type=appengine.CreateAuthorizedCertificateRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AuthorizedCertificatesAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2287,7 +2314,7 @@ async def test_create_authorized_certificate_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2320,11 +2347,6 @@ async def test_create_authorized_certificate_async(
     assert response.domain_names == ["domain_names_value"]
     assert response.visible_domain_mappings == ["visible_domain_mappings_value"]
     assert response.domain_mappings_count == 2238
-
-
-@pytest.mark.asyncio
-async def test_create_authorized_certificate_async_from_dict():
-    await test_create_authorized_certificate_async(request_type=dict)
 
 
 def test_create_authorized_certificate_field_headers():
@@ -2395,8 +2417,8 @@ async def test_create_authorized_certificate_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        appengine.UpdateAuthorizedCertificateRequest,
-        dict,
+        appengine.UpdateAuthorizedCertificateRequest(),
+        {},
     ],
 )
 def test_update_authorized_certificate(request_type, transport: str = "grpc"):
@@ -2407,7 +2429,7 @@ def test_update_authorized_certificate(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2465,9 +2487,10 @@ def test_update_authorized_certificate_non_empty_request_with_auto_populated_fie
         client.update_authorized_certificate(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == appengine.UpdateAuthorizedCertificateRequest(
+        request_msg = appengine.UpdateAuthorizedCertificateRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_authorized_certificate_use_cached_wrapped_rpc():
@@ -2553,9 +2576,15 @@ async def test_update_authorized_certificate_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        appengine.UpdateAuthorizedCertificateRequest(),
+        {},
+    ],
+)
 async def test_update_authorized_certificate_async(
-    transport: str = "grpc_asyncio",
-    request_type=appengine.UpdateAuthorizedCertificateRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AuthorizedCertificatesAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2564,7 +2593,7 @@ async def test_update_authorized_certificate_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2597,11 +2626,6 @@ async def test_update_authorized_certificate_async(
     assert response.domain_names == ["domain_names_value"]
     assert response.visible_domain_mappings == ["visible_domain_mappings_value"]
     assert response.domain_mappings_count == 2238
-
-
-@pytest.mark.asyncio
-async def test_update_authorized_certificate_async_from_dict():
-    await test_update_authorized_certificate_async(request_type=dict)
 
 
 def test_update_authorized_certificate_field_headers():
@@ -2672,8 +2696,8 @@ async def test_update_authorized_certificate_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        appengine.DeleteAuthorizedCertificateRequest,
-        dict,
+        appengine.DeleteAuthorizedCertificateRequest(),
+        {},
     ],
 )
 def test_delete_authorized_certificate(request_type, transport: str = "grpc"):
@@ -2684,7 +2708,7 @@ def test_delete_authorized_certificate(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2729,9 +2753,10 @@ def test_delete_authorized_certificate_non_empty_request_with_auto_populated_fie
         client.delete_authorized_certificate(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == appengine.DeleteAuthorizedCertificateRequest(
+        request_msg = appengine.DeleteAuthorizedCertificateRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_authorized_certificate_use_cached_wrapped_rpc():
@@ -2817,9 +2842,15 @@ async def test_delete_authorized_certificate_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        appengine.DeleteAuthorizedCertificateRequest(),
+        {},
+    ],
+)
 async def test_delete_authorized_certificate_async(
-    transport: str = "grpc_asyncio",
-    request_type=appengine.DeleteAuthorizedCertificateRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AuthorizedCertificatesAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2828,7 +2859,7 @@ async def test_delete_authorized_certificate_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2846,11 +2877,6 @@ async def test_delete_authorized_certificate_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_authorized_certificate_async_from_dict():
-    await test_delete_authorized_certificate_async(request_type=dict)
 
 
 def test_delete_authorized_certificate_field_headers():
@@ -3309,7 +3335,6 @@ def test_list_authorized_certificates_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = appengine.ListAuthorizedCertificatesRequest()
-
         assert args[0] == request_msg
 
 
@@ -3332,7 +3357,6 @@ def test_get_authorized_certificate_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = appengine.GetAuthorizedCertificateRequest()
-
         assert args[0] == request_msg
 
 
@@ -3355,7 +3379,6 @@ def test_create_authorized_certificate_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = appengine.CreateAuthorizedCertificateRequest()
-
         assert args[0] == request_msg
 
 
@@ -3378,7 +3401,6 @@ def test_update_authorized_certificate_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = appengine.UpdateAuthorizedCertificateRequest()
-
         assert args[0] == request_msg
 
 
@@ -3401,7 +3423,6 @@ def test_delete_authorized_certificate_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = appengine.DeleteAuthorizedCertificateRequest()
-
         assert args[0] == request_msg
 
 
@@ -3444,7 +3465,6 @@ async def test_list_authorized_certificates_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = appengine.ListAuthorizedCertificatesRequest()
-
         assert args[0] == request_msg
 
 
@@ -3478,7 +3498,6 @@ async def test_get_authorized_certificate_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = appengine.GetAuthorizedCertificateRequest()
-
         assert args[0] == request_msg
 
 
@@ -3512,7 +3531,6 @@ async def test_create_authorized_certificate_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = appengine.CreateAuthorizedCertificateRequest()
-
         assert args[0] == request_msg
 
 
@@ -3546,7 +3564,6 @@ async def test_update_authorized_certificate_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = appengine.UpdateAuthorizedCertificateRequest()
-
         assert args[0] == request_msg
 
 
@@ -3571,7 +3588,6 @@ async def test_delete_authorized_certificate_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = appengine.DeleteAuthorizedCertificateRequest()
-
         assert args[0] == request_msg
 
 
@@ -4459,7 +4475,6 @@ def test_list_authorized_certificates_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = appengine.ListAuthorizedCertificatesRequest()
-
         assert args[0] == request_msg
 
 
@@ -4481,7 +4496,6 @@ def test_get_authorized_certificate_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = appengine.GetAuthorizedCertificateRequest()
-
         assert args[0] == request_msg
 
 
@@ -4503,7 +4517,6 @@ def test_create_authorized_certificate_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = appengine.CreateAuthorizedCertificateRequest()
-
         assert args[0] == request_msg
 
 
@@ -4525,7 +4538,6 @@ def test_update_authorized_certificate_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = appengine.UpdateAuthorizedCertificateRequest()
-
         assert args[0] == request_msg
 
 
@@ -4547,7 +4559,6 @@ def test_delete_authorized_certificate_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = appengine.DeleteAuthorizedCertificateRequest()
-
         assert args[0] == request_msg
 
 

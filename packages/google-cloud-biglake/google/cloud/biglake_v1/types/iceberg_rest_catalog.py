@@ -17,8 +17,10 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -32,6 +34,9 @@ __protobuf__ = proto.module(
         "ListIcebergCatalogsResponse",
         "FailoverIcebergCatalogRequest",
         "FailoverIcebergCatalogResponse",
+        "TableIdentifier",
+        "IcebergNamespaceUpdate",
+        "StorageCredential",
     },
 )
 
@@ -51,25 +56,64 @@ class IcebergCatalog(proto.Message):
             Output only. The service account used for
             credential vending, output only. Might be empty
             if Credential vending was never enabled for the
-            catalog.
+            catalog. For federated catalogs, the service
+            account will be always provisioned and will be
+            used to access the remote Iceberg REST Catalog
+            using access to Secret Manager secret or
+            identity federation.
+        biglake_service_account_unique_id (str):
+            Output only. The unique ID of the service
+            account. This is used for federation scenarios.
         catalog_type (google.cloud.biglake_v1.types.IcebergCatalog.CatalogType):
             Required. The catalog type. Required for
             CreateIcebergCatalog.
         default_location (str):
-            Optional. The default location for the
-            catalog. For the Google Cloud Storage Bucket
-            catalog this is output only.
-        catalog_regions (MutableSequence[str]):
-            Output only. The GCP region(s) where the
-            catalog metadata is stored. This will contain
-            one value for all locations, except for the
-            catalogs that are configured to use custom dual
-            region buckets.
+            Optional. The default storage location for the catalog,
+            e.g., ``gs://my-bucket``. For Google Cloud Storage bucket
+            catalogs, this is output only.
+
+            For BigLake catalogs, this field must be provided and point
+            to a Google Cloud Storage bucket or a path within that
+            bucket. This path serves as the base directory for
+            constructing the full path to a table's data and metadata
+            directories when a location is not specified at the
+            namespace or table level. The full path is formed by
+            appending the namespace and table identifiers to the default
+            location.
+        storage_regions (MutableSequence[str]):
+            Output only. The GCP region(s) of the default location's
+            bucket, e.g. ``us-central1``, ``nam4`` or ``us``. This will
+            contain one value for all locations, except for the catalogs
+            that are configured to use custom dual region buckets, in
+            which case it will contain the two regions of the bucket.
+            The region(s) of this field should be in the jurisdiction of
+            or nearby the primary location of the catalog.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. When the catalog was created.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. When the catalog was last
             updated.
+        replicas (MutableSequence[google.cloud.biglake_v1.types.IcebergCatalog.Replica]):
+            Output only. The replicas for the catalog
+            metadata.
+        description (str):
+            Optional. A user-provided description of the
+            catalog. The description must be a UTF-8 string
+            with a maximum length of 1024 characters.
+        restricted_locations_config (google.cloud.biglake_v1.types.IcebergCatalog.RestrictedLocationsConfig):
+            Optional. Restricted locations configuration. This field is
+            currently only used for BigLake catalogs.
+
+            If this field is unset, or if
+            ``restricted_locations_config.restricted_locations`` is
+            empty, all accessible locations are allowed. If
+            ``restricted_locations_config.restricted_locations`` is not
+            empty, only locations in ``default_location`` and
+            ``restricted_locations_config.restricted_locations`` are
+            allowed.
+        federated_catalog_options (google.cloud.biglake_v1.types.IcebergCatalog.FederatedCatalogOptions):
+            Optional. Configuration options for federated
+            catalogs.
     """
 
     class CatalogType(proto.Enum):
@@ -79,12 +123,17 @@ class IcebergCatalog(proto.Message):
             CATALOG_TYPE_UNSPECIFIED (0):
                 Default value. This value is unused.
             CATALOG_TYPE_GCS_BUCKET (1):
-                Catalog type for Google Cloud Storage
-                Buckets.
+                Google Cloud Storage bucket catalog type.
+            CATALOG_TYPE_BIGLAKE (3):
+                BigLake catalog type.
+            CATALOG_TYPE_FEDERATED (4):
+                Federated catalog type.
         """
 
         CATALOG_TYPE_UNSPECIFIED = 0
         CATALOG_TYPE_GCS_BUCKET = 1
+        CATALOG_TYPE_BIGLAKE = 3
+        CATALOG_TYPE_FEDERATED = 4
 
     class CredentialMode(proto.Enum):
         r"""The credential mode used for the catalog.
@@ -116,6 +165,367 @@ class IcebergCatalog(proto.Message):
         CREDENTIAL_MODE_END_USER = 1
         CREDENTIAL_MODE_VENDED_CREDENTIALS = 2
 
+    class Replica(proto.Message):
+        r"""The replica of the Catalog.
+
+        Attributes:
+            region (str):
+                Output only. The region of the replica. For
+                example "us-east1".
+            state (google.cloud.biglake_v1.types.IcebergCatalog.Replica.State):
+                Output only. The current state of the
+                replica.
+        """
+
+        class State(proto.Enum):
+            r"""If the catalog is replicated to multiple regions, this enum
+            describes the current state of the replica.
+
+            Values:
+                STATE_UNKNOWN (0):
+                    The replica state is unknown.
+                STATE_PRIMARY (1):
+                    The replica is the writable primary.
+                STATE_PRIMARY_IN_PROGRESS (2):
+                    The replica has been recently assigned as the
+                    primary, but not all namespaces are writeable
+                    yet.
+                STATE_SECONDARY (3):
+                    The replica is a read-only secondary replica.
+            """
+
+            STATE_UNKNOWN = 0
+            STATE_PRIMARY = 1
+            STATE_PRIMARY_IN_PROGRESS = 2
+            STATE_SECONDARY = 3
+
+        region: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        state: "IcebergCatalog.Replica.State" = proto.Field(
+            proto.ENUM,
+            number=2,
+            enum="IcebergCatalog.Replica.State",
+        )
+
+    class RestrictedLocationsConfig(proto.Message):
+        r"""Configuration of location restrictions.
+
+        Attributes:
+            restricted_locations (MutableSequence[str]):
+                Optional. Additional Google Cloud Storage buckets and
+                locations (e.g., ``gs://my-other-bucket/...``) that are
+                permitted for use by resources within a catalog. This field
+                is currently only used for BigLake catalogs.
+
+                If ``restricted_locations`` is empty and unrestricted
+                catalog creation is enabled, all accessible locations are
+                allowed. Otherwise, only ``default_location`` and locations
+                in this list are allowed.
+        """
+
+        restricted_locations: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=1,
+        )
+
+    class FederatedCatalogOptions(proto.Message):
+        r"""Configuration options for a federated catalog.
+
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            unity_catalog_info (google.cloud.biglake_v1.types.IcebergCatalog.FederatedCatalogOptions.UnityCatalogInfo):
+                Optional. Info specific to a Unity Catalog by
+                Databricks.
+
+                This field is a member of `oneof`_ ``remote_catalog_info``.
+            glue_catalog_info (google.cloud.biglake_v1.types.IcebergCatalog.FederatedCatalogOptions.GlueCatalogInfo):
+                Optional. Info specific to an AWS Glue
+                Catalog.
+
+                This field is a member of `oneof`_ ``remote_catalog_info``.
+            secret_name (str):
+                Optional. The secret resource name in Secret Manager, in the
+                format
+                ``projects/{project_id}/locations/{location}/secrets/{secret_id}``
+                or
+                ``projects/{project_id}/locations/{location}/secrets/{secret_id}/versions/{version_id}``.
+
+                The project ID must match the catalog's project and location
+                must match the catalog's location. If the version is not
+                specified, the latest version will be used.
+
+                This field is not used when
+                ``service_principal_application_id`` is set.
+
+                This field is a member of `oneof`_ ``_secret_name``.
+            service_directory_name (str):
+                Optional. The service directory resource name for routing
+                traffic over a private network connection through
+                Cross-Cloud Interconnect, in the format
+                ``projects/{project_id}/locations/{location_id}/namespaces/{namespace_id}/services/{service_id}``.
+
+                This field is a member of `oneof`_ ``_service_directory_name``.
+            refresh_options (google.cloud.biglake_v1.types.IcebergCatalog.FederatedCatalogOptions.RefreshOptions):
+                Optional. Refresh configuration.
+            refresh_status (google.cloud.biglake_v1.types.IcebergCatalog.FederatedCatalogOptions.RefreshStatus):
+                Output only. The status of the background
+                refresh operations.
+        """
+
+        class UnityCatalogInfo(proto.Message):
+            r"""Unity Catalog info.
+
+            .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+            Attributes:
+                instance_name (str):
+                    Required. The instance name is the first part
+                    of the URL when logging into the Databricks
+                    deployment. For example, for a Databricks on GCP
+                    workspace URL https://1.1.gcp.databricks.com,
+                    the instance name is 1.1.gcp.databricks.com.
+
+                    This field is a member of `oneof`_ ``_instance_name``.
+                catalog_name (str):
+                    Required. The catalog name in Unity Catalog.
+
+                    This field is a member of `oneof`_ ``_catalog_name``.
+                service_principal_application_id (str):
+                    Optional. The application ID of the Databricks service
+                    principal that will be used to access the Unity Catalog in
+                    the OIDC authentication flow. With OIDC, the secret_name
+                    field is not used.
+
+                    This field is a member of `oneof`_ ``_service_principal_application_id``.
+            """
+
+            instance_name: str = proto.Field(
+                proto.STRING,
+                number=1,
+                optional=True,
+            )
+            catalog_name: str = proto.Field(
+                proto.STRING,
+                number=2,
+                optional=True,
+            )
+            service_principal_application_id: str = proto.Field(
+                proto.STRING,
+                number=3,
+                optional=True,
+            )
+
+        class GlueCatalogInfo(proto.Message):
+            r"""AWS Glue Catalog info. We support regional AWS Glue default
+            account catalog and S3 Table Buckets.
+
+
+            .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+            Attributes:
+                warehouse (str):
+                    Required. Immutable. The warehouse to connect to a regional
+                    AWS Glue Iceberg REST Catalog. For top level access, use the
+                    AWS account ID (e.g. 111222333444). For an S3 table bucket,
+                    the warehouse is of the form: 111222333444:s3tablescatalog/.
+                    The URL to access catalog will be
+                    https://glue.{aws_region}.amazonaws.com/iceberg/v1?warehouse={warehouse}.
+                    Must be non-empty and is immutable.
+
+                    This field is a member of `oneof`_ ``_warehouse``.
+                aws_region (str):
+                    Required. Immutable. The AWS region of the
+                    Glue catalog to connect to. The region should be
+                    in the same geographical region and jurisdiction
+                    as the federated catalog.
+                    Must be non-empty and is immutable.
+
+                    This field is a member of `oneof`_ ``_aws_region``.
+                aws_role_arn (str):
+                    Required. The AWS role ARN of the Glue
+                    catalog that the federated catalog will assume
+                    to access the catalog. Must be non-empty. Can be
+                    updated.
+
+                    This field is a member of `oneof`_ ``_aws_role_arn``.
+            """
+
+            warehouse: str = proto.Field(
+                proto.STRING,
+                number=1,
+                optional=True,
+            )
+            aws_region: str = proto.Field(
+                proto.STRING,
+                number=2,
+                optional=True,
+            )
+            aws_role_arn: str = proto.Field(
+                proto.STRING,
+                number=3,
+                optional=True,
+            )
+
+        class RefreshSchedule(proto.Message):
+            r"""Schedule defines if and when metadata refresh should be
+            scheduled.
+
+
+            .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+            Attributes:
+                refresh_interval (google.protobuf.duration_pb2.Duration):
+                    Optional. The interval for refreshing
+                    metadata from the remote catalog. If unset or if
+                    the value is <= 0, the background refresh will
+                    be disabled. If this field is updated for an
+                    existing federated catalog, the previous
+                    background refresh must complete before the new
+                    refresh interval will take effect.
+
+                    This field is a member of `oneof`_ ``_refresh_interval``.
+            """
+
+            refresh_interval: duration_pb2.Duration = proto.Field(
+                proto.MESSAGE,
+                number=1,
+                optional=True,
+                message=duration_pb2.Duration,
+            )
+
+        class RefreshScope(proto.Message):
+            r"""The scope defines a subset of namespaces to be refreshed.
+
+            Attributes:
+                namespace_filters (MutableSequence[str]):
+                    Optional. Filters to determine which namespaces are included
+                    in the refresh process.
+
+                    - empty list means include all namespaces.
+                    - "[namespaces]" means include the specified namespaces.
+                      ['ns1', 'ns2'] : Discover only namespaces 'ns1' and 'ns2'.
+                      The maximum number of namespace filters allowed is 32.
+            """
+
+            namespace_filters: MutableSequence[str] = proto.RepeatedField(
+                proto.STRING,
+                number=1,
+            )
+
+        class RefreshOptions(proto.Message):
+            r"""Refresh configuration.
+
+            Attributes:
+                refresh_schedule (google.cloud.biglake_v1.types.IcebergCatalog.FederatedCatalogOptions.RefreshSchedule):
+                    Optional. Schedule defines if and when
+                    metadata refresh should be scheduled.
+                refresh_scope (google.cloud.biglake_v1.types.IcebergCatalog.FederatedCatalogOptions.RefreshScope):
+                    Optional. Refresh scope configurations.
+            """
+
+            refresh_schedule: "IcebergCatalog.FederatedCatalogOptions.RefreshSchedule" = proto.Field(
+                proto.MESSAGE,
+                number=1,
+                message="IcebergCatalog.FederatedCatalogOptions.RefreshSchedule",
+            )
+            refresh_scope: "IcebergCatalog.FederatedCatalogOptions.RefreshScope" = (
+                proto.Field(
+                    proto.MESSAGE,
+                    number=2,
+                    message="IcebergCatalog.FederatedCatalogOptions.RefreshScope",
+                )
+            )
+
+        class RefreshStatus(proto.Message):
+            r"""Remote catalog background refresh status.
+
+            .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+            Attributes:
+                start_time (google.protobuf.timestamp_pb2.Timestamp):
+                    Output only. When the catalog refresh has
+                    started, including in-progress refreshes.
+
+                    This field is a member of `oneof`_ ``_start_time``.
+                end_time (google.protobuf.timestamp_pb2.Timestamp):
+                    Output only. When the catalog refresh has
+                    ended, unset for in-progress refreshes.
+
+                    This field is a member of `oneof`_ ``_end_time``.
+                status (google.rpc.status_pb2.Status):
+                    Output only. The status of the last
+                    background refresh operation, unset for
+                    in-progress refreshes.
+
+                    This field is a member of `oneof`_ ``_status``.
+            """
+
+            start_time: timestamp_pb2.Timestamp = proto.Field(
+                proto.MESSAGE,
+                number=1,
+                optional=True,
+                message=timestamp_pb2.Timestamp,
+            )
+            end_time: timestamp_pb2.Timestamp = proto.Field(
+                proto.MESSAGE,
+                number=2,
+                optional=True,
+                message=timestamp_pb2.Timestamp,
+            )
+            status: status_pb2.Status = proto.Field(
+                proto.MESSAGE,
+                number=3,
+                optional=True,
+                message=status_pb2.Status,
+            )
+
+        unity_catalog_info: "IcebergCatalog.FederatedCatalogOptions.UnityCatalogInfo" = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            oneof="remote_catalog_info",
+            message="IcebergCatalog.FederatedCatalogOptions.UnityCatalogInfo",
+        )
+        glue_catalog_info: "IcebergCatalog.FederatedCatalogOptions.GlueCatalogInfo" = (
+            proto.Field(
+                proto.MESSAGE,
+                number=4,
+                oneof="remote_catalog_info",
+                message="IcebergCatalog.FederatedCatalogOptions.GlueCatalogInfo",
+            )
+        )
+        secret_name: str = proto.Field(
+            proto.STRING,
+            number=1,
+            optional=True,
+        )
+        service_directory_name: str = proto.Field(
+            proto.STRING,
+            number=5,
+            optional=True,
+        )
+        refresh_options: "IcebergCatalog.FederatedCatalogOptions.RefreshOptions" = (
+            proto.Field(
+                proto.MESSAGE,
+                number=3,
+                message="IcebergCatalog.FederatedCatalogOptions.RefreshOptions",
+            )
+        )
+        refresh_status: "IcebergCatalog.FederatedCatalogOptions.RefreshStatus" = (
+            proto.Field(
+                proto.MESSAGE,
+                number=6,
+                message="IcebergCatalog.FederatedCatalogOptions.RefreshStatus",
+            )
+        )
+
     name: str = proto.Field(
         proto.STRING,
         number=1,
@@ -129,6 +539,10 @@ class IcebergCatalog(proto.Message):
         proto.STRING,
         number=3,
     )
+    biglake_service_account_unique_id: str = proto.Field(
+        proto.STRING,
+        number=14,
+    )
     catalog_type: CatalogType = proto.Field(
         proto.ENUM,
         number=4,
@@ -138,9 +552,9 @@ class IcebergCatalog(proto.Message):
         proto.STRING,
         number=5,
     )
-    catalog_regions: MutableSequence[str] = proto.RepeatedField(
+    storage_regions: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
-        number=6,
+        number=10,
     )
     create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
@@ -151,6 +565,25 @@ class IcebergCatalog(proto.Message):
         proto.MESSAGE,
         number=8,
         message=timestamp_pb2.Timestamp,
+    )
+    replicas: MutableSequence[Replica] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=9,
+        message=Replica,
+    )
+    description: str = proto.Field(
+        proto.STRING,
+        number=12,
+    )
+    restricted_locations_config: RestrictedLocationsConfig = proto.Field(
+        proto.MESSAGE,
+        number=15,
+        message=RestrictedLocationsConfig,
+    )
+    federated_catalog_options: FederatedCatalogOptions = proto.Field(
+        proto.MESSAGE,
+        number=13,
+        message=FederatedCatalogOptions,
     )
 
 
@@ -169,6 +602,23 @@ class CreateIcebergCatalogRequest(proto.Message):
 
             - catalog_type. Optionally: credential_mode can be provided,
               if Credential Vending is desired.
+        primary_location (str):
+            Optional. The primary location where the catalog metadata
+            will be stored.
+
+            For Google Cloud Storage bucket catalogs and BigLake
+            catalogs, if this is not specified, then the region is
+            inferred from the bucket's region (``default_location``
+            bucket for BigLake catalogs). If specified, the region must
+            be in jurisdiction (near the ``default_location`` bucket's
+            region and the ``restricted_locations`` buckets' regions for
+            BigLake catalogs).
+
+            For federated catalogs, this must be specified and be a
+            Lakehouse-supported location
+            (https://docs.cloud.google.com/lakehouse/docs/locations). It
+            should be close to the remote catalog's location for the
+            best performance and cost.
     """
 
     parent: str = proto.Field(
@@ -183,6 +633,10 @@ class CreateIcebergCatalogRequest(proto.Message):
         proto.MESSAGE,
         number=2,
         message="IcebergCatalog",
+    )
+    primary_location: str = proto.Field(
+        proto.STRING,
+        number=4,
     )
 
 
@@ -287,7 +741,8 @@ class ListIcebergCatalogsResponse(proto.Message):
             pagination.
         unreachable (MutableSequence[str]):
             Output only. The list of unreachable cloud
-            regions for router fanout.
+            regions. If non-empty, the result set might be
+            incomplete.
     """
 
     @property
@@ -379,6 +834,77 @@ class FailoverIcebergCatalogResponse(proto.Message):
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
+    )
+
+
+class TableIdentifier(proto.Message):
+    r"""The table identifier.
+
+    Attributes:
+        namespace (MutableSequence[str]):
+            The namespace of the table. This is always 1
+            element, since we don't support nested
+            namespaces.
+        name (str):
+            The table name.
+    """
+
+    namespace: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=1,
+    )
+    name: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class IcebergNamespaceUpdate(proto.Message):
+    r"""The request message for the ``UpdateIcebergNamespace`` API.
+
+    Attributes:
+        removals (MutableSequence[str]):
+            Optional. Keys of the properties to remove.
+        updates (MutableMapping[str, str]):
+            Optional. List of properties to update or
+            add.
+    """
+
+    removals: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+    updates: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=3,
+    )
+
+
+class StorageCredential(proto.Message):
+    r"""The storage credential for a path in the table.
+
+    Attributes:
+        prefix (str):
+            Indicates a storage location prefix where the
+            credential is relevant.
+        config (MutableMapping[str, str]):
+            The credentials for the storage location. The keys that are
+            populated are:
+
+            - ``gcs.oauth2.token``
+            - ``gcs.oauth2.token_expires_at``
+            - ``expiration-time`` (to support federation from Polaris).
+    """
+
+    prefix: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    config: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=2,
     )
 
 

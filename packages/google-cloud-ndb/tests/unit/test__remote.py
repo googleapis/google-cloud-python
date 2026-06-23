@@ -17,9 +17,7 @@ from unittest import mock
 import grpc
 import pytest
 
-from google.cloud.ndb import exceptions
-from google.cloud.ndb import _remote
-from google.cloud.ndb import tasklets
+from google.cloud.ndb import _remote, exceptions, tasklets
 
 
 class TestRemoteCall:

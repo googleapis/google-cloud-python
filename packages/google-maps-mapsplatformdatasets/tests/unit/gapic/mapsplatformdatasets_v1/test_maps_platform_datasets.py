@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -113,6 +114,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1378,8 +1394,8 @@ def test_maps_platform_datasets_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        maps_platform_datasets.CreateDatasetRequest,
-        dict,
+        maps_platform_datasets.CreateDatasetRequest(),
+        {},
     ],
 )
 def test_create_dataset(request_type, transport: str = "grpc"):
@@ -1390,7 +1406,7 @@ def test_create_dataset(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_dataset), "__call__") as call:
@@ -1444,9 +1460,10 @@ def test_create_dataset_non_empty_request_with_auto_populated_field():
         client.create_dataset(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == maps_platform_datasets.CreateDatasetRequest(
+        request_msg = maps_platform_datasets.CreateDatasetRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_dataset_use_cached_wrapped_rpc():
@@ -1527,10 +1544,14 @@ async def test_create_dataset_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_dataset_async(
-    transport: str = "grpc_asyncio",
-    request_type=maps_platform_datasets.CreateDatasetRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        maps_platform_datasets.CreateDatasetRequest(),
+        {},
+    ],
+)
+async def test_create_dataset_async(request_type, transport: str = "grpc_asyncio"):
     client = MapsPlatformDatasetsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1538,7 +1559,7 @@ async def test_create_dataset_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_dataset), "__call__") as call:
@@ -1569,11 +1590,6 @@ async def test_create_dataset_async(
     assert response.version_id == "version_id_value"
     assert response.usage == [gmm_dataset.Usage.USAGE_DATA_DRIVEN_STYLING]
     assert response.version_description == "version_description_value"
-
-
-@pytest.mark.asyncio
-async def test_create_dataset_async_from_dict():
-    await test_create_dataset_async(request_type=dict)
 
 
 def test_create_dataset_field_headers():
@@ -1728,8 +1744,8 @@ async def test_create_dataset_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        maps_platform_datasets.UpdateDatasetMetadataRequest,
-        dict,
+        maps_platform_datasets.UpdateDatasetMetadataRequest(),
+        {},
     ],
 )
 def test_update_dataset_metadata(request_type, transport: str = "grpc"):
@@ -1740,7 +1756,7 @@ def test_update_dataset_metadata(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1796,7 +1812,8 @@ def test_update_dataset_metadata_non_empty_request_with_auto_populated_field():
         client.update_dataset_metadata(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == maps_platform_datasets.UpdateDatasetMetadataRequest()
+        request_msg = maps_platform_datasets.UpdateDatasetMetadataRequest()
+        assert args[0] == request_msg
 
 
 def test_update_dataset_metadata_use_cached_wrapped_rpc():
@@ -1882,9 +1899,15 @@ async def test_update_dataset_metadata_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        maps_platform_datasets.UpdateDatasetMetadataRequest(),
+        {},
+    ],
+)
 async def test_update_dataset_metadata_async(
-    transport: str = "grpc_asyncio",
-    request_type=maps_platform_datasets.UpdateDatasetMetadataRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = MapsPlatformDatasetsAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1893,7 +1916,7 @@ async def test_update_dataset_metadata_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1926,11 +1949,6 @@ async def test_update_dataset_metadata_async(
     assert response.version_id == "version_id_value"
     assert response.usage == [gmm_dataset.Usage.USAGE_DATA_DRIVEN_STYLING]
     assert response.version_description == "version_description_value"
-
-
-@pytest.mark.asyncio
-async def test_update_dataset_metadata_async_from_dict():
-    await test_update_dataset_metadata_async(request_type=dict)
 
 
 def test_update_dataset_metadata_field_headers():
@@ -2093,8 +2111,8 @@ async def test_update_dataset_metadata_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        maps_platform_datasets.GetDatasetRequest,
-        dict,
+        maps_platform_datasets.GetDatasetRequest(),
+        {},
     ],
 )
 def test_get_dataset(request_type, transport: str = "grpc"):
@@ -2105,7 +2123,7 @@ def test_get_dataset(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_dataset), "__call__") as call:
@@ -2159,9 +2177,10 @@ def test_get_dataset_non_empty_request_with_auto_populated_field():
         client.get_dataset(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == maps_platform_datasets.GetDatasetRequest(
+        request_msg = maps_platform_datasets.GetDatasetRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_dataset_use_cached_wrapped_rpc():
@@ -2242,10 +2261,14 @@ async def test_get_dataset_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_dataset_async(
-    transport: str = "grpc_asyncio",
-    request_type=maps_platform_datasets.GetDatasetRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        maps_platform_datasets.GetDatasetRequest(),
+        {},
+    ],
+)
+async def test_get_dataset_async(request_type, transport: str = "grpc_asyncio"):
     client = MapsPlatformDatasetsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2253,7 +2276,7 @@ async def test_get_dataset_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_dataset), "__call__") as call:
@@ -2284,11 +2307,6 @@ async def test_get_dataset_async(
     assert response.version_id == "version_id_value"
     assert response.usage == [dataset.Usage.USAGE_DATA_DRIVEN_STYLING]
     assert response.version_description == "version_description_value"
-
-
-@pytest.mark.asyncio
-async def test_get_dataset_async_from_dict():
-    await test_get_dataset_async(request_type=dict)
 
 
 def test_get_dataset_field_headers():
@@ -2433,8 +2451,8 @@ async def test_get_dataset_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        maps_platform_datasets.FetchDatasetErrorsRequest,
-        dict,
+        maps_platform_datasets.FetchDatasetErrorsRequest(),
+        {},
     ],
 )
 def test_fetch_dataset_errors(request_type, transport: str = "grpc"):
@@ -2445,7 +2463,7 @@ def test_fetch_dataset_errors(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2494,10 +2512,11 @@ def test_fetch_dataset_errors_non_empty_request_with_auto_populated_field():
         client.fetch_dataset_errors(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == maps_platform_datasets.FetchDatasetErrorsRequest(
+        request_msg = maps_platform_datasets.FetchDatasetErrorsRequest(
             dataset="dataset_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_fetch_dataset_errors_use_cached_wrapped_rpc():
@@ -2582,9 +2601,15 @@ async def test_fetch_dataset_errors_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        maps_platform_datasets.FetchDatasetErrorsRequest(),
+        {},
+    ],
+)
 async def test_fetch_dataset_errors_async(
-    transport: str = "grpc_asyncio",
-    request_type=maps_platform_datasets.FetchDatasetErrorsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = MapsPlatformDatasetsAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2593,7 +2618,7 @@ async def test_fetch_dataset_errors_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2616,11 +2641,6 @@ async def test_fetch_dataset_errors_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.FetchDatasetErrorsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_fetch_dataset_errors_async_from_dict():
-    await test_fetch_dataset_errors_async(request_type=dict)
 
 
 def test_fetch_dataset_errors_field_headers():
@@ -2975,8 +2995,8 @@ async def test_fetch_dataset_errors_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        maps_platform_datasets.ListDatasetsRequest,
-        dict,
+        maps_platform_datasets.ListDatasetsRequest(),
+        {},
     ],
 )
 def test_list_datasets(request_type, transport: str = "grpc"):
@@ -2987,7 +3007,7 @@ def test_list_datasets(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_datasets), "__call__") as call:
@@ -3033,11 +3053,12 @@ def test_list_datasets_non_empty_request_with_auto_populated_field():
         client.list_datasets(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == maps_platform_datasets.ListDatasetsRequest(
+        request_msg = maps_platform_datasets.ListDatasetsRequest(
             parent="parent_value",
             page_token="page_token_value",
             tag="tag_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_datasets_use_cached_wrapped_rpc():
@@ -3118,10 +3139,14 @@ async def test_list_datasets_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_datasets_async(
-    transport: str = "grpc_asyncio",
-    request_type=maps_platform_datasets.ListDatasetsRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        maps_platform_datasets.ListDatasetsRequest(),
+        {},
+    ],
+)
+async def test_list_datasets_async(request_type, transport: str = "grpc_asyncio"):
     client = MapsPlatformDatasetsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3129,7 +3154,7 @@ async def test_list_datasets_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_datasets), "__call__") as call:
@@ -3150,11 +3175,6 @@ async def test_list_datasets_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDatasetsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_datasets_async_from_dict():
-    await test_list_datasets_async(request_type=dict)
 
 
 def test_list_datasets_field_headers():
@@ -3493,8 +3513,8 @@ async def test_list_datasets_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        maps_platform_datasets.DeleteDatasetRequest,
-        dict,
+        maps_platform_datasets.DeleteDatasetRequest(),
+        {},
     ],
 )
 def test_delete_dataset(request_type, transport: str = "grpc"):
@@ -3505,7 +3525,7 @@ def test_delete_dataset(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_dataset), "__call__") as call:
@@ -3546,9 +3566,10 @@ def test_delete_dataset_non_empty_request_with_auto_populated_field():
         client.delete_dataset(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == maps_platform_datasets.DeleteDatasetRequest(
+        request_msg = maps_platform_datasets.DeleteDatasetRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_dataset_use_cached_wrapped_rpc():
@@ -3629,10 +3650,14 @@ async def test_delete_dataset_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_dataset_async(
-    transport: str = "grpc_asyncio",
-    request_type=maps_platform_datasets.DeleteDatasetRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        maps_platform_datasets.DeleteDatasetRequest(),
+        {},
+    ],
+)
+async def test_delete_dataset_async(request_type, transport: str = "grpc_asyncio"):
     client = MapsPlatformDatasetsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3640,7 +3665,7 @@ async def test_delete_dataset_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_dataset), "__call__") as call:
@@ -3656,11 +3681,6 @@ async def test_delete_dataset_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_dataset_async_from_dict():
-    await test_delete_dataset_async(request_type=dict)
 
 
 def test_delete_dataset_field_headers():
@@ -5162,7 +5182,6 @@ def test_create_dataset_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = maps_platform_datasets.CreateDatasetRequest()
-
         assert args[0] == request_msg
 
 
@@ -5185,7 +5204,6 @@ def test_update_dataset_metadata_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = maps_platform_datasets.UpdateDatasetMetadataRequest()
-
         assert args[0] == request_msg
 
 
@@ -5206,7 +5224,6 @@ def test_get_dataset_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = maps_platform_datasets.GetDatasetRequest()
-
         assert args[0] == request_msg
 
 
@@ -5229,7 +5246,6 @@ def test_fetch_dataset_errors_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = maps_platform_datasets.FetchDatasetErrorsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5250,7 +5266,6 @@ def test_list_datasets_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = maps_platform_datasets.ListDatasetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5271,7 +5286,6 @@ def test_delete_dataset_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = maps_platform_datasets.DeleteDatasetRequest()
-
         assert args[0] == request_msg
 
 
@@ -5317,7 +5331,6 @@ async def test_create_dataset_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = maps_platform_datasets.CreateDatasetRequest()
-
         assert args[0] == request_msg
 
 
@@ -5351,7 +5364,6 @@ async def test_update_dataset_metadata_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = maps_platform_datasets.UpdateDatasetMetadataRequest()
-
         assert args[0] == request_msg
 
 
@@ -5383,7 +5395,6 @@ async def test_get_dataset_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = maps_platform_datasets.GetDatasetRequest()
-
         assert args[0] == request_msg
 
 
@@ -5412,7 +5423,6 @@ async def test_fetch_dataset_errors_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = maps_platform_datasets.FetchDatasetErrorsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5439,7 +5449,6 @@ async def test_list_datasets_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = maps_platform_datasets.ListDatasetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5462,7 +5471,6 @@ async def test_delete_dataset_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = maps_platform_datasets.DeleteDatasetRequest()
-
         assert args[0] == request_msg
 
 
@@ -6469,7 +6477,6 @@ def test_create_dataset_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = maps_platform_datasets.CreateDatasetRequest()
-
         assert args[0] == request_msg
 
 
@@ -6491,7 +6498,6 @@ def test_update_dataset_metadata_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = maps_platform_datasets.UpdateDatasetMetadataRequest()
-
         assert args[0] == request_msg
 
 
@@ -6511,7 +6517,6 @@ def test_get_dataset_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = maps_platform_datasets.GetDatasetRequest()
-
         assert args[0] == request_msg
 
 
@@ -6533,7 +6538,6 @@ def test_fetch_dataset_errors_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = maps_platform_datasets.FetchDatasetErrorsRequest()
-
         assert args[0] == request_msg
 
 
@@ -6553,7 +6557,6 @@ def test_list_datasets_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = maps_platform_datasets.ListDatasetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -6573,7 +6576,6 @@ def test_delete_dataset_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = maps_platform_datasets.DeleteDatasetRequest()
-
         assert args[0] == request_msg
 
 

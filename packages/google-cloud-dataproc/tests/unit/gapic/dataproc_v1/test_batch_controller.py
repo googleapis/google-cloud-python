@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -117,6 +118,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1350,8 +1366,8 @@ def test_batch_controller_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        batches.CreateBatchRequest,
-        dict,
+        batches.CreateBatchRequest(),
+        {},
     ],
 )
 def test_create_batch(request_type, transport: str = "grpc"):
@@ -1362,7 +1378,7 @@ def test_create_batch(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_batch), "__call__") as call:
@@ -1405,11 +1421,12 @@ def test_create_batch_non_empty_request_with_auto_populated_field():
         client.create_batch(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == batches.CreateBatchRequest(
+        request_msg = batches.CreateBatchRequest(
             parent="parent_value",
             batch_id="batch_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_batch_use_cached_wrapped_rpc():
@@ -1500,9 +1517,14 @@ async def test_create_batch_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_batch_async(
-    transport: str = "grpc_asyncio", request_type=batches.CreateBatchRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        batches.CreateBatchRequest(),
+        {},
+    ],
+)
+async def test_create_batch_async(request_type, transport: str = "grpc_asyncio"):
     client = BatchControllerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1510,7 +1532,7 @@ async def test_create_batch_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_batch), "__call__") as call:
@@ -1528,11 +1550,6 @@ async def test_create_batch_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_batch_async_from_dict():
-    await test_create_batch_async(request_type=dict)
 
 
 def test_create_batch_field_headers():
@@ -1701,8 +1718,8 @@ async def test_create_batch_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        batches.GetBatchRequest,
-        dict,
+        batches.GetBatchRequest(),
+        {},
     ],
 )
 def test_get_batch(request_type, transport: str = "grpc"):
@@ -1713,7 +1730,7 @@ def test_get_batch(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_batch), "__call__") as call:
@@ -1767,9 +1784,10 @@ def test_get_batch_non_empty_request_with_auto_populated_field():
         client.get_batch(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == batches.GetBatchRequest(
+        request_msg = batches.GetBatchRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_batch_use_cached_wrapped_rpc():
@@ -1848,9 +1866,14 @@ async def test_get_batch_async_use_cached_wrapped_rpc(transport: str = "grpc_asy
 
 
 @pytest.mark.asyncio
-async def test_get_batch_async(
-    transport: str = "grpc_asyncio", request_type=batches.GetBatchRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        batches.GetBatchRequest(),
+        {},
+    ],
+)
+async def test_get_batch_async(request_type, transport: str = "grpc_asyncio"):
     client = BatchControllerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1858,7 +1881,7 @@ async def test_get_batch_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_batch), "__call__") as call:
@@ -1889,11 +1912,6 @@ async def test_get_batch_async(
     assert response.state_message == "state_message_value"
     assert response.creator == "creator_value"
     assert response.operation == "operation_value"
-
-
-@pytest.mark.asyncio
-async def test_get_batch_async_from_dict():
-    await test_get_batch_async(request_type=dict)
 
 
 def test_get_batch_field_headers():
@@ -2038,8 +2056,8 @@ async def test_get_batch_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        batches.ListBatchesRequest,
-        dict,
+        batches.ListBatchesRequest(),
+        {},
     ],
 )
 def test_list_batches(request_type, transport: str = "grpc"):
@@ -2050,7 +2068,7 @@ def test_list_batches(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_batches), "__call__") as call:
@@ -2099,12 +2117,13 @@ def test_list_batches_non_empty_request_with_auto_populated_field():
         client.list_batches(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == batches.ListBatchesRequest(
+        request_msg = batches.ListBatchesRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_batches_use_cached_wrapped_rpc():
@@ -2185,9 +2204,14 @@ async def test_list_batches_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_batches_async(
-    transport: str = "grpc_asyncio", request_type=batches.ListBatchesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        batches.ListBatchesRequest(),
+        {},
+    ],
+)
+async def test_list_batches_async(request_type, transport: str = "grpc_asyncio"):
     client = BatchControllerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2195,7 +2219,7 @@ async def test_list_batches_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_batches), "__call__") as call:
@@ -2218,11 +2242,6 @@ async def test_list_batches_async(
     assert isinstance(response, pagers.ListBatchesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_batches_async_from_dict():
-    await test_list_batches_async(request_type=dict)
 
 
 def test_list_batches_field_headers():
@@ -2561,8 +2580,8 @@ async def test_list_batches_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        batches.DeleteBatchRequest,
-        dict,
+        batches.DeleteBatchRequest(),
+        {},
     ],
 )
 def test_delete_batch(request_type, transport: str = "grpc"):
@@ -2573,7 +2592,7 @@ def test_delete_batch(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_batch), "__call__") as call:
@@ -2614,9 +2633,10 @@ def test_delete_batch_non_empty_request_with_auto_populated_field():
         client.delete_batch(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == batches.DeleteBatchRequest(
+        request_msg = batches.DeleteBatchRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_batch_use_cached_wrapped_rpc():
@@ -2697,9 +2717,14 @@ async def test_delete_batch_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_batch_async(
-    transport: str = "grpc_asyncio", request_type=batches.DeleteBatchRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        batches.DeleteBatchRequest(),
+        {},
+    ],
+)
+async def test_delete_batch_async(request_type, transport: str = "grpc_asyncio"):
     client = BatchControllerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2707,7 +2732,7 @@ async def test_delete_batch_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_batch), "__call__") as call:
@@ -2723,11 +2748,6 @@ async def test_delete_batch_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_batch_async_from_dict():
-    await test_delete_batch_async(request_type=dict)
 
 
 def test_delete_batch_field_headers():
@@ -3791,7 +3811,6 @@ def test_create_batch_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = batches.CreateBatchRequest()
-
         assert args[0] == request_msg
 
 
@@ -3812,7 +3831,6 @@ def test_get_batch_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = batches.GetBatchRequest()
-
         assert args[0] == request_msg
 
 
@@ -3833,7 +3851,6 @@ def test_list_batches_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = batches.ListBatchesRequest()
-
         assert args[0] == request_msg
 
 
@@ -3854,7 +3871,6 @@ def test_delete_batch_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = batches.DeleteBatchRequest()
-
         assert args[0] == request_msg
 
 
@@ -3893,7 +3909,6 @@ async def test_create_batch_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = batches.CreateBatchRequest()
-
         assert args[0] == request_msg
 
 
@@ -3925,7 +3940,6 @@ async def test_get_batch_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = batches.GetBatchRequest()
-
         assert args[0] == request_msg
 
 
@@ -3953,7 +3967,6 @@ async def test_list_batches_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = batches.ListBatchesRequest()
-
         assert args[0] == request_msg
 
 
@@ -3976,7 +3989,6 @@ async def test_delete_batch_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = batches.DeleteBatchRequest()
-
         assert args[0] == request_msg
 
 
@@ -5111,7 +5123,6 @@ def test_create_batch_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = batches.CreateBatchRequest()
-
         assert args[0] == request_msg
 
 
@@ -5131,7 +5142,6 @@ def test_get_batch_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = batches.GetBatchRequest()
-
         assert args[0] == request_msg
 
 
@@ -5151,7 +5161,6 @@ def test_list_batches_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = batches.ListBatchesRequest()
-
         assert args[0] == request_msg
 
 
@@ -5171,7 +5180,6 @@ def test_delete_batch_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = batches.DeleteBatchRequest()
-
         assert args[0] == request_msg
 
 

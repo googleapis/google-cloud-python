@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-biglake/#history
 
+## [0.5.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-biglake-v0.4.0...google-cloud-biglake-v0.5.0) (2026-06-11)
+
+
+### Features
+
+* update API sources and regenerate (#17431) ([2e75c78cdd09d4472ed412a2e925196effaea9fd](https://github.com/googleapis/google-cloud-python/commit/2e75c78cdd09d4472ed412a2e925196effaea9fd))
+
+## [0.4.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-biglake-v0.3.0...google-cloud-biglake-v0.4.0) (2026-06-02)
+
+
+### Features
+
+* regenerate google-cloud-b packages (#17090) ([77d4fcc15d1a6d96adb5f2765ecd0fcc47e478bd](https://github.com/googleapis/google-cloud-python/commit/77d4fcc15d1a6d96adb5f2765ecd0fcc47e478bd))
+
 ## [0.3.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-biglake-v0.2.0...google-cloud-biglake-v0.3.0) (2026-03-26)
 
 

@@ -124,8 +124,6 @@ class BigQueryTableReferences(proto.Message):
 class BigQueryTableReference(proto.Message):
     r"""Message representing a reference to a single BigQuery table.
 
-    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
-
     Attributes:
         project_id (str):
             Required. The project that the table belongs
@@ -137,15 +135,6 @@ class BigQueryTableReference(proto.Message):
             Required. The table id.
         schema (google.cloud.geminidataanalytics_v1.types.Schema):
             Optional. The schema of the datasource.
-        location_boundary (str):
-            Optional. The location to restrict BigQuery
-            operations to.
-            If unspecified, this value defaults to the
-            location of the endpoint.
-
-            Examples: "us-central1", "europe-west1".
-
-            This field is a member of `oneof`_ ``_location_boundary``.
     """
 
     project_id: str = proto.Field(
@@ -164,11 +153,6 @@ class BigQueryTableReference(proto.Message):
         proto.MESSAGE,
         number=6,
         message="Schema",
-    )
-    location_boundary: str = proto.Field(
-        proto.STRING,
-        number=7,
-        optional=True,
     )
 
 
@@ -282,9 +266,6 @@ class BigQueryPropertyGraphReference(proto.Message):
     r"""Message representing a reference to a single BigQuery
     property graph.
 
-
-    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
-
     Attributes:
         project_id (str):
             Required. The project that the property graph
@@ -294,10 +275,6 @@ class BigQueryPropertyGraphReference(proto.Message):
             belongs to.
         property_graph_id (str):
             Required. The property graph id.
-        location_boundary (str):
-            Optional. The location boundary of the graph.
-
-            This field is a member of `oneof`_ ``_location_boundary``.
     """
 
     project_id: str = proto.Field(
@@ -311,11 +288,6 @@ class BigQueryPropertyGraphReference(proto.Message):
     property_graph_id: str = proto.Field(
         proto.STRING,
         number=3,
-    )
-    location_boundary: str = proto.Field(
-        proto.STRING,
-        number=4,
-        optional=True,
     )
 
 

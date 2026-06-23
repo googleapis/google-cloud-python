@@ -50,7 +50,7 @@ class AIAccessor:
             >>> bpd.options.compute.ai_ops_confirmation_threshold = 25
 
             >>> import bigframes.ml.llm as llm
-            >>> model = llm.GeminiTextGenerator(model_name="gemini-2.0-flash-001")
+            >>> model = llm.GeminiTextGenerator(model_name="gemini-2.5-pro")
 
             >>> df = bpd.DataFrame({"country": ["USA", "Germany"], "city": ["Seattle", "Berlin"]})
             >>> df.ai.filter("{city} is the capital of {country}", model)
@@ -119,15 +119,13 @@ class AIAccessor:
             >>> bpd.options.compute.ai_ops_confirmation_threshold = 25
 
             >>> import bigframes.ml.llm as llm
-            >>> model = llm.GeminiTextGenerator(model_name="gemini-2.0-flash-001")
+            >>> model = llm.GeminiTextGenerator(model_name="gemini-2.5-pro")
 
             >>> df = bpd.DataFrame({"ingredient_1": ["Burger Bun", "Soy Bean"], "ingredient_2": ["Beef Patty", "Bittern"]})
-            >>> df.ai.map("What is the food made from {ingredient_1} and {ingredient_2}? One word only.", model=model, output_schema={"food": "string"})
-              ingredient_1 ingredient_2      food
-            0   Burger Bun   Beef Patty  Burger
-            <BLANKLINE>
-            1     Soy Bean      Bittern    Tofu
-            <BLANKLINE>
+            >>> df.ai.map("What is the food made from {ingredient_1} and {ingredient_2}? One word only.", model=model, output_schema={"food": "string"}) # doctest: +ELLIPSIS
+              ingredient_1 ingredient_2...
+            0   Burger Bun   Beef Patty...
+            1     Soy Bean      Bittern...Tofu
             <BLANKLINE>
             [2 rows x 3 columns]
 
@@ -137,7 +135,7 @@ class AIAccessor:
             >>> bpd.options.compute.ai_ops_confirmation_threshold = 25
 
             >>> import bigframes.ml.llm as llm
-            >>> model = llm.GeminiTextGenerator(model_name="gemini-2.0-flash-001")
+            >>> model = llm.GeminiTextGenerator(model_name="gemini-2.5-pro")
 
             >>> df = bpd.DataFrame({"text": ["Elmo lives at 123 Sesame Street."]})
             >>> df.ai.map("{text}", model=model, output_schema={"person": "string", "address": "string"})
@@ -268,7 +266,7 @@ class AIAccessor:
             >>> bpd.options.compute.ai_ops_confirmation_threshold = 25
 
             >>> import bigframes.ml.llm as llm
-            >>> model = llm.GeminiTextGenerator(model_name="gemini-2.0-flash-001")
+            >>> model = llm.GeminiTextGenerator(model_name="gemini-2.5-pro")
 
             >>> df = bpd.DataFrame({
             ...     "feedback_text": [
@@ -357,7 +355,7 @@ class AIAccessor:
             >>> bpd.options.compute.ai_ops_confirmation_threshold = 25
 
             >>> import bigframes.ml.llm as llm
-            >>> model = llm.GeminiTextGenerator(model_name="gemini-2.0-flash-001")
+            >>> model = llm.GeminiTextGenerator(model_name="gemini-2.5-pro")
 
             >>> cities = bpd.DataFrame({'city': ['Seattle', 'Ottawa', 'Berlin', 'Shanghai', 'New Delhi']})
             >>> continents = bpd.DataFrame({'continent': ['North America', 'Africa', 'Asia']})

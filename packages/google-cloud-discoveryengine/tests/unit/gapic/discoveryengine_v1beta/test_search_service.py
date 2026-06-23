@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -39,6 +40,7 @@ except ImportError:  # pragma: NO COVER
 
 import google.auth
 import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
+import google.type.latlng_pb2 as latlng_pb2  # type: ignore
 from google.api_core import (
     client_options,
     gapic_v1,
@@ -108,6 +110,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1295,7 +1312,12 @@ def test_search_service_client_create_channel_credentials_file(
             credentials=file_creds,
             credentials_file=None,
             quota_project_id=None,
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/discoveryengine.assist.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.serving.readwrite",
+            ),
             scopes=None,
             default_host="discoveryengine.googleapis.com",
             ssl_credentials=None,
@@ -1309,8 +1331,8 @@ def test_search_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        search_service.SearchRequest,
-        dict,
+        search_service.SearchRequest(),
+        {},
     ],
 )
 def test_search(request_type, transport: str = "grpc"):
@@ -1321,7 +1343,7 @@ def test_search(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.search), "__call__") as call:
@@ -1332,7 +1354,9 @@ def test_search(request_type, transport: str = "grpc"):
             redirect_uri="redirect_uri_value",
             next_page_token="next_page_token_value",
             corrected_query="corrected_query_value",
+            suggested_query="suggested_query_value",
             applied_controls=["applied_controls_value"],
+            semantic_state=search_service.SearchResponse.SemanticState.DISABLED,
         )
         response = client.search(request)
 
@@ -1349,7 +1373,11 @@ def test_search(request_type, transport: str = "grpc"):
     assert response.redirect_uri == "redirect_uri_value"
     assert response.next_page_token == "next_page_token_value"
     assert response.corrected_query == "corrected_query_value"
+    assert response.suggested_query == "suggested_query_value"
     assert response.applied_controls == ["applied_controls_value"]
+    assert (
+        response.semantic_state == search_service.SearchResponse.SemanticState.DISABLED
+    )
 
 
 def test_search_non_empty_request_with_auto_populated_field():
@@ -1376,6 +1404,7 @@ def test_search_non_empty_request_with_auto_populated_field():
         user_pseudo_id="user_pseudo_id_value",
         ranking_expression="ranking_expression_value",
         session="session_value",
+        entity="entity_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1386,7 +1415,7 @@ def test_search_non_empty_request_with_auto_populated_field():
         client.search(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == search_service.SearchRequest(
+        request_msg = search_service.SearchRequest(
             serving_config="serving_config_value",
             branch="branch_value",
             query="query_value",
@@ -1399,7 +1428,9 @@ def test_search_non_empty_request_with_auto_populated_field():
             user_pseudo_id="user_pseudo_id_value",
             ranking_expression="ranking_expression_value",
             session="session_value",
+            entity="entity_value",
         )
+        assert args[0] == request_msg
 
 
 def test_search_use_cached_wrapped_rpc():
@@ -1478,9 +1509,14 @@ async def test_search_async_use_cached_wrapped_rpc(transport: str = "grpc_asynci
 
 
 @pytest.mark.asyncio
-async def test_search_async(
-    transport: str = "grpc_asyncio", request_type=search_service.SearchRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        search_service.SearchRequest(),
+        {},
+    ],
+)
+async def test_search_async(request_type, transport: str = "grpc_asyncio"):
     client = SearchServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1488,7 +1524,7 @@ async def test_search_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.search), "__call__") as call:
@@ -1500,7 +1536,9 @@ async def test_search_async(
                 redirect_uri="redirect_uri_value",
                 next_page_token="next_page_token_value",
                 corrected_query="corrected_query_value",
+                suggested_query="suggested_query_value",
                 applied_controls=["applied_controls_value"],
+                semantic_state=search_service.SearchResponse.SemanticState.DISABLED,
             )
         )
         response = await client.search(request)
@@ -1518,12 +1556,11 @@ async def test_search_async(
     assert response.redirect_uri == "redirect_uri_value"
     assert response.next_page_token == "next_page_token_value"
     assert response.corrected_query == "corrected_query_value"
+    assert response.suggested_query == "suggested_query_value"
     assert response.applied_controls == ["applied_controls_value"]
-
-
-@pytest.mark.asyncio
-async def test_search_async_from_dict():
-    await test_search_async(request_type=dict)
+    assert (
+        response.semantic_state == search_service.SearchResponse.SemanticState.DISABLED
+    )
 
 
 def test_search_field_headers():
@@ -1784,8 +1821,8 @@ async def test_search_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        search_service.SearchRequest,
-        dict,
+        search_service.SearchRequest(),
+        {},
     ],
 )
 def test_search_lite(request_type, transport: str = "grpc"):
@@ -1796,7 +1833,7 @@ def test_search_lite(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.search_lite), "__call__") as call:
@@ -1807,7 +1844,9 @@ def test_search_lite(request_type, transport: str = "grpc"):
             redirect_uri="redirect_uri_value",
             next_page_token="next_page_token_value",
             corrected_query="corrected_query_value",
+            suggested_query="suggested_query_value",
             applied_controls=["applied_controls_value"],
+            semantic_state=search_service.SearchResponse.SemanticState.DISABLED,
         )
         response = client.search_lite(request)
 
@@ -1824,7 +1863,11 @@ def test_search_lite(request_type, transport: str = "grpc"):
     assert response.redirect_uri == "redirect_uri_value"
     assert response.next_page_token == "next_page_token_value"
     assert response.corrected_query == "corrected_query_value"
+    assert response.suggested_query == "suggested_query_value"
     assert response.applied_controls == ["applied_controls_value"]
+    assert (
+        response.semantic_state == search_service.SearchResponse.SemanticState.DISABLED
+    )
 
 
 def test_search_lite_non_empty_request_with_auto_populated_field():
@@ -1851,6 +1894,7 @@ def test_search_lite_non_empty_request_with_auto_populated_field():
         user_pseudo_id="user_pseudo_id_value",
         ranking_expression="ranking_expression_value",
         session="session_value",
+        entity="entity_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1861,7 +1905,7 @@ def test_search_lite_non_empty_request_with_auto_populated_field():
         client.search_lite(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == search_service.SearchRequest(
+        request_msg = search_service.SearchRequest(
             serving_config="serving_config_value",
             branch="branch_value",
             query="query_value",
@@ -1874,7 +1918,9 @@ def test_search_lite_non_empty_request_with_auto_populated_field():
             user_pseudo_id="user_pseudo_id_value",
             ranking_expression="ranking_expression_value",
             session="session_value",
+            entity="entity_value",
         )
+        assert args[0] == request_msg
 
 
 def test_search_lite_use_cached_wrapped_rpc():
@@ -1955,9 +2001,14 @@ async def test_search_lite_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_search_lite_async(
-    transport: str = "grpc_asyncio", request_type=search_service.SearchRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        search_service.SearchRequest(),
+        {},
+    ],
+)
+async def test_search_lite_async(request_type, transport: str = "grpc_asyncio"):
     client = SearchServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1965,7 +2016,7 @@ async def test_search_lite_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.search_lite), "__call__") as call:
@@ -1977,7 +2028,9 @@ async def test_search_lite_async(
                 redirect_uri="redirect_uri_value",
                 next_page_token="next_page_token_value",
                 corrected_query="corrected_query_value",
+                suggested_query="suggested_query_value",
                 applied_controls=["applied_controls_value"],
+                semantic_state=search_service.SearchResponse.SemanticState.DISABLED,
             )
         )
         response = await client.search_lite(request)
@@ -1995,12 +2048,11 @@ async def test_search_lite_async(
     assert response.redirect_uri == "redirect_uri_value"
     assert response.next_page_token == "next_page_token_value"
     assert response.corrected_query == "corrected_query_value"
+    assert response.suggested_query == "suggested_query_value"
     assert response.applied_controls == ["applied_controls_value"]
-
-
-@pytest.mark.asyncio
-async def test_search_lite_async_from_dict():
-    await test_search_lite_async(request_type=dict)
+    assert (
+        response.semantic_state == search_service.SearchResponse.SemanticState.DISABLED
+    )
 
 
 def test_search_lite_field_headers():
@@ -2749,7 +2801,6 @@ def test_search_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = search_service.SearchRequest()
-
         assert args[0] == request_msg
 
 
@@ -2770,7 +2821,6 @@ def test_search_lite_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = search_service.SearchRequest()
-
         assert args[0] == request_msg
 
 
@@ -2807,7 +2857,9 @@ async def test_search_empty_call_grpc_asyncio():
                 redirect_uri="redirect_uri_value",
                 next_page_token="next_page_token_value",
                 corrected_query="corrected_query_value",
+                suggested_query="suggested_query_value",
                 applied_controls=["applied_controls_value"],
+                semantic_state=search_service.SearchResponse.SemanticState.DISABLED,
             )
         )
         await client.search(request=None)
@@ -2816,7 +2868,6 @@ async def test_search_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = search_service.SearchRequest()
-
         assert args[0] == request_msg
 
 
@@ -2839,7 +2890,9 @@ async def test_search_lite_empty_call_grpc_asyncio():
                 redirect_uri="redirect_uri_value",
                 next_page_token="next_page_token_value",
                 corrected_query="corrected_query_value",
+                suggested_query="suggested_query_value",
                 applied_controls=["applied_controls_value"],
+                semantic_state=search_service.SearchResponse.SemanticState.DISABLED,
             )
         )
         await client.search_lite(request=None)
@@ -2848,7 +2901,6 @@ async def test_search_lite_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = search_service.SearchRequest()
-
         assert args[0] == request_msg
 
 
@@ -2912,7 +2964,9 @@ def test_search_rest_call_success(request_type):
             redirect_uri="redirect_uri_value",
             next_page_token="next_page_token_value",
             corrected_query="corrected_query_value",
+            suggested_query="suggested_query_value",
             applied_controls=["applied_controls_value"],
+            semantic_state=search_service.SearchResponse.SemanticState.DISABLED,
         )
 
         # Wrap the value into a proper Response obj
@@ -2934,7 +2988,11 @@ def test_search_rest_call_success(request_type):
     assert response.redirect_uri == "redirect_uri_value"
     assert response.next_page_token == "next_page_token_value"
     assert response.corrected_query == "corrected_query_value"
+    assert response.suggested_query == "suggested_query_value"
     assert response.applied_controls == ["applied_controls_value"]
+    assert (
+        response.semantic_state == search_service.SearchResponse.SemanticState.DISABLED
+    )
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -3052,7 +3110,9 @@ def test_search_lite_rest_call_success(request_type):
             redirect_uri="redirect_uri_value",
             next_page_token="next_page_token_value",
             corrected_query="corrected_query_value",
+            suggested_query="suggested_query_value",
             applied_controls=["applied_controls_value"],
+            semantic_state=search_service.SearchResponse.SemanticState.DISABLED,
         )
 
         # Wrap the value into a proper Response obj
@@ -3074,7 +3134,11 @@ def test_search_lite_rest_call_success(request_type):
     assert response.redirect_uri == "redirect_uri_value"
     assert response.next_page_token == "next_page_token_value"
     assert response.corrected_query == "corrected_query_value"
+    assert response.suggested_query == "suggested_query_value"
     assert response.applied_controls == ["applied_controls_value"]
+    assert (
+        response.semantic_state == search_service.SearchResponse.SemanticState.DISABLED
+    )
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -3368,7 +3432,6 @@ def test_search_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = search_service.SearchRequest()
-
         assert args[0] == request_msg
 
 
@@ -3388,7 +3451,6 @@ def test_search_lite_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = search_service.SearchRequest()
-
         assert args[0] == request_msg
 
 
@@ -3466,7 +3528,12 @@ def test_search_service_base_transport_with_credentials_file():
         load_creds.assert_called_once_with(
             "credentials.json",
             scopes=None,
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/discoveryengine.assist.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.serving.readwrite",
+            ),
             quota_project_id="octopus",
         )
 
@@ -3492,7 +3559,12 @@ def test_search_service_auth_adc():
         SearchServiceClient()
         adc.assert_called_once_with(
             scopes=None,
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/discoveryengine.assist.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.serving.readwrite",
+            ),
             quota_project_id=None,
         )
 
@@ -3512,7 +3584,12 @@ def test_search_service_transport_auth_adc(transport_class):
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
         adc.assert_called_once_with(
             scopes=["1", "2"],
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/discoveryengine.assist.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.serving.readwrite",
+            ),
             quota_project_id="octopus",
         )
 
@@ -3565,7 +3642,12 @@ def test_search_service_transport_create_channel(transport_class, grpc_helpers):
             credentials=creds,
             credentials_file=None,
             quota_project_id="octopus",
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/discoveryengine.assist.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.serving.readwrite",
+            ),
             scopes=["1", "2"],
             default_host="discoveryengine.googleapis.com",
             ssl_credentials=None,

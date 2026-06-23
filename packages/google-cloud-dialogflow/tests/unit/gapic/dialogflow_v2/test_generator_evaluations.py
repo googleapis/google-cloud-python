@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -128,6 +129,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1396,8 +1412,8 @@ def test_generator_evaluations_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcd_generator_evaluation.CreateGeneratorEvaluationRequest,
-        dict,
+        gcd_generator_evaluation.CreateGeneratorEvaluationRequest(),
+        {},
     ],
 )
 def test_create_generator_evaluation(request_type, transport: str = "grpc"):
@@ -1408,7 +1424,7 @@ def test_create_generator_evaluation(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1453,9 +1469,10 @@ def test_create_generator_evaluation_non_empty_request_with_auto_populated_field
         client.create_generator_evaluation(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcd_generator_evaluation.CreateGeneratorEvaluationRequest(
+        request_msg = gcd_generator_evaluation.CreateGeneratorEvaluationRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_generator_evaluation_use_cached_wrapped_rpc():
@@ -1551,9 +1568,15 @@ async def test_create_generator_evaluation_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcd_generator_evaluation.CreateGeneratorEvaluationRequest(),
+        {},
+    ],
+)
 async def test_create_generator_evaluation_async(
-    transport: str = "grpc_asyncio",
-    request_type=gcd_generator_evaluation.CreateGeneratorEvaluationRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = GeneratorEvaluationsAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1562,7 +1585,7 @@ async def test_create_generator_evaluation_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1582,11 +1605,6 @@ async def test_create_generator_evaluation_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_generator_evaluation_async_from_dict():
-    await test_create_generator_evaluation_async(request_type=dict)
 
 
 def test_create_generator_evaluation_field_headers():
@@ -1761,8 +1779,8 @@ async def test_create_generator_evaluation_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        generator_evaluation.GetGeneratorEvaluationRequest,
-        dict,
+        generator_evaluation.GetGeneratorEvaluationRequest(),
+        {},
     ],
 )
 def test_get_generator_evaluation(request_type, transport: str = "grpc"):
@@ -1773,7 +1791,7 @@ def test_get_generator_evaluation(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1827,9 +1845,10 @@ def test_get_generator_evaluation_non_empty_request_with_auto_populated_field():
         client.get_generator_evaluation(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == generator_evaluation.GetGeneratorEvaluationRequest(
+        request_msg = generator_evaluation.GetGeneratorEvaluationRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_generator_evaluation_use_cached_wrapped_rpc():
@@ -1915,9 +1934,15 @@ async def test_get_generator_evaluation_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        generator_evaluation.GetGeneratorEvaluationRequest(),
+        {},
+    ],
+)
 async def test_get_generator_evaluation_async(
-    transport: str = "grpc_asyncio",
-    request_type=generator_evaluation.GetGeneratorEvaluationRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = GeneratorEvaluationsAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1926,7 +1951,7 @@ async def test_get_generator_evaluation_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1955,11 +1980,6 @@ async def test_get_generator_evaluation_async(
     assert response.display_name == "display_name_value"
     assert response.satisfies_pzs is True
     assert response.satisfies_pzi is True
-
-
-@pytest.mark.asyncio
-async def test_get_generator_evaluation_async_from_dict():
-    await test_get_generator_evaluation_async(request_type=dict)
 
 
 def test_get_generator_evaluation_field_headers():
@@ -2116,8 +2136,8 @@ async def test_get_generator_evaluation_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        generator_evaluation.ListGeneratorEvaluationsRequest,
-        dict,
+        generator_evaluation.ListGeneratorEvaluationsRequest(),
+        {},
     ],
 )
 def test_list_generator_evaluations(request_type, transport: str = "grpc"):
@@ -2128,7 +2148,7 @@ def test_list_generator_evaluations(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2177,10 +2197,11 @@ def test_list_generator_evaluations_non_empty_request_with_auto_populated_field(
         client.list_generator_evaluations(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == generator_evaluation.ListGeneratorEvaluationsRequest(
+        request_msg = generator_evaluation.ListGeneratorEvaluationsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_generator_evaluations_use_cached_wrapped_rpc():
@@ -2266,9 +2287,15 @@ async def test_list_generator_evaluations_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        generator_evaluation.ListGeneratorEvaluationsRequest(),
+        {},
+    ],
+)
 async def test_list_generator_evaluations_async(
-    transport: str = "grpc_asyncio",
-    request_type=generator_evaluation.ListGeneratorEvaluationsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = GeneratorEvaluationsAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2277,7 +2304,7 @@ async def test_list_generator_evaluations_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2300,11 +2327,6 @@ async def test_list_generator_evaluations_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListGeneratorEvaluationsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_generator_evaluations_async_from_dict():
-    await test_list_generator_evaluations_async(request_type=dict)
 
 
 def test_list_generator_evaluations_field_headers():
@@ -2665,8 +2687,8 @@ async def test_list_generator_evaluations_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        generator_evaluation.DeleteGeneratorEvaluationRequest,
-        dict,
+        generator_evaluation.DeleteGeneratorEvaluationRequest(),
+        {},
     ],
 )
 def test_delete_generator_evaluation(request_type, transport: str = "grpc"):
@@ -2677,7 +2699,7 @@ def test_delete_generator_evaluation(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2722,9 +2744,10 @@ def test_delete_generator_evaluation_non_empty_request_with_auto_populated_field
         client.delete_generator_evaluation(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == generator_evaluation.DeleteGeneratorEvaluationRequest(
+        request_msg = generator_evaluation.DeleteGeneratorEvaluationRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_generator_evaluation_use_cached_wrapped_rpc():
@@ -2810,9 +2833,15 @@ async def test_delete_generator_evaluation_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        generator_evaluation.DeleteGeneratorEvaluationRequest(),
+        {},
+    ],
+)
 async def test_delete_generator_evaluation_async(
-    transport: str = "grpc_asyncio",
-    request_type=generator_evaluation.DeleteGeneratorEvaluationRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = GeneratorEvaluationsAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2821,7 +2850,7 @@ async def test_delete_generator_evaluation_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2839,11 +2868,6 @@ async def test_delete_generator_evaluation_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_generator_evaluation_async_from_dict():
-    await test_delete_generator_evaluation_async(request_type=dict)
 
 
 def test_delete_generator_evaluation_field_headers():
@@ -3954,7 +3978,6 @@ def test_create_generator_evaluation_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcd_generator_evaluation.CreateGeneratorEvaluationRequest()
-
         assert args[0] == request_msg
 
 
@@ -3977,7 +4000,6 @@ def test_get_generator_evaluation_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = generator_evaluation.GetGeneratorEvaluationRequest()
-
         assert args[0] == request_msg
 
 
@@ -4000,7 +4022,6 @@ def test_list_generator_evaluations_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = generator_evaluation.ListGeneratorEvaluationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -4023,7 +4044,6 @@ def test_delete_generator_evaluation_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = generator_evaluation.DeleteGeneratorEvaluationRequest()
-
         assert args[0] == request_msg
 
 
@@ -4064,7 +4084,6 @@ async def test_create_generator_evaluation_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcd_generator_evaluation.CreateGeneratorEvaluationRequest()
-
         assert args[0] == request_msg
 
 
@@ -4096,7 +4115,6 @@ async def test_get_generator_evaluation_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = generator_evaluation.GetGeneratorEvaluationRequest()
-
         assert args[0] == request_msg
 
 
@@ -4125,7 +4143,6 @@ async def test_list_generator_evaluations_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = generator_evaluation.ListGeneratorEvaluationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -4150,7 +4167,6 @@ async def test_delete_generator_evaluation_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = generator_evaluation.DeleteGeneratorEvaluationRequest()
-
         assert args[0] == request_msg
 
 
@@ -4371,7 +4387,12 @@ def test_create_generator_evaluation_rest_call_success(request_type):
                 {"ces_tool": "ces_tool_value", "confirmation_requirement": 1}
             ],
             "ces_app_specs": [
-                {"ces_app": "ces_app_value", "confirmation_requirement": 1}
+                {
+                    "ces_app": "ces_app_value",
+                    "confirmation_requirement": 1,
+                    "proactive_enabled": True,
+                    "reactive_enabled": True,
+                }
             ],
         },
         "summarization_metrics": {
@@ -5351,7 +5372,6 @@ def test_create_generator_evaluation_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcd_generator_evaluation.CreateGeneratorEvaluationRequest()
-
         assert args[0] == request_msg
 
 
@@ -5373,7 +5393,6 @@ def test_get_generator_evaluation_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = generator_evaluation.GetGeneratorEvaluationRequest()
-
         assert args[0] == request_msg
 
 
@@ -5395,7 +5414,6 @@ def test_list_generator_evaluations_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = generator_evaluation.ListGeneratorEvaluationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5417,7 +5435,6 @@ def test_delete_generator_evaluation_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = generator_evaluation.DeleteGeneratorEvaluationRequest()
-
         assert args[0] == request_msg
 
 

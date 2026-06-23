@@ -364,10 +364,30 @@ def is_json_like(type_: ExpressionType) -> bool:
     return type_ == JSON_DTYPE or type_ == STRING_DTYPE  # Including JSON string
 
 
-def is_json_encoding_type(type_: ExpressionType) -> bool:
+def is_json_encoding_type(type_: ExpressionType, strict: bool = False) -> bool:
     # Types can be converted into JSON.
     # https://cloud.google.com/bigquery/docs/reference/standard-sql/json_functions#json_encodings
-    return type_ != GEO_DTYPE
+    if is_array_like(type_):
+        return is_json_encoding_type(get_array_inner_type(type_), strict=strict)
+    if is_struct_like(type_):
+        return all(
+            is_json_encoding_type(field_type, strict=strict)
+            for field_type in get_struct_fields(type_).values()
+        )
+
+    if strict:
+        # Strict are the types (mostly) defined by json spec, with no/minimal
+        # encoding/decoding involved. So no temporal types.
+        return type_ in (
+            INT_DTYPE,
+            FLOAT_DTYPE,
+            BOOL_DTYPE,
+            STRING_DTYPE,
+            JSON_DTYPE,
+        )
+    else:
+        # GoogleSQL implementation handles anything but GEO
+        return type_ != GEO_DTYPE
 
 
 def is_numeric(type_: ExpressionType, include_bool: bool = True) -> bool:

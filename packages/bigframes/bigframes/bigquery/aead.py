@@ -16,7 +16,7 @@
 
 from __future__ import annotations
 
-from bigframes.bigquery._operations.aead import decrypt_bytes, decrypt_string, encrypt
+from bigframes.operations.googlesql.aead import decrypt_bytes, decrypt_string, encrypt
 
 __all__ = [
     "decrypt_bytes",

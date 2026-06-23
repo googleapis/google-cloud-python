@@ -45,6 +45,7 @@ from .services.data_taxonomy_service import (
 from .services.dataplex_service import DataplexServiceAsyncClient, DataplexServiceClient
 from .services.metadata_service import MetadataServiceAsyncClient, MetadataServiceClient
 from .types.analyze import Content, Environment, Session
+from .types.approval_workflow import ChangeRequest, DataProductAccessRequest
 from .types.business_glossary import (
     CreateGlossaryCategoryRequest,
     CreateGlossaryRequest,
@@ -119,6 +120,7 @@ from .types.catalog import (
     LookupEntryRequest,
     MetadataFeed,
     MetadataJob,
+    ModifyEntryRequest,
     SearchEntriesRequest,
     SearchEntriesResponse,
     SearchEntriesResult,
@@ -154,6 +156,8 @@ from .types.data_products import (
     ListDataAssetsResponse,
     ListDataProductsRequest,
     ListDataProductsResponse,
+    RequestDataProductAccessRequest,
+    RequestDataProductAccessResponse,
     UpdateDataAssetRequest,
     UpdateDataProductRequest,
 )
@@ -167,6 +171,7 @@ from .types.data_quality import (
     DataQualityRuleResult,
     DataQualitySpec,
 )
+from .types.data_quality_rule_template import DataQualityRuleTemplate
 from .types.data_taxonomy import (
     CreateDataAttributeBindingRequest,
     CreateDataAttributeRequest,
@@ -191,11 +196,14 @@ from .types.data_taxonomy import (
     UpdateDataTaxonomyRequest,
 )
 from .types.datascans import (
+    CancelDataScanJobRequest,
+    CancelDataScanJobResponse,
     CreateDataScanRequest,
     DataScan,
     DataScanJob,
     DataScanType,
     DeleteDataScanRequest,
+    ExecutionIdentity,
     GenerateDataQualityRulesRequest,
     GenerateDataQualityRulesResponse,
     GetDataScanJobRequest,
@@ -305,7 +313,7 @@ else:  # pragma: NO COVER
 
         def parse_version_to_tuple(version_string: str):
             """Safely converts a semantic version string to a comparable tuple of integers.
-            Example: "4.25.8" -> (4, 25, 8)
+            Example: "6.33.5" -> (6, 33, 5)
             Ignores non-numeric parts and handles common version formats.
             Args:
                 version_string: Version string in the format "x.y.z" or "x.y.z<suffix>"
@@ -334,9 +342,9 @@ else:  # pragma: NO COVER
                 return (None, "--")
 
         _dependency_package = "google.protobuf"
-        _next_supported_version = "4.25.8"
-        _next_supported_version_tuple = (4, 25, 8)
-        _recommendation = " (we recommend 6.x)"
+        _next_supported_version = "6.33.5"
+        _next_supported_version_tuple = (6, 33, 5)
+        _recommendation = " (we recommend 7.x)"
         (_version_used, _version_used_string) = _get_version(_dependency_package)
         if _version_used and _version_used < _next_supported_version_tuple:
             warnings.warn(
@@ -381,9 +389,12 @@ __all__ = (
     "AssetStatus",
     "BusinessGlossaryEvent",
     "BusinessGlossaryServiceClient",
+    "CancelDataScanJobRequest",
+    "CancelDataScanJobResponse",
     "CancelJobRequest",
     "CancelMetadataJobRequest",
     "CatalogServiceClient",
+    "ChangeRequest",
     "CmekServiceClient",
     "Content",
     "ContentServiceClient",
@@ -419,6 +430,7 @@ __all__ = (
     "DataDocumentationResult",
     "DataDocumentationSpec",
     "DataProduct",
+    "DataProductAccessRequest",
     "DataProductServiceClient",
     "DataProfileResult",
     "DataProfileSpec",
@@ -428,6 +440,7 @@ __all__ = (
     "DataQualityResult",
     "DataQualityRule",
     "DataQualityRuleResult",
+    "DataQualityRuleTemplate",
     "DataQualityScanRuleResult",
     "DataQualitySpec",
     "DataScan",
@@ -473,6 +486,7 @@ __all__ = (
     "EntryType",
     "EntryView",
     "Environment",
+    "ExecutionIdentity",
     "GenerateDataQualityRulesRequest",
     "GenerateDataQualityRulesResponse",
     "GetAspectTypeRequest",
@@ -568,8 +582,11 @@ __all__ = (
     "MetadataFeed",
     "MetadataJob",
     "MetadataServiceClient",
+    "ModifyEntryRequest",
     "OperationMetadata",
     "Partition",
+    "RequestDataProductAccessRequest",
+    "RequestDataProductAccessResponse",
     "ResourceAccessSpec",
     "RunDataScanRequest",
     "RunDataScanResponse",

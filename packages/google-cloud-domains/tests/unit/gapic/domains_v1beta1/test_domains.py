@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -115,6 +116,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1250,8 +1266,8 @@ def test_domains_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        domains.SearchDomainsRequest,
-        dict,
+        domains.SearchDomainsRequest(),
+        {},
     ],
 )
 def test_search_domains(request_type, transport: str = "grpc"):
@@ -1262,7 +1278,7 @@ def test_search_domains(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.search_domains), "__call__") as call:
@@ -1304,10 +1320,11 @@ def test_search_domains_non_empty_request_with_auto_populated_field():
         client.search_domains(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == domains.SearchDomainsRequest(
+        request_msg = domains.SearchDomainsRequest(
             query="query_value",
             location="location_value",
         )
+        assert args[0] == request_msg
 
 
 def test_search_domains_use_cached_wrapped_rpc():
@@ -1388,9 +1405,14 @@ async def test_search_domains_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_search_domains_async(
-    transport: str = "grpc_asyncio", request_type=domains.SearchDomainsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        domains.SearchDomainsRequest(),
+        {},
+    ],
+)
+async def test_search_domains_async(request_type, transport: str = "grpc_asyncio"):
     client = DomainsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1398,7 +1420,7 @@ async def test_search_domains_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.search_domains), "__call__") as call:
@@ -1416,11 +1438,6 @@ async def test_search_domains_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, domains.SearchDomainsResponse)
-
-
-@pytest.mark.asyncio
-async def test_search_domains_async_from_dict():
-    await test_search_domains_async(request_type=dict)
 
 
 def test_search_domains_field_headers():
@@ -1579,8 +1596,8 @@ async def test_search_domains_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        domains.RetrieveRegisterParametersRequest,
-        dict,
+        domains.RetrieveRegisterParametersRequest(),
+        {},
     ],
 )
 def test_retrieve_register_parameters(request_type, transport: str = "grpc"):
@@ -1591,7 +1608,7 @@ def test_retrieve_register_parameters(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1637,10 +1654,11 @@ def test_retrieve_register_parameters_non_empty_request_with_auto_populated_fiel
         client.retrieve_register_parameters(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == domains.RetrieveRegisterParametersRequest(
+        request_msg = domains.RetrieveRegisterParametersRequest(
             domain_name="domain_name_value",
             location="location_value",
         )
+        assert args[0] == request_msg
 
 
 def test_retrieve_register_parameters_use_cached_wrapped_rpc():
@@ -1726,9 +1744,15 @@ async def test_retrieve_register_parameters_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        domains.RetrieveRegisterParametersRequest(),
+        {},
+    ],
+)
 async def test_retrieve_register_parameters_async(
-    transport: str = "grpc_asyncio",
-    request_type=domains.RetrieveRegisterParametersRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DomainsAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1737,7 +1761,7 @@ async def test_retrieve_register_parameters_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1757,11 +1781,6 @@ async def test_retrieve_register_parameters_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, domains.RetrieveRegisterParametersResponse)
-
-
-@pytest.mark.asyncio
-async def test_retrieve_register_parameters_async_from_dict():
-    await test_retrieve_register_parameters_async(request_type=dict)
 
 
 def test_retrieve_register_parameters_field_headers():
@@ -1928,8 +1947,8 @@ async def test_retrieve_register_parameters_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        domains.RegisterDomainRequest,
-        dict,
+        domains.RegisterDomainRequest(),
+        {},
     ],
 )
 def test_register_domain(request_type, transport: str = "grpc"):
@@ -1940,7 +1959,7 @@ def test_register_domain(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.register_domain), "__call__") as call:
@@ -1981,9 +2000,10 @@ def test_register_domain_non_empty_request_with_auto_populated_field():
         client.register_domain(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == domains.RegisterDomainRequest(
+        request_msg = domains.RegisterDomainRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_register_domain_use_cached_wrapped_rpc():
@@ -2074,9 +2094,14 @@ async def test_register_domain_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_register_domain_async(
-    transport: str = "grpc_asyncio", request_type=domains.RegisterDomainRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        domains.RegisterDomainRequest(),
+        {},
+    ],
+)
+async def test_register_domain_async(request_type, transport: str = "grpc_asyncio"):
     client = DomainsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2084,7 +2109,7 @@ async def test_register_domain_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.register_domain), "__call__") as call:
@@ -2102,11 +2127,6 @@ async def test_register_domain_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_register_domain_async_from_dict():
-    await test_register_domain_async(request_type=dict)
 
 
 def test_register_domain_field_headers():
@@ -2275,8 +2295,8 @@ async def test_register_domain_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        domains.RetrieveTransferParametersRequest,
-        dict,
+        domains.RetrieveTransferParametersRequest(),
+        {},
     ],
 )
 def test_retrieve_transfer_parameters(request_type, transport: str = "grpc"):
@@ -2287,7 +2307,7 @@ def test_retrieve_transfer_parameters(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2333,10 +2353,11 @@ def test_retrieve_transfer_parameters_non_empty_request_with_auto_populated_fiel
         client.retrieve_transfer_parameters(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == domains.RetrieveTransferParametersRequest(
+        request_msg = domains.RetrieveTransferParametersRequest(
             domain_name="domain_name_value",
             location="location_value",
         )
+        assert args[0] == request_msg
 
 
 def test_retrieve_transfer_parameters_use_cached_wrapped_rpc():
@@ -2422,9 +2443,15 @@ async def test_retrieve_transfer_parameters_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        domains.RetrieveTransferParametersRequest(),
+        {},
+    ],
+)
 async def test_retrieve_transfer_parameters_async(
-    transport: str = "grpc_asyncio",
-    request_type=domains.RetrieveTransferParametersRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DomainsAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2433,7 +2460,7 @@ async def test_retrieve_transfer_parameters_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2453,11 +2480,6 @@ async def test_retrieve_transfer_parameters_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, domains.RetrieveTransferParametersResponse)
-
-
-@pytest.mark.asyncio
-async def test_retrieve_transfer_parameters_async_from_dict():
-    await test_retrieve_transfer_parameters_async(request_type=dict)
 
 
 def test_retrieve_transfer_parameters_field_headers():
@@ -2624,8 +2646,8 @@ async def test_retrieve_transfer_parameters_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        domains.TransferDomainRequest,
-        dict,
+        domains.TransferDomainRequest(),
+        {},
     ],
 )
 def test_transfer_domain(request_type, transport: str = "grpc"):
@@ -2636,7 +2658,7 @@ def test_transfer_domain(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.transfer_domain), "__call__") as call:
@@ -2677,9 +2699,10 @@ def test_transfer_domain_non_empty_request_with_auto_populated_field():
         client.transfer_domain(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == domains.TransferDomainRequest(
+        request_msg = domains.TransferDomainRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_transfer_domain_use_cached_wrapped_rpc():
@@ -2770,9 +2793,14 @@ async def test_transfer_domain_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_transfer_domain_async(
-    transport: str = "grpc_asyncio", request_type=domains.TransferDomainRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        domains.TransferDomainRequest(),
+        {},
+    ],
+)
+async def test_transfer_domain_async(request_type, transport: str = "grpc_asyncio"):
     client = DomainsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2780,7 +2808,7 @@ async def test_transfer_domain_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.transfer_domain), "__call__") as call:
@@ -2798,11 +2826,6 @@ async def test_transfer_domain_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_transfer_domain_async_from_dict():
-    await test_transfer_domain_async(request_type=dict)
 
 
 def test_transfer_domain_field_headers():
@@ -2981,8 +3004,8 @@ async def test_transfer_domain_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        domains.ListRegistrationsRequest,
-        dict,
+        domains.ListRegistrationsRequest(),
+        {},
     ],
 )
 def test_list_registrations(request_type, transport: str = "grpc"):
@@ -2993,7 +3016,7 @@ def test_list_registrations(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3043,11 +3066,12 @@ def test_list_registrations_non_empty_request_with_auto_populated_field():
         client.list_registrations(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == domains.ListRegistrationsRequest(
+        request_msg = domains.ListRegistrationsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_registrations_use_cached_wrapped_rpc():
@@ -3132,9 +3156,14 @@ async def test_list_registrations_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_registrations_async(
-    transport: str = "grpc_asyncio", request_type=domains.ListRegistrationsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        domains.ListRegistrationsRequest(),
+        {},
+    ],
+)
+async def test_list_registrations_async(request_type, transport: str = "grpc_asyncio"):
     client = DomainsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3142,7 +3171,7 @@ async def test_list_registrations_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3165,11 +3194,6 @@ async def test_list_registrations_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListRegistrationsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_registrations_async_from_dict():
-    await test_list_registrations_async(request_type=dict)
 
 
 def test_list_registrations_field_headers():
@@ -3524,8 +3548,8 @@ async def test_list_registrations_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        domains.GetRegistrationRequest,
-        dict,
+        domains.GetRegistrationRequest(),
+        {},
     ],
 )
 def test_get_registration(request_type, transport: str = "grpc"):
@@ -3536,7 +3560,7 @@ def test_get_registration(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_registration), "__call__") as call:
@@ -3588,9 +3612,10 @@ def test_get_registration_non_empty_request_with_auto_populated_field():
         client.get_registration(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == domains.GetRegistrationRequest(
+        request_msg = domains.GetRegistrationRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_registration_use_cached_wrapped_rpc():
@@ -3673,9 +3698,14 @@ async def test_get_registration_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_registration_async(
-    transport: str = "grpc_asyncio", request_type=domains.GetRegistrationRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        domains.GetRegistrationRequest(),
+        {},
+    ],
+)
+async def test_get_registration_async(request_type, transport: str = "grpc_asyncio"):
     client = DomainsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3683,7 +3713,7 @@ async def test_get_registration_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_registration), "__call__") as call:
@@ -3712,11 +3742,6 @@ async def test_get_registration_async(
     assert response.state == domains.Registration.State.REGISTRATION_PENDING
     assert response.issues == [domains.Registration.Issue.CONTACT_SUPPORT]
     assert response.supported_privacy == [domains.ContactPrivacy.PUBLIC_CONTACT_DATA]
-
-
-@pytest.mark.asyncio
-async def test_get_registration_async_from_dict():
-    await test_get_registration_async(request_type=dict)
 
 
 def test_get_registration_field_headers():
@@ -3865,8 +3890,8 @@ async def test_get_registration_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        domains.UpdateRegistrationRequest,
-        dict,
+        domains.UpdateRegistrationRequest(),
+        {},
     ],
 )
 def test_update_registration(request_type, transport: str = "grpc"):
@@ -3877,7 +3902,7 @@ def test_update_registration(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3920,7 +3945,8 @@ def test_update_registration_non_empty_request_with_auto_populated_field():
         client.update_registration(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == domains.UpdateRegistrationRequest()
+        request_msg = domains.UpdateRegistrationRequest()
+        assert args[0] == request_msg
 
 
 def test_update_registration_use_cached_wrapped_rpc():
@@ -4015,9 +4041,14 @@ async def test_update_registration_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_registration_async(
-    transport: str = "grpc_asyncio", request_type=domains.UpdateRegistrationRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        domains.UpdateRegistrationRequest(),
+        {},
+    ],
+)
+async def test_update_registration_async(request_type, transport: str = "grpc_asyncio"):
     client = DomainsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4025,7 +4056,7 @@ async def test_update_registration_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4045,11 +4076,6 @@ async def test_update_registration_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_registration_async_from_dict():
-    await test_update_registration_async(request_type=dict)
 
 
 def test_update_registration_field_headers():
@@ -4216,8 +4242,8 @@ async def test_update_registration_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        domains.ConfigureManagementSettingsRequest,
-        dict,
+        domains.ConfigureManagementSettingsRequest(),
+        {},
     ],
 )
 def test_configure_management_settings(request_type, transport: str = "grpc"):
@@ -4228,7 +4254,7 @@ def test_configure_management_settings(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4273,9 +4299,10 @@ def test_configure_management_settings_non_empty_request_with_auto_populated_fie
         client.configure_management_settings(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == domains.ConfigureManagementSettingsRequest(
+        request_msg = domains.ConfigureManagementSettingsRequest(
             registration="registration_value",
         )
+        assert args[0] == request_msg
 
 
 def test_configure_management_settings_use_cached_wrapped_rpc():
@@ -4371,9 +4398,15 @@ async def test_configure_management_settings_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        domains.ConfigureManagementSettingsRequest(),
+        {},
+    ],
+)
 async def test_configure_management_settings_async(
-    transport: str = "grpc_asyncio",
-    request_type=domains.ConfigureManagementSettingsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DomainsAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4382,7 +4415,7 @@ async def test_configure_management_settings_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4402,11 +4435,6 @@ async def test_configure_management_settings_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_configure_management_settings_async_from_dict():
-    await test_configure_management_settings_async(request_type=dict)
 
 
 def test_configure_management_settings_field_headers():
@@ -4595,8 +4623,8 @@ async def test_configure_management_settings_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        domains.ConfigureDnsSettingsRequest,
-        dict,
+        domains.ConfigureDnsSettingsRequest(),
+        {},
     ],
 )
 def test_configure_dns_settings(request_type, transport: str = "grpc"):
@@ -4607,7 +4635,7 @@ def test_configure_dns_settings(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4652,9 +4680,10 @@ def test_configure_dns_settings_non_empty_request_with_auto_populated_field():
         client.configure_dns_settings(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == domains.ConfigureDnsSettingsRequest(
+        request_msg = domains.ConfigureDnsSettingsRequest(
             registration="registration_value",
         )
+        assert args[0] == request_msg
 
 
 def test_configure_dns_settings_use_cached_wrapped_rpc():
@@ -4750,8 +4779,15 @@ async def test_configure_dns_settings_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        domains.ConfigureDnsSettingsRequest(),
+        {},
+    ],
+)
 async def test_configure_dns_settings_async(
-    transport: str = "grpc_asyncio", request_type=domains.ConfigureDnsSettingsRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DomainsAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4760,7 +4796,7 @@ async def test_configure_dns_settings_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4780,11 +4816,6 @@ async def test_configure_dns_settings_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_configure_dns_settings_async_from_dict():
-    await test_configure_dns_settings_async(request_type=dict)
 
 
 def test_configure_dns_settings_field_headers():
@@ -4985,8 +5016,8 @@ async def test_configure_dns_settings_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        domains.ConfigureContactSettingsRequest,
-        dict,
+        domains.ConfigureContactSettingsRequest(),
+        {},
     ],
 )
 def test_configure_contact_settings(request_type, transport: str = "grpc"):
@@ -4997,7 +5028,7 @@ def test_configure_contact_settings(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5042,9 +5073,10 @@ def test_configure_contact_settings_non_empty_request_with_auto_populated_field(
         client.configure_contact_settings(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == domains.ConfigureContactSettingsRequest(
+        request_msg = domains.ConfigureContactSettingsRequest(
             registration="registration_value",
         )
+        assert args[0] == request_msg
 
 
 def test_configure_contact_settings_use_cached_wrapped_rpc():
@@ -5140,9 +5172,15 @@ async def test_configure_contact_settings_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        domains.ConfigureContactSettingsRequest(),
+        {},
+    ],
+)
 async def test_configure_contact_settings_async(
-    transport: str = "grpc_asyncio",
-    request_type=domains.ConfigureContactSettingsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DomainsAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5151,7 +5189,7 @@ async def test_configure_contact_settings_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5171,11 +5209,6 @@ async def test_configure_contact_settings_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_configure_contact_settings_async_from_dict():
-    await test_configure_contact_settings_async(request_type=dict)
 
 
 def test_configure_contact_settings_field_headers():
@@ -5364,8 +5397,8 @@ async def test_configure_contact_settings_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        domains.ExportRegistrationRequest,
-        dict,
+        domains.ExportRegistrationRequest(),
+        {},
     ],
 )
 def test_export_registration(request_type, transport: str = "grpc"):
@@ -5376,7 +5409,7 @@ def test_export_registration(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5421,9 +5454,10 @@ def test_export_registration_non_empty_request_with_auto_populated_field():
         client.export_registration(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == domains.ExportRegistrationRequest(
+        request_msg = domains.ExportRegistrationRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_export_registration_use_cached_wrapped_rpc():
@@ -5518,9 +5552,14 @@ async def test_export_registration_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_export_registration_async(
-    transport: str = "grpc_asyncio", request_type=domains.ExportRegistrationRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        domains.ExportRegistrationRequest(),
+        {},
+    ],
+)
+async def test_export_registration_async(request_type, transport: str = "grpc_asyncio"):
     client = DomainsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5528,7 +5567,7 @@ async def test_export_registration_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5548,11 +5587,6 @@ async def test_export_registration_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_export_registration_async_from_dict():
-    await test_export_registration_async(request_type=dict)
 
 
 def test_export_registration_field_headers():
@@ -5709,8 +5743,8 @@ async def test_export_registration_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        domains.DeleteRegistrationRequest,
-        dict,
+        domains.DeleteRegistrationRequest(),
+        {},
     ],
 )
 def test_delete_registration(request_type, transport: str = "grpc"):
@@ -5721,7 +5755,7 @@ def test_delete_registration(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5766,9 +5800,10 @@ def test_delete_registration_non_empty_request_with_auto_populated_field():
         client.delete_registration(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == domains.DeleteRegistrationRequest(
+        request_msg = domains.DeleteRegistrationRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_registration_use_cached_wrapped_rpc():
@@ -5863,9 +5898,14 @@ async def test_delete_registration_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_registration_async(
-    transport: str = "grpc_asyncio", request_type=domains.DeleteRegistrationRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        domains.DeleteRegistrationRequest(),
+        {},
+    ],
+)
+async def test_delete_registration_async(request_type, transport: str = "grpc_asyncio"):
     client = DomainsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5873,7 +5913,7 @@ async def test_delete_registration_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5893,11 +5933,6 @@ async def test_delete_registration_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_registration_async_from_dict():
-    await test_delete_registration_async(request_type=dict)
 
 
 def test_delete_registration_field_headers():
@@ -6054,8 +6089,8 @@ async def test_delete_registration_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        domains.RetrieveAuthorizationCodeRequest,
-        dict,
+        domains.RetrieveAuthorizationCodeRequest(),
+        {},
     ],
 )
 def test_retrieve_authorization_code(request_type, transport: str = "grpc"):
@@ -6066,7 +6101,7 @@ def test_retrieve_authorization_code(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6114,9 +6149,10 @@ def test_retrieve_authorization_code_non_empty_request_with_auto_populated_field
         client.retrieve_authorization_code(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == domains.RetrieveAuthorizationCodeRequest(
+        request_msg = domains.RetrieveAuthorizationCodeRequest(
             registration="registration_value",
         )
+        assert args[0] == request_msg
 
 
 def test_retrieve_authorization_code_use_cached_wrapped_rpc():
@@ -6202,9 +6238,15 @@ async def test_retrieve_authorization_code_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        domains.RetrieveAuthorizationCodeRequest(),
+        {},
+    ],
+)
 async def test_retrieve_authorization_code_async(
-    transport: str = "grpc_asyncio",
-    request_type=domains.RetrieveAuthorizationCodeRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DomainsAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -6213,7 +6255,7 @@ async def test_retrieve_authorization_code_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6236,11 +6278,6 @@ async def test_retrieve_authorization_code_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, domains.AuthorizationCode)
     assert response.code == "code_value"
-
-
-@pytest.mark.asyncio
-async def test_retrieve_authorization_code_async_from_dict():
-    await test_retrieve_authorization_code_async(request_type=dict)
 
 
 def test_retrieve_authorization_code_field_headers():
@@ -6397,8 +6434,8 @@ async def test_retrieve_authorization_code_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        domains.ResetAuthorizationCodeRequest,
-        dict,
+        domains.ResetAuthorizationCodeRequest(),
+        {},
     ],
 )
 def test_reset_authorization_code(request_type, transport: str = "grpc"):
@@ -6409,7 +6446,7 @@ def test_reset_authorization_code(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6457,9 +6494,10 @@ def test_reset_authorization_code_non_empty_request_with_auto_populated_field():
         client.reset_authorization_code(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == domains.ResetAuthorizationCodeRequest(
+        request_msg = domains.ResetAuthorizationCodeRequest(
             registration="registration_value",
         )
+        assert args[0] == request_msg
 
 
 def test_reset_authorization_code_use_cached_wrapped_rpc():
@@ -6545,8 +6583,15 @@ async def test_reset_authorization_code_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        domains.ResetAuthorizationCodeRequest(),
+        {},
+    ],
+)
 async def test_reset_authorization_code_async(
-    transport: str = "grpc_asyncio", request_type=domains.ResetAuthorizationCodeRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DomainsAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -6555,7 +6600,7 @@ async def test_reset_authorization_code_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6578,11 +6623,6 @@ async def test_reset_authorization_code_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, domains.AuthorizationCode)
     assert response.code == "code_value"
-
-
-@pytest.mark.asyncio
-async def test_reset_authorization_code_async_from_dict():
-    await test_reset_authorization_code_async(request_type=dict)
 
 
 def test_reset_authorization_code_field_headers():
@@ -9834,7 +9874,6 @@ def test_search_domains_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = domains.SearchDomainsRequest()
-
         assert args[0] == request_msg
 
 
@@ -9857,7 +9896,6 @@ def test_retrieve_register_parameters_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = domains.RetrieveRegisterParametersRequest()
-
         assert args[0] == request_msg
 
 
@@ -9878,7 +9916,6 @@ def test_register_domain_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = domains.RegisterDomainRequest()
-
         assert args[0] == request_msg
 
 
@@ -9901,7 +9938,6 @@ def test_retrieve_transfer_parameters_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = domains.RetrieveTransferParametersRequest()
-
         assert args[0] == request_msg
 
 
@@ -9922,7 +9958,6 @@ def test_transfer_domain_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = domains.TransferDomainRequest()
-
         assert args[0] == request_msg
 
 
@@ -9945,7 +9980,6 @@ def test_list_registrations_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = domains.ListRegistrationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -9966,7 +10000,6 @@ def test_get_registration_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = domains.GetRegistrationRequest()
-
         assert args[0] == request_msg
 
 
@@ -9989,7 +10022,6 @@ def test_update_registration_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = domains.UpdateRegistrationRequest()
-
         assert args[0] == request_msg
 
 
@@ -10012,7 +10044,6 @@ def test_configure_management_settings_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = domains.ConfigureManagementSettingsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10035,7 +10066,6 @@ def test_configure_dns_settings_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = domains.ConfigureDnsSettingsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10058,7 +10088,6 @@ def test_configure_contact_settings_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = domains.ConfigureContactSettingsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10081,7 +10110,6 @@ def test_export_registration_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = domains.ExportRegistrationRequest()
-
         assert args[0] == request_msg
 
 
@@ -10104,7 +10132,6 @@ def test_delete_registration_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = domains.DeleteRegistrationRequest()
-
         assert args[0] == request_msg
 
 
@@ -10127,7 +10154,6 @@ def test_retrieve_authorization_code_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = domains.RetrieveAuthorizationCodeRequest()
-
         assert args[0] == request_msg
 
 
@@ -10150,7 +10176,6 @@ def test_reset_authorization_code_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = domains.ResetAuthorizationCodeRequest()
-
         assert args[0] == request_msg
 
 
@@ -10189,7 +10214,6 @@ async def test_search_domains_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = domains.SearchDomainsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10216,7 +10240,6 @@ async def test_retrieve_register_parameters_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = domains.RetrieveRegisterParametersRequest()
-
         assert args[0] == request_msg
 
 
@@ -10241,7 +10264,6 @@ async def test_register_domain_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = domains.RegisterDomainRequest()
-
         assert args[0] == request_msg
 
 
@@ -10268,7 +10290,6 @@ async def test_retrieve_transfer_parameters_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = domains.RetrieveTransferParametersRequest()
-
         assert args[0] == request_msg
 
 
@@ -10293,7 +10314,6 @@ async def test_transfer_domain_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = domains.TransferDomainRequest()
-
         assert args[0] == request_msg
 
 
@@ -10322,7 +10342,6 @@ async def test_list_registrations_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = domains.ListRegistrationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10353,7 +10372,6 @@ async def test_get_registration_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = domains.GetRegistrationRequest()
-
         assert args[0] == request_msg
 
 
@@ -10380,7 +10398,6 @@ async def test_update_registration_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = domains.UpdateRegistrationRequest()
-
         assert args[0] == request_msg
 
 
@@ -10407,7 +10424,6 @@ async def test_configure_management_settings_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = domains.ConfigureManagementSettingsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10434,7 +10450,6 @@ async def test_configure_dns_settings_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = domains.ConfigureDnsSettingsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10461,7 +10476,6 @@ async def test_configure_contact_settings_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = domains.ConfigureContactSettingsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10488,7 +10502,6 @@ async def test_export_registration_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = domains.ExportRegistrationRequest()
-
         assert args[0] == request_msg
 
 
@@ -10515,7 +10528,6 @@ async def test_delete_registration_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = domains.DeleteRegistrationRequest()
-
         assert args[0] == request_msg
 
 
@@ -10544,7 +10556,6 @@ async def test_retrieve_authorization_code_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = domains.RetrieveAuthorizationCodeRequest()
-
         assert args[0] == request_msg
 
 
@@ -10573,7 +10584,6 @@ async def test_reset_authorization_code_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = domains.ResetAuthorizationCodeRequest()
-
         assert args[0] == request_msg
 
 
@@ -12652,7 +12662,6 @@ def test_search_domains_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = domains.SearchDomainsRequest()
-
         assert args[0] == request_msg
 
 
@@ -12674,7 +12683,6 @@ def test_retrieve_register_parameters_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = domains.RetrieveRegisterParametersRequest()
-
         assert args[0] == request_msg
 
 
@@ -12694,7 +12702,6 @@ def test_register_domain_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = domains.RegisterDomainRequest()
-
         assert args[0] == request_msg
 
 
@@ -12716,7 +12723,6 @@ def test_retrieve_transfer_parameters_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = domains.RetrieveTransferParametersRequest()
-
         assert args[0] == request_msg
 
 
@@ -12736,7 +12742,6 @@ def test_transfer_domain_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = domains.TransferDomainRequest()
-
         assert args[0] == request_msg
 
 
@@ -12758,7 +12763,6 @@ def test_list_registrations_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = domains.ListRegistrationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -12778,7 +12782,6 @@ def test_get_registration_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = domains.GetRegistrationRequest()
-
         assert args[0] == request_msg
 
 
@@ -12800,7 +12803,6 @@ def test_update_registration_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = domains.UpdateRegistrationRequest()
-
         assert args[0] == request_msg
 
 
@@ -12822,7 +12824,6 @@ def test_configure_management_settings_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = domains.ConfigureManagementSettingsRequest()
-
         assert args[0] == request_msg
 
 
@@ -12844,7 +12845,6 @@ def test_configure_dns_settings_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = domains.ConfigureDnsSettingsRequest()
-
         assert args[0] == request_msg
 
 
@@ -12866,7 +12866,6 @@ def test_configure_contact_settings_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = domains.ConfigureContactSettingsRequest()
-
         assert args[0] == request_msg
 
 
@@ -12888,7 +12887,6 @@ def test_export_registration_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = domains.ExportRegistrationRequest()
-
         assert args[0] == request_msg
 
 
@@ -12910,7 +12908,6 @@ def test_delete_registration_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = domains.DeleteRegistrationRequest()
-
         assert args[0] == request_msg
 
 
@@ -12932,7 +12929,6 @@ def test_retrieve_authorization_code_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = domains.RetrieveAuthorizationCodeRequest()
-
         assert args[0] == request_msg
 
 
@@ -12954,7 +12950,6 @@ def test_reset_authorization_code_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = domains.ResetAuthorizationCodeRequest()
-
         assert args[0] == request_msg
 
 

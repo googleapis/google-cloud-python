@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import asyncio
 import json
 import math
 import os
@@ -117,6 +118,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1284,8 +1300,8 @@ def test_aws_clusters_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        aws_service.CreateAwsClusterRequest,
-        dict,
+        aws_service.CreateAwsClusterRequest(),
+        {},
     ],
 )
 def test_create_aws_cluster(request_type, transport: str = "grpc"):
@@ -1296,7 +1312,7 @@ def test_create_aws_cluster(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1342,10 +1358,11 @@ def test_create_aws_cluster_non_empty_request_with_auto_populated_field():
         client.create_aws_cluster(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.CreateAwsClusterRequest(
+        request_msg = aws_service.CreateAwsClusterRequest(
             parent="parent_value",
             aws_cluster_id="aws_cluster_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_aws_cluster_use_cached_wrapped_rpc():
@@ -1440,9 +1457,14 @@ async def test_create_aws_cluster_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_aws_cluster_async(
-    transport: str = "grpc_asyncio", request_type=aws_service.CreateAwsClusterRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        aws_service.CreateAwsClusterRequest(),
+        {},
+    ],
+)
+async def test_create_aws_cluster_async(request_type, transport: str = "grpc_asyncio"):
     client = AwsClustersAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1450,7 +1472,7 @@ async def test_create_aws_cluster_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1470,11 +1492,6 @@ async def test_create_aws_cluster_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_aws_cluster_async_from_dict():
-    await test_create_aws_cluster_async(request_type=dict)
 
 
 def test_create_aws_cluster_field_headers():
@@ -1651,8 +1668,8 @@ async def test_create_aws_cluster_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        aws_service.UpdateAwsClusterRequest,
-        dict,
+        aws_service.UpdateAwsClusterRequest(),
+        {},
     ],
 )
 def test_update_aws_cluster(request_type, transport: str = "grpc"):
@@ -1663,7 +1680,7 @@ def test_update_aws_cluster(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1706,7 +1723,8 @@ def test_update_aws_cluster_non_empty_request_with_auto_populated_field():
         client.update_aws_cluster(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.UpdateAwsClusterRequest()
+        request_msg = aws_service.UpdateAwsClusterRequest()
+        assert args[0] == request_msg
 
 
 def test_update_aws_cluster_use_cached_wrapped_rpc():
@@ -1801,9 +1819,14 @@ async def test_update_aws_cluster_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_aws_cluster_async(
-    transport: str = "grpc_asyncio", request_type=aws_service.UpdateAwsClusterRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        aws_service.UpdateAwsClusterRequest(),
+        {},
+    ],
+)
+async def test_update_aws_cluster_async(request_type, transport: str = "grpc_asyncio"):
     client = AwsClustersAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1811,7 +1834,7 @@ async def test_update_aws_cluster_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1831,11 +1854,6 @@ async def test_update_aws_cluster_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_aws_cluster_async_from_dict():
-    await test_update_aws_cluster_async(request_type=dict)
 
 
 def test_update_aws_cluster_field_headers():
@@ -2002,8 +2020,8 @@ async def test_update_aws_cluster_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        aws_service.GetAwsClusterRequest,
-        dict,
+        aws_service.GetAwsClusterRequest(),
+        {},
     ],
 )
 def test_get_aws_cluster(request_type, transport: str = "grpc"):
@@ -2014,7 +2032,7 @@ def test_get_aws_cluster(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_aws_cluster), "__call__") as call:
@@ -2074,9 +2092,10 @@ def test_get_aws_cluster_non_empty_request_with_auto_populated_field():
         client.get_aws_cluster(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.GetAwsClusterRequest(
+        request_msg = aws_service.GetAwsClusterRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_aws_cluster_use_cached_wrapped_rpc():
@@ -2157,9 +2176,14 @@ async def test_get_aws_cluster_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_aws_cluster_async(
-    transport: str = "grpc_asyncio", request_type=aws_service.GetAwsClusterRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        aws_service.GetAwsClusterRequest(),
+        {},
+    ],
+)
+async def test_get_aws_cluster_async(request_type, transport: str = "grpc_asyncio"):
     client = AwsClustersAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2167,7 +2191,7 @@ async def test_get_aws_cluster_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_aws_cluster), "__call__") as call:
@@ -2204,11 +2228,6 @@ async def test_get_aws_cluster_async(
     assert response.reconciling is True
     assert response.etag == "etag_value"
     assert response.cluster_ca_certificate == "cluster_ca_certificate_value"
-
-
-@pytest.mark.asyncio
-async def test_get_aws_cluster_async_from_dict():
-    await test_get_aws_cluster_async(request_type=dict)
 
 
 def test_get_aws_cluster_field_headers():
@@ -2357,8 +2376,8 @@ async def test_get_aws_cluster_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        aws_service.ListAwsClustersRequest,
-        dict,
+        aws_service.ListAwsClustersRequest(),
+        {},
     ],
 )
 def test_list_aws_clusters(request_type, transport: str = "grpc"):
@@ -2369,7 +2388,7 @@ def test_list_aws_clusters(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2418,10 +2437,11 @@ def test_list_aws_clusters_non_empty_request_with_auto_populated_field():
         client.list_aws_clusters(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.ListAwsClustersRequest(
+        request_msg = aws_service.ListAwsClustersRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_aws_clusters_use_cached_wrapped_rpc():
@@ -2504,9 +2524,14 @@ async def test_list_aws_clusters_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_aws_clusters_async(
-    transport: str = "grpc_asyncio", request_type=aws_service.ListAwsClustersRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        aws_service.ListAwsClustersRequest(),
+        {},
+    ],
+)
+async def test_list_aws_clusters_async(request_type, transport: str = "grpc_asyncio"):
     client = AwsClustersAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2514,7 +2539,7 @@ async def test_list_aws_clusters_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2537,11 +2562,6 @@ async def test_list_aws_clusters_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAwsClustersAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_aws_clusters_async_from_dict():
-    await test_list_aws_clusters_async(request_type=dict)
 
 
 def test_list_aws_clusters_field_headers():
@@ -2896,8 +2916,8 @@ async def test_list_aws_clusters_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        aws_service.DeleteAwsClusterRequest,
-        dict,
+        aws_service.DeleteAwsClusterRequest(),
+        {},
     ],
 )
 def test_delete_aws_cluster(request_type, transport: str = "grpc"):
@@ -2908,7 +2928,7 @@ def test_delete_aws_cluster(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2954,10 +2974,11 @@ def test_delete_aws_cluster_non_empty_request_with_auto_populated_field():
         client.delete_aws_cluster(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.DeleteAwsClusterRequest(
+        request_msg = aws_service.DeleteAwsClusterRequest(
             name="name_value",
             etag="etag_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_aws_cluster_use_cached_wrapped_rpc():
@@ -3052,9 +3073,14 @@ async def test_delete_aws_cluster_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_aws_cluster_async(
-    transport: str = "grpc_asyncio", request_type=aws_service.DeleteAwsClusterRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        aws_service.DeleteAwsClusterRequest(),
+        {},
+    ],
+)
+async def test_delete_aws_cluster_async(request_type, transport: str = "grpc_asyncio"):
     client = AwsClustersAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3062,7 +3088,7 @@ async def test_delete_aws_cluster_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3082,11 +3108,6 @@ async def test_delete_aws_cluster_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_aws_cluster_async_from_dict():
-    await test_delete_aws_cluster_async(request_type=dict)
 
 
 def test_delete_aws_cluster_field_headers():
@@ -3243,8 +3264,8 @@ async def test_delete_aws_cluster_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        aws_service.GenerateAwsClusterAgentTokenRequest,
-        dict,
+        aws_service.GenerateAwsClusterAgentTokenRequest(),
+        {},
     ],
 )
 def test_generate_aws_cluster_agent_token(request_type, transport: str = "grpc"):
@@ -3255,7 +3276,7 @@ def test_generate_aws_cluster_agent_token(request_type, transport: str = "grpc")
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3316,7 +3337,7 @@ def test_generate_aws_cluster_agent_token_non_empty_request_with_auto_populated_
         client.generate_aws_cluster_agent_token(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.GenerateAwsClusterAgentTokenRequest(
+        request_msg = aws_service.GenerateAwsClusterAgentTokenRequest(
             aws_cluster="aws_cluster_value",
             subject_token="subject_token_value",
             subject_token_type="subject_token_type_value",
@@ -3328,6 +3349,7 @@ def test_generate_aws_cluster_agent_token_non_empty_request_with_auto_populated_
             requested_token_type="requested_token_type_value",
             options="options_value",
         )
+        assert args[0] == request_msg
 
 
 def test_generate_aws_cluster_agent_token_use_cached_wrapped_rpc():
@@ -3413,9 +3435,15 @@ async def test_generate_aws_cluster_agent_token_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        aws_service.GenerateAwsClusterAgentTokenRequest(),
+        {},
+    ],
+)
 async def test_generate_aws_cluster_agent_token_async(
-    transport: str = "grpc_asyncio",
-    request_type=aws_service.GenerateAwsClusterAgentTokenRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AwsClustersAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3424,7 +3452,7 @@ async def test_generate_aws_cluster_agent_token_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3451,11 +3479,6 @@ async def test_generate_aws_cluster_agent_token_async(
     assert response.access_token == "access_token_value"
     assert response.expires_in == 1078
     assert response.token_type == "token_type_value"
-
-
-@pytest.mark.asyncio
-async def test_generate_aws_cluster_agent_token_async_from_dict():
-    await test_generate_aws_cluster_agent_token_async(request_type=dict)
 
 
 def test_generate_aws_cluster_agent_token_field_headers():
@@ -3526,8 +3549,8 @@ async def test_generate_aws_cluster_agent_token_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        aws_service.GenerateAwsAccessTokenRequest,
-        dict,
+        aws_service.GenerateAwsAccessTokenRequest(),
+        {},
     ],
 )
 def test_generate_aws_access_token(request_type, transport: str = "grpc"):
@@ -3538,7 +3561,7 @@ def test_generate_aws_access_token(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3586,9 +3609,10 @@ def test_generate_aws_access_token_non_empty_request_with_auto_populated_field()
         client.generate_aws_access_token(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.GenerateAwsAccessTokenRequest(
+        request_msg = aws_service.GenerateAwsAccessTokenRequest(
             aws_cluster="aws_cluster_value",
         )
+        assert args[0] == request_msg
 
 
 def test_generate_aws_access_token_use_cached_wrapped_rpc():
@@ -3674,9 +3698,15 @@ async def test_generate_aws_access_token_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        aws_service.GenerateAwsAccessTokenRequest(),
+        {},
+    ],
+)
 async def test_generate_aws_access_token_async(
-    transport: str = "grpc_asyncio",
-    request_type=aws_service.GenerateAwsAccessTokenRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AwsClustersAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3685,7 +3715,7 @@ async def test_generate_aws_access_token_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3708,11 +3738,6 @@ async def test_generate_aws_access_token_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, aws_service.GenerateAwsAccessTokenResponse)
     assert response.access_token == "access_token_value"
-
-
-@pytest.mark.asyncio
-async def test_generate_aws_access_token_async_from_dict():
-    await test_generate_aws_access_token_async(request_type=dict)
 
 
 def test_generate_aws_access_token_field_headers():
@@ -3783,8 +3808,8 @@ async def test_generate_aws_access_token_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        aws_service.CreateAwsNodePoolRequest,
-        dict,
+        aws_service.CreateAwsNodePoolRequest(),
+        {},
     ],
 )
 def test_create_aws_node_pool(request_type, transport: str = "grpc"):
@@ -3795,7 +3820,7 @@ def test_create_aws_node_pool(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3841,10 +3866,11 @@ def test_create_aws_node_pool_non_empty_request_with_auto_populated_field():
         client.create_aws_node_pool(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.CreateAwsNodePoolRequest(
+        request_msg = aws_service.CreateAwsNodePoolRequest(
             parent="parent_value",
             aws_node_pool_id="aws_node_pool_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_aws_node_pool_use_cached_wrapped_rpc():
@@ -3939,8 +3965,15 @@ async def test_create_aws_node_pool_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        aws_service.CreateAwsNodePoolRequest(),
+        {},
+    ],
+)
 async def test_create_aws_node_pool_async(
-    transport: str = "grpc_asyncio", request_type=aws_service.CreateAwsNodePoolRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AwsClustersAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3949,7 +3982,7 @@ async def test_create_aws_node_pool_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3969,11 +4002,6 @@ async def test_create_aws_node_pool_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_aws_node_pool_async_from_dict():
-    await test_create_aws_node_pool_async(request_type=dict)
 
 
 def test_create_aws_node_pool_field_headers():
@@ -4150,8 +4178,8 @@ async def test_create_aws_node_pool_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        aws_service.UpdateAwsNodePoolRequest,
-        dict,
+        aws_service.UpdateAwsNodePoolRequest(),
+        {},
     ],
 )
 def test_update_aws_node_pool(request_type, transport: str = "grpc"):
@@ -4162,7 +4190,7 @@ def test_update_aws_node_pool(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4205,7 +4233,8 @@ def test_update_aws_node_pool_non_empty_request_with_auto_populated_field():
         client.update_aws_node_pool(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.UpdateAwsNodePoolRequest()
+        request_msg = aws_service.UpdateAwsNodePoolRequest()
+        assert args[0] == request_msg
 
 
 def test_update_aws_node_pool_use_cached_wrapped_rpc():
@@ -4300,8 +4329,15 @@ async def test_update_aws_node_pool_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        aws_service.UpdateAwsNodePoolRequest(),
+        {},
+    ],
+)
 async def test_update_aws_node_pool_async(
-    transport: str = "grpc_asyncio", request_type=aws_service.UpdateAwsNodePoolRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AwsClustersAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4310,7 +4346,7 @@ async def test_update_aws_node_pool_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4330,11 +4366,6 @@ async def test_update_aws_node_pool_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_aws_node_pool_async_from_dict():
-    await test_update_aws_node_pool_async(request_type=dict)
 
 
 def test_update_aws_node_pool_field_headers():
@@ -4501,8 +4532,8 @@ async def test_update_aws_node_pool_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        aws_service.RollbackAwsNodePoolUpdateRequest,
-        dict,
+        aws_service.RollbackAwsNodePoolUpdateRequest(),
+        {},
     ],
 )
 def test_rollback_aws_node_pool_update(request_type, transport: str = "grpc"):
@@ -4513,7 +4544,7 @@ def test_rollback_aws_node_pool_update(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4558,9 +4589,10 @@ def test_rollback_aws_node_pool_update_non_empty_request_with_auto_populated_fie
         client.rollback_aws_node_pool_update(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.RollbackAwsNodePoolUpdateRequest(
+        request_msg = aws_service.RollbackAwsNodePoolUpdateRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_rollback_aws_node_pool_update_use_cached_wrapped_rpc():
@@ -4656,9 +4688,15 @@ async def test_rollback_aws_node_pool_update_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        aws_service.RollbackAwsNodePoolUpdateRequest(),
+        {},
+    ],
+)
 async def test_rollback_aws_node_pool_update_async(
-    transport: str = "grpc_asyncio",
-    request_type=aws_service.RollbackAwsNodePoolUpdateRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AwsClustersAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4667,7 +4705,7 @@ async def test_rollback_aws_node_pool_update_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4687,11 +4725,6 @@ async def test_rollback_aws_node_pool_update_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_rollback_aws_node_pool_update_async_from_dict():
-    await test_rollback_aws_node_pool_update_async(request_type=dict)
 
 
 def test_rollback_aws_node_pool_update_field_headers():
@@ -4848,8 +4881,8 @@ async def test_rollback_aws_node_pool_update_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        aws_service.GetAwsNodePoolRequest,
-        dict,
+        aws_service.GetAwsNodePoolRequest(),
+        {},
     ],
 )
 def test_get_aws_node_pool(request_type, transport: str = "grpc"):
@@ -4860,7 +4893,7 @@ def test_get_aws_node_pool(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4920,9 +4953,10 @@ def test_get_aws_node_pool_non_empty_request_with_auto_populated_field():
         client.get_aws_node_pool(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.GetAwsNodePoolRequest(
+        request_msg = aws_service.GetAwsNodePoolRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_aws_node_pool_use_cached_wrapped_rpc():
@@ -5005,9 +5039,14 @@ async def test_get_aws_node_pool_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_aws_node_pool_async(
-    transport: str = "grpc_asyncio", request_type=aws_service.GetAwsNodePoolRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        aws_service.GetAwsNodePoolRequest(),
+        {},
+    ],
+)
+async def test_get_aws_node_pool_async(request_type, transport: str = "grpc_asyncio"):
     client = AwsClustersAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5015,7 +5054,7 @@ async def test_get_aws_node_pool_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5050,11 +5089,6 @@ async def test_get_aws_node_pool_async(
     assert response.uid == "uid_value"
     assert response.reconciling is True
     assert response.etag == "etag_value"
-
-
-@pytest.mark.asyncio
-async def test_get_aws_node_pool_async_from_dict():
-    await test_get_aws_node_pool_async(request_type=dict)
 
 
 def test_get_aws_node_pool_field_headers():
@@ -5211,8 +5245,8 @@ async def test_get_aws_node_pool_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        aws_service.ListAwsNodePoolsRequest,
-        dict,
+        aws_service.ListAwsNodePoolsRequest(),
+        {},
     ],
 )
 def test_list_aws_node_pools(request_type, transport: str = "grpc"):
@@ -5223,7 +5257,7 @@ def test_list_aws_node_pools(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5272,10 +5306,11 @@ def test_list_aws_node_pools_non_empty_request_with_auto_populated_field():
         client.list_aws_node_pools(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.ListAwsNodePoolsRequest(
+        request_msg = aws_service.ListAwsNodePoolsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_aws_node_pools_use_cached_wrapped_rpc():
@@ -5360,9 +5395,14 @@ async def test_list_aws_node_pools_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_aws_node_pools_async(
-    transport: str = "grpc_asyncio", request_type=aws_service.ListAwsNodePoolsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        aws_service.ListAwsNodePoolsRequest(),
+        {},
+    ],
+)
+async def test_list_aws_node_pools_async(request_type, transport: str = "grpc_asyncio"):
     client = AwsClustersAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5370,7 +5410,7 @@ async def test_list_aws_node_pools_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5393,11 +5433,6 @@ async def test_list_aws_node_pools_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAwsNodePoolsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_aws_node_pools_async_from_dict():
-    await test_list_aws_node_pools_async(request_type=dict)
 
 
 def test_list_aws_node_pools_field_headers():
@@ -5752,8 +5787,8 @@ async def test_list_aws_node_pools_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        aws_service.DeleteAwsNodePoolRequest,
-        dict,
+        aws_service.DeleteAwsNodePoolRequest(),
+        {},
     ],
 )
 def test_delete_aws_node_pool(request_type, transport: str = "grpc"):
@@ -5764,7 +5799,7 @@ def test_delete_aws_node_pool(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5810,10 +5845,11 @@ def test_delete_aws_node_pool_non_empty_request_with_auto_populated_field():
         client.delete_aws_node_pool(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.DeleteAwsNodePoolRequest(
+        request_msg = aws_service.DeleteAwsNodePoolRequest(
             name="name_value",
             etag="etag_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_aws_node_pool_use_cached_wrapped_rpc():
@@ -5908,8 +5944,15 @@ async def test_delete_aws_node_pool_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        aws_service.DeleteAwsNodePoolRequest(),
+        {},
+    ],
+)
 async def test_delete_aws_node_pool_async(
-    transport: str = "grpc_asyncio", request_type=aws_service.DeleteAwsNodePoolRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AwsClustersAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5918,7 +5961,7 @@ async def test_delete_aws_node_pool_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5938,11 +5981,6 @@ async def test_delete_aws_node_pool_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_aws_node_pool_async_from_dict():
-    await test_delete_aws_node_pool_async(request_type=dict)
 
 
 def test_delete_aws_node_pool_field_headers():
@@ -6099,8 +6137,8 @@ async def test_delete_aws_node_pool_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        aws_service.GetAwsOpenIdConfigRequest,
-        dict,
+        aws_service.GetAwsOpenIdConfigRequest(),
+        {},
     ],
 )
 def test_get_aws_open_id_config(request_type, transport: str = "grpc"):
@@ -6111,7 +6149,7 @@ def test_get_aws_open_id_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6175,9 +6213,10 @@ def test_get_aws_open_id_config_non_empty_request_with_auto_populated_field():
         client.get_aws_open_id_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.GetAwsOpenIdConfigRequest(
+        request_msg = aws_service.GetAwsOpenIdConfigRequest(
             aws_cluster="aws_cluster_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_aws_open_id_config_use_cached_wrapped_rpc():
@@ -6263,8 +6302,15 @@ async def test_get_aws_open_id_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        aws_service.GetAwsOpenIdConfigRequest(),
+        {},
+    ],
+)
 async def test_get_aws_open_id_config_async(
-    transport: str = "grpc_asyncio", request_type=aws_service.GetAwsOpenIdConfigRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AwsClustersAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -6273,7 +6319,7 @@ async def test_get_aws_open_id_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6312,11 +6358,6 @@ async def test_get_aws_open_id_config_async(
     ]
     assert response.claims_supported == ["claims_supported_value"]
     assert response.grant_types == ["grant_types_value"]
-
-
-@pytest.mark.asyncio
-async def test_get_aws_open_id_config_async_from_dict():
-    await test_get_aws_open_id_config_async(request_type=dict)
 
 
 def test_get_aws_open_id_config_field_headers():
@@ -6387,8 +6428,8 @@ async def test_get_aws_open_id_config_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        aws_service.GetAwsJsonWebKeysRequest,
-        dict,
+        aws_service.GetAwsJsonWebKeysRequest(),
+        {},
     ],
 )
 def test_get_aws_json_web_keys(request_type, transport: str = "grpc"):
@@ -6399,7 +6440,7 @@ def test_get_aws_json_web_keys(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6444,9 +6485,10 @@ def test_get_aws_json_web_keys_non_empty_request_with_auto_populated_field():
         client.get_aws_json_web_keys(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.GetAwsJsonWebKeysRequest(
+        request_msg = aws_service.GetAwsJsonWebKeysRequest(
             aws_cluster="aws_cluster_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_aws_json_web_keys_use_cached_wrapped_rpc():
@@ -6532,8 +6574,15 @@ async def test_get_aws_json_web_keys_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        aws_service.GetAwsJsonWebKeysRequest(),
+        {},
+    ],
+)
 async def test_get_aws_json_web_keys_async(
-    transport: str = "grpc_asyncio", request_type=aws_service.GetAwsJsonWebKeysRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AwsClustersAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -6542,7 +6591,7 @@ async def test_get_aws_json_web_keys_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6562,11 +6611,6 @@ async def test_get_aws_json_web_keys_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, aws_resources.AwsJsonWebKeys)
-
-
-@pytest.mark.asyncio
-async def test_get_aws_json_web_keys_async_from_dict():
-    await test_get_aws_json_web_keys_async(request_type=dict)
 
 
 def test_get_aws_json_web_keys_field_headers():
@@ -6637,8 +6681,8 @@ async def test_get_aws_json_web_keys_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        aws_service.GetAwsServerConfigRequest,
-        dict,
+        aws_service.GetAwsServerConfigRequest(),
+        {},
     ],
 )
 def test_get_aws_server_config(request_type, transport: str = "grpc"):
@@ -6649,7 +6693,7 @@ def test_get_aws_server_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6699,9 +6743,10 @@ def test_get_aws_server_config_non_empty_request_with_auto_populated_field():
         client.get_aws_server_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == aws_service.GetAwsServerConfigRequest(
+        request_msg = aws_service.GetAwsServerConfigRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_aws_server_config_use_cached_wrapped_rpc():
@@ -6787,8 +6832,15 @@ async def test_get_aws_server_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        aws_service.GetAwsServerConfigRequest(),
+        {},
+    ],
+)
 async def test_get_aws_server_config_async(
-    transport: str = "grpc_asyncio", request_type=aws_service.GetAwsServerConfigRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AwsClustersAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -6797,7 +6849,7 @@ async def test_get_aws_server_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6822,11 +6874,6 @@ async def test_get_aws_server_config_async(
     assert isinstance(response, aws_resources.AwsServerConfig)
     assert response.name == "name_value"
     assert response.supported_aws_regions == ["supported_aws_regions_value"]
-
-
-@pytest.mark.asyncio
-async def test_get_aws_server_config_async_from_dict():
-    await test_get_aws_server_config_async(request_type=dict)
 
 
 def test_get_aws_server_config_field_headers():
@@ -10136,7 +10183,6 @@ def test_create_aws_cluster_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = aws_service.CreateAwsClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -10159,7 +10205,6 @@ def test_update_aws_cluster_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = aws_service.UpdateAwsClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -10180,7 +10225,6 @@ def test_get_aws_cluster_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = aws_service.GetAwsClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -10203,7 +10247,6 @@ def test_list_aws_clusters_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = aws_service.ListAwsClustersRequest()
-
         assert args[0] == request_msg
 
 
@@ -10226,7 +10269,6 @@ def test_delete_aws_cluster_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = aws_service.DeleteAwsClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -10249,7 +10291,6 @@ def test_generate_aws_cluster_agent_token_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = aws_service.GenerateAwsClusterAgentTokenRequest()
-
         assert args[0] == request_msg
 
 
@@ -10272,7 +10313,6 @@ def test_generate_aws_access_token_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = aws_service.GenerateAwsAccessTokenRequest()
-
         assert args[0] == request_msg
 
 
@@ -10295,7 +10335,6 @@ def test_create_aws_node_pool_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = aws_service.CreateAwsNodePoolRequest()
-
         assert args[0] == request_msg
 
 
@@ -10318,7 +10357,6 @@ def test_update_aws_node_pool_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = aws_service.UpdateAwsNodePoolRequest()
-
         assert args[0] == request_msg
 
 
@@ -10341,7 +10379,6 @@ def test_rollback_aws_node_pool_update_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = aws_service.RollbackAwsNodePoolUpdateRequest()
-
         assert args[0] == request_msg
 
 
@@ -10364,7 +10401,6 @@ def test_get_aws_node_pool_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = aws_service.GetAwsNodePoolRequest()
-
         assert args[0] == request_msg
 
 
@@ -10387,7 +10423,6 @@ def test_list_aws_node_pools_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = aws_service.ListAwsNodePoolsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10410,7 +10445,6 @@ def test_delete_aws_node_pool_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = aws_service.DeleteAwsNodePoolRequest()
-
         assert args[0] == request_msg
 
 
@@ -10433,7 +10467,6 @@ def test_get_aws_open_id_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = aws_service.GetAwsOpenIdConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -10456,7 +10489,6 @@ def test_get_aws_json_web_keys_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = aws_service.GetAwsJsonWebKeysRequest()
-
         assert args[0] == request_msg
 
 
@@ -10479,7 +10511,6 @@ def test_get_aws_server_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = aws_service.GetAwsServerConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -10520,7 +10551,6 @@ async def test_create_aws_cluster_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = aws_service.CreateAwsClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -10547,7 +10577,6 @@ async def test_update_aws_cluster_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = aws_service.UpdateAwsClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -10582,7 +10611,6 @@ async def test_get_aws_cluster_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = aws_service.GetAwsClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -10611,7 +10639,6 @@ async def test_list_aws_clusters_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = aws_service.ListAwsClustersRequest()
-
         assert args[0] == request_msg
 
 
@@ -10638,7 +10665,6 @@ async def test_delete_aws_cluster_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = aws_service.DeleteAwsClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -10669,7 +10695,6 @@ async def test_generate_aws_cluster_agent_token_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = aws_service.GenerateAwsClusterAgentTokenRequest()
-
         assert args[0] == request_msg
 
 
@@ -10698,7 +10723,6 @@ async def test_generate_aws_access_token_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = aws_service.GenerateAwsAccessTokenRequest()
-
         assert args[0] == request_msg
 
 
@@ -10725,7 +10749,6 @@ async def test_create_aws_node_pool_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = aws_service.CreateAwsNodePoolRequest()
-
         assert args[0] == request_msg
 
 
@@ -10752,7 +10775,6 @@ async def test_update_aws_node_pool_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = aws_service.UpdateAwsNodePoolRequest()
-
         assert args[0] == request_msg
 
 
@@ -10779,7 +10801,6 @@ async def test_rollback_aws_node_pool_update_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = aws_service.RollbackAwsNodePoolUpdateRequest()
-
         assert args[0] == request_msg
 
 
@@ -10814,7 +10835,6 @@ async def test_get_aws_node_pool_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = aws_service.GetAwsNodePoolRequest()
-
         assert args[0] == request_msg
 
 
@@ -10843,7 +10863,6 @@ async def test_list_aws_node_pools_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = aws_service.ListAwsNodePoolsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10870,7 +10889,6 @@ async def test_delete_aws_node_pool_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = aws_service.DeleteAwsNodePoolRequest()
-
         assert args[0] == request_msg
 
 
@@ -10907,7 +10925,6 @@ async def test_get_aws_open_id_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = aws_service.GetAwsOpenIdConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -10934,7 +10951,6 @@ async def test_get_aws_json_web_keys_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = aws_service.GetAwsJsonWebKeysRequest()
-
         assert args[0] == request_msg
 
 
@@ -10964,7 +10980,6 @@ async def test_get_aws_server_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = aws_service.GetAwsServerConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -13965,7 +13980,6 @@ def test_create_aws_cluster_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = aws_service.CreateAwsClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -13987,7 +14001,6 @@ def test_update_aws_cluster_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = aws_service.UpdateAwsClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -14007,7 +14020,6 @@ def test_get_aws_cluster_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = aws_service.GetAwsClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -14029,7 +14041,6 @@ def test_list_aws_clusters_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = aws_service.ListAwsClustersRequest()
-
         assert args[0] == request_msg
 
 
@@ -14051,7 +14062,6 @@ def test_delete_aws_cluster_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = aws_service.DeleteAwsClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -14073,7 +14083,6 @@ def test_generate_aws_cluster_agent_token_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = aws_service.GenerateAwsClusterAgentTokenRequest()
-
         assert args[0] == request_msg
 
 
@@ -14095,7 +14104,6 @@ def test_generate_aws_access_token_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = aws_service.GenerateAwsAccessTokenRequest()
-
         assert args[0] == request_msg
 
 
@@ -14117,7 +14125,6 @@ def test_create_aws_node_pool_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = aws_service.CreateAwsNodePoolRequest()
-
         assert args[0] == request_msg
 
 
@@ -14139,7 +14146,6 @@ def test_update_aws_node_pool_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = aws_service.UpdateAwsNodePoolRequest()
-
         assert args[0] == request_msg
 
 
@@ -14161,7 +14167,6 @@ def test_rollback_aws_node_pool_update_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = aws_service.RollbackAwsNodePoolUpdateRequest()
-
         assert args[0] == request_msg
 
 
@@ -14183,7 +14188,6 @@ def test_get_aws_node_pool_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = aws_service.GetAwsNodePoolRequest()
-
         assert args[0] == request_msg
 
 
@@ -14205,7 +14209,6 @@ def test_list_aws_node_pools_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = aws_service.ListAwsNodePoolsRequest()
-
         assert args[0] == request_msg
 
 
@@ -14227,7 +14230,6 @@ def test_delete_aws_node_pool_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = aws_service.DeleteAwsNodePoolRequest()
-
         assert args[0] == request_msg
 
 
@@ -14249,7 +14251,6 @@ def test_get_aws_open_id_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = aws_service.GetAwsOpenIdConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -14271,7 +14272,6 @@ def test_get_aws_json_web_keys_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = aws_service.GetAwsJsonWebKeysRequest()
-
         assert args[0] == request_msg
 
 
@@ -14293,7 +14293,6 @@ def test_get_aws_server_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = aws_service.GetAwsServerConfigRequest()
-
         assert args[0] == request_msg
 
 

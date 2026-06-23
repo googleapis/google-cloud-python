@@ -45,7 +45,10 @@ if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
 class CmekServiceTransport(abc.ABC):
     """Abstract transport class for CmekService."""
 
-    AUTH_SCOPES = ("https://www.googleapis.com/auth/cloud-platform",)
+    AUTH_SCOPES = (
+        "https://www.googleapis.com/auth/cloud-platform",
+        "https://www.googleapis.com/auth/dataplex.read-write",
+    )
 
     DEFAULT_HOST: str = "dataplex.googleapis.com"
 

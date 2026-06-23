@@ -19,6 +19,7 @@ import re
 import pytest
 import psutil
 
+from . import helpers
 
 IPython = pytest.importorskip("IPython")
 io = pytest.importorskip("IPython.utils.io")
@@ -48,27 +49,30 @@ def ipython_interactive(ipython):
 def test_bigquery_magic(ipython_interactive):
     ip = IPython.get_ipython()
     current_process = psutil.Process()
-    conn_count_start = len(current_process.net_connections())
+    conn_start = current_process.net_connections()
+    conn_count_start = len(conn_start)
 
-    # Deprecated, but should still work in google-cloud-bigquery 3.x.
-    with pytest.warns(FutureWarning, match="bigquery_magics"):
-        ip.extension_manager.load_extension("google.cloud.bigquery")
+    with helpers.patch_tracked_requests():
+        # Deprecated, but should still work in google-cloud-bigquery 3.x.
+        with pytest.warns(FutureWarning, match="bigquery_magics"):
+            ip.extension_manager.load_extension("google.cloud.bigquery")
 
-    sql = """
-        SELECT
-            CONCAT(
-            'https://stackoverflow.com/questions/',
-            CAST(id as STRING)) as url,
-            view_count
-        FROM `bigquery-public-data.stackoverflow.posts_questions`
-        WHERE tags like '%google-bigquery%'
-        ORDER BY view_count DESC
-        LIMIT 10
-    """
-    with io.capture_output() as captured:
-        result = ip.run_cell_magic("bigquery", "--use_rest_api", sql)
+        sql = """
+            SELECT
+                CONCAT(
+                'https://stackoverflow.com/questions/',
+                CAST(id as STRING)) as url,
+                view_count
+            FROM `bigquery-public-data.stackoverflow.posts_questions`
+            WHERE tags like '%google-bigquery%'
+            ORDER BY view_count DESC
+            LIMIT 10
+        """
+        with io.capture_output() as captured:
+            result = ip.run_cell_magic("bigquery", "--use_rest_api", sql)
 
-    conn_count_end = len(current_process.net_connections())
+    conn_end = current_process.net_connections()
+    conn_count_end = len(conn_end)
 
     lines = re.split("\n|\r", captured.stdout)
     # Removes blanks & terminal code (result of display clearing)

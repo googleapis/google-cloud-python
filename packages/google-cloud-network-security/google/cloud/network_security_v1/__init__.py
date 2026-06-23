@@ -46,6 +46,14 @@ from .services.organization_security_profile_group_service import (
     OrganizationSecurityProfileGroupServiceAsyncClient,
     OrganizationSecurityProfileGroupServiceClient,
 )
+from .services.security_profile_group_service import (
+    SecurityProfileGroupServiceAsyncClient,
+    SecurityProfileGroupServiceClient,
+)
+from .services.sse_realm_service import (
+    SSERealmServiceAsyncClient,
+    SSERealmServiceClient,
+)
 from .types.address_group import (
     AddAddressGroupItemsRequest,
     AddressGroup,
@@ -239,6 +247,20 @@ from .types.server_tls_policy import (
     ServerTlsPolicy,
     UpdateServerTlsPolicyRequest,
 )
+from .types.sse_realm import (
+    CreateSACAttachmentRequest,
+    CreateSACRealmRequest,
+    DeleteSACAttachmentRequest,
+    DeleteSACRealmRequest,
+    GetSACAttachmentRequest,
+    GetSACRealmRequest,
+    ListSACAttachmentsRequest,
+    ListSACAttachmentsResponse,
+    ListSACRealmsRequest,
+    ListSACRealmsResponse,
+    SACAttachment,
+    SACRealm,
+)
 from .types.tls import (
     CertificateProvider,
     CertificateProviderInstance,
@@ -289,7 +311,7 @@ else:  # pragma: NO COVER
 
         def parse_version_to_tuple(version_string: str):
             """Safely converts a semantic version string to a comparable tuple of integers.
-            Example: "4.25.8" -> (4, 25, 8)
+            Example: "6.33.5" -> (6, 33, 5)
             Ignores non-numeric parts and handles common version formats.
             Args:
                 version_string: Version string in the format "x.y.z" or "x.y.z<suffix>"
@@ -318,9 +340,9 @@ else:  # pragma: NO COVER
                 return (None, "--")
 
         _dependency_package = "google.protobuf"
-        _next_supported_version = "4.25.8"
-        _next_supported_version_tuple = (4, 25, 8)
-        _recommendation = " (we recommend 6.x)"
+        _next_supported_version = "6.33.5"
+        _next_supported_version_tuple = (6, 33, 5)
+        _recommendation = " (we recommend 7.x)"
         (_version_used, _version_used_string) = _get_version(_dependency_package)
         if _version_used and _version_used < _next_supported_version_tuple:
             warnings.warn(
@@ -356,6 +378,8 @@ __all__ = (
     "NetworkSecurityAsyncClient",
     "OrganizationAddressGroupServiceAsyncClient",
     "OrganizationSecurityProfileGroupServiceAsyncClient",
+    "SSERealmServiceAsyncClient",
+    "SecurityProfileGroupServiceAsyncClient",
     "AddAddressGroupItemsRequest",
     "AddressGroup",
     "AddressGroupServiceClient",
@@ -385,6 +409,8 @@ __all__ = (
     "CreateMirroringDeploymentRequest",
     "CreateMirroringEndpointGroupAssociationRequest",
     "CreateMirroringEndpointGroupRequest",
+    "CreateSACAttachmentRequest",
+    "CreateSACRealmRequest",
     "CreateSecurityProfileGroupRequest",
     "CreateSecurityProfileRequest",
     "CreateServerTlsPolicyRequest",
@@ -410,6 +436,8 @@ __all__ = (
     "DeleteMirroringDeploymentRequest",
     "DeleteMirroringEndpointGroupAssociationRequest",
     "DeleteMirroringEndpointGroupRequest",
+    "DeleteSACAttachmentRequest",
+    "DeleteSACRealmRequest",
     "DeleteSecurityProfileGroupRequest",
     "DeleteSecurityProfileRequest",
     "DeleteServerTlsPolicyRequest",
@@ -440,6 +468,8 @@ __all__ = (
     "GetMirroringDeploymentRequest",
     "GetMirroringEndpointGroupAssociationRequest",
     "GetMirroringEndpointGroupRequest",
+    "GetSACAttachmentRequest",
+    "GetSACRealmRequest",
     "GetSecurityProfileGroupRequest",
     "GetSecurityProfileRequest",
     "GetServerTlsPolicyRequest",
@@ -490,6 +520,10 @@ __all__ = (
     "ListMirroringEndpointGroupAssociationsResponse",
     "ListMirroringEndpointGroupsRequest",
     "ListMirroringEndpointGroupsResponse",
+    "ListSACAttachmentsRequest",
+    "ListSACAttachmentsResponse",
+    "ListSACRealmsRequest",
+    "ListSACRealmsResponse",
     "ListSecurityProfileGroupsRequest",
     "ListSecurityProfileGroupsResponse",
     "ListSecurityProfilesRequest",
@@ -512,8 +546,12 @@ __all__ = (
     "OrganizationSecurityProfileGroupServiceClient",
     "Protocol",
     "RemoveAddressGroupItemsRequest",
+    "SACAttachment",
+    "SACRealm",
+    "SSERealmServiceClient",
     "SecurityProfile",
     "SecurityProfileGroup",
+    "SecurityProfileGroupServiceClient",
     "ServerTlsPolicy",
     "Severity",
     "SeverityOverride",
