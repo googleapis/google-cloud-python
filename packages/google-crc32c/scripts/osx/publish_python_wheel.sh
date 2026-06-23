@@ -15,7 +15,7 @@
 
 set -eo pipefail
 
-if [ -z "$(pyenv versions --bare | grep "^3\.10\b")" ]; then
+if ! pyenv versions --bare | grep -q "^3\.10\b"; then
     echo "Python 3.10 is not installed. Installing..."
     pyenv install 3.10
 fi
