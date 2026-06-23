@@ -16,10 +16,10 @@
 
 import re
 
-from IPython.testing import globalipapp
-from IPython.utils import io
 import pandas
 import psutil
+from IPython.testing import globalipapp
+from IPython.utils import io
 
 
 def test_bigquery_magic():
