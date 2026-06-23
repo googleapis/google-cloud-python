@@ -6688,7 +6688,12 @@ def test_delete_collection_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials()
     ).delete_collection._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("request_id",))
+    assert not set(unset_fields) - set(
+        (
+            "force",
+            "request_id",
+        )
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -6740,7 +6745,15 @@ def test_delete_collection_rest_unset_required_fields():
     )
 
     unset_fields = transport.delete_collection._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("requestId",)) & set(("name",)))
+    assert set(unset_fields) == (
+        set(
+            (
+                "force",
+                "requestId",
+            )
+        )
+        & set(("name",))
+    )
 
 
 def test_delete_collection_rest_flattened():

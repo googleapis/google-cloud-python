@@ -626,7 +626,6 @@ class EvaluationServiceAsyncClient:
                 # Initialize request argument(s)
                 evaluation = discoveryengine_v1beta.Evaluation()
                 evaluation.evaluation_spec.search_request.serving_config = "serving_config_value"
-                evaluation.evaluation_spec.query_set_spec.sample_query_set = "sample_query_set_value"
 
                 request = discoveryengine_v1beta.CreateEvaluationRequest(
                     parent="parent_value",
@@ -790,9 +789,10 @@ class EvaluationServiceAsyncClient:
                 ``projects/{project}/locations/{location}/evaluations/{evaluation}``.
 
                 If the caller does not have permission to list
-                [EvaluationResult][] under this evaluation, regardless
-                of whether or not this evaluation set exists, a
-                ``PERMISSION_DENIED`` error is returned.
+                [ListEvaluationResultsResponse.EvaluationResult][google.cloud.discoveryengine.v1beta.ListEvaluationResultsResponse.EvaluationResult]
+                under this evaluation, regardless of whether or not this
+                evaluation set exists, a ``PERMISSION_DENIED`` error is
+                returned.
 
                 This corresponds to the ``evaluation`` field
                 on the ``request`` instance; if ``request`` is provided, this

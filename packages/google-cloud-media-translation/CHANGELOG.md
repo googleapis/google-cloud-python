@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-media-translation/#history
 
+## [0.14.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-media-translation-v0.14.0...google-cloud-media-translation-v0.14.1) (2026-06-22)
+
+
+### Features
+
+* regenerate google-cloud-[k-n] packages ([#17074](https://github.com/googleapis/google-cloud-python/issues/17074)) ([ec54f78](https://github.com/googleapis/google-cloud-python/commit/ec54f78e37bb3b48e0794d544784b99fa13d6f85))
+
 ## [0.14.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-media-translation-v0.13.0...google-cloud-media-translation-v0.14.0) (2026-03-26)
 
 

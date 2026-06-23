@@ -58,7 +58,6 @@ from test_utils.system import unique_resource_id
 
 from . import helpers
 
-
 JOB_TIMEOUT = 120  # 2 minutes
 DATA_PATH = pathlib.Path(__file__).parent.parent / "data"
 
@@ -234,23 +233,29 @@ class TestBigQuery(unittest.TestCase):
 
     def test_close_releases_open_sockets(self):
         current_process = psutil.Process()
-        conn_count_start = len(current_process.net_connections())
+        conn_start = current_process.net_connections()
+        conn_count_start = len(conn_start)
 
-        client = Config.CLIENT
-        client.query(
-            """
-            SELECT
-                source_year AS year, COUNT(is_male) AS birth_count
-            FROM `bigquery-public-data.samples.natality`
-            GROUP BY year
-            ORDER BY year DESC
-            LIMIT 15
-            """
-        )
+        with helpers.patch_tracked_requests():
+            client = Config.CLIENT
+            client.query(
+                """
+                SELECT
+                    source_year AS year, COUNT(is_male) AS birth_count
+                FROM `bigquery-public-data.samples.natality`
+                GROUP BY year
+                ORDER BY year DESC
+                LIMIT 15
+                """
+            )
 
-        client.close()
+            client.close()
 
-        conn_count_end = len(current_process.net_connections())
+        import gc
+
+        gc.collect()
+        conn_end = current_process.net_connections()
+        conn_count_end = len(conn_end)
         self.assertLessEqual(conn_count_end, conn_count_start)
 
     def test_create_dataset(self):
@@ -2174,25 +2179,31 @@ class TestBigQuery(unittest.TestCase):
     def test_dbapi_connection_does_not_leak_sockets(self):
         pytest.importorskip("google.cloud.bigquery_storage")
         current_process = psutil.Process()
-        conn_count_start = len(current_process.net_connections())
+        conn_start = current_process.net_connections()
+        conn_count_start = len(conn_start)
 
-        # Provide no explicit clients, so that the connection will create and own them.
-        connection = dbapi.connect()
-        cursor = connection.cursor()
+        with helpers.patch_tracked_requests():
+            # Provide no explicit clients, so that the connection will create and own them.
+            connection = dbapi.connect()
+            cursor = connection.cursor()
 
-        cursor.execute(
+            cursor.execute(
+                """
+                SELECT id, `by`, timestamp
+                FROM `bigquery-public-data.hacker_news.full`
+                ORDER BY `id` ASC
+                LIMIT 100000
             """
-            SELECT id, `by`, timestamp
-            FROM `bigquery-public-data.hacker_news.full`
-            ORDER BY `id` ASC
-            LIMIT 100000
-        """
-        )
-        rows = cursor.fetchall()
-        self.assertEqual(len(rows), 100000)
+            )
+            rows = cursor.fetchall()
+            self.assertEqual(len(rows), 100000)
 
-        connection.close()
-        conn_count_end = len(current_process.net_connections())
+            connection.close()
+        import gc
+
+        gc.collect()
+        conn_end = current_process.net_connections()
+        conn_count_end = len(conn_end)
         self.assertLessEqual(conn_count_end, conn_count_start)
 
     def _load_table_for_dml(self, rows, dataset_id, table_id):

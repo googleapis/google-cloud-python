@@ -47,6 +47,16 @@ from .services.user_list_service import (
     UserListServiceAsyncClient,
     UserListServiceClient,
 )
+from .types.ad_event import (
+    AdEvent,
+    AdFormat,
+    AdPlacement,
+    AdType,
+    AttributionHint,
+    Platform,
+    PlatformType,
+    TargetingType,
+)
 from .types.age_range import AgeRange
 from .types.audience import (
     AudienceMember,
@@ -62,7 +72,12 @@ from .types.consent import Consent, ConsentStatus
 from .types.destination import Destination, Product, ProductAccount
 from .types.device_info import DeviceInfo
 from .types.encrypted_user_id import EncryptedUserId
-from .types.encryption_info import AwsWrappedKeyInfo, EncryptionInfo, GcpWrappedKeyInfo
+from .types.encryption_info import (
+    AwsWrappedKeyInfo,
+    CoordinatorKeyInfo,
+    EncryptionInfo,
+    GcpWrappedKeyInfo,
+)
 from .types.error import ErrorReason
 from .types.event import (
     AdIdentifiers,
@@ -76,6 +91,8 @@ from .types.experimental_field import ExperimentalField
 from .types.gender import Gender
 from .types.ingestion_service import (
     Encoding,
+    IngestAdEventsRequest,
+    IngestAdEventsResponse,
     IngestAudienceMembersRequest,
     IngestAudienceMembersResponse,
     IngestEventsRequest,
@@ -95,7 +112,10 @@ from .types.match_rate import MatchRateRange
 from .types.partner_link_service import (
     CreatePartnerLinkRequest,
     DeletePartnerLinkRequest,
+    FeatureSet,
+    PartnerCustomerAccount,
     PartnerLink,
+    PartnerLinkMetadata,
     SearchPartnerLinksRequest,
     SearchPartnerLinksResponse,
 )
@@ -165,6 +185,7 @@ from .types.user_properties import (
     UserProperties,
     UserProperty,
 )
+from .types.viewability_info import MediaQuartile, ViewabilityInfo, ViewType
 
 if hasattr(api_core, "check_python_version") and hasattr(
     api_core, "check_dependency_versions"
@@ -191,7 +212,7 @@ else:  # pragma: NO COVER
 
         def parse_version_to_tuple(version_string: str):
             """Safely converts a semantic version string to a comparable tuple of integers.
-            Example: "4.25.8" -> (4, 25, 8)
+            Example: "6.33.5" -> (6, 33, 5)
             Ignores non-numeric parts and handles common version formats.
             Args:
                 version_string: Version string in the format "x.y.z" or "x.y.z<suffix>"
@@ -220,9 +241,9 @@ else:  # pragma: NO COVER
                 return (None, "--")
 
         _dependency_package = "google.protobuf"
-        _next_supported_version = "4.25.8"
-        _next_supported_version_tuple = (4, 25, 8)
-        _recommendation = " (we recommend 6.x)"
+        _next_supported_version = "6.33.5"
+        _next_supported_version_tuple = (6, 33, 5)
+        _recommendation = " (we recommend 7.x)"
         (_version_used, _version_used_string) = _get_version(_dependency_package)
         if _version_used and _version_used < _next_supported_version_tuple:
             warnings.warn(
@@ -256,9 +277,14 @@ __all__ = (
     "UserListDirectLicenseServiceAsyncClient",
     "UserListGlobalLicenseServiceAsyncClient",
     "UserListServiceAsyncClient",
+    "AdEvent",
+    "AdFormat",
     "AdIdentifiers",
+    "AdPlacement",
+    "AdType",
     "AddressInfo",
     "AgeRange",
+    "AttributionHint",
     "AudienceMember",
     "AwsWrappedKeyInfo",
     "Baseline",
@@ -267,6 +293,7 @@ __all__ = (
     "Consent",
     "ConsentStatus",
     "ContactIdInfo",
+    "CoordinatorKeyInfo",
     "CreatePartnerLinkRequest",
     "CreateUserListDirectLicenseRequest",
     "CreateUserListGlobalLicenseRequest",
@@ -290,11 +317,14 @@ __all__ = (
     "EventParameter",
     "EventSource",
     "ExperimentalField",
+    "FeatureSet",
     "GcpWrappedKeyInfo",
     "Gender",
     "GetUserListDirectLicenseRequest",
     "GetUserListGlobalLicenseRequest",
     "GetUserListRequest",
+    "IngestAdEventsRequest",
+    "IngestAdEventsResponse",
     "IngestAudienceMembersRequest",
     "IngestAudienceMembersResponse",
     "IngestEventsRequest",
@@ -315,13 +345,18 @@ __all__ = (
     "ListUserListsResponse",
     "MarketingDataInsightsServiceClient",
     "MatchRateRange",
+    "MediaQuartile",
     "MobileData",
     "MobileIdInfo",
     "PairData",
     "PairIdInfo",
     "PartnerAudienceInfo",
+    "PartnerCustomerAccount",
     "PartnerLink",
+    "PartnerLinkMetadata",
     "PartnerLinkServiceClient",
+    "Platform",
+    "PlatformType",
     "PpidData",
     "ProcessingErrorReason",
     "ProcessingWarningReason",
@@ -339,6 +374,7 @@ __all__ = (
     "SearchPartnerLinksResponse",
     "SizeInfo",
     "TargetNetworkInfo",
+    "TargetingType",
     "TermsOfService",
     "TermsOfServiceStatus",
     "UpdateUserListDirectLicenseRequest",
@@ -362,6 +398,8 @@ __all__ = (
     "UserListServiceClient",
     "UserProperties",
     "UserProperty",
+    "ViewType",
+    "ViewabilityInfo",
     "WarningCount",
     "WarningInfo",
 )

@@ -454,6 +454,13 @@ class TestCredentials(object):
         quota_project_creds = credentials.with_quota_project("project-foo")
 
         assert quota_project_creds.quota_project_id == "project-foo"
+        request = mock.create_autospec(transport.Request, instance=True)
+        headers = {}
+        quota_project_creds.token = "fake-token"
+        quota_project_creds.before_request(
+            request, "GET", "https://example.com", headers
+        )
+        assert headers.get("x-goog-user-project") == "project-foo"
 
     def test_with_quota_project_workforce_pool(self):
         credentials = self.make_workforce_pool_credentials(

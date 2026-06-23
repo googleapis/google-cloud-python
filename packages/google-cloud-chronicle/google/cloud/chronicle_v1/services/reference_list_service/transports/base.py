@@ -41,7 +41,11 @@ if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
 class ReferenceListServiceTransport(abc.ABC):
     """Abstract transport class for ReferenceListService."""
 
-    AUTH_SCOPES = ("https://www.googleapis.com/auth/cloud-platform",)
+    AUTH_SCOPES = (
+        "https://www.googleapis.com/auth/chronicle",
+        "https://www.googleapis.com/auth/chronicle.readonly",
+        "https://www.googleapis.com/auth/cloud-platform",
+    )
 
     DEFAULT_HOST: str = "chronicle.googleapis.com"
 
@@ -182,6 +186,20 @@ class ReferenceListServiceTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.verify_reference_list: gapic_v1.method.wrap_method(
+                self.verify_reference_list,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
             self.cancel_operation: gapic_v1.method.wrap_method(
                 self.cancel_operation,
                 default_timeout=None,
@@ -254,6 +272,18 @@ class ReferenceListServiceTransport(abc.ABC):
         Union[
             gcc_reference_list.ReferenceList,
             Awaitable[gcc_reference_list.ReferenceList],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def verify_reference_list(
+        self,
+    ) -> Callable[
+        [reference_list.VerifyReferenceListRequest],
+        Union[
+            reference_list.VerifyReferenceListResponse,
+            Awaitable[reference_list.VerifyReferenceListResponse],
         ],
     ]:
         raise NotImplementedError()

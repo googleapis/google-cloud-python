@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-video-stitcher/#history
 
+## [0.11.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-video-stitcher-v0.11.0...google-cloud-video-stitcher-v0.11.1) (2026-06-22)
+
+
+### Features
+
+* regenerate google-cloud-[t-w] packages ([#17076](https://github.com/googleapis/google-cloud-python/issues/17076)) ([928a03c](https://github.com/googleapis/google-cloud-python/commit/928a03ce41fbcb82398636e89f840c00c7749cf8))
+
 ## [0.11.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-video-stitcher-v0.10.0...google-cloud-video-stitcher-v0.11.0) (2026-03-26)
 
 

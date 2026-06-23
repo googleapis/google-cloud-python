@@ -181,6 +181,14 @@ class DataformRestInterceptor:
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
+            def pre_delete_folder_tree(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_delete_folder_tree(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_delete_release_config(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -189,9 +197,25 @@ class DataformRestInterceptor:
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
+            def pre_delete_repository_long_running(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_delete_repository_long_running(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_delete_team_folder(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
+
+            def pre_delete_team_folder_tree(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_delete_team_folder_tree(self, response):
+                logging.log(f"Received response: {response}")
+                return response
 
             def pre_delete_workflow_config(self, request, metadata):
                 logging.log(f"Received request: {request}")
@@ -1223,6 +1247,54 @@ class DataformRestInterceptor:
         """
         return request, metadata
 
+    def pre_delete_folder_tree(
+        self,
+        request: dataform.DeleteFolderTreeRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dataform.DeleteFolderTreeRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for delete_folder_tree
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Dataform server.
+        """
+        return request, metadata
+
+    def post_delete_folder_tree(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for delete_folder_tree
+
+        DEPRECATED. Please use the `post_delete_folder_tree_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Dataform server but before
+        it is returned to user code. This `post_delete_folder_tree` interceptor runs
+        before the `post_delete_folder_tree_with_metadata` interceptor.
+        """
+        return response
+
+    def post_delete_folder_tree_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_folder_tree
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Dataform server but before it is returned to user code.
+
+        We recommend only using this `post_delete_folder_tree_with_metadata`
+        interceptor in new development instead of the `post_delete_folder_tree` interceptor.
+        When both interceptors are used, this `post_delete_folder_tree_with_metadata` interceptor runs after the
+        `post_delete_folder_tree` interceptor. The (possibly modified) response returned by
+        `post_delete_folder_tree` will be passed to
+        `post_delete_folder_tree_with_metadata`.
+        """
+        return response, metadata
+
     def pre_delete_release_config(
         self,
         request: dataform.DeleteReleaseConfigRequest,
@@ -1251,6 +1323,55 @@ class DataformRestInterceptor:
         """
         return request, metadata
 
+    def pre_delete_repository_long_running(
+        self,
+        request: dataform.DeleteRepositoryLongRunningRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dataform.DeleteRepositoryLongRunningRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for delete_repository_long_running
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Dataform server.
+        """
+        return request, metadata
+
+    def post_delete_repository_long_running(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for delete_repository_long_running
+
+        DEPRECATED. Please use the `post_delete_repository_long_running_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Dataform server but before
+        it is returned to user code. This `post_delete_repository_long_running` interceptor runs
+        before the `post_delete_repository_long_running_with_metadata` interceptor.
+        """
+        return response
+
+    def post_delete_repository_long_running_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_repository_long_running
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Dataform server but before it is returned to user code.
+
+        We recommend only using this `post_delete_repository_long_running_with_metadata`
+        interceptor in new development instead of the `post_delete_repository_long_running` interceptor.
+        When both interceptors are used, this `post_delete_repository_long_running_with_metadata` interceptor runs after the
+        `post_delete_repository_long_running` interceptor. The (possibly modified) response returned by
+        `post_delete_repository_long_running` will be passed to
+        `post_delete_repository_long_running_with_metadata`.
+        """
+        return response, metadata
+
     def pre_delete_team_folder(
         self,
         request: dataform.DeleteTeamFolderRequest,
@@ -1264,6 +1385,54 @@ class DataformRestInterceptor:
         before they are sent to the Dataform server.
         """
         return request, metadata
+
+    def pre_delete_team_folder_tree(
+        self,
+        request: dataform.DeleteTeamFolderTreeRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dataform.DeleteTeamFolderTreeRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for delete_team_folder_tree
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Dataform server.
+        """
+        return request, metadata
+
+    def post_delete_team_folder_tree(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for delete_team_folder_tree
+
+        DEPRECATED. Please use the `post_delete_team_folder_tree_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Dataform server but before
+        it is returned to user code. This `post_delete_team_folder_tree` interceptor runs
+        before the `post_delete_team_folder_tree_with_metadata` interceptor.
+        """
+        return response
+
+    def post_delete_team_folder_tree_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_team_folder_tree
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Dataform server but before it is returned to user code.
+
+        We recommend only using this `post_delete_team_folder_tree_with_metadata`
+        interceptor in new development instead of the `post_delete_team_folder_tree` interceptor.
+        When both interceptors are used, this `post_delete_team_folder_tree_with_metadata` interceptor runs after the
+        `post_delete_team_folder_tree` interceptor. The (possibly modified) response returned by
+        `post_delete_team_folder_tree` will be passed to
+        `post_delete_team_folder_tree_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_workflow_config(
         self,
@@ -6070,6 +6239,163 @@ class DataformRestTransport(_BaseDataformRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+    class _DeleteFolderTree(
+        _BaseDataformRestTransport._BaseDeleteFolderTree, DataformRestStub
+    ):
+        def __hash__(self):
+            return hash("DataformRestTransport.DeleteFolderTree")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: dataform.DeleteFolderTreeRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the delete folder tree method over HTTP.
+
+            Args:
+                request (~.dataform.DeleteFolderTreeRequest):
+                    The request object. ``DeleteFolderTree`` request message.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseDataformRestTransport._BaseDeleteFolderTree._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_delete_folder_tree(
+                request, metadata
+            )
+            transcoded_request = _BaseDataformRestTransport._BaseDeleteFolderTree._get_transcoded_request(
+                http_options, request
+            )
+
+            body = (
+                _BaseDataformRestTransport._BaseDeleteFolderTree._get_request_body_json(
+                    transcoded_request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseDataformRestTransport._BaseDeleteFolderTree._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataform_v1beta1.DataformClient.DeleteFolderTree",
+                    extra={
+                        "serviceName": "google.cloud.dataform.v1beta1.Dataform",
+                        "rpcName": "DeleteFolderTree",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = DataformRestTransport._DeleteFolderTree._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_delete_folder_tree(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_folder_tree_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataform_v1beta1.DataformClient.delete_folder_tree",
+                    extra={
+                        "serviceName": "google.cloud.dataform.v1beta1.Dataform",
+                        "rpcName": "DeleteFolderTree",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _DeleteReleaseConfig(
         _BaseDataformRestTransport._BaseDeleteReleaseConfig, DataformRestStub
     ):
@@ -6288,6 +6614,160 @@ class DataformRestTransport(_BaseDataformRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+    class _DeleteRepositoryLongRunning(
+        _BaseDataformRestTransport._BaseDeleteRepositoryLongRunning, DataformRestStub
+    ):
+        def __hash__(self):
+            return hash("DataformRestTransport.DeleteRepositoryLongRunning")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: dataform.DeleteRepositoryLongRunningRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the delete repository long
+            running method over HTTP.
+
+                Args:
+                    request (~.dataform.DeleteRepositoryLongRunningRequest):
+                        The request object. ``DeleteRepositoryLongRunning`` request message.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
+
+                Returns:
+                    ~.operations_pb2.Operation:
+                        This resource represents a
+                    long-running operation that is the
+                    result of a network API call.
+
+            """
+
+            http_options = _BaseDataformRestTransport._BaseDeleteRepositoryLongRunning._get_http_options()
+
+            request, metadata = self._interceptor.pre_delete_repository_long_running(
+                request, metadata
+            )
+            transcoded_request = _BaseDataformRestTransport._BaseDeleteRepositoryLongRunning._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseDataformRestTransport._BaseDeleteRepositoryLongRunning._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseDataformRestTransport._BaseDeleteRepositoryLongRunning._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataform_v1beta1.DataformClient.DeleteRepositoryLongRunning",
+                    extra={
+                        "serviceName": "google.cloud.dataform.v1beta1.Dataform",
+                        "rpcName": "DeleteRepositoryLongRunning",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = DataformRestTransport._DeleteRepositoryLongRunning._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_delete_repository_long_running(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = (
+                self._interceptor.post_delete_repository_long_running_with_metadata(
+                    resp, response_metadata
+                )
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataform_v1beta1.DataformClient.delete_repository_long_running",
+                    extra={
+                        "serviceName": "google.cloud.dataform.v1beta1.Dataform",
+                        "rpcName": "DeleteRepositoryLongRunning",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _DeleteTeamFolder(
         _BaseDataformRestTransport._BaseDeleteTeamFolder, DataformRestStub
     ):
@@ -6397,6 +6877,159 @@ class DataformRestTransport(_BaseDataformRestTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
+    class _DeleteTeamFolderTree(
+        _BaseDataformRestTransport._BaseDeleteTeamFolderTree, DataformRestStub
+    ):
+        def __hash__(self):
+            return hash("DataformRestTransport.DeleteTeamFolderTree")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: dataform.DeleteTeamFolderTreeRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the delete team folder tree method over HTTP.
+
+            Args:
+                request (~.dataform.DeleteTeamFolderTreeRequest):
+                    The request object. ``DeleteTeamFolderTree`` request message.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseDataformRestTransport._BaseDeleteTeamFolderTree._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_delete_team_folder_tree(
+                request, metadata
+            )
+            transcoded_request = _BaseDataformRestTransport._BaseDeleteTeamFolderTree._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseDataformRestTransport._BaseDeleteTeamFolderTree._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseDataformRestTransport._BaseDeleteTeamFolderTree._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataform_v1beta1.DataformClient.DeleteTeamFolderTree",
+                    extra={
+                        "serviceName": "google.cloud.dataform.v1beta1.Dataform",
+                        "rpcName": "DeleteTeamFolderTree",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = DataformRestTransport._DeleteTeamFolderTree._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_delete_team_folder_tree(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_team_folder_tree_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataform_v1beta1.DataformClient.delete_team_folder_tree",
+                    extra={
+                        "serviceName": "google.cloud.dataform.v1beta1.Dataform",
+                        "rpcName": "DeleteTeamFolderTree",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
 
     class _DeleteWorkflowConfig(
         _BaseDataformRestTransport._BaseDeleteWorkflowConfig, DataformRestStub
@@ -14842,6 +15475,14 @@ class DataformRestTransport(_BaseDataformRestTransport):
         return self._DeleteFolder(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def delete_folder_tree(
+        self,
+    ) -> Callable[[dataform.DeleteFolderTreeRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteFolderTree(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def delete_release_config(
         self,
     ) -> Callable[[dataform.DeleteReleaseConfigRequest], empty_pb2.Empty]:
@@ -14858,12 +15499,32 @@ class DataformRestTransport(_BaseDataformRestTransport):
         return self._DeleteRepository(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def delete_repository_long_running(
+        self,
+    ) -> Callable[
+        [dataform.DeleteRepositoryLongRunningRequest], operations_pb2.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteRepositoryLongRunning(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
+
+    @property
     def delete_team_folder(
         self,
     ) -> Callable[[dataform.DeleteTeamFolderRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteTeamFolder(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def delete_team_folder_tree(
+        self,
+    ) -> Callable[[dataform.DeleteTeamFolderTreeRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteTeamFolderTree(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def delete_workflow_config(

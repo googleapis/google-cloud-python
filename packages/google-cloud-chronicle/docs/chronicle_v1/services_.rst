@@ -13,4 +13,5 @@ Services for Google Cloud Chronicle v1 API
     instance_service
     native_dashboard_service
     reference_list_service
+    rule_execution_error_service
     rule_service

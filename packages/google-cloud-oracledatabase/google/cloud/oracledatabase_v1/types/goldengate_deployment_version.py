@@ -25,7 +25,6 @@ __protobuf__ = proto.module(
     manifest={
         "GoldengateDeploymentVersion",
         "GoldengateDeploymentVersionProperties",
-        "GetGoldengateDeploymentVersionRequest",
         "ListGoldengateDeploymentVersionsRequest",
         "ListGoldengateDeploymentVersionsResponse",
     },
@@ -180,22 +179,6 @@ class GoldengateDeploymentVersionProperties(proto.Message):
         proto.MESSAGE,
         number=6,
         message=timestamp_pb2.Timestamp,
-    )
-
-
-class GetGoldengateDeploymentVersionRequest(proto.Message):
-    r"""Message for getting a GoldengateDeploymentVersion.
-
-    Attributes:
-        name (str):
-            Required. The name of the GoldengateDeploymentVersion to
-            retrieve. Format:
-            projects/{project}/locations/{location}/goldengateDeploymentVersions/{goldengate_deployment_version}
-    """
-
-    name: str = proto.Field(
-        proto.STRING,
-        number=1,
     )
 
 
