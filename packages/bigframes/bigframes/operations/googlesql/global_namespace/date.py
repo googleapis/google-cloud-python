@@ -49,11 +49,6 @@ _DATE_ADD_OP = googlesql.GoogleSqlScalarOp(
     args=(googlesql.ArgSpec(), googlesql.ArgSpec(), googlesql.ArgSpec()),
     signature=lambda *args: dtypes.DATE_DTYPE,
 )
-_DATE_BUCKET_OP = googlesql.GoogleSqlScalarOp(
-    "DATE_BUCKET",
-    args=(googlesql.ArgSpec(), googlesql.ArgSpec(), googlesql.ArgSpec(optional=True)),
-    signature=lambda *args: dtypes.DATE_DTYPE,
-)
 _DATE_DIFF_OP = googlesql.GoogleSqlScalarOp(
     "DATE_DIFF",
     args=(googlesql.ArgSpec(), googlesql.ArgSpec(), googlesql.ArgSpec()),
@@ -194,32 +189,6 @@ def date_add(
     )
 
 
-def date_bucket(
-    date_in_bucket: Union[
-        series.Series,
-        bigframes.core.col.Expression,
-        Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], datetime.date],
-    ],
-    bucket_width: Union[
-        series.Series,
-        bigframes.core.col.Expression,
-        Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], datetime.timedelta],
-    ],
-    bucket_origin: Union[
-        series.Series,
-        bigframes.core.col.Expression,
-        Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], datetime.date],
-    ] = sentinels.Sentinel.ARGUMENT_DEFAULT,
-) -> Union[series.Series, bigframes.core.col.Expression]:
-    """Gets the lower bound of the date bucket that contains a date."""
-    return bigframes.core.googlesql.apply_googlesql_scalar_op(
-        _DATE_BUCKET_OP,
-        date_in_bucket,
-        bucket_width,
-        bucket_origin,
-    )
-
-
 def date_diff(
     end_date: Union[
         series.Series,
@@ -315,7 +284,6 @@ def extract(
             datetime.date,
             datetime.datetime,
             datetime.time,
-            datetime.timedelta,
         ],
     ],
     part: Union[

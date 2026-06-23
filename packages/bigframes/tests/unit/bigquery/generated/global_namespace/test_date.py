@@ -101,32 +101,6 @@ def test_date_add_expression():
     assert expr.inputs[2].id == "date_part"
 
 
-def test_date_bucket_expression():
-    # Call the function with col() expressions
-    result = bbq.date_bucket(
-        bpd.col("date_in_bucket"),
-        bpd.col("bucket_width"),
-        bpd.col("bucket_origin"),
-    )
-
-    # Verify result is a col Expression
-    assert isinstance(result, bigframes.core.col.Expression)
-
-    # Verify the internal expression structure
-    expr = result._value
-    assert isinstance(expr, ex.OpExpression)
-    assert expr.op == date_op._DATE_BUCKET_OP
-
-    # Verify arguments are free variables matching the names
-    assert len(expr.inputs) == 3
-    assert isinstance(expr.inputs[0], ex.UnboundVariableExpression)
-    assert expr.inputs[0].id == "date_in_bucket"
-    assert isinstance(expr.inputs[1], ex.UnboundVariableExpression)
-    assert expr.inputs[1].id == "bucket_width"
-    assert isinstance(expr.inputs[2], ex.UnboundVariableExpression)
-    assert expr.inputs[2].id == "bucket_origin"
-
-
 def test_date_diff_expression():
     # Call the function with col() expressions
     result = bbq.date_diff(

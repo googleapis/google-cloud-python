@@ -80,25 +80,7 @@ scalar_functions:
             optional: false
             keyword_only: false
         return: date
-  - name: "date_bucket"
-    description: "Gets the lower bound of the date bucket that contains a date."
-    series_accessor_arg: date_in_bucket
-    impls:
-      # Signature: date_bucket:date_iday_date
-      - args:
-          - name: "date_in_bucket"
-            value: date
-            optional: false
-            keyword_only: false
-          - name: "bucket_width"
-            value: interval_day
-            optional: false
-            keyword_only: false
-          - name: "bucket_origin"
-            value: date
-            optional: true
-            keyword_only: false
-        return: date
+  # TODO(b/527093666): add support for date_bucket when we add an INTERVAL dtype
   - name: "date_diff"
     description: "Gets the number of unit boundaries between two DATE values (end_date - start_date) at a particular time granularity."
     series_accessor_arg: end_date
@@ -208,17 +190,6 @@ scalar_functions:
       - args:
           - name: "date_expression"
             value: time
-            optional: false
-            keyword_only: false
-          - name: "part"
-            value: any1
-            optional: false
-            keyword_only: false
-        return: i64
-      # Signature: extract:iday_any
-      - args:
-          - name: "date_expression"
-            value: interval_day
             optional: false
             keyword_only: false
           - name: "part"

@@ -78,7 +78,6 @@ DTYPE_MAP = {
     "timestamp": "dtypes.TIMESTAMP_DTYPE",
     "decimal<38,9>": "dtypes.NUMERIC_DTYPE",
     "decimal<76,38>": "dtypes.BIGNUMERIC_DTYPE",
-    "interval_day": "dtypes.TIMEDELTA_DTYPE",
 }
 
 PY_TYPE_MAP = {
