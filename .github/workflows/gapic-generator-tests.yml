@@ -158,6 +158,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
+      - name: Checkout gapic-showcase
+        uses: actions/checkout@v6
+        with:
+          repository: googleapis/gapic-showcase
+          path: packages/gapic-generator/gapic-showcase
+      - name: Checkout googleapis
+        uses: actions/checkout@v6
+        with:
+          repository: googleapis/googleapis
+          path: packages/gapic-generator/googleapis
       - name: Setup python
         uses: actions/setup-python@v5
         with:
