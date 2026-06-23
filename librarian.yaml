@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 language: python
-version: v0.19.0
+version: v0.21.0
 repo: googleapis/google-cloud-python
 sources:
   googleapis:
@@ -636,6 +636,7 @@ libraries:
     apis:
       - path: google/bigtable/v2
       - path: google/bigtable/admin/v2
+    skip_generate: true
     skip_release: true
     python:
       library_type: GAPIC_COMBO
@@ -763,6 +764,8 @@ libraries:
     version: 1.48.0
     apis:
       - path: google/cloud/compute/v1
+    skip_generate: true
+    skip_release: true
     python:
       metadata_name_override: compute
       default_version: v1
@@ -1934,6 +1937,8 @@ libraries:
       - docs/spanner_v1/table.rst
       - docs/spanner_v1/transaction.rst
       - tests/unit/gapic/conftest.py
+    skip_generate: true
+    skip_release: true
     python:
       library_type: GAPIC_COMBO
       opt_args_by_api:
