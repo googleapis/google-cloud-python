@@ -359,9 +359,12 @@ class TextSearch(proto.Message):
 
     Attributes:
         search_text (str):
-            Required. The query text.
+            Optional. The query text. Required when using
+            the default text search mode.
         data_field_names (MutableSequence[str]):
-            Required. The data field names to search.
+            Optional. The data field names to search.
+            Required when using the default text search
+            mode.
         output_fields (google.cloud.vectorsearch_v1.types.OutputFields):
             Optional. The fields to return in the search
             results.

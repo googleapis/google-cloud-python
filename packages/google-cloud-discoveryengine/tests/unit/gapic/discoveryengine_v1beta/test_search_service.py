@@ -40,6 +40,7 @@ except ImportError:  # pragma: NO COVER
 
 import google.auth
 import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
+import google.type.latlng_pb2 as latlng_pb2  # type: ignore
 from google.api_core import (
     client_options,
     gapic_v1,
@@ -1311,7 +1312,12 @@ def test_search_service_client_create_channel_credentials_file(
             credentials=file_creds,
             credentials_file=None,
             quota_project_id=None,
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/discoveryengine.assist.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.serving.readwrite",
+            ),
             scopes=None,
             default_host="discoveryengine.googleapis.com",
             ssl_credentials=None,
@@ -1348,7 +1354,9 @@ def test_search(request_type, transport: str = "grpc"):
             redirect_uri="redirect_uri_value",
             next_page_token="next_page_token_value",
             corrected_query="corrected_query_value",
+            suggested_query="suggested_query_value",
             applied_controls=["applied_controls_value"],
+            semantic_state=search_service.SearchResponse.SemanticState.DISABLED,
         )
         response = client.search(request)
 
@@ -1365,7 +1373,11 @@ def test_search(request_type, transport: str = "grpc"):
     assert response.redirect_uri == "redirect_uri_value"
     assert response.next_page_token == "next_page_token_value"
     assert response.corrected_query == "corrected_query_value"
+    assert response.suggested_query == "suggested_query_value"
     assert response.applied_controls == ["applied_controls_value"]
+    assert (
+        response.semantic_state == search_service.SearchResponse.SemanticState.DISABLED
+    )
 
 
 def test_search_non_empty_request_with_auto_populated_field():
@@ -1392,6 +1404,7 @@ def test_search_non_empty_request_with_auto_populated_field():
         user_pseudo_id="user_pseudo_id_value",
         ranking_expression="ranking_expression_value",
         session="session_value",
+        entity="entity_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1415,6 +1428,7 @@ def test_search_non_empty_request_with_auto_populated_field():
             user_pseudo_id="user_pseudo_id_value",
             ranking_expression="ranking_expression_value",
             session="session_value",
+            entity="entity_value",
         )
         assert args[0] == request_msg
 
@@ -1522,7 +1536,9 @@ async def test_search_async(request_type, transport: str = "grpc_asyncio"):
                 redirect_uri="redirect_uri_value",
                 next_page_token="next_page_token_value",
                 corrected_query="corrected_query_value",
+                suggested_query="suggested_query_value",
                 applied_controls=["applied_controls_value"],
+                semantic_state=search_service.SearchResponse.SemanticState.DISABLED,
             )
         )
         response = await client.search(request)
@@ -1540,7 +1556,11 @@ async def test_search_async(request_type, transport: str = "grpc_asyncio"):
     assert response.redirect_uri == "redirect_uri_value"
     assert response.next_page_token == "next_page_token_value"
     assert response.corrected_query == "corrected_query_value"
+    assert response.suggested_query == "suggested_query_value"
     assert response.applied_controls == ["applied_controls_value"]
+    assert (
+        response.semantic_state == search_service.SearchResponse.SemanticState.DISABLED
+    )
 
 
 def test_search_field_headers():
@@ -1824,7 +1844,9 @@ def test_search_lite(request_type, transport: str = "grpc"):
             redirect_uri="redirect_uri_value",
             next_page_token="next_page_token_value",
             corrected_query="corrected_query_value",
+            suggested_query="suggested_query_value",
             applied_controls=["applied_controls_value"],
+            semantic_state=search_service.SearchResponse.SemanticState.DISABLED,
         )
         response = client.search_lite(request)
 
@@ -1841,7 +1863,11 @@ def test_search_lite(request_type, transport: str = "grpc"):
     assert response.redirect_uri == "redirect_uri_value"
     assert response.next_page_token == "next_page_token_value"
     assert response.corrected_query == "corrected_query_value"
+    assert response.suggested_query == "suggested_query_value"
     assert response.applied_controls == ["applied_controls_value"]
+    assert (
+        response.semantic_state == search_service.SearchResponse.SemanticState.DISABLED
+    )
 
 
 def test_search_lite_non_empty_request_with_auto_populated_field():
@@ -1868,6 +1894,7 @@ def test_search_lite_non_empty_request_with_auto_populated_field():
         user_pseudo_id="user_pseudo_id_value",
         ranking_expression="ranking_expression_value",
         session="session_value",
+        entity="entity_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1891,6 +1918,7 @@ def test_search_lite_non_empty_request_with_auto_populated_field():
             user_pseudo_id="user_pseudo_id_value",
             ranking_expression="ranking_expression_value",
             session="session_value",
+            entity="entity_value",
         )
         assert args[0] == request_msg
 
@@ -2000,7 +2028,9 @@ async def test_search_lite_async(request_type, transport: str = "grpc_asyncio"):
                 redirect_uri="redirect_uri_value",
                 next_page_token="next_page_token_value",
                 corrected_query="corrected_query_value",
+                suggested_query="suggested_query_value",
                 applied_controls=["applied_controls_value"],
+                semantic_state=search_service.SearchResponse.SemanticState.DISABLED,
             )
         )
         response = await client.search_lite(request)
@@ -2018,7 +2048,11 @@ async def test_search_lite_async(request_type, transport: str = "grpc_asyncio"):
     assert response.redirect_uri == "redirect_uri_value"
     assert response.next_page_token == "next_page_token_value"
     assert response.corrected_query == "corrected_query_value"
+    assert response.suggested_query == "suggested_query_value"
     assert response.applied_controls == ["applied_controls_value"]
+    assert (
+        response.semantic_state == search_service.SearchResponse.SemanticState.DISABLED
+    )
 
 
 def test_search_lite_field_headers():
@@ -2823,7 +2857,9 @@ async def test_search_empty_call_grpc_asyncio():
                 redirect_uri="redirect_uri_value",
                 next_page_token="next_page_token_value",
                 corrected_query="corrected_query_value",
+                suggested_query="suggested_query_value",
                 applied_controls=["applied_controls_value"],
+                semantic_state=search_service.SearchResponse.SemanticState.DISABLED,
             )
         )
         await client.search(request=None)
@@ -2854,7 +2890,9 @@ async def test_search_lite_empty_call_grpc_asyncio():
                 redirect_uri="redirect_uri_value",
                 next_page_token="next_page_token_value",
                 corrected_query="corrected_query_value",
+                suggested_query="suggested_query_value",
                 applied_controls=["applied_controls_value"],
+                semantic_state=search_service.SearchResponse.SemanticState.DISABLED,
             )
         )
         await client.search_lite(request=None)
@@ -2926,7 +2964,9 @@ def test_search_rest_call_success(request_type):
             redirect_uri="redirect_uri_value",
             next_page_token="next_page_token_value",
             corrected_query="corrected_query_value",
+            suggested_query="suggested_query_value",
             applied_controls=["applied_controls_value"],
+            semantic_state=search_service.SearchResponse.SemanticState.DISABLED,
         )
 
         # Wrap the value into a proper Response obj
@@ -2948,7 +2988,11 @@ def test_search_rest_call_success(request_type):
     assert response.redirect_uri == "redirect_uri_value"
     assert response.next_page_token == "next_page_token_value"
     assert response.corrected_query == "corrected_query_value"
+    assert response.suggested_query == "suggested_query_value"
     assert response.applied_controls == ["applied_controls_value"]
+    assert (
+        response.semantic_state == search_service.SearchResponse.SemanticState.DISABLED
+    )
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -3066,7 +3110,9 @@ def test_search_lite_rest_call_success(request_type):
             redirect_uri="redirect_uri_value",
             next_page_token="next_page_token_value",
             corrected_query="corrected_query_value",
+            suggested_query="suggested_query_value",
             applied_controls=["applied_controls_value"],
+            semantic_state=search_service.SearchResponse.SemanticState.DISABLED,
         )
 
         # Wrap the value into a proper Response obj
@@ -3088,7 +3134,11 @@ def test_search_lite_rest_call_success(request_type):
     assert response.redirect_uri == "redirect_uri_value"
     assert response.next_page_token == "next_page_token_value"
     assert response.corrected_query == "corrected_query_value"
+    assert response.suggested_query == "suggested_query_value"
     assert response.applied_controls == ["applied_controls_value"]
+    assert (
+        response.semantic_state == search_service.SearchResponse.SemanticState.DISABLED
+    )
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -3478,7 +3528,12 @@ def test_search_service_base_transport_with_credentials_file():
         load_creds.assert_called_once_with(
             "credentials.json",
             scopes=None,
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/discoveryengine.assist.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.serving.readwrite",
+            ),
             quota_project_id="octopus",
         )
 
@@ -3504,7 +3559,12 @@ def test_search_service_auth_adc():
         SearchServiceClient()
         adc.assert_called_once_with(
             scopes=None,
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/discoveryengine.assist.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.serving.readwrite",
+            ),
             quota_project_id=None,
         )
 
@@ -3524,7 +3584,12 @@ def test_search_service_transport_auth_adc(transport_class):
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
         adc.assert_called_once_with(
             scopes=["1", "2"],
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/discoveryengine.assist.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.serving.readwrite",
+            ),
             quota_project_id="octopus",
         )
 
@@ -3577,7 +3642,12 @@ def test_search_service_transport_create_channel(transport_class, grpc_helpers):
             credentials=creds,
             credentials_file=None,
             quota_project_id="octopus",
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/discoveryengine.assist.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.serving.readwrite",
+            ),
             scopes=["1", "2"],
             default_host="discoveryengine.googleapis.com",
             ssl_credentials=None,

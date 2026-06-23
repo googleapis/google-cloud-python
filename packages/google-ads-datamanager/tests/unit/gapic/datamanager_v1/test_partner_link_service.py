@@ -1393,6 +1393,7 @@ def test_create_partner_link(request_type, transport: str = "grpc"):
         call.return_value = partner_link_service.PartnerLink(
             name="name_value",
             partner_link_id="partner_link_id_value",
+            feature_set=partner_link_service.FeatureSet.FEATURE_SET_AUDIENCE_AND_EVENT_MANAGEMENT,
         )
         response = client.create_partner_link(request)
 
@@ -1406,6 +1407,10 @@ def test_create_partner_link(request_type, transport: str = "grpc"):
     assert isinstance(response, partner_link_service.PartnerLink)
     assert response.name == "name_value"
     assert response.partner_link_id == "partner_link_id_value"
+    assert (
+        response.feature_set
+        == partner_link_service.FeatureSet.FEATURE_SET_AUDIENCE_AND_EVENT_MANAGEMENT
+    )
 
 
 def test_create_partner_link_non_empty_request_with_auto_populated_field():
@@ -1547,6 +1552,7 @@ async def test_create_partner_link_async(request_type, transport: str = "grpc_as
             partner_link_service.PartnerLink(
                 name="name_value",
                 partner_link_id="partner_link_id_value",
+                feature_set=partner_link_service.FeatureSet.FEATURE_SET_AUDIENCE_AND_EVENT_MANAGEMENT,
             )
         )
         response = await client.create_partner_link(request)
@@ -1561,6 +1567,10 @@ async def test_create_partner_link_async(request_type, transport: str = "grpc_as
     assert isinstance(response, partner_link_service.PartnerLink)
     assert response.name == "name_value"
     assert response.partner_link_id == "partner_link_id_value"
+    assert (
+        response.feature_set
+        == partner_link_service.FeatureSet.FEATURE_SET_AUDIENCE_AND_EVENT_MANAGEMENT
+    )
 
 
 def test_create_partner_link_field_headers():
@@ -3440,6 +3450,7 @@ async def test_create_partner_link_empty_call_grpc_asyncio():
             partner_link_service.PartnerLink(
                 name="name_value",
                 partner_link_id="partner_link_id_value",
+                feature_set=partner_link_service.FeatureSet.FEATURE_SET_AUDIENCE_AND_EVENT_MANAGEMENT,
             )
         )
         await client.create_partner_link(request=None)
@@ -3559,6 +3570,13 @@ def test_create_partner_link_rest_call_success(request_type):
             "account_type": 1,
         },
         "partner_account": {},
+        "feature_set": 1,
+        "partner_customer_account": {
+            "account_id": "account_id_value",
+            "account_name": "account_name_value",
+            "account_type": "account_type_value",
+        },
+        "partner_link_metadata": {"implicit_accounts": {}},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -3637,6 +3655,7 @@ def test_create_partner_link_rest_call_success(request_type):
         return_value = partner_link_service.PartnerLink(
             name="name_value",
             partner_link_id="partner_link_id_value",
+            feature_set=partner_link_service.FeatureSet.FEATURE_SET_AUDIENCE_AND_EVENT_MANAGEMENT,
         )
 
         # Wrap the value into a proper Response obj
@@ -3655,6 +3674,10 @@ def test_create_partner_link_rest_call_success(request_type):
     assert isinstance(response, partner_link_service.PartnerLink)
     assert response.name == "name_value"
     assert response.partner_link_id == "partner_link_id_value"
+    assert (
+        response.feature_set
+        == partner_link_service.FeatureSet.FEATURE_SET_AUDIENCE_AND_EVENT_MANAGEMENT
+    )
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])

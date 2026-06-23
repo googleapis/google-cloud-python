@@ -120,6 +120,7 @@ from .conversation_profile import (
     NotificationConfig,
     SetSuggestionFeatureConfigOperationMetadata,
     SetSuggestionFeatureConfigRequest,
+    SipConfig,
     UpdateConversationProfileRequest,
 )
 from .document import (
@@ -468,6 +469,7 @@ __all__ = (
     "NotificationConfig",
     "SetSuggestionFeatureConfigOperationMetadata",
     "SetSuggestionFeatureConfigRequest",
+    "SipConfig",
     "UpdateConversationProfileRequest",
     "CreateDocumentRequest",
     "DeleteDocumentRequest",

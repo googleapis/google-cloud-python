@@ -90,6 +90,10 @@ class CloudVmCluster(proto.Message):
             Output only. The identity connector details
             which will allow OCI to securely access the
             resources in the customer project.
+        exascale_db_storage_vault (str):
+            Optional. The name of ExascaleDbStorageVault associated with
+            the VM Cluster. Format:
+            projects/{project}/locations/{location}/exascaleDbStorageVaults/{exascale_db_storage_vault}
     """
 
     name: str = proto.Field(
@@ -151,6 +155,10 @@ class CloudVmCluster(proto.Message):
         proto.MESSAGE,
         number=16,
         message=common.IdentityConnector,
+    )
+    exascale_db_storage_vault: str = proto.Field(
+        proto.STRING,
+        number=17,
     )
 
 
@@ -240,6 +248,9 @@ class CloudVmClusterProperties(proto.Message):
         compute_model (google.cloud.oracledatabase_v1.types.ComputeModel):
             Output only. The compute model of the VM
             Cluster.
+        storage_management_type (google.cloud.oracledatabase_v1.types.CloudVmClusterProperties.StorageManagementType):
+            Output only. The storage management type of
+            the VM Cluster.
     """
 
     class LicenseType(proto.Enum):
@@ -311,6 +322,22 @@ class CloudVmClusterProperties(proto.Message):
         TERMINATED = 5
         FAILED = 6
         MAINTENANCE_IN_PROGRESS = 7
+
+    class StorageManagementType(proto.Enum):
+        r"""The type of storage management for the Cloud VM Cluster.
+
+        Values:
+            STORAGE_MANAGEMENT_TYPE_UNSPECIFIED (0):
+                Unspecified storage management type.
+            ASM (1):
+                Automatic Storage Management.
+            EXASCALE (2):
+                Exascale storage management.
+        """
+
+        STORAGE_MANAGEMENT_TYPE_UNSPECIFIED = 0
+        ASM = 1
+        EXASCALE = 2
 
     ocid: str = proto.Field(
         proto.STRING,
@@ -449,6 +476,11 @@ class CloudVmClusterProperties(proto.Message):
         proto.ENUM,
         number=37,
         enum=common.ComputeModel,
+    )
+    storage_management_type: StorageManagementType = proto.Field(
+        proto.ENUM,
+        number=38,
+        enum=StorageManagementType,
     )
 
 

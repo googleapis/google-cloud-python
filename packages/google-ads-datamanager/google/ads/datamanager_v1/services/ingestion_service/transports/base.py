@@ -157,6 +157,11 @@ class IngestionServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.ingest_ad_events: gapic_v1.method.wrap_method(
+                self.ingest_ad_events,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.retrieve_request_status: gapic_v1.method.wrap_method(
                 self.retrieve_request_status,
                 default_timeout=None,
@@ -205,6 +210,18 @@ class IngestionServiceTransport(abc.ABC):
         Union[
             ingestion_service.IngestEventsResponse,
             Awaitable[ingestion_service.IngestEventsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def ingest_ad_events(
+        self,
+    ) -> Callable[
+        [ingestion_service.IngestAdEventsRequest],
+        Union[
+            ingestion_service.IngestAdEventsResponse,
+            Awaitable[ingestion_service.IngestAdEventsResponse],
         ],
     ]:
         raise NotImplementedError()

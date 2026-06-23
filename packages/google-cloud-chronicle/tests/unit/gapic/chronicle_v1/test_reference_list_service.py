@@ -1376,7 +1376,11 @@ def test_reference_list_service_client_create_channel_credentials_file(
             credentials=file_creds,
             credentials_file=None,
             quota_project_id=None,
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/chronicle",
+                "https://www.googleapis.com/auth/chronicle.readonly",
+                "https://www.googleapis.com/auth/cloud-platform",
+            ),
             scopes=None,
             default_host="chronicle.googleapis.com",
             ssl_credentials=None,
@@ -3069,6 +3073,265 @@ async def test_update_reference_list_flattened_error_async():
         )
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        reference_list.VerifyReferenceListRequest(),
+        {},
+    ],
+)
+def test_verify_reference_list(request_type, transport: str = "grpc"):
+    client = ReferenceListServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.verify_reference_list), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = reference_list.VerifyReferenceListResponse(
+            success=True,
+        )
+        response = client.verify_reference_list(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = reference_list.VerifyReferenceListRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, reference_list.VerifyReferenceListResponse)
+    assert response.success is True
+
+
+def test_verify_reference_list_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ReferenceListServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = reference_list.VerifyReferenceListRequest(
+        instance="instance_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.verify_reference_list), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.verify_reference_list(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = reference_list.VerifyReferenceListRequest(
+            instance="instance_value",
+        )
+        assert args[0] == request_msg
+
+
+def test_verify_reference_list_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ReferenceListServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.verify_reference_list
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.verify_reference_list] = (
+            mock_rpc
+        )
+        request = {}
+        client.verify_reference_list(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.verify_reference_list(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_verify_reference_list_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = ReferenceListServiceAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.verify_reference_list
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.verify_reference_list
+        ] = mock_rpc
+
+        request = {}
+        await client.verify_reference_list(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.verify_reference_list(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        reference_list.VerifyReferenceListRequest(),
+        {},
+    ],
+)
+async def test_verify_reference_list_async(
+    request_type, transport: str = "grpc_asyncio"
+):
+    client = ReferenceListServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.verify_reference_list), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            reference_list.VerifyReferenceListResponse(
+                success=True,
+            )
+        )
+        response = await client.verify_reference_list(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = reference_list.VerifyReferenceListRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, reference_list.VerifyReferenceListResponse)
+    assert response.success is True
+
+
+def test_verify_reference_list_field_headers():
+    client = ReferenceListServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = reference_list.VerifyReferenceListRequest()
+
+    request.instance = "instance_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.verify_reference_list), "__call__"
+    ) as call:
+        call.return_value = reference_list.VerifyReferenceListResponse()
+        client.verify_reference_list(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "instance=instance_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_verify_reference_list_field_headers_async():
+    client = ReferenceListServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = reference_list.VerifyReferenceListRequest()
+
+    request.instance = "instance_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.verify_reference_list), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            reference_list.VerifyReferenceListResponse()
+        )
+        await client.verify_reference_list(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "instance=instance_value",
+    ) in kw["metadata"]
+
+
 def test_get_reference_list_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -3922,6 +4185,141 @@ def test_update_reference_list_rest_flattened_error(transport: str = "rest"):
         )
 
 
+def test_verify_reference_list_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ReferenceListServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.verify_reference_list
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.verify_reference_list] = (
+            mock_rpc
+        )
+
+        request = {}
+        client.verify_reference_list(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.verify_reference_list(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_verify_reference_list_rest_required_fields(
+    request_type=reference_list.VerifyReferenceListRequest,
+):
+    transport_class = transports.ReferenceListServiceRestTransport
+
+    request_init = {}
+    request_init["instance"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).verify_reference_list._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["instance"] = "instance_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).verify_reference_list._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "instance" in jsonified_request
+    assert jsonified_request["instance"] == "instance_value"
+
+    client = ReferenceListServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = reference_list.VerifyReferenceListResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = reference_list.VerifyReferenceListResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.verify_reference_list(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert sorted(expected_params) == sorted(actual_params)
+
+
+def test_verify_reference_list_rest_unset_required_fields():
+    transport = transports.ReferenceListServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.verify_reference_list._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "instance",
+                "syntaxType",
+                "entries",
+            )
+        )
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.ReferenceListServiceGrpcTransport(
@@ -4116,6 +4514,28 @@ def test_update_reference_list_empty_call_grpc():
         assert args[0] == request_msg
 
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_verify_reference_list_empty_call_grpc():
+    client = ReferenceListServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.verify_reference_list), "__call__"
+    ) as call:
+        call.return_value = reference_list.VerifyReferenceListResponse()
+        client.verify_reference_list(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = reference_list.VerifyReferenceListRequest()
+        assert args[0] == request_msg
+
+
 def test_transport_kind_grpc_asyncio():
     transport = ReferenceListServiceAsyncClient.get_transport_class("grpc_asyncio")(
         credentials=async_anonymous_credentials()
@@ -4254,6 +4674,34 @@ async def test_update_reference_list_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcc_reference_list.UpdateReferenceListRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_verify_reference_list_empty_call_grpc_asyncio():
+    client = ReferenceListServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.verify_reference_list), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            reference_list.VerifyReferenceListResponse(
+                success=True,
+            )
+        )
+        await client.verify_reference_list(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = reference_list.VerifyReferenceListRequest()
         assert args[0] == request_msg
 
 
@@ -5018,6 +5466,142 @@ def test_update_reference_list_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
+def test_verify_reference_list_rest_bad_request(
+    request_type=reference_list.VerifyReferenceListRequest,
+):
+    client = ReferenceListServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"instance": "projects/sample1/locations/sample2/instances/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.verify_reference_list(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        reference_list.VerifyReferenceListRequest,
+        dict,
+    ],
+)
+def test_verify_reference_list_rest_call_success(request_type):
+    client = ReferenceListServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"instance": "projects/sample1/locations/sample2/instances/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = reference_list.VerifyReferenceListResponse(
+            success=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = reference_list.VerifyReferenceListResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.verify_reference_list(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, reference_list.VerifyReferenceListResponse)
+    assert response.success is True
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_verify_reference_list_rest_interceptors(null_interceptor):
+    transport = transports.ReferenceListServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ReferenceListServiceRestInterceptor(),
+    )
+    client = ReferenceListServiceClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ReferenceListServiceRestInterceptor, "post_verify_reference_list"
+        ) as post,
+        mock.patch.object(
+            transports.ReferenceListServiceRestInterceptor,
+            "post_verify_reference_list_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ReferenceListServiceRestInterceptor, "pre_verify_reference_list"
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = reference_list.VerifyReferenceListRequest.pb(
+            reference_list.VerifyReferenceListRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = reference_list.VerifyReferenceListResponse.to_json(
+            reference_list.VerifyReferenceListResponse()
+        )
+        req.return_value.content = return_value
+
+        request = reference_list.VerifyReferenceListRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = reference_list.VerifyReferenceListResponse()
+        post_with_metadata.return_value = (
+            reference_list.VerifyReferenceListResponse(),
+            metadata,
+        )
+
+        client.verify_reference_list(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
 def test_cancel_operation_rest_bad_request(
     request_type=operations_pb2.CancelOperationRequest,
 ):
@@ -5376,6 +5960,27 @@ def test_update_reference_list_empty_call_rest():
         assert args[0] == request_msg
 
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_verify_reference_list_empty_call_rest():
+    client = ReferenceListServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.verify_reference_list), "__call__"
+    ) as call:
+        client.verify_reference_list(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = reference_list.VerifyReferenceListRequest()
+        assert args[0] == request_msg
+
+
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
     client = ReferenceListServiceClient(
@@ -5413,6 +6018,7 @@ def test_reference_list_service_base_transport():
         "list_reference_lists",
         "create_reference_list",
         "update_reference_list",
+        "verify_reference_list",
         "get_operation",
         "cancel_operation",
         "delete_operation",
@@ -5453,7 +6059,11 @@ def test_reference_list_service_base_transport_with_credentials_file():
         load_creds.assert_called_once_with(
             "credentials.json",
             scopes=None,
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/chronicle",
+                "https://www.googleapis.com/auth/chronicle.readonly",
+                "https://www.googleapis.com/auth/cloud-platform",
+            ),
             quota_project_id="octopus",
         )
 
@@ -5479,7 +6089,11 @@ def test_reference_list_service_auth_adc():
         ReferenceListServiceClient()
         adc.assert_called_once_with(
             scopes=None,
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/chronicle",
+                "https://www.googleapis.com/auth/chronicle.readonly",
+                "https://www.googleapis.com/auth/cloud-platform",
+            ),
             quota_project_id=None,
         )
 
@@ -5499,7 +6113,11 @@ def test_reference_list_service_transport_auth_adc(transport_class):
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
         adc.assert_called_once_with(
             scopes=["1", "2"],
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/chronicle",
+                "https://www.googleapis.com/auth/chronicle.readonly",
+                "https://www.googleapis.com/auth/cloud-platform",
+            ),
             quota_project_id="octopus",
         )
 
@@ -5552,7 +6170,11 @@ def test_reference_list_service_transport_create_channel(transport_class, grpc_h
             credentials=creds,
             credentials_file=None,
             quota_project_id="octopus",
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/chronicle",
+                "https://www.googleapis.com/auth/chronicle.readonly",
+                "https://www.googleapis.com/auth/cloud-platform",
+            ),
             scopes=["1", "2"],
             default_host="chronicle.googleapis.com",
             ssl_credentials=None,
@@ -5696,6 +6318,9 @@ def test_reference_list_service_client_transport_session_collision(transport_nam
     session1 = client1.transport.update_reference_list._session
     session2 = client2.transport.update_reference_list._session
     assert session1 != session2
+    session1 = client1.transport.verify_reference_list._session
+    session2 = client2.transport.verify_reference_list._session
+    assert session1 != session2
 
 
 def test_reference_list_service_grpc_transport_channel():
@@ -5825,11 +6450,37 @@ def test_reference_list_service_transport_channel_mtls_with_adc(transport_class)
             assert transport.grpc_channel == mock_grpc_channel
 
 
-def test_reference_list_path():
+def test_instance_path():
     project = "squid"
     location = "clam"
     instance = "whelk"
-    reference_list = "octopus"
+    expected = "projects/{project}/locations/{location}/instances/{instance}".format(
+        project=project,
+        location=location,
+        instance=instance,
+    )
+    actual = ReferenceListServiceClient.instance_path(project, location, instance)
+    assert expected == actual
+
+
+def test_parse_instance_path():
+    expected = {
+        "project": "octopus",
+        "location": "oyster",
+        "instance": "nudibranch",
+    }
+    path = ReferenceListServiceClient.instance_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ReferenceListServiceClient.parse_instance_path(path)
+    assert expected == actual
+
+
+def test_reference_list_path():
+    project = "cuttlefish"
+    location = "mussel"
+    instance = "winkle"
+    reference_list = "nautilus"
     expected = "projects/{project}/locations/{location}/instances/{instance}/referenceLists/{reference_list}".format(
         project=project,
         location=location,
@@ -5844,10 +6495,10 @@ def test_reference_list_path():
 
 def test_parse_reference_list_path():
     expected = {
-        "project": "oyster",
-        "location": "nudibranch",
-        "instance": "cuttlefish",
-        "reference_list": "mussel",
+        "project": "scallop",
+        "location": "abalone",
+        "instance": "squid",
+        "reference_list": "clam",
     }
     path = ReferenceListServiceClient.reference_list_path(**expected)
 
@@ -5857,7 +6508,7 @@ def test_parse_reference_list_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "winkle"
+    billing_account = "whelk"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -5867,7 +6518,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "nautilus",
+        "billing_account": "octopus",
     }
     path = ReferenceListServiceClient.common_billing_account_path(**expected)
 
@@ -5877,7 +6528,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "scallop"
+    folder = "oyster"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -5887,7 +6538,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "abalone",
+        "folder": "nudibranch",
     }
     path = ReferenceListServiceClient.common_folder_path(**expected)
 
@@ -5897,7 +6548,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "squid"
+    organization = "cuttlefish"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -5907,7 +6558,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "clam",
+        "organization": "mussel",
     }
     path = ReferenceListServiceClient.common_organization_path(**expected)
 
@@ -5917,7 +6568,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "whelk"
+    project = "winkle"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -5927,7 +6578,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "octopus",
+        "project": "nautilus",
     }
     path = ReferenceListServiceClient.common_project_path(**expected)
 
@@ -5937,8 +6588,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "oyster"
-    location = "nudibranch"
+    project = "scallop"
+    location = "abalone"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -5949,8 +6600,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "cuttlefish",
-        "location": "mussel",
+        "project": "squid",
+        "location": "clam",
     }
     path = ReferenceListServiceClient.common_location_path(**expected)
 

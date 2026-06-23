@@ -23,7 +23,6 @@ __protobuf__ = proto.module(
     package="google.cloud.oracledatabase.v1",
     manifest={
         "GoldengateDeploymentType",
-        "GetGoldengateDeploymentTypeRequest",
         "ListGoldengateDeploymentTypesRequest",
         "ListGoldengateDeploymentTypesResponse",
     },
@@ -176,22 +175,6 @@ class GoldengateDeploymentType(proto.Message):
     default_username: str = proto.Field(
         proto.STRING,
         number=11,
-    )
-
-
-class GetGoldengateDeploymentTypeRequest(proto.Message):
-    r"""Message for getting a GoldengateDeploymentType.
-
-    Attributes:
-        name (str):
-            Required. The name of the GoldengateDeploymentType to
-            retrieve. Format:
-            projects/{project}/locations/{location}/goldengateDeploymentTypes/{goldengate_deployment_type}
-    """
-
-    name: str = proto.Field(
-        proto.STRING,
-        number=1,
     )
 
 
