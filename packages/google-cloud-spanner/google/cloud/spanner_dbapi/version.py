@@ -15,6 +15,6 @@
 import platform
 
 PY_VERSION = platform.python_version()
-__version__ = "3.68.0"
+__version__ = "0.1.0"
 VERSION = __version__
 DEFAULT_USER_AGENT = "gl-dbapi/" + VERSION

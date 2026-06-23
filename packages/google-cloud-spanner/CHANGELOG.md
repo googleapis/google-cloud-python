@@ -4,6 +4,28 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## 0.1.0 (2026-06-23)
+
+
+### Features
+
+* Add last statement option samples ([#16499](https://github.com/googleapis/google-cloud-python/issues/16499)) ([ee09805](https://github.com/googleapis/google-cloud-python/commit/ee098051f562dd2f26743a622b52605e6cef19f1))
+* **spanner:** add asynchronous code snippets and minor cleanup changes ([#17337](https://github.com/googleapis/google-cloud-python/issues/17337)) ([d6aaf61](https://github.com/googleapis/google-cloud-python/commit/d6aaf610fa97b76077cacade2fca306dbe1e8c80))
+* **spanner:** drop Python 3.7-3.9 support and regenerate ([#17169](https://github.com/googleapis/google-cloud-python/issues/17169)) ([2408166](https://github.com/googleapis/google-cloud-python/commit/2408166fec2fac7fc19f15d89f1b7bbb329c5ace))
+* **spanner:** drop python runtime 3.9  ([#17070](https://github.com/googleapis/google-cloud-python/issues/17070)) ([cddabc0](https://github.com/googleapis/google-cloud-python/commit/cddabc0f48c198f7866756fc1f8e45b5b208731d))
+* **spanner:** log client configuration at startup ([#17040](https://github.com/googleapis/google-cloud-python/issues/17040)) ([a830a78](https://github.com/googleapis/google-cloud-python/commit/a830a78547c4fba545f8789fecfac97107ca799f))
+* update API sources and regenerate ([#16998](https://github.com/googleapis/google-cloud-python/issues/16998)) ([cef659d](https://github.com/googleapis/google-cloud-python/commit/cef659d8207939aab3834a32c99a3a2738cb3015))
+
+
+### Bug Fixes
+
+* **spanner_dbapi:** replace insecure pickle with json for partition deserialization ([#17014](https://github.com/googleapis/google-cloud-python/issues/17014)) ([86e57cb](https://github.com/googleapis/google-cloud-python/commit/86e57cb9b6ec4266773e99e8a5f60eda78cd1e11))
+
+
+### Performance Improvements
+
+* **spanner:** optimize query result decoding ([#17375](https://github.com/googleapis/google-cloud-python/issues/17375)) ([3f70b2f](https://github.com/googleapis/google-cloud-python/commit/3f70b2ff6f6bc5d4c3bee33784da3e353866ec8e))
+
 ## [3.68.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-spanner-v3.67.0...google-cloud-spanner-v3.68.0) (2026-06-11)
 
 
