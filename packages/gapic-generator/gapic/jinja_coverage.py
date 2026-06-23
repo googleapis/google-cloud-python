@@ -69,15 +69,24 @@ class FileTracer(coverage.plugin.FileTracer):
         if env and getattr(env, 'loader', None):
             try:
                 co_filename = frame.f_code.co_filename
-                for search_path in env.loader.searchpath:
-                    try:
-                        rel_path = os.path.relpath(co_filename, search_path)
-                        if not rel_path.startswith(".."):
-                            template = env.get_template(rel_path)
-                            lineno = template.get_corresponding_lineno(frame.f_lineno)
-                            break
-                    except Exception:
-                        pass
+                template = None
+                try:
+                    template = env.get_template(co_filename)
+                except Exception:
+                    pass
+
+                if not template:
+                    for search_path in env.loader.searchpath:
+                        try:
+                            rel_path = os.path.relpath(self.metadata['filename'], search_path)
+                            if not rel_path.startswith(".."):
+                                template = env.get_template(rel_path)
+                                break
+                        except Exception:
+                            pass
+
+                if template:
+                    lineno = template.get_corresponding_lineno(frame.f_lineno)
             except Exception:
                 pass
 

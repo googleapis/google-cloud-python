@@ -908,8 +908,6 @@ def template_coverage(session):
     session.run(
         "py.test",
         "-vv",
-        "-n",
-        "auto",
         "--cov=gapic",
         "--cov-config=.coveragerc-templates",
         "--cov-report=html",

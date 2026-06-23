@@ -1,0 +1,63 @@
+# Test matrix configuration for Jinja template coverage testing.
+# This list is dynamically loaded and executed by test_goldens_coverage.py.
+
+configs:
+  showcase:
+    package: "google.showcase.v1beta1"
+    opts: "transport=grpc+rest,service-yaml=tests/integration/showcase_v1beta1.yaml,add-iam-methods=true,samples=tests/integration/showcase_samples.yaml,rest-async-io-enabled=true"
+    use_retry: true
+    exclude_files:
+      - "identity.proto"
+    expected_file_keywords:
+      - "client.py"
+      - "async_client.py"
+      - "pagers.py"
+      - "transports"
+  
+  showcase_retry_snippets:
+    package: "google.showcase.v1beta1"
+    opts: "transport=grpc+rest,service-yaml=tests/integration/showcase_v1beta1.yaml,add-iam-methods=true,autogen-snippets=true,rest-async-io-enabled=true"
+    use_retry: true
+    exclude_files:
+      - "compliance.proto"
+      - "testing.proto"
+      - "sequence.proto"
+      - "rest_error.proto"
+      - "messaging.proto"
+      - "identity.proto"
+    expected_file_keywords:
+      - "client.py"
+      - "async_client.py"
+      - "pagers.py"
+      - "transports"
+  
+  showcase_no_iam_no_rest_async:
+    package: "google.showcase.v1beta1"
+    opts: "transport=grpc+rest,service-yaml=tests/integration/showcase_v1beta1.yaml,add-iam-methods=false,rest-async-io-enabled=false"
+    use_retry: true
+    exclude_files:
+      - "compliance.proto"
+      - "testing.proto"
+      - "sequence.proto"
+      - "rest_error.proto"
+      - "messaging.proto"
+      - "identity.proto"
+    expected_file_keywords:
+      - "client.py"
+      - "pagers.py"
+      - "transports"
+  
+  showcase_pure_grpc:
+    package: "google.showcase.v1beta1"
+    opts: "transport=grpc,service-yaml=tests/integration/showcase_v1beta1.yaml,add-iam-methods=false"
+    use_retry: true
+    exclude_files:
+      - "compliance.proto"
+      - "testing.proto"
+      - "sequence.proto"
+      - "rest_error.proto"
+      - "messaging.proto"
+      - "identity.proto"
+    expected_file_keywords:
+      - "client.py"
+      - "transports"

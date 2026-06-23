@@ -1,6 +1,7 @@
 import os
 from pathlib import Path
-from typing import Any, Dict
+from typing import Any, Dict, List
+import yaml
 import pytest
 from google.protobuf import descriptor_pb2
 from gapic.schema.api import API
@@ -8,87 +9,26 @@ from gapic.generator import Generator
 from gapic.utils import Options
 
 
-CUSTOM_YAML = """type: google.api.Service
-config_version: 3
-name: localhost
-title: Showcase API
+def load_test_configs() -> Dict[str, Dict[str, Any]]:
+    """Loads declarative test configurations from a YAML manifest.
 
-apis:
-- name: google.showcase.v1beta1.Echo
-- name: google.iam.v1.IAMPolicy
-- name: google.cloud.location.Locations
-- name: google.longrunning.Operations
+    Allows developers to specify another configuration or proto set by defining
+    COVERAGE_CONFIGS_FILE environment variable pointing to their custom YAML manifest.
+    """
+    default_config_path = Path(__file__).parent / "coverage_configs.yaml"
+    config_file_path = os.environ.get("COVERAGE_CONFIGS_FILE", str(default_config_path))
+    
+    config_path = Path(config_file_path)
+    if not config_path.exists():
+        pytest.fail(f"Test configs manifest not found at: {config_path.absolute()}")
 
-http:
-  rules:
-  - selector: google.cloud.location.Locations.GetLocation
-    get: '/v1beta1/{name=projects/*/locations/*}'
-  - selector: google.cloud.location.Locations.ListLocations
-    get: '/v1beta1/{name=projects/*}/locations'
-  - selector: google.iam.v1.IAMPolicy.GetIamPolicy
-    get: '/v1beta1/{resource=projects/*/locations/*/triggers/*}:getIamPolicy'
-  - selector: google.iam.v1.IAMPolicy.SetIamPolicy
-    post: '/v1beta1/{resource=projects/*/locations/*/triggers/*}:setIamPolicy'
-    body: '*'
-  - selector: google.iam.v1.IAMPolicy.TestIamPermissions
-    post: '/v1beta1/{resource=projects/*/locations/*/triggers/*}:testIamPermissions'
-    body: '*'
-"""
+    with open(config_path, "r") as f:
+        data = yaml.safe_load(f)
+    
+    return data.get("configs", {})
 
-# Define configuration metadata without binding the exact runtime path at import time.
-CONFIGS: Dict[str, Dict[str, Any]] = {
-    "showcase": {
-        "env_var": "SHOWCASE_DESC_PATH",
-        "default_path": "/tmp/showcase.desc",
-        "package": "google.showcase.v1beta1",
-        "opts": "transport=grpc+rest,service-yaml=tests/integration/showcase_v1beta1.yaml,add-iam-methods=true,samples=tests/integration/showcase_samples.yaml,rest-async-io-enabled=true",
-        "use_retry": True,
-        "expected_file_keywords": [
-            "client.py",
-            "async_client.py",
-            "pagers.py",
-            "transports",
-        ],
-    },
-    "showcase_retry_snippets": {
-        "env_var": "SHOWCASE_DESC_PATH",
-        "default_path": "/tmp/showcase.desc",
-        "package": "google.showcase.v1beta1",
-        "opts": "transport=grpc+rest,service-yaml=tests/integration/showcase_v1beta1.yaml,add-iam-methods=true,autogen-snippets=true,rest-async-io-enabled=true",
-        "use_retry": True,
-        "expected_file_keywords": [
-            "client.py",
-            "async_client.py",
-            "pagers.py",
-            "transports",
-        ],
-    },
-    "showcase_no_iam_no_rest_async": {
-        "env_var": "SHOWCASE_DESC_PATH",
-        "default_path": "/tmp/showcase.desc",
-        "package": "google.showcase.v1beta1",
-        "opts": "transport=grpc+rest,service-yaml=/tmp/showcase_no_iam_no_rest_async.yaml,add-iam-methods=false,rest-async-io-enabled=false",
-        "use_retry": True,
-        "exclude_identity": True,
-        "custom_yaml": CUSTOM_YAML,
-        "expected_file_keywords": [
-            "client.py",
-            "pagers.py",
-            "transports",
-        ],
-    },
-    "showcase_pure_grpc": {
-        "env_var": "SHOWCASE_DESC_PATH",
-        "default_path": "/tmp/showcase.desc",
-        "package": "google.showcase.v1beta1",
-        "opts": "transport=grpc,service-yaml=tests/integration/showcase_v1beta1.yaml,add-iam-methods=false",
-        "use_retry": True,
-        "expected_file_keywords": [
-            "client.py",
-            "transports",
-        ],
-    },
-}
+
+CONFIGS = load_test_configs()
 
 
 @pytest.mark.parametrize("config_name,config", CONFIGS.items())
@@ -99,21 +39,24 @@ def test_render_goldens_for_coverage(config_name: str, config: Dict[str, Any]) -
     template coverage upstream and verifies that all expected core files are produced.
     """
     # Dynamically resolve the descriptor path at test execution time.
-    desc_path_str = os.environ.get(config["env_var"], config["default_path"])
+    desc_path_str = os.environ.get(config.get("env_var", "SHOWCASE_DESC_PATH"), config.get("default_path", "/tmp/showcase.desc"))
     desc_path = Path(desc_path_str)
 
     if not desc_path.exists():
         pytest.fail(
             f"Required descriptor file not found: {desc_path.absolute()}\n"
-            f"Ensure {config['env_var']} is set or compile the descriptor set before running this test."
+            f"Ensure SHOWCASE_DESC_PATH or config env_var is set correctly."
         )
 
-    if config.get("custom_yaml"):
-        Path("/tmp/showcase_no_iam_no_rest_async.yaml").write_text(config["custom_yaml"])
 
     # Parse the FileDescriptorSet
     fds = descriptor_pb2.FileDescriptorSet.FromString(desc_path.read_bytes())
-    files_to_build = [f for f in fds.file if not config.get("exclude_identity") or "identity.proto" not in f.name]
+    
+    exclude_files = config.get("exclude_files", [])
+    files_to_build = [
+        f for f in fds.file
+        if not any(excluded in f.name for excluded in exclude_files)
+    ]
 
     opts_str = config["opts"]
     if config.get("use_retry"):
