@@ -155,7 +155,7 @@ jobs:
           # such as grpcio, which we build from scratch on every run for Python 3.15+.
           # Follow https://github.com/grpc/grpc/issues/41010 for updates.
           cache: 'pip'
-          cache-dependency-path: 'packages/gapic-generator/tests/integration/goldens/**/testing/requirements-prerelease.txt'
+          cache-dependency-path: '**/packages/gapic-generator/tests/integration/goldens/**/testing/requirements-prerelease.txt'
       - name: Install System Deps
         run: sudo apt-get update && sudo apt-get install -y pandoc
       - name: Run Goldens (Prerelease)
