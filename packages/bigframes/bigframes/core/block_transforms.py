@@ -14,8 +14,9 @@
 from __future__ import annotations
 
 import functools
+import inspect
 import typing
-from typing import Optional, Sequence
+from typing import Callable, Hashable, Optional, Sequence
 
 import bigframes_vendored.constants as constants
 import pandas as pd
@@ -23,13 +24,48 @@ import pandas as pd
 import bigframes.constants
 import bigframes.core as core
 import bigframes.core.blocks as blocks
+import bigframes.core.bytecode as bytecode
 import bigframes.core.expression as ex
 import bigframes.core.ordering as ordering
 import bigframes.core.window_spec as windows
 import bigframes.dtypes as dtypes
 import bigframes.operations as ops
 import bigframes.operations.aggregations as agg_ops
-from bigframes.core import agg_expressions
+from bigframes.core import agg_expressions, py_expressions
+
+
+def apply_to_block_rows(
+    func: Callable, block: blocks.Block, *args, **kwargs
+) -> blocks.Block:
+    """
+    Apply the given function to each row of the block.
+
+    The function is applied to each row of the block, and the result is returned
+    as a new block with the same index.
+    """
+    expr = bytecode._compile_bytecode_to_py_expr(func)
+    sig = inspect.signature(func)
+
+    bindings: dict[Hashable, ex.Expression] = {}
+
+    bound_args = sig.bind(*(None, *args), **kwargs)
+    bound_args.apply_defaults()
+    bound_params = bound_args.arguments
+    for name, value in bound_params.items():
+        bindings[name] = ex.const(value)
+
+    expr = py_expressions.resolve_py_exprs(
+        expr,
+        series_arg=next(iter(sig.parameters.keys())),
+        series_attrs={
+            label: col_id
+            for label in block.column_labels
+            if (col_id := block.resolve_label_exact(label)) is not None
+        },
+    )
+    expr = expr.bind_variables(bindings)
+
+    return block.project_exprs([expr], labels=[None], drop=True)
 
 
 def equals(block1: blocks.Block, block2: blocks.Block) -> bool:
