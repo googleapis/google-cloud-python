@@ -81,7 +81,9 @@ def test_llm_gemini_configure_fit(
 
 @pytest.mark.flaky(retries=2)
 def test_llm_gemini_w_ground_with_google_search(llm_remote_text_df):
-    model = llm.GeminiTextGenerator(model_name="gemini-2.5-flash", max_iterations=1)
+    model = llm.GeminiTextGenerator(
+        model_name="gemini-3.1-flash-lite", max_iterations=1
+    )
     df = model.predict(
         llm_remote_text_df["prompt"],
         ground_with_google_search=True,
