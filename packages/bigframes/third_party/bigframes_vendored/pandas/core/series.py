@@ -5450,7 +5450,7 @@ class Series(NDFrame):  # type: ignore[misc]
             <Axes: title={'center': 'My plot'}, ylabel='Frequency'>
 
         Returns:
-            bigframes.operations.plotting.PlotAccessor:
+            bigframes.pandas.api.typing.PlotAccessor:
                 An accessor making plots.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
