@@ -280,14 +280,18 @@ def secure_authorized_channel(
 class SslCredentials:
     """Class for application default SSL credentials.
 
-    The behavior is controlled by `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment
-    variable whose default value is `false`. Client certificate will not be used
-    unless the environment variable is explicitly set to `true`. See
-    https://google.aip.dev/auth/4114
+    The client certificate usage (mutual TLS) is determined by the
+    `should_use_client_cert` helper. Client certificate will not be used
+    unless client certificate usage is enabled. This is true if the
+    `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is explicitly
+    set to `"true"`, or if the environment variable is unset/empty but a client
+    certificate configuration is found (e.g. via the `GOOGLE_API_CERTIFICATE_CONFIG`
+    environment variable containing a `"workload"` certificate configuration).
+    See https://google.aip.dev/auth/4114
 
-    If the environment variable is `true`, then for devices with endpoint verification
-    support, a device certificate will be automatically loaded and mutual TLS will
-    be established.
+    If client certificate usage is enabled, then for devices with endpoint
+    verification support, a device certificate will be automatically loaded and
+    mutual TLS will be established.
     See https://cloud.google.com/endpoint-verification/docs/overview.
     """
 
@@ -316,11 +320,16 @@ class SslCredentials:
         """
         if self._is_mtls:
             try:
-                _, cert, key, _ = _mtls_helper.get_client_ssl_credentials()
-                self._ssl_credentials = grpc.ssl_channel_credentials(
-                    certificate_chain=cert, private_key=key
-                )
-            except exceptions.ClientCertError as caught_exc:
+                has_cert, cert, key, _ = _mtls_helper.get_client_ssl_credentials()
+                if has_cert:
+                    self._ssl_credentials = grpc.ssl_channel_credentials(
+                        certificate_chain=cert, private_key=key
+                    )
+                else:
+                    self._ssl_credentials = grpc.ssl_channel_credentials()
+                    self._is_mtls = False
+            except (exceptions.ClientCertError, OSError) as caught_exc:
+                self._is_mtls = False
                 new_exc = exceptions.MutualTLSChannelError(caught_exc)
                 raise new_exc from caught_exc
         else:

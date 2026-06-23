@@ -156,7 +156,6 @@ class AsyncAuthorizedSession:
         (via GOOGLE_API_USE_CLIENT_CERTIFICATE=true) or auto-enabled (when the env
         variable is unset and workload certificates are discovered). In these cases,
         the underlying transport will be reconfigured to use mTLS.
-
         Note: This function does nothing if the `aiohttp` library is not
         installed.
         Important: Calling this method will close any ongoing API requests associated
