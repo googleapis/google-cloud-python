@@ -65,7 +65,7 @@ def _safe_read_file(
         else:
             print(f"Warning: Permission denied reading {description}: {file_path}", file=sys.stderr)
             return None
-    except IOError as e:
+    except (IOError, ValueError) as e:
         if required:
             print(f"Error reading {description} {file_path}: {e}", file=sys.stderr)
             sys.exit(1)
@@ -624,33 +624,36 @@ def scan_repository(
     return results
 
 
-def parse_targets_file(file_path: str) -> List[Tuple[str, str]]:
+def parse_matrix_file(file_path: str) -> List[Tuple[str, str]]:
     """
-    Parses a YAML targets file into a list of (dependency, version) tuples.
+    Parses a YAML matrix file into a list of (dependency, version) tuples.
     """
-    content = _safe_read_file(file_path, required=True, description="targets file")
+    content = _safe_read_file(file_path, required=True, description="matrix file")
     try:
-        raw_targets = yaml.safe_load(content)
+        raw_matrix = yaml.safe_load(content)
     except Exception as e:
-        print(f"Error parsing targets YAML mapping: {e}", file=sys.stderr)
+        print(f"Error parsing matrix YAML mapping: {e}", file=sys.stderr)
         sys.exit(1)
         
-    if not isinstance(raw_targets, dict):
-        print("Error: Targets file content must resolve to a YAML mapping", file=sys.stderr)
+    if not isinstance(raw_matrix, dict):
+        print("Error: Matrix file content must resolve to a YAML mapping", file=sys.stderr)
         sys.exit(1)
         
     targets = []
-    for dep, versions in raw_targets.items():
+    for dep, versions in raw_matrix.items():
         if isinstance(versions, list):
             for v in versions:
                 if v is None or isinstance(v, (dict, list)):
                     print(f"Error: Invalid version '{v}' for dependency '{dep}'", file=sys.stderr)
                     sys.exit(1)
-                targets.append((str(dep), str(v)))
-        elif versions is not None and not isinstance(versions, dict):
-            targets.append((str(dep), str(versions)))
+                if not isinstance(v, str):
+                    print(f"Error: Version '{v}' for dependency '{dep}' must be specified as a quoted string to prevent YAML parsing issues (e.g., 3.10 parsed as 3.1).", file=sys.stderr)
+                    sys.exit(1)
+                targets.append((str(dep), v))
+        elif isinstance(versions, str):
+            targets.append((str(dep), versions))
         else:
-            print(f"Error: Invalid version '{versions}' for dependency '{dep}'", file=sys.stderr)
+            print(f"Error: Invalid version '{versions}' for dependency '{dep}'. Versions must be specified as quoted strings.", file=sys.stderr)
             sys.exit(1)
             
     return targets
@@ -675,7 +678,7 @@ def main():
     )
     
     parser.add_argument(
-        "--targets-file",
+        "-m", "--matrix-file",
         help="Path to a YAML file containing target dependencies and versions."
     )
     
@@ -743,17 +746,17 @@ def main():
     args = parser.parse_args()
     
     # Validation of required inputs
-    has_single_target = bool(args.dependency and args.version)
-    has_targets_file = bool(args.targets_file)
-    
-    if not (has_single_target or has_targets_file):
-        parser.error("Must specify either (-d/--dependency AND -v/--version) OR (--targets-file)")
-    if has_single_target and has_targets_file:
-        parser.error("Cannot specify both single target (-d/-v) and targets file (--targets-file)")
+    has_matrix_file = bool(args.matrix_file)
+    if has_matrix_file:
+        if args.dependency or args.version:
+            parser.error("Cannot specify -d/--dependency or -v/--version when using -m/--matrix-file")
+    else:
+        if not (args.dependency and args.version):
+            parser.error("Must specify both -d/--dependency and -v/--version when not using -m/--matrix-file")
         
     targets = []
-    if has_targets_file:
-        targets = parse_targets_file(args.targets_file)
+    if has_matrix_file:
+        targets = parse_matrix_file(args.matrix_file)
     else:
         targets = [(args.dependency, args.version)]
         
@@ -772,7 +775,7 @@ def main():
     elif args.package_file:
         target_packages = read_package_file(args.package_file)
         
-    if has_targets_file:
+    if has_matrix_file:
         print("Starting scan for multiple targets:")
         for dep, ver in targets:
             print(f"  - {dep}: {ver}")
@@ -809,7 +812,7 @@ def main():
         rules,
         target_packages,
         ignore_dirs,
-        version_string=(None if has_targets_file else args.version),
+        version_string=(None if has_matrix_file else args.version),
         targets=targets
     )
     
@@ -833,8 +836,8 @@ def main():
         script_dir = os.path.dirname(os.path.abspath(__file__))
         results_dir = os.path.join(script_dir, "results")
         os.makedirs(results_dir, exist_ok=True)
-        if has_targets_file:
-            base_name = os.path.splitext(os.path.basename(args.targets_file))[0]
+        if has_matrix_file:
+            base_name = os.path.splitext(os.path.basename(args.matrix_file))[0]
             output_path = os.path.join(results_dir, f"{base_name}-{timestamp}.csv")
         else:
             output_path = os.path.join(results_dir, f"{args.dependency}-{args.version}-{timestamp}.csv")

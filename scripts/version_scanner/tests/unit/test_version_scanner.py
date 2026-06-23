@@ -59,6 +59,8 @@ def sample_match():
         (PermissionError(), False, False, False, "Warning: Permission denied reading test_desc", None),  # Optional PermissionError
         (IOError("disk full"), True, False, True, "Error reading test_desc", None),  # Required IOError
         (IOError("disk full"), False, False, False, "Warning: Error reading test_desc", None),  # Optional IOError
+        (ValueError("invalid bytes"), True, False, True, "Error reading test_desc", None),  # Required ValueError
+        (ValueError("invalid bytes"), False, False, False, "Warning: Error reading test_desc", None),  # Optional ValueError
     ]
 )
 def test_safe_read_file_scenarios(
@@ -782,16 +784,16 @@ def test_format_for_console(sample_match):
     assert "python_requires = " not in log_str  # Slim format doesn't print context line
 
 
-def test_parse_targets_file(tmp_path):
-    from version_scanner import parse_targets_file
-    yaml_file = tmp_path / "targets.yaml"
+def test_parse_matrix_file(tmp_path):
+    from version_scanner import parse_matrix_file
+    yaml_file = tmp_path / "matrix.yaml"
     yaml_file.write_text("""
 python:
   - "3.7"
   - "3.8"
 protobuf: "4.25.8"
 """)
-    targets = parse_targets_file(str(yaml_file))
+    targets = parse_matrix_file(str(yaml_file))
     assert targets == [("python", "3.7"), ("python", "3.8"), ("protobuf", "4.25.8")]
 
 @pytest.mark.parametrize(
@@ -801,20 +803,22 @@ protobuf: "4.25.8"
         ("invalid: {", True),           # Invalid YAML
         ("- not_a_mapping", True),      # Invalid structure (list instead of map)
         ("python:\n  - null", True),    # Invalid version type (null/None value)
+        ("python:\n  - 3.10", True),    # Invalid version type (float instead of string in list)
+        ("python: 3.10", True),         # Invalid version type (float instead of string)
     ]
 )
-def test_parse_targets_file_failures(tmp_path, file_content, file_exists):
-    from version_scanner import parse_targets_file
+def test_parse_matrix_file_failures(tmp_path, file_content, file_exists):
+    from version_scanner import parse_matrix_file
     
     if file_exists:
-        yaml_file = tmp_path / "targets_failures.yaml"
+        yaml_file = tmp_path / "matrix_failures.yaml"
         yaml_file.write_text(file_content)
         path = str(yaml_file)
     else:
         path = "nonexistent_file.yaml"
         
     with pytest.raises(SystemExit) as excinfo:
-        parse_targets_file(path)
+        parse_matrix_file(path)
     assert excinfo.value.code == 1
 
 def test_scan_repository_multi_targets(tmp_path):
@@ -867,4 +871,27 @@ rules:
     assert len(protobuf_match) == 1
     assert protobuf_match[0]["version"] == "4.25.8"
     assert protobuf_match[0]["rule_name"] == "protobuf_check"
+
+
+@pytest.mark.parametrize(
+    "args, expected_error_msg",
+    [
+        # Mixing -m/--matrix-file with -d or -v
+        (['version_scanner.py', '-m', 'matrix.yaml', '-d', 'python'], "Cannot specify -d/--dependency or -v/--version when using -m/--matrix-file"),
+        (['version_scanner.py', '-m', 'matrix.yaml', '-v', '3.7'], "Cannot specify -d/--dependency or -v/--version when using -m/--matrix-file"),
+        (['version_scanner.py', '-m', 'matrix.yaml', '-d', 'python', '-v', '3.7'], "Cannot specify -d/--dependency or -v/--version when using -m/--matrix-file"),
+        # Missing either -d or -v when not using -m
+        (['version_scanner.py', '-d', 'python'], "Must specify both -d/--dependency and -v/--version when not using -m/--matrix-file"),
+        (['version_scanner.py', '-v', '3.7'], "Must specify both -d/--dependency and -v/--version when not using -m/--matrix-file"),
+        (['version_scanner.py'], "Must specify both -d/--dependency and -v/--version when not using -m/--matrix-file"),
+    ]
+)
+def test_main_cli_validation(capsys, args, expected_error_msg):
+    from version_scanner import main
+    with mock.patch('sys.argv', args):
+        with pytest.raises(SystemExit) as excinfo:
+            main()
+        assert excinfo.value.code == 2
+        captured = capsys.readouterr()
+        assert expected_error_msg in captured.err
 

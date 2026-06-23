@@ -21,7 +21,6 @@ from __future__ import annotations
 import abc
 from typing import (
     Any,
-    Generic,
     Literal,
     Optional,
     TypeVar,
@@ -29,51 +28,43 @@ from typing import (
     cast,
 )
 
-import bigframes.core.col
-import bigframes.core.sentinels as sentinels
-import bigframes.series as series
-import bigframes.session
+from bigframes import series, session
+from bigframes.core import col, sentinels
+from bigframes.extensions.core import abstract_series_accessor, series_tvf_mixins
 
+T = TypeVar("T")
 S = TypeVar("S")
 
 
-class AbstractBigQuerySeriesAccessor(abc.ABC, Generic[S]):
-    def __init__(self, obj: S):
-        self._obj = obj
-
-    @abc.abstractmethod
-    def _bf_from_series(
-        self, session: Optional[bigframes.session.Session] = None
-    ) -> series.Series:
-        """Convert the accessor's object to a BigFrames Series."""
-
-    @abc.abstractmethod
-    def _to_series(self, bf_series: series.Series) -> S:
-        """Convert a BigFrames Series to the accessor's object type."""
-
-
-class BigQuerySeriesAccessor(AbstractBigQuerySeriesAccessor[S]):
+class BigQuerySeriesAccessor(
+    abstract_series_accessor.AbstractBigQuerySeriesAccessor[T, S]
+):
     """Series accessor for BigQuery functions."""
 
     @property
     @abc.abstractmethod
-    def aead(self) -> AeadSeriesAccessor[S]:
+    def ai(self) -> AiSeriesAccessor[T, S]:
+        """Accessor for BigQuery ai functions."""
+
+    @property
+    @abc.abstractmethod
+    def aead(self) -> AeadSeriesAccessor[T, S]:
         """Accessor for BigQuery aead functions."""
 
     def deterministic_decrypt_bytes(
         self,
         ciphertext: Union[
             series.Series,
-            bigframes.core.col.Expression,
+            col.Expression,
             Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], bytes],
         ],
         additional_data: Union[
             series.Series,
-            bigframes.core.col.Expression,
+            col.Expression,
             Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], bytes],
         ],
         *,
-        session: Optional[bigframes.session.Session] = None,
+        session: Optional[session.Session] = None,
     ) -> S:
         """Uses the matching key from `keyset` to decrypt `ciphertext` and verifies the integrity of the data using `additional_data`. Returns an error if decryption fails."""
         from bigframes.operations.googlesql.global_namespace.aead_encryption import (
@@ -82,7 +73,7 @@ class BigQuerySeriesAccessor(AbstractBigQuerySeriesAccessor[S]):
 
         # Resolve session from other arguments if not passed
         if session is None:
-            import bigframes.core.googlesql as googlesql
+            from bigframes.core import googlesql
 
             session = googlesql._find_session(
                 ciphertext,
@@ -101,16 +92,16 @@ class BigQuerySeriesAccessor(AbstractBigQuerySeriesAccessor[S]):
         self,
         ciphertext: Union[
             series.Series,
-            bigframes.core.col.Expression,
+            col.Expression,
             Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], bytes],
         ],
         additional_data: Union[
             series.Series,
-            bigframes.core.col.Expression,
+            col.Expression,
             Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], str],
         ],
         *,
-        session: Optional[bigframes.session.Session] = None,
+        session: Optional[session.Session] = None,
     ) -> S:
         """Like `DETERMINISTIC_DECRYPT_BYTES`, but where plaintext is of type STRING."""
         from bigframes.operations.googlesql.global_namespace.aead_encryption import (
@@ -119,7 +110,7 @@ class BigQuerySeriesAccessor(AbstractBigQuerySeriesAccessor[S]):
 
         # Resolve session from other arguments if not passed
         if session is None:
-            import bigframes.core.googlesql as googlesql
+            from bigframes.core import googlesql
 
             session = googlesql._find_session(
                 ciphertext,
@@ -138,16 +129,16 @@ class BigQuerySeriesAccessor(AbstractBigQuerySeriesAccessor[S]):
         self,
         plaintext: Union[
             series.Series,
-            bigframes.core.col.Expression,
+            col.Expression,
             Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], bytes, str],
         ],
         additional_data: Union[
             series.Series,
-            bigframes.core.col.Expression,
+            col.Expression,
             Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], bytes, str],
         ],
         *,
-        session: Optional[bigframes.session.Session] = None,
+        session: Optional[session.Session] = None,
     ) -> S:
         """Encrypts `plaintext` using the primary cryptographic key in `keyset` using deterministic AEAD. The algorithm of the primary key must be `DETERMINISTIC_AEAD_AES_SIV_CMAC_256`. Binds the ciphertext to the context defined by `additional_data`. Returns `NULL` if any input is `NULL`."""
         from bigframes.operations.googlesql.global_namespace.aead_encryption import (
@@ -156,7 +147,7 @@ class BigQuerySeriesAccessor(AbstractBigQuerySeriesAccessor[S]):
 
         # Resolve session from other arguments if not passed
         if session is None:
-            import bigframes.core.googlesql as googlesql
+            from bigframes.core import googlesql
 
             session = googlesql._find_session(
                 plaintext,
@@ -175,11 +166,11 @@ class BigQuerySeriesAccessor(AbstractBigQuerySeriesAccessor[S]):
         self,
         array_expression_2: Union[
             series.Series,
-            bigframes.core.col.Expression,
+            col.Expression,
             Union[Any, Literal[sentinels.Sentinel.ARGUMENT_DEFAULT]],
         ],
         *,
-        session: Optional[bigframes.session.Session] = None,
+        session: Optional[session.Session] = None,
     ) -> S:
         """Concatenates one or more arrays with the same element type into a single array."""
         from bigframes.operations.googlesql.global_namespace.array import (
@@ -188,7 +179,7 @@ class BigQuerySeriesAccessor(AbstractBigQuerySeriesAccessor[S]):
 
         # Resolve session from other arguments if not passed
         if session is None:
-            import bigframes.core.googlesql as googlesql
+            from bigframes.core import googlesql
 
             session = googlesql._find_session(
                 array_expression_2,
@@ -204,7 +195,7 @@ class BigQuerySeriesAccessor(AbstractBigQuerySeriesAccessor[S]):
     def array_first(
         self,
         *,
-        session: Optional[bigframes.session.Session] = None,
+        session: Optional[session.Session] = None,
     ) -> S:
         """Takes an array and returns the first element in the array."""
         from bigframes.operations.googlesql.global_namespace.array import (
@@ -221,11 +212,11 @@ class BigQuerySeriesAccessor(AbstractBigQuerySeriesAccessor[S]):
         self,
         n: Union[
             series.Series,
-            bigframes.core.col.Expression,
+            col.Expression,
             Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], int],
         ],
         *,
-        session: Optional[bigframes.session.Session] = None,
+        session: Optional[session.Session] = None,
     ) -> S:
         """Returns a prefix of `input_array` consisting of the first `n` elements."""
         from bigframes.operations.googlesql.global_namespace.array import (
@@ -234,7 +225,7 @@ class BigQuerySeriesAccessor(AbstractBigQuerySeriesAccessor[S]):
 
         # Resolve session from other arguments if not passed
         if session is None:
-            import bigframes.core.googlesql as googlesql
+            from bigframes.core import googlesql
 
             session = googlesql._find_session(
                 n,
@@ -251,11 +242,11 @@ class BigQuerySeriesAccessor(AbstractBigQuerySeriesAccessor[S]):
         self,
         search_value: Union[
             series.Series,
-            bigframes.core.col.Expression,
+            col.Expression,
             Union[Any, Literal[sentinels.Sentinel.ARGUMENT_DEFAULT]],
         ],
         *,
-        session: Optional[bigframes.session.Session] = None,
+        session: Optional[session.Session] = None,
     ) -> S:
         """Takes an array and returns `TRUE` if there is an element in the array that is equal to the search_value."""
         from bigframes.operations.googlesql.global_namespace.array import (
@@ -264,7 +255,7 @@ class BigQuerySeriesAccessor(AbstractBigQuerySeriesAccessor[S]):
 
         # Resolve session from other arguments if not passed
         if session is None:
-            import bigframes.core.googlesql as googlesql
+            from bigframes.core import googlesql
 
             session = googlesql._find_session(
                 search_value,
@@ -281,11 +272,11 @@ class BigQuerySeriesAccessor(AbstractBigQuerySeriesAccessor[S]):
         self,
         search_values: Union[
             series.Series,
-            bigframes.core.col.Expression,
+            col.Expression,
             Union[Any, Literal[sentinels.Sentinel.ARGUMENT_DEFAULT]],
         ],
         *,
-        session: Optional[bigframes.session.Session] = None,
+        session: Optional[session.Session] = None,
     ) -> S:
         """Takes an array to search and an array of search values. Returns `TRUE` if all search values are in the array to search, otherwise returns `FALSE`."""
         from bigframes.operations.googlesql.global_namespace.array import (
@@ -294,7 +285,7 @@ class BigQuerySeriesAccessor(AbstractBigQuerySeriesAccessor[S]):
 
         # Resolve session from other arguments if not passed
         if session is None:
-            import bigframes.core.googlesql as googlesql
+            from bigframes.core import googlesql
 
             session = googlesql._find_session(
                 search_values,
@@ -311,11 +302,11 @@ class BigQuerySeriesAccessor(AbstractBigQuerySeriesAccessor[S]):
         self,
         search_values: Union[
             series.Series,
-            bigframes.core.col.Expression,
+            col.Expression,
             Union[Any, Literal[sentinels.Sentinel.ARGUMENT_DEFAULT]],
         ],
         *,
-        session: Optional[bigframes.session.Session] = None,
+        session: Optional[session.Session] = None,
     ) -> S:
         """Takes an array to search and an array of search values. Returns `TRUE` if any search values are in the array to search, otherwise returns `FALSE`."""
         from bigframes.operations.googlesql.global_namespace.array import (
@@ -324,7 +315,7 @@ class BigQuerySeriesAccessor(AbstractBigQuerySeriesAccessor[S]):
 
         # Resolve session from other arguments if not passed
         if session is None:
-            import bigframes.core.googlesql as googlesql
+            from bigframes.core import googlesql
 
             session = googlesql._find_session(
                 search_values,
@@ -340,7 +331,7 @@ class BigQuerySeriesAccessor(AbstractBigQuerySeriesAccessor[S]):
     def array_is_distinct(
         self,
         *,
-        session: Optional[bigframes.session.Session] = None,
+        session: Optional[session.Session] = None,
     ) -> S:
         """Returns `TRUE` if the array contains no repeated elements, using the same equality comparison logic as `SELECT DISTINCT`."""
         from bigframes.operations.googlesql.global_namespace.array import (
@@ -356,7 +347,7 @@ class BigQuerySeriesAccessor(AbstractBigQuerySeriesAccessor[S]):
     def array_last(
         self,
         *,
-        session: Optional[bigframes.session.Session] = None,
+        session: Optional[session.Session] = None,
     ) -> S:
         """Takes an array and returns the last element in the array."""
         from bigframes.operations.googlesql.global_namespace.array import (
@@ -372,7 +363,7 @@ class BigQuerySeriesAccessor(AbstractBigQuerySeriesAccessor[S]):
     def array_length(
         self,
         *,
-        session: Optional[bigframes.session.Session] = None,
+        session: Optional[session.Session] = None,
     ) -> S:
         """Compute the length of each array element in the Series.
 
@@ -435,7 +426,7 @@ class BigQuerySeriesAccessor(AbstractBigQuerySeriesAccessor[S]):
     def array_reverse(
         self,
         *,
-        session: Optional[bigframes.session.Session] = None,
+        session: Optional[session.Session] = None,
     ) -> S:
         """Returns the input `ARRAY` with elements in reverse order."""
         from bigframes.operations.googlesql.global_namespace.array import (
@@ -452,16 +443,16 @@ class BigQuerySeriesAccessor(AbstractBigQuerySeriesAccessor[S]):
         self,
         start_offset: Union[
             series.Series,
-            bigframes.core.col.Expression,
+            col.Expression,
             Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], int],
         ],
         end_offset: Union[
             series.Series,
-            bigframes.core.col.Expression,
+            col.Expression,
             Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], int],
         ],
         *,
-        session: Optional[bigframes.session.Session] = None,
+        session: Optional[session.Session] = None,
     ) -> S:
         """Returns an array containing zero or more consecutive elements from the input array."""
         from bigframes.operations.googlesql.global_namespace.array import (
@@ -470,7 +461,7 @@ class BigQuerySeriesAccessor(AbstractBigQuerySeriesAccessor[S]):
 
         # Resolve session from other arguments if not passed
         if session is None:
-            import bigframes.core.googlesql as googlesql
+            from bigframes.core import googlesql
 
             session = googlesql._find_session(
                 start_offset,
@@ -489,16 +480,16 @@ class BigQuerySeriesAccessor(AbstractBigQuerySeriesAccessor[S]):
         self,
         delimiter: Union[
             series.Series,
-            bigframes.core.col.Expression,
+            col.Expression,
             Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], bytes, str],
         ],
         null_text: Union[
             series.Series,
-            bigframes.core.col.Expression,
+            col.Expression,
             Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], bytes, str],
         ] = sentinels.Sentinel.ARGUMENT_DEFAULT,
         *,
-        session: Optional[bigframes.session.Session] = None,
+        session: Optional[session.Session] = None,
     ) -> S:
         """Converts array elements within a Series into delimited strings.
 
@@ -553,7 +544,7 @@ class BigQuerySeriesAccessor(AbstractBigQuerySeriesAccessor[S]):
 
         # Resolve session from other arguments if not passed
         if session is None:
-            import bigframes.core.googlesql as googlesql
+            from bigframes.core import googlesql
 
             session = googlesql._find_session(
                 delimiter,
@@ -572,11 +563,11 @@ class BigQuerySeriesAccessor(AbstractBigQuerySeriesAccessor[S]):
         self,
         depth: Union[
             series.Series,
-            bigframes.core.col.Expression,
+            col.Expression,
             Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], int],
         ] = sentinels.Sentinel.ARGUMENT_DEFAULT,
         *,
-        session: Optional[bigframes.session.Session] = None,
+        session: Optional[session.Session] = None,
     ) -> S:
         """Takes an array of nested data and flattens a specific part of it into a single, flat array with the [array elements field access operator][array-el-field-operator]. Returns `NULL` if the input value is `NULL`."""
         from bigframes.operations.googlesql.global_namespace.array import (
@@ -585,7 +576,7 @@ class BigQuerySeriesAccessor(AbstractBigQuerySeriesAccessor[S]):
 
         # Resolve session from other arguments if not passed
         if session is None:
-            import bigframes.core.googlesql as googlesql
+            from bigframes.core import googlesql
 
             session = googlesql._find_session(
                 depth,
@@ -601,7 +592,7 @@ class BigQuerySeriesAccessor(AbstractBigQuerySeriesAccessor[S]):
     def bool_(
         self,
         *,
-        session: Optional[bigframes.session.Session] = None,
+        session: Optional[session.Session] = None,
     ) -> S:
         """Converts a JSON boolean to a SQL BOOL value."""
         from bigframes.operations.googlesql.global_namespace.conversion import (
@@ -618,11 +609,11 @@ class BigQuerySeriesAccessor(AbstractBigQuerySeriesAccessor[S]):
         self,
         wide_number_mode: Union[
             series.Series,
-            bigframes.core.col.Expression,
+            col.Expression,
             Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], str],
         ] = sentinels.Sentinel.ARGUMENT_DEFAULT,
         *,
-        session: Optional[bigframes.session.Session] = None,
+        session: Optional[session.Session] = None,
     ) -> S:
         """Converts a JSON number to a SQL FLOAT64 value."""
         from bigframes.operations.googlesql.global_namespace.conversion import (
@@ -631,7 +622,7 @@ class BigQuerySeriesAccessor(AbstractBigQuerySeriesAccessor[S]):
 
         # Resolve session from other arguments if not passed
         if session is None:
-            import bigframes.core.googlesql as googlesql
+            from bigframes.core import googlesql
 
             session = googlesql._find_session(
                 wide_number_mode,
@@ -648,11 +639,11 @@ class BigQuerySeriesAccessor(AbstractBigQuerySeriesAccessor[S]):
         self,
         wide_number_mode: Union[
             series.Series,
-            bigframes.core.col.Expression,
+            col.Expression,
             Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], str],
         ] = sentinels.Sentinel.ARGUMENT_DEFAULT,
         *,
-        session: Optional[bigframes.session.Session] = None,
+        session: Optional[session.Session] = None,
     ) -> S:
         """Converts a JSON number to a SQL FLOAT64 value."""
         from bigframes.operations.googlesql.global_namespace.conversion import (
@@ -661,7 +652,7 @@ class BigQuerySeriesAccessor(AbstractBigQuerySeriesAccessor[S]):
 
         # Resolve session from other arguments if not passed
         if session is None:
-            import bigframes.core.googlesql as googlesql
+            from bigframes.core import googlesql
 
             session = googlesql._find_session(
                 wide_number_mode,
@@ -677,7 +668,7 @@ class BigQuerySeriesAccessor(AbstractBigQuerySeriesAccessor[S]):
     def int64(
         self,
         *,
-        session: Optional[bigframes.session.Session] = None,
+        session: Optional[session.Session] = None,
     ) -> S:
         """Converts a JSON number to a SQL INT64 value."""
         from bigframes.operations.googlesql.global_namespace.conversion import (
@@ -693,7 +684,7 @@ class BigQuerySeriesAccessor(AbstractBigQuerySeriesAccessor[S]):
     def parse_bignumeric(
         self,
         *,
-        session: Optional[bigframes.session.Session] = None,
+        session: Optional[session.Session] = None,
     ) -> S:
         """Converts a STRING to a BIGNUMERIC value."""
         from bigframes.operations.googlesql.global_namespace.conversion import (
@@ -709,7 +700,7 @@ class BigQuerySeriesAccessor(AbstractBigQuerySeriesAccessor[S]):
     def parse_numeric(
         self,
         *,
-        session: Optional[bigframes.session.Session] = None,
+        session: Optional[session.Session] = None,
     ) -> S:
         """Converts a STRING to a NUMERIC value."""
         from bigframes.operations.googlesql.global_namespace.conversion import (
@@ -726,11 +717,11 @@ class BigQuerySeriesAccessor(AbstractBigQuerySeriesAccessor[S]):
         self,
         timezone: Union[
             series.Series,
-            bigframes.core.col.Expression,
+            col.Expression,
             Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], str],
         ] = sentinels.Sentinel.ARGUMENT_DEFAULT,
         *,
-        session: Optional[bigframes.session.Session] = None,
+        session: Optional[session.Session] = None,
     ) -> S:
         """Converts a value to a STRING value."""
         from bigframes.operations.googlesql.global_namespace.conversion import (
@@ -739,7 +730,7 @@ class BigQuerySeriesAccessor(AbstractBigQuerySeriesAccessor[S]):
 
         # Resolve session from other arguments if not passed
         if session is None:
-            import bigframes.core.googlesql as googlesql
+            from bigframes.core import googlesql
 
             session = googlesql._find_session(
                 timezone,
@@ -753,23 +744,27 @@ class BigQuerySeriesAccessor(AbstractBigQuerySeriesAccessor[S]):
         return self._to_series(cast(series.Series, result))
 
 
-class AeadSeriesAccessor(AbstractBigQuerySeriesAccessor[S]):
+class AiSeriesAccessor(series_tvf_mixins.AITVFMixin[T, S]):
+    """Series accessor for BigQuery ai functions."""
+
+
+class AeadSeriesAccessor(abstract_series_accessor.AbstractBigQuerySeriesAccessor[T, S]):
     """Series accessor for BigQuery aead functions."""
 
     def decrypt_bytes(
         self,
         ciphertext: Union[
             series.Series,
-            bigframes.core.col.Expression,
+            col.Expression,
             Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], bytes],
         ],
         additional_data: Union[
             series.Series,
-            bigframes.core.col.Expression,
+            col.Expression,
             Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], bytes],
         ],
         *,
-        session: Optional[bigframes.session.Session] = None,
+        session: Optional[session.Session] = None,
     ) -> S:
         """Uses the matching key from keyset to decrypt ciphertext and verifies the integrity of the data using additional_data. Returns an error if decryption or verification fails."""
         from bigframes.operations.googlesql.aead import (
@@ -778,7 +773,7 @@ class AeadSeriesAccessor(AbstractBigQuerySeriesAccessor[S]):
 
         # Resolve session from other arguments if not passed
         if session is None:
-            import bigframes.core.googlesql as googlesql
+            from bigframes.core import googlesql
 
             session = googlesql._find_session(
                 ciphertext,
@@ -797,16 +792,16 @@ class AeadSeriesAccessor(AbstractBigQuerySeriesAccessor[S]):
         self,
         ciphertext: Union[
             series.Series,
-            bigframes.core.col.Expression,
+            col.Expression,
             Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], bytes],
         ],
         additional_data: Union[
             series.Series,
-            bigframes.core.col.Expression,
+            col.Expression,
             Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], str],
         ],
         *,
-        session: Optional[bigframes.session.Session] = None,
+        session: Optional[session.Session] = None,
     ) -> S:
         """Like AEAD.DECRYPT_BYTES, but where additional_data is of type STRING."""
         from bigframes.operations.googlesql.aead import (
@@ -815,7 +810,7 @@ class AeadSeriesAccessor(AbstractBigQuerySeriesAccessor[S]):
 
         # Resolve session from other arguments if not passed
         if session is None:
-            import bigframes.core.googlesql as googlesql
+            from bigframes.core import googlesql
 
             session = googlesql._find_session(
                 ciphertext,
@@ -834,23 +829,23 @@ class AeadSeriesAccessor(AbstractBigQuerySeriesAccessor[S]):
         self,
         plaintext: Union[
             series.Series,
-            bigframes.core.col.Expression,
+            col.Expression,
             Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], bytes, str],
         ],
         additional_data: Union[
             series.Series,
-            bigframes.core.col.Expression,
+            col.Expression,
             Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], bytes, str],
         ],
         *,
-        session: Optional[bigframes.session.Session] = None,
+        session: Optional[session.Session] = None,
     ) -> S:
         """Encrypts plaintext using the primary cryptographic key in keyset. The algorithm of the primary key must be AEAD_AES_GCM_256. Binds the ciphertext to the context defined by additional_data. Returns NULL if any input is NULL."""
         from bigframes.operations.googlesql.aead import encrypt as encrypt_impl
 
         # Resolve session from other arguments if not passed
         if session is None:
-            import bigframes.core.googlesql as googlesql
+            from bigframes.core import googlesql
 
             session = googlesql._find_session(
                 plaintext,

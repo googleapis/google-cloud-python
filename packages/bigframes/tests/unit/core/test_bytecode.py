@@ -18,73 +18,64 @@ import pytest
 
 import bigframes.core.expression as ex
 import bigframes.operations as ops
-from bigframes.core.bytecode import dis_to_expr
+from bigframes.core.bytecode import py_to_expression
 
 
-def test_dis_to_expr_simple_arithmetic():
-    func = lambda row: row.x + 1
-    expr = dis_to_expr(func, unpack_mode=False)
+def test_py_to_expression_simple_arithmetic():
+    func = lambda x: x + 1
+    expr = py_to_expression(func)
     assert expr is not None
 
     expected = ops.add_op.as_expr(ex.free_var("x"), ex.const(1))
     assert expr == expected
 
 
-def test_dis_to_expr_unpack_mode():
-    func = lambda col1, col2: col1 * col2
-    expr = dis_to_expr(func, unpack_mode=True)
-    assert expr is not None
-
-    expected = ops.mul_op.as_expr(ex.free_var("col1"), ex.free_var("col2"))
-    assert expr == expected
-
-
-def test_dis_to_expr_math_function():
-    func = lambda row: math.sin(row.x)
-    expr = dis_to_expr(func, unpack_mode=False)
+def test_py_to_expression_math_function():
+    func = lambda x: math.sin(x)
+    expr = py_to_expression(func)
     assert expr is not None
 
     expected = ops.numeric_ops.sin_op.as_expr(ex.free_var("x"))
     assert expr == expected
 
 
-def test_dis_to_expr_negation():
-    func = lambda row: -row.x
-    expr = dis_to_expr(func, unpack_mode=False)
+def test_py_to_expression_negation():
+    func = lambda x: -x
+    expr = py_to_expression(func)
     assert expr is not None
 
     expected = ops.numeric_ops.neg_op.as_expr(ex.free_var("x"))
     assert expr == expected
 
 
-def test_dis_to_expr_comparison():
-    func = lambda row: row.x == row.y
-    expr = dis_to_expr(func, unpack_mode=False)
+def test_py_to_expression_comparison():
+    func = lambda x, y: x == y
+    expr = py_to_expression(func)
     assert expr is not None
 
     expected = ops.comparison_ops.eq_op.as_expr(ex.free_var("x"), ex.free_var("y"))
     assert expr == expected
 
 
-def test_dis_to_expr_unsupported():
+def test_py_to_expression_unsupported():
     # Control flow or unsupported structures should return None
-    def func_with_loop(row):
+    def func_with_loop(x):
         res = 0
-        for val in range(int(row.x)):
+        for val in range(int(x)):
             res += val
         return res
 
     with pytest.raises(ValueError):
-        dis_to_expr(func_with_loop, unpack_mode=False)
+        py_to_expression(func_with_loop)
 
 
 global_none_val = None
 
 
-def test_dis_to_expr_global_none():
+def test_py_to_expression_global_none():
     # Test resolving a global variable explicitly set to None
-    func = lambda row: row.x == global_none_val
-    expr = dis_to_expr(func, unpack_mode=False)
+    func = lambda x: x == global_none_val
+    expr = py_to_expression(func)
     assert expr is not None
 
     expected = ops.comparison_ops.eq_op.as_expr(ex.free_var("x"), ex.const(None))
