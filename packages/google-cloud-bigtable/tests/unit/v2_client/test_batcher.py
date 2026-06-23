@@ -13,8 +13,6 @@
 # limitations under the License.
 
 
-import time
-
 import mock
 import pytest
 
