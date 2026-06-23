@@ -35,7 +35,7 @@ jobs:
           # Uses -o to output a detailed, raw CSV to a file
           # Uses --stdout to print a slim, easier to parse summary to the GitHub Actions UI
           # Uses --soft-fail to temporarily limit causing CI/CD failures during the migration to full operation. 
-          python scripts/version_scanner/version_scanner.py --targets-file scripts/version_scanner/targets.yaml --stdout -o version_scanner_output.csv --soft-fail
+          python scripts/version_scanner/version_scanner.py --targets-file scripts/version_scanner/targets.yaml --package-file scripts/version_scanner/python-310-package-list.txt --stdout -o version_scanner_output.csv --soft-fail
           
       - name: Upload CSV Results
         if: always()
