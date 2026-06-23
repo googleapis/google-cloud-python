@@ -507,7 +507,7 @@ def prerelease_deps(session, protobuf_implementation):
     """
 
     # Install all dependencies
-    session.install("-e", ".")
+    session.install("-e", f".[{','.join(UNIT_TEST_EXTRAS)}]")
 
     # Install dependencies for the unit test environment
     unit_deps_all = UNIT_TEST_STANDARD_DEPENDENCIES + UNIT_TEST_EXTERNAL_DEPENDENCIES
@@ -618,7 +618,7 @@ def core_deps_from_source(session, protobuf_implementation):
     """
 
     # Install all dependencies
-    session.install("-e", ".")
+    session.install("-e", f".[{','.join(UNIT_TEST_EXTRAS)}]")
 
     # Install dependencies for the unit test environment
     unit_deps_all = UNIT_TEST_STANDARD_DEPENDENCIES + UNIT_TEST_EXTERNAL_DEPENDENCIES

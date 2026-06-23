@@ -118,6 +118,7 @@ def _overwrite_golden_impl(ctx):
     find tests/integration/goldens/{api_name}/ -name \\*.json -type f -delete
     find tests/integration/goldens/{api_name}/ -name \\*.txt -type f -delete
     find tests/integration/goldens/{api_name}/ -name \\*.in -type f -delete
+    find tests/integration/goldens/{api_name}/ -name \\*.ini -type f -delete
     unzip -ao {goldens_output_zip} -d tests/integration/goldens/{api_name}
     """.format(
         goldens_output_zip = goldens_output_zip.path,
