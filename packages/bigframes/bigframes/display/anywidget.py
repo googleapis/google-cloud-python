@@ -307,14 +307,14 @@ class TableWidget(_WIDGET_BASE):
                 self.start_execution = False
             else:
                 self._dataframe = result.df_to_set
-                self.orderable_columns = result.orderable_cols
+                self.orderable_columns = result.orderable_cols or []
                 self._batches = result.batches
                 self._batch_iter = result.batch_iter
-                self._cached_batches = result.cached_batches
+                self._cached_batches = result.cached_batches or []
                 self._all_data_loaded = result.all_data_loaded
                 self._last_sort_state = _SortState((), ())
                 self.row_count = result.total_rows
-                self.table_html = result.initial_html
+                self.table_html = result.initial_html or ""
                 self.is_deferred_mode = False
                 self.start_execution = False
 
