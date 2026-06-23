@@ -1024,7 +1024,7 @@ class BigQuerySeriesAccessor(AbstractBigQuerySeriesAccessor[S]):
             series.Series,
             bigframes.core.col.Expression,
             Union[Any, Literal[sentinels.Sentinel.ARGUMENT_DEFAULT]],
-        ] = sentinels.Sentinel.ARGUMENT_DEFAULT,
+        ],
         time_zone: Union[
             series.Series,
             bigframes.core.col.Expression,

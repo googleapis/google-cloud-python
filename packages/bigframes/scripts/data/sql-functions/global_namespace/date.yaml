@@ -241,24 +241,6 @@ scalar_functions:
             optional: false
             keyword_only: false
         return: i64
-      # Signature: extract:pts_str
-      - args:
-          - name: "date_expression"
-            value: timestamp
-            optional: false
-            keyword_only: false
-          - name: "time_zone"
-            value: string
-            optional: true
-            keyword_only: false
-        return: time
-      # Signature: extract:pts
-      - args:
-          - name: "date_expression"
-            value: timestamp
-            optional: false
-            keyword_only: false
-        return: time
   - name: "format_date"
     description: "Formats a DATE value according to a specified format string."
     series_accessor_arg: date_expr
