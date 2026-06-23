@@ -782,16 +782,16 @@ def test_format_for_console(sample_match):
     assert "python_requires = " not in log_str  # Slim format doesn't print context line
 
 
-def test_parse_targets_file(tmp_path):
-    from version_scanner import parse_targets_file
-    yaml_file = tmp_path / "targets.yaml"
+def test_parse_matrix_file(tmp_path):
+    from version_scanner import parse_matrix_file
+    yaml_file = tmp_path / "matrix.yaml"
     yaml_file.write_text("""
 python:
   - "3.7"
   - "3.8"
 protobuf: "4.25.8"
 """)
-    targets = parse_targets_file(str(yaml_file))
+    targets = parse_matrix_file(str(yaml_file))
     assert targets == [("python", "3.7"), ("python", "3.8"), ("protobuf", "4.25.8")]
 
 @pytest.mark.parametrize(
@@ -803,18 +803,18 @@ protobuf: "4.25.8"
         ("python:\n  - null", True),    # Invalid version type (null/None value)
     ]
 )
-def test_parse_targets_file_failures(tmp_path, file_content, file_exists):
-    from version_scanner import parse_targets_file
+def test_parse_matrix_file_failures(tmp_path, file_content, file_exists):
+    from version_scanner import parse_matrix_file
     
     if file_exists:
-        yaml_file = tmp_path / "targets_failures.yaml"
+        yaml_file = tmp_path / "matrix_failures.yaml"
         yaml_file.write_text(file_content)
         path = str(yaml_file)
     else:
         path = "nonexistent_file.yaml"
         
     with pytest.raises(SystemExit) as excinfo:
-        parse_targets_file(path)
+        parse_matrix_file(path)
     assert excinfo.value.code == 1
 
 def test_scan_repository_multi_targets(tmp_path):
