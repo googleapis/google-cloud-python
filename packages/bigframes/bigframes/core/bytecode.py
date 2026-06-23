@@ -249,15 +249,12 @@ def _compile_bytecode_to_py_expr(func: Callable) -> expression.Expression:
     raise ValueError("No return value found")
 
 
-def dis_to_expr(func: Callable, unpack_mode: bool = False) -> expression.Expression:
+def py_to_expression(func: Callable) -> expression.Expression:
     """
     Try to convert a python function to a BigQuery expression.
-
-    Unpack mode is whether SQL columns are addressed as attributes of a single
-    python argument (e.g. row.col1), or as separate arguments (e.g. col1).
 
     This is "best effort" - if the function contains operations that cannot
     be converted to BigQuery expressions, it will raise an Exception.
     """
     py_expr = _compile_bytecode_to_py_expr(func)
-    return py_exprs.resolve_py_exprs(py_expr, unpack_mode=unpack_mode)
+    return py_exprs.resolve_py_exprs(py_expr)

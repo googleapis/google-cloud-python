@@ -510,6 +510,11 @@ def process_yaml_file(yaml_file, templates):
 
     is_global = "global_namespace" in module_path.parts
     namespace = get_namespace(yaml_file)
+
+    if not data or not isinstance(data, dict) or "scalar_functions" not in data:
+        # If the file is empty or has no functions, just create the namespace.
+        return [{"namespace": namespace}]
+
     ops_list, functions_list = parse_scalar_functions(
         data,
         module_name,
@@ -632,8 +637,9 @@ def generate_series_accessors(functions: list[dict], templates: dict):
 
     # Populate functions
     for func in functions:
-        ns = func["namespace"] or ()
-        ns_by_tuple[ns]["functions"].append(func)
+        if "name" in func:
+            ns = func["namespace"] or ()
+            ns_by_tuple[ns]["functions"].append(func)
 
     # Populate children properties
     for ns in sorted_namespaces:

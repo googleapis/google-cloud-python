@@ -29,7 +29,7 @@ if hasattr(pd.errors, "SettingWithCopyWarning"):
     warnings.simplefilter("ignore", pd.errors.SettingWithCopyWarning)
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture()
 def polars_session_or_bpd():
     # Since the doctest imports fixture is autouse=True, don't skip if polars
     # isn't available.
