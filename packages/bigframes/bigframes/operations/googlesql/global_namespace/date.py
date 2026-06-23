@@ -81,7 +81,7 @@ _EXTRACT_OP = googlesql.GoogleSqlScalarOp(
 )
 _FORMAT_DATE_OP = googlesql.GoogleSqlScalarOp(
     "FORMAT_DATE",
-    args=(googlesql.ArgSpec(), googlesql.ArgSpec(), googlesql.ArgSpec(optional=True)),
+    args=(googlesql.ArgSpec(), googlesql.ArgSpec()),
     signature=lambda *args: dtypes.STRING_DTYPE,
 )
 _GENERATE_DATE_ARRAY_OP = googlesql.GoogleSqlScalarOp(
@@ -355,24 +355,14 @@ def format_date(
     date_expr: Union[
         series.Series,
         bigframes.core.col.Expression,
-        Union[
-            Literal[sentinels.Sentinel.ARGUMENT_DEFAULT],
-            datetime.date,
-            datetime.datetime,
-        ],
+        Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], datetime.date],
     ],
-    time_zone: Union[
-        series.Series,
-        bigframes.core.col.Expression,
-        Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], str],
-    ] = sentinels.Sentinel.ARGUMENT_DEFAULT,
 ) -> Union[series.Series, bigframes.core.col.Expression]:
     """Formats a DATE value according to a specified format string."""
     return bigframes.core.googlesql.apply_googlesql_scalar_op(
         _FORMAT_DATE_OP,
         format_string,
         date_expr,
-        time_zone,
     )
 
 

@@ -256,32 +256,6 @@ scalar_functions:
             optional: false
             keyword_only: false
         return: string
-      # Signature: format_date:str_pts
-      - args:
-          - name: "format_string"
-            value: string
-            optional: false
-            keyword_only: false
-          - name: "date_expr"
-            value: timestamp
-            optional: false
-            keyword_only: false
-        return: string
-      # Signature: format_date:str_pts_str
-      - args:
-          - name: "format_string"
-            value: string
-            optional: false
-            keyword_only: false
-          - name: "date_expr"
-            value: timestamp
-            optional: false
-            keyword_only: false
-          - name: "time_zone"
-            value: string
-            optional: true
-            keyword_only: false
-        return: string
   - name: "generate_date_array"
     description: "Generates an array of dates in a range."
     impls:

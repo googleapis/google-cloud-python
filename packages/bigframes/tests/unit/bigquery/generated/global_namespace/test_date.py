@@ -253,7 +253,6 @@ def test_format_date_expression():
     result = bbq.format_date(
         bpd.col("format_string"),
         bpd.col("date_expr"),
-        bpd.col("time_zone"),
     )
 
     # Verify result is a col Expression
@@ -265,13 +264,11 @@ def test_format_date_expression():
     assert expr.op == date_op._FORMAT_DATE_OP
 
     # Verify arguments are free variables matching the names
-    assert len(expr.inputs) == 3
+    assert len(expr.inputs) == 2
     assert isinstance(expr.inputs[0], ex.UnboundVariableExpression)
     assert expr.inputs[0].id == "format_string"
     assert isinstance(expr.inputs[1], ex.UnboundVariableExpression)
     assert expr.inputs[1].id == "date_expr"
-    assert isinstance(expr.inputs[2], ex.UnboundVariableExpression)
-    assert expr.inputs[2].id == "time_zone"
 
 
 def test_generate_date_array_expression():

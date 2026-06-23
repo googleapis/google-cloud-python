@@ -1062,11 +1062,6 @@ class BigQuerySeriesAccessor(AbstractBigQuerySeriesAccessor[S]):
             bigframes.core.col.Expression,
             Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], str],
         ],
-        time_zone: Union[
-            series.Series,
-            bigframes.core.col.Expression,
-            Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], str],
-        ] = sentinels.Sentinel.ARGUMENT_DEFAULT,
         *,
         session: Optional[bigframes.session.Session] = None,
     ) -> S:
@@ -1081,14 +1076,12 @@ class BigQuerySeriesAccessor(AbstractBigQuerySeriesAccessor[S]):
 
             session = googlesql._find_session(
                 format_string,
-                time_zone,
             )
 
         bf_series = self._bf_from_series(session)
         result = format_date_impl(
             format_string,
             bf_series,
-            time_zone,
         )
         return self._to_series(cast(series.Series, result))
 
