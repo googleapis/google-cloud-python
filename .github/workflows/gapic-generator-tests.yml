@@ -168,7 +168,7 @@ jobs:
           cd packages/gapic-generator
           # Fire all 4 sessions concurrently; fails clean if any fail
           printf "%s\n" credentials eventarc logging redis | xargs -I {} -P 4 \
-            nox -f tests/integration/goldens/{}/noxfile.py -s core_deps_from_source prerelease_deps
+            nox -f tests/integration/goldens/{}/noxfile.py -s prerelease_deps
 
   fragment-snippet:
     needs: python_config
