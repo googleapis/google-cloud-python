@@ -22,7 +22,11 @@ import nox
 
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 # Path to the centralized mypy configuration file at the repository root.
-MYPY_CONFIG_FILE = str(CURRENT_DIRECTORY.parent.parent / "mypy.ini")
+# Search upwards to support running nox from both monorepo packages and integration test goldens.
+MYPY_CONFIG_FILE = next(
+    (str(p / "mypy.ini") for p in CURRENT_DIRECTORY.parents if (p / "mypy.ini").exists()),
+    str(CURRENT_DIRECTORY.parent.parent / "mypy.ini"),
+)
 
 
 SYSTEM_TEST_ENV_VARS = ("GOOGLE_APPLICATION_CREDENTIALS",)
