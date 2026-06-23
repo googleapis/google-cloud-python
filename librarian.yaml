@@ -761,7 +761,7 @@ libraries:
       metadata_name_override: common
       default_version: apiVersion
   - name: google-cloud-compute
-    version: 1.48.0
+    version: 0.1.0
     apis:
       - path: google/cloud/compute/v1
     skip_generate: true
