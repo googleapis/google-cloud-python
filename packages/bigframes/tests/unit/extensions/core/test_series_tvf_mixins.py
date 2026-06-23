@@ -37,7 +37,7 @@ def test_ai_generate_embedding(monkeypatch):
     )
 
     series = pd.Series(["apple"], name="content")
-    actual_result = series.bigquery.ai.generate_embedding(
+    actual_result = series.bigquery.ai.generate_embedding(  # type: ignore
         model="my_model",
         output_dimensionality=256,
         task_type="retrieval_document",
@@ -112,7 +112,7 @@ def test_ai_generate_text(monkeypatch):
     monkeypatch.setattr(bigframes.bigquery.ai, "generate_text", mock_generate_text)
 
     series = pd.Series(["write a poem"], name="prompt")
-    actual_result = series.bigquery.ai.generate_text(
+    actual_result = series.bigquery.ai.generate_text(  # type: ignore
         model="my_model",
         temperature=0.7,
         max_output_tokens=100,
@@ -188,7 +188,7 @@ def test_ai_generate_table(monkeypatch):
     monkeypatch.setattr(bigframes.bigquery.ai, "generate_table", mock_generate_table)
 
     series = pd.Series(["generate something"], name="prompt")
-    actual_result = series.bigquery.ai.generate_table(
+    actual_result = series.bigquery.ai.generate_table(  # type: ignore
         model="my_model",
         output_schema="category STRING",
         temperature=0.7,
