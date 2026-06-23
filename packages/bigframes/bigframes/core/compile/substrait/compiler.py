@@ -67,7 +67,10 @@ class SubstraitCompiler:
 
         for item in plan.schema.items:
             plan_rel.root.names.extend(
-                self._get_substrait_names(item.column, item.dtype)
+                self._get_substrait_names(
+                    item.column if isinstance(item.column, str) else item.column.sql,
+                    item.dtype,
+                )
             )
 
         for name, anchor in self._EXTENSIONS.items():
@@ -88,6 +91,7 @@ class SubstraitCompiler:
             nodes.ProjectionNode,
             nodes.JoinNode,
             nodes.AggregateNode,
+            nodes.WindowOpNode,
             nodes.OrderByNode,
             nodes.ConcatNode,
         )
@@ -106,6 +110,8 @@ class SubstraitCompiler:
             return self._compile_join(node)
         elif isinstance(node, nodes.AggregateNode):
             return self._compile_aggregate(node)
+        elif isinstance(node, nodes.WindowOpNode):
+            return self._compile_window(node)
         elif isinstance(node, nodes.OrderByNode):
             return self._compile_orderby(node)
         elif isinstance(node, nodes.ConcatNode):
@@ -307,6 +313,11 @@ class SubstraitCompiler:
     def _compile_aggregate(self, node: nodes.AggregateNode) -> algebra_pb2.Rel:
         input_rel = self._compile_node(node.child)
 
+        import bigframes.dtypes as dtypes
+        import bigframes.operations.aggregations as agg_ops
+
+        child_ids = list(node.child.ids)
+
         rel = algebra_pb2.Rel()
         agg_rel = rel.aggregate
         agg_rel.input.CopyFrom(input_rel)
@@ -314,15 +325,11 @@ class SubstraitCompiler:
         if node.by_column_ids:
             grouping = agg_rel.groupings.add()
             for deref in node.by_column_ids:
-                idx = list(node.child.ids).index(deref.id)
+                idx = child_ids.index(deref.id)
                 expr = grouping.grouping_expressions.add()
                 expr.selection.direct_reference.struct_field.field = idx
 
-        import bigframes.dtypes as dtypes
-        import bigframes.operations.aggregations as agg_ops
-
-        size_count = 0
-        for agg, out_col_id in node.aggregations:
+        for agg_idx, (agg, out_col_id) in enumerate(node.aggregations):
             distinct = False
             if isinstance(agg.op, agg_ops.SumOp):
                 func_ref = self._EXTENSIONS["sum"]
@@ -331,7 +338,7 @@ class SubstraitCompiler:
             elif isinstance(agg.op, agg_ops.MinOp):
                 func_ref = self._EXTENSIONS["min"]
             elif isinstance(agg.op, agg_ops.MeanOp):
-                func_ref = self._EXTENSIONS["mean"]
+                func_ref = self._EXTENSIONS["avg"]
             elif isinstance(agg.op, agg_ops.CountOp):
                 func_ref = self._EXTENSIONS["count"]
             elif isinstance(agg.op, (agg_ops.SizeOp, agg_ops.SizeUnaryOp)):
@@ -366,38 +373,26 @@ class SubstraitCompiler:
 
             measure = agg_rel.measures.add()
             measure.measure.function_reference = func_ref
+            measure.measure.phase = algebra_pb2.AGGREGATION_PHASE_INITIAL_TO_RESULT
+
+            output_dtype = agg.output_type
+            type_dict = self._convert_type(output_dtype)
+            json_format.ParseDict(type_dict, measure.measure.output_type)
+
             if distinct or isinstance(agg.op, agg_ops.NuniqueOp):
                 measure.measure.invocation = (
                     algebra_pb2.AggregateFunction.AGGREGATION_INVOCATION_DISTINCT
                 )
 
-            if isinstance(agg.op, (agg_ops.SizeOp, agg_ops.SizeUnaryOp)):
-                size_count += 1
-                arg = measure.measure.arguments.add()
-                arg.value.literal.i64 = size_count
-            elif hasattr(agg, "column_references"):
+            if hasattr(agg, "column_references"):
                 for col_id in agg.column_references:
                     try:
-                        idx = list(node.child.ids).index(col_id)
+                        idx = child_ids.index(col_id)
                         field_expr = algebra_pb2.Expression()
                         field_expr.selection.direct_reference.struct_field.field = idx
-
-                        col_dtype = node.child.schema.items[idx].dtype
-                        is_bool = col_dtype == dtypes.BOOL_DTYPE
-                        if isinstance(
-                            agg.op, (agg_ops.StdOp, agg_ops.VarOp, agg_ops.PopVarOp)
-                        ) or (
-                            isinstance(agg.op, (agg_ops.SumOp, agg_ops.MeanOp))
-                            and is_bool
-                        ):
-                            casted_expr = self._compile_cast(
-                                field_expr, dtypes.FLOAT_DTYPE
-                            )
-                            arg = measure.measure.arguments.add()
-                            arg.value.CopyFrom(casted_expr)
-                        else:
-                            arg = measure.measure.arguments.add()
-                            arg.value.CopyFrom(field_expr)
+                        
+                        arg = measure.measure.arguments.add()
+                        arg.value.CopyFrom(field_expr)
                     except ValueError:
                         pass
 
@@ -411,6 +406,7 @@ class SubstraitCompiler:
                 not_null_op.scalar_function.function_reference = self._EXTENSIONS[
                     "is_not_null"
                 ]
+                json_format.ParseDict({"bool": {}}, not_null_op.scalar_function.output_type)
                 not_null_op.scalar_function.arguments.add().value.CopyFrom(key_expr)
                 not_null_exprs.append(not_null_op)
 
@@ -421,6 +417,7 @@ class SubstraitCompiler:
                     and_expr.scalar_function.function_reference = self._EXTENSIONS[
                         "and"
                     ]
+                    json_format.ParseDict({"bool": {}}, and_expr.scalar_function.output_type)
                     and_expr.scalar_function.arguments.add().value.CopyFrom(expr)
                     and_expr.scalar_function.arguments.add().value.CopyFrom(e)
                     expr = and_expr
@@ -431,6 +428,184 @@ class SubstraitCompiler:
             filter_rel.filter.input.CopyFrom(rel)
             filter_rel.filter.condition.CopyFrom(expr)
             rel = filter_rel
+
+        return rel
+
+    def _compile_window(self, node: nodes.WindowOpNode) -> algebra_pb2.Rel:
+        input_rel = self._compile_node(node.child)
+
+        import bigframes.dtypes as dtypes
+        import bigframes.operations.aggregations as agg_ops
+        from bigframes.core import window_spec
+
+        child_ids = list(node.child.ids)
+
+        rel = algebra_pb2.Rel()
+        proj = rel.project
+        proj.input.CopyFrom(input_rel)
+
+        # 1. Project all child columns first
+        for idx in range(len(child_ids)):
+            expr = proj.expressions.add()
+            expr.selection.direct_reference.struct_field.field = idx
+
+        # 2. Map window frame bounds (RowsWindowBounds / RangeWindowBounds / None)
+        bounds_type = algebra_pb2.Expression.WindowFunction.BoundsType.BOUNDS_TYPE_UNSPECIFIED
+        lower_bound = algebra_pb2.Expression.WindowFunction.Bound()
+        upper_bound = algebra_pb2.Expression.WindowFunction.Bound()
+
+        if node.window_spec.bounds is not None:
+            if isinstance(node.window_spec.bounds, window_spec.RowsWindowBounds):
+                bounds_type = algebra_pb2.Expression.WindowFunction.BoundsType.BOUNDS_TYPE_ROWS
+                
+                # Lower bound mapping
+                start = node.window_spec.bounds.start
+                if start is None:
+                    lower_bound.unbounded.CopyFrom(algebra_pb2.Expression.WindowFunction.Bound.Unbounded())
+                elif start == 0:
+                    lower_bound.current_row.CopyFrom(algebra_pb2.Expression.WindowFunction.Bound.CurrentRow())
+                elif start < 0:
+                    lower_bound.preceding.offset = -start
+                else:
+                    lower_bound.following.offset = start
+                    
+                # Upper bound mapping
+                end = node.window_spec.bounds.end
+                if end is None:
+                    upper_bound.unbounded.CopyFrom(algebra_pb2.Expression.WindowFunction.Bound.Unbounded())
+                elif end == 0:
+                    upper_bound.current_row.CopyFrom(algebra_pb2.Expression.WindowFunction.Bound.CurrentRow())
+                elif end < 0:
+                    upper_bound.preceding.offset = -end
+                else:
+                    upper_bound.following.offset = end
+
+            elif isinstance(node.window_spec.bounds, window_spec.RangeWindowBounds):
+                bounds_type = algebra_pb2.Expression.WindowFunction.BoundsType.BOUNDS_TYPE_RANGE
+                start = node.window_spec.bounds.start
+                if start is None:
+                    lower_bound.unbounded.CopyFrom(algebra_pb2.Expression.WindowFunction.Bound.Unbounded())
+                elif start == pd.Timedelta(0):
+                    lower_bound.current_row.CopyFrom(algebra_pb2.Expression.WindowFunction.Bound.CurrentRow())
+                else:
+                    raise NotImplementedError("Range window bounds with non-zero offsets are not supported yet")
+
+                end = node.window_spec.bounds.end
+                if end is None:
+                    upper_bound.unbounded.CopyFrom(algebra_pb2.Expression.WindowFunction.Bound.Unbounded())
+                elif end == pd.Timedelta(0):
+                    upper_bound.current_row.CopyFrom(algebra_pb2.Expression.WindowFunction.Bound.CurrentRow())
+                else:
+                    raise NotImplementedError("Range window bounds with non-zero offsets are not supported yet")
+        else:
+            bounds_type = algebra_pb2.Expression.WindowFunction.BoundsType.BOUNDS_TYPE_ROWS
+            lower_bound.unbounded.CopyFrom(algebra_pb2.Expression.WindowFunction.Bound.Unbounded())
+            upper_bound.unbounded.CopyFrom(algebra_pb2.Expression.WindowFunction.Bound.Unbounded())
+
+        # 3. Project each window aggregation expression as a WindowFunction expression
+        for agg_idx, col_def in enumerate(node.agg_exprs):
+            agg = col_def.expression
+            distinct = False
+
+            if isinstance(agg.op, agg_ops.SumOp):
+                func_ref = self._EXTENSIONS["sum"]
+            elif isinstance(agg.op, agg_ops.MaxOp):
+                func_ref = self._EXTENSIONS["max"]
+            elif isinstance(agg.op, agg_ops.MinOp):
+                func_ref = self._EXTENSIONS["min"]
+            elif isinstance(agg.op, agg_ops.MeanOp):
+                func_ref = self._EXTENSIONS["avg"]
+            elif isinstance(agg.op, agg_ops.CountOp):
+                func_ref = self._EXTENSIONS["count"]
+            elif isinstance(agg.op, (agg_ops.SizeOp, agg_ops.SizeUnaryOp)):
+                func_ref = self._EXTENSIONS["count"]
+            elif isinstance(agg.op, agg_ops.NuniqueOp):
+                func_ref = self._EXTENSIONS["count"]
+                distinct = True
+            elif isinstance(agg.op, agg_ops.StdOp):
+                func_ref = self._EXTENSIONS["stddev"]
+            elif isinstance(agg.op, agg_ops.VarOp):
+                func_ref = self._EXTENSIONS["var"]
+            elif isinstance(agg.op, agg_ops.PopVarOp):
+                func_ref = self._EXTENSIONS["var_pop"]
+            elif isinstance(agg.op, agg_ops.AnyValueOp):
+                func_ref = self._EXTENSIONS["min"]
+            elif isinstance(agg.op, agg_ops.AllOp):
+                func_ref = self._EXTENSIONS["bool_and"]
+            elif isinstance(agg.op, agg_ops.AnyOp):
+                func_ref = self._EXTENSIONS["bool_or"]
+            elif isinstance(agg.op, agg_ops.ProductOp):
+                func_ref = self._EXTENSIONS["product"]
+            elif isinstance(agg.op, agg_ops.MedianOp):
+                func_ref = self._EXTENSIONS["median"]
+            elif isinstance(agg.op, agg_ops.CovOp):
+                func_ref = self._EXTENSIONS["cov"]
+            elif isinstance(agg.op, agg_ops.CorrOp):
+                func_ref = self._EXTENSIONS["corr"]
+            else:
+                raise NotImplementedError(
+                    f"Aggregation {type(agg.op)} not supported in window function yet"
+                )
+
+            expr = proj.expressions.add()
+            win_func = expr.window_function
+            win_func.function_reference = func_ref
+            win_func.phase = algebra_pb2.AGGREGATION_PHASE_INITIAL_TO_RESULT
+
+            bound_expr = ex.bind_schema_fields(agg, node.child.field_by_id)
+            type_dict = self._convert_type(dtypes.dtype_for_etype(bound_expr.output_type))
+            json_format.ParseDict(type_dict, win_func.output_type)
+
+            if distinct or isinstance(agg.op, agg_ops.NuniqueOp):
+                win_func.invocation = (
+                    algebra_pb2.AggregateFunction.AGGREGATION_INVOCATION_DISTINCT
+                )
+
+            # Set bounds
+            win_func.lower_bound.CopyFrom(lower_bound)
+            win_func.upper_bound.CopyFrom(upper_bound)
+            win_func.bounds_type = bounds_type
+
+            # Set partitioning keys (partitions)
+            for partition_expr in node.window_spec.grouping_keys:
+                partition_pb = self._compile_expression(partition_expr, node.child)
+                win_func.partitions.add().CopyFrom(partition_pb)
+
+            # Set sorting keys (sorts)
+            for ord_expr in node.window_spec.ordering:
+                sort_field = win_func.sorts.add()
+                sort_pb = self._compile_expression(ord_expr.scalar_expression, node.child)
+                sort_field.expr.CopyFrom(sort_pb)
+
+                is_asc = ord_expr.direction.is_ascending
+                if is_asc:
+                    if ord_expr.na_last:
+                        sort_field.direction = algebra_pb2.SortField.SortDirection.SORT_DIRECTION_ASC_NULLS_LAST
+                    else:
+                        sort_field.direction = algebra_pb2.SortField.SortDirection.SORT_DIRECTION_ASC_NULLS_FIRST
+                else:
+                    if ord_expr.na_last:
+                        sort_field.direction = algebra_pb2.SortField.SortDirection.SORT_DIRECTION_DESC_NULLS_LAST
+                    else:
+                        sort_field.direction = algebra_pb2.SortField.SortDirection.SORT_DIRECTION_DESC_NULLS_FIRST
+
+            # Set arguments
+            if hasattr(agg, "column_references"):
+                for col_id in agg.column_references:
+                    try:
+                        idx = child_ids.index(col_id)
+                        field_expr = algebra_pb2.Expression()
+                        field_expr.selection.direct_reference.struct_field.field = idx
+                        
+                        arg = win_func.arguments.add()
+                        arg.value.CopyFrom(field_expr)
+                    except ValueError:
+                        pass
+
+        # Emit all columns (child columns + new window columns)
+        proj.common.emit.output_mapping.extend(
+            range(len(child_ids) + len(node.agg_exprs))
+        )
 
         return rel
 
@@ -478,7 +653,7 @@ class SubstraitCompiler:
         "max": 12,
         "and": 13,
         "min": 14,
-        "mean": 15,
+        "avg": 15,
         "count": 16,
         "stddev": 17,
         "var": 18,

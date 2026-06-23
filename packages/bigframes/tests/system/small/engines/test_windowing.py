@@ -32,7 +32,11 @@ pytest.importorskip("polars")
 REFERENCE_ENGINE = polars_executor.PolarsExecutor()
 
 
-@pytest.mark.parametrize("engine", ["polars", "bq", "bq-sqlglot"], indirect=True)
+@pytest.mark.parametrize(
+    "engine",
+    ["polars", "bq", "bq-sqlglot", "substrait-datafusion", "substrait-acero"],
+    indirect=True,
+)
 def test_engines_with_offsets(
     scalars_array_value: array_value.ArrayValue,
     engine,
@@ -41,13 +45,25 @@ def test_engines_with_offsets(
     assert_equivalence_execution(result.node, REFERENCE_ENGINE, engine)
 
 
+@pytest.mark.parametrize(
+    "engine",
+    ["bq", "bq-sqlglot", "substrait-datafusion", "substrait-acero"],
+    indirect=True,
+)
 @pytest.mark.parametrize("agg_op", [agg_ops.sum_op, agg_ops.count_op])
 def test_engines_with_rows_window(
     scalars_array_value: array_value.ArrayValue,
     agg_op,
+    engine,
     bq_engine,
-    sqlglot_engine,
 ):
+    from bigframes.session.substrait_executor import SubstraitExecutor
+
+    if isinstance(engine, SubstraitExecutor):
+        pytest.skip(
+            f"Substrait engine ({type(engine._consumer).__name__}) does not support windowing execution"
+        )
+
     window = window_spec.WindowSpec(
         bounds=window_spec.RowsWindowBounds.from_window_size(3, "left"),
     )
@@ -61,4 +77,4 @@ def test_engines_with_rows_window(
         ),
         window_spec=window,
     )
-    assert_equivalence_execution(window_node, bq_engine, sqlglot_engine)
+    assert_equivalence_execution(window_node, bq_engine, engine)

@@ -135,6 +135,8 @@ class SubstraitExecutor(semi_executor.SemiExecutor):
         plan = plan.bottom_up(rewrite.rewrite_slice)
         # Only needed for acero technically, datafusion can handle timedeltas
         plan = plan.bottom_up(rewrite.rewrite_timedelta_expressions)
+        plan = plan.bottom_up(rewrite.rewrite_substrait_aggregations)
+        plan = plan.bottom_up(rewrite.rewrite_substrait_windows)
 
         from bigframes.core import expression
 
@@ -188,6 +190,7 @@ class SubstraitExecutor(semi_executor.SemiExecutor):
 
                     table = pyarrow_utils.append_offsets(table, node.offsets_col.sql)
                 tables[table_name] = table
+
 
         pa_table = await asyncio.to_thread(
             self._consumer.consume, substrait_plan_proto, tables
