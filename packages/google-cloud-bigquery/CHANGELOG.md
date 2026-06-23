@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## [3.42.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-v3.42.0...google-cloud-bigquery-v3.42.1) (2026-06-22)
+
+
+### Bug Fixes
+
+* **bigquery:** close GAPIC storage transport and auth sessions to prevent socket leaks ([#17508](https://github.com/googleapis/google-cloud-python/issues/17508)) ([0258405](https://github.com/googleapis/google-cloud-python/commit/025840544f5d4ab6a429d1cd9bdbb256c981aa0d))
+
 ## [3.42.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-v3.41.0...google-cloud-bigquery-v3.42.0) (2026-06-12)
 
 
