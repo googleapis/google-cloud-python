@@ -148,6 +148,38 @@ def test_scan_file_ignores_pragma(tmp_path):
     results = scan_file(str(test_file), rules)
     assert len(results) == 0
 
+
+def test_scan_file_ignores_targeted_pragma(tmp_path):
+    test_file = tmp_path / "test.py"
+    test_file.write_text("python_requires = '>=3.7'  # version-scanner: ignore-rule=python_requires_check:3.7\n")
+    
+    rules = [
+        {
+            "name": "python_requires_check", 
+            "pattern": re.compile(r"python_requires\s*=\s*['\"]>=3\.7['\"]"),
+            "version": "3.7"
+        }
+    ]
+    
+    results = scan_file(str(test_file), rules)
+    assert len(results) == 0
+
+
+def test_scan_file_does_not_ignore_mismatched_targeted_pragma(tmp_path):
+    test_file = tmp_path / "test.py"
+    test_file.write_text("python_requires = '>=3.7'  # version-scanner: ignore-rule=python_requires_check:3.8\n")
+    
+    rules = [
+        {
+            "name": "python_requires_check", 
+            "pattern": re.compile(r"python_requires\s*=\s*['\"]>=3\.7['\"]"),
+            "version": "3.7"
+        }
+    ]
+    
+    results = scan_file(str(test_file), rules)
+    assert len(results) == 1
+
 def test_scan_file_ignores_next_line(tmp_path):
     test_file = tmp_path / "test.py"
     test_file.write_text("# version-scanner: ignore-next-line\npython_requires = '>=3.7'\n")

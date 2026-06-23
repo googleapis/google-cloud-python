@@ -214,11 +214,16 @@ def scan_file(file_path: str, compiled_rules: List[Dict[str, re.Pattern]]) -> Li
                 if "version-scanner: ignore-next-line" in line:
                     skip_next = True
                     continue
-                if "version-scanner: ignore" in line:
+                if "version-scanner: ignore" in line and "version-scanner: ignore-rule" not in line and "version-scanner: ignore-next-line" not in line:
                     continue
                 for rule in compiled_rules:
                     match = rule["pattern"].search(line)
                     if match:
+                        version = rule.get("version")
+                        if version:
+                            pragma_pattern = rf"version-scanner\s*:\s*ignore-rule\s*=\s*{re.escape(rule['name'])}\s*:\s*{re.escape(version)}"
+                            if re.search(pragma_pattern, line, re.IGNORECASE):
+                                continue
                         results.append({
                             "rule_name": rule["name"],
                             "line_number": line_num,
