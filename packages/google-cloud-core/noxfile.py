@@ -15,6 +15,7 @@
 from __future__ import absolute_import
 
 import os
+import pathlib
 import re
 import shutil
 
@@ -32,9 +33,13 @@ UNIT_TEST_PYTHON_VERSIONS = [
     "3.13",
     "3.14",
 ]
-CURRENT_DIRECTORY = os.path.abspath(os.path.dirname(__file__))
+CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 # Path to the centralized mypy configuration file at the repository root.
-MYPY_CONFIG_FILE = os.path.join(os.path.dirname(os.path.dirname(CURRENT_DIRECTORY)), "mypy.ini")
+# Search upwards to support running nox from both monorepo packages and integration test goldens.
+MYPY_CONFIG_FILE = next(
+    (str(p / "mypy.ini") for p in CURRENT_DIRECTORY.parents if (p / "mypy.ini").exists()),
+    str(CURRENT_DIRECTORY.parent.parent / "mypy.ini"),
+)
 
 # Error if a python version is missing
 nox.options.error_on_missing_interpreters = True
