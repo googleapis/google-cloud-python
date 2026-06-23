@@ -20,6 +20,7 @@ Scans a repository for references to specific dependency versions.
 import argparse
 import csv
 import datetime
+import fnmatch
 import os
 import re
 import sys
@@ -498,6 +499,28 @@ def read_package_file(file_path: str) -> List[str]:
     return packages
 
 
+def _should_ignore(rel_path: str, name: str, ignore_patterns: List[str]) -> bool:
+    """Check if a file or directory matches any of the ignore patterns."""
+    if not ignore_patterns:
+        return False
+    name_lower = name.lower()
+    rel_path_norm = rel_path.replace(os.sep, '/').lower()
+    
+    for pattern in ignore_patterns:
+        pattern_lower = pattern.lower()
+        if '/' in pattern:
+            if pattern_lower.startswith('/'):
+                p = pattern_lower[1:]
+            else:
+                p = pattern_lower
+            if fnmatch.fnmatchcase(rel_path_norm, p) or fnmatch.fnmatchcase(rel_path_norm, f"*/{p}"):
+                return True
+        else:
+            if fnmatch.fnmatchcase(name_lower, pattern_lower):
+                return True
+    return False
+
+
 def scan_repository(
     root_path: str,
     rules: List[Dict[str, Any]],
@@ -528,7 +551,6 @@ def scan_repository(
     Returns:
         A list of dictionaries detailing each match.
     """
-    ignore_lower = {i.lower() for i in ignore_dirs} if ignore_dirs else set()
     results = []
     
     filename_targets = []
@@ -557,13 +579,23 @@ def scan_repository(
         print(f"Filtering for packages: {target_packages}")
         
     for root, dirs, files in os.walk(root_path):
+        rel_root = os.path.relpath(root, root_path)
+        
+        # Helper to construct relative path for ignore matching
+        def get_rel_path(name):
+            return name if rel_root == "." else os.path.join(rel_root, name)
+            
         # Prune ignore directories (case-insensitive)
-        dirs[:] = [d for d in dirs if d.lower() not in ignore_lower]
+        dirs[:] = [
+            d for d in dirs 
+            if not _should_ignore(get_rel_path(d), d, ignore_dirs)
+        ]
         
         # Filter ignore files (case-insensitive)
-        files = [f for f in files if f.lower() not in ignore_lower]
-        
-        rel_root = os.path.relpath(root, root_path)
+        files = [
+            f for f in files 
+            if not _should_ignore(get_rel_path(f), f, ignore_dirs)
+        ]
         
         # Layout-agnostic generic subdirectory filtering
         if target_packages:

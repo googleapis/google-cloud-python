@@ -366,6 +366,53 @@ def test_scan_repository_ignores_version_scanner(tmp_path):
     assert len(results) == 0
 
 
+def test_scan_repository_wildcard_ignores(tmp_path):
+    # Create files
+    (tmp_path / "test.jpg").write_text("dummy version 3.7\n")
+    (tmp_path / "test.py").write_text("python_requires = '>=3.7'\n")
+    
+    rules = [
+        {"name": "python_requires_check", "pattern": "python_requires\\s*=\\s*['\"]>=3\\.7['\"]"},
+        {"name": "explicit_version_string", "pattern": "3\\.7"}
+    ]
+    
+    from version_scanner import scan_repository
+    # Without ignore
+    results = scan_repository(str(tmp_path), rules)
+    assert len(results) >= 2
+    
+    # With wildcard ignore for *.jpg
+    results_ignored = scan_repository(str(tmp_path), rules, ignore_dirs=["*.jpg"])
+    # test.jpg should be ignored completely
+    for match in results_ignored:
+        assert not match["file_path"].endswith("test.jpg")
+
+
+def test__should_ignore():
+    from version_scanner import _should_ignore
+    
+    ignore_patterns = [
+        ".git",
+        "*.jpg",
+        "packages/pkg_a/.nox",
+        "*.egg-info"
+    ]
+    
+    # Exact match
+    assert _should_ignore(".git", ".git", ignore_patterns) is True
+    # Case insensitivity
+    assert _should_ignore(".GIT", ".GIT", ignore_patterns) is True
+    # Wildcard match
+    assert _should_ignore("some/path/image.jpg", "image.jpg", ignore_patterns) is True
+    assert _should_ignore("image.JPG", "image.JPG", ignore_patterns) is True
+    # Subpath match
+    assert _should_ignore("packages/pkg_a/.nox", ".nox", ignore_patterns) is True
+    # Wildcard directory match
+    assert _should_ignore("google_cloud_pubsub.egg-info", "google_cloud_pubsub.egg-info", ignore_patterns) is True
+    # Negative match
+    assert _should_ignore("setup.py", "setup.py", ignore_patterns) is False
+
+
 def test_load_ignore_file(tmp_path):
     from version_scanner import load_ignore_file
     
