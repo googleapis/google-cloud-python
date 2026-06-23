@@ -224,20 +224,12 @@ def date_diff(
     end_date: Union[
         series.Series,
         bigframes.core.col.Expression,
-        Union[
-            Literal[sentinels.Sentinel.ARGUMENT_DEFAULT],
-            datetime.date,
-            datetime.datetime,
-        ],
+        Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], datetime.date],
     ],
     start_date: Union[
         series.Series,
         bigframes.core.col.Expression,
-        Union[
-            Literal[sentinels.Sentinel.ARGUMENT_DEFAULT],
-            datetime.date,
-            datetime.datetime,
-        ],
+        Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], datetime.date],
     ],
     granularity: Union[
         series.Series,

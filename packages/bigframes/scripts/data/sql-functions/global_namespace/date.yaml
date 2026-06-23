@@ -118,21 +118,6 @@ scalar_functions:
             optional: false
             keyword_only: false
         return: i64
-      # Signature: date_diff:pts_pts_any
-      - args:
-          - name: "end_date"
-            value: timestamp
-            optional: false
-            keyword_only: false
-          - name: "start_date"
-            value: timestamp
-            optional: false
-            keyword_only: false
-          - name: "granularity"
-            value: any1
-            optional: false
-            keyword_only: false
-        return: i64
   - name: "date_from_unix_date"
     description: "Interprets an INT64 expression as the number of days since 1970-01-01."
     series_accessor_arg: int64_expression

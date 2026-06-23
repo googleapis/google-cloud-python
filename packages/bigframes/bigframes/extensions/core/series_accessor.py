@@ -899,11 +899,7 @@ class BigQuerySeriesAccessor(AbstractBigQuerySeriesAccessor[S]):
         start_date: Union[
             series.Series,
             bigframes.core.col.Expression,
-            Union[
-                Literal[sentinels.Sentinel.ARGUMENT_DEFAULT],
-                datetime.date,
-                datetime.datetime,
-            ],
+            Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], datetime.date],
         ],
         granularity: Union[
             series.Series,
