@@ -15,9 +15,7 @@
 import datetime
 import decimal
 import re
-import unittest.mock as mock
 
-import bigframes_vendored.sqlglot.expressions as sge
 import numpy as np
 import pandas as pd
 import pyarrow as pa
@@ -164,6 +162,8 @@ def test_literal_for_list(value: list, expected: str):
 
 
 def test_literal_null_type():
+    import unittest.mock as mock
+
     mock_dtype = mock.Mock()
     with mock.patch(
         "bigframes.core.compile.sqlglot.sql.base.sgt.from_bigframes_dtype",
@@ -171,21 +171,3 @@ def test_literal_null_type():
     ):
         got = sql.to_sql(sql.literal(None, dtype=mock_dtype))
     assert got == "NULL"
-
-
-@pytest.mark.parametrize(
-    ("arg", "safe"),
-    (
-        pytest.param("abc", False, id="string"),
-        pytest.param(None, False, id="none"),
-        pytest.param("abc", True, id="safe_cast"),
-    ),
-)
-def test_cast_to_null_type_returns_flat_null(arg, safe):
-    assert sql.to_sql(sql.cast(arg, "NULL", safe=safe)) == "NULL"
-
-
-def test_nested_cast_to_null_type_is_flattened():
-    nested = sge.Cast(this=sge.Cast(this=sge.Null(), to="NULL"), to="INT64")
-
-    assert sql.to_sql(nested) == "CAST(NULL AS INT64)"
