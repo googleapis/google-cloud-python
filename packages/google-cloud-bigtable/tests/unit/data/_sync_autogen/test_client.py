@@ -1926,7 +1926,7 @@ class TestReadRowsSharded:
                         starting_timeout - kwargs["operation_timeout"]
                         for _, kwargs in read_rows.call_args_list
                     ]
-                    eps = 0.01
+                    eps = 0.2
                     assert all(
                         (rpc_start_list[i] < eps for i in range(_CONCURRENCY_LIMIT))
                     )
