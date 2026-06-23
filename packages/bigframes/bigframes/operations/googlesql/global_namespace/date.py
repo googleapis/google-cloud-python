@@ -412,11 +412,7 @@ def last_day(
     date_expression: Union[
         series.Series,
         bigframes.core.col.Expression,
-        Union[
-            Literal[sentinels.Sentinel.ARGUMENT_DEFAULT],
-            datetime.date,
-            datetime.datetime,
-        ],
+        Union[Literal[sentinels.Sentinel.ARGUMENT_DEFAULT], datetime.date],
     ],
     date_part: Union[
         series.Series,

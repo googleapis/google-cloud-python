@@ -319,17 +319,6 @@ scalar_functions:
             optional: true
             keyword_only: false
         return: date
-      # Signature: last_day:pts_any
-      - args:
-          - name: "date_expression"
-            value: timestamp
-            optional: false
-            keyword_only: false
-          - name: "date_part"
-            value: any1
-            optional: true
-            keyword_only: false
-        return: date
   - name: "parse_date"
     description: "Converts a STRING value to a DATE value."
     series_accessor_arg: date_string
