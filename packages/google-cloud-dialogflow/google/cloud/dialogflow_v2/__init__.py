@@ -196,6 +196,7 @@ from .types.conversation_profile import (
     NotificationConfig,
     SetSuggestionFeatureConfigOperationMetadata,
     SetSuggestionFeatureConfigRequest,
+    SipConfig,
     SuggestionFeature,
     UpdateConversationProfileRequest,
 )
@@ -787,6 +788,7 @@ __all__ = (
     "SetAgentRequest",
     "SetSuggestionFeatureConfigOperationMetadata",
     "SetSuggestionFeatureConfigRequest",
+    "SipConfig",
     "SipTrunk",
     "SipTrunksClient",
     "SmartReplyAnswer",

@@ -38341,7 +38341,6 @@ def test_create_tool_rest_call_success(request_type):
         "agent_tool": {
             "name": "name_value",
             "description": "description_value",
-            "root_agent": "root_agent_value",
             "agent": "agent_value",
         },
         "widget_tool": {
@@ -38817,7 +38816,6 @@ def test_update_tool_rest_call_success(request_type):
         "agent_tool": {
             "name": "name_value",
             "description": "description_value",
-            "root_agent": "root_agent_value",
             "agent": "agent_value",
         },
         "widget_tool": {
@@ -42782,7 +42780,6 @@ def test_create_app_version_rest_call_success(request_type):
                     "agent_tool": {
                         "name": "name_value",
                         "description": "description_value",
-                        "root_agent": "root_agent_value",
                         "agent": "agent_value",
                     },
                     "widget_tool": {

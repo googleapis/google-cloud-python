@@ -702,7 +702,12 @@ class GceClusterConfig(proto.Message):
         confidential_instance_config (google.cloud.dataproc_v1.types.ConfidentialInstanceConfig):
             Optional. Confidential Instance Config for clusters using
             `Confidential
-            VMs <https://cloud.google.com/compute/confidential-vm/docs>`__.
+            VMs <https://cloud.google.com/confidential-computing/confidential-vm/docs>`__.
+        resource_manager_tags (MutableMapping[str, str]):
+            Optional. [Resource manager tags]
+            (https://cloud.google.com/resource-manager/docs/tags/tags-creating-and-managing)
+            to add to all instances (see [Use secure tags]
+            (https://cloud.google.com/dataproc/docs/guides/use-secure-tags)).
     """
 
     class PrivateIpv6GoogleAccess(proto.Enum):
@@ -795,6 +800,11 @@ class GceClusterConfig(proto.Message):
         number=15,
         message="ConfidentialInstanceConfig",
     )
+    resource_manager_tags: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=16,
+    )
 
 
 class NodeGroupAffinity(proto.Message):
@@ -866,17 +876,51 @@ class ShieldedInstanceConfig(proto.Message):
 
 class ConfidentialInstanceConfig(proto.Message):
     r"""Confidential Instance Config for clusters using `Confidential
-    VMs <https://cloud.google.com/compute/confidential-vm/docs>`__
+    VMs <https://cloud.google.com/confidential-computing/confidential-vm/docs>`__
 
     Attributes:
         enable_confidential_compute (bool):
-            Optional. Defines whether the instance should
-            have confidential compute enabled.
+            Optional. Deprecated: Use 'confidential_instance_type'
+            instead. Defines whether the instance should have
+            confidential compute enabled.
+        confidential_instance_type (google.cloud.dataproc_v1.types.ConfidentialInstanceConfig.ConfidentialInstanceType):
+            Optional. Defines the type of Confidential
+            Compute technology to use.
     """
+
+    class ConfidentialInstanceType(proto.Enum):
+        r"""The type of Confidential Compute technology as per `Confidential
+        Computing
+        types <https://cloud.google.com/confidential-computing/confidential-vm/docs/create-a-confidential-vm-instance#create-instance>`__.
+        New values may be added in the future.
+
+        Values:
+            CONFIDENTIAL_INSTANCE_TYPE_UNSPECIFIED (0):
+                Confidential Instance Type is not specified.
+            SEV (1):
+                `AMD Secure Encrypted
+                Virtualization <https://cloud.google.com/confidential-computing/confidential-vm/docs/confidential-vm-overview#amd_sev>`__
+            SEV_SNP (2):
+                `AMD Secure Encrypted Virtualization-Secure Nested
+                Paging <https://cloud.google.com/confidential-computing/confidential-vm/docs/confidential-vm-overview#amd_sev-snp>`__
+            TDX (3):
+                `Intel Trust Domain
+                Extensions <https://cloud.google.com/confidential-computing/confidential-vm/docs/confidential-vm-overview#intel_tdx>`__
+        """
+
+        CONFIDENTIAL_INSTANCE_TYPE_UNSPECIFIED = 0
+        SEV = 1
+        SEV_SNP = 2
+        TDX = 3
 
     enable_confidential_compute: bool = proto.Field(
         proto.BOOL,
         number=1,
+    )
+    confidential_instance_type: ConfidentialInstanceType = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=ConfidentialInstanceType,
     )
 
 

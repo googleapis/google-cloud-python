@@ -76,6 +76,12 @@ from google.cloud.chronicle_v1.services.reference_list_service.async_client impo
 from google.cloud.chronicle_v1.services.reference_list_service.client import (
     ReferenceListServiceClient,
 )
+from google.cloud.chronicle_v1.services.rule_execution_error_service.async_client import (
+    RuleExecutionErrorServiceAsyncClient,
+)
+from google.cloud.chronicle_v1.services.rule_execution_error_service.client import (
+    RuleExecutionErrorServiceClient,
+)
 from google.cloud.chronicle_v1.services.rule_service.async_client import (
     RuleServiceAsyncClient,
 )
@@ -235,11 +241,14 @@ from google.cloud.chronicle_v1.types.reference_list import (
     ListReferenceListsResponse,
     ReferenceList,
     ReferenceListEntry,
+    ReferenceListError,
     ReferenceListScope,
     ReferenceListSyntaxType,
     ReferenceListView,
     ScopeInfo,
     UpdateReferenceListRequest,
+    VerifyReferenceListRequest,
+    VerifyReferenceListResponse,
 )
 from google.cloud.chronicle_v1.types.rule import (
     CompilationDiagnostic,
@@ -269,6 +278,13 @@ from google.cloud.chronicle_v1.types.rule import (
     Severity,
     UpdateRuleDeploymentRequest,
     UpdateRuleRequest,
+    VerifyRuleTextRequest,
+    VerifyRuleTextResponse,
+)
+from google.cloud.chronicle_v1.types.rule_execution_error import (
+    ListRuleExecutionErrorsRequest,
+    ListRuleExecutionErrorsResponse,
+    RuleExecutionError,
 )
 
 __all__ = (
@@ -292,6 +308,8 @@ __all__ = (
     "NativeDashboardServiceAsyncClient",
     "ReferenceListServiceClient",
     "ReferenceListServiceAsyncClient",
+    "RuleExecutionErrorServiceClient",
+    "RuleExecutionErrorServiceAsyncClient",
     "RuleServiceClient",
     "RuleServiceAsyncClient",
     "BigQueryExport",
@@ -431,9 +449,12 @@ __all__ = (
     "ListReferenceListsResponse",
     "ReferenceList",
     "ReferenceListEntry",
+    "ReferenceListError",
     "ReferenceListScope",
     "ScopeInfo",
     "UpdateReferenceListRequest",
+    "VerifyReferenceListRequest",
+    "VerifyReferenceListResponse",
     "ReferenceListSyntaxType",
     "ReferenceListView",
     "CompilationDiagnostic",
@@ -460,7 +481,12 @@ __all__ = (
     "Severity",
     "UpdateRuleDeploymentRequest",
     "UpdateRuleRequest",
+    "VerifyRuleTextRequest",
+    "VerifyRuleTextResponse",
     "RuleType",
     "RuleView",
     "RunFrequency",
+    "ListRuleExecutionErrorsRequest",
+    "ListRuleExecutionErrorsResponse",
+    "RuleExecutionError",
 )

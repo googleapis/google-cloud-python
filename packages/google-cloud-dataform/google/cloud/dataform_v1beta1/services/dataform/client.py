@@ -359,6 +359,30 @@ class DataformClient(metaclass=DataformClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def git_repository_link_path(
+        project: str,
+        location: str,
+        connection: str,
+        git_repository_link: str,
+    ) -> str:
+        """Returns a fully-qualified git_repository_link string."""
+        return "projects/{project}/locations/{location}/connections/{connection}/gitRepositoryLinks/{git_repository_link}".format(
+            project=project,
+            location=location,
+            connection=connection,
+            git_repository_link=git_repository_link,
+        )
+
+    @staticmethod
+    def parse_git_repository_link_path(path: str) -> Dict[str, str]:
+        """Parses a git_repository_link path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/connections/(?P<connection>.+?)/gitRepositoryLinks/(?P<git_repository_link>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def notebook_runtime_template_path(
         project: str,
         location: str,
@@ -1477,6 +1501,154 @@ class DataformClient(metaclass=DataformClientMeta):
             metadata=metadata,
         )
 
+    def delete_team_folder_tree(
+        self,
+        request: Optional[Union[dataform.DeleteTeamFolderTreeRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        force: Optional[bool] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation.Operation:
+        r"""Deletes a TeamFolder with its contents (Folders,
+        Repositories, Workspaces, ReleaseConfigs, and
+        WorkflowConfigs).
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dataform_v1beta1
+
+            def sample_delete_team_folder_tree():
+                # Create a client
+                client = dataform_v1beta1.DataformClient()
+
+                # Initialize request argument(s)
+                request = dataform_v1beta1.DeleteTeamFolderTreeRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_team_folder_tree(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.dataform_v1beta1.types.DeleteTeamFolderTreeRequest, dict]):
+                The request object. ``DeleteTeamFolderTree`` request message.
+            name (str):
+                Required. The TeamFolder's name. Format:
+                projects/{project}/locations/{location}/teamFolders/{team_folder}
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            force (bool):
+                Optional. If ``false`` (default): The operation will
+                fail if any Repository within the folder hierarchy has
+                associated Release Configs or Workflow Configs.
+
+                If ``true``: The operation will attempt to delete
+                everything, including any Release Configs and Workflow
+                Configs linked to Repositories within the folder
+                hierarchy. This permanently removes schedules and
+                resources.
+
+                This corresponds to the ``force`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
+                   empty messages in your APIs. A typical example is to
+                   use it as the request or the response type of an API
+                   method. For instance:
+
+                      service Foo {
+                         rpc Bar(google.protobuf.Empty) returns
+                         (google.protobuf.Empty);
+
+                      }
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name, force]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dataform.DeleteTeamFolderTreeRequest):
+            request = dataform.DeleteTeamFolderTreeRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+            if force is not None:
+                request.force = force
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.delete_team_folder_tree]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            empty_pb2.Empty,
+            metadata_type=dataform.DeleteFolderTreeMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
     def query_team_folder_contents(
         self,
         request: Optional[Union[dataform.QueryTeamFolderContentsRequest, dict]] = None,
@@ -1519,8 +1691,9 @@ class DataformClient(metaclass=DataformClientMeta):
             request (Union[google.cloud.dataform_v1beta1.types.QueryTeamFolderContentsRequest, dict]):
                 The request object. ``QueryTeamFolderContents`` request message.
             team_folder (str):
-                Required. Name of the team_folder whose contents to
-                list. Format: ``projects/*/locations/*/teamFolders/*``.
+                Required. Resource name of the TeamFolder to list
+                contents for. Format:
+                ``projects/*/locations/*/teamFolders/*``.
 
                 This corresponds to the ``team_folder`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2146,6 +2319,155 @@ class DataformClient(metaclass=DataformClientMeta):
             metadata=metadata,
         )
 
+    def delete_folder_tree(
+        self,
+        request: Optional[Union[dataform.DeleteFolderTreeRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        force: Optional[bool] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation.Operation:
+        r"""Deletes a Folder with its contents (Folders,
+        Repositories, Workspaces, ReleaseConfigs, and
+        WorkflowConfigs).
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dataform_v1beta1
+
+            def sample_delete_folder_tree():
+                # Create a client
+                client = dataform_v1beta1.DataformClient()
+
+                # Initialize request argument(s)
+                request = dataform_v1beta1.DeleteFolderTreeRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_folder_tree(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.dataform_v1beta1.types.DeleteFolderTreeRequest, dict]):
+                The request object. ``DeleteFolderTree`` request message.
+            name (str):
+                Required. The Folder's name.
+                Format:
+                projects/{project}/locations/{location}/folders/{folder}
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            force (bool):
+                Optional. If ``false`` (default): The operation will
+                fail if any Repository within the folder hierarchy has
+                associated Release Configs or Workflow Configs.
+
+                If ``true``: The operation will attempt to delete
+                everything, including any Release Configs and Workflow
+                Configs linked to Repositories within the folder
+                hierarchy. This permanently removes schedules and
+                resources.
+
+                This corresponds to the ``force`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
+                   empty messages in your APIs. A typical example is to
+                   use it as the request or the response type of an API
+                   method. For instance:
+
+                      service Foo {
+                         rpc Bar(google.protobuf.Empty) returns
+                         (google.protobuf.Empty);
+
+                      }
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name, force]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dataform.DeleteFolderTreeRequest):
+            request = dataform.DeleteFolderTreeRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+            if force is not None:
+                request.force = force
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.delete_folder_tree]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            empty_pb2.Empty,
+            metadata_type=dataform.DeleteFolderTreeMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
     def query_folder_contents(
         self,
         request: Optional[Union[dataform.QueryFolderContentsRequest, dict]] = None,
@@ -2188,8 +2510,8 @@ class DataformClient(metaclass=DataformClientMeta):
             request (Union[google.cloud.dataform_v1beta1.types.QueryFolderContentsRequest, dict]):
                 The request object. ``QueryFolderContents`` request message.
             folder (str):
-                Required. Name of the folder whose contents to list.
-                Format: projects/*/locations/*/folders/\*
+                Required. Resource name of the Folder to list contents
+                for. Format: projects/*/locations/*/folders/\*
 
                 This corresponds to the ``folder`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2312,8 +2634,8 @@ class DataformClient(metaclass=DataformClientMeta):
             request (Union[google.cloud.dataform_v1beta1.types.QueryUserRootContentsRequest, dict]):
                 The request object. ``QueryUserRootContents`` request message.
             location (str):
-                Required. Location of the user root folder whose
-                contents to list. Format: projects/*/locations/*
+                Required. Location of the user root folder to list
+                contents for. Format: projects/*/locations/*
 
                 This corresponds to the ``location`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3103,6 +3425,148 @@ class DataformClient(metaclass=DataformClientMeta):
             timeout=timeout,
             metadata=metadata,
         )
+
+    def delete_repository_long_running(
+        self,
+        request: Optional[
+            Union[dataform.DeleteRepositoryLongRunningRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        force: Optional[bool] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation.Operation:
+        r"""Deletes a single repository asynchronously.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dataform_v1beta1
+
+            def sample_delete_repository_long_running():
+                # Create a client
+                client = dataform_v1beta1.DataformClient()
+
+                # Initialize request argument(s)
+                request = dataform_v1beta1.DeleteRepositoryLongRunningRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_repository_long_running(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.dataform_v1beta1.types.DeleteRepositoryLongRunningRequest, dict]):
+                The request object. ``DeleteRepositoryLongRunning`` request message.
+            name (str):
+                Required. The repository's name.
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            force (bool):
+                Optional. If set to true, child resources of this
+                repository (compilation results and workflow
+                invocations) will also be deleted. Otherwise, the
+                request will only succeed if the repository has no child
+                resources.
+
+                **Note:** *This flag doesn't support deletion of
+                workspaces, release configs or workflow configs. If any
+                of such resources exists in the repository, the request
+                will fail.*
+
+                This corresponds to the ``force`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.dataform_v1beta1.types.DeleteRepositoryLongRunningResponse`
+                DeleteRepositoryLongRunning response message.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name, force]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dataform.DeleteRepositoryLongRunningRequest):
+            request = dataform.DeleteRepositoryLongRunningRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+            if force is not None:
+                request.force = force
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.delete_repository_long_running
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            dataform.DeleteRepositoryLongRunningResponse,
+            metadata_type=dataform.DeleteRepositoryLongRunningMetadata,
+        )
+
+        # Done; return the response.
+        return response
 
     def move_repository(
         self,

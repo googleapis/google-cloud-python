@@ -19,6 +19,7 @@ from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
 import google.api_core
 import google.auth  # type: ignore
 import google.protobuf
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
@@ -47,7 +48,11 @@ if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
 class ServingConfigServiceTransport(abc.ABC):
     """Abstract transport class for ServingConfigService."""
 
-    AUTH_SCOPES = ("https://www.googleapis.com/auth/cloud-platform",)
+    AUTH_SCOPES = (
+        "https://www.googleapis.com/auth/cloud-platform",
+        "https://www.googleapis.com/auth/discoveryengine.readwrite",
+        "https://www.googleapis.com/auth/discoveryengine.serving.readwrite",
+    )
 
     DEFAULT_HOST: str = "discoveryengine.googleapis.com"
 
@@ -150,6 +155,16 @@ class ServingConfigServiceTransport(abc.ABC):
     def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
+            self.create_serving_config: gapic_v1.method.wrap_method(
+                self.create_serving_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_serving_config: gapic_v1.method.wrap_method(
+                self.delete_serving_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.update_serving_config: gapic_v1.method.wrap_method(
                 self.update_serving_config,
                 default_timeout=None,
@@ -189,6 +204,27 @@ class ServingConfigServiceTransport(abc.ABC):
              Only call this method if the transport is NOT shared
              with other clients - this may cause errors in other clients!
         """
+        raise NotImplementedError()
+
+    @property
+    def create_serving_config(
+        self,
+    ) -> Callable[
+        [serving_config_service.CreateServingConfigRequest],
+        Union[
+            gcd_serving_config.ServingConfig,
+            Awaitable[gcd_serving_config.ServingConfig],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_serving_config(
+        self,
+    ) -> Callable[
+        [serving_config_service.DeleteServingConfigRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
         raise NotImplementedError()
 
     @property

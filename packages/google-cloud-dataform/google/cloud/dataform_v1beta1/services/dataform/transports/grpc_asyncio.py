@@ -466,6 +466,36 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
         return self._stubs["delete_team_folder"]
 
     @property
+    def delete_team_folder_tree(
+        self,
+    ) -> Callable[
+        [dataform.DeleteTeamFolderTreeRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the delete team folder tree method over gRPC.
+
+        Deletes a TeamFolder with its contents (Folders,
+        Repositories, Workspaces, ReleaseConfigs, and
+        WorkflowConfigs).
+
+        Returns:
+            Callable[[~.DeleteTeamFolderTreeRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_team_folder_tree" not in self._stubs:
+            self._stubs["delete_team_folder_tree"] = self._logged_channel.unary_unary(
+                "/google.cloud.dataform.v1beta1.Dataform/DeleteTeamFolderTree",
+                request_serializer=dataform.DeleteTeamFolderTreeRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_team_folder_tree"]
+
+    @property
     def query_team_folder_contents(
         self,
     ) -> Callable[
@@ -629,6 +659,36 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
                 response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["delete_folder"]
+
+    @property
+    def delete_folder_tree(
+        self,
+    ) -> Callable[
+        [dataform.DeleteFolderTreeRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the delete folder tree method over gRPC.
+
+        Deletes a Folder with its contents (Folders,
+        Repositories, Workspaces, ReleaseConfigs, and
+        WorkflowConfigs).
+
+        Returns:
+            Callable[[~.DeleteFolderTreeRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_folder_tree" not in self._stubs:
+            self._stubs["delete_folder_tree"] = self._logged_channel.unary_unary(
+                "/google.cloud.dataform.v1beta1.Dataform/DeleteFolderTree",
+                request_serializer=dataform.DeleteFolderTreeRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_folder_tree"]
 
     @property
     def query_folder_contents(
@@ -860,6 +920,37 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
                 response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["delete_repository"]
+
+    @property
+    def delete_repository_long_running(
+        self,
+    ) -> Callable[
+        [dataform.DeleteRepositoryLongRunningRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the delete repository long running method over gRPC.
+
+        Deletes a single repository asynchronously.
+
+        Returns:
+            Callable[[~.DeleteRepositoryLongRunningRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_repository_long_running" not in self._stubs:
+            self._stubs["delete_repository_long_running"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.dataform.v1beta1.Dataform/DeleteRepositoryLongRunning",
+                    request_serializer=dataform.DeleteRepositoryLongRunningRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
+            )
+        return self._stubs["delete_repository_long_running"]
 
     @property
     def move_repository(
@@ -2432,6 +2523,11 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.delete_team_folder_tree: self._wrap_method(
+                self.delete_team_folder_tree,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.query_team_folder_contents: self._wrap_method(
                 self.query_team_folder_contents,
                 default_timeout=None,
@@ -2459,6 +2555,11 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
             ),
             self.delete_folder: self._wrap_method(
                 self.delete_folder,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_folder_tree: self._wrap_method(
+                self.delete_folder_tree,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -2499,6 +2600,11 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
             ),
             self.delete_repository: self._wrap_method(
                 self.delete_repository,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_repository_long_running: self._wrap_method(
+                self.delete_repository_long_running,
                 default_timeout=None,
                 client_info=client_info,
             ),

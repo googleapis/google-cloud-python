@@ -154,8 +154,8 @@ class Participant(proto.Message):
 
             2. If you set this field in
                [AnalyzeContent][google.cloud.dialogflow.v2beta1.AnalyzeContentRequest.obfuscated_external_user_id]
-               or
-               [StreamingAnalyzeContent][google.cloud.dialogflow.v2beta1.StreamingAnalyzeContentRequest.obfuscated_external_user_id],
+               or [StreamingAnalyzeContent]
+               [google.cloud.dialogflow.v2beta1.StreamingAnalyzeContentRequest.obfuscated_external_user_id],
                Dialogflow will update
                [Participant.obfuscated_external_user_id][google.cloud.dialogflow.v2beta1.Participant.obfuscated_external_user_id].
 
@@ -168,6 +168,12 @@ class Participant(proto.Message):
             suggestion personalization. For example, Dialogflow can use
             it to provide personalized smart reply suggestions for this
             user.
+
+            Additionally, to link an escalated Virtual Agent
+            conversation with its corresponding Agent Assist
+            conversation for analytics, this field in Agent Assist
+            conversations should be populated to indicate the user id of
+            the ``END_USER`` participant in the escalated conversation.
 
             Note:
 
@@ -1443,8 +1449,12 @@ class StreamingAnalyzeContentResponse(proto.Message):
     1. If the input was set to streaming audio, the first one or more
        messages contain ``recognition_result``. Each
        ``recognition_result`` represents a more complete transcript of
-       what the user said. The last ``recognition_result`` has
-       ``is_final`` set to ``true``.
+       what the user said. When a user speaks multiple sentences, the
+       API will emit multiple messages where ``is_final = true``. Each
+       time the system detects a distinct pause or completed thought, it
+       locks in that segment, marks it ``is_final = true``, and then
+       immediately starts a new recognition cycle for the next sentence
+       on the same stream.
 
     2. In virtual agent stage: if
        ``enable_partial_automated_agent_reply`` is true, the following N
@@ -2897,6 +2907,11 @@ class SuggestKnowledgeAssistResponse(proto.Message):
             [SuggestKnowledgeAssistRequest.context_size][google.cloud.dialogflow.v2beta1.SuggestKnowledgeAssistRequest.context_size]
             field in the request if there are fewer messages in the
             conversation.
+        additional_suggested_query_results (MutableSequence[google.cloud.dialogflow_v2beta1.types.KnowledgeAssistAnswer.AdditionalSuggestedQueryResult]):
+            Optional. The list of additional suggested
+            queries based on the context. This is used for
+            the cases when we want to generate multiple
+            queries for a single request.
     """
 
     knowledge_assist_answer: "KnowledgeAssistAnswer" = proto.Field(
@@ -2911,6 +2926,13 @@ class SuggestKnowledgeAssistResponse(proto.Message):
     context_size: int = proto.Field(
         proto.INT32,
         number=3,
+    )
+    additional_suggested_query_results: MutableSequence[
+        "KnowledgeAssistAnswer.AdditionalSuggestedQueryResult"
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=4,
+        message="KnowledgeAssistAnswer.AdditionalSuggestedQueryResult",
     )
 
 
@@ -3074,6 +3096,10 @@ class KnowledgeAssistDebugInfo(proto.Message):
             search knowledge.
         service_latency (google.cloud.dialogflow_v2beta1.types.ServiceLatency):
             The latency of the service.
+        query_generation_debug_info (google.cloud.dialogflow_v2beta1.types.KnowledgeAssistDebugInfo.QueryGenerationDebugInfo):
+            Token usage metadata for query generation.
+        ces_debug_info (google.protobuf.struct_pb2.Struct):
+            Debug information from CES runtime API.
     """
 
     class QueryGenerationFailureReason(proto.Enum):
@@ -3280,6 +3306,33 @@ class KnowledgeAssistDebugInfo(proto.Message):
             number=18,
         )
 
+    class QueryGenerationDebugInfo(proto.Message):
+        r"""Token usage metadata for query generation.
+
+        Attributes:
+            prompt_token_count (int):
+                The total number of tokens in the prompt.
+            candidates_token_count (int):
+                The total number of tokens in the generated
+                candidates.
+            total_token_count (int):
+                The total number of tokens for the entire
+                request.
+        """
+
+        prompt_token_count: int = proto.Field(
+            proto.INT32,
+            number=1,
+        )
+        candidates_token_count: int = proto.Field(
+            proto.INT32,
+            number=2,
+        )
+        total_token_count: int = proto.Field(
+            proto.INT32,
+            number=3,
+        )
+
     query_generation_failure_reason: QueryGenerationFailureReason = proto.Field(
         proto.ENUM,
         number=1,
@@ -3312,6 +3365,16 @@ class KnowledgeAssistDebugInfo(proto.Message):
         number=6,
         message="ServiceLatency",
     )
+    query_generation_debug_info: QueryGenerationDebugInfo = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=QueryGenerationDebugInfo,
+    )
+    ces_debug_info: struct_pb2.Struct = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message=struct_pb2.Struct,
+    )
 
 
 class KnowledgeAssistAnswer(proto.Message):
@@ -3340,11 +3403,65 @@ class KnowledgeAssistAnswer(proto.Message):
         Attributes:
             query_text (str):
                 Suggested query text.
+            search_contexts (MutableSequence[google.cloud.dialogflow_v2beta1.types.KnowledgeAssistAnswer.SuggestedQuery.SearchContext]):
+                Optional. The search contexts for the query.
         """
+
+        class SearchContext(proto.Message):
+            r"""Search context is information useful for knowledge search that helps
+            enrich the query. Example: search_context { key: "application name"
+            value: "DesignApp" }
+
+            Attributes:
+                key (str):
+                    Optional. The key of the search context, e.g.
+                    "application name".
+                value (str):
+                    Optional. The value of the search context,
+                    e.g. "DesignApp".
+            """
+
+            key: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+            value: str = proto.Field(
+                proto.STRING,
+                number=2,
+            )
 
         query_text: str = proto.Field(
             proto.STRING,
             number=1,
+        )
+        search_contexts: MutableSequence[
+            "KnowledgeAssistAnswer.SuggestedQuery.SearchContext"
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=4,
+            message="KnowledgeAssistAnswer.SuggestedQuery.SearchContext",
+        )
+
+    class AdditionalSuggestedQueryResult(proto.Message):
+        r"""Represents a single suggested query result.
+
+        Attributes:
+            suggested_query (google.cloud.dialogflow_v2beta1.types.KnowledgeAssistAnswer.SuggestedQuery):
+                Output only. The suggested query based on the
+                context.
+            answer_record (str):
+                Output only. The name of the answer record. Format:
+                ``projects/<Project ID>/locations/<Location ID>/answerRecords/<Answer Record ID>``
+        """
+
+        suggested_query: "KnowledgeAssistAnswer.SuggestedQuery" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message="KnowledgeAssistAnswer.SuggestedQuery",
+        )
+        answer_record: str = proto.Field(
+            proto.STRING,
+            number=5,
         )
 
     class KnowledgeAnswer(proto.Message):
@@ -3368,6 +3485,16 @@ class KnowledgeAssistAnswer(proto.Message):
                 This field is a member of `oneof`_ ``source``.
             generative_source (google.cloud.dialogflow_v2beta1.types.KnowledgeAssistAnswer.KnowledgeAnswer.GenerativeSource):
                 Populated if the prediction was Generative.
+
+                This field is a member of `oneof`_ ``source``.
+            playbook_source (google.cloud.dialogflow_v2beta1.types.KnowledgeAssistAnswer.KnowledgeAnswer.GenerativeSource):
+                Populated if the prediction was from
+                Playbook.
+
+                This field is a member of `oneof`_ ``source``.
+            event_source (google.cloud.dialogflow_v2beta1.types.KnowledgeAssistAnswer.KnowledgeAnswer.EventSource):
+                Populated if the prediction was from an
+                event.
 
                 This field is a member of `oneof`_ ``source``.
         """
@@ -3434,6 +3561,28 @@ class KnowledgeAssistAnswer(proto.Message):
                 message="KnowledgeAssistAnswer.KnowledgeAnswer.GenerativeSource.Snippet",
             )
 
+        class EventSource(proto.Message):
+            r"""Details about source of Event answer.
+
+            Attributes:
+                event (str):
+                    Name of the triggered event.
+                snippets (google.cloud.dialogflow_v2beta1.types.KnowledgeAssistAnswer.KnowledgeAnswer.GenerativeSource):
+                    Sources used in event fulfillment.
+            """
+
+            event: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+            snippets: "KnowledgeAssistAnswer.KnowledgeAnswer.GenerativeSource" = (
+                proto.Field(
+                    proto.MESSAGE,
+                    number=2,
+                    message="KnowledgeAssistAnswer.KnowledgeAnswer.GenerativeSource",
+                )
+            )
+
         answer_text: str = proto.Field(
             proto.STRING,
             number=1,
@@ -3451,6 +3600,20 @@ class KnowledgeAssistAnswer(proto.Message):
                 oneof="source",
                 message="KnowledgeAssistAnswer.KnowledgeAnswer.GenerativeSource",
             )
+        )
+        playbook_source: "KnowledgeAssistAnswer.KnowledgeAnswer.GenerativeSource" = (
+            proto.Field(
+                proto.MESSAGE,
+                number=7,
+                oneof="source",
+                message="KnowledgeAssistAnswer.KnowledgeAnswer.GenerativeSource",
+            )
+        )
+        event_source: "KnowledgeAssistAnswer.KnowledgeAnswer.EventSource" = proto.Field(
+            proto.MESSAGE,
+            number=8,
+            oneof="source",
+            message="KnowledgeAssistAnswer.KnowledgeAnswer.EventSource",
         )
 
     suggested_query: SuggestedQuery = proto.Field(
@@ -3622,7 +3785,54 @@ class BidiStreamingAnalyzeContentRequest(proto.Message):
             virtual_agent_parameters (google.protobuf.struct_pb2.Struct):
                 Optional. Parameters to be passed to the
                 virtual agent.
+            tool_responses (google.cloud.dialogflow_v2beta1.types.BidiStreamingAnalyzeContentRequest.TurnInput.ToolResponses):
+                Optional. The tool responses from the client.
         """
+
+        class ToolResponse(proto.Message):
+            r"""The execution result of a specific tool from the client.
+
+            Attributes:
+                id (str):
+                    Required. The matching ID of the tool call
+                    the response is for.
+                tool (str):
+                    Required. The identifier of the tool that got
+                    executed.
+                response (google.protobuf.struct_pb2.Struct):
+                    Optional. The tool execution result in JSON
+                    object format.
+            """
+
+            id: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+            tool: str = proto.Field(
+                proto.STRING,
+                number=2,
+            )
+            response: struct_pb2.Struct = proto.Field(
+                proto.MESSAGE,
+                number=3,
+                message=struct_pb2.Struct,
+            )
+
+        class ToolResponses(proto.Message):
+            r"""The tool responses from the client.
+
+            Attributes:
+                tool_responses (MutableSequence[google.cloud.dialogflow_v2beta1.types.BidiStreamingAnalyzeContentRequest.TurnInput.ToolResponse]):
+                    Optional. The list of tool responses.
+            """
+
+            tool_responses: MutableSequence[
+                "BidiStreamingAnalyzeContentRequest.TurnInput.ToolResponse"
+            ] = proto.RepeatedField(
+                proto.MESSAGE,
+                number=1,
+                message="BidiStreamingAnalyzeContentRequest.TurnInput.ToolResponse",
+            )
 
         text: str = proto.Field(
             proto.STRING,
@@ -3643,6 +3853,13 @@ class BidiStreamingAnalyzeContentRequest(proto.Message):
             proto.MESSAGE,
             number=4,
             message=struct_pb2.Struct,
+        )
+        tool_responses: "BidiStreamingAnalyzeContentRequest.TurnInput.ToolResponses" = (
+            proto.Field(
+                proto.MESSAGE,
+                number=5,
+                message="BidiStreamingAnalyzeContentRequest.TurnInput.ToolResponses",
+            )
         )
 
     class Input(proto.Message):
@@ -3734,6 +3951,10 @@ class BidiStreamingAnalyzeContentResponse(proto.Message):
             Indicate that the turn is complete.
 
             This field is a member of `oneof`_ ``response``.
+        tool_calls (google.cloud.dialogflow_v2beta1.types.BidiStreamingAnalyzeContentResponse.ToolCalls):
+            The tool calls from the server.
+
+            This field is a member of `oneof`_ ``response``.
     """
 
     class BargeInSignal(proto.Message):
@@ -3741,6 +3962,49 @@ class BidiStreamingAnalyzeContentResponse(proto.Message):
 
     class TurnComplete(proto.Message):
         r"""Indicate that the turn is complete."""
+
+    class ToolCall(proto.Message):
+        r"""Request for the client to execute the specified tool.
+
+        Attributes:
+            id (str):
+                The unique identifier of the tool call.
+            tool (str):
+                The identifier of the tool to execute.
+            args (google.protobuf.struct_pb2.Struct):
+                The input parameters and values for the tool
+                in JSON object format.
+        """
+
+        id: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        tool: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        args: struct_pb2.Struct = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            message=struct_pb2.Struct,
+        )
+
+    class ToolCalls(proto.Message):
+        r"""The tool calls from the server.
+
+        Attributes:
+            tool_calls (MutableSequence[google.cloud.dialogflow_v2beta1.types.BidiStreamingAnalyzeContentResponse.ToolCall]):
+                The list of tool calls.
+        """
+
+        tool_calls: MutableSequence["BidiStreamingAnalyzeContentResponse.ToolCall"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=1,
+                message="BidiStreamingAnalyzeContentResponse.ToolCall",
+            )
+        )
 
     recognition_result: session.StreamingRecognitionResult = proto.Field(
         proto.MESSAGE,
@@ -3765,6 +4029,12 @@ class BidiStreamingAnalyzeContentResponse(proto.Message):
         number=4,
         oneof="response",
         message=TurnComplete,
+    )
+    tool_calls: ToolCalls = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="response",
+        message=ToolCalls,
     )
 
 

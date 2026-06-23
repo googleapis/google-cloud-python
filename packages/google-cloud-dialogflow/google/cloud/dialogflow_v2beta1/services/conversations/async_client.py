@@ -97,10 +97,6 @@ class ConversationsAsyncClient:
     parse_ces_tool_path = staticmethod(ConversationsClient.parse_ces_tool_path)
     conversation_path = staticmethod(ConversationsClient.conversation_path)
     parse_conversation_path = staticmethod(ConversationsClient.parse_conversation_path)
-    conversation_model_path = staticmethod(ConversationsClient.conversation_model_path)
-    parse_conversation_model_path = staticmethod(
-        ConversationsClient.parse_conversation_model_path
-    )
     conversation_profile_path = staticmethod(
         ConversationsClient.conversation_profile_path
     )

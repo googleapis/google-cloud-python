@@ -99,6 +99,8 @@ from .types.entitlement import CloudAccountDetails, Entitlement
 from .types.exadata_infra import (
     CloudExadataInfrastructure,
     CloudExadataInfrastructureProperties,
+    ConfigureExascaleCloudExadataInfrastructureRequest,
+    ExascaleConfig,
     MaintenanceWindow,
 )
 from .types.exadb_vm_cluster import (
@@ -179,7 +181,6 @@ from .types.goldengate_connection_assignment import (
     TestGoldengateConnectionAssignmentResponse,
 )
 from .types.goldengate_connection_type import (
-    GetGoldengateConnectionTypeRequest,
     GoldengateConnectionType,
     ListGoldengateConnectionTypesRequest,
     ListGoldengateConnectionTypesResponse,
@@ -205,19 +206,16 @@ from .types.goldengate_deployment import (
     StopGoldengateDeploymentRequest,
 )
 from .types.goldengate_deployment_environment import (
-    GetGoldengateDeploymentEnvironmentRequest,
     GoldengateDeploymentEnvironment,
     ListGoldengateDeploymentEnvironmentsRequest,
     ListGoldengateDeploymentEnvironmentsResponse,
 )
 from .types.goldengate_deployment_type import (
-    GetGoldengateDeploymentTypeRequest,
     GoldengateDeploymentType,
     ListGoldengateDeploymentTypesRequest,
     ListGoldengateDeploymentTypesResponse,
 )
 from .types.goldengate_deployment_version import (
-    GetGoldengateDeploymentVersionRequest,
     GoldengateDeploymentVersion,
     GoldengateDeploymentVersionProperties,
     ListGoldengateDeploymentVersionsRequest,
@@ -415,6 +413,7 @@ __all__ = (
     "CloudVmCluster",
     "CloudVmClusterProperties",
     "ComputeModel",
+    "ConfigureExascaleCloudExadataInfrastructureRequest",
     "CreateAutonomousDatabaseRequest",
     "CreateCloudExadataInfrastructureRequest",
     "CreateCloudVmClusterRequest",
@@ -468,6 +467,7 @@ __all__ = (
     "ExadbVmCluster",
     "ExadbVmClusterProperties",
     "ExadbVmClusterStorageDetails",
+    "ExascaleConfig",
     "ExascaleDbStorageDetails",
     "ExascaleDbStorageVault",
     "ExascaleDbStorageVaultProperties",
@@ -484,11 +484,7 @@ __all__ = (
     "GetExascaleDbStorageVaultRequest",
     "GetGoldengateConnectionAssignmentRequest",
     "GetGoldengateConnectionRequest",
-    "GetGoldengateConnectionTypeRequest",
-    "GetGoldengateDeploymentEnvironmentRequest",
     "GetGoldengateDeploymentRequest",
-    "GetGoldengateDeploymentTypeRequest",
-    "GetGoldengateDeploymentVersionRequest",
     "GetOdbNetworkRequest",
     "GetOdbSubnetRequest",
     "GetPluggableDatabaseRequest",

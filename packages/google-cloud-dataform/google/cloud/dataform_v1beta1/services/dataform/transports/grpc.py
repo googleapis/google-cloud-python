@@ -458,6 +458,34 @@ class DataformGrpcTransport(DataformTransport):
         return self._stubs["delete_team_folder"]
 
     @property
+    def delete_team_folder_tree(
+        self,
+    ) -> Callable[[dataform.DeleteTeamFolderTreeRequest], operations_pb2.Operation]:
+        r"""Return a callable for the delete team folder tree method over gRPC.
+
+        Deletes a TeamFolder with its contents (Folders,
+        Repositories, Workspaces, ReleaseConfigs, and
+        WorkflowConfigs).
+
+        Returns:
+            Callable[[~.DeleteTeamFolderTreeRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_team_folder_tree" not in self._stubs:
+            self._stubs["delete_team_folder_tree"] = self._logged_channel.unary_unary(
+                "/google.cloud.dataform.v1beta1.Dataform/DeleteTeamFolderTree",
+                request_serializer=dataform.DeleteTeamFolderTreeRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_team_folder_tree"]
+
+    @property
     def query_team_folder_contents(
         self,
     ) -> Callable[
@@ -618,6 +646,34 @@ class DataformGrpcTransport(DataformTransport):
                 response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["delete_folder"]
+
+    @property
+    def delete_folder_tree(
+        self,
+    ) -> Callable[[dataform.DeleteFolderTreeRequest], operations_pb2.Operation]:
+        r"""Return a callable for the delete folder tree method over gRPC.
+
+        Deletes a Folder with its contents (Folders,
+        Repositories, Workspaces, ReleaseConfigs, and
+        WorkflowConfigs).
+
+        Returns:
+            Callable[[~.DeleteFolderTreeRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_folder_tree" not in self._stubs:
+            self._stubs["delete_folder_tree"] = self._logged_channel.unary_unary(
+                "/google.cloud.dataform.v1beta1.Dataform/DeleteFolderTree",
+                request_serializer=dataform.DeleteFolderTreeRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_folder_tree"]
 
     @property
     def query_folder_contents(
@@ -847,6 +903,36 @@ class DataformGrpcTransport(DataformTransport):
                 response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["delete_repository"]
+
+    @property
+    def delete_repository_long_running(
+        self,
+    ) -> Callable[
+        [dataform.DeleteRepositoryLongRunningRequest], operations_pb2.Operation
+    ]:
+        r"""Return a callable for the delete repository long running method over gRPC.
+
+        Deletes a single repository asynchronously.
+
+        Returns:
+            Callable[[~.DeleteRepositoryLongRunningRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_repository_long_running" not in self._stubs:
+            self._stubs["delete_repository_long_running"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.dataform.v1beta1.Dataform/DeleteRepositoryLongRunning",
+                    request_serializer=dataform.DeleteRepositoryLongRunningRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
+            )
+        return self._stubs["delete_repository_long_running"]
 
     @property
     def move_repository(

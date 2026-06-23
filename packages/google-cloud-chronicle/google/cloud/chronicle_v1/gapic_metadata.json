@@ -995,6 +995,11 @@
               "methods": [
                 "update_reference_list"
               ]
+            },
+            "VerifyReferenceList": {
+              "methods": [
+                "verify_reference_list"
+              ]
             }
           }
         },
@@ -1020,6 +1025,11 @@
               "methods": [
                 "update_reference_list"
               ]
+            },
+            "VerifyReferenceList": {
+              "methods": [
+                "verify_reference_list"
+              ]
             }
           }
         },
@@ -1044,6 +1054,45 @@
             "UpdateReferenceList": {
               "methods": [
                 "update_reference_list"
+              ]
+            },
+            "VerifyReferenceList": {
+              "methods": [
+                "verify_reference_list"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "RuleExecutionErrorService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "RuleExecutionErrorServiceClient",
+          "rpcs": {
+            "ListRuleExecutionErrors": {
+              "methods": [
+                "list_rule_execution_errors"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "RuleExecutionErrorServiceAsyncClient",
+          "rpcs": {
+            "ListRuleExecutionErrors": {
+              "methods": [
+                "list_rule_execution_errors"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "RuleExecutionErrorServiceClient",
+          "rpcs": {
+            "ListRuleExecutionErrors": {
+              "methods": [
+                "list_rule_execution_errors"
               ]
             }
           }
@@ -1114,6 +1163,11 @@
               "methods": [
                 "update_rule_deployment"
               ]
+            },
+            "VerifyRuleText": {
+              "methods": [
+                "verify_rule_text"
+              ]
             }
           }
         },
@@ -1179,6 +1233,11 @@
               "methods": [
                 "update_rule_deployment"
               ]
+            },
+            "VerifyRuleText": {
+              "methods": [
+                "verify_rule_text"
+              ]
             }
           }
         },
@@ -1243,6 +1302,11 @@
             "UpdateRuleDeployment": {
               "methods": [
                 "update_rule_deployment"
+              ]
+            },
+            "VerifyRuleText": {
+              "methods": [
+                "verify_rule_text"
               ]
             }
           }
