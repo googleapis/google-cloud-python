@@ -34,6 +34,7 @@ export class WidgetStateService {
   readonly startExecution = signal<boolean>(false);
   readonly isDeferredMode = signal<boolean>(false);
   readonly dryRunInfo = signal<string>('');
+  readonly ping = signal<number>(0);
 
   constructor(@Inject('ANYWIDGET_MODEL') private model: any) {
     if (model) {
@@ -53,6 +54,7 @@ export class WidgetStateService {
       this.startExecution.set(model.get('start_execution') ?? false);
       this.isDeferredMode.set(model.get('is_deferred_mode') ?? false);
       this.dryRunInfo.set(model.get('dry_run_info') ?? '');
+      this.ping.set(model.get('ping') ?? 0);
 
       // Register event listeners for anywidget updates
       model.on('change:page', () => {
@@ -84,6 +86,9 @@ export class WidgetStateService {
       });
       model.on('change:dry_run_info', () => {
         this.dryRunInfo.set(model.get('dry_run_info') ?? '');
+      });
+      model.on('change:ping', () => {
+        this.ping.set(model.get('ping') ?? 0);
       });
 
       // Robust dual-listen pattern for error messages (with/without underscore)
@@ -138,6 +143,14 @@ export class WidgetStateService {
     this.startExecution.set(startExecution);
     if (this.model) {
       this.model.set('start_execution', startExecution);
+      this.model.save_changes();
+    }
+  }
+
+  setPing(ping: number) {
+    this.ping.set(ping);
+    if (this.model) {
+      this.model.set('ping', ping);
       this.model.save_changes();
     }
   }

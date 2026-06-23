@@ -513,6 +513,23 @@ export class App {
         this.isLoading.set(false);
       }
     });
+
+    effect((onCleanup) => {
+      const executing = this.state.startExecution();
+      if (executing) {
+        const intervalId = setInterval(() => {
+          if (this.state.startExecution()) {
+            const currentPing = this.state.ping();
+            this.state.setPing(currentPing + 1);
+          } else {
+            clearInterval(intervalId);
+          }
+        }, 500);
+        onCleanup(() => {
+          clearInterval(intervalId);
+        });
+      }
+    });
   }
 
   ngOnInit() {

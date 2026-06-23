@@ -61,6 +61,19 @@ class _SortState:
     ascending: tuple[bool, ...]
 
 
+@dataclasses.dataclass
+class _ExecutionResult:
+    df_to_set: Optional[bigframes.dataframe.DataFrame] = None
+    orderable_cols: Optional[list[str]] = None
+    batches: Optional[blocks.PandasBatches] = None
+    batch_iter: Optional[Iterator[pd.DataFrame]] = None
+    cached_batches: Optional[list[pd.DataFrame]] = None
+    all_data_loaded: bool = False
+    total_rows: Optional[int] = None
+    initial_html: Optional[str] = None
+    error_message: Optional[str] = None
+
+
 class TableWidget(_WIDGET_BASE):
     """An interactive, paginated table widget for BigFrames DataFrames.
 
@@ -83,6 +96,7 @@ class TableWidget(_WIDGET_BASE):
     start_execution = traitlets.Bool(False).tag(sync=True)
     is_deferred_mode = traitlets.Bool(False).tag(sync=True)
     dry_run_info = traitlets.Unicode("").tag(sync=True)
+    ping = traitlets.Int(0).tag(sync=True)
 
     def __init__(
         self,
@@ -148,6 +162,7 @@ class TableWidget(_WIDGET_BASE):
         self._batch_iter: Optional[Iterator[pd.DataFrame]] = None
         self._cached_batches: list[pd.DataFrame] = []
         self._last_sort_state: Optional[_SortState] = None
+        self._execution_result: Optional[_ExecutionResult] = None
         # Lock to ensure only one thread at a time is updating the table HTML.
         self._setting_html_lock = threading.Lock()
 
@@ -248,48 +263,64 @@ class TableWidget(_WIDGET_BASE):
                         max_columns=self.max_columns,
                     )
 
-                    def update_ui():
-                        with self.hold_sync():
-                            self._dataframe = df_to_set
-                            self.orderable_columns = orderable_cols
-                            self._batches = batches
-                            self._batch_iter = batch_iter
-                            self._cached_batches = cached_batches
-                            self._all_data_loaded = all_data_loaded
-                            self._last_sort_state = _SortState((), ())
-                            self.row_count = total_rows
-                            self.table_html = initial_html
-                            self.is_deferred_mode = False
-                            self.start_execution = False
-
-                    import sys
-
-                    is_colab = "google.colab" in sys.modules
-
-                    if loop is not None and loop.is_running() and not is_colab:
-                        loop.call_soon_threadsafe(update_ui)
-                    else:
-                        update_ui()
+                    self._execution_result = _ExecutionResult(
+                        df_to_set=df_to_set,
+                        orderable_cols=orderable_cols,
+                        batches=batches,
+                        batch_iter=batch_iter,
+                        cached_batches=cached_batches,
+                        all_data_loaded=all_data_loaded,
+                        total_rows=total_rows,
+                        initial_html=initial_html,
+                    )
                 except Exception as e:
                     logger.warning(f"Error in background execution: {e}")
-                    err_msg = str(e)
+                    self._execution_result = _ExecutionResult(error_message=str(e))
 
-                    def set_error():
-                        with self.hold_sync():
-                            self._error_message = err_msg
-                            self.start_execution = False
+                import sys
 
-                    import sys
+                is_colab = "google.colab" in sys.modules
 
-                    is_colab = "google.colab" in sys.modules
-
-                    if loop is not None and loop.is_running() and not is_colab:
-                        loop.call_soon_threadsafe(set_error)
-                    else:
-                        set_error()
+                if loop is not None and loop.is_running() and not is_colab:
+                    loop.call_soon_threadsafe(self._apply_execution_result)
+                elif is_colab:
+                    # In Google Colab, background thread updates to traitlets are not automatically
+                    # synchronized to the frontend. We rely on the frontend's active pinging
+                    # (which triggers `_on_ping` on the main kernel thread) to apply the result.
+                    pass
+                else:
+                    self._apply_execution_result()
 
             self._execution_thread = threading.Thread(target=run_execution, daemon=True)
             self._execution_thread.start()
+
+    def _apply_execution_result(self) -> None:
+        if self._execution_result is None:
+            return
+
+        result = self._execution_result
+        self._execution_result = None
+
+        with self.hold_sync():
+            if result.error_message is not None:
+                self._error_message = result.error_message
+                self.start_execution = False
+            else:
+                self._dataframe = result.df_to_set
+                self.orderable_columns = result.orderable_cols
+                self._batches = result.batches
+                self._batch_iter = result.batch_iter
+                self._cached_batches = result.cached_batches
+                self._all_data_loaded = result.all_data_loaded
+                self._last_sort_state = _SortState((), ())
+                self.row_count = result.total_rows
+                self.table_html = result.initial_html
+                self.is_deferred_mode = False
+                self.start_execution = False
+
+    @traitlets.observe("ping")
+    def _on_ping(self, _change: dict[str, Any]):
+        self._apply_execution_result()
 
     def _initialize_from_dataframe(self):
         if self._dataframe is None:

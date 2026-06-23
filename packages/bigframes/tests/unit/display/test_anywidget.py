@@ -538,5 +538,11 @@ def test_deferred_mode_execution_in_colab(mock_deferred_df, mock_df_deferred):
             if thread is not None:
                 thread.join(timeout=5)
 
+            assert widget.is_deferred_mode is True
+            assert widget.table_html == ""
+
+            # Simulate frontend ping callback
+            widget.ping = 1
+
             assert widget.is_deferred_mode is False
             assert widget.table_html != ""
