@@ -45,7 +45,7 @@ pandas = pytest.importorskip("pandas")
 
 @pytest.fixture()
 def use_local_magics_context(monkeypatch):
-    if magics is not None:
+    if magics is not None:  # pragma: NO COVER
         local_context = magics.Context()
         local_context._project = "unit-test-project"
         mock_credentials = mock.create_autospec(
@@ -2195,13 +2195,10 @@ def test_bigquery_magic_create_dataset_fails(monkeypatch):
 
 
 @pytest.mark.usefixtures("ipython_interactive")
-def test_bigquery_magic_with_location(monkeypatch):
+def test_bigquery_magic_with_location(monkeypatch, use_local_magics_context):
     ip = IPython.get_ipython()
     monkeypatch.setattr(bigquery, "bigquery_magics", None)
     bigquery.load_ipython_extension(ip)
-    magics.context.credentials = mock.create_autospec(
-        google.auth.credentials.Credentials, instance=True
-    )
 
     run_query_patch = mock.patch(
         "google.cloud.bigquery.magics.magics._run_query", autospec=True
