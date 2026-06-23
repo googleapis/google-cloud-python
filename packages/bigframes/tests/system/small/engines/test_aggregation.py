@@ -100,7 +100,11 @@ def test_engines_aggregate_size(
     assert_equivalence_execution(node, REFERENCE_ENGINE, engine)
 
 
-@pytest.mark.parametrize("engine", ["polars", "bq", "bq-sqlglot", "substrait-datafusion", "substrait-acero"], indirect=True)
+@pytest.mark.parametrize(
+    "engine",
+    ["polars", "bq", "bq-sqlglot", "substrait-datafusion", "substrait-acero"],
+    indirect=True,
+)
 @pytest.mark.parametrize(
     "op",
     [agg_ops.min_op, agg_ops.max_op, agg_ops.mean_op, agg_ops.sum_op, agg_ops.count_op],
@@ -141,7 +145,11 @@ def test_sql_engines_median_op_aggregates(
     assert_equivalence_execution(node, bq_engine, sqlglot_engine)
 
 
-@pytest.mark.parametrize("engine", ["polars", "bq", "bq-sqlglot", "substrait-datafusion", "substrait-acero"], indirect=True)
+@pytest.mark.parametrize(
+    "engine",
+    ["polars", "bq", "bq-sqlglot", "substrait-datafusion", "substrait-acero"],
+    indirect=True,
+)
 @pytest.mark.parametrize(
     "grouping_cols",
     [

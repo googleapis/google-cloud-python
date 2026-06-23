@@ -313,7 +313,6 @@ class SubstraitCompiler:
     def _compile_aggregate(self, node: nodes.AggregateNode) -> algebra_pb2.Rel:
         input_rel = self._compile_node(node.child)
 
-        import bigframes.dtypes as dtypes
         import bigframes.operations.aggregations as agg_ops
 
         child_ids = list(node.child.ids)
@@ -390,7 +389,7 @@ class SubstraitCompiler:
                         idx = child_ids.index(col_id)
                         field_expr = algebra_pb2.Expression()
                         field_expr.selection.direct_reference.struct_field.field = idx
-                        
+
                         arg = measure.measure.arguments.add()
                         arg.value.CopyFrom(field_expr)
                     except ValueError:
@@ -406,7 +405,9 @@ class SubstraitCompiler:
                 not_null_op.scalar_function.function_reference = self._EXTENSIONS[
                     "is_not_null"
                 ]
-                json_format.ParseDict({"bool": {}}, not_null_op.scalar_function.output_type)
+                json_format.ParseDict(
+                    {"bool": {}}, not_null_op.scalar_function.output_type
+                )
                 not_null_op.scalar_function.arguments.add().value.CopyFrom(key_expr)
                 not_null_exprs.append(not_null_op)
 
@@ -417,7 +418,9 @@ class SubstraitCompiler:
                     and_expr.scalar_function.function_reference = self._EXTENSIONS[
                         "and"
                     ]
-                    json_format.ParseDict({"bool": {}}, and_expr.scalar_function.output_type)
+                    json_format.ParseDict(
+                        {"bool": {}}, and_expr.scalar_function.output_type
+                    )
                     and_expr.scalar_function.arguments.add().value.CopyFrom(expr)
                     and_expr.scalar_function.arguments.add().value.CopyFrom(e)
                     expr = and_expr
@@ -450,57 +453,89 @@ class SubstraitCompiler:
             expr.selection.direct_reference.struct_field.field = idx
 
         # 2. Map window frame bounds (RowsWindowBounds / RangeWindowBounds / None)
-        bounds_type = algebra_pb2.Expression.WindowFunction.BoundsType.BOUNDS_TYPE_UNSPECIFIED
+        bounds_type = (
+            algebra_pb2.Expression.WindowFunction.BoundsType.BOUNDS_TYPE_UNSPECIFIED
+        )
         lower_bound = algebra_pb2.Expression.WindowFunction.Bound()
         upper_bound = algebra_pb2.Expression.WindowFunction.Bound()
 
         if node.window_spec.bounds is not None:
             if isinstance(node.window_spec.bounds, window_spec.RowsWindowBounds):
-                bounds_type = algebra_pb2.Expression.WindowFunction.BoundsType.BOUNDS_TYPE_ROWS
-                
+                bounds_type = (
+                    algebra_pb2.Expression.WindowFunction.BoundsType.BOUNDS_TYPE_ROWS
+                )
+
                 # Lower bound mapping
                 start = node.window_spec.bounds.start
                 if start is None:
-                    lower_bound.unbounded.CopyFrom(algebra_pb2.Expression.WindowFunction.Bound.Unbounded())
+                    lower_bound.unbounded.CopyFrom(
+                        algebra_pb2.Expression.WindowFunction.Bound.Unbounded()
+                    )
                 elif start == 0:
-                    lower_bound.current_row.CopyFrom(algebra_pb2.Expression.WindowFunction.Bound.CurrentRow())
+                    lower_bound.current_row.CopyFrom(
+                        algebra_pb2.Expression.WindowFunction.Bound.CurrentRow()
+                    )
                 elif start < 0:
                     lower_bound.preceding.offset = -start
                 else:
                     lower_bound.following.offset = start
-                    
+
                 # Upper bound mapping
                 end = node.window_spec.bounds.end
                 if end is None:
-                    upper_bound.unbounded.CopyFrom(algebra_pb2.Expression.WindowFunction.Bound.Unbounded())
+                    upper_bound.unbounded.CopyFrom(
+                        algebra_pb2.Expression.WindowFunction.Bound.Unbounded()
+                    )
                 elif end == 0:
-                    upper_bound.current_row.CopyFrom(algebra_pb2.Expression.WindowFunction.Bound.CurrentRow())
+                    upper_bound.current_row.CopyFrom(
+                        algebra_pb2.Expression.WindowFunction.Bound.CurrentRow()
+                    )
                 elif end < 0:
                     upper_bound.preceding.offset = -end
                 else:
                     upper_bound.following.offset = end
 
             elif isinstance(node.window_spec.bounds, window_spec.RangeWindowBounds):
-                bounds_type = algebra_pb2.Expression.WindowFunction.BoundsType.BOUNDS_TYPE_RANGE
+                bounds_type = (
+                    algebra_pb2.Expression.WindowFunction.BoundsType.BOUNDS_TYPE_RANGE
+                )
                 start = node.window_spec.bounds.start
                 if start is None:
-                    lower_bound.unbounded.CopyFrom(algebra_pb2.Expression.WindowFunction.Bound.Unbounded())
+                    lower_bound.unbounded.CopyFrom(
+                        algebra_pb2.Expression.WindowFunction.Bound.Unbounded()
+                    )
                 elif start == pd.Timedelta(0):
-                    lower_bound.current_row.CopyFrom(algebra_pb2.Expression.WindowFunction.Bound.CurrentRow())
+                    lower_bound.current_row.CopyFrom(
+                        algebra_pb2.Expression.WindowFunction.Bound.CurrentRow()
+                    )
                 else:
-                    raise NotImplementedError("Range window bounds with non-zero offsets are not supported yet")
+                    raise NotImplementedError(
+                        "Range window bounds with non-zero offsets are not supported yet"
+                    )
 
                 end = node.window_spec.bounds.end
                 if end is None:
-                    upper_bound.unbounded.CopyFrom(algebra_pb2.Expression.WindowFunction.Bound.Unbounded())
+                    upper_bound.unbounded.CopyFrom(
+                        algebra_pb2.Expression.WindowFunction.Bound.Unbounded()
+                    )
                 elif end == pd.Timedelta(0):
-                    upper_bound.current_row.CopyFrom(algebra_pb2.Expression.WindowFunction.Bound.CurrentRow())
+                    upper_bound.current_row.CopyFrom(
+                        algebra_pb2.Expression.WindowFunction.Bound.CurrentRow()
+                    )
                 else:
-                    raise NotImplementedError("Range window bounds with non-zero offsets are not supported yet")
+                    raise NotImplementedError(
+                        "Range window bounds with non-zero offsets are not supported yet"
+                    )
         else:
-            bounds_type = algebra_pb2.Expression.WindowFunction.BoundsType.BOUNDS_TYPE_ROWS
-            lower_bound.unbounded.CopyFrom(algebra_pb2.Expression.WindowFunction.Bound.Unbounded())
-            upper_bound.unbounded.CopyFrom(algebra_pb2.Expression.WindowFunction.Bound.Unbounded())
+            bounds_type = (
+                algebra_pb2.Expression.WindowFunction.BoundsType.BOUNDS_TYPE_ROWS
+            )
+            lower_bound.unbounded.CopyFrom(
+                algebra_pb2.Expression.WindowFunction.Bound.Unbounded()
+            )
+            upper_bound.unbounded.CopyFrom(
+                algebra_pb2.Expression.WindowFunction.Bound.Unbounded()
+            )
 
         # 3. Project each window aggregation expression as a WindowFunction expression
         for agg_idx, col_def in enumerate(node.agg_exprs):
@@ -553,7 +588,9 @@ class SubstraitCompiler:
             win_func.phase = algebra_pb2.AGGREGATION_PHASE_INITIAL_TO_RESULT
 
             bound_expr = ex.bind_schema_fields(agg, node.child.field_by_id)
-            type_dict = self._convert_type(dtypes.dtype_for_etype(bound_expr.output_type))
+            type_dict = self._convert_type(
+                dtypes.dtype_for_etype(bound_expr.output_type)
+            )
             json_format.ParseDict(type_dict, win_func.output_type)
 
             if distinct or isinstance(agg.op, agg_ops.NuniqueOp):
@@ -574,7 +611,9 @@ class SubstraitCompiler:
             # Set sorting keys (sorts)
             for ord_expr in node.window_spec.ordering:
                 sort_field = win_func.sorts.add()
-                sort_pb = self._compile_expression(ord_expr.scalar_expression, node.child)
+                sort_pb = self._compile_expression(
+                    ord_expr.scalar_expression, node.child
+                )
                 sort_field.expr.CopyFrom(sort_pb)
 
                 is_asc = ord_expr.direction.is_ascending
@@ -596,7 +635,7 @@ class SubstraitCompiler:
                         idx = child_ids.index(col_id)
                         field_expr = algebra_pb2.Expression()
                         field_expr.selection.direct_reference.struct_field.field = idx
-                        
+
                         arg = win_func.arguments.add()
                         arg.value.CopyFrom(field_expr)
                     except ValueError:

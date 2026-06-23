@@ -191,7 +191,6 @@ class SubstraitExecutor(semi_executor.SemiExecutor):
                     table = pyarrow_utils.append_offsets(table, node.offsets_col.sql)
                 tables[table_name] = table
 
-
         pa_table = await asyncio.to_thread(
             self._consumer.consume, substrait_plan_proto, tables
         )
