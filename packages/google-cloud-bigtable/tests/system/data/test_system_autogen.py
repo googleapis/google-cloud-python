@@ -904,6 +904,9 @@ class TestSystem(SystemTestRunner):
         )
 
     @pytest.mark.usefixtures("target")
+    @CrossSync._Sync_Impl.Retry(
+        predicate=retry.if_exception_type(ClientError), initial=1, maximum=5
+    )
     @pytest.mark.parametrize(
         "cell_value,mask,expect_match",
         [
