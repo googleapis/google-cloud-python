@@ -928,7 +928,6 @@ class TestSystem(SystemTestRunner):
             f"row {cell_value!r} not matched as {expect_match} with {mask!r} bitmask filter"
         )
 
-
     @pytest.mark.skipif(
         bool(os.environ.get(BIGTABLE_EMULATOR)), reason="emulator doesn't support SQL"
     )
