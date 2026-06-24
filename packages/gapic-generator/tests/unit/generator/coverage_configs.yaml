@@ -6,8 +6,6 @@ configs:
     package: "google.showcase.v1beta1"
     opts: "transport=grpc+rest,service-yaml=tests/integration/showcase_v1beta1.yaml,add-iam-methods=true,samples=tests/integration/showcase_samples.yaml,rest-async-io-enabled=true"
     use_retry: true
-    exclude_files:
-      - "identity.proto"
     expected_file_keywords:
       - "client.py"
       - "async_client.py"

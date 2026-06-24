@@ -51,34 +51,34 @@ jobs:
       - run: echo "Initializing config for gapic-generator"
 
   showcase-unit:
-    needs: python_config
+    needs: [python_config, check_changes]
+    if: ${{ needs.check_changes.outputs.run_generator == 'true' }}
     strategy:
       fail-fast: false
       matrix:
         python: ${{ fromJSON(needs.python_config.outputs.all_python) }}
-        variant: ['', _alternative_templates, _mixins, _alternative_templates_mixins, _w_rest_async]
-        logging_scope: ["", "google"]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
+      - name: Checkout gapic-showcase
+        uses: actions/checkout@v6
+        with:
+          repository: googleapis/gapic-showcase
+          path: packages/gapic-generator/gapic-showcase
+      - name: Checkout googleapis
+        uses: actions/checkout@v6
+        with:
+          repository: googleapis/googleapis
+          path: packages/gapic-generator/googleapis
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
           python-version: "${{ matrix.python }}"
-      - name: Install System Deps & Protoc
-        run: |
-          sudo apt-get update && sudo apt-get install -y curl pandoc unzip
-          sudo mkdir -p /usr/src/protoc/ && sudo chown -R ${USER} /usr/src/
-          curl --location https://github.com/google/protobuf/releases/download/v${PROTOC_VERSION}/protoc-${PROTOC_VERSION}-linux-x86_64.zip --output /usr/src/protoc/protoc.zip
-          cd /usr/src/protoc/ && unzip protoc.zip
-          sudo ln -s /usr/src/protoc/bin/protoc /usr/local/bin/protoc
-      - name: Run Nox
-        env:
-          GOOGLE_SDK_PYTHON_LOGGING_SCOPE: ${{ matrix.logging_scope }}
+      - name: Run showcase unit tests and template coverage
         run: |
           pip install nox
           cd packages/gapic-generator
-          nox -s showcase_unit${{ matrix.variant }}-${{ matrix.python }}
+          nox -s showcase_unit-${{ matrix.python }}
 
   showcase-mypy:
     needs: python_config
@@ -152,31 +152,6 @@ jobs:
           done
           nox -s showcase_prerelease_deps-${{ needs.python_config.outputs.latest_stable_python }}
 
-  template-coverage:
-    needs: [python_config, check_changes]
-    if: ${{ needs.check_changes.outputs.run_generator == 'true' }}
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-      - name: Checkout gapic-showcase
-        uses: actions/checkout@v6
-        with:
-          repository: googleapis/gapic-showcase
-          path: packages/gapic-generator/gapic-showcase
-      - name: Checkout googleapis
-        uses: actions/checkout@v6
-        with:
-          repository: googleapis/googleapis
-          path: packages/gapic-generator/googleapis
-      - name: Setup python
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ needs.python_config.outputs.latest_stable_python }}
-      - name: Run template coverage
-        run: |
-          pip install nox
-          cd packages/gapic-generator
-          nox -s template_coverage
 
   fragment-snippet:
     needs: python_config
