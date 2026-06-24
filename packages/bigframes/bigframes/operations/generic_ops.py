@@ -93,10 +93,6 @@ _VALID_CASTS = set(
             dtypes.STRING_DTYPE,
             dtypes.INT_DTYPE,
         ),
-        (
-            dtypes.JSON_DTYPE,
-            dtypes.INT_DTYPE,
-        ),
         # Float casts
         (
             dtypes.BOOL_DTYPE,
@@ -118,10 +114,6 @@ _VALID_CASTS = set(
             dtypes.STRING_DTYPE,
             dtypes.FLOAT_DTYPE,
         ),
-        (
-            dtypes.JSON_DTYPE,
-            dtypes.FLOAT_DTYPE,
-        ),
         # Bool casts
         (
             dtypes.INT_DTYPE,
@@ -129,10 +121,6 @@ _VALID_CASTS = set(
         ),
         (
             dtypes.FLOAT_DTYPE,
-            dtypes.BOOL_DTYPE,
-        ),
-        (
-            dtypes.JSON_DTYPE,
             dtypes.BOOL_DTYPE,
         ),
         # String casts
@@ -166,10 +154,6 @@ _VALID_CASTS = set(
         ),
         (
             dtypes.DATE_DTYPE,
-            dtypes.STRING_DTYPE,
-        ),
-        (
-            dtypes.JSON_DTYPE,
             dtypes.STRING_DTYPE,
         ),
         # bytes casts
@@ -275,23 +259,6 @@ _VALID_CASTS = set(
         (
             dtypes.INT_DTYPE,
             dtypes.TIMEDELTA_DTYPE,
-        ),
-        # json casts
-        (
-            dtypes.BOOL_DTYPE,
-            dtypes.JSON_DTYPE,
-        ),
-        (
-            dtypes.FLOAT_DTYPE,
-            dtypes.JSON_DTYPE,
-        ),
-        (
-            dtypes.STRING_DTYPE,
-            dtypes.JSON_DTYPE,
-        ),
-        (
-            dtypes.INT_DTYPE,
-            dtypes.JSON_DTYPE,
         ),
     )
 )

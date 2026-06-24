@@ -40,7 +40,7 @@ class TestConnection(unittest.TestCase):
         from google.cloud import bigquery_storage
 
         mock_client = mock.create_autospec(bigquery_storage.BigQueryReadClient)
-        mock_client._transport = mock.Mock(spec=["channel"])
+        mock_client._transport = mock.Mock(spec=["channel", "close"])
         mock_client._transport.grpc_channel = mock.Mock(spec=["close"])
         return mock_client
 
@@ -176,7 +176,7 @@ class TestConnection(unittest.TestCase):
         connection.close()
 
         self.assertTrue(client.close.called)
-        self.assertTrue(bqstorage_client._transport.grpc_channel.close.called)
+        self.assertTrue(bqstorage_client._transport.close.called)
 
     def test_close_does_not_close_bigquery_clients_passed_to_it(self):
         pytest.importorskip("google.cloud.bigquery_storage")
@@ -187,7 +187,7 @@ class TestConnection(unittest.TestCase):
         connection.close()
 
         self.assertFalse(client.close.called)
-        self.assertFalse(bqstorage_client._transport.grpc_channel.close.called)
+        self.assertFalse(bqstorage_client._transport.close.called)
 
     def test_close_closes_all_created_cursors(self):
         connection = self._make_one(client=self._mock_client())

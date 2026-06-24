@@ -28,11 +28,9 @@ from google.auth import exceptions
 from google.auth import transport
 from google.auth.credentials import DEFAULT_UNIVERSE_DOMAIN
 
-IMPERSONATE_ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE = (
-    "gl-python/3.7 auth/1.1 auth-request-type/at cred-type/imp"
-)
+IMPERSONATE_ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE = "gl-python/<python-version> auth/<library-version> auth-request-type/at cred-type/imp"
 
-LANG_LIBRARY_METRICS_HEADER_VALUE = "gl-python/3.7 auth/1.1"
+LANG_LIBRARY_METRICS_HEADER_VALUE = "gl-python/<python-version> auth/<library-version>"
 
 CLIENT_ID = "username"
 CLIENT_SECRET = "password"
@@ -1039,6 +1037,21 @@ class TestCredentials(object):
         )
 
     @mock.patch.object(aws.Credentials, "__init__", return_value=None)
+    def test_from_info_programmatic_supplier_keyword(self, mock_init):
+        supplier = TestAwsSecurityCredentialsSupplier()
+        info = {
+            "audience": AUDIENCE,
+            "subject_token_type": SUBJECT_TOKEN_TYPE,
+            "token_url": TOKEN_URL,
+        }
+        credentials = aws.Credentials.from_info(
+            info, aws_security_credentials_supplier=supplier
+        )
+
+        assert isinstance(credentials, aws.Credentials)
+        assert mock_init.call_args[1]["aws_security_credentials_supplier"] == supplier
+
+    @mock.patch.object(aws.Credentials, "__init__", return_value=None)
     def test_from_file_full_options(self, mock_init, tmpdir):
         info = {
             "audience": AUDIENCE,
@@ -1913,7 +1926,7 @@ class TestCredentials(object):
         token_headers = {
             "Content-Type": "application/x-www-form-urlencoded",
             "Authorization": "Basic " + BASIC_AUTH_ENCODING,
-            "x-goog-api-client": "gl-python/3.7 auth/1.1 google-byoid-sdk sa-impersonation/false config-lifetime/false source/aws",
+            "x-goog-api-client": "gl-python/<python-version> auth/<library-version> google-byoid-sdk sa-impersonation/false config-lifetime/false source/aws",
         }
         token_request_data = {
             "grant_type": "urn:ietf:params:oauth:grant-type:token-exchange",
@@ -1972,7 +1985,7 @@ class TestCredentials(object):
         token_headers = {
             "Content-Type": "application/x-www-form-urlencoded",
             "Authorization": "Basic " + BASIC_AUTH_ENCODING,
-            "x-goog-api-client": "gl-python/3.7 auth/1.1 google-byoid-sdk sa-impersonation/false config-lifetime/false source/aws",
+            "x-goog-api-client": "gl-python/<python-version> auth/<library-version> google-byoid-sdk sa-impersonation/false config-lifetime/false source/aws",
         }
         token_request_data = {
             "grant_type": "urn:ietf:params:oauth:grant-type:token-exchange",
@@ -2038,7 +2051,7 @@ class TestCredentials(object):
         token_headers = {
             "Content-Type": "application/x-www-form-urlencoded",
             "Authorization": "Basic " + BASIC_AUTH_ENCODING,
-            "x-goog-api-client": "gl-python/3.7 auth/1.1 google-byoid-sdk sa-impersonation/true config-lifetime/false source/aws",
+            "x-goog-api-client": "gl-python/<python-version> auth/<library-version> google-byoid-sdk sa-impersonation/true config-lifetime/false source/aws",
         }
         token_request_data = {
             "grant_type": "urn:ietf:params:oauth:grant-type:token-exchange",
@@ -2133,7 +2146,7 @@ class TestCredentials(object):
         token_headers = {
             "Content-Type": "application/x-www-form-urlencoded",
             "Authorization": "Basic " + BASIC_AUTH_ENCODING,
-            "x-goog-api-client": "gl-python/3.7 auth/1.1 google-byoid-sdk sa-impersonation/true config-lifetime/false source/aws",
+            "x-goog-api-client": "gl-python/<python-version> auth/<library-version> google-byoid-sdk sa-impersonation/true config-lifetime/false source/aws",
         }
         token_request_data = {
             "grant_type": "urn:ietf:params:oauth:grant-type:token-exchange",
@@ -2328,7 +2341,7 @@ class TestCredentials(object):
         token_headers = {
             "Content-Type": "application/x-www-form-urlencoded",
             "Authorization": "Basic " + BASIC_AUTH_ENCODING,
-            "x-goog-api-client": "gl-python/3.7 auth/1.1 google-byoid-sdk sa-impersonation/true config-lifetime/false source/programmatic",
+            "x-goog-api-client": "gl-python/<python-version> auth/<library-version> google-byoid-sdk sa-impersonation/true config-lifetime/false source/programmatic",
         }
         token_request_data = {
             "grant_type": "urn:ietf:params:oauth:grant-type:token-exchange",
@@ -2414,7 +2427,7 @@ class TestCredentials(object):
         token_headers = {
             "Content-Type": "application/x-www-form-urlencoded",
             "Authorization": "Basic " + BASIC_AUTH_ENCODING,
-            "x-goog-api-client": "gl-python/3.7 auth/1.1 google-byoid-sdk sa-impersonation/false config-lifetime/false source/programmatic",
+            "x-goog-api-client": "gl-python/<python-version> auth/<library-version> google-byoid-sdk sa-impersonation/false config-lifetime/false source/programmatic",
         }
         token_request_data = {
             "grant_type": "urn:ietf:params:oauth:grant-type:token-exchange",

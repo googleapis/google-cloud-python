@@ -4,6 +4,33 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.55.0](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.54.0...google-auth-v2.55.0) (2026-06-15)
+
+
+### Features
+
+* make RAB feature production ready (#17390) ([af193931e4e38c4b59751edb8e915ae3388b8524](https://github.com/googleapis/google-cloud-python/commit/af193931e4e38c4b59751edb8e915ae3388b8524))
+
+
+### Bug Fixes
+
+* run async background boundary refresh on detached session (#17441) ([56cbea8509c66889485b43f2d98d60210eae81bc](https://github.com/googleapis/google-cloud-python/commit/56cbea8509c66889485b43f2d98d60210eae81bc))
+
+## [2.54.0](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.53.0...google-auth-v2.54.0) (2026-06-11)
+
+
+### Features
+
+* implement regional access boundary support for standalone JWT and async service accounts (#17025) ([35af6168c19dd6f114dd67a8bfdcd0ff8fe3bdf9](https://github.com/googleapis/google-cloud-python/commit/35af6168c19dd6f114dd67a8bfdcd0ff8fe3bdf9))
+
+
+### Bug Fixes
+
+* configure mTLS for impersonated credentials (#17404) ([57269d567227655e16a2c518e29129c31ebe65be](https://github.com/googleapis/google-cloud-python/commit/57269d567227655e16a2c518e29129c31ebe65be))
+* fail-fast on missing ECP config file to avoid 30s hang (#17377) ([e0961270013ceea2c191ec2c6d445c5c5f928ddf](https://github.com/googleapis/google-cloud-python/commit/e0961270013ceea2c191ec2c6d445c5c5f928ddf))
+* update incorrect urls in setup.py to point at monorepo vs splitrepo (#17237) ([eaed04baf3cd356c3811c66e64c277c8841c7563](https://github.com/googleapis/google-cloud-python/commit/eaed04baf3cd356c3811c66e64c277c8841c7563))
+* Rename the 'seed' argument for setting an initial regional access boundary for clarity (#17186) ([e5c8cf92f4e78fe05c8d899e00fb36f29f31d7c4](https://github.com/googleapis/google-cloud-python/commit/e5c8cf92f4e78fe05c8d899e00fb36f29f31d7c4))
+
 ## [2.53.0](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.52.0...google-auth-v2.53.0) (2026-05-15)
 
 

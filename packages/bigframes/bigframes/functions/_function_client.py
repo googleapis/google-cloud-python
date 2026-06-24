@@ -358,13 +358,22 @@ class FunctionClient:
         config = func_def
 
         # Build and deploy folder structure containing cloud function
-        with tempfile.TemporaryDirectory() as directory:
+        with tempfile.TemporaryDirectory() as scratch_dir:
+            # Keep the generated sources in a subdirectory so the archive can be
+            # written inside the 0700 TemporaryDirectory. shutil.make_archive
+            # appends ".zip" to base_name, so archiving `directory` into itself
+            # would leave a world-readable copy of the (pickled) user code as a
+            # sibling of the temp dir that also survives the cleanup.
+            directory = os.path.join(scratch_dir, "src")
+            os.mkdir(directory)
             entry_point = self._generate_cloud_function_code(
                 config.code,
                 directory,
                 udf_signature=config.signature,
             )
-            archive_path = shutil.make_archive(directory, "zip", directory)
+            archive_path = shutil.make_archive(
+                os.path.join(scratch_dir, "source"), "zip", directory
+            )
 
             # We are creating cloud function source code from the currently running
             # python version. Use the same version to deploy. This is necessary

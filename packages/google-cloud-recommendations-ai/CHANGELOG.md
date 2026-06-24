@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-recommendations-ai/#history
 
+## [0.13.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-recommendations-ai-v0.13.0...google-cloud-recommendations-ai-v0.13.1) (2026-06-22)
+
+
+### Features
+
+* regenerate google-cloud-[o-r] packages ([#17075](https://github.com/googleapis/google-cloud-python/issues/17075)) ([f4bd018](https://github.com/googleapis/google-cloud-python/commit/f4bd0182d808ae73c3c6981e6ce3d565f78a6051))
+
 ## [0.13.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-recommendations-ai-v0.12.0...google-cloud-recommendations-ai-v0.13.0) (2026-03-26)
 
 

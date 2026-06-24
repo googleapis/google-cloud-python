@@ -71,6 +71,7 @@ from google.longrunning import operations_pb2  # type: ignore
 
 from google.cloud.discoveryengine_v1beta.services.data_store_service import pagers
 from google.cloud.discoveryengine_v1beta.types import (
+    cmek_config_service,
     common,
     data_store,
     data_store_service,
@@ -245,6 +246,25 @@ class DataStoreServiceClient(metaclass=DataStoreServiceClientMeta):
         return self._transport
 
     @staticmethod
+    def cmek_config_path(
+        project: str,
+        location: str,
+    ) -> str:
+        """Returns a fully-qualified cmek_config string."""
+        return "projects/{project}/locations/{location}/cmekConfig".format(
+            project=project,
+            location=location,
+        )
+
+    @staticmethod
+    def parse_cmek_config_path(path: str) -> Dict[str, str]:
+        """Parses a cmek_config path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/cmekConfig$", path
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def collection_path(
         project: str,
         location: str,
@@ -264,6 +284,56 @@ class DataStoreServiceClient(metaclass=DataStoreServiceClientMeta):
         """Parses a collection path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/collections/(?P<collection>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def crypto_keys_path(
+        project: str,
+        location: str,
+        key_ring: str,
+        crypto_key: str,
+    ) -> str:
+        """Returns a fully-qualified crypto_keys string."""
+        return "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}".format(
+            project=project,
+            location=location,
+            key_ring=key_ring,
+            crypto_key=crypto_key,
+        )
+
+    @staticmethod
+    def parse_crypto_keys_path(path: str) -> Dict[str, str]:
+        """Parses a crypto_keys path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/keyRings/(?P<key_ring>.+?)/cryptoKeys/(?P<crypto_key>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def crypto_key_versions_path(
+        project: str,
+        location: str,
+        key_ring: str,
+        crypto_key: str,
+        crypto_key_version: str,
+    ) -> str:
+        """Returns a fully-qualified crypto_key_versions string."""
+        return "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}/cryptoKeyVersions/{crypto_key_version}".format(
+            project=project,
+            location=location,
+            key_ring=key_ring,
+            crypto_key=crypto_key,
+            crypto_key_version=crypto_key_version,
+        )
+
+    @staticmethod
+    def parse_crypto_key_versions_path(path: str) -> Dict[str, str]:
+        """Parses a crypto_key_versions path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/keyRings/(?P<key_ring>.+?)/cryptoKeys/(?P<crypto_key>.+?)/cryptoKeyVersions/(?P<crypto_key_version>.+?)$",
             path,
         )
         return m.groupdict() if m else {}
@@ -308,6 +378,28 @@ class DataStoreServiceClient(metaclass=DataStoreServiceClientMeta):
         """Parses a document_processing_config path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/dataStores/(?P<data_store>.+?)/documentProcessingConfig$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def identity_mapping_store_path(
+        project: str,
+        location: str,
+        identity_mapping_store: str,
+    ) -> str:
+        """Returns a fully-qualified identity_mapping_store string."""
+        return "projects/{project}/locations/{location}/identityMappingStores/{identity_mapping_store}".format(
+            project=project,
+            location=location,
+            identity_mapping_store=identity_mapping_store,
+        )
+
+    @staticmethod
+    def parse_identity_mapping_store_path(path: str) -> Dict[str, str]:
+        """Parses a identity_mapping_store path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/identityMappingStores/(?P<identity_mapping_store>.+?)$",
             path,
         )
         return m.groupdict() if m else {}
@@ -860,6 +952,7 @@ class DataStoreServiceClient(metaclass=DataStoreServiceClientMeta):
                 data_store.display_name = "display_name_value"
 
                 request = discoveryengine_v1beta.CreateDataStoreRequest(
+                    cmek_config_name="cmek_config_name_value",
                     parent="parent_value",
                     data_store=data_store,
                     data_store_id="data_store_id_value",

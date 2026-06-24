@@ -12,12 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 language: python
-version: v0.19.0
+version: v0.22.0
 repo: googleapis/google-cloud-python
 sources:
   googleapis:
-    commit: d8daa97972d091191898915589335cef66fcdc8a
-    sha256: 7dbdf2b1b667fe57128d41c77e530a2541767772cfe3487713f29b7b25d9f5ad
+    commit: e57bae6efbd075a925978a79bb9b997beb4ecc19
+    sha256: 762523e55a4cd9f57c7e5a952dd76ca6041c0e1dd405c14b1d6cfb165e4730b1
 default:
   output: packages
   tag_format: '{name}-v{version}'
@@ -58,7 +58,7 @@ default:
     library_type: GAPIC_AUTO
 libraries:
   - name: bigframes
-    version: 2.42.0
+    version: 2.43.0
     skip_release: true
     python:
       library_type: INTEGRATION
@@ -75,7 +75,7 @@ libraries:
     python:
       library_type: INTEGRATION
   - name: gapic-generator
-    version: 1.34.1
+    version: 1.35.0
     python:
       library_type: CORE
   - name: gcp-sphinx-docfx-yaml
@@ -228,7 +228,7 @@ libraries:
       metadata_name_override: area120tables
       default_version: v1alpha1
   - name: google-auth
-    version: 2.53.0
+    version: 2.55.0
     python:
       library_type: AUTH
   - name: google-auth-httplib2
@@ -287,7 +287,7 @@ libraries:
     python:
       default_version: v1
   - name: google-cloud-alloydb
-    version: 0.10.0
+    version: 0.11.0
     apis:
       - path: google/cloud/alloydb/v1
       - path: google/cloud/alloydb/v1beta
@@ -526,7 +526,7 @@ libraries:
       metadata_name_override: beyondcorpclientgateways
       default_version: v1
   - name: google-cloud-biglake
-    version: 0.4.0
+    version: 0.5.0
     apis:
       - path: google/cloud/biglake/v1
     python:
@@ -538,8 +538,7 @@ libraries:
     python:
       default_version: v1beta
   - name: google-cloud-bigquery
-    version: 3.41.0
-    skip_release: true
+    version: 3.42.1
     python:
       library_type: GAPIC_COMBO
       metadata_name_override: bigquery
@@ -633,10 +632,11 @@ libraries:
       metadata_name_override: bigquerystorage
       default_version: v1
   - name: google-cloud-bigtable
-    version: 2.38.0
+    version: 2.39.0
     apis:
       - path: google/bigtable/v2
       - path: google/bigtable/admin/v2
+    skip_generate: true
     skip_release: true
     python:
       library_type: GAPIC_COMBO
@@ -710,7 +710,7 @@ libraries:
       metadata_name_override: certificatemanager
       default_version: v1
   - name: google-cloud-ces
-    version: 0.6.0
+    version: 0.7.0
     apis:
       - path: google/cloud/ces/v1
       - path: google/cloud/ces/v1beta
@@ -764,6 +764,8 @@ libraries:
     version: 1.48.0
     apis:
       - path: google/cloud/compute/v1
+    skip_generate: true
+    skip_release: true
     python:
       metadata_name_override: compute
       default_version: v1
@@ -774,7 +776,7 @@ libraries:
     python:
       default_version: v1beta
   - name: google-cloud-confidentialcomputing
-    version: 0.10.0
+    version: 0.11.0
     apis:
       - path: google/cloud/confidentialcomputing/v1
     python:
@@ -1016,7 +1018,7 @@ libraries:
       metadata_name_override: discoveryengine
       default_version: v1beta
   - name: google-cloud-dlp
-    version: 3.37.0
+    version: 3.38.0
     apis:
       - path: google/privacy/dlp/v2
     python:
@@ -1061,27 +1063,27 @@ libraries:
       metadata_name_override: domains
       default_version: v1
   - name: google-cloud-edgecontainer
-    version: 0.8.0
+    version: 0.8.1
     apis:
       - path: google/cloud/edgecontainer/v1
     python:
       metadata_name_override: edgecontainer
       default_version: v1
   - name: google-cloud-edgenetwork
-    version: 0.5.0
+    version: 0.5.1
     apis:
       - path: google/cloud/edgenetwork/v1
     python:
       default_version: v1
   - name: google-cloud-enterpriseknowledgegraph
-    version: 0.6.0
+    version: 0.6.1
     apis:
       - path: google/cloud/enterpriseknowledgegraph/v1
     python:
       metadata_name_override: enterpriseknowledgegraph
       default_version: v1
   - name: google-cloud-error-reporting
-    version: 1.15.0
+    version: 1.16.0
     apis:
       - path: google/devtools/clouderrorreporting/v1beta1
     python:
@@ -1093,7 +1095,7 @@ libraries:
       metadata_name_override: clouderrorreporting
       default_version: v1beta1
   - name: google-cloud-essential-contacts
-    version: 1.13.0
+    version: 1.14.0
     apis:
       - path: google/cloud/essentialcontacts/v1
     python:
@@ -1103,21 +1105,21 @@ libraries:
       metadata_name_override: essentialcontacts
       default_version: v1
   - name: google-cloud-eventarc
-    version: 1.20.0
+    version: 1.21.0
     apis:
       - path: google/cloud/eventarc/v1
     python:
       metadata_name_override: eventarc
       default_version: v1
   - name: google-cloud-eventarc-publishing
-    version: 0.10.0
+    version: 0.10.1
     apis:
       - path: google/cloud/eventarc/publishing/v1
     python:
       metadata_name_override: eventarcpublishing
       default_version: v1
   - name: google-cloud-filestore
-    version: 1.16.0
+    version: 1.17.0
     apis:
       - path: google/cloud/filestore/v1
     python:
@@ -1127,7 +1129,7 @@ libraries:
       metadata_name_override: file
       default_version: v1
   - name: google-cloud-financialservices
-    version: 0.4.0
+    version: 0.4.1
     apis:
       - path: google/cloud/financialservices/v1
     python:
@@ -1168,7 +1170,7 @@ libraries:
       metadata_name_override: firestore
       default_version: v1
   - name: google-cloud-functions
-    version: 1.23.0
+    version: 1.24.0
     apis:
       - path: google/cloud/functions/v2
       - path: google/cloud/functions/v1
@@ -1176,13 +1178,13 @@ libraries:
       metadata_name_override: cloudfunctions
       default_version: v1
   - name: google-cloud-gdchardwaremanagement
-    version: 0.5.0
+    version: 0.5.1
     apis:
       - path: google/cloud/gdchardwaremanagement/v1alpha
     python:
       default_version: v1alpha
   - name: google-cloud-geminidataanalytics
-    version: 0.13.0
+    version: 0.13.1
     apis:
       - path: google/cloud/geminidataanalytics/v1
       - path: google/cloud/geminidataanalytics/v1beta
@@ -1190,7 +1192,7 @@ libraries:
     python:
       default_version: v1
   - name: google-cloud-gke-backup
-    version: 0.8.0
+    version: 0.8.1
     apis:
       - path: google/cloud/gkebackup/v1
     python:
@@ -1200,7 +1202,7 @@ libraries:
       metadata_name_override: gkebackup
       default_version: v1
   - name: google-cloud-gke-connect-gateway
-    version: 0.13.0
+    version: 0.13.1
     apis:
       - path: google/cloud/gkeconnect/gateway/v1
       - path: google/cloud/gkeconnect/gateway/v1beta1
@@ -1215,7 +1217,7 @@ libraries:
       metadata_name_override: connectgateway
       default_version: v1
   - name: google-cloud-gke-hub
-    version: 1.24.0
+    version: 1.25.0
     apis:
       - path: google/cloud/gkehub/v1
       - path: google/cloud/gkehub/v1beta1
@@ -1231,7 +1233,7 @@ libraries:
       metadata_name_override: gkehub
       default_version: v1
   - name: google-cloud-gke-multicloud
-    version: 0.9.0
+    version: 0.9.1
     apis:
       - path: google/cloud/gkemulticloud/v1
     python:
@@ -1241,13 +1243,13 @@ libraries:
       metadata_name_override: gkemulticloud
       default_version: v1
   - name: google-cloud-gkerecommender
-    version: 0.3.0
+    version: 0.3.1
     apis:
       - path: google/cloud/gkerecommender/v1
     python:
       default_version: v1
   - name: google-cloud-gsuiteaddons
-    version: 0.5.0
+    version: 0.5.1
     apis:
       - path: google/cloud/gsuiteaddons/v1
     python:
@@ -1257,14 +1259,14 @@ libraries:
       metadata_name_override: gsuiteaddons
       default_version: v1
   - name: google-cloud-hypercomputecluster
-    version: 0.4.0
+    version: 0.4.1
     apis:
       - path: google/cloud/hypercomputecluster/v1
       - path: google/cloud/hypercomputecluster/v1beta
     python:
       default_version: v1
   - name: google-cloud-iam
-    version: 2.23.0
+    version: 2.24.0
     apis:
       - path: google/iam/v3
       - path: google/iam/v2
@@ -1295,7 +1297,7 @@ libraries:
       metadata_name_override: iam
       default_version: v2
   - name: google-cloud-iam-logging
-    version: 1.7.0
+    version: 1.8.0
     apis:
       - path: google/iam/v1/logging
     keep:
@@ -1309,34 +1311,34 @@ libraries:
       metadata_name_override: iamlogging
       default_version: v1
   - name: google-cloud-iamconnectorcredentials
-    version: 0.1.0
+    version: 0.1.1
     apis:
       - path: google/cloud/iamconnectorcredentials/v1alpha
     python:
       default_version: v1alpha
   - name: google-cloud-iap
-    version: 1.21.0
+    version: 1.22.0
     apis:
       - path: google/cloud/iap/v1
     python:
       metadata_name_override: iap
       default_version: v1
   - name: google-cloud-ids
-    version: 1.13.0
+    version: 1.14.0
     apis:
       - path: google/cloud/ids/v1
     python:
       metadata_name_override: ids
       default_version: v1
   - name: google-cloud-kms
-    version: 3.13.0
+    version: 3.14.0
     apis:
       - path: google/cloud/kms/v1
     python:
       metadata_name_override: cloudkms
       default_version: v1
   - name: google-cloud-kms-inventory
-    version: 0.6.0
+    version: 0.6.1
     apis:
       - path: google/cloud/kms/inventory/v1
     python:
@@ -1346,7 +1348,7 @@ libraries:
       metadata_name_override: inventory
       default_version: v1
   - name: google-cloud-language
-    version: 2.20.0
+    version: 2.21.0
     apis:
       - path: google/cloud/language/v2
       - path: google/cloud/language/v1
@@ -1355,20 +1357,20 @@ libraries:
       metadata_name_override: language
       default_version: v1
   - name: google-cloud-licensemanager
-    version: 0.4.0
+    version: 0.4.1
     apis:
       - path: google/cloud/licensemanager/v1
     python:
       default_version: v1
   - name: google-cloud-life-sciences
-    version: 0.12.0
+    version: 0.12.1
     apis:
       - path: google/cloud/lifesciences/v2beta
     python:
       metadata_name_override: lifesciences
       default_version: v2beta
   - name: google-cloud-locationfinder
-    version: 0.4.0
+    version: 0.4.1
     apis:
       - path: google/cloud/locationfinder/v1
     python:
@@ -1386,46 +1388,46 @@ libraries:
       metadata_name_override: logging
       default_version: v2
   - name: google-cloud-lustre
-    version: 0.4.0
+    version: 0.4.1
     apis:
       - path: google/cloud/lustre/v1
     python:
       default_version: v1
   - name: google-cloud-maintenance-api
-    version: 0.4.0
+    version: 0.4.1
     apis:
       - path: google/cloud/maintenance/api/v1
       - path: google/cloud/maintenance/api/v1beta
     python:
       default_version: v1
   - name: google-cloud-managed-identities
-    version: 1.15.0
+    version: 1.16.0
     apis:
       - path: google/cloud/managedidentities/v1
     python:
       metadata_name_override: managedidentities
       default_version: v1
   - name: google-cloud-managedkafka
-    version: 0.4.0
+    version: 0.4.1
     apis:
       - path: google/cloud/managedkafka/v1
     python:
       default_version: v1
   - name: google-cloud-managedkafka-schemaregistry
-    version: 0.4.0
+    version: 0.4.1
     apis:
       - path: google/cloud/managedkafka/schemaregistry/v1
     python:
       default_version: v1
   - name: google-cloud-media-translation
-    version: 0.14.0
+    version: 0.14.1
     apis:
       - path: google/cloud/mediatranslation/v1beta1
     python:
       metadata_name_override: mediatranslation
       default_version: v1beta1
   - name: google-cloud-memcache
-    version: 1.15.0
+    version: 1.16.0
     apis:
       - path: google/cloud/memcache/v1
       - path: google/cloud/memcache/v1beta2
@@ -1433,21 +1435,21 @@ libraries:
       metadata_name_override: memcache
       default_version: v1
   - name: google-cloud-memorystore
-    version: 0.5.0
+    version: 0.5.1
     apis:
       - path: google/cloud/memorystore/v1
       - path: google/cloud/memorystore/v1beta
     python:
       default_version: v1
   - name: google-cloud-migrationcenter
-    version: 0.4.0
+    version: 0.4.1
     apis:
       - path: google/cloud/migrationcenter/v1
     python:
       metadata_name_override: migrationcenter
       default_version: v1
   - name: google-cloud-modelarmor
-    version: 0.6.0
+    version: 0.7.0
     apis:
       - path: google/cloud/modelarmor/v1
       - path: google/cloud/modelarmor/v1beta
@@ -1466,7 +1468,7 @@ libraries:
       metadata_name_override: monitoring
       default_version: v3
   - name: google-cloud-monitoring-dashboards
-    version: 2.21.0
+    version: 2.22.0
     apis:
       - path: google/monitoring/dashboard/v1
     keep:
@@ -1480,7 +1482,7 @@ libraries:
       metadata_name_override: monitoring-dashboards
       default_version: v1
   - name: google-cloud-monitoring-metrics-scopes
-    version: 1.12.0
+    version: 1.13.0
     apis:
       - path: google/monitoring/metricsscope/v1
     python:
@@ -1495,14 +1497,14 @@ libraries:
       library_type: GAPIC_MANUAL
       metadata_name_override: python-ndb
   - name: google-cloud-netapp
-    version: 0.10.0
+    version: 0.10.1
     apis:
       - path: google/cloud/netapp/v1
     python:
       metadata_name_override: netapp
       default_version: v1
   - name: google-cloud-network-connectivity
-    version: 2.15.0
+    version: 2.16.0
     apis:
       - path: google/cloud/networkconnectivity/v1
       - path: google/cloud/networkconnectivity/v1beta
@@ -1511,7 +1513,7 @@ libraries:
       metadata_name_override: networkconnectivity
       default_version: v1
   - name: google-cloud-network-management
-    version: 1.35.0
+    version: 1.36.0
     apis:
       - path: google/cloud/networkmanagement/v1
     python:
@@ -1521,7 +1523,7 @@ libraries:
       metadata_name_override: networkmanagement
       default_version: v1
   - name: google-cloud-network-security
-    version: 0.13.0
+    version: 0.13.1
     apis:
       - path: google/cloud/networksecurity/v1
       - path: google/cloud/networksecurity/v1beta1
@@ -1537,7 +1539,7 @@ libraries:
       metadata_name_override: networksecurity
       default_version: v1
   - name: google-cloud-network-services
-    version: 0.9.0
+    version: 0.10.0
     apis:
       - path: google/cloud/networkservices/v1
     python:
@@ -1547,7 +1549,7 @@ libraries:
       metadata_name_override: networkservices
       default_version: v1
   - name: google-cloud-notebooks
-    version: 1.16.0
+    version: 1.17.0
     apis:
       - path: google/cloud/notebooks/v2
       - path: google/cloud/notebooks/v1
@@ -1556,20 +1558,20 @@ libraries:
       metadata_name_override: notebooks
       default_version: v1
   - name: google-cloud-optimization
-    version: 1.14.0
+    version: 1.15.0
     apis:
       - path: google/cloud/optimization/v1
     python:
       metadata_name_override: optimization
       default_version: v1
   - name: google-cloud-oracledatabase
-    version: 0.5.0
+    version: 0.6.0
     apis:
       - path: google/cloud/oracledatabase/v1
     python:
       default_version: v1
   - name: google-cloud-orchestration-airflow
-    version: 1.21.0
+    version: 1.22.0
     apis:
       - path: google/cloud/orchestration/airflow/service/v1
       - path: google/cloud/orchestration/airflow/service/v1beta1
@@ -1584,7 +1586,7 @@ libraries:
       metadata_name_override: composer
       default_version: v1
   - name: google-cloud-org-policy
-    version: 1.17.0
+    version: 1.18.0
     apis:
       - path: google/cloud/orgpolicy/v2
       - path: google/cloud/orgpolicy/v1
@@ -1594,7 +1596,7 @@ libraries:
       metadata_name_override: orgpolicy
       default_version: v2
   - name: google-cloud-os-config
-    version: 1.24.0
+    version: 1.25.0
     apis:
       - path: google/cloud/osconfig/v1
       - path: google/cloud/osconfig/v1alpha
@@ -1602,7 +1604,7 @@ libraries:
       metadata_name_override: osconfig
       default_version: v1
   - name: google-cloud-os-login
-    version: 2.21.0
+    version: 2.22.0
     apis:
       - path: google/cloud/oslogin/v1
     keep:
@@ -1614,34 +1616,34 @@ libraries:
       metadata_name_override: oslogin
       default_version: v1
   - name: google-cloud-parallelstore
-    version: 0.6.0
+    version: 0.6.1
     apis:
       - path: google/cloud/parallelstore/v1
       - path: google/cloud/parallelstore/v1beta
     python:
       default_version: v1beta
   - name: google-cloud-parametermanager
-    version: 0.4.0
+    version: 0.4.1
     apis:
       - path: google/cloud/parametermanager/v1
     python:
       default_version: v1
   - name: google-cloud-phishing-protection
-    version: 1.17.0
+    version: 1.18.0
     apis:
       - path: google/cloud/phishingprotection/v1beta1
     python:
       metadata_name_override: phishingprotection
       default_version: v1beta1
   - name: google-cloud-policy-troubleshooter
-    version: 1.16.0
+    version: 1.17.0
     apis:
       - path: google/cloud/policytroubleshooter/v1
     python:
       metadata_name_override: policytroubleshooter
       default_version: v1
   - name: google-cloud-policysimulator
-    version: 0.4.0
+    version: 0.4.1
     apis:
       - path: google/cloud/policysimulator/v1
     python:
@@ -1651,14 +1653,14 @@ libraries:
       metadata_name_override: policysimulator
       default_version: v1
   - name: google-cloud-policytroubleshooter-iam
-    version: 0.5.0
+    version: 0.5.1
     apis:
       - path: google/cloud/policytroubleshooter/iam/v3
     python:
       metadata_name_override: policytroubleshooter-iam
       default_version: v3
   - name: google-cloud-private-ca
-    version: 1.18.0
+    version: 1.19.0
     apis:
       - path: google/cloud/security/privateca/v1
       - path: google/cloud/security/privateca/v1beta1
@@ -1673,14 +1675,14 @@ libraries:
       metadata_name_override: privateca
       default_version: v1
   - name: google-cloud-private-catalog
-    version: 0.12.0
+    version: 0.12.1
     apis:
       - path: google/cloud/privatecatalog/v1beta1
     python:
       metadata_name_override: cloudprivatecatalog
       default_version: v1beta1
   - name: google-cloud-privilegedaccessmanager
-    version: 0.4.0
+    version: 0.4.1
     apis:
       - path: google/cloud/privilegedaccessmanager/v1
     python:
@@ -1698,7 +1700,7 @@ libraries:
       metadata_name_override: pubsub
       default_version: v1
   - name: google-cloud-quotas
-    version: 0.6.0
+    version: 0.6.1
     apis:
       - path: google/api/cloudquotas/v1
       - path: google/api/cloudquotas/v1beta
@@ -1711,28 +1713,28 @@ libraries:
       metadata_name_override: google-cloud-cloudquotas
       default_version: v1
   - name: google-cloud-rapidmigrationassessment
-    version: 0.4.0
+    version: 0.4.1
     apis:
       - path: google/cloud/rapidmigrationassessment/v1
     python:
       metadata_name_override: rapidmigrationassessment
       default_version: v1
   - name: google-cloud-recaptcha-enterprise
-    version: 1.31.0
+    version: 1.32.0
     apis:
       - path: google/cloud/recaptchaenterprise/v1
     python:
       metadata_name_override: recaptchaenterprise
       default_version: v1
   - name: google-cloud-recommendations-ai
-    version: 0.13.0
+    version: 0.13.1
     apis:
       - path: google/cloud/recommendationengine/v1beta1
     python:
       metadata_name_override: recommendationengine
       default_version: v1beta1
   - name: google-cloud-recommender
-    version: 2.21.0
+    version: 2.22.0
     apis:
       - path: google/cloud/recommender/v1
       - path: google/cloud/recommender/v1beta1
@@ -1740,7 +1742,7 @@ libraries:
       metadata_name_override: recommender
       default_version: v1
   - name: google-cloud-redis
-    version: 2.21.0
+    version: 2.22.0
     apis:
       - path: google/cloud/redis/v1
       - path: google/cloud/redis/v1beta1
@@ -1748,21 +1750,21 @@ libraries:
       metadata_name_override: redis
       default_version: v1
   - name: google-cloud-redis-cluster
-    version: 0.5.0
+    version: 0.5.1
     apis:
       - path: google/cloud/redis/cluster/v1
       - path: google/cloud/redis/cluster/v1beta1
     python:
       default_version: v1
   - name: google-cloud-resource-manager
-    version: 1.17.0
+    version: 1.18.0
     apis:
       - path: google/cloud/resourcemanager/v3
     python:
       metadata_name_override: cloudresourcemanager
       default_version: v3
   - name: google-cloud-retail
-    version: 2.10.0
+    version: 2.11.0
     apis:
       - path: google/cloud/retail/v2
       - path: google/cloud/retail/v2beta
@@ -1771,7 +1773,7 @@ libraries:
       metadata_name_override: retail
       default_version: v2
   - name: google-cloud-run
-    version: 0.16.0
+    version: 0.16.1
     apis:
       - path: google/cloud/run/v2
     python:
@@ -1918,7 +1920,7 @@ libraries:
       metadata_name_override: source
       default_version: v1
   - name: google-cloud-spanner
-    version: 3.67.0
+    version: 3.68.0
     apis:
       - path: google/spanner/v1
       - path: google/spanner/admin/instance/v1
@@ -1935,6 +1937,8 @@ libraries:
       - docs/spanner_v1/table.rst
       - docs/spanner_v1/transaction.rst
       - tests/unit/gapic/conftest.py
+    skip_generate: true
+    skip_release: true
     python:
       library_type: GAPIC_COMBO
       opt_args_by_api:
@@ -1960,7 +1964,7 @@ libraries:
       metadata_name_override: speech
       default_version: v1
   - name: google-cloud-storage
-    version: 3.11.0
+    version: 3.12.0
     apis:
       - path: google/storage/v2
     python:
@@ -2014,7 +2018,7 @@ libraries:
       metadata_name_override: support
       default_version: v2
   - name: google-cloud-talent
-    version: 2.20.0
+    version: 2.21.0
     apis:
       - path: google/cloud/talent/v4
       - path: google/cloud/talent/v4beta1
@@ -2022,7 +2026,7 @@ libraries:
       metadata_name_override: talent
       default_version: v4
   - name: google-cloud-tasks
-    version: 2.22.0
+    version: 2.23.0
     apis:
       - path: google/cloud/tasks/v2
       - path: google/cloud/tasks/v2beta3
@@ -2031,19 +2035,19 @@ libraries:
       metadata_name_override: cloudtasks
       default_version: v2
   - name: google-cloud-telcoautomation
-    version: 0.5.0
+    version: 0.5.1
     apis:
       - path: google/cloud/telcoautomation/v1
       - path: google/cloud/telcoautomation/v1alpha1
     python:
       default_version: v1
   - name: google-cloud-testutils
-    version: 1.9.0
+    version: 1.9.1
     python:
       library_type: OTHER
       metadata_name_override: google-cloud-test-utils
   - name: google-cloud-texttospeech
-    version: 2.36.0
+    version: 2.37.0
     apis:
       - path: google/cloud/texttospeech/v1
       - path: google/cloud/texttospeech/v1beta1
@@ -2051,7 +2055,7 @@ libraries:
       metadata_name_override: texttospeech
       default_version: v1
   - name: google-cloud-tpu
-    version: 1.26.0
+    version: 1.27.0
     apis:
       - path: google/cloud/tpu/v2
       - path: google/cloud/tpu/v1
@@ -2060,7 +2064,7 @@ libraries:
       metadata_name_override: tpu
       default_version: v1
   - name: google-cloud-trace
-    version: 1.19.0
+    version: 1.20.0
     apis:
       - path: google/devtools/cloudtrace/v2
       - path: google/devtools/cloudtrace/v1
@@ -2075,7 +2079,7 @@ libraries:
       metadata_name_override: cloudtrace
       default_version: v2
   - name: google-cloud-translate
-    version: 3.26.0
+    version: 3.27.0
     apis:
       - path: google/cloud/translate/v3
       - path: google/cloud/translate/v3beta1
@@ -2091,7 +2095,7 @@ libraries:
     python:
       default_version: v1
   - name: google-cloud-video-live-stream
-    version: 1.16.0
+    version: 1.17.0
     apis:
       - path: google/cloud/video/livestream/v1
     python:
@@ -2102,7 +2106,7 @@ libraries:
       metadata_name_override: livestream
       default_version: v1
   - name: google-cloud-video-stitcher
-    version: 0.11.0
+    version: 0.11.1
     apis:
       - path: google/cloud/video/stitcher/v1
     python:
@@ -2113,7 +2117,7 @@ libraries:
       metadata_name_override: videostitcher
       default_version: v1
   - name: google-cloud-video-transcoder
-    version: 1.20.0
+    version: 1.21.0
     apis:
       - path: google/cloud/video/transcoder/v1
     python:
@@ -2124,7 +2128,7 @@ libraries:
       metadata_name_override: transcoder
       default_version: v1
   - name: google-cloud-videointelligence
-    version: 2.19.0
+    version: 2.20.0
     apis:
       - path: google/cloud/videointelligence/v1
       - path: google/cloud/videointelligence/v1p3beta1
@@ -2135,7 +2139,7 @@ libraries:
       metadata_name_override: videointelligence
       default_version: v1
   - name: google-cloud-vision
-    version: 3.14.0
+    version: 3.15.0
     apis:
       - path: google/cloud/vision/v1
       - path: google/cloud/vision/v1p4beta1
@@ -2147,35 +2151,35 @@ libraries:
       metadata_name_override: vision
       default_version: v1
   - name: google-cloud-visionai
-    version: 0.5.0
+    version: 0.5.1
     apis:
       - path: google/cloud/visionai/v1
       - path: google/cloud/visionai/v1alpha1
     python:
       default_version: v1
   - name: google-cloud-vm-migration
-    version: 1.16.0
+    version: 1.17.0
     apis:
       - path: google/cloud/vmmigration/v1
     python:
       metadata_name_override: vmmigration
       default_version: v1
   - name: google-cloud-vmwareengine
-    version: 1.11.0
+    version: 1.12.0
     apis:
       - path: google/cloud/vmwareengine/v1
     python:
       metadata_name_override: vmwareengine
       default_version: v1
   - name: google-cloud-vpc-access
-    version: 1.16.0
+    version: 1.17.0
     apis:
       - path: google/cloud/vpcaccess/v1
     python:
       metadata_name_override: vpcaccess
       default_version: v1
   - name: google-cloud-webrisk
-    version: 1.21.0
+    version: 1.22.0
     apis:
       - path: google/cloud/webrisk/v1
       - path: google/cloud/webrisk/v1beta1
@@ -2183,7 +2187,7 @@ libraries:
       metadata_name_override: webrisk
       default_version: v1
   - name: google-cloud-websecurityscanner
-    version: 1.20.0
+    version: 1.21.0
     apis:
       - path: google/cloud/websecurityscanner/v1
       - path: google/cloud/websecurityscanner/v1beta
@@ -2192,7 +2196,7 @@ libraries:
       metadata_name_override: websecurityscanner
       default_version: v1
   - name: google-cloud-workflows
-    version: 1.22.0
+    version: 1.23.0
     apis:
       - path: google/cloud/workflows/v1
       - path: google/cloud/workflows/executions/v1
@@ -2209,13 +2213,13 @@ libraries:
       metadata_name_override: workflows
       default_version: v1
   - name: google-cloud-workloadmanager
-    version: 0.2.0
+    version: 0.2.1
     apis:
       - path: google/cloud/workloadmanager/v1
     python:
       default_version: v1
   - name: google-cloud-workstations
-    version: 0.8.0
+    version: 0.8.1
     apis:
       - path: google/cloud/workstations/v1
       - path: google/cloud/workstations/v1beta
@@ -2228,7 +2232,7 @@ libraries:
     python:
       library_type: OTHER
   - name: google-developer-knowledge
-    version: 0.0.0
+    version: 0.1.0
     apis:
       - path: google/developers/knowledge/v1
     copyright_year: "2026"

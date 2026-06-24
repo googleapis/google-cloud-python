@@ -112,6 +112,14 @@ class OracleDatabaseRestInterceptor:
 
     .. code-block:: python
         class MyCustomOracleDatabaseInterceptor(OracleDatabaseRestInterceptor):
+            def pre_configure_exascale_cloud_exadata_infrastructure(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_configure_exascale_cloud_exadata_infrastructure(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_create_autonomous_database(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -376,43 +384,11 @@ class OracleDatabaseRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
-            def pre_get_goldengate_connection_type(self, request, metadata):
-                logging.log(f"Received request: {request}")
-                return request, metadata
-
-            def post_get_goldengate_connection_type(self, response):
-                logging.log(f"Received response: {response}")
-                return response
-
             def pre_get_goldengate_deployment(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
             def post_get_goldengate_deployment(self, response):
-                logging.log(f"Received response: {response}")
-                return response
-
-            def pre_get_goldengate_deployment_environment(self, request, metadata):
-                logging.log(f"Received request: {request}")
-                return request, metadata
-
-            def post_get_goldengate_deployment_environment(self, response):
-                logging.log(f"Received response: {response}")
-                return response
-
-            def pre_get_goldengate_deployment_type(self, request, metadata):
-                logging.log(f"Received request: {request}")
-                return request, metadata
-
-            def post_get_goldengate_deployment_type(self, response):
-                logging.log(f"Received response: {response}")
-                return response
-
-            def pre_get_goldengate_deployment_version(self, request, metadata):
-                logging.log(f"Received request: {request}")
-                return request, metadata
-
-            def post_get_goldengate_deployment_version(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -765,6 +741,55 @@ class OracleDatabaseRestInterceptor:
 
 
     """
+
+    def pre_configure_exascale_cloud_exadata_infrastructure(
+        self,
+        request: exadata_infra.ConfigureExascaleCloudExadataInfrastructureRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        exadata_infra.ConfigureExascaleCloudExadataInfrastructureRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for configure_exascale_cloud_exadata_infrastructure
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the OracleDatabase server.
+        """
+        return request, metadata
+
+    def post_configure_exascale_cloud_exadata_infrastructure(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for configure_exascale_cloud_exadata_infrastructure
+
+        DEPRECATED. Please use the `post_configure_exascale_cloud_exadata_infrastructure_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the OracleDatabase server but before
+        it is returned to user code. This `post_configure_exascale_cloud_exadata_infrastructure` interceptor runs
+        before the `post_configure_exascale_cloud_exadata_infrastructure_with_metadata` interceptor.
+        """
+        return response
+
+    def post_configure_exascale_cloud_exadata_infrastructure_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for configure_exascale_cloud_exadata_infrastructure
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the OracleDatabase server but before it is returned to user code.
+
+        We recommend only using this `post_configure_exascale_cloud_exadata_infrastructure_with_metadata`
+        interceptor in new development instead of the `post_configure_exascale_cloud_exadata_infrastructure` interceptor.
+        When both interceptors are used, this `post_configure_exascale_cloud_exadata_infrastructure_with_metadata` interceptor runs after the
+        `post_configure_exascale_cloud_exadata_infrastructure` interceptor. The (possibly modified) response returned by
+        `post_configure_exascale_cloud_exadata_infrastructure` will be passed to
+        `post_configure_exascale_cloud_exadata_infrastructure_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_autonomous_database(
         self,
@@ -2384,58 +2409,6 @@ class OracleDatabaseRestInterceptor:
         """
         return response, metadata
 
-    def pre_get_goldengate_connection_type(
-        self,
-        request: goldengate_connection_type.GetGoldengateConnectionTypeRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        goldengate_connection_type.GetGoldengateConnectionTypeRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
-        """Pre-rpc interceptor for get_goldengate_connection_type
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the OracleDatabase server.
-        """
-        return request, metadata
-
-    def post_get_goldengate_connection_type(
-        self, response: goldengate_connection_type.GoldengateConnectionType
-    ) -> goldengate_connection_type.GoldengateConnectionType:
-        """Post-rpc interceptor for get_goldengate_connection_type
-
-        DEPRECATED. Please use the `post_get_goldengate_connection_type_with_metadata`
-        interceptor instead.
-
-        Override in a subclass to read or manipulate the response
-        after it is returned by the OracleDatabase server but before
-        it is returned to user code. This `post_get_goldengate_connection_type` interceptor runs
-        before the `post_get_goldengate_connection_type_with_metadata` interceptor.
-        """
-        return response
-
-    def post_get_goldengate_connection_type_with_metadata(
-        self,
-        response: goldengate_connection_type.GoldengateConnectionType,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        goldengate_connection_type.GoldengateConnectionType,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
-        """Post-rpc interceptor for get_goldengate_connection_type
-
-        Override in a subclass to read or manipulate the response or metadata after it
-        is returned by the OracleDatabase server but before it is returned to user code.
-
-        We recommend only using this `post_get_goldengate_connection_type_with_metadata`
-        interceptor in new development instead of the `post_get_goldengate_connection_type` interceptor.
-        When both interceptors are used, this `post_get_goldengate_connection_type_with_metadata` interceptor runs after the
-        `post_get_goldengate_connection_type` interceptor. The (possibly modified) response returned by
-        `post_get_goldengate_connection_type` will be passed to
-        `post_get_goldengate_connection_type_with_metadata`.
-        """
-        return response, metadata
-
     def pre_get_goldengate_deployment(
         self,
         request: goldengate_deployment.GetGoldengateDeploymentRequest,
@@ -2485,163 +2458,6 @@ class OracleDatabaseRestInterceptor:
         `post_get_goldengate_deployment` interceptor. The (possibly modified) response returned by
         `post_get_goldengate_deployment` will be passed to
         `post_get_goldengate_deployment_with_metadata`.
-        """
-        return response, metadata
-
-    def pre_get_goldengate_deployment_environment(
-        self,
-        request: goldengate_deployment_environment.GetGoldengateDeploymentEnvironmentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        goldengate_deployment_environment.GetGoldengateDeploymentEnvironmentRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
-        """Pre-rpc interceptor for get_goldengate_deployment_environment
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the OracleDatabase server.
-        """
-        return request, metadata
-
-    def post_get_goldengate_deployment_environment(
-        self,
-        response: goldengate_deployment_environment.GoldengateDeploymentEnvironment,
-    ) -> goldengate_deployment_environment.GoldengateDeploymentEnvironment:
-        """Post-rpc interceptor for get_goldengate_deployment_environment
-
-        DEPRECATED. Please use the `post_get_goldengate_deployment_environment_with_metadata`
-        interceptor instead.
-
-        Override in a subclass to read or manipulate the response
-        after it is returned by the OracleDatabase server but before
-        it is returned to user code. This `post_get_goldengate_deployment_environment` interceptor runs
-        before the `post_get_goldengate_deployment_environment_with_metadata` interceptor.
-        """
-        return response
-
-    def post_get_goldengate_deployment_environment_with_metadata(
-        self,
-        response: goldengate_deployment_environment.GoldengateDeploymentEnvironment,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        goldengate_deployment_environment.GoldengateDeploymentEnvironment,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
-        """Post-rpc interceptor for get_goldengate_deployment_environment
-
-        Override in a subclass to read or manipulate the response or metadata after it
-        is returned by the OracleDatabase server but before it is returned to user code.
-
-        We recommend only using this `post_get_goldengate_deployment_environment_with_metadata`
-        interceptor in new development instead of the `post_get_goldengate_deployment_environment` interceptor.
-        When both interceptors are used, this `post_get_goldengate_deployment_environment_with_metadata` interceptor runs after the
-        `post_get_goldengate_deployment_environment` interceptor. The (possibly modified) response returned by
-        `post_get_goldengate_deployment_environment` will be passed to
-        `post_get_goldengate_deployment_environment_with_metadata`.
-        """
-        return response, metadata
-
-    def pre_get_goldengate_deployment_type(
-        self,
-        request: goldengate_deployment_type.GetGoldengateDeploymentTypeRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        goldengate_deployment_type.GetGoldengateDeploymentTypeRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
-        """Pre-rpc interceptor for get_goldengate_deployment_type
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the OracleDatabase server.
-        """
-        return request, metadata
-
-    def post_get_goldengate_deployment_type(
-        self, response: goldengate_deployment_type.GoldengateDeploymentType
-    ) -> goldengate_deployment_type.GoldengateDeploymentType:
-        """Post-rpc interceptor for get_goldengate_deployment_type
-
-        DEPRECATED. Please use the `post_get_goldengate_deployment_type_with_metadata`
-        interceptor instead.
-
-        Override in a subclass to read or manipulate the response
-        after it is returned by the OracleDatabase server but before
-        it is returned to user code. This `post_get_goldengate_deployment_type` interceptor runs
-        before the `post_get_goldengate_deployment_type_with_metadata` interceptor.
-        """
-        return response
-
-    def post_get_goldengate_deployment_type_with_metadata(
-        self,
-        response: goldengate_deployment_type.GoldengateDeploymentType,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        goldengate_deployment_type.GoldengateDeploymentType,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
-        """Post-rpc interceptor for get_goldengate_deployment_type
-
-        Override in a subclass to read or manipulate the response or metadata after it
-        is returned by the OracleDatabase server but before it is returned to user code.
-
-        We recommend only using this `post_get_goldengate_deployment_type_with_metadata`
-        interceptor in new development instead of the `post_get_goldengate_deployment_type` interceptor.
-        When both interceptors are used, this `post_get_goldengate_deployment_type_with_metadata` interceptor runs after the
-        `post_get_goldengate_deployment_type` interceptor. The (possibly modified) response returned by
-        `post_get_goldengate_deployment_type` will be passed to
-        `post_get_goldengate_deployment_type_with_metadata`.
-        """
-        return response, metadata
-
-    def pre_get_goldengate_deployment_version(
-        self,
-        request: goldengate_deployment_version.GetGoldengateDeploymentVersionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        goldengate_deployment_version.GetGoldengateDeploymentVersionRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
-        """Pre-rpc interceptor for get_goldengate_deployment_version
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the OracleDatabase server.
-        """
-        return request, metadata
-
-    def post_get_goldengate_deployment_version(
-        self, response: goldengate_deployment_version.GoldengateDeploymentVersion
-    ) -> goldengate_deployment_version.GoldengateDeploymentVersion:
-        """Post-rpc interceptor for get_goldengate_deployment_version
-
-        DEPRECATED. Please use the `post_get_goldengate_deployment_version_with_metadata`
-        interceptor instead.
-
-        Override in a subclass to read or manipulate the response
-        after it is returned by the OracleDatabase server but before
-        it is returned to user code. This `post_get_goldengate_deployment_version` interceptor runs
-        before the `post_get_goldengate_deployment_version_with_metadata` interceptor.
-        """
-        return response
-
-    def post_get_goldengate_deployment_version_with_metadata(
-        self,
-        response: goldengate_deployment_version.GoldengateDeploymentVersion,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        goldengate_deployment_version.GoldengateDeploymentVersion,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
-        """Post-rpc interceptor for get_goldengate_deployment_version
-
-        Override in a subclass to read or manipulate the response or metadata after it
-        is returned by the OracleDatabase server but before it is returned to user code.
-
-        We recommend only using this `post_get_goldengate_deployment_version_with_metadata`
-        interceptor in new development instead of the `post_get_goldengate_deployment_version` interceptor.
-        When both interceptors are used, this `post_get_goldengate_deployment_version_with_metadata` interceptor runs after the
-        `post_get_goldengate_deployment_version` interceptor. The (possibly modified) response returned by
-        `post_get_goldengate_deployment_version` will be passed to
-        `post_get_goldengate_deployment_version_with_metadata`.
         """
         return response, metadata
 
@@ -5112,6 +4928,170 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
         # Return the client from cache.
         return self._operations_client
+
+    class _ConfigureExascaleCloudExadataInfrastructure(
+        _BaseOracleDatabaseRestTransport._BaseConfigureExascaleCloudExadataInfrastructure,
+        OracleDatabaseRestStub,
+    ):
+        def __hash__(self):
+            return hash(
+                "OracleDatabaseRestTransport.ConfigureExascaleCloudExadataInfrastructure"
+            )
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: exadata_infra.ConfigureExascaleCloudExadataInfrastructureRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the configure exascale cloud
+            exadata infrastructure method over HTTP.
+
+                Args:
+                    request (~.exadata_infra.ConfigureExascaleCloudExadataInfrastructureRequest):
+                        The request object. The request for
+                    ``CloudExadataInfrastructure.ConfigureExascale``.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
+
+                Returns:
+                    ~.operations_pb2.Operation:
+                        This resource represents a
+                    long-running operation that is the
+                    result of a network API call.
+
+            """
+
+            http_options = _BaseOracleDatabaseRestTransport._BaseConfigureExascaleCloudExadataInfrastructure._get_http_options()
+
+            request, metadata = (
+                self._interceptor.pre_configure_exascale_cloud_exadata_infrastructure(
+                    request, metadata
+                )
+            )
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseConfigureExascaleCloudExadataInfrastructure._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseOracleDatabaseRestTransport._BaseConfigureExascaleCloudExadataInfrastructure._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseOracleDatabaseRestTransport._BaseConfigureExascaleCloudExadataInfrastructure._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.oracledatabase_v1.OracleDatabaseClient.ConfigureExascaleCloudExadataInfrastructure",
+                    extra={
+                        "serviceName": "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "rpcName": "ConfigureExascaleCloudExadataInfrastructure",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = OracleDatabaseRestTransport._ConfigureExascaleCloudExadataInfrastructure._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = (
+                self._interceptor.post_configure_exascale_cloud_exadata_infrastructure(
+                    resp
+                )
+            )
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = (
+                self._interceptor.post_configure_exascale_cloud_exadata_infrastructure_with_metadata(
+                    resp, response_metadata
+                )
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.oracledatabase_v1.OracleDatabaseClient.configure_exascale_cloud_exadata_infrastructure",
+                    extra={
+                        "serviceName": "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "rpcName": "ConfigureExascaleCloudExadataInfrastructure",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
 
     class _CreateAutonomousDatabase(
         _BaseOracleDatabaseRestTransport._BaseCreateAutonomousDatabase,
@@ -10116,163 +10096,6 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 )
             return resp
 
-    class _GetGoldengateConnectionType(
-        _BaseOracleDatabaseRestTransport._BaseGetGoldengateConnectionType,
-        OracleDatabaseRestStub,
-    ):
-        def __hash__(self):
-            return hash("OracleDatabaseRestTransport.GetGoldengateConnectionType")
-
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
-            return response
-
-        def __call__(
-            self,
-            request: goldengate_connection_type.GetGoldengateConnectionTypeRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> goldengate_connection_type.GoldengateConnectionType:
-            r"""Call the get goldengate connection
-            type method over HTTP.
-
-                Args:
-                    request (~.goldengate_connection_type.GetGoldengateConnectionTypeRequest):
-                        The request object. Message for getting a
-                    GoldengateConnectionType.
-                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                        should be retried.
-                    timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                        sent along with the request as metadata. Normally, each value must be of type `str`,
-                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                        be of type `bytes`.
-
-                Returns:
-                    ~.goldengate_connection_type.GoldengateConnectionType:
-                        Details of the Goldengate Connection
-                    Type resource.
-
-            """
-
-            http_options = _BaseOracleDatabaseRestTransport._BaseGetGoldengateConnectionType._get_http_options()
-
-            request, metadata = self._interceptor.pre_get_goldengate_connection_type(
-                request, metadata
-            )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseGetGoldengateConnectionType._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseGetGoldengateConnectionType._get_query_params_json(
-                transcoded_request
-            )
-
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
-                try:
-                    request_payload = type(request).to_json(request)
-                except:
-                    request_payload = None
-                http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
-                }
-                _LOGGER.debug(
-                    f"Sending request for google.cloud.oracledatabase_v1.OracleDatabaseClient.GetGoldengateConnectionType",
-                    extra={
-                        "serviceName": "google.cloud.oracledatabase.v1.OracleDatabase",
-                        "rpcName": "GetGoldengateConnectionType",
-                        "httpRequest": http_request,
-                        "metadata": http_request["headers"],
-                    },
-                )
-
-            # Send the request
-            response = (
-                OracleDatabaseRestTransport._GetGoldengateConnectionType._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
-            )
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
-
-            # Return the response
-            resp = goldengate_connection_type.GoldengateConnectionType()
-            pb_resp = goldengate_connection_type.GoldengateConnectionType.pb(resp)
-
-            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-
-            resp = self._interceptor.post_get_goldengate_connection_type(resp)
-            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = (
-                self._interceptor.post_get_goldengate_connection_type_with_metadata(
-                    resp, response_metadata
-                )
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                try:
-                    response_payload = (
-                        goldengate_connection_type.GoldengateConnectionType.to_json(
-                            response
-                        )
-                    )
-                except:
-                    response_payload = None
-                http_response = {
-                    "payload": response_payload,
-                    "headers": dict(response.headers),
-                    "status": response.status_code,
-                }
-                _LOGGER.debug(
-                    "Received response for google.cloud.oracledatabase_v1.OracleDatabaseClient.get_goldengate_connection_type",
-                    extra={
-                        "serviceName": "google.cloud.oracledatabase.v1.OracleDatabase",
-                        "rpcName": "GetGoldengateConnectionType",
-                        "metadata": http_response["headers"],
-                        "httpResponse": http_response,
-                    },
-                )
-            return resp
-
     class _GetGoldengateDeployment(
         _BaseOracleDatabaseRestTransport._BaseGetGoldengateDeployment,
         OracleDatabaseRestStub,
@@ -10418,477 +10241,6 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                     extra={
                         "serviceName": "google.cloud.oracledatabase.v1.OracleDatabase",
                         "rpcName": "GetGoldengateDeployment",
-                        "metadata": http_response["headers"],
-                        "httpResponse": http_response,
-                    },
-                )
-            return resp
-
-    class _GetGoldengateDeploymentEnvironment(
-        _BaseOracleDatabaseRestTransport._BaseGetGoldengateDeploymentEnvironment,
-        OracleDatabaseRestStub,
-    ):
-        def __hash__(self):
-            return hash(
-                "OracleDatabaseRestTransport.GetGoldengateDeploymentEnvironment"
-            )
-
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
-            return response
-
-        def __call__(
-            self,
-            request: goldengate_deployment_environment.GetGoldengateDeploymentEnvironmentRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> goldengate_deployment_environment.GoldengateDeploymentEnvironment:
-            r"""Call the get goldengate deployment
-            environment method over HTTP.
-
-                Args:
-                    request (~.goldengate_deployment_environment.GetGoldengateDeploymentEnvironmentRequest):
-                        The request object. Message for getting a
-                    GoldengateDeploymentEnvironment.
-                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                        should be retried.
-                    timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                        sent along with the request as metadata. Normally, each value must be of type `str`,
-                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                        be of type `bytes`.
-
-                Returns:
-                    ~.goldengate_deployment_environment.GoldengateDeploymentEnvironment:
-                        Details of the Goldengate Deployment
-                    Environment resource.
-
-            """
-
-            http_options = _BaseOracleDatabaseRestTransport._BaseGetGoldengateDeploymentEnvironment._get_http_options()
-
-            request, metadata = (
-                self._interceptor.pre_get_goldengate_deployment_environment(
-                    request, metadata
-                )
-            )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseGetGoldengateDeploymentEnvironment._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseGetGoldengateDeploymentEnvironment._get_query_params_json(
-                transcoded_request
-            )
-
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
-                try:
-                    request_payload = type(request).to_json(request)
-                except:
-                    request_payload = None
-                http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
-                }
-                _LOGGER.debug(
-                    f"Sending request for google.cloud.oracledatabase_v1.OracleDatabaseClient.GetGoldengateDeploymentEnvironment",
-                    extra={
-                        "serviceName": "google.cloud.oracledatabase.v1.OracleDatabase",
-                        "rpcName": "GetGoldengateDeploymentEnvironment",
-                        "httpRequest": http_request,
-                        "metadata": http_request["headers"],
-                    },
-                )
-
-            # Send the request
-            response = OracleDatabaseRestTransport._GetGoldengateDeploymentEnvironment._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
-
-            # Return the response
-            resp = goldengate_deployment_environment.GoldengateDeploymentEnvironment()
-            pb_resp = (
-                goldengate_deployment_environment.GoldengateDeploymentEnvironment.pb(
-                    resp
-                )
-            )
-
-            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-
-            resp = self._interceptor.post_get_goldengate_deployment_environment(resp)
-            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = (
-                self._interceptor.post_get_goldengate_deployment_environment_with_metadata(
-                    resp, response_metadata
-                )
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                try:
-                    response_payload = goldengate_deployment_environment.GoldengateDeploymentEnvironment.to_json(
-                        response
-                    )
-                except:
-                    response_payload = None
-                http_response = {
-                    "payload": response_payload,
-                    "headers": dict(response.headers),
-                    "status": response.status_code,
-                }
-                _LOGGER.debug(
-                    "Received response for google.cloud.oracledatabase_v1.OracleDatabaseClient.get_goldengate_deployment_environment",
-                    extra={
-                        "serviceName": "google.cloud.oracledatabase.v1.OracleDatabase",
-                        "rpcName": "GetGoldengateDeploymentEnvironment",
-                        "metadata": http_response["headers"],
-                        "httpResponse": http_response,
-                    },
-                )
-            return resp
-
-    class _GetGoldengateDeploymentType(
-        _BaseOracleDatabaseRestTransport._BaseGetGoldengateDeploymentType,
-        OracleDatabaseRestStub,
-    ):
-        def __hash__(self):
-            return hash("OracleDatabaseRestTransport.GetGoldengateDeploymentType")
-
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
-            return response
-
-        def __call__(
-            self,
-            request: goldengate_deployment_type.GetGoldengateDeploymentTypeRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> goldengate_deployment_type.GoldengateDeploymentType:
-            r"""Call the get goldengate deployment
-            type method over HTTP.
-
-                Args:
-                    request (~.goldengate_deployment_type.GetGoldengateDeploymentTypeRequest):
-                        The request object. Message for getting a
-                    GoldengateDeploymentType.
-                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                        should be retried.
-                    timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                        sent along with the request as metadata. Normally, each value must be of type `str`,
-                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                        be of type `bytes`.
-
-                Returns:
-                    ~.goldengate_deployment_type.GoldengateDeploymentType:
-                        Details of the Goldengate Deployment
-                    Type resource.
-
-            """
-
-            http_options = _BaseOracleDatabaseRestTransport._BaseGetGoldengateDeploymentType._get_http_options()
-
-            request, metadata = self._interceptor.pre_get_goldengate_deployment_type(
-                request, metadata
-            )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseGetGoldengateDeploymentType._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseGetGoldengateDeploymentType._get_query_params_json(
-                transcoded_request
-            )
-
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
-                try:
-                    request_payload = type(request).to_json(request)
-                except:
-                    request_payload = None
-                http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
-                }
-                _LOGGER.debug(
-                    f"Sending request for google.cloud.oracledatabase_v1.OracleDatabaseClient.GetGoldengateDeploymentType",
-                    extra={
-                        "serviceName": "google.cloud.oracledatabase.v1.OracleDatabase",
-                        "rpcName": "GetGoldengateDeploymentType",
-                        "httpRequest": http_request,
-                        "metadata": http_request["headers"],
-                    },
-                )
-
-            # Send the request
-            response = (
-                OracleDatabaseRestTransport._GetGoldengateDeploymentType._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
-            )
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
-
-            # Return the response
-            resp = goldengate_deployment_type.GoldengateDeploymentType()
-            pb_resp = goldengate_deployment_type.GoldengateDeploymentType.pb(resp)
-
-            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-
-            resp = self._interceptor.post_get_goldengate_deployment_type(resp)
-            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = (
-                self._interceptor.post_get_goldengate_deployment_type_with_metadata(
-                    resp, response_metadata
-                )
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                try:
-                    response_payload = (
-                        goldengate_deployment_type.GoldengateDeploymentType.to_json(
-                            response
-                        )
-                    )
-                except:
-                    response_payload = None
-                http_response = {
-                    "payload": response_payload,
-                    "headers": dict(response.headers),
-                    "status": response.status_code,
-                }
-                _LOGGER.debug(
-                    "Received response for google.cloud.oracledatabase_v1.OracleDatabaseClient.get_goldengate_deployment_type",
-                    extra={
-                        "serviceName": "google.cloud.oracledatabase.v1.OracleDatabase",
-                        "rpcName": "GetGoldengateDeploymentType",
-                        "metadata": http_response["headers"],
-                        "httpResponse": http_response,
-                    },
-                )
-            return resp
-
-    class _GetGoldengateDeploymentVersion(
-        _BaseOracleDatabaseRestTransport._BaseGetGoldengateDeploymentVersion,
-        OracleDatabaseRestStub,
-    ):
-        def __hash__(self):
-            return hash("OracleDatabaseRestTransport.GetGoldengateDeploymentVersion")
-
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
-            return response
-
-        def __call__(
-            self,
-            request: goldengate_deployment_version.GetGoldengateDeploymentVersionRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> goldengate_deployment_version.GoldengateDeploymentVersion:
-            r"""Call the get goldengate deployment
-            version method over HTTP.
-
-                Args:
-                    request (~.goldengate_deployment_version.GetGoldengateDeploymentVersionRequest):
-                        The request object. Message for getting a
-                    GoldengateDeploymentVersion.
-                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                        should be retried.
-                    timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                        sent along with the request as metadata. Normally, each value must be of type `str`,
-                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                        be of type `bytes`.
-
-                Returns:
-                    ~.goldengate_deployment_version.GoldengateDeploymentVersion:
-                        Details of the Goldengate Deployment
-                    Version resource.
-
-            """
-
-            http_options = _BaseOracleDatabaseRestTransport._BaseGetGoldengateDeploymentVersion._get_http_options()
-
-            request, metadata = self._interceptor.pre_get_goldengate_deployment_version(
-                request, metadata
-            )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseGetGoldengateDeploymentVersion._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseGetGoldengateDeploymentVersion._get_query_params_json(
-                transcoded_request
-            )
-
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
-                try:
-                    request_payload = type(request).to_json(request)
-                except:
-                    request_payload = None
-                http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
-                }
-                _LOGGER.debug(
-                    f"Sending request for google.cloud.oracledatabase_v1.OracleDatabaseClient.GetGoldengateDeploymentVersion",
-                    extra={
-                        "serviceName": "google.cloud.oracledatabase.v1.OracleDatabase",
-                        "rpcName": "GetGoldengateDeploymentVersion",
-                        "httpRequest": http_request,
-                        "metadata": http_request["headers"],
-                    },
-                )
-
-            # Send the request
-            response = OracleDatabaseRestTransport._GetGoldengateDeploymentVersion._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
-
-            # Return the response
-            resp = goldengate_deployment_version.GoldengateDeploymentVersion()
-            pb_resp = goldengate_deployment_version.GoldengateDeploymentVersion.pb(resp)
-
-            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-
-            resp = self._interceptor.post_get_goldengate_deployment_version(resp)
-            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = (
-                self._interceptor.post_get_goldengate_deployment_version_with_metadata(
-                    resp, response_metadata
-                )
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                try:
-                    response_payload = goldengate_deployment_version.GoldengateDeploymentVersion.to_json(
-                        response
-                    )
-                except:
-                    response_payload = None
-                http_response = {
-                    "payload": response_payload,
-                    "headers": dict(response.headers),
-                    "status": response.status_code,
-                }
-                _LOGGER.debug(
-                    "Received response for google.cloud.oracledatabase_v1.OracleDatabaseClient.get_goldengate_deployment_version",
-                    extra={
-                        "serviceName": "google.cloud.oracledatabase.v1.OracleDatabase",
-                        "rpcName": "GetGoldengateDeploymentVersion",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -17432,6 +16784,19 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             return resp
 
     @property
+    def configure_exascale_cloud_exadata_infrastructure(
+        self,
+    ) -> Callable[
+        [exadata_infra.ConfigureExascaleCloudExadataInfrastructureRequest],
+        operations_pb2.Operation,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ConfigureExascaleCloudExadataInfrastructure(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
+
+    @property
     def create_autonomous_database(
         self,
     ) -> Callable[
@@ -17798,19 +17163,6 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
         )  # type: ignore
 
     @property
-    def get_goldengate_connection_type(
-        self,
-    ) -> Callable[
-        [goldengate_connection_type.GetGoldengateConnectionTypeRequest],
-        goldengate_connection_type.GoldengateConnectionType,
-    ]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._GetGoldengateConnectionType(
-            self._session, self._host, self._interceptor
-        )  # type: ignore
-
-    @property
     def get_goldengate_deployment(
         self,
     ) -> Callable[
@@ -17820,45 +17172,6 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetGoldengateDeployment(
-            self._session, self._host, self._interceptor
-        )  # type: ignore
-
-    @property
-    def get_goldengate_deployment_environment(
-        self,
-    ) -> Callable[
-        [goldengate_deployment_environment.GetGoldengateDeploymentEnvironmentRequest],
-        goldengate_deployment_environment.GoldengateDeploymentEnvironment,
-    ]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._GetGoldengateDeploymentEnvironment(
-            self._session, self._host, self._interceptor
-        )  # type: ignore
-
-    @property
-    def get_goldengate_deployment_type(
-        self,
-    ) -> Callable[
-        [goldengate_deployment_type.GetGoldengateDeploymentTypeRequest],
-        goldengate_deployment_type.GoldengateDeploymentType,
-    ]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._GetGoldengateDeploymentType(
-            self._session, self._host, self._interceptor
-        )  # type: ignore
-
-    @property
-    def get_goldengate_deployment_version(
-        self,
-    ) -> Callable[
-        [goldengate_deployment_version.GetGoldengateDeploymentVersionRequest],
-        goldengate_deployment_version.GoldengateDeploymentVersion,
-    ]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._GetGoldengateDeploymentVersion(
             self._session, self._host, self._interceptor
         )  # type: ignore
 

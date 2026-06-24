@@ -77,6 +77,7 @@ DTYPE_MAP = {
     "datetime": "dtypes.DATETIME_DTYPE",
     "timestamp": "dtypes.TIMESTAMP_DTYPE",
     "decimal<38,9>": "dtypes.NUMERIC_DTYPE",
+    "decimal<76,38>": "dtypes.BIGNUMERIC_DTYPE",
 }
 
 PY_TYPE_MAP = {
@@ -96,6 +97,8 @@ PY_TYPE_MAP = {
     "timestamp": "datetime.datetime",
     "struct": "dict",
     "decimal<38,9>": "decimal.Decimal",
+    "decimal<76,38>": "decimal.Decimal",
+    "interval_day": "datetime.timedelta",
 }
 
 YAML_TYPE_TO_COL = {
@@ -113,6 +116,78 @@ YAML_TYPE_TO_COL = {
     "datetime": "datetime_col",
     "timestamp": "timestamp_col",
     "decimal<38,9>": "numeric_col",
+    "decimal<76,38>": "bignumeric_col",
+}
+
+_PYTHON_BUILTINS = {
+    "abs",
+    "all",
+    "any",
+    "ascii",
+    "bin",
+    "bool",
+    "breakpoint",
+    "bytearray",
+    "bytes",
+    "callable",
+    "chr",
+    "classmethod",
+    "compile",
+    "complex",
+    "delattr",
+    "dict",
+    "dir",
+    "divmod",
+    "enumerate",
+    "eval",
+    "exec",
+    "filter",
+    "float",
+    "format",
+    "frozenset",
+    "getattr",
+    "globals",
+    "hasattr",
+    "hash",
+    "help",
+    "hex",
+    "id",
+    "input",
+    "int",
+    "isinstance",
+    "issubclass",
+    "iter",
+    "len",
+    "list",
+    "locals",
+    "map",
+    "max",
+    "memoryview",
+    "min",
+    "next",
+    "object",
+    "oct",
+    "open",
+    "ord",
+    "pow",
+    "print",
+    "property",
+    "range",
+    "repr",
+    "reversed",
+    "round",
+    "set",
+    "setattr",
+    "slice",
+    "sorted",
+    "staticmethod",
+    "str",
+    "sum",
+    "super",
+    "tuple",
+    "type",
+    "vars",
+    "zip",
 }
 
 
@@ -148,9 +223,12 @@ def load_templates():
 def _collect_args(impls):
     args_by_name = {}
     arg_order = []
+    arg_appearances = {}
     for impl in impls:
+        seen_in_impl = set()
         for arg in impl["args"]:
             name = arg["name"]
+            seen_in_impl.add(name)
             if name not in args_by_name:
                 args_by_name[name] = {
                     "types": set(),
@@ -158,7 +236,23 @@ def _collect_args(impls):
                     "keyword_only": arg["keyword_only"],
                 }
                 arg_order.append(name)
+            else:
+                # If it was marked optional or keyword_only in any previous impl, keep it.
+                # Or if this impl marks it as optional/keyword_only, update it.
+                if arg["optional"]:
+                    args_by_name[name]["optional"] = True
+                if arg["keyword_only"]:
+                    args_by_name[name]["keyword_only"] = True
             args_by_name[name]["types"].add(arg["value"])
+        for name in seen_in_impl:
+            arg_appearances[name] = arg_appearances.get(name, 0) + 1
+
+    # If an argument is not in all impls, it must be optional overall
+    num_impls = len(impls)
+    for name, count in arg_appearances.items():
+        if count < num_impls:
+            args_by_name[name]["optional"] = True
+
     return args_by_name, arg_order
 
 
@@ -311,7 +405,11 @@ def parse_scalar_functions(data, module_name, signature_def_template, is_global=
         if not is_global and python_name.startswith(module_name + "_"):
             python_name = python_name[len(module_name) + 1 :]
 
-        internal_op_name = f"_{python_name.upper()}_OP"
+        op_base_name = python_name
+        if python_name in _PYTHON_BUILTINS:
+            python_name = python_name + "_"
+
+        internal_op_name = f"_{op_base_name.upper()}_OP"
 
         # Aggregate args across impls
         args_by_name, arg_order = _collect_args(func_data["impls"])
@@ -324,7 +422,7 @@ def parse_scalar_functions(data, module_name, signature_def_template, is_global=
 
         # Determine return dtype
         sig_name, sig_def = _generate_signature_def(
-            python_name,
+            op_base_name,
             func_data["impls"],
             sql_name,
             signature_def_template,
@@ -411,6 +509,11 @@ def process_yaml_file(yaml_file, templates):
 
     is_global = "global_namespace" in module_path.parts
     namespace = get_namespace(yaml_file)
+
+    if not data or not isinstance(data, dict) or "scalar_functions" not in data:
+        # If the file is empty or has no functions, just create the namespace.
+        return [{"namespace": namespace}]
+
     ops_list, functions_list = parse_scalar_functions(
         data,
         module_name,
@@ -533,8 +636,9 @@ def generate_series_accessors(functions: list[dict], templates: dict):
 
     # Populate functions
     for func in functions:
-        ns = func["namespace"] or ()
-        ns_by_tuple[ns]["functions"].append(func)
+        if "name" in func:
+            ns = func["namespace"] or ()
+            ns_by_tuple[ns]["functions"].append(func)
 
     # Populate children properties
     for ns in sorted_namespaces:

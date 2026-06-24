@@ -99,6 +99,8 @@ from .types.entitlement import CloudAccountDetails, Entitlement
 from .types.exadata_infra import (
     CloudExadataInfrastructure,
     CloudExadataInfrastructureProperties,
+    ConfigureExascaleCloudExadataInfrastructureRequest,
+    ExascaleConfig,
     MaintenanceWindow,
 )
 from .types.exadb_vm_cluster import (
@@ -179,7 +181,6 @@ from .types.goldengate_connection_assignment import (
     TestGoldengateConnectionAssignmentResponse,
 )
 from .types.goldengate_connection_type import (
-    GetGoldengateConnectionTypeRequest,
     GoldengateConnectionType,
     ListGoldengateConnectionTypesRequest,
     ListGoldengateConnectionTypesResponse,
@@ -205,19 +206,16 @@ from .types.goldengate_deployment import (
     StopGoldengateDeploymentRequest,
 )
 from .types.goldengate_deployment_environment import (
-    GetGoldengateDeploymentEnvironmentRequest,
     GoldengateDeploymentEnvironment,
     ListGoldengateDeploymentEnvironmentsRequest,
     ListGoldengateDeploymentEnvironmentsResponse,
 )
 from .types.goldengate_deployment_type import (
-    GetGoldengateDeploymentTypeRequest,
     GoldengateDeploymentType,
     ListGoldengateDeploymentTypesRequest,
     ListGoldengateDeploymentTypesResponse,
 )
 from .types.goldengate_deployment_version import (
-    GetGoldengateDeploymentVersionRequest,
     GoldengateDeploymentVersion,
     GoldengateDeploymentVersionProperties,
     ListGoldengateDeploymentVersionsRequest,
@@ -336,7 +334,7 @@ else:  # pragma: NO COVER
 
         def parse_version_to_tuple(version_string: str):
             """Safely converts a semantic version string to a comparable tuple of integers.
-            Example: "4.25.8" -> (4, 25, 8)
+            Example: "6.33.5" -> (6, 33, 5)
             Ignores non-numeric parts and handles common version formats.
             Args:
                 version_string: Version string in the format "x.y.z" or "x.y.z<suffix>"
@@ -365,9 +363,9 @@ else:  # pragma: NO COVER
                 return (None, "--")
 
         _dependency_package = "google.protobuf"
-        _next_supported_version = "4.25.8"
-        _next_supported_version_tuple = (4, 25, 8)
-        _recommendation = " (we recommend 6.x)"
+        _next_supported_version = "6.33.5"
+        _next_supported_version_tuple = (6, 33, 5)
+        _recommendation = " (we recommend 7.x)"
         (_version_used, _version_used_string) = _get_version(_dependency_package)
         if _version_used and _version_used < _next_supported_version_tuple:
             warnings.warn(
@@ -415,6 +413,7 @@ __all__ = (
     "CloudVmCluster",
     "CloudVmClusterProperties",
     "ComputeModel",
+    "ConfigureExascaleCloudExadataInfrastructureRequest",
     "CreateAutonomousDatabaseRequest",
     "CreateCloudExadataInfrastructureRequest",
     "CreateCloudVmClusterRequest",
@@ -468,6 +467,7 @@ __all__ = (
     "ExadbVmCluster",
     "ExadbVmClusterProperties",
     "ExadbVmClusterStorageDetails",
+    "ExascaleConfig",
     "ExascaleDbStorageDetails",
     "ExascaleDbStorageVault",
     "ExascaleDbStorageVaultProperties",
@@ -484,11 +484,7 @@ __all__ = (
     "GetExascaleDbStorageVaultRequest",
     "GetGoldengateConnectionAssignmentRequest",
     "GetGoldengateConnectionRequest",
-    "GetGoldengateConnectionTypeRequest",
-    "GetGoldengateDeploymentEnvironmentRequest",
     "GetGoldengateDeploymentRequest",
-    "GetGoldengateDeploymentTypeRequest",
-    "GetGoldengateDeploymentVersionRequest",
     "GetOdbNetworkRequest",
     "GetOdbSubnetRequest",
     "GetPluggableDatabaseRequest",

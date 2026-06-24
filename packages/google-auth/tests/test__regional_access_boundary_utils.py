@@ -13,7 +13,6 @@
 # limitations under the License.
 
 import datetime
-import os
 from unittest import mock
 
 import pytest  # type: ignore
@@ -22,7 +21,6 @@ from google.auth import _credentials_async
 from google.auth import _helpers
 from google.auth import _regional_access_boundary_utils
 from google.auth import credentials
-from google.auth import environment_vars
 from google.oauth2 import credentials as oauth2_credentials
 
 
@@ -53,48 +51,7 @@ class CredentialsImpl(credentials.CredentialsWithRegionalAccessBoundary):
         return new_credentials
 
 
-@pytest.fixture(autouse=True)
-def clear_rab_cache():
-    """Clears the Regional Access Boundary enablement cache before every test."""
-    _regional_access_boundary_utils.is_regional_access_boundary_enabled.cache_clear()
-
-
 class TestCredentialsWithRegionalAccessBoundary(object):
-    def test_is_regional_access_boundary_enabled_cached(self, monkeypatch):
-        # Set to true
-        monkeypatch.setenv(environment_vars.GOOGLE_AUTH_TRUST_BOUNDARY_ENABLED, "true")
-        assert (
-            _regional_access_boundary_utils.is_regional_access_boundary_enabled()
-            is True
-        )
-
-        # Change env var to false, but it should still return True due to caching
-        monkeypatch.setenv(environment_vars.GOOGLE_AUTH_TRUST_BOUNDARY_ENABLED, "false")
-        assert (
-            _regional_access_boundary_utils.is_regional_access_boundary_enabled()
-            is True
-        )
-
-        # Clear cache and it should now reflect the new value
-        _regional_access_boundary_utils.is_regional_access_boundary_enabled.cache_clear()
-        assert (
-            _regional_access_boundary_utils.is_regional_access_boundary_enabled()
-            is False
-        )
-
-    @mock.patch(
-        "google.auth._regional_access_boundary_utils._RegionalAccessBoundaryRefreshManager.start_refresh"
-    )
-    def test_maybe_start_refresh_is_skipped_if_env_var_not_set(
-        self, mock_start_refresh
-    ):
-        creds = CredentialsImpl()
-        with mock.patch.dict(os.environ, clear=True):
-            creds._maybe_start_regional_access_boundary_refresh(
-                mock.Mock(), "http://example.com"
-            )
-        mock_start_refresh.assert_not_called()
-
     @mock.patch(
         "google.auth._regional_access_boundary_utils._RegionalAccessBoundaryRefreshManager.start_refresh"
     )
@@ -106,13 +63,9 @@ class TestCredentialsWithRegionalAccessBoundary(object):
             cooldown_expiry=None,
             cooldown_duration=_regional_access_boundary_utils.DEFAULT_REGIONAL_ACCESS_BOUNDARY_COOLDOWN,
         )
-        with mock.patch.dict(
-            os.environ,
-            {environment_vars.GOOGLE_AUTH_TRUST_BOUNDARY_ENABLED: "true"},
-        ):
-            creds._maybe_start_regional_access_boundary_refresh(
-                mock.Mock(), "http://example.com"
-            )
+        creds._maybe_start_regional_access_boundary_refresh(
+            mock.Mock(), "http://example.com"
+        )
         mock_start_refresh.assert_not_called()
 
     @mock.patch(
@@ -127,13 +80,9 @@ class TestCredentialsWithRegionalAccessBoundary(object):
             cooldown_duration=_regional_access_boundary_utils.DEFAULT_REGIONAL_ACCESS_BOUNDARY_COOLDOWN,
         )
         request = mock.Mock()
-        with mock.patch.dict(
-            os.environ,
-            {environment_vars.GOOGLE_AUTH_TRUST_BOUNDARY_ENABLED: "true"},
-        ):
-            creds._maybe_start_regional_access_boundary_refresh(
-                request, "http://example.com"
-            )
+        creds._maybe_start_regional_access_boundary_refresh(
+            request, "http://example.com"
+        )
         mock_start_refresh.assert_called_once_with(creds, request, creds._rab_manager)
 
     @mock.patch(
@@ -149,29 +98,28 @@ class TestCredentialsWithRegionalAccessBoundary(object):
             cooldown_expiry=_helpers.utcnow() + datetime.timedelta(minutes=5),
             cooldown_duration=_regional_access_boundary_utils.DEFAULT_REGIONAL_ACCESS_BOUNDARY_COOLDOWN,
         )
-        with mock.patch.dict(
-            os.environ,
-            {environment_vars.GOOGLE_AUTH_TRUST_BOUNDARY_ENABLED: "true"},
-        ):
-            creds._maybe_start_regional_access_boundary_refresh(
-                mock.Mock(), "http://example.com"
-            )
+        creds._maybe_start_regional_access_boundary_refresh(
+            mock.Mock(), "http://example.com"
+        )
         mock_start_refresh.assert_not_called()
 
     @mock.patch(
         "google.auth._regional_access_boundary_utils._RegionalAccessBoundaryRefreshManager.start_refresh"
     )
+    @pytest.mark.parametrize(
+        "url",
+        [
+            "https://my-service.us-east1.rep.googleapis.com",
+            "https://my-service.us-east1.rep.sandbox.googleapis.com",
+            "https://my-service.us-east1.rep.mtls.googleapis.com",
+            "https://my-service.us-east1.rep.mtls.sandbox.googleapis.com",
+        ],
+    )
     def test_maybe_start_refresh_is_skipped_for_regional_endpoint(
-        self, mock_start_refresh
+        self, mock_start_refresh, url
     ):
         creds = CredentialsImpl()
-        with mock.patch.dict(
-            os.environ,
-            {environment_vars.GOOGLE_AUTH_TRUST_BOUNDARY_ENABLED: "true"},
-        ):
-            creds._maybe_start_regional_access_boundary_refresh(
-                mock.Mock(), "https://my-service.us-east1.rep.googleapis.com"
-            )
+        creds._maybe_start_regional_access_boundary_refresh(mock.Mock(), url)
         mock_start_refresh.assert_not_called()
 
     @mock.patch(
@@ -180,13 +128,9 @@ class TestCredentialsWithRegionalAccessBoundary(object):
     def test_maybe_start_refresh_is_triggered(self, mock_start_refresh):
         creds = CredentialsImpl()
         request = mock.Mock()
-        with mock.patch.dict(
-            os.environ,
-            {environment_vars.GOOGLE_AUTH_TRUST_BOUNDARY_ENABLED: "true"},
-        ):
-            creds._maybe_start_regional_access_boundary_refresh(
-                request, "http://example.com"
-            )
+        creds._maybe_start_regional_access_boundary_refresh(
+            request, "http://example.com"
+        )
         mock_start_refresh.assert_called_once_with(creds, request, creds._rab_manager)
 
     def test_apply_headers_success(self):
@@ -327,13 +271,9 @@ class TestCredentialsWithRegionalAccessBoundary(object):
         self, mock_start_refresh
     ):
         creds = CredentialsImpl(universe_domain="not.googleapis.com")
-        with mock.patch.dict(
-            os.environ,
-            {environment_vars.GOOGLE_AUTH_TRUST_BOUNDARY_ENABLED: "true"},
-        ):
-            creds._maybe_start_regional_access_boundary_refresh(
-                mock.Mock(), "http://example.com"
-            )
+        creds._maybe_start_regional_access_boundary_refresh(
+            mock.Mock(), "http://example.com"
+        )
         mock_start_refresh.assert_not_called()
 
     @mock.patch(
@@ -346,13 +286,9 @@ class TestCredentialsWithRegionalAccessBoundary(object):
         mock_urlparse.side_effect = ValueError("Malformed URL")
         creds = CredentialsImpl()
         request = mock.Mock()
-        with mock.patch.dict(
-            os.environ,
-            {environment_vars.GOOGLE_AUTH_TRUST_BOUNDARY_ENABLED: "true"},
-        ):
-            creds._maybe_start_regional_access_boundary_refresh(
-                request, "http://malformed-url"
-            )
+        creds._maybe_start_regional_access_boundary_refresh(
+            request, "http://malformed-url"
+        )
         mock_start_refresh.assert_called_once_with(creds, request, creds._rab_manager)
 
     @mock.patch(
@@ -362,13 +298,9 @@ class TestCredentialsWithRegionalAccessBoundary(object):
         creds = CredentialsImpl()
         creds._rab_manager._use_blocking_regional_access_boundary_lookup = True
         request = mock.Mock()
-        with mock.patch.dict(
-            os.environ,
-            {environment_vars.GOOGLE_AUTH_TRUST_BOUNDARY_ENABLED: "true"},
-        ):
-            creds._maybe_start_regional_access_boundary_refresh(
-                request, "http://example.com"
-            )
+        creds._maybe_start_regional_access_boundary_refresh(
+            request, "http://example.com"
+        )
         mock_start_blocking_refresh.assert_called_once_with(creds, request)
 
     def test_start_blocking_refresh_success(self):
@@ -622,19 +554,15 @@ class TestAsyncCredentialsWithRegionalAccessBoundary(object):
         creds._rab_manager._use_blocking_regional_access_boundary_lookup = True
         request = mock.Mock()
 
-        with mock.patch.dict(
-            os.environ,
-            {environment_vars.GOOGLE_AUTH_TRUST_BOUNDARY_ENABLED: "true"},
-        ):
-            with mock.patch.object(
-                creds._rab_manager,
-                "start_blocking_refresh_async",
-                new_callable=mock.AsyncMock,
-            ) as mock_start_blocking:
-                await creds._maybe_start_regional_access_boundary_refresh_async(
-                    request, "http://example.com"
-                )
-                mock_start_blocking.assert_called_once_with(creds, request)
+        with mock.patch.object(
+            creds._rab_manager,
+            "start_blocking_refresh_async",
+            new_callable=mock.AsyncMock,
+        ) as mock_start_blocking:
+            await creds._maybe_start_regional_access_boundary_refresh_async(
+                request, "http://example.com"
+            )
+            mock_start_blocking.assert_called_once_with(creds, request)
 
     @pytest.mark.asyncio
     async def test_start_blocking_refresh_async_success(self):
@@ -678,6 +606,7 @@ class TestAsyncCredentialsWithRegionalAccessBoundary(object):
         )
 
         request = mock.Mock()
+        request._clone.return_value = request
         rab_manager = mock.Mock()
 
         manager = (
@@ -692,6 +621,120 @@ class TestAsyncCredentialsWithRegionalAccessBoundary(object):
 
         # Verify that the lookup was still triggered but failed open cleanly
         credentials._lookup_regional_access_boundary.assert_called_once_with(request)
+        rab_manager.process_regional_access_boundary_info.assert_called_once_with(None)
+
+    @pytest.mark.asyncio
+    async def test_start_refresh_async_clones_request_and_unwraps_partial(self):
+        import functools
+
+        credentials = mock.AsyncMock()
+        credentials._lookup_regional_access_boundary.return_value = {
+            "encodedLocations": "0xA30"
+        }
+
+        mock_request = mock.Mock()
+        mock_cloned_request = mock.Mock()
+        mock_request._clone.return_value = mock_cloned_request
+        mock_cloned_request.close = mock.AsyncMock()
+
+        # Wrap in a functools.partial to simulate AuthorizedSession.request() timeouts
+        partial_request = functools.partial(mock_request, timeout=180)
+
+        rab_manager = mock.Mock()
+
+        manager = (
+            _regional_access_boundary_utils._AsyncRegionalAccessBoundaryRefreshManager()
+        )
+        manager.start_refresh(credentials, partial_request, rab_manager)
+
+        await manager._worker_task
+
+        # Verify that actual_request._clone() was called
+        mock_request._clone.assert_called_once()
+
+        # Verify that the lookup ran on a re-wrapped partial of the cloned request
+        called_arg = credentials._lookup_regional_access_boundary.call_args[0][0]
+        assert isinstance(called_arg, functools.partial)
+        assert called_arg.func is mock_cloned_request
+        assert called_arg.keywords == {"timeout": 180}
+
+        # Verify that the cloned request was closed cleanly in the finally block
+        mock_cloned_request.close.assert_awaited_once()
+        rab_manager.process_regional_access_boundary_info.assert_called_once_with(
+            {"encodedLocations": "0xA30"}
+        )
+
+    @pytest.mark.asyncio
+    async def test_start_refresh_suppresses_request_clone_exception(self):
+        from google.auth import exceptions
+
+        credentials = mock.AsyncMock()
+
+        request = mock.Mock()
+        request._clone.side_effect = exceptions.TransportError(
+            "Cannot clone a closed transport."
+        )
+
+        rab_manager = mock.Mock()
+        manager = (
+            _regional_access_boundary_utils._AsyncRegionalAccessBoundaryRefreshManager()
+        )
+
+        manager.start_refresh(credentials, request, rab_manager)
+
+        assert manager._worker_task is None
+        credentials._lookup_regional_access_boundary.assert_not_called()
+        rab_manager.process_regional_access_boundary_info.assert_called_once_with(None)
+
+    @pytest.mark.asyncio
+    async def test_start_refresh_async_mimics_ephemeral_session_closed_bug(self):
+        # Specifically mimics the real-world race condition where a fast foreground main call
+        # pulls the rug out from under the background worker when using an un-cloned session.
+        import asyncio
+
+        manager = (
+            _regional_access_boundary_utils._AsyncRegionalAccessBoundaryRefreshManager()
+        )
+
+        worker_started_event = asyncio.Event()
+        foreground_closed_event = asyncio.Event()
+
+        class EphemeralRequest:
+            def __init__(self):
+                self.closed = False
+
+            async def __call__(self, *args, **kwargs):
+                worker_started_event.set()
+                await foreground_closed_event.wait()
+                if self.closed:
+                    raise RuntimeError("Session is closed")
+                return "success"
+
+        ephemeral_req = EphemeralRequest()
+
+        credentials = mock.AsyncMock()
+
+        async def mock_lookup(req):
+            return await req()
+
+        credentials._lookup_regional_access_boundary.side_effect = mock_lookup
+
+        rab_manager = mock.Mock()
+
+        # Start the background refresh worker
+        manager.start_refresh(credentials, ephemeral_req, rab_manager)
+
+        # Wait until the background worker has actually started its speculative request
+        await worker_started_event.wait()
+
+        # Simulate fast foreground primary call closing the session
+        ephemeral_req.closed = True
+        foreground_closed_event.set()
+
+        # Await the background worker task to settle
+        await manager._worker_task
+
+        # Verify that the background worker hit the "Session is closed" error and failed open cleanly
         rab_manager.process_regional_access_boundary_info.assert_called_once_with(None)
 
 
@@ -761,3 +804,58 @@ def test_get_workload_identity_pool_rab_endpoint(monkeypatch):
         url
         == "https://iamcredentials.mtls.googleapis.com/v1/projects/PROJECT_NUM/locations/global/workloadIdentityPools/POOL_ID/allowedLocations"
     )
+
+
+def test_sync_refresh_manager_pickle():
+    import pickle
+
+    manager = _regional_access_boundary_utils._RegionalAccessBoundaryRefreshManager()
+    manager._worker = mock.Mock()
+
+    dumped = pickle.dumps(manager)
+    loaded = pickle.loads(dumped)
+
+    assert loaded._lock is not None
+    assert loaded._worker is None
+
+
+def test_manager_eq_different_type():
+    manager = _regional_access_boundary_utils._RegionalAccessBoundaryManager()
+    assert manager != "not a manager"
+
+
+def test_set_initial_regional_access_boundary_empty():
+    manager = _regional_access_boundary_utils._RegionalAccessBoundaryManager()
+    manager.set_initial_regional_access_boundary(
+        encoded_locations="", expiry=datetime.datetime.now()
+    )
+    assert manager._data.encoded_locations == ""
+    assert manager._data.expiry is None
+
+
+def test_set_initial_regional_access_boundary_with_value():
+    manager = _regional_access_boundary_utils._RegionalAccessBoundaryManager()
+    expiry = datetime.datetime.now()
+    manager.set_initial_regional_access_boundary(
+        encoded_locations="us-east1", expiry=expiry
+    )
+    assert manager._data.encoded_locations == "us-east1"
+    assert manager._data.expiry == expiry
+
+
+def test_sync_refresh_manager_start_refresh_executes():
+    manager = _regional_access_boundary_utils._RegionalAccessBoundaryRefreshManager()
+    creds = mock.Mock()
+    request = mock.Mock()
+    rab_manager = mock.Mock()
+
+    with mock.patch(
+        "google.auth._regional_access_boundary_utils._RegionalAccessBoundaryRefreshThread"
+    ) as mock_thread_class:
+        mock_thread = mock.Mock()
+        mock_thread_class.return_value = mock_thread
+
+        manager.start_refresh(creds, request, rab_manager)
+
+        mock_thread_class.assert_called_once()
+        mock_thread.start.assert_called_once()

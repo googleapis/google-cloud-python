@@ -6394,7 +6394,11 @@ def test_create_cluster_rest_call_success(request_type):
                     "enable_vtpm": True,
                     "enable_integrity_monitoring": True,
                 },
-                "confidential_instance_config": {"enable_confidential_compute": True},
+                "confidential_instance_config": {
+                    "enable_confidential_compute": True,
+                    "confidential_instance_type": 1,
+                },
+                "resource_manager_tags": {},
             },
             "master_config": {
                 "num_instances": 1399,
@@ -6814,7 +6818,11 @@ def test_update_cluster_rest_call_success(request_type):
                     "enable_vtpm": True,
                     "enable_integrity_monitoring": True,
                 },
-                "confidential_instance_config": {"enable_confidential_compute": True},
+                "confidential_instance_config": {
+                    "enable_confidential_compute": True,
+                    "confidential_instance_type": 1,
+                },
+                "resource_manager_tags": {},
             },
             "master_config": {
                 "num_instances": 1399,

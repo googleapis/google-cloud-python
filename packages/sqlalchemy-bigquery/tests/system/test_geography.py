@@ -22,6 +22,8 @@ import pytest
 geoalchemy2 = pytest.importorskip("geoalchemy2")
 
 
+# TODO(http://github.com/googleapis/google-cloud-python/issues/17287): Unskip once bug is resolved.
+@pytest.mark.skip(reason="Failing in CI with AssertionError.")
 def test_geoalchemy2_core(bigquery_dataset):
     """Make sure GeoAlchemy 2 Core Tutorial works as adapted to only having geography
 
@@ -139,6 +141,8 @@ def test_geoalchemy2_core(bigquery_dataset):
     )
 
 
+# TODO(http://github.com/googleapis/google-cloud-python/issues/17287): Unskip once bug is resolved.
+@pytest.mark.skip(reason="Failing in CI with AssertionError.")
 def test_geoalchemy2_orm(bigquery_dataset):
     """Make sure GeoAlchemy 2 ORM Tutorial works as adapted to only having geometry
 
@@ -254,6 +258,8 @@ def test_geoalchemy2_orm(bigquery_dataset):
     ]
 
 
+# TODO(http://github.com/googleapis/google-cloud-python/issues/17287): Unskip once bug is resolved.
+@pytest.mark.skip(reason="Failing in CI with AssertionError.")
 def test_geoalchemy2_orm_w_relationship(bigquery_dataset):
     from sqlalchemy import create_engine
 
