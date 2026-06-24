@@ -153,7 +153,6 @@ google-auth-httplib2==0.2.0
 google-auth-oauthlib==1.2.2
 google-cloud-aiplatform==1.106.0
 google-cloud-bigquery==3.36.0
-google-cloud-bigquery-connection==1.18.3
 google-cloud-bigquery-storage==2.32.0
 google-cloud-core==2.4.3
 google-cloud-dataproc==5.21.0
