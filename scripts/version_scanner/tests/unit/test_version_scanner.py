@@ -388,29 +388,25 @@ def test_scan_repository_wildcard_ignores(tmp_path):
         assert not match["file_path"].endswith("test.jpg")
 
 
-def test__should_ignore():
-    from version_scanner import _should_ignore
-    
-    ignore_patterns = [
-        ".git",
-        "*.jpg",
-        "packages/pkg_a/.nox",
-        "*.egg-info"
+DEFAULT_IGNORE_PATTERNS = [".git", "*.jpg", "packages/pkg_a/.nox", "*.egg-info"]
+
+@pytest.mark.parametrize(
+    "rel_path, name, ignore_patterns, expected",
+    [
+        pytest.param(".git", ".git", DEFAULT_IGNORE_PATTERNS, True, id="exact_match"),
+        pytest.param(".GIT", ".GIT", DEFAULT_IGNORE_PATTERNS, True, id="case_insensitive_match"),
+        pytest.param("some/path/image.jpg", "image.jpg", DEFAULT_IGNORE_PATTERNS, True, id="wildcard_subpath_match"),
+        pytest.param("image.JPG", "image.JPG", DEFAULT_IGNORE_PATTERNS, True, id="wildcard_case_insensitive_match"),
+        pytest.param("packages/pkg_a/.nox", ".nox", DEFAULT_IGNORE_PATTERNS, True, id="subpath_exact_match"),
+        pytest.param("google_cloud_pubsub.egg-info", "google_cloud_pubsub.egg-info", DEFAULT_IGNORE_PATTERNS, True, id="wildcard_directory_match"),
+        pytest.param("setup.py", "setup.py", DEFAULT_IGNORE_PATTERNS, False, id="no_match"),
+        pytest.param("packages", "packages", ["/packages"], True, id="anchored_root_match"),
+        pytest.param("some/other/packages", "packages", ["/packages"], False, id="anchored_root_nested_no_match"),
     ]
-    
-    # Exact match
-    assert _should_ignore(".git", ".git", ignore_patterns) is True
-    # Case insensitivity
-    assert _should_ignore(".GIT", ".GIT", ignore_patterns) is True
-    # Wildcard match
-    assert _should_ignore("some/path/image.jpg", "image.jpg", ignore_patterns) is True
-    assert _should_ignore("image.JPG", "image.JPG", ignore_patterns) is True
-    # Subpath match
-    assert _should_ignore("packages/pkg_a/.nox", ".nox", ignore_patterns) is True
-    # Wildcard directory match
-    assert _should_ignore("google_cloud_pubsub.egg-info", "google_cloud_pubsub.egg-info", ignore_patterns) is True
-    # Negative match
-    assert _should_ignore("setup.py", "setup.py", ignore_patterns) is False
+)
+def test__should_ignore(rel_path, name, ignore_patterns, expected):
+    from version_scanner import _should_ignore
+    assert _should_ignore(rel_path, name, ignore_patterns) is expected
 
 
 def test_load_ignore_file(tmp_path):

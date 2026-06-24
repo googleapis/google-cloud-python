@@ -500,7 +500,19 @@ def read_package_file(file_path: str) -> List[str]:
 
 
 def _should_ignore(rel_path: str, name: str, ignore_patterns: List[str]) -> bool:
-    """Check if a file or directory matches any of the ignore patterns."""
+    """Check if a file or directory matches any of the ignore patterns.
+    
+    Directories and files can be ignored by providing an ignore pattern in the 
+    .scannerignore file.
+
+    Args:
+        rel_path: The relative path of the file or directory from the scan root.
+        name: The name of the file or directory (basename).
+        ignore_patterns: A list of ignore patterns (glob-like or subpaths).
+        
+    Returns:
+        True if the file or directory should be ignored, False otherwise.
+    """
     if not ignore_patterns:
         return False
     name_lower = name.lower()
@@ -511,10 +523,12 @@ def _should_ignore(rel_path: str, name: str, ignore_patterns: List[str]) -> bool
         if '/' in pattern:
             if pattern_lower.startswith('/'):
                 p = pattern_lower[1:]
+                if fnmatch.fnmatchcase(rel_path_norm, p):
+                    return True
             else:
                 p = pattern_lower
-            if fnmatch.fnmatchcase(rel_path_norm, p) or fnmatch.fnmatchcase(rel_path_norm, f"*/{p}"):
-                return True
+                if fnmatch.fnmatchcase(rel_path_norm, p) or fnmatch.fnmatchcase(rel_path_norm, f"*/{p}"):
+                    return True
         else:
             if fnmatch.fnmatchcase(name_lower, pattern_lower):
                 return True
