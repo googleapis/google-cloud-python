@@ -59,4 +59,3 @@ def test_bigquery_magic():
     assert isinstance(result, pandas.DataFrame)
     assert len(result) == 10  # verify row count
     assert list(result) == ["url", "view_count"]  # verify column names
-
