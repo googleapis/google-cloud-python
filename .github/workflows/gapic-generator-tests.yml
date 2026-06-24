@@ -73,6 +73,7 @@ jobs:
         with:
           repository: googleapis/gapic-showcase
           path: packages/gapic-generator/gapic-showcase
+          ref: backfill-showcase
       - name: Checkout googleapis
         uses: actions/checkout@v6
         with:
