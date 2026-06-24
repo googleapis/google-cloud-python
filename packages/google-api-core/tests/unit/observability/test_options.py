@@ -70,65 +70,67 @@ def test_get_env_bool(monkeypatch):
 
 
 @pytest.mark.parametrize(
-    "env_vars, client_options, default_val, expected",
+    "signal_type, env_vars, client_options, default_val, expected",
     [
         # Default fallback tests
-        ({}, None, False, False),
-        ({}, None, True, True),
-        # Service-specific env var
-        ({"GOOGLE_CLOUD_PYTHON_TRANSLATE_TRACES_ENABLED": True}, None, False, True),
-        ({"GOOGLE_CLOUD_PYTHON_TRANSLATE_TRACES_ENABLED": False}, None, True, False),
+        ("tracing", {}, None, False, False),
+        ("tracing", {}, None, True, True),
+        # Global env var
+        ("tracing", {"GOOGLE_CLOUD_PYTHON_TRACING_ENABLED": True}, None, False, True),
+        ("tracing", {"GOOGLE_CLOUD_PYTHON_TRACING_ENABLED": False}, None, True, False),
         # Experimental fallback
         (
-            {"GOOGLE_CLOUD_EXPERIMENTAL_PYTHON_TRANSLATE_TRACES_ENABLED": True},
+            "tracing",
+            {"GOOGLE_CLOUD_EXPERIMENTAL_PYTHON_TRACING_ENABLED": True},
             None,
             False,
             True,
         ),
-        # Precedence: Service specific overrides global
         (
-            {
-                "GOOGLE_CLOUD_PYTHON_TRACES_ENABLED": True,
-                "GOOGLE_CLOUD_PYTHON_TRANSLATE_TRACES_ENABLED": False,
-            },
+            "tracing",
+            {"GOOGLE_CLOUD_EXPERIMENTAL_PYTHON_TRACING_ENABLED": False},
             None,
-            False,
+            True,
             False,
         ),
+        # Implicit opt-in with provider
         (
-            {
-                "GOOGLE_CLOUD_PYTHON_TRACES_ENABLED": False,
-                "GOOGLE_CLOUD_PYTHON_TRANSLATE_TRACES_ENABLED": True,
-            },
-            None,
+            "tracing",
+            {"GOOGLE_CLOUD_PYTHON_TRACING_ENABLED": False},
+            {"tracer_provider": object()},
             False,
             True,
         ),
-        # Precedence: Client options override env vars
+        # Programmatic boolean flags are NOT supported (should default/fallback)
         (
-            {"GOOGLE_CLOUD_PYTHON_TRANSLATE_TRACES_ENABLED": False},
+            "tracing",
+            {"GOOGLE_CLOUD_PYTHON_TRACING_ENABLED": False},
             {"enable_traces": True},
             False,
-            True,
+            False,
+        ),
+        (
+            "tracing",
+            {"GOOGLE_CLOUD_PYTHON_TRACING_ENABLED": False},
+            {"enable_tracing": True},
+            False,
+            False,
         ),
     ],
 )
-def test_is_signal_enabled(env_vars, client_options, default_val, expected):
+def test_is_signal_enabled(
+    signal_type, env_vars, client_options, default_val, expected
+):
     # Setup environment variables using our test overrides
     for k, v in env_vars.items():
         set_test_env_override(k, v)
 
     result = options.is_signal_enabled(
-        "translate", "traces", client_options=client_options, default=default_val
+        signal_type, client_options=client_options, default=default_val
     )
     assert result is expected
 
 
-def test_legacy_var_with_warning():
-    set_test_env_override("LEGACY_TRACE_VAR", True)
-
-    with pytest.warns(DeprecationWarning, match="LEGACY_TRACE_VAR"):
-        result = options.is_signal_enabled(
-            "translate", "traces", legacy_vars=["LEGACY_TRACE_VAR"]
-        )
-        assert result is True
+def test_is_signal_enabled_invalid_signal():
+    with pytest.raises(ValueError, match="Only 'tracing' is supported"):
+        options.is_signal_enabled("traces")
