@@ -500,12 +500,9 @@ class ValueBitmaskFilter(RowFilter):
         self.mask: bytes = _to_bytes(mask)
 
     def __eq__(self, other):
-        if not isinstance(other, self.__class__):
+        if not isinstance(other, ValueBitmaskFilter):
             return NotImplemented
         return other.mask == self.mask
-
-    def __ne__(self, other):
-        return not self == other
 
     def _to_dict(self) -> dict[str, Any]:
         """Converts the row filter to a dict representation."""
