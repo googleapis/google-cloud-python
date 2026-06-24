@@ -73,8 +73,8 @@ extras = {
     "tests": [
         "freezegun",
         "pytest-snapshot",
-        "google-cloud-bigtable >=2.24.0",
-        "google-cloud-pubsub >=2.21.4",
+        "google-cloud-bigtable >=2.28.0",
+        "google-cloud-pubsub >=2.28.0",
         "tzdata",
     ],
     # used for local engine
