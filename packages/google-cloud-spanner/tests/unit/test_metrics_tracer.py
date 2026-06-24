@@ -264,3 +264,36 @@ def test_record_gfe_missing_header_count(metrics_tracer):
     metrics_tracer.record_gfe_missing_header_count()
     assert mock_gfe_missing_header_count.add.call_count == 1  # Should not increment
     metrics_tracer.enabled = True  # Reset for next test
+
+
+def test_extract_gfe_latency():
+    # Valid trailing metadata list of tuples
+    metadata_list = [("server-timing", "gfet4t7; dur=123")]
+    assert MetricsTracer.extract_gfe_latency(metadata_list) == 123
+
+    # Valid metadata dict
+    metadata_dict = {"server-timing": "gfet4t7; dur=456"}
+    assert MetricsTracer.extract_gfe_latency(metadata_dict) == 456
+
+    # Missing header
+    assert MetricsTracer.extract_gfe_latency([("other-header", "val")]) is None
+    assert MetricsTracer.extract_gfe_latency(None) is None
+
+
+def test_record_gfe_metrics(metrics_tracer):
+    mock_gfe_latency = mock.create_autospec(Histogram, instance=True)
+    mock_gfe_missing = mock.create_autospec(Counter, instance=True)
+    metrics_tracer._instrument_gfe_latency = mock_gfe_latency
+    metrics_tracer._instrument_gfe_missing_header_count = mock_gfe_missing
+    metrics_tracer.gfe_enabled = True
+
+    # With header
+    metrics_tracer.record_gfe_metrics([("server-timing", "gfet4t7; dur=88")])
+    assert mock_gfe_latency.record.call_count == 1
+    assert mock_gfe_latency.record.call_args[1]["amount"] == 88
+    assert mock_gfe_missing.add.call_count == 0
+
+    # Without header
+    metrics_tracer.record_gfe_metrics([("other", "1")])
+    assert mock_gfe_latency.record.call_count == 1
+    assert mock_gfe_missing.add.call_count == 1

@@ -51,9 +51,7 @@ class SpannerMetricsTracerFactory(MetricsTracerFactory):
         "current_metrics_tracer", default=None
     )
 
-    def __new__(
-        cls, enabled: bool = True, gfe_enabled: bool = False
-    ) -> "SpannerMetricsTracerFactory":
+    def __new__(cls, enabled: bool = True) -> "SpannerMetricsTracerFactory":
         """
         Create a new instance of SpannerMetricsTracerFactory if it doesn't already exist.
 
@@ -63,7 +61,6 @@ class SpannerMetricsTracerFactory(MetricsTracerFactory):
 
         Args:
             enabled (bool): A flag indicating whether metrics tracing is enabled. Defaults to True.
-            gfe_enabled (bool): A flag indicating whether GFE metrics are enabled. Defaults to False.
 
         Returns:
             SpannerMetricsTracerFactory: The singleton instance of SpannerMetricsTracerFactory.
@@ -83,7 +80,7 @@ class SpannerMetricsTracerFactory(MetricsTracerFactory):
                 cls._generate_client_hash(client_uid)
             )
             cls._metrics_tracer_factory.set_location(_get_cloud_region())
-            cls._metrics_tracer_factory.gfe_enabled = gfe_enabled
+            cls._metrics_tracer_factory.gfe_enabled = True
 
             if cls._metrics_tracer_factory.enabled != enabled:
                 cls._metrics_tracer_factory.enabled = enabled

@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, Mock
 
 import pytest
 
@@ -41,7 +41,7 @@ class MockMetricTracer:
         self.project = None
         self.instance = None
         self.database = None
-        self.gfe_enabled = False
+        self.gfe_enabled = True
         self.record_attempt_start = MagicMock()
         self.record_attempt_completion = MagicMock()
         self.set_method = MagicMock()
@@ -99,10 +99,8 @@ def test_set_metrics_tracer_attributes(interceptor, mock_tracer_ctx):
 
 def test_intercept_with_tracer(interceptor, mock_tracer_ctx):
     # mock_tracer_ctx fixture sets the ContextVar
-    mock_tracer_ctx.gfe_enabled = False
-
-    invoked_response = MagicMock()
-    invoked_response.initial_metadata.return_value = {}
+    invoked_response = Mock()
+    invoked_response.initial_metadata.return_value = []
 
     mock_invoked_method = MagicMock(return_value=invoked_response)
     call_details = MagicMock(
@@ -119,4 +117,5 @@ def test_intercept_with_tracer(interceptor, mock_tracer_ctx):
     assert response == invoked_response
     mock_tracer_ctx.record_attempt_start.assert_called()
     mock_tracer_ctx.record_attempt_completion.assert_called_once()
+    mock_tracer_ctx.record_gfe_metrics.assert_called_once()
     mock_invoked_method.assert_called_once_with("request", call_details)
