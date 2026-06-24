@@ -509,7 +509,7 @@ class ValueBitmaskFilter(RowFilter):
 
     def _to_dict(self) -> dict[str, Any]:
         """Converts the row filter to a dict representation."""
-        return {"value_bitmask_filter": data_v2_pb2.ValueBitmask(mask=self.mask)}
+        return {"value_bitmask_filter": {"mask": self.mask}}
 
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}(mask={self.mask!r})"

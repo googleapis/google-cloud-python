@@ -1995,11 +1995,9 @@ class TestValueBitmaskFilter:
         return ValueBitmaskFilter
 
     def test_to_dict(self):
-        from google.cloud.bigtable_v2.types import data as data_v2_pb2
-
         mask = b"\xaa" * 8
         row_filter = self._target_class()(mask)
-        expected = {"value_bitmask_filter": data_v2_pb2.ValueBitmask(mask=mask)}
+        expected = {"value_bitmask_filter": {"mask": mask}}
         assert row_filter._to_dict() == expected
 
     def test_to_pb(self):
