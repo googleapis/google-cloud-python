@@ -190,6 +190,9 @@ def _compile_bytecode_to_py_expr(func: Callable) -> expression.Expression:
     blocks = build_cfg(instructions, next_offsets)
     order = topological_sort(blocks)
 
+    stack: list[expression.Expression]
+    local_vars: dict[str, expression.Expression]
+
     globals_dict = func.__globals__
     import builtins
 
@@ -219,13 +222,14 @@ def _compile_bytecode_to_py_expr(func: Callable) -> expression.Expression:
         co.co_varnames[co.co_argcount : co.co_argcount + kwonly_argcount]
     )
 
-    initial_local_vars = {
+    initial_local_vars: dict[str, expression.Expression] = {
         name: expression.UnboundVariableExpression(name) for name in param_names
     }
 
     for offset in order:
         block = blocks[offset]
 
+        reach_cond: expression.Expression
         if offset == 0:
             reach_cond = py_exprs.PyObject(True)
         else:
@@ -264,7 +268,7 @@ def _compile_bytecode_to_py_expr(func: Callable) -> expression.Expression:
                 ]
                 stack.append(merge_values(pairs))
 
-            all_vars = set()
+            all_vars: set[str] = set()
             for p in reachable_preds:
                 all_vars.update(block_outputs[p][1].keys())
 
