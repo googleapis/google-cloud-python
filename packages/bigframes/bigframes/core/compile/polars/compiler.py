@@ -381,6 +381,8 @@ if polars_installed:
                 res = input
             elif bigframes.dtypes.is_numeric(from_type):
                 res = input != 0
+            elif from_type == bigframes.dtypes.BYTES_DTYPE:
+                res = input.bin.size() > 0
             elif bigframes.dtypes.is_string_like(from_type):
                 res = input.str.len_chars() > 0
             elif bigframes.dtypes.is_array_like(from_type):
