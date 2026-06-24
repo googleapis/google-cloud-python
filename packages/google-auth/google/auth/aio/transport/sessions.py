@@ -15,6 +15,7 @@
 import asyncio
 from contextlib import asynccontextmanager
 import functools
+import logging
 import time
 from typing import Mapping, Optional, TYPE_CHECKING, Union
 
@@ -24,6 +25,8 @@ from google.auth.aio.credentials import Credentials
 from google.auth.aio.transport import mtls
 from google.auth.exceptions import TimeoutError
 import google.auth.transport._mtls_helper
+
+_LOGGER = logging.getLogger(__name__)
 
 if TYPE_CHECKING:  # pragma: NO COVER
     import aiohttp

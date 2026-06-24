@@ -203,6 +203,7 @@ def get_and_parse_agent_identity_certificate():
 
     # Respect explicit opt-out of mTLS / client certs
     from google.auth.transport import _mtls_helper
+
     env_override = _mtls_helper._check_use_client_cert_env()
     if env_override is False:
         return None
@@ -323,6 +324,7 @@ def should_request_bound_token(cert):
 
     # Respect explicit opt-out of mTLS / client certs
     from google.auth.transport import _mtls_helper
+
     env_override = _mtls_helper._check_use_client_cert_env()
     if env_override is False:
         return False

@@ -944,8 +944,6 @@ class TestCheckUseClientCert(object):
             assert _mtls_helper.check_use_client_cert() is True
 
 
-
-
 class TestMtlsHelper:
     @mock.patch.object(_mtls_helper, "call_client_cert_callback")
     @mock.patch("google.auth.transport._mtls_helper._agent_identity_utils")

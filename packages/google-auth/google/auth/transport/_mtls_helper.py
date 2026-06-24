@@ -449,9 +449,6 @@ def decrypt_private_key(key, passphrase):
     return crypto.dump_privatekey(crypto.FILETYPE_PEM, pkey)
 
 
-
-
-
 def _check_use_client_cert_env():
     use_client_cert = getenv(environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE)
     if use_client_cert is None or use_client_cert == "":
