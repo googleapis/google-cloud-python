@@ -69,6 +69,30 @@ def test_get_env_bool(monkeypatch):
     assert _get_env_bool("TEST_VAR") is None
 
 
+def test_set_test_env_override_clear_specific():
+    """Verify that setting an override to None clears that specific override.
+
+    This is important to ensure tests can reset individual environment overrides
+    without affecting other overrides that might be set for other tests running
+    concurrently or subsequently.
+    """
+    set_test_env_override("TEST_CLEAR", True)
+    assert _get_env_bool("TEST_CLEAR") is True
+    set_test_env_override("TEST_CLEAR", None)
+    assert _get_env_bool("TEST_CLEAR") is None
+
+
+def test_get_env_bool_with_dev_fallback_other_prefix(monkeypatch):
+    """Verify that environment variables without the 'GOOGLE_CLOUD_' prefix fall back directly.
+
+    This is important to ensure that generic or non-GCP environment variables
+    are handled correctly by the fallback logic without triggering GCP-specific
+    replacement logic.
+    """
+    monkeypatch.setenv("OTHER_PREFIX_VAR", "true")
+    assert options._get_env_bool_with_dev_fallback("OTHER_PREFIX_VAR") is True
+
+
 @pytest.mark.parametrize(
     "signal_type, env_vars, client_options, default_val, expected",
     [
