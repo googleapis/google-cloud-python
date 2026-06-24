@@ -1128,6 +1128,10 @@ class TestSystemAsync(SystemTestRunner):
             (b"\x00\x02\x03", b"\x01\x00\x00", False),
         ],
     )
+    @pytest.mark.skipif(
+        bool(os.environ.get(BIGTABLE_EMULATOR)),
+        reason="value_bitmask_filter not supported by emulator",
+    )
     @CrossSync.pytest
     async def test_value_bitmask_filter(
         self, target, temp_rows, cell_value, mask, expect_match
