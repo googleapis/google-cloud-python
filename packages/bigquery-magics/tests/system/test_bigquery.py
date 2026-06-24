@@ -15,19 +15,17 @@
 """System tests for Jupyter/IPython connector."""
 
 import re
+from unittest import mock
 
+import google.cloud.bigquery
+import pandas
 from IPython.testing import globalipapp
 from IPython.utils import io
-import pandas
-import psutil
 
 
 def test_bigquery_magic():
     globalipapp.start_ipython()
     ip = globalipapp.get_ipython()
-    current_process = psutil.Process()
-    conn_count_start = len(current_process.net_connections())
-
     ip.extension_manager.load_extension("bigquery_magics")
     sql = """
         SELECT
@@ -40,10 +38,17 @@ def test_bigquery_magic():
         ORDER BY view_count DESC
         LIMIT 10
     """
-    with io.capture_output() as captured:
-        result = ip.run_cell_magic("bigquery", "--use_rest_api", sql)
+    original_close = google.cloud.bigquery.Client.close
+    with mock.patch.object(
+        google.cloud.bigquery.Client, "close", autospec=True
+    ) as mock_close:
+        mock_close.side_effect = original_close
 
-    conn_count_end = len(current_process.net_connections())
+        with io.capture_output() as captured:
+            result = ip.run_cell_magic("bigquery", "--use_rest_api", sql)
+
+        # Verify that client close is explicitly called to release sockets.
+        assert mock_close.called
 
     lines = re.split("\n|\r", captured.stdout)
     # Removes blanks & terminal code (result of display clearing)
@@ -53,8 +58,3 @@ def test_bigquery_magic():
     assert isinstance(result, pandas.DataFrame)
     assert len(result) == 10  # verify row count
     assert list(result) == ["url", "view_count"]  # verify column names
-
-    # NOTE: For some reason, the number of open sockets is sometimes one *less*
-    # than expected when running system tests on Kokoro, thus using the <= assertion.
-    # That's still fine, however, since the sockets are apparently not leaked.
-    assert conn_count_end <= conn_count_start  # system resources are released
