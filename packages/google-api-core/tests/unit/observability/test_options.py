@@ -76,10 +76,17 @@ def test_set_test_env_override_clear_specific():
     without affecting other overrides that might be set for other tests running
     concurrently or subsequently.
     """
-    set_test_env_override("TEST_CLEAR", True)
-    assert _get_env_bool("TEST_CLEAR") is True
-    set_test_env_override("TEST_CLEAR", None)
-    assert _get_env_bool("TEST_CLEAR") is None
+    set_test_env_override("TEST_A", True)
+    set_test_env_override("TEST_B", True)
+    assert _get_env_bool("TEST_A") is True
+    assert _get_env_bool("TEST_B") is True
+
+    # Clear only TEST_A
+    set_test_env_override("TEST_A", None)
+
+    # Verify TEST_A is cleared but TEST_B remains
+    assert _get_env_bool("TEST_A") is None
+    assert _get_env_bool("TEST_B") is True
 
 
 def test_get_env_bool_with_dev_fallback_other_prefix(monkeypatch):
