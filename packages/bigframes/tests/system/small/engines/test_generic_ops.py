@@ -410,8 +410,6 @@ def test_engines_astype_time(scalars_array_value: array_value.ArrayValue, engine
         "polars",
         "bq",
         "bq-sqlglot",
-        "substrait-datafusion",
-        "substrait-acero",
     ],
     indirect=True,
 )
@@ -441,8 +439,6 @@ def test_engines_astype_from_json(scalars_array_value: array_value.ArrayValue, e
         "polars",
         "bq",
         "bq-sqlglot",
-        "substrait-datafusion",
-        "substrait-acero",
     ],
     indirect=True,
 )

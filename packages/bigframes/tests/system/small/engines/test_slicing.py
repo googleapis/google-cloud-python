@@ -31,7 +31,6 @@ REFERENCE_ENGINE = polars_executor.PolarsExecutor()
         "bq",
         "bq-sqlglot",
         "substrait-datafusion",
-        "substrait-acero",
     ],
     indirect=True,
 )

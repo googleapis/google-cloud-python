@@ -13,7 +13,7 @@
 # limitations under the License.
 
 import dataclasses
-from typing import cast
+from typing import Literal, cast
 
 import numpy as np
 import pandas as pd
@@ -36,6 +36,7 @@ from bigframes.operations import (
 @dataclasses.dataclass
 class CoerceArgsRule(op_lowering.OpLoweringRule):
     op_type: type[ops.BinaryOp]
+    dialect: Literal["polars", "substrait"]
 
     @property
     def op(self) -> type[ops.ScalarOp]:
@@ -43,7 +44,9 @@ class CoerceArgsRule(op_lowering.OpLoweringRule):
 
     def lower(self, expr: expression.OpExpression) -> expression.Expression:
         assert isinstance(expr.op, self.op_type)
-        larg, rarg = _coerce_comparables(expr.children[0], expr.children[1])
+        larg, rarg = _coerce_comparables(
+            expr.children[0], expr.children[1], dialect=self.dialect
+        )
         return expr.op.as_expr(larg, rarg)
 
 
@@ -285,14 +288,20 @@ class LowerModRule(op_lowering.OpLoweringRule):
         return wo_bools
 
 
+@dataclasses.dataclass
 class LowerAsTypeRule(op_lowering.OpLoweringRule):
+    dialect: Literal["polars", "substrait"]
+
     @property
     def op(self) -> type[ops.ScalarOp]:
         return ops.AsTypeOp
 
     def lower(self, expr: expression.OpExpression) -> expression.Expression:
         assert isinstance(expr.op, ops.AsTypeOp)
-        return _lower_cast(expr.op, expr.inputs[0])
+        if self.dialect == "polars":
+            return _lower_cast_to_polars(expr.op, expr.inputs[0])
+        elif self.dialect == "substrait":
+            return _lower_cast_to_substrait(expr.op, expr.inputs[0])
 
 
 def invert_bytes(byte_string):
@@ -392,6 +401,7 @@ def _coerce_comparables(
     expr2: expression.Expression,
     *,
     bools_only: bool = False,
+    dialect: Literal["polars", "substrait"],
 ):
     if bools_only:
         if (
@@ -402,13 +412,19 @@ def _coerce_comparables(
 
     target_type = dtypes.coerce_to_common(expr1.output_type, expr2.output_type)
     if expr1.output_type != target_type:
-        expr1 = _lower_cast(ops.AsTypeOp(target_type), expr1)
+        if dialect == "polars":
+            expr1 = _lower_cast_to_polars(ops.AsTypeOp(target_type), expr1)
+        elif dialect == "substrait":
+            expr1 = _lower_cast_to_substrait(ops.AsTypeOp(target_type), expr1)
     if expr2.output_type != target_type:
-        expr2 = _lower_cast(ops.AsTypeOp(target_type), expr2)
+        if dialect == "polars":
+            expr2 = _lower_cast_to_polars(ops.AsTypeOp(target_type), expr2)
+        elif dialect == "substrait":
+            expr2 = _lower_cast_to_substrait(ops.AsTypeOp(target_type), expr2)
     return expr1, expr2
 
 
-def _lower_cast(cast_op: ops.AsTypeOp, arg: expression.Expression):
+def _lower_cast_to_polars(cast_op: ops.AsTypeOp, arg: expression.Expression):
     if arg.output_type == cast_op.to_type:
         return arg
     if (
@@ -435,8 +451,6 @@ def _lower_cast(cast_op: ops.AsTypeOp, arg: expression.Expression):
     ):
         return datetime_ops.StrftimeOp("%Y-%m-%d %H:%M:%S%.6f%:::z").as_expr(arg)
     if arg.output_type == dtypes.BOOL_DTYPE and cast_op.to_type == dtypes.STRING_DTYPE:
-        # bool -> decimal needs two-step cast
-        new_arg = ops.AsTypeOp(to_type=dtypes.INT_DTYPE).as_expr(arg)
         is_true_cond = ops.eq_op.as_expr(arg, expression.const(True))
         is_false_cond = ops.eq_op.as_expr(arg, expression.const(False))
         return ops.CaseWhenOp().as_expr(
@@ -456,6 +470,19 @@ def _lower_cast(cast_op: ops.AsTypeOp, arg: expression.Expression):
         )
     if dtypes.is_numeric(arg.output_type) and cast_op.to_type == dtypes.TIME_DTYPE:
         return cast_op.as_expr(ops.mul_op.as_expr(expression.const(1000), arg))
+    return cast_op.as_expr(arg)
+
+
+def _lower_cast_to_substrait(cast_op: ops.AsTypeOp, arg: expression.Expression):
+    if arg.output_type == dtypes.BOOL_DTYPE and cast_op.to_type == dtypes.STRING_DTYPE:
+        is_true_cond = ops.eq_op.as_expr(arg, expression.const(True))
+        is_false_cond = ops.eq_op.as_expr(arg, expression.const(False))
+        return ops.CaseWhenOp().as_expr(
+            is_true_cond,
+            expression.const("True"),
+            is_false_cond,
+            expression.const("False"),
+        )
     return cast_op.as_expr(arg)
 
 
@@ -500,7 +527,7 @@ class LowerEqNullsMatchRule(op_lowering.OpLoweringRule):
 
 
 POLARS_LOWER_COMPARISONS = tuple(
-    CoerceArgsRule(op)
+    CoerceArgsRule(op, dialect="polars")
     for op in (
         comparison_ops.EqOp,
         comparison_ops.EqNullsMatchOp,
@@ -513,7 +540,7 @@ POLARS_LOWER_COMPARISONS = tuple(
 )
 
 SUBSTRAIT_LOWER_COMPARISONS = tuple(
-    CoerceArgsRule(op)
+    CoerceArgsRule(op, dialect="substrait")
     for op in (
         comparison_ops.EqOp,
         comparison_ops.NeOp,
@@ -532,7 +559,7 @@ POLARS_LOWERING_RULES = (
     LowerDivRule(),
     LowerFloorDivRule(),
     LowerModRule(),
-    LowerAsTypeRule(),
+    LowerAsTypeRule(dialect="polars"),
     LowerInvertOp(),
     LowerIsinOp(),
     LowerLenOp(),
@@ -543,6 +570,7 @@ POLARS_LOWERING_RULES = (
 SUBSTRAIT_LOWERING_RULES = (
     LowerEqNullsMatchRule(),
     *SUBSTRAIT_LOWER_COMPARISONS,
+    LowerAsTypeRule(dialect="substrait"),
 )
 
 
