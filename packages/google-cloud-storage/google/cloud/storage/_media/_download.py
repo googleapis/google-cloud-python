@@ -51,6 +51,10 @@ class DownloadBase(object):
             See the retry.py source code and docstrings in this package
             (google.cloud.storage.retry) for information on retry types and how
             to configure them.
+        client_info_bucket_name (Optional[str]): The bucket name to include in
+            client info headers.
+        client_info_object_name (Optional[str]): The object name to include in
+            client info headers.
 
     Attributes:
         media_url (str): The URL containing the media to be downloaded.
@@ -493,12 +497,19 @@ class ChunkedDownload(DownloadBase):
 
         if self._finished:
             requested_length = None
-            if self.start is not None and self.start < 0 and self.end is None:
-                requested_length = -self.start
-            elif self.start is not None and self.end is not None:
-                requested_length = self.end - self.start + 1
-            elif self.start is None and self.end is not None:
-                requested_length = self.end + 1
+            if self.start is None:
+                if self.end is None:
+                    requested_length = self.total_bytes
+                else:
+                    requested_length = self.end + 1
+            else:
+                if self.end is not None:
+                    requested_length = self.end - self.start + 1
+                else:
+                    if self.start < 0:
+                        requested_length = -self.start
+                    elif self.total_bytes is not None:
+                        requested_length = self.total_bytes - self.start
 
             if (
                 requested_length is not None
