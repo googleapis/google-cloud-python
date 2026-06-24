@@ -223,8 +223,10 @@ class TestBigtableDataClient:
     def test__ping_and_warm_instances(self):
         """test ping and warm with mocked asyncio.gather"""
         client_mock = mock.Mock()
-        client_mock._execute_ping_and_warms = lambda *args: (
-            self._get_target_class()._execute_ping_and_warms(client_mock, *args)
+        client_mock._execute_ping_and_warms = (
+            lambda *args: self._get_target_class()._execute_ping_and_warms(
+                client_mock, *args
+            )
         )
         with mock.patch.object(
             CrossSync._Sync_Impl, "gather_partials", CrossSync._Sync_Impl.Mock()
@@ -267,8 +269,10 @@ class TestBigtableDataClient:
     def test__ping_and_warm_single_instance(self):
         """should be able to call ping and warm with single instance"""
         client_mock = mock.Mock()
-        client_mock._execute_ping_and_warms = lambda *args: (
-            self._get_target_class()._execute_ping_and_warms(client_mock, *args)
+        client_mock._execute_ping_and_warms = (
+            lambda *args: self._get_target_class()._execute_ping_and_warms(
+                client_mock, *args
+            )
         )
         with mock.patch.object(
             CrossSync._Sync_Impl, "gather_partials", CrossSync._Sync_Impl.Mock()
@@ -1340,11 +1344,11 @@ class TestReadRows:
 
     def _make_table(self, *args, **kwargs):
         client_mock = mock.Mock()
-        client_mock._register_instance.side_effect = lambda *args, **kwargs: (
-            CrossSync._Sync_Impl.yield_to_event_loop()
+        client_mock._register_instance.side_effect = (
+            lambda *args, **kwargs: CrossSync._Sync_Impl.yield_to_event_loop()
         )
-        client_mock._remove_instance_registration.side_effect = lambda *args, **kwargs: (
-            CrossSync._Sync_Impl.yield_to_event_loop()
+        client_mock._remove_instance_registration.side_effect = (
+            lambda *args, **kwargs: CrossSync._Sync_Impl.yield_to_event_loop()
         )
         kwargs["instance_id"] = kwargs.get(
             "instance_id", args[0] if args else "instance"
@@ -1820,8 +1824,9 @@ class TestReadRowsSharded:
                 with mock.patch.object(
                     table.client._gapic_client, "read_rows"
                 ) as read_rows:
-                    read_rows.side_effect = lambda *args, **kwargs: (
-                        CrossSync._Sync_Impl.TestReadRows._make_gapic_stream(
+                    read_rows.side_effect = (
+                        lambda *args,
+                        **kwargs: CrossSync._Sync_Impl.TestReadRows._make_gapic_stream(
                             [
                                 CrossSync._Sync_Impl.TestReadRows._make_chunk(row_key=k)
                                 for k in args[0].rows.row_keys
