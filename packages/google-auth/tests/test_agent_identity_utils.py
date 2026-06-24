@@ -151,12 +151,10 @@ class TestAgentIdentityUtils:
         assert not _agent_identity_utils.should_request_bound_token(mock.sentinel.cert)
 
     @mock.patch("google.auth._agent_identity_utils._is_agent_identity_certificate")
-    @mock.patch("google.auth.transport._mtls_helper.is_transport_mtls_capable")
     def test_should_request_bound_token_explicit_use_client_cert_false(
-        self, mock_capable, mock_is_agent, monkeypatch
+        self, mock_is_agent, monkeypatch
     ):
         mock_is_agent.return_value = True
-        mock_capable.return_value = True
         monkeypatch.setenv(
             environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE,
             "false",
@@ -164,30 +162,26 @@ class TestAgentIdentityUtils:
         assert not _agent_identity_utils.should_request_bound_token(mock.sentinel.cert)
 
     @mock.patch("google.auth._agent_identity_utils._is_agent_identity_certificate")
-    @mock.patch("google.auth.transport._mtls_helper.is_transport_mtls_capable")
-    def test_should_request_bound_token_auto_enablement_capable(
-        self, mock_capable, mock_is_agent, monkeypatch
+    def test_should_request_bound_token_explicit_use_client_cert_invalid(
+        self, mock_is_agent, monkeypatch
     ):
         mock_is_agent.return_value = True
-        mock_capable.return_value = True
+        monkeypatch.setenv(
+            environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE,
+            "foo",
+        )
+        assert not _agent_identity_utils.should_request_bound_token(mock.sentinel.cert)
+
+    @mock.patch("google.auth._agent_identity_utils._is_agent_identity_certificate")
+    def test_should_request_bound_token_auto_enablement(
+        self, mock_is_agent, monkeypatch
+    ):
+        mock_is_agent.return_value = True
         monkeypatch.delenv(
             environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE,
             raising=False,
         )
         assert _agent_identity_utils.should_request_bound_token(mock.sentinel.cert)
-
-    @mock.patch("google.auth._agent_identity_utils._is_agent_identity_certificate")
-    @mock.patch("google.auth.transport._mtls_helper.is_transport_mtls_capable")
-    def test_should_request_bound_token_auto_enablement_incapable(
-        self, mock_capable, mock_is_agent, monkeypatch
-    ):
-        mock_is_agent.return_value = True
-        mock_capable.return_value = False
-        monkeypatch.delenv(
-            environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE,
-            raising=False,
-        )
-        assert not _agent_identity_utils.should_request_bound_token(mock.sentinel.cert)
 
     def test_get_agent_identity_certificate_path_success(self, tmpdir, monkeypatch):
         cert_path = tmpdir.join("cert.pem")
@@ -485,6 +479,18 @@ class TestAgentIdentityUtils:
         monkeypatch.setenv(
             environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE,
             "false",
+        )
+        result = _agent_identity_utils.get_and_parse_agent_identity_certificate()
+        assert result is None
+        mock_get_path.assert_not_called()
+
+    @mock.patch("google.auth._agent_identity_utils.get_agent_identity_certificate_path")
+    def test_get_and_parse_agent_identity_certificate_use_client_cert_invalid(
+        self, mock_get_path, monkeypatch
+    ):
+        monkeypatch.setenv(
+            environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE,
+            "foo",
         )
         result = _agent_identity_utils.get_and_parse_agent_identity_certificate()
         assert result is None

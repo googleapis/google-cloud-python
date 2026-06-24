@@ -76,9 +76,8 @@ class TestSessionsMtls:
             mock_exists.return_value = False
             mock_creds = mock.AsyncMock(spec=credentials.Credentials)
             session = sessions.AsyncAuthorizedSession(mock_creds)
-
-            with pytest.raises(exceptions.MutualTLSChannelError):
-                await session.configure_mtls_channel()
+            await session.configure_mtls_channel()
+            assert session._is_mtls is False
 
     @pytest.mark.asyncio
     async def test_configure_mtls_channel_invalid_format(self):
@@ -110,9 +109,8 @@ class TestSessionsMtls:
             mock_exists.return_value = True
             mock_creds = mock.AsyncMock(spec=credentials.Credentials)
             session = sessions.AsyncAuthorizedSession(mock_creds)
-
-            with pytest.raises(exceptions.MutualTLSChannelError):
-                await session.configure_mtls_channel()
+            await session.configure_mtls_channel()
+            assert session._is_mtls is False
 
     @pytest.mark.asyncio
     async def test_configure_mtls_channel_mock_callback(self):
@@ -163,6 +161,5 @@ class TestSessionsMtls:
             session = sessions.AsyncAuthorizedSession(
                 mock_creds, auth_request=mock_auth_request
             )
-
-            with pytest.raises(exceptions.MutualTLSChannelError):
-                await session.configure_mtls_channel()
+            await session.configure_mtls_channel()
+            assert session._is_mtls is False

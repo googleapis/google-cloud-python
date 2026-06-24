@@ -443,8 +443,7 @@ class AuthorizedSession(requests.Session):
 
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If mutual TLS channel
-                creation failed for any reason (e.g. missing dependencies, missing
-                certificates when explicitly requested, or custom request adapter issues).
+                creation failed for any reason.
         """
         use_client_cert = google.auth.transport._mtls_helper.check_use_client_cert()
         if not use_client_cert:
@@ -453,6 +452,7 @@ class AuthorizedSession(requests.Session):
         try:
             import OpenSSL
         except ImportError as caught_exc:
+            self._is_mtls = False
             new_exc = exceptions.MutualTLSChannelError(caught_exc)
             raise new_exc from caught_exc
 
@@ -469,18 +469,13 @@ class AuthorizedSession(requests.Session):
                 mtls_adapter = _MutualTlsAdapter(cert, key)
                 self._cached_cert = cert
                 self.mount("https://", mtls_adapter)
-            else:
-                # If mTLS is configured or intended, but we fail to find client certificates,
-                # we must fail fast by raising an error instead of silently falling back to
-                # standard TLS.
-                raise exceptions.MutualTLSChannelError(
-                    "mTLS channel configuration failed because no client certificates were found."
-                )
         except (
             exceptions.ClientCertError,
             ImportError,
+            OSError,
             OpenSSL.crypto.Error,
         ) as caught_exc:
+            self._is_mtls = False
             new_exc = exceptions.MutualTLSChannelError(caught_exc)
             raise new_exc from caught_exc
 

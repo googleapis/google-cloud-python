@@ -332,8 +332,7 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
 
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If mutual TLS channel
-                creation failed for any reason (e.g., missing dependencies, or missing
-                certificates when mTLS was explicitly/implicitly requested).
+                creation failed for any reason.
         """
         use_client_cert = transport._mtls_helper.check_use_client_cert()
         if not use_client_cert:
@@ -344,6 +343,7 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
         try:
             import OpenSSL
         except ImportError as caught_exc:
+            self._is_mtls = False
             new_exc = exceptions.MutualTLSChannelError(caught_exc)
             raise new_exc from caught_exc
 
@@ -356,17 +356,15 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
                 self.http = _make_mutual_tls_http(cert, key)
                 self._cached_cert = cert
             else:
-                # If mTLS is configured or intended, but we fail to find client certificates,
-                # we must fail fast by raising an error instead of silently falling back to
-                # standard TLS.
-                raise exceptions.MutualTLSChannelError(
-                    "mTLS channel configuration failed because no client certificates were found."
-                )
+                self.http = _make_default_http()
+                self._is_mtls = False
         except (
             exceptions.ClientCertError,
             ImportError,
+            OSError,
             OpenSSL.crypto.Error,
         ) as caught_exc:
+            self._is_mtls = False
             new_exc = exceptions.MutualTLSChannelError(caught_exc)
             raise new_exc from caught_exc
 

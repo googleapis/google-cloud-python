@@ -210,24 +210,20 @@ class AsyncAuthorizedSession:
                             await old_auth_request.close()
                         else:
                             self._is_mtls = False
-                            # If a custom request handler was provided, the library cannot configure
-                            # the connection to use mTLS. Raise an error instead of silently falling back.
-                            raise exceptions.MutualTLSChannelError(
-                                "mTLS was configured/enabled but client certificate or private key could not be loaded."
+                            _LOGGER.warning(
+                                "Attempted to establish mTLS, but a custom async transport was provided. "
+                                "google-auth cannot automatically configure custom transports for mTLS. "
+                                "Falling back to standard TLS. If your custom transport is not manually "
+                                "configured for mTLS, you may encounter 401 Unauthorized errors when "
+                                "using Certificate-Bound Tokens."
                             )
-                    else:
-                        # If mTLS is configured or intended, but we fail to find client certificates,
-                        # we must fail fast by raising an error instead of silently falling back to
-                        # standard TLS.
-                        raise exceptions.MutualTLSChannelError(
-                            "mTLS was configured/enabled but client certificate or private key could not be loaded."
-                        )
 
                 except (
                     exceptions.ClientCertError,
                     ImportError,
                     OSError,
                 ) as caught_exc:
+                    self._is_mtls = False
                     new_exc = exceptions.MutualTLSChannelError(caught_exc)
                     raise new_exc from caught_exc
 
