@@ -86,6 +86,8 @@ jobs:
           allow-prereleases: true
           cache: 'pip'
           cache-dependency-path: '**/requirements*.txt'
+      - name: Install System Deps
+        run: sudo apt-get update && sudo apt-get install -y pandoc
       - name: Run showcase unit tests and template coverage
         run: |
           pip install nox
