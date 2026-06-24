@@ -93,6 +93,7 @@ from bigframes.operations.frequency_ops import (
 from bigframes.operations.generic_ops import (
     AsTypeOp,
     CaseWhenOp,
+    CoerceToBoolOp,
     IsInOp,
     MapOp,
     RowKey,
@@ -256,6 +257,7 @@ __all__ = [
     "maximum_op",
     "minimum_op",
     "notnull_op",
+    "CoerceToBoolOp",
     "coerce_to_bool_op",
     "RowKey",
     "SqlScalarOp",
