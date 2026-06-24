@@ -408,6 +408,42 @@ def _compile_bytecode_to_py_expr(func: Callable) -> expression.Expression:
                     raise ValueError(f"Invalid COPY index or stack too small: {idx}")
                 stack.append(stack[-idx])
 
+            elif opname == "UNARY_NOT":
+                if not stack:
+                    raise ValueError("Stack is empty")
+                val = stack.pop()
+                val_bool = py_exprs.Call(
+                    py_exprs.PyObject(generic_ops.coerce_to_bool_op),
+                    (val,),
+                )
+                stack.append(
+                    py_exprs.Call(
+                        py_exprs.PyObject(operator.not_),
+                        (val_bool,),
+                    )
+                )
+
+            elif opname == "SWAP":
+                idx = inst.arg
+                if idx is None or idx < 1 or len(stack) < idx:
+                    raise ValueError(f"Invalid SWAP index or stack too small: {idx}")
+                stack[-1], stack[-idx] = stack[-idx], stack[-1]
+
+            elif opname == "ROT_TWO":
+                if len(stack) < 2:
+                    raise ValueError("Stack has < 2 elements")
+                stack[-1], stack[-2] = stack[-2], stack[-1]
+
+            elif opname == "ROT_THREE":
+                if len(stack) < 3:
+                    raise ValueError("Stack has < 3 elements")
+                stack[-1], stack[-2], stack[-3] = stack[-2], stack[-3], stack[-1]
+
+            elif opname == "DUP_TOP":
+                if not stack:
+                    raise ValueError("Stack is empty")
+                stack.append(stack[-1])
+
             elif opname == "BINARY_OP":
                 if len(stack) < 2:
                     raise ValueError("Stack is empty")

@@ -429,3 +429,25 @@ def test_local_series_apply_w_logical_and_mixed(
 
     with pytest.raises(TypeError, match="Cannot coerce"):
         scalars_df_index["int64_col"].apply(logical_and_mixed)
+
+
+def test_local_series_apply_w_logical_not_val(scalars_df_index, scalars_pandas_df_index):
+    def logical_not_val(x):
+        return not x
+
+    bf_result = scalars_df_index["bool_col"].dropna().apply(logical_not_val).to_pandas()
+    pd_result = scalars_pandas_df_index["bool_col"].dropna().apply(logical_not_val)
+
+    assert_series_equal(bf_result, pd_result, check_dtype=False)
+
+
+def test_local_series_apply_w_compare_chain(scalars_df_index, scalars_pandas_df_index):
+    def compare_chain(x):
+        return 0 < x < 1000
+
+    bf_result = (
+        scalars_df_index["int64_col"].dropna().apply(compare_chain).to_pandas()
+    )
+    pd_result = scalars_pandas_df_index["int64_col"].dropna().apply(compare_chain)
+
+    assert_series_equal(bf_result, pd_result, check_dtype=False)
