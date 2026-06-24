@@ -3553,9 +3553,8 @@ class TestExecuteQueryAsync:
         request = execute_query_mock.call_args[0][0]
         assert "user_id" in request.view_parameters
         assert request.view_parameters["user_id"].string_value == "alice"
-        assert type(request.view_parameters["user_id"].type_).to_dict(
-            request.view_parameters["user_id"].type_
-        ) == {"string_type": {}}
+        val_type = request.view_parameters["user_id"].type_
+        assert type(val_type).to_dict(val_type) == {"string_type": {}}
 
     @CrossSync.pytest
     async def test_execute_query_with_view_parameters_invalid_type(
