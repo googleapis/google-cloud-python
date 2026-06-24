@@ -263,7 +263,7 @@ class TestStreamingRetry(Test_BaseRetry):
         with pytest.raises(TypeError) as exc_info:
             # calling first send with non-None input should raise a TypeError
             result.send("can not send to fresh generator")
-            assert exc_info.match("can't send non-None value")
+        assert exc_info.match("can't send non-None value")
         # initiate iteration with None
         result = retry_(self._generator_mock)(error_on=3)
         assert result.send(None) == 0
