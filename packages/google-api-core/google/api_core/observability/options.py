@@ -1,8 +1,7 @@
 """Observability environment variable and client options resolution helpers."""
 
 import os
-import warnings
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, Optional, Union
 
 # Allowed truthy and falsy patterns for environment variables
 _TRUTHY_VALUES = ("y", "yes", "t", "true", "on", "1")
@@ -66,15 +65,30 @@ def _get_env_bool_with_dev_fallback(name: str) -> Optional[bool]:
 
 
 def is_signal_enabled(
-    service_name: str,
     signal_type: str,
     client_options: Optional[Union[Dict[str, Any], Any]] = None,
     default: bool = False,
-    legacy_vars: Optional[List[str]] = None,
 ) -> bool:
-    """Determines if a telemetry signal is enabled."""
-    service_upper = service_name.upper().replace("-", "_")
-    signal_upper = signal_type.upper()
+    """Determines if a telemetry signal is enabled.
+
+    Resolves settings in the following order of precedence:
+    1. Programmatic overrides in client_options (checks tracer_provider)
+    2. Language-wide Environment Variable: GOOGLE_CLOUD_PYTHON_TRACING_ENABLED
+       (natively checks for an EXPERIMENTAL prefix variant first)
+    3. Default fallback
+
+    Args:
+        signal_type: The signal type: must be 'tracing'.
+        client_options: A dictionary or object representing client configuration.
+        default: Fallback boolean if no options or env variables match.
+
+    Returns:
+        bool: True if the signal is resolved to enabled, False otherwise.
+    """
+    if signal_type != "tracing":
+        raise ValueError(
+            f"Invalid signal_type: {signal_type!r}. Only 'tracing' is supported."
+        )
 
     # 1. Resolve Programmatic Options First
     if client_options is not None:
@@ -83,51 +97,14 @@ def is_signal_enabled(
             if isinstance(client_options, dict)
             else getattr(client_options, "__dict__", {})
         )
-        option_key = f"enable_{signal_type.lower()}"
-        provider_key = f"{signal_type.rstrip('s').lower()}_provider"
 
-        if options_dict.get(option_key) is not None:
-            return bool(options_dict.get(option_key))
-        if options_dict.get(provider_key) is not None:
+        if options_dict.get("tracer_provider") is not None:
             return True
 
-    # 2. Language & Service-specific
-    val = _get_env_bool_with_dev_fallback(
-        f"GOOGLE_CLOUD_PYTHON_{service_upper}_{signal_upper}_ENABLED"
-    )
+    # 2. Check Language-Wide Environment Variable
+    val = _get_env_bool_with_dev_fallback("GOOGLE_CLOUD_PYTHON_TRACING_ENABLED")
     if val is not None:
         return val
 
-    # 3. Language-wide Global
-    val = _get_env_bool_with_dev_fallback(f"GOOGLE_CLOUD_PYTHON_{signal_upper}_ENABLED")
-    if val is not None:
-        return val
-
-    # 4. Cross-language Service-specific
-    val = _get_env_bool_with_dev_fallback(
-        f"GOOGLE_CLOUD_{service_upper}_{signal_upper}_ENABLED"
-    )
-    if val is not None:
-        return val
-
-    # 5. Cross-language Global
-    val = _get_env_bool_with_dev_fallback(f"GOOGLE_CLOUD_{signal_upper}_ENABLED")
-    if val is not None:
-        return val
-
-    # 6. Legacy Variables
-    if legacy_vars:
-        for legacy_var in legacy_vars:
-            val = _get_env_bool(legacy_var)
-            if val is not None:
-                warnings.warn(
-                    f"Environment variable {legacy_var!r} is deprecated and will be removed "
-                    "in a future release. Please migrate to the standardized "
-                    f"GOOGLE_CLOUD_PYTHON_{service_upper}_{signal_upper}_ENABLED instead.",
-                    DeprecationWarning,
-                    stacklevel=2,
-                )
-                return val
-
-    # 7. Default Fallback
+    # 3. Default Fallback
     return default
