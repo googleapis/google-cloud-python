@@ -15,9 +15,9 @@
 import pathlib
 from typing import Generator
 
+import numpy as np
 import pandas as pd
 import pandas.testing
-import numpy as np
 import pytest
 
 import bigframes
@@ -378,7 +378,9 @@ def test_local_series_apply_w_short_circuit(scalars_df_index, scalars_pandas_df_
     pd.testing.assert_series_equal(bf_result, pd_result, check_dtype=False)
 
 
-def test_local_series_apply_w_var_assignments(scalars_df_index, scalars_pandas_df_index):
+def test_local_series_apply_w_var_assignments(
+    scalars_df_index, scalars_pandas_df_index
+):
     def var_assign(x):
         val = x
         if x > 0:

@@ -19,8 +19,8 @@ import sys
 from types import ModuleType
 from typing import Callable
 
-from bigframes import dtypes
 import bigframes.core.py_expressions as py_exprs
+from bigframes import dtypes
 from bigframes.core import expression
 from bigframes.operations import generic_ops
 
@@ -87,23 +87,24 @@ def get_block_starts(instructions: list[dis.Instruction]) -> set[int]:
     return starts
 
 
-def get_block_successors(
-    block: BasicBlock, instructions_by_offset: dict[int, dis.Instruction]
-) -> list[int]:
+def get_block_successors(block: BasicBlock, next_offsets: dict[int, int]) -> list[int]:
     if not block.instructions:
         return []
     last_inst = block.instructions[-1]
     opname = last_inst.opname
     offset = last_inst.offset
 
-    sorted_offsets = sorted(instructions_by_offset.keys())
-    idx = sorted_offsets.index(offset)
-    next_offset = sorted_offsets[idx + 1] if idx + 1 < len(sorted_offsets) else None
+    next_offset = next_offsets.get(offset)
 
     if opname in ("RETURN_VALUE", "RETURN_CONST"):
         return []
 
-    if opname in ("JUMP_FORWARD", "JUMP_ABSOLUTE", "JUMP_BACKWARD"):
+    if opname in (
+        "JUMP_FORWARD",
+        "JUMP_ABSOLUTE",
+        "JUMP_BACKWARD",
+        "JUMP_BACKWARD_NO_INTERRUPT",
+    ):
         return [last_inst.argval]
 
     if "JUMP" in opname and ("IF" in opname or "OR_POP" in opname):
@@ -117,9 +118,10 @@ def get_block_successors(
     return []
 
 
-def build_cfg(instructions: list[dis.Instruction]) -> dict[int, BasicBlock]:
+def build_cfg(
+    instructions: list[dis.Instruction], next_offsets: dict[int, int]
+) -> dict[int, BasicBlock]:
     starts = sorted(list(get_block_starts(instructions)))
-    instructions_by_offset = {inst.offset: inst for inst in instructions}
 
     blocks: dict[int, BasicBlock] = {}
     for i, start in enumerate(starts):
@@ -132,7 +134,7 @@ def build_cfg(instructions: list[dis.Instruction]) -> dict[int, BasicBlock]:
         blocks[start] = BasicBlock(start_offset=start, instructions=block_insts)
 
     for block in blocks.values():
-        successors = get_block_successors(block, instructions_by_offset)
+        successors = get_block_successors(block, next_offsets)
         block.successors = successors
         for succ in successors:
             blocks[succ].predecessors.append(block.start_offset)
@@ -180,12 +182,17 @@ def merge_values(
 
 def _compile_bytecode_to_py_expr(func: Callable) -> expression.Expression:
     instructions = list(dis.get_instructions(func))
+    next_offsets = {
+        inst.offset: next_inst.offset
+        for inst, next_inst in zip(instructions, instructions[1:])
+    }
 
-    blocks = build_cfg(instructions)
+    blocks = build_cfg(instructions, next_offsets)
     order = topological_sort(blocks)
 
     globals_dict = func.__globals__
     import builtins
+
     builtins_dict = builtins.__dict__
     closure_dict = {}
     if func.__closure__:
@@ -206,7 +213,7 @@ def _compile_bytecode_to_py_expr(func: Callable) -> expression.Expression:
     returns: list[tuple[expression.Expression, expression.Expression]] = []
 
     co = func.__code__
-    param_names = list(co.co_varnames[:co.co_argcount])
+    param_names = list(co.co_varnames[: co.co_argcount])
     kwonly_argcount = co.co_kwonlyargcount
     param_names.extend(
         co.co_varnames[co.co_argcount : co.co_argcount + kwonly_argcount]
@@ -287,14 +294,10 @@ def _compile_bytecode_to_py_expr(func: Callable) -> expression.Expression:
             ):
                 var1, var2 = inst.argval
                 stack.append(
-                    local_vars.get(
-                        var1, expression.UnboundVariableExpression(var1)
-                    )
+                    local_vars.get(var1, expression.UnboundVariableExpression(var1))
                 )
                 stack.append(
-                    local_vars.get(
-                        var2, expression.UnboundVariableExpression(var2)
-                    )
+                    local_vars.get(var2, expression.UnboundVariableExpression(var2))
                 )
 
             elif opname.startswith("LOAD_FAST"):
@@ -390,9 +393,7 @@ def _compile_bytecode_to_py_expr(func: Callable) -> expression.Expression:
                 val = stack.pop()
                 stack.append(
                     py_exprs.Call(
-                        py_exprs.PyObject(
-                            generic_ops.AsTypeOp(dtypes.BOOL_DTYPE)
-                        ),
+                        py_exprs.PyObject(generic_ops.AsTypeOp(dtypes.BOOL_DTYPE)),
                         (val,),
                     )
                 )
@@ -463,9 +464,7 @@ def _compile_bytecode_to_py_expr(func: Callable) -> expression.Expression:
                 if not stack:
                     raise ValueError("Stack is empty")
                 target = stack.pop()
-                stack.append(
-                    py_exprs.Call(py_exprs.PyObject(operator.pos), (target,))
-                )
+                stack.append(py_exprs.Call(py_exprs.PyObject(operator.pos), (target,)))
 
             elif opname == "CALL_INTRINSIC_1":
                 if inst.argrepr == "INTRINSIC_UNARY_POSITIVE":
@@ -473,9 +472,7 @@ def _compile_bytecode_to_py_expr(func: Callable) -> expression.Expression:
                         raise ValueError("Stack is empty")
                     target = stack.pop()
                     stack.append(
-                        py_exprs.Call(
-                            py_exprs.PyObject(operator.pos), (target,)
-                        )
+                        py_exprs.Call(py_exprs.PyObject(operator.pos), (target,))
                     )
                 else:
                     raise ValueError(f"Unsupported intrinsic: {inst.argrepr}")
@@ -484,7 +481,7 @@ def _compile_bytecode_to_py_expr(func: Callable) -> expression.Expression:
                 num_args = inst.arg
                 assert num_args is not None
                 if len(stack) < num_args:
-                    raise ValueError("Stack has < 2 elements")
+                    raise ValueError(f"Stack has fewer than {num_args} elements")
                 args = [stack.pop() for _ in range(num_args)][::-1]
                 if len(stack) >= 2 and stack[-2] == _NULL:
                     stack[-1], stack[-2] = stack[-2], stack[-1]
@@ -514,7 +511,7 @@ def _compile_bytecode_to_py_expr(func: Callable) -> expression.Expression:
                 jumped = True
                 break
 
-            elif opname in ("STORE_FAST", "POP_TOP"):
+            elif opname == "POP_TOP":
                 if stack:
                     stack.pop()
 
@@ -529,14 +526,7 @@ def _compile_bytecode_to_py_expr(func: Callable) -> expression.Expression:
 
                     dest = inst.argval
 
-                    instructions_by_offset = {i.offset: i for i in instructions}
-                    sorted_offsets = sorted(instructions_by_offset.keys())
-                    idx = sorted_offsets.index(inst.offset)
-                    next_offset = (
-                        sorted_offsets[idx + 1]
-                        if idx + 1 < len(sorted_offsets)
-                        else None
-                    )
+                    next_offset = next_offsets.get(inst.offset)
 
                     if "IF_FALSE" in opname:
                         not_cond_expr = py_exprs.Call(
@@ -547,11 +537,9 @@ def _compile_bytecode_to_py_expr(func: Callable) -> expression.Expression:
                             (reach_cond, not_cond_expr),
                         )
                         if next_offset is not None:
-                            edge_conditions[(offset, next_offset)] = (
-                                py_exprs.Call(
-                                    py_exprs.PyObject(operator.and_),
-                                    (reach_cond, cond_expr),
-                                )
+                            edge_conditions[(offset, next_offset)] = py_exprs.Call(
+                                py_exprs.PyObject(operator.and_),
+                                (reach_cond, cond_expr),
                             )
                     elif "IF_TRUE" in opname:
                         not_cond_expr = py_exprs.Call(
@@ -562,16 +550,12 @@ def _compile_bytecode_to_py_expr(func: Callable) -> expression.Expression:
                             (reach_cond, cond_expr),
                         )
                         if next_offset is not None:
-                            edge_conditions[(offset, next_offset)] = (
-                                py_exprs.Call(
-                                    py_exprs.PyObject(operator.and_),
-                                    (reach_cond, not_cond_expr),
-                                )
+                            edge_conditions[(offset, next_offset)] = py_exprs.Call(
+                                py_exprs.PyObject(operator.and_),
+                                (reach_cond, not_cond_expr),
                             )
                     else:
-                        raise ValueError(
-                            f"Unsupported conditional jump: {opname}"
-                        )
+                        raise ValueError(f"Unsupported conditional jump: {opname}")
                 else:
                     raise ValueError(f"Unsupported jump opcode: {opname}")
                 jumped = True
@@ -581,12 +565,7 @@ def _compile_bytecode_to_py_expr(func: Callable) -> expression.Expression:
                 raise ValueError(f"Unsupported opcode: {opname}")
 
         if not jumped:
-            instructions_by_offset = {i.offset: i for i in instructions}
-            sorted_offsets = sorted(instructions_by_offset.keys())
-            idx = sorted_offsets.index(block.instructions[-1].offset)
-            next_offset = (
-                sorted_offsets[idx + 1] if idx + 1 < len(sorted_offsets) else None
-            )
+            next_offset = next_offsets.get(block.instructions[-1].offset)
             if next_offset is not None:
                 edge_conditions[(offset, next_offset)] = reach_cond
 
