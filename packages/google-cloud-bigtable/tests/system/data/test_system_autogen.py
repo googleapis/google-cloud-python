@@ -925,7 +925,7 @@ class TestSystem(SystemTestRunner):
 
         f = ValueBitmaskFilter(mask)
         temp_rows.add_row(b"row_key_1", value=cell_value)
-        query = ReadRowsQuery(row_filter=f)
+        query = ReadRowsQuery(row_keys=[b"row_key_1"], row_filter=f)
         row_list = target.read_rows(query)
         assert len(row_list) == bool(expect_match), (
             f"row {cell_value!r} not matched as {expect_match} with {mask!r} bitmask filter"
