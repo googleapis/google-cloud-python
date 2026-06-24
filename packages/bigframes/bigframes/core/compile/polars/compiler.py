@@ -370,6 +370,26 @@ if polars_installed:
         ) -> pl.Expr:
             return pl.when(condition).then(original).otherwise(otherwise)
 
+        @compile_op.register(gen_ops.CoerceToBoolOp)
+        def _(self, op: ops.ScalarOp, input: pl.Expr) -> pl.Expr:
+            assert isinstance(op, gen_ops.CoerceToBoolOp)
+            from_type = self._expr_types.get(id(input))
+            if from_type is None:
+                return input.cast(pl.Boolean).fill_null(False)
+
+            if from_type == bigframes.dtypes.BOOL_DTYPE:
+                res = input
+            elif bigframes.dtypes.is_numeric(from_type):
+                res = input != 0
+            elif bigframes.dtypes.is_string_like(from_type):
+                res = input.str.len_chars() > 0
+            elif bigframes.dtypes.is_array_like(from_type):
+                res = input.list.len() > 0
+            else:
+                res = input.is_not_null()
+
+            return res.fill_null(False)
+
         @compile_op.register(gen_ops.AsTypeOp)
         def _(self, op: ops.ScalarOp, input: pl.Expr) -> pl.Expr:
             assert isinstance(op, gen_ops.AsTypeOp)

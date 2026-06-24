@@ -20,7 +20,6 @@ from types import ModuleType
 from typing import Callable
 
 import bigframes.core.py_expressions as py_exprs
-from bigframes import dtypes
 from bigframes.core import expression
 from bigframes.operations import generic_ops
 
@@ -213,6 +212,7 @@ def _compile_bytecode_to_py_expr(func: Callable) -> expression.Expression:
         0: py_exprs.PyObject(True)
     }
     edge_conditions: dict[tuple[int, int], expression.Expression] = {}
+    edge_stacks: dict[tuple[int, int], list[expression.Expression]] = {}
     returns: list[tuple[expression.Expression, expression.Expression]] = []
 
     co = func.__code__
@@ -254,16 +254,16 @@ def _compile_bytecode_to_py_expr(func: Callable) -> expression.Expression:
             local_vars = initial_local_vars.copy()
         else:
             reachable_preds = [
-                pred for pred in block.predecessors if pred in block_outputs
+                pred for pred in block.predecessors if (pred, offset) in edge_stacks
             ]
             if not reachable_preds:
                 continue
 
-            h = len(block_outputs[reachable_preds[0]][0])
+            h = len(edge_stacks[(reachable_preds[0], offset)])
             stack = []
             for i in range(h):
                 pairs = [
-                    (block_outputs[p][0][i], edge_conditions[(p, offset)])
+                    (edge_stacks[(p, offset)][i], edge_conditions[(p, offset)])
                     for p in reachable_preds
                 ]
                 stack.append(merge_values(pairs))
@@ -397,10 +397,16 @@ def _compile_bytecode_to_py_expr(func: Callable) -> expression.Expression:
                 val = stack.pop()
                 stack.append(
                     py_exprs.Call(
-                        py_exprs.PyObject(generic_ops.AsTypeOp(dtypes.BOOL_DTYPE)),
+                        py_exprs.PyObject(generic_ops.coerce_to_bool_op),
                         (val,),
                     )
                 )
+
+            elif opname == "COPY":
+                idx = inst.arg
+                if idx is None or idx < 1 or len(stack) < idx:
+                    raise ValueError(f"Invalid COPY index or stack too small: {idx}")
+                stack.append(stack[-idx])
 
             elif opname == "BINARY_OP":
                 if len(stack) < 2:
@@ -523,10 +529,55 @@ def _compile_bytecode_to_py_expr(func: Callable) -> expression.Expression:
                 if opname in ("JUMP_FORWARD", "JUMP_ABSOLUTE", "JUMP_BACKWARD"):
                     dest = inst.argval
                     edge_conditions[(offset, dest)] = reach_cond
+                    edge_stacks[(offset, dest)] = stack.copy()
+                elif opname in ("JUMP_IF_FALSE_OR_POP", "JUMP_IF_TRUE_OR_POP"):
+                    if not stack:
+                        raise ValueError("Stack is empty")
+                    cond_expr = stack[-1]
+                    cond_bool = py_exprs.Call(
+                        py_exprs.PyObject(generic_ops.coerce_to_bool_op),
+                        (cond_expr,),
+                    )
+                    dest = inst.argval
+                    next_offset = next_offsets.get(inst.offset)
+                    if opname == "JUMP_IF_FALSE_OR_POP":
+                        not_cond_bool = py_exprs.Call(
+                            py_exprs.PyObject(operator.not_), (cond_bool,)
+                        )
+                        edge_conditions[(offset, dest)] = py_exprs.Call(
+                            py_exprs.PyObject(operator.and_),
+                            (reach_cond, not_cond_bool),
+                        )
+                        edge_stacks[(offset, dest)] = stack.copy()
+                        if next_offset is not None:
+                            edge_conditions[(offset, next_offset)] = py_exprs.Call(
+                                py_exprs.PyObject(operator.and_),
+                                (reach_cond, cond_bool),
+                            )
+                            edge_stacks[(offset, next_offset)] = stack[:-1]
+                    else:  # JUMP_IF_TRUE_OR_POP
+                        edge_conditions[(offset, dest)] = py_exprs.Call(
+                            py_exprs.PyObject(operator.and_),
+                            (reach_cond, cond_bool),
+                        )
+                        edge_stacks[(offset, dest)] = stack.copy()
+                        if next_offset is not None:
+                            not_cond_bool = py_exprs.Call(
+                                py_exprs.PyObject(operator.not_), (cond_bool,)
+                            )
+                            edge_conditions[(offset, next_offset)] = py_exprs.Call(
+                                py_exprs.PyObject(operator.and_),
+                                (reach_cond, not_cond_bool),
+                            )
+                            edge_stacks[(offset, next_offset)] = stack[:-1]
                 elif "IF" in opname:
                     if not stack:
                         raise ValueError("Stack is empty")
                     cond_expr = stack.pop()
+                    cond_expr = py_exprs.Call(
+                        py_exprs.PyObject(generic_ops.coerce_to_bool_op),
+                        (cond_expr,),
+                    )
 
                     dest = inst.argval
 
@@ -540,11 +591,13 @@ def _compile_bytecode_to_py_expr(func: Callable) -> expression.Expression:
                             py_exprs.PyObject(operator.and_),
                             (reach_cond, not_cond_expr),
                         )
+                        edge_stacks[(offset, dest)] = stack.copy()
                         if next_offset is not None:
                             edge_conditions[(offset, next_offset)] = py_exprs.Call(
                                 py_exprs.PyObject(operator.and_),
                                 (reach_cond, cond_expr),
                             )
+                            edge_stacks[(offset, next_offset)] = stack.copy()
                     elif "IF_TRUE" in opname:
                         not_cond_expr = py_exprs.Call(
                             py_exprs.PyObject(operator.not_), (cond_expr,)
@@ -553,11 +606,13 @@ def _compile_bytecode_to_py_expr(func: Callable) -> expression.Expression:
                             py_exprs.PyObject(operator.and_),
                             (reach_cond, cond_expr),
                         )
+                        edge_stacks[(offset, dest)] = stack.copy()
                         if next_offset is not None:
                             edge_conditions[(offset, next_offset)] = py_exprs.Call(
                                 py_exprs.PyObject(operator.and_),
                                 (reach_cond, not_cond_expr),
                             )
+                            edge_stacks[(offset, next_offset)] = stack.copy()
                     else:
                         raise ValueError(f"Unsupported conditional jump: {opname}")
                 else:
@@ -572,6 +627,7 @@ def _compile_bytecode_to_py_expr(func: Callable) -> expression.Expression:
             next_offset = next_offsets.get(block.instructions[-1].offset)
             if next_offset is not None:
                 edge_conditions[(offset, next_offset)] = reach_cond
+                edge_stacks[(offset, next_offset)] = stack.copy()
 
         block_outputs[offset] = (stack, local_vars)
 

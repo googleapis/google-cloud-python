@@ -395,3 +395,37 @@ def test_local_series_apply_w_var_assignments(
     pd_result = scalars_pandas_df_index["int64_col"].apply(var_assign)
 
     assert_series_equal(bf_result, pd_result, check_dtype=False)
+
+
+def test_local_series_apply_w_logical_and_val(
+    scalars_df_index, scalars_pandas_df_index
+):
+    def logical_and_val(x):
+        return (x % 3) and 100
+
+    bf_result = (
+        scalars_df_index["int64_col"].dropna().apply(logical_and_val).to_pandas()
+    )
+    pd_result = scalars_pandas_df_index["int64_col"].dropna().apply(logical_and_val)
+
+    assert_series_equal(bf_result, pd_result, check_dtype=False)
+
+
+def test_local_series_apply_w_logical_or_val(scalars_df_index, scalars_pandas_df_index):
+    def logical_or_val(x):
+        return (x % 3) or 200
+
+    bf_result = scalars_df_index["int64_col"].dropna().apply(logical_or_val).to_pandas()
+    pd_result = scalars_pandas_df_index["int64_col"].dropna().apply(logical_or_val)
+
+    assert_series_equal(bf_result, pd_result, check_dtype=False)
+
+
+def test_local_series_apply_w_logical_and_mixed(
+    scalars_df_index,
+):
+    def logical_and_mixed(x):
+        return (x % 3) and "hello"
+
+    with pytest.raises(TypeError, match="Cannot coerce"):
+        scalars_df_index["int64_col"].apply(logical_and_mixed)

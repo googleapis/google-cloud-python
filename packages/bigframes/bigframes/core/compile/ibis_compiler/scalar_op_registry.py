@@ -884,6 +884,23 @@ def numeric_to_datetime(
     )
 
 
+@scalar_op_compiler.register_unary_op(ops.CoerceToBoolOp, pass_op=True)
+def coerce_to_bool_op_impl(x: ibis_types.Value, op: ops.CoerceToBoolOp):
+    x_type = x.type()
+    if x_type.is_boolean():
+        res = x
+    elif x_type.is_numeric():
+        res = x != 0
+    elif x_type.is_string():
+        res = x.length() > 0
+    elif isinstance(x_type, ibis_dtypes.Array):
+        res = x.length() > 0
+    else:
+        res = x.is_not_null()
+
+    return res.fill_null(False)
+
+
 @scalar_op_compiler.register_unary_op(ops.AsTypeOp, pass_op=True)
 def astype_op_impl(x: ibis_types.Value, op: ops.AsTypeOp):
     to_type = bigframes.core.compile.ibis_types.bigframes_dtype_to_ibis_dtype(

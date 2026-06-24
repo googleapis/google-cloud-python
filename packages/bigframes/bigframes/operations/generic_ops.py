@@ -45,6 +45,15 @@ NotNullOp = base_ops.create_unary_op(
 )
 notnull_op = NotNullOp()
 
+
+CoerceToBoolOp = base_ops.create_unary_op(
+    name="coerce_to_bool",
+    type_signature=op_typing.FixedOutputType(
+        dtypes.is_bool_coercable, dtypes.BOOL_DTYPE, description="coercable to bool"
+    ),
+)
+coerce_to_bool_op = CoerceToBoolOp()
+
 HashOp = base_ops.create_unary_op(
     name="hash",
     type_signature=op_typing.FixedOutputType(
