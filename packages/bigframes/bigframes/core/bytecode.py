@@ -285,7 +285,7 @@ def _compile_bytecode_to_py_expr(func: Callable) -> expression.Expression:
         for inst in block.instructions:
             opname = inst.opname
 
-            if opname in ("RESUME", "PRECALL", "COPY_FREE_VARS"):
+            if opname in ("RESUME", "PRECALL", "COPY_FREE_VARS", "NOT_TAKEN", "NOP"):
                 continue
 
             elif opname in (
