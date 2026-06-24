@@ -405,8 +405,9 @@ DEFAULT_IGNORE_PATTERNS = [".git", "*.jpg", "packages/pkg_a/.nox", "*.egg-info"]
     ]
 )
 def test__should_ignore(rel_path, name, ignore_patterns, expected):
-    from version_scanner import _should_ignore
-    assert _should_ignore(rel_path, name, ignore_patterns) is expected
+    from version_scanner import _should_ignore, _preprocess_ignore_patterns
+    preprocessed = _preprocess_ignore_patterns(ignore_patterns)
+    assert _should_ignore(rel_path, name, preprocessed) is expected
 
 
 def test_load_ignore_file(tmp_path):

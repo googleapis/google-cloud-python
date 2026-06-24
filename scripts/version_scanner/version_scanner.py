@@ -499,7 +499,32 @@ def read_package_file(file_path: str) -> List[str]:
     return packages
 
 
-def _should_ignore(rel_path: str, name: str, ignore_patterns: List[str]) -> bool:
+def _preprocess_ignore_patterns(ignore_patterns: List[str]) -> List[Tuple[str, str]]:
+    """Preprocesses ignore patterns into a classified list for faster matching.
+
+    Args:
+        ignore_patterns: A list of raw ignore patterns from .scannerignore.
+
+    Returns:
+        A list of tuples (type, pattern) where type is 'anchored', 'subpath', or 'filename'.
+    """
+    if not ignore_patterns:
+        return []
+    
+    preprocessed = []
+    for pattern in ignore_patterns:
+        pattern_lower = pattern.lower()
+        if '/' in pattern:
+            if pattern_lower.startswith('/'):
+                preprocessed.append(('anchored', pattern_lower[1:]))
+            else:
+                preprocessed.append(('subpath', pattern_lower))
+        else:
+            preprocessed.append(('filename', pattern_lower))
+    return preprocessed
+
+
+def _should_ignore(rel_path: str, name: str, preprocessed_patterns: List[Tuple[str, str]]) -> bool:
     """Check if a file or directory matches any of the ignore patterns.
     
     Directories and files can be ignored by providing an ignore pattern in the 
@@ -508,29 +533,25 @@ def _should_ignore(rel_path: str, name: str, ignore_patterns: List[str]) -> bool
     Args:
         rel_path: The relative path of the file or directory from the scan root.
         name: The name of the file or directory (basename).
-        ignore_patterns: A list of ignore patterns (glob-like or subpaths).
+        preprocessed_patterns: A list of preprocessed ignore patterns.
         
     Returns:
         True if the file or directory should be ignored, False otherwise.
     """
-    if not ignore_patterns:
+    if not preprocessed_patterns:
         return False
     name_lower = name.lower()
     rel_path_norm = rel_path.replace(os.sep, '/').lower()
     
-    for pattern in ignore_patterns:
-        pattern_lower = pattern.lower()
-        if '/' in pattern:
-            if pattern_lower.startswith('/'):
-                p = pattern_lower[1:]
-                if fnmatch.fnmatchcase(rel_path_norm, p):
-                    return True
-            else:
-                p = pattern_lower
-                if fnmatch.fnmatchcase(rel_path_norm, p) or fnmatch.fnmatchcase(rel_path_norm, f"*/{p}"):
-                    return True
-        else:
-            if fnmatch.fnmatchcase(name_lower, pattern_lower):
+    for p_type, p_val in preprocessed_patterns:
+        if p_type == 'anchored':
+            if fnmatch.fnmatchcase(rel_path_norm, p_val):
+                return True
+        elif p_type == 'subpath':
+            if fnmatch.fnmatchcase(rel_path_norm, p_val) or fnmatch.fnmatchcase(rel_path_norm, f"*/{p_val}"):
+                return True
+        elif p_type == 'filename':
+            if fnmatch.fnmatchcase(name_lower, p_val):
                 return True
     return False
 
@@ -588,6 +609,9 @@ def scan_repository(
             print(f"Error compiling regex for rule {rule['name']}: {e}", file=sys.stderr)
             continue
             
+    # Preprocess ignore patterns once
+    preprocessed_ignores = _preprocess_ignore_patterns(ignore_dirs)
+
     print(f"\nScanning repository: {root_path}")
     if target_packages:
         print(f"Filtering for packages: {target_packages}")
@@ -602,13 +626,13 @@ def scan_repository(
         # Prune ignore directories (case-insensitive)
         dirs[:] = [
             d for d in dirs 
-            if not _should_ignore(get_rel_path(d), d, ignore_dirs)
+            if not _should_ignore(get_rel_path(d), d, preprocessed_ignores)
         ]
         
         # Filter ignore files (case-insensitive)
         files = [
             f for f in files 
-            if not _should_ignore(get_rel_path(f), f, ignore_dirs)
+            if not _should_ignore(get_rel_path(f), f, preprocessed_ignores)
         ]
         
         # Layout-agnostic generic subdirectory filtering
