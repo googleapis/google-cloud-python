@@ -43,7 +43,7 @@ dependencies = [
     # 2.30 needed for arrow support.
     "google-cloud-bigquery-storage >= 2.30.0, < 3.0.0",
     "google-cloud-functions >=1.12.0",
-    "google-cloud-bigquery-connection >=1.12.0",
+    "google-cloud-bigquery-connection >=1.16.0",
     "google-cloud-resource-manager >=1.10.3",
     "google-cloud-storage >=2.0.0",
     "google-crc32c >=1.0.0,<2.0.0",
@@ -79,7 +79,7 @@ extras = {
     ],
     # used for local engine
     "polars": ["polars >= 1.21.0"],
-    "datafusion": ["datafusion >= 45.0.0", "substrait >= 0.29"],
+    "datafusion": ["datafusion >= 45.2.0", "substrait >= 0.29"],
     "substrait": ["substrait >= 0.29"],
     "scikit-learn": ["scikit-learn>=1.2.2"],
     # Packages required for basic development flow.
