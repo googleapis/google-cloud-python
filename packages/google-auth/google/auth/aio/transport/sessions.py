@@ -26,7 +26,6 @@ from google.auth.aio.transport import mtls
 from google.auth.exceptions import TimeoutError
 import google.auth.transport._mtls_helper
 
-_LOGGER = logging.getLogger(__name__)
 
 if TYPE_CHECKING:  # pragma: NO COVER
     import aiohttp
@@ -38,6 +37,10 @@ else:
         from aiohttp import ClientTimeout
     except (ImportError, AttributeError):
         ClientTimeout = None
+
+
+_LOGGER = logging.getLogger(__name__)
+
 
 # Tracks the internal aiohttp installation and usage
 try:
@@ -173,8 +176,7 @@ class AsyncAuthorizedSession:
 
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If mutual TLS channel
-                creation failed for any reason (e.g., missing dependencies, custom request
-                handler limitations, or missing certificates when mTLS was requested).
+                creation failed for any reason.
         """
         if self._mtls_init_task is None:
 
