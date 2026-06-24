@@ -30,7 +30,7 @@ import bigframes.operations.comparison_ops as comparison_ops
 import bigframes.operations.generic_ops as generic_ops
 import bigframes.operations.numeric_ops as numeric_ops
 import bigframes.operations.struct_ops as struct_ops
-from bigframes.core import bigframe_node, nodes, rewrite
+from bigframes.core import agg_expressions, bigframe_node, nodes, rewrite
 from bigframes.core.compile import lowering
 
 
@@ -499,12 +499,12 @@ class SubstraitCompiler:
                 bounds_type = (
                     algebra_pb2.Expression.WindowFunction.BoundsType.BOUNDS_TYPE_RANGE
                 )
-                start = node.window_spec.bounds.start
-                if start is None:
+                range_start = node.window_spec.bounds.start
+                if range_start is None:
                     lower_bound.unbounded.CopyFrom(
                         algebra_pb2.Expression.WindowFunction.Bound.Unbounded()
                     )
-                elif start == pd.Timedelta(0):
+                elif range_start == pd.Timedelta(0):
                     lower_bound.current_row.CopyFrom(
                         algebra_pb2.Expression.WindowFunction.Bound.CurrentRow()
                     )
@@ -513,12 +513,12 @@ class SubstraitCompiler:
                         "Range window bounds with non-zero offsets are not supported yet"
                     )
 
-                end = node.window_spec.bounds.end
-                if end is None:
+                range_end = node.window_spec.bounds.end
+                if range_end is None:
                     upper_bound.unbounded.CopyFrom(
                         algebra_pb2.Expression.WindowFunction.Bound.Unbounded()
                     )
-                elif end == pd.Timedelta(0):
+                elif range_end == pd.Timedelta(0):
                     upper_bound.current_row.CopyFrom(
                         algebra_pb2.Expression.WindowFunction.Bound.CurrentRow()
                     )
@@ -540,6 +540,7 @@ class SubstraitCompiler:
         # 3. Project each window aggregation expression as a WindowFunction expression
         for agg_idx, col_def in enumerate(node.agg_exprs):
             agg = col_def.expression
+            assert isinstance(agg, agg_expressions.Aggregation)
             distinct = False
 
             if isinstance(agg.op, agg_ops.SumOp):
@@ -798,10 +799,10 @@ class SubstraitCompiler:
                 pb_expr.literal.precision_timestamp.precision = 6
                 pb_expr.literal.precision_timestamp.value = us
         elif isinstance(val, datetime.date):
-            epoch = datetime.date(1970, 1, 1)
-            days = (val - epoch).days
+            date_epoch = datetime.date(1970, 1, 1)
+            days = (val - date_epoch).days
             pb_expr.literal.date = days
-        elif pd.isna(val):
+        elif pd.isna(val):  # type: ignore[call-overload]
             pb_expr.literal.null.varchar.length = 0
         else:
             pb_expr.literal.string = str(val)
@@ -911,7 +912,7 @@ class SubstraitCompiler:
         import bigframes.dtypes as dtypes
 
         if isinstance(expr, ex.ScalarConstantExpression):
-            if expr.value is None or pd.isna(expr.value):
+            if expr.value is None or pd.isna(expr.value):  # type: ignore[call-overload]
                 return None
             return expr.dtype or dtypes.infer_literal_type(expr.value)
         elif isinstance(expr, ex.DerefOp):
@@ -1110,7 +1111,7 @@ class SubstraitCompiler:
     @_compile_op.register(generic_ops.FillNaOp)
     def _compile_fillna_op(
         self,
-        op: generic_ops.FillNaOp,
+        op: ops.BinaryOp,
         inputs: Sequence[ex.Expression],
         child: nodes.BigFrameNode,
     ) -> algebra_pb2.Expression:
@@ -1237,7 +1238,7 @@ class SubstraitCompiler:
     @_compile_op.register(numeric_ops.PosOp)
     def _compile_pos_op(
         self,
-        op: numeric_ops.PosOp,
+        op: ops.UnaryOp,
         inputs: Sequence[ex.Expression],
         child: nodes.BigFrameNode,
     ) -> algebra_pb2.Expression:
@@ -1247,7 +1248,7 @@ class SubstraitCompiler:
     @_compile_op.register(numeric_ops.NegOp)
     def _compile_neg_op(
         self,
-        op: numeric_ops.NegOp,
+        op: ops.UnaryOp,
         inputs: Sequence[ex.Expression],
         child: nodes.BigFrameNode,
     ) -> algebra_pb2.Expression:
@@ -1270,7 +1271,7 @@ class SubstraitCompiler:
     @_compile_op.register(generic_ops.InvertOp)
     def _compile_invert_op(
         self,
-        op: generic_ops.InvertOp,
+        op: ops.UnaryOp,
         inputs: Sequence[ex.Expression],
         child: nodes.BigFrameNode,
     ) -> algebra_pb2.Expression:

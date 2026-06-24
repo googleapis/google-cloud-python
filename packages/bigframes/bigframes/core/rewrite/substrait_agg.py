@@ -48,7 +48,7 @@ def rewrite_substrait_aggregations(node: nodes.BigFrameNode) -> nodes.BigFrameNo
     ]
 
     # Collect cast aggregations (bool->float for mean/stddev/var, bool->int for sum)
-    cast_aggs = []
+    cast_aggs: list[tuple[int, identifiers.ColumnId, dtypes.Dtype]] = []
     for agg_idx, (agg, _) in enumerate(node.aggregations):
         if hasattr(agg, "column_references"):
             for col_id in agg.column_references:
@@ -92,6 +92,7 @@ def rewrite_substrait_aggregations(node: nodes.BigFrameNode) -> nodes.BigFrameNo
         # Rewrite aggregations to use the projected columns
         rewritten_aggs = []
         for agg_idx, (agg, out_col_id) in enumerate(node.aggregations):
+            rewritten_agg: agg_expressions.Aggregation
             if isinstance(agg.op, (agg_ops.SizeOp, agg_ops.SizeUnaryOp)):
                 new_col_id = size_agg_to_col_id[agg_idx]
                 rewritten_agg = agg_expressions.UnaryAggregation(
@@ -107,14 +108,7 @@ def rewrite_substrait_aggregations(node: nodes.BigFrameNode) -> nodes.BigFrameNo
                     else:
                         new_exprs.append(expression.deref(col_id.name))
 
-                if isinstance(agg, agg_expressions.UnaryAggregation):
-                    rewritten_agg = agg_expressions.UnaryAggregation(
-                        agg.op, new_exprs[0]
-                    )
-                else:
-                    rewritten_agg = agg_expressions.UnaryAggregation(
-                        agg.op, new_exprs[0]
-                    )
+                rewritten_agg = agg.replace_args(*new_exprs)
             else:
                 rewritten_agg = agg
 
@@ -135,9 +129,9 @@ def rewrite_substrait_aggregations(node: nodes.BigFrameNode) -> nodes.BigFrameNo
 
     assignments = []
     selection_pairs = []
-    for idx, (out_id, target_dtype) in enumerate(zip(output_ids, expected_types)):
+    for idx, (out_id, out_dtype) in enumerate(zip(output_ids, expected_types)):
         cast_id = identifiers.ColumnId(f"bf_out_cast_{out_id.name}")
-        cast_expr = ops.AsTypeOp(to_type=target_dtype).as_expr(
+        cast_expr = ops.AsTypeOp(to_type=out_dtype).as_expr(
             expression.deref(out_id.name)
         )
         assignments.append((cast_expr, cast_id))
@@ -173,10 +167,11 @@ def rewrite_substrait_windows(node: nodes.BigFrameNode) -> nodes.BigFrameNode:
 
     # Collect size and cast requirements for the window agg expressions
     size_aggs = []
-    cast_aggs = []
+    cast_aggs: list[tuple[int, identifiers.ColumnId, dtypes.Dtype]] = []
 
     for agg_idx, col_def in enumerate(node.agg_exprs):
         agg = col_def.expression
+        assert isinstance(agg, agg_expressions.Aggregation)
         if isinstance(agg.op, (agg_ops.SizeOp, agg_ops.SizeUnaryOp)):
             size_aggs.append((agg_idx, agg))
         elif hasattr(agg, "column_references"):
@@ -222,7 +217,9 @@ def rewrite_substrait_windows(node: nodes.BigFrameNode) -> nodes.BigFrameNode:
         rewritten_agg_exprs = []
         for agg_idx, col_def in enumerate(node.agg_exprs):
             agg = col_def.expression
+            assert isinstance(agg, agg_expressions.Aggregation)
             out_col_id = col_def.id
+            rewritten_agg: agg_expressions.Aggregation
 
             if isinstance(agg.op, (agg_ops.SizeOp, agg_ops.SizeUnaryOp)):
                 new_col_id = size_agg_to_col_id[agg_idx]
@@ -239,14 +236,7 @@ def rewrite_substrait_windows(node: nodes.BigFrameNode) -> nodes.BigFrameNode:
                     else:
                         new_exprs.append(expression.deref(col_id.name))
 
-                if isinstance(agg, agg_expressions.UnaryAggregation):
-                    rewritten_agg = agg_expressions.UnaryAggregation(
-                        agg.op, new_exprs[0]
-                    )
-                else:
-                    rewritten_agg = agg_expressions.UnaryAggregation(
-                        agg.op, new_exprs[0]
-                    )
+                rewritten_agg = agg.replace_args(*new_exprs)
             else:
                 rewritten_agg = agg
 
@@ -273,10 +263,10 @@ def rewrite_substrait_windows(node: nodes.BigFrameNode) -> nodes.BigFrameNode:
 
     for col_def, field in zip(node.agg_exprs, node.added_fields):
         out_id = col_def.id
-        target_dtype = field.dtype
+        out_dtype = field.dtype
 
         cast_id = identifiers.ColumnId(f"bf_window_out_cast_{out_id.name}")
-        cast_expr = ops.AsTypeOp(to_type=target_dtype).as_expr(
+        cast_expr = ops.AsTypeOp(to_type=out_dtype).as_expr(
             expression.deref(out_id.name)
         )
         assignments.append((cast_expr, cast_id))

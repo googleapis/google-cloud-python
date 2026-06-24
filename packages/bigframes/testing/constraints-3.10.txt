@@ -18,7 +18,7 @@ pandas==1.5.3
 pandas-gbq==0.26.1
 polars==1.21.0
 substrait==0.29.0
-datafusion==45.0.0
+datafusion==45.2.0
 pyarrow==23.0.1
 pydata-google-auth==1.8.2
 pyiceberg==0.7.1

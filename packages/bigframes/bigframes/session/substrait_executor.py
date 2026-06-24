@@ -21,7 +21,7 @@ from typing import TYPE_CHECKING, Optional, cast
 import bigframes.core.compile.substrait.compiler as substrait_compiler
 import bigframes.core.rewrite as rewrite
 from bigframes.core import bigframe_node, nodes
-from bigframes.session import executor, semi_executor
+from bigframes.session import execution_spec, executor, semi_executor
 
 if TYPE_CHECKING:
     import pyarrow as pa
@@ -129,9 +129,10 @@ class SubstraitExecutor(semi_executor.SemiExecutor):
     async def execute(
         self,
         plan: bigframe_node.BigFrameNode,
-        ordered: bool,
-        peek: Optional[int] = None,
+        execution_spec: execution_spec.ExecutionSpec,
     ) -> Optional[executor.ExecuteResult]:
+        ordered = execution_spec.ordered
+        peek = execution_spec.peek
         plan = plan.bottom_up(rewrite.rewrite_slice)
         # Only needed for acero technically, datafusion can handle timedeltas
         plan = plan.bottom_up(rewrite.rewrite_timedelta_expressions)

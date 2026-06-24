@@ -35,9 +35,18 @@ class SubstraitTestExecutor(bigframes.session.executor.Executor):
     def __init__(
         self, consumer: bigframes.session.substrait_executor.SubstraitConsumer
     ):
-        from bigframes.session.substrait_executor import SubstraitExecutor
+        from bigframes.core.compile.substrait.compiler import SubstraitCompiler
+        from bigframes.session.substrait_executor import (
+            AceroSubstraitConsumer,
+            SubstraitExecutor,
+        )
 
-        self.executor = SubstraitExecutor(consumer)
+        if isinstance(consumer, AceroSubstraitConsumer):
+            compiler = SubstraitCompiler(duration_type="int", use_precision_types=False)
+        else:
+            compiler = SubstraitCompiler(duration_type="int")
+
+        self.executor = SubstraitExecutor(consumer, compiler)
 
     def execute(
         self,
@@ -51,7 +60,10 @@ class SubstraitTestExecutor(bigframes.session.executor.Executor):
 
         result = asyncio.run(
             self.executor.execute(
-                array_value.node, ordered=True, peek=execution_spec.peek
+                array_value.node,
+                bigframes.session.execution_spec.ExecutionSpec(
+                    ordered=True, peek=execution_spec.peek
+                ),
             )
         )
         if result is None:
