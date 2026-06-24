@@ -17,6 +17,7 @@ from typing import Generator
 
 import pandas as pd
 import pandas.testing
+import numpy as np
 import pytest
 
 import bigframes
@@ -225,14 +226,6 @@ def test_series_apply_transpile_invalid_bindings(
 def test_transpilation_unsupported_ops_raise(
     scalars_df_index,
 ):
-    def foo_with_if(x):
-        if x > 0:
-            return x
-        return -x
-
-    with pytest.raises(ValueError):
-        scalars_df_index["int64_col"].apply(foo_with_if)
-
     def foo_with_loop(x):
         total = 0
         for i in range(x):
@@ -241,3 +234,162 @@ def test_transpilation_unsupported_ops_raise(
 
     with pytest.raises(ValueError):
         scalars_df_index["int64_col"].apply(foo_with_loop)
+
+
+def my_foo(x: int):
+    return x + 1
+
+
+def test_local_series_apply_simple(scalars_df_index, scalars_pandas_df_index):
+    bf_result = scalars_df_index["int64_col"].apply(my_foo).to_pandas()
+    pd_result = scalars_pandas_df_index["int64_col"].apply(my_foo)
+
+    pd.testing.assert_series_equal(bf_result, pd_result, check_dtype=False)
+
+
+def my_numpy_foo(x: int):
+    return np.add(x, x) * (np.cos(x) - np.sin(3))
+
+
+def test_local_series_apply_w_numpy(scalars_df_index, scalars_pandas_df_index):
+    bf_result = scalars_df_index["int64_col"].apply(my_numpy_foo).to_pandas()
+    pd_result = scalars_pandas_df_index["int64_col"].apply(my_numpy_foo)
+
+    pd.testing.assert_series_equal(bf_result, pd_result, check_dtype=False)
+
+
+def test_local_series_apply_w_simple_lamdba(scalars_df_index, scalars_pandas_df_index):
+    bf_result = scalars_df_index["int64_col"].apply(lambda x: x + 3).to_pandas()
+    pd_result = scalars_pandas_df_index["int64_col"].apply(lambda x: x + 3)
+
+    pd.testing.assert_series_equal(bf_result, pd_result, check_dtype=False)
+
+
+def test_local_series_apply_w_ternary_lamdba(scalars_df_index, scalars_pandas_df_index):
+    bf_result = (
+        scalars_df_index["int64_col"]
+        .apply(lambda x: "positive" if x > 0 else "negative")
+        .to_pandas()
+    )
+    pd_result = scalars_pandas_df_index["int64_col"].apply(
+        lambda x: "positive" if x > 0 else "negative"
+    )
+
+    pd.testing.assert_series_equal(bf_result, pd_result, check_dtype=False)
+
+
+def test_local_series_apply_w_nested_fizzbuzz(session):
+    # challenging: closure, multiple exits, mutating variables
+    foo_div = 3
+    buzz_div = 5
+    pd_series = pd.Series(
+        range(20),
+        dtype="Int64",
+        index=pd.Index(range(20), dtype="Int64"),
+        name="integers",
+    )
+    bf_series = bpd.Series(pd_series, session=session)
+
+    def fizzbuzz(x):
+        if (x % 3) and (x % 5):
+            return str(x)
+        val = ""
+        if (x % foo_div) == 0:
+            val += "fizz"
+        if (x % buzz_div) == 0:
+            val += "buzz"
+        return val
+
+    bf_result = bf_series.apply(fizzbuzz).to_pandas()
+    pd_result = pd_series.apply(fizzbuzz).astype(pd.StringDtype(storage="pyarrow"))
+
+    pd.testing.assert_series_equal(bf_result, pd_result, check_dtype=False)
+
+
+def test_local_dataframe_apply_w_ternary_lamdba(
+    scalars_df_index, scalars_pandas_df_index
+):
+    bf_result = scalars_df_index.apply(
+        lambda x: x.int64_col if x.rowindex_2 > 5 else x.float64_col, axis=1
+    ).to_pandas()
+    pd_result = scalars_pandas_df_index.apply(
+        lambda x: x.int64_col if x.rowindex_2 > 5 else x.float64_col, axis=1
+    ).astype("Float64")
+
+    pd.testing.assert_series_equal(bf_result, pd_result, check_dtype=False)
+
+
+def test_local_series_apply_w_nested_ifs(scalars_df_index, scalars_pandas_df_index):
+    def nested_ifs(x):
+        if x > 0:
+            if x > 100:
+                return x * 10
+            else:
+                return x * 2
+        else:
+            if x < -100:
+                return x * 20
+            return x * -1
+
+    bf_result = scalars_df_index["int64_col"].apply(nested_ifs).to_pandas()
+    pd_result = scalars_pandas_df_index["int64_col"].apply(nested_ifs)
+
+    pd.testing.assert_series_equal(bf_result, pd_result, check_dtype=False)
+
+
+def test_local_series_apply_w_elif(scalars_df_index, scalars_pandas_df_index):
+    def elif_fn(x):
+        if x > 100:
+            return 1
+        elif x > 50:
+            return 2
+        elif x > 0:
+            return 3
+        else:
+            return 4
+
+    bf_result = scalars_df_index["int64_col"].apply(elif_fn).to_pandas()
+    pd_result = scalars_pandas_df_index["int64_col"].apply(elif_fn)
+
+    pd.testing.assert_series_equal(bf_result, pd_result, check_dtype=False)
+
+
+def test_local_series_apply_w_logical_not(scalars_df_index, scalars_pandas_df_index):
+    def logical_not_fn(x):
+        if not (x > 0):
+            return -x
+        return x
+
+    bf_result = scalars_df_index["int64_col"].apply(logical_not_fn).to_pandas()
+    pd_result = scalars_pandas_df_index["int64_col"].apply(logical_not_fn)
+
+    pd.testing.assert_series_equal(bf_result, pd_result, check_dtype=False)
+
+
+def test_local_series_apply_w_short_circuit(scalars_df_index, scalars_pandas_df_index):
+    def short_circuit(x):
+        if (x > 0 and x < 100) or x == 55555:
+            return 1
+        return 0
+
+    bf_result = scalars_df_index["int64_col"].apply(short_circuit).to_pandas()
+    pd_result = scalars_pandas_df_index["int64_col"].apply(short_circuit)
+
+    pd.testing.assert_series_equal(bf_result, pd_result, check_dtype=False)
+
+
+def test_local_series_apply_w_var_assignments(scalars_df_index, scalars_pandas_df_index):
+    def var_assign(x):
+        val = x
+        if x > 0:
+            val = val + 10
+            if val > 100:
+                val = val * 2
+        else:
+            val = val - 10
+        return val
+
+    bf_result = scalars_df_index["int64_col"].apply(var_assign).to_pandas()
+    pd_result = scalars_pandas_df_index["int64_col"].apply(var_assign)
+
+    pd.testing.assert_series_equal(bf_result, pd_result, check_dtype=False)
