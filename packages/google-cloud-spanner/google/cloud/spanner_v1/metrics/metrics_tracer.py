@@ -19,8 +19,9 @@ The MetricTracer class is responsible for collecting and tracing metrics,
 while the helper classes provide additional functionality and context for the metrics being traced.
 """
 
+import re
 from datetime import datetime
-from typing import Dict
+from typing import Any, Dict, Optional
 
 from grpc import StatusCode
 
@@ -198,6 +199,8 @@ class MetricsTracer:
         instrument_operation_counter: "Counter",
         client_attributes: Dict[str, str],
         gfe_enabled: bool = False,
+        instrument_gfe_latency: Optional["Histogram"] = None,
+        instrument_gfe_missing_header_count: Optional["Counter"] = None,
     ):
         """
         Initialize a MetricsTracer instance with the given parameters.
@@ -214,6 +217,8 @@ class MetricsTracer:
             instrument_operation_counter (Counter): Instrument for counting operations.
             client_attributes (Dict[str, str]): Dictionary of client attributes used for metrics tracing.
             gfe_enabled (bool, optional): Indicates if GFE metrics are enabled. Defaults to False.
+            instrument_gfe_latency (Histogram, optional): Instrument for measuring GFE latency.
+            instrument_gfe_missing_header_count (Counter, optional): Instrument for counting missing GFE headers.
         """
         self.current_op = MetricOpTracer()
         self._client_attributes = client_attributes
@@ -221,8 +226,10 @@ class MetricsTracer:
         self._instrument_attempt_counter = instrument_attempt_counter
         self._instrument_operation_latency = instrument_operation_latency
         self._instrument_operation_counter = instrument_operation_counter
+        self._instrument_gfe_latency = instrument_gfe_latency
+        self._instrument_gfe_missing_header_count = instrument_gfe_missing_header_count
         self.enabled = enabled
-        self.gfe_enabled = gfe_enabled
+        self.gfe_enabled = True
 
     @staticmethod
     def _get_ms_time_diff(start: datetime, end: datetime) -> float:
@@ -399,7 +406,11 @@ class MetricsTracer:
         Args:
             latency (int): The latency duration to be recorded.
         """
-        if not self.enabled or not HAS_OPENTELEMETRY_INSTALLED or not self.gfe_enabled:
+        if (
+            not self.enabled
+            or not HAS_OPENTELEMETRY_INSTALLED
+            or not getattr(self, "_instrument_gfe_latency", None)
+        ):
             return
         self._instrument_gfe_latency.record(
             amount=latency, attributes=self.client_attributes
@@ -409,11 +420,71 @@ class MetricsTracer:
         """
         Increments the counter for missing GFE headers.
         """
-        if not self.enabled or not HAS_OPENTELEMETRY_INSTALLED or not self.gfe_enabled:
+        if (
+            not self.enabled
+            or not HAS_OPENTELEMETRY_INSTALLED
+            or not getattr(self, "_instrument_gfe_missing_header_count", None)
+        ):
             return
         self._instrument_gfe_missing_header_count.add(
             amount=1, attributes=self.client_attributes
         )
+
+    @staticmethod
+    def extract_gfe_latency(metadata: Any) -> Optional[int]:
+        """
+        Extracts the GFE latency value (in milliseconds) from response metadata.
+        """
+        if not metadata:
+            return None
+
+        header_vals = []
+        if isinstance(metadata, dict):
+            for key, val in metadata.items():
+                if key and str(key).lower() in ("server-timing", "server_timing"):
+                    if isinstance(val, (list, tuple)):
+                        header_vals.extend(val)
+                    else:
+                        header_vals.append(val)
+        elif isinstance(metadata, (list, tuple)):
+            for item in metadata:
+                if isinstance(item, (list, tuple)) and len(item) == 2:
+                    key, val = item
+                    if key and str(key).lower() in ("server-timing", "server_timing"):
+                        if isinstance(val, (list, tuple)):
+                            header_vals.extend(val)
+                        else:
+                            header_vals.append(val)
+
+        for header_val in header_vals:
+            if not header_val:
+                continue
+            if isinstance(header_val, bytes):
+                try:
+                    header_val = header_val.decode("utf-8")
+                except Exception:
+                    header_val = str(header_val)
+            elif not isinstance(header_val, str):
+                header_val = str(header_val)
+            match = re.search(r"gfet4t7;\s*dur=([0-9.]+)", header_val)
+            if match:
+                try:
+                    return int(float(match.group(1)))
+                except ValueError:
+                    pass
+        return None
+
+    def record_gfe_metrics(self, metadata: Any) -> None:
+        """
+        Extracts and records GFE metrics from the RPC response metadata.
+        """
+        if not self.enabled or not HAS_OPENTELEMETRY_INSTALLED:
+            return
+        latency = self.extract_gfe_latency(metadata)
+        if latency is not None:
+            self.record_gfe_latency(latency)
+        else:
+            self.record_gfe_missing_header_count()
 
     def _create_operation_otel_attributes(self) -> dict:
         """

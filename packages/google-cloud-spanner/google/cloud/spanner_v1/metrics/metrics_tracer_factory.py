@@ -85,6 +85,7 @@ class MetricsTracerFactory:
             project (str): The project ID for the monitored resource.
         """
         self.enabled = enabled
+        self.gfe_enabled = True
         self._create_metric_instruments(service_name)
         self._client_attributes = {}
 
@@ -268,6 +269,11 @@ class MetricsTracerFactory:
             instrument_operation_latency=self._instrument_operation_latency,
             instrument_operation_counter=self._instrument_operation_counter,
             client_attributes=self._client_attributes.copy(),
+            gfe_enabled=True,
+            instrument_gfe_latency=getattr(self, "_instrument_gfe_latency", None),
+            instrument_gfe_missing_header_count=getattr(
+                self, "_instrument_gfe_missing_header_count", None
+            ),
         )
         return metrics_tracer
 
