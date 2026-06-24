@@ -39,9 +39,7 @@ def _format_execute_query_view_params(
             raise TypeError(
                 f"View parameter {key} must be a string, got {type(value).__name__}"
             )
-        result_values[key] = _convert_value_to_pb_value_dict(
-            value, SqlType.String()
-        )
+        result_values[key] = _convert_value_to_pb_value_dict(value, SqlType.String())
 
     return result_values
 
