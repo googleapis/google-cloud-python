@@ -65,6 +65,19 @@ class TestAgentIdentityUtils:
         mock_load_cert.assert_called_once_with(b"cert_bytes")
         assert result == mock_load_cert.return_value
 
+    @mock.patch("os.path.getsize")
+    def test_is_certificate_file_ready_permission_error(self, mock_getsize):
+        mock_getsize.side_effect = PermissionError("Permission denied")
+        with pytest.raises(PermissionError):
+            _agent_identity_utils._is_certificate_file_ready("/path/to/cert")
+
+    @mock.patch("os.path.getsize")
+    def test_is_certificate_file_ready_os_error(self, mock_getsize):
+        mock_getsize.side_effect = OSError("Not found")
+        # Should swallow the OSError and return False
+        result = _agent_identity_utils._is_certificate_file_ready("/path/to/cert")
+        assert result is False
+
     def test__is_agent_identity_certificate_invalid(self):
         cert = _agent_identity_utils.parse_certificate(NON_AGENT_IDENTITY_CERT_BYTES)
         assert not _agent_identity_utils._is_agent_identity_certificate(cert)
@@ -432,6 +445,45 @@ class TestAgentIdentityUtils:
             _agent_identity_utils.get_agent_identity_certificate_path()
 
         assert mock_sleep.call_count == len(_agent_identity_utils._POLLING_INTERVALS)
+
+    @mock.patch("time.sleep")
+    @mock.patch("google.auth._agent_identity_utils._is_certificate_file_ready")
+    @mock.patch("os.path.exists")
+    def test_get_agent_identity_certificate_path_permission_error_well_known(
+        self, mock_exists, mock_is_ready, mock_sleep, monkeypatch
+    ):
+        monkeypatch.delenv(
+            environment_vars.GOOGLE_API_CERTIFICATE_CONFIG, raising=False
+        )
+        mock_exists.return_value = True
+        mock_is_ready.side_effect = PermissionError("Permission denied")
+
+        # It should fail-fast and return None immediately
+        result = _agent_identity_utils.get_agent_identity_certificate_path()
+        assert result is None
+        mock_sleep.assert_not_called()
+
+    @mock.patch("time.sleep")
+    @mock.patch("os.path.exists")
+    def test_get_agent_identity_certificate_path_permission_error_config(
+        self, mock_exists, mock_sleep, tmpdir, monkeypatch
+    ):
+        config_path = tmpdir.join("config.json")
+        monkeypatch.setenv(
+            environment_vars.GOOGLE_API_CERTIFICATE_CONFIG, str(config_path)
+        )
+        # Mock os.path.exists so ECP workstation fail-fast is not triggered
+        mock_exists.return_value = True
+
+        # Mocking open to raise PermissionError
+        mock_open = mock.mock_open()
+        mock_open.side_effect = PermissionError("Permission denied")
+
+        with mock.patch("builtins.open", mock_open):
+            result = _agent_identity_utils.get_agent_identity_certificate_path()
+
+        assert result is None
+        mock_sleep.assert_not_called()
 
     @mock.patch("google.auth._agent_identity_utils.get_agent_identity_certificate_path")
     def test_get_and_parse_agent_identity_certificate_opted_out(

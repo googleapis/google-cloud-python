@@ -59,7 +59,15 @@ _POLLING_INTERVALS = ([_FAST_POLL_INTERVAL] * _FAST_POLL_CYCLES) + (
 
 def _is_certificate_file_ready(path):
     """Checks if a file exists and is not empty."""
-    return path and os.path.exists(path) and os.path.getsize(path) > 0
+    if not path:
+        return False
+    try:
+        return os.path.getsize(path) > 0
+    except PermissionError:
+        # Propagate PermissionError to let caller handle it (fail-fast or fallback)
+        raise
+    except OSError:
+        return False
 
 
 def get_agent_identity_certificate_path():
@@ -148,6 +156,13 @@ def get_agent_identity_certificate_path():
                 )
                 has_logged_cert_warning = True
 
+        except PermissionError as e:
+            _LOGGER.warning(
+                "Permission denied when accessing certificate config or certificate file: %s. "
+                "Token binding protection cannot be enabled. Falling back to unbound tokens.",
+                e,
+            )
+            return None
         except (IOError, ValueError, KeyError) as e:
             if cert_config_path and os.path.exists(cert_config_path):
                 # If the file exists but has invalid JSON or is unreadable,
