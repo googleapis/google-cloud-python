@@ -256,6 +256,18 @@
         }
       ]
     },
+    "packages/google-cloud-agentregistry": {
+      "component": "google-cloud-agentregistry",
+      "extra-files": [
+        "google/cloud/agentregistry/gapic_version.py",
+        "google/cloud/agentregistry_v1/gapic_version.py",
+        {
+          "jsonpath": "$.clientLibrary.version",
+          "path": "samples/generated_samples/snippet_metadata_google.cloud.agentregistry.v1.json",
+          "type": "json"
+        }
+      ]
+    },
     "packages/google-cloud-alloydb": {
       "component": "google-cloud-alloydb",
       "extra-files": [

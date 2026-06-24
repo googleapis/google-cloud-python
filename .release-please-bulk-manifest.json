@@ -25,6 +25,7 @@
   "packages/google-cloud-access-context-manager": "0.6.0",
   "packages/google-cloud-advisorynotifications": "0.7.0",
   "packages/google-cloud-agentidentitycredentials": "0.1.0",
+  "packages/google-cloud-agentregistry": "0.0.0",
   "packages/google-cloud-alloydb": "0.11.0",
   "packages/google-cloud-alloydb-connectors": "0.5.0",
   "packages/google-cloud-api-gateway": "1.16.0",

@@ -286,6 +286,13 @@ libraries:
     copyright_year: "2026"
     python:
       default_version: v1
+  - name: google-cloud-agentregistry
+    version: 0.0.0
+    apis:
+      - path: google/cloud/agentregistry/v1
+    copyright_year: "2026"
+    python:
+      default_version: v1
   - name: google-cloud-alloydb
     version: 0.11.0
     apis:
