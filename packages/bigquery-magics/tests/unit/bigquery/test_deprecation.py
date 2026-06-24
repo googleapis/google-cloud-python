@@ -56,8 +56,7 @@ def test_cell_magic_engine_bigframes_warning(mock_ipython):
 
     from IPython.testing.globalipapp import get_ipython, start_ipython
 
-    start_ipython()
-    ip = get_ipython()
+    ip = start_ipython()
 
     ip.extension_manager.load_extension("bigquery_magics")
 
