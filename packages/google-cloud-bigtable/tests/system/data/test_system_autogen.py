@@ -903,6 +903,32 @@ class TestSystem(SystemTestRunner):
             f"row {type(cell_value)}({cell_value}) not found with {type(filter_input)}({filter_input}) filter"
         )
 
+    @pytest.mark.usefixtures("target")
+    @pytest.mark.parametrize(
+        "cell_value,mask,expect_match",
+        [
+            (b"\x01\x02\x03", b"\x01\x02\x03", True),
+            (b"\x01\x02\x03", b"\x01\x00\x00", True),
+            (b"\x00\x02\x03", b"\x01\x00\x00", False),
+        ],
+    )
+    def test_value_bitmask_filter(
+        self, target, temp_rows, cell_value, mask, expect_match
+    ):
+        """ValueBitmaskFilter matches cells where (value & mask) == mask.
+        Make sure inputs are properly interpreted by the server."""
+        from google.cloud.bigtable.data import ReadRowsQuery
+        from google.cloud.bigtable.data.row_filters import ValueBitmaskFilter
+
+        f = ValueBitmaskFilter(mask)
+        temp_rows.add_row(b"row_key_1", value=cell_value)
+        query = ReadRowsQuery(row_filter=f)
+        row_list = target.read_rows(query)
+        assert len(row_list) == bool(expect_match), (
+            f"row {cell_value!r} not matched as {expect_match} with {mask!r} bitmask filter"
+        )
+
+
     @pytest.mark.skipif(
         bool(os.environ.get(BIGTABLE_EMULATOR)), reason="emulator doesn't support SQL"
     )
