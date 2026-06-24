@@ -455,6 +455,8 @@ class AsyncMultiRangeDownloader:
             "routing_token": None,
             "enable_checksum": enable_checksum,
             "full_obj_server_crc32c": self.full_obj_server_crc32c,
+            "bucket_name": self.bucket_name,
+            "object_name": self.object_name,
         }
 
         read_ids = set(download_states.keys())

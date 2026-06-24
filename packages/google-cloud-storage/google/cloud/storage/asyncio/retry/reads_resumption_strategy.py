@@ -164,10 +164,14 @@ class _ReadResumptionStrategy(_BaseResumptionStrategy):
                     read_state.initial_length != 0
                     and read_state.bytes_written > read_state.initial_length
                 ):
-                    raise DataCorruption(
-                        response,
-                        f"Byte count mismatch for read_id {read_id}. "
-                        f"Expected {read_state.initial_length}, got {read_state.bytes_written}",
+                    bucket_name = state.get("bucket_name", "unknown")
+                    object_name = state.get("object_name", "unknown")
+                    diff = read_state.bytes_written - read_state.initial_length
+                    logger.warning(
+                        "storage: received %d more bytes than requested from GCS for bucket %r, object %r",
+                        diff,
+                        bucket_name,
+                        object_name,
                     )
 
                 # Perform full-object checksum verification once the stream finishes.

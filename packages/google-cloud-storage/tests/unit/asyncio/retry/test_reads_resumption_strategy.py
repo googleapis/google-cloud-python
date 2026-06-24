@@ -310,14 +310,24 @@ class TestReadResumptionStrategy(unittest.TestCase):
             self.strategy.update_state_from_response(response, self.state)
 
     def test_update_state_final_byte_count_mismatch(self):
-        """Test mismatch between expected length and actual bytes written on completion."""
+        """Test mismatch between expected length and actual bytes written on completion logs warning."""
         self._add_download(_READ_ID, length=100)
+        self.state["bucket_name"] = "my-bucket"
+        self.state["object_name"] = "my-object"
 
         data = b"data" * 30
         response = self._create_response(data, _READ_ID, offset=0, range_end=True)
 
-        with self.assertRaisesRegex(DataCorruption, "Byte count mismatch"):
+        with self.assertLogs(LOGGER_NAME, level="WARNING") as cm:
             self.strategy.update_state_from_response(response, self.state)
+
+        self.assertTrue(
+            any(
+                "storage: received 20 more bytes than requested from GCS for bucket 'my-bucket', object 'my-object'"
+                in output
+                for output in cm.output
+            )
+        )
 
     def test_update_state_completes_download(self):
         """Test that the download is marked complete on range_end."""
