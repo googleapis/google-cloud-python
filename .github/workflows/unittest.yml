@@ -117,21 +117,23 @@ jobs:
               echo "============================================================"
 
               set +e
-              if [ -f "${pkg}/.coveragerc" ]; then
+              pushd "${pkg}" > /dev/null
+              if [ -f ".coveragerc" ]; then
                 echo "Using package-specific configuration: ${pkg}/.coveragerc"
                 # If fail_under is specified in the package-specific .coveragerc, coverage report
                 # will automatically enforce it. Otherwise, we enforce the default.
-                if grep -q "fail_under" "${pkg}/.coveragerc"; then
-                  coverage report --rcfile="${pkg}/.coveragerc" --include="${pkg}/**"
+                if grep -q "fail_under" ".coveragerc"; then
+                  COVERAGE_FILE=../../.coverage coverage report
                 else
                   echo "No fail_under specified in ${pkg}/.coveragerc, enforcing default"
-                  coverage report --rcfile="${pkg}/.coveragerc" --include="${pkg}/**" --fail-under="${DEFAULT_FAIL_UNDER}"
+                  COVERAGE_FILE=../../.coverage coverage report --fail-under="${DEFAULT_FAIL_UNDER}"
                 fi
               else
                 echo "No .coveragerc found for ${pkg}, enforcing default"
-                coverage report --include="${pkg}/**" --fail-under="${DEFAULT_FAIL_UNDER}"
+                COVERAGE_FILE=../../.coverage coverage report --fail-under="${DEFAULT_FAIL_UNDER}"
               fi
               status=$?
+              popd > /dev/null
               set -e
 
               if [ ${status} -ne 0 ]; then
