@@ -195,7 +195,7 @@ def test_async_refresh_manager_pickle():
 
 
 @pytest.mark.asyncio
-async def test_async_worker_exception_logging_enabled(monkeypatch):
+async def test_async_worker_exception_logging():
     credentials = mock.AsyncMock()
     credentials._lookup_regional_access_boundary.side_effect = Exception("lookup fail")
 
@@ -203,55 +203,18 @@ async def test_async_worker_exception_logging_enabled(monkeypatch):
     request._clone.return_value = request
     rab_manager = mock.Mock()
 
-    # Force is_logging_enabled to return True
-    monkeypatch.setattr(
-        _regional_access_boundary_utils._helpers,
-        "is_logging_enabled",
-        lambda logger: True,
-    )
-
     manager = (
         _regional_access_boundary_utils._AsyncRegionalAccessBoundaryRefreshManager()
     )
 
     with mock.patch.object(
-        _regional_access_boundary_utils._LOGGER, "warning"
-    ) as mock_warning:
+        _regional_access_boundary_utils._LOGGER, "info"
+    ) as mock_info:
         manager.start_refresh(credentials, request, rab_manager)
         await manager._worker_task
 
-        mock_warning.assert_called_once()
-        assert "lookup raised an exception" in mock_warning.call_args[0][0]
-        rab_manager.process_regional_access_boundary_info.assert_called_once_with(None)
-
-
-@pytest.mark.asyncio
-async def test_async_worker_exception_logging_disabled(monkeypatch):
-    credentials = mock.AsyncMock()
-    credentials._lookup_regional_access_boundary.side_effect = Exception("lookup fail")
-
-    request = mock.Mock()
-    request._clone.return_value = request
-    rab_manager = mock.Mock()
-
-    # Force is_logging_enabled to return False
-    monkeypatch.setattr(
-        _regional_access_boundary_utils._helpers,
-        "is_logging_enabled",
-        lambda logger: False,
-    )
-
-    manager = (
-        _regional_access_boundary_utils._AsyncRegionalAccessBoundaryRefreshManager()
-    )
-
-    with mock.patch.object(
-        _regional_access_boundary_utils._LOGGER, "warning"
-    ) as mock_warning:
-        manager.start_refresh(credentials, request, rab_manager)
-        await manager._worker_task
-
-        mock_warning.assert_not_called()
+        mock_info.assert_called_once()
+        assert "lookup raised an exception" in mock_info.call_args[0][0]
         rab_manager.process_regional_access_boundary_info.assert_called_once_with(None)
 
 
