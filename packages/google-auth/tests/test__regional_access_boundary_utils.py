@@ -414,13 +414,12 @@ class TestCredentialsWithRegionalAccessBoundary(object):
         assert rab_manager._data.expiry is None
         assert rab_manager._data.cooldown_expiry is not None
 
-        assert (
-            "Regional Access Boundary lookup failed. Entering cooldown."
-            in rab_caplog.text
+        # RAB failures should be logged at DEBUG level.
+        assert any(
+            t[1] == logging.DEBUG
+            and "Regional Access Boundary lookup failed. Entering cooldown." in t[2]
+            for t in rab_caplog.record_tuples
         )
-        # RAB failures should be logged at INFO level.
-        warning_logs = [t for t in rab_caplog.record_tuples if t[1] == logging.WARNING]
-        assert not warning_logs, f"Unexpected warnings emitted: {warning_logs}"
 
     def test_lookup_regional_access_boundary_null_url(self):
         creds = oauth2_credentials.Credentials(token="token")
@@ -494,17 +493,17 @@ class TestCredentialsWithRegionalAccessBoundary(object):
         assert rab_manager._data.cooldown_expiry == expected_cooldown_expiry
         assert rab_manager._data.cooldown_duration == initial_cooldown * 2
 
-        assert (
-            "Asynchronous Regional Access Boundary lookup raised an exception"
-            in rab_caplog.text
+        # RAB failures should be logged at DEBUG level.
+        assert any(
+            t[1] == logging.DEBUG
+            and "Asynchronous Regional Access Boundary lookup raised an exception" in t[2]
+            for t in rab_caplog.record_tuples
         )
-        assert (
-            "Regional Access Boundary lookup failed. Entering cooldown."
-            in rab_caplog.text
+        assert any(
+            t[1] == logging.DEBUG
+            and "Regional Access Boundary lookup failed. Entering cooldown." in t[2]
+            for t in rab_caplog.record_tuples
         )
-        # RAB failures should be logged at INFO level.
-        warning_logs = [t for t in rab_caplog.record_tuples if t[1] == logging.WARNING]
-        assert not warning_logs, f"Unexpected warnings emitted: {warning_logs}"
 
     @mock.patch("google.auth._helpers.utcnow")
     def test_regional_access_boundary_refresh_thread_run_failure_hard_expiry(
