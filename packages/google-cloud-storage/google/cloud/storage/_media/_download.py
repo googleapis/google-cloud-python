@@ -51,10 +51,6 @@ class DownloadBase(object):
             See the retry.py source code and docstrings in this package
             (google.cloud.storage.retry) for information on retry types and how
             to configure them.
-        client_info_bucket_name (Optional[str]): The bucket name to include in
-            client info headers.
-        client_info_object_name (Optional[str]): The object name to include in
-            client info headers.
 
     Attributes:
         media_url (str): The URL containing the media to be downloaded.
@@ -70,8 +66,6 @@ class DownloadBase(object):
         end=None,
         headers=None,
         retry=DEFAULT_RETRY,
-        client_info_bucket_name=None,
-        client_info_object_name=None,
     ):
         self.media_url = media_url
         self._stream = stream
@@ -82,8 +76,6 @@ class DownloadBase(object):
         self._headers = headers
         self._finished = False
         self._retry_strategy = retry
-        self.client_info_bucket_name = client_info_bucket_name
-        self.client_info_object_name = client_info_object_name
 
     @property
     def finished(self):
@@ -494,42 +486,6 @@ class ChunkedDownload(DownloadBase):
             self._total_bytes = total_bytes
         # Write the response body to the stream.
         self._stream.write(response_body)
-
-        if self._finished:
-            requested_length = None
-            if self.start is None:
-                if self.end is None:
-                    requested_length = self.total_bytes
-                else:
-                    requested_length = self.end + 1
-            else:
-                if self.end is not None:
-                    requested_length = self.end - self.start + 1
-                else:
-                    if self.start < 0:
-                        requested_length = -self.start
-                    elif self.total_bytes is not None:
-                        requested_length = self.total_bytes - self.start
-
-            if (
-                requested_length is not None
-                and self._bytes_downloaded > requested_length
-            ):
-                if response.headers.get("x-goog-stored-content-encoding") != "gzip":
-                    import logging
-
-                    logger = logging.getLogger(__name__)
-                    bucket_name = (
-                        getattr(self, "client_info_bucket_name", None) or "unknown"
-                    )
-                    object_name = (
-                        getattr(self, "client_info_object_name", None) or "unknown"
-                    )
-                    diff = self._bytes_downloaded - requested_length
-                    logger.warning(
-                        f"storage: received {diff} more bytes than requested from GCS "
-                        f'for bucket "{bucket_name}", object "{object_name}"'
-                    )
 
     def consume_next_chunk(self, transport, timeout=None):
         """Consume the next chunk of the resource to be downloaded.

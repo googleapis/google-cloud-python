@@ -593,44 +593,6 @@ class TestChunkedDownload(object):
         assert download.bytes_downloaded == 0
         assert download.total_bytes is None
 
-    @mock.patch("logging.getLogger")
-    def test__process_response_warn_extra_bytes(self, mock_get_logger):
-        chunk_size = 100
-        start = 200
-        total_bytes = 500
-        stream = io.BytesIO()
-        download = _download.ChunkedDownload(
-            EXAMPLE_URL,
-            chunk_size,
-            stream,
-            start=start,
-        )
-        download.client_info_bucket_name = "my-bucket"
-        download.client_info_object_name = "my-object"
-        _fix_up_virtual(download)
-
-        download._bytes_downloaded = 0
-        download._total_bytes = total_bytes
-
-        mock_logger = mock_get_logger.return_value
-
-        data = b"x" * 310
-        response = self._mock_response(
-            start,
-            total_bytes - 1,
-            total_bytes,
-            content=data,
-            status_code=int(http.client.PARTIAL_CONTENT),
-        )
-        response.headers["content-length"] = "310"
-
-        download._process_response(response)
-
-        assert download.finished
-        mock_logger.warning.assert_called_once_with(
-            'storage: received 10 more bytes than requested from GCS for bucket "my-bucket", object "my-object"'
-        )
-
     def test_consume_next_chunk(self):
         download = _download.ChunkedDownload(EXAMPLE_URL, 256, None)
         with pytest.raises(NotImplementedError) as exc_info:
