@@ -82,12 +82,23 @@ class _MemfdCreationError(OSError):
     pass
 
 
+def _can_read(path: Optional[str]) -> bool:
+    if path is None:
+        return True
+    try:
+        with open(path, "rb"):
+            pass
+        return True
+    except OSError:
+        return False
+
+
 @contextlib.contextmanager
 def secure_cert_key_paths(
     cert: Union[bytes, str, None],
     key: Union[bytes, str, None],
     passphrase: Optional[bytes] = None,
-) -> Generator[Tuple[str, str, Optional[bytes]], None, None]:
+) -> Generator[Tuple[Optional[str], Optional[str], Optional[bytes]], None, None]:
     """Provides secure file paths for certificate and key.
 
     This function is implemented as a context manager generator to ensure that
@@ -132,10 +143,11 @@ def secure_cert_key_paths(
                 if (cert_path is None or os.path.exists(cert_path)) and (
                     key_path is None or os.path.exists(key_path)
                 ):
-                    yield cast(str, cert_path or cert), cast(
-                        str, key_path or key
-                    ), passphrase
-                    return
+                    if _can_read(cert_path) and _can_read(key_path):
+                        yield cast(str, cert_path or cert), cast(
+                            str, key_path or key
+                        ), passphrase
+                        return
         except _MemfdCreationError:
             pass  # Fallback to Tier 3 on failure.
 
@@ -267,39 +279,40 @@ def _tempfile_cert_key_paths(
         if os.path.isdir("/dev/shm") and os.access("/dev/shm", os.W_OK)
         else None
     )
-    cleanup_files = []
+    cleanup_files = [None, None]
     new_passphrase = passphrase
     cert_data = cert_bytes
     key_data = None
     if key_bytes is not None:
         key_data, new_passphrase = _encrypt_key_if_plaintext(key_bytes, passphrase)
 
-    cert_path, key_path = None, None
     try:
-        paths: List[Optional[str]] = []
-        for data in [cert_data, key_data]:
+        for i, data in enumerate([cert_data, key_data]):
             if data is not None:
-                fd, path = tempfile.mkstemp(dir=tmp_dir)
-                cleanup_files.append(path)
+                try:
+                    fd, path = tempfile.mkstemp(dir=tmp_dir)
+                except OSError:
+                    fd, path = tempfile.mkstemp(dir=None)
+                cleanup_files[i] = path
                 with os.fdopen(fd, "wb") as f:
                     f.write(data)
                     f.flush()
                     os.fsync(f.fileno())
-                paths.append(path)
-            else:
-                paths.append(None)
 
-        cert_path, key_path = paths
-        yield cert_path, key_path, new_passphrase
+        yield cleanup_files[0], cleanup_files[1], new_passphrase
     finally:
-        for file_path in cleanup_files:
+        cert_cleanup_path = cleanup_files[0]
+        key_cleanup_path = cleanup_files[1]
+
+        if key_cleanup_path:
             try:
-                # Wiping the private key with null bytes before removal.
-                if file_path == key_path:
-                    _secure_wipe_and_remove(file_path)
-                else:
-                    if os.path.exists(file_path):
-                        os.remove(file_path)
+                _secure_wipe_and_remove(key_cleanup_path)
+            except OSError:
+                pass
+        if cert_cleanup_path:
+            try:
+                if os.path.exists(cert_cleanup_path):
+                    os.remove(cert_cleanup_path)
             except OSError:
                 pass
 
