@@ -24,7 +24,7 @@ cryptography_base_require = [
 
 DEPENDENCIES = (
     "pyasn1-modules>=0.2.1",
-    cryptography_base_require,
+    *cryptography_base_require,
 )
 
 requests_extra_require = ["requests >= 2.20.0, < 3.0.0"]
