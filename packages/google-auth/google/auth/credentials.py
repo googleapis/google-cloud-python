@@ -535,7 +535,7 @@ class CredentialsWithRegionalAccessBoundary(Credentials):
 
         url = self._build_regional_access_boundary_lookup_url(request=request)
         if not url:
-            _LOGGER.warning("Failed to build Regional Access Boundary lookup URL.")
+            _LOGGER.debug("Failed to build Regional Access Boundary lookup URL.")
             return None
 
         headers: Dict[str, str] = {}
