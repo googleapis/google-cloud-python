@@ -87,7 +87,7 @@ def generate(
             Specifies the connection to use to communicate with the model. For example, ``myproject.us.myconnection``.
             If not provided, the query uses your end-user credential.
         endpoint (str, optional):
-            Specifies the Vertex AI endpoint to use for the model. For example ``"gemini-2.5-flash"``. You can specify any
+            Specifies the Vertex AI endpoint to use for the model. For example ``"gemini-3.5-flash"``. You can specify any
             generally available or preview Gemini model. If you specify the model name, BigQuery ML automatically identifies and
             uses the full endpoint of the model. If you don't specify an ENDPOINT value, BigQuery ML selects a recent stable
             version of Gemini to use.
@@ -178,7 +178,7 @@ def generate_bool(
             Specifies the connection to use to communicate with the model. For example, ``myproject.us.myconnection``.
             If not provided, the query uses your end-user credential.
         endpoint (str, optional):
-            Specifies the Vertex AI endpoint to use for the model. For example ``"gemini-2.5-flash"``. You can specify any
+            Specifies the Vertex AI endpoint to use for the model. For example ``"gemini-3.5-flash"``. You can specify any
             generally available or preview Gemini model. If you specify the model name, BigQuery ML automatically identifies and
             uses the full endpoint of the model. If you don't specify an ENDPOINT value, BigQuery ML selects a recent stable
             version of Gemini to use.
@@ -252,7 +252,7 @@ def generate_int(
             Specifies the connection to use to communicate with the model. For example, ``myproject.us.myconnection``.
             If not provided, the query uses your end-user credential.
         endpoint (str, optional):
-            Specifies the Vertex AI endpoint to use for the model. For example ``"gemini-2.5-flash"``. You can specify any
+            Specifies the Vertex AI endpoint to use for the model. For example ``"gemini-3.5-flash"``. You can specify any
             generally available or preview Gemini model. If you specify the model name, BigQuery ML automatically identifies and
             uses the full endpoint of the model. If you don't specify an ENDPOINT value, BigQuery ML selects a recent stable
             version of Gemini to use.
@@ -326,7 +326,7 @@ def generate_double(
             Specifies the connection to use to communicate with the model. For example, ``myproject.us.myconnection``.
             If not provided, the query uses your end-user credential.
         endpoint (str, optional):
-            Specifies the Vertex AI endpoint to use for the model. For example ``"gemini-2.5-flash"``. You can specify any
+            Specifies the Vertex AI endpoint to use for the model. For example ``"gemini-3.5-flash"``. You can specify any
             generally available or preview Gemini model. If you specify the model name, BigQuery ML automatically identifies and
             uses the full endpoint of the model. If you don't specify an ENDPOINT value, BigQuery ML selects a recent stable
             version of Gemini to use.
@@ -809,7 +809,7 @@ def if_(
             Specifies the connection to use to communicate with the model. For example, ``myproject.us.myconnection``.
             If not provided, the query uses your end-user credential.
         endpoint (str, optional):
-            Specifies the Vertex AI endpoint to use for the model. For example ``"gemini-2.5-flash"``. You can specify any
+            Specifies the Vertex AI endpoint to use for the model. For example ``"gemini-3.5-flash"``. You can specify any
             generally available or preview Gemini model. If you specify the model name, BigQuery ML automatically identifies and
             uses the full endpoint of the model. If you don't specify an ENDPOINT value, BigQuery ML dynamically chooses a model based on your query to have the
             best cost to quality tradeoff for the task.
@@ -960,7 +960,7 @@ def score(
             Specifies the connection to use to communicate with the model. For example, ``myproject.us.myconnection``.
             If not provided, the query uses your end-user credential.
         endpoint (str, optional):
-            Specifies the Vertex AI endpoint to use for the model. For example ``"gemini-2.5-flash"``. You can specify any
+            Specifies the Vertex AI endpoint to use for the model. For example ``"gemini-3.5-flash"``. You can specify any
             generally available or preview Gemini model. If you specify the model name, BigQuery ML automatically identifies and
             uses the full endpoint of the model. If you don't specify an endpoint value, BigQuery ML dynamically chooses a model
             based on your query to have the best cost to quality tradeoff for the task.
