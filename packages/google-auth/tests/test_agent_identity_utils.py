@@ -561,6 +561,23 @@ class TestAgentIdentityUtils:
         assert result is None
         mock_get_path.assert_not_called()
 
+    @mock.patch("google.auth._agent_identity_utils.get_agent_identity_certificate_path")
+    def test_get_and_parse_agent_identity_certificate_file_read_error(
+        self, mock_get_path, monkeypatch
+    ):
+        monkeypatch.setenv(
+            environment_vars.GOOGLE_API_PREVENT_AGENT_TOKEN_SHARING_FOR_GCP_SERVICES,
+            "true",
+        )
+        mock_get_path.return_value = "/fake/cert.pem"
+        mock_open = mock.mock_open()
+        mock_open.side_effect = PermissionError("Permission denied")
+
+        with mock.patch("builtins.open", mock_open):
+            result = _agent_identity_utils.get_and_parse_agent_identity_certificate()
+
+        assert result is None
+
     def test_get_cached_cert_fingerprint_no_cert(self):
         with pytest.raises(ValueError, match="mTLS connection is not configured."):
             _agent_identity_utils.get_cached_cert_fingerprint(None)

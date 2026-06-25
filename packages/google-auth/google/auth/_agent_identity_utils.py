@@ -232,8 +232,17 @@ def get_and_parse_agent_identity_certificate():
     if not cert_path:
         return None
 
-    with open(cert_path, "rb") as cert_file:
-        cert_bytes = cert_file.read()
+    try:
+        with open(cert_path, "rb") as cert_file:
+            cert_bytes = cert_file.read()
+    except OSError as e:
+        _LOGGER.warning(
+            "Failed to read agent identity certificate file at %s: %s. "
+            "Token binding protection cannot be enabled. Falling back to unbound tokens.",
+            cert_path,
+            e,
+        )
+        return None
 
     return parse_certificate(cert_bytes)
 
