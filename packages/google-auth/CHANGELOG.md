@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.55.1](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.55.0...google-auth-v2.55.1) (2026-06-25)
+
+
+### Bug Fixes
+
+* **auth:** lower regional access boundary logs from warning to debug. ([#17571](https://github.com/googleapis/google-cloud-python/issues/17571)) ([1ef4183](https://github.com/googleapis/google-cloud-python/commit/1ef418362c1a69e6bbe6f78741b53dc1f3e7b301)), closes [#17515](https://github.com/googleapis/google-cloud-python/issues/17515)
+
 ## [2.55.0](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.54.0...google-auth-v2.55.0) (2026-06-15)
 
 
