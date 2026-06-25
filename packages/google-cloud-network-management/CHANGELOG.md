@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-network-management/#history
 
+## [1.37.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-management-v1.36.0...google-cloud-network-management-v1.37.0) (2026-06-25)
+
+
+### Features
+
+* update googleapis and regenerate ([#17554](https://github.com/googleapis/google-cloud-python/issues/17554)) ([03d0574](https://github.com/googleapis/google-cloud-python/commit/03d0574da8485e918f16e90666928f5c7b7f1c92))
+
 ## [1.36.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-management-v1.35.0...google-cloud-network-management-v1.36.0) (2026-06-22)
 
 

@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## [3.69.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-spanner-v3.68.0...google-cloud-spanner-v3.69.0) (2026-06-25)
+
+
+### Features
+
+* regenerate google-cloud-spanner ([#17578](https://github.com/googleapis/google-cloud-python/issues/17578)) ([39b252f](https://github.com/googleapis/google-cloud-python/commit/39b252f4effe7e8915efa8796d90fd29f356bf96))
+
 ## [3.68.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-spanner-v3.67.0...google-cloud-spanner-v3.68.0) (2026-06-11)
 
 
