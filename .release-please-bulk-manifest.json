@@ -77,6 +77,7 @@
   "packages/google-cloud-cloudsecuritycompliance": "0.8.0",
   "packages/google-cloud-commerce-consumer-procurement": "0.6.0",
   "packages/google-cloud-common": "1.10.0",
+  "packages/google-cloud-compute": "1.48.0",
   "packages/google-cloud-compute-v1beta": "0.12.0",
   "packages/google-cloud-confidentialcomputing": "0.11.0",
   "packages/google-cloud-config": "0.7.0",

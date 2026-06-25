@@ -81,7 +81,7 @@ class TestPaginationAggregatedList(TestBase):
     def test_auto_paging_map_response(self):
         client = AcceleratorTypesClient()
         request = AggregatedListAcceleratorTypesRequest(
-            project=self.DEFAULT_PROJECT, max_results=3
+            project=self.DEFAULT_PROJECT, max_results=100
         )
         result = client.aggregated_list(request=request)
         zone_acc_types = collections.defaultdict(list)
