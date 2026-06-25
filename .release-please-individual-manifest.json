@@ -1,6 +1,5 @@
 {
   "packages/bigframes": "2.43.0",
-  "packages/google-cloud-firestore": "2.27.0",
   "packages/google-crc32c": "1.8.0",
   "packages/pandas-gbq": "0.35.0",
   "packages/sqlalchemy-bigquery": "1.17.0"

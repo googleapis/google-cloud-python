@@ -1149,8 +1149,6 @@ libraries:
       - docs/firestore_v1/transaction.rst
       - docs/firestore_v1/transforms.rst
       - docs/firestore_v1/types.rst
-    skip_generate: true
-    skip_release: true
     python:
       library_type: GAPIC_COMBO
       opt_args_by_api:

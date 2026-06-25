@@ -123,6 +123,7 @@
   "packages/google-cloud-eventarc-publishing": "0.10.1",
   "packages/google-cloud-filestore": "1.17.0",
   "packages/google-cloud-financialservices": "0.4.1",
+  "packages/google-cloud-firestore": "2.27.0",
   "packages/google-cloud-functions": "1.24.0",
   "packages/google-cloud-gdchardwaremanagement": "0.5.1",
   "packages/google-cloud-geminidataanalytics": "0.13.1",

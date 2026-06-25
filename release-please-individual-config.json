@@ -5,26 +5,6 @@
     "packages/bigframes": {
       "component": "bigframes"
     },
-    "packages/google-cloud-firestore": {
-      "component": "google-cloud-firestore",
-      "extra-files": [
-        "google/cloud/firestore/gapic_version.py",
-        "google/cloud/firestore_admin/gapic_version.py",
-        "google/cloud/firestore_admin_v1/gapic_version.py",
-        "google/cloud/firestore_bundle/gapic_version.py",
-        "google/cloud/firestore_v1/gapic_version.py",
-        {
-          "jsonpath": "$.clientLibrary.version",
-          "path": "samples/generated_samples/snippet_metadata_google.firestore.admin.v1.json",
-          "type": "json"
-        },
-        {
-          "jsonpath": "$.clientLibrary.version",
-          "path": "samples/generated_samples/snippet_metadata_google.firestore.v1.json",
-          "type": "json"
-        }
-      ]
-    },
     "packages/google-crc32c": {
       "component": "google-crc32c"
     },
