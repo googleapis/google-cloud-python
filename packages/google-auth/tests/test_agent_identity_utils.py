@@ -65,16 +65,24 @@ class TestAgentIdentityUtils:
         mock_load_cert.assert_called_once_with(b"cert_bytes")
         assert result == mock_load_cert.return_value
 
-    @mock.patch("os.path.getsize")
-    def test_is_certificate_file_ready_permission_error(self, mock_getsize):
-        mock_getsize.side_effect = PermissionError("Permission denied")
+    @mock.patch("google.auth._agent_identity_utils.os.stat")
+    def test_is_certificate_file_ready_permission_error(self, mock_stat):
+        mock_stat.side_effect = PermissionError("Permission denied")
         with pytest.raises(PermissionError):
             _agent_identity_utils._is_certificate_file_ready("/path/to/cert")
 
-    @mock.patch("os.path.getsize")
-    def test_is_certificate_file_ready_os_error(self, mock_getsize):
-        mock_getsize.side_effect = OSError("Not found")
+    @mock.patch("google.auth._agent_identity_utils.os.stat")
+    def test_is_certificate_file_ready_os_error(self, mock_stat):
+        mock_stat.side_effect = OSError("Not found")
         # Should swallow the OSError and return False
+        result = _agent_identity_utils._is_certificate_file_ready("/path/to/cert")
+        assert result is False
+
+    @mock.patch("google.auth._agent_identity_utils.os.stat")
+    def test_is_certificate_file_ready_not_a_file(self, mock_stat):
+        import stat
+
+        mock_stat.return_value = mock.MagicMock(st_mode=stat.S_IFDIR, st_size=4096)
         result = _agent_identity_utils._is_certificate_file_ready("/path/to/cert")
         assert result is False
 

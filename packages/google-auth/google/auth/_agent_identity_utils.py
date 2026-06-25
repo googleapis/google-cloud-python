@@ -19,6 +19,7 @@ import hashlib
 import logging
 import os
 import re
+import stat
 import time
 from urllib.parse import quote, urlparse
 
@@ -58,11 +59,15 @@ _POLLING_INTERVALS = ([_FAST_POLL_INTERVAL] * _FAST_POLL_CYCLES) + (
 
 
 def _is_certificate_file_ready(path):
-    """Checks if a file exists and is not empty."""
+    """Checks if a file exists, is a regular file, and is not empty."""
     if not path:
         return False
     try:
-        return os.path.getsize(path) > 0
+        # Check if the path points to a regular file and is not empty.
+        # stat.S_ISREG is used instead of os.path.isfile to avoid swallowing
+        # PermissionError exceptions, which the caller needs to propagate.
+        st = os.stat(path)
+        return stat.S_ISREG(st.st_mode) and st.st_size > 0
     except PermissionError:
         # Propagate PermissionError to let caller handle it (fail-fast or fallback)
         raise
