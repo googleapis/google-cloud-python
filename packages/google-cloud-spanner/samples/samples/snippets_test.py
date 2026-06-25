@@ -192,6 +192,18 @@ def test_create_instance_with_autoscaling_config(capsys, lci_instance_id):
     retry_429(instance.delete)()
 
 
+def test_create_instance_with_asymmetric_autoscaling_config(capsys, lci_instance_id):
+    retry_429(snippets.create_instance_with_asymmetric_autoscaling_config)(
+        lci_instance_id,
+    )
+    out, _ = capsys.readouterr()
+    assert lci_instance_id in out
+    assert "autoscaling config" in out
+    spanner_client = spanner.Client()
+    instance = spanner_client.instance(lci_instance_id)
+    retry_429(instance.delete)()
+
+
 def test_create_and_update_instance_default_backup_schedule_type(
     capsys, lci_instance_id
 ):
