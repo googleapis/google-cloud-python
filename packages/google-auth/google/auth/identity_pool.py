@@ -154,10 +154,13 @@ class _X509Supplier(SubjectTokenSupplier):
     def get_subject_token(self, context, request):
         from cryptography import x509
 
-        leaf_cert_data = self._leaf_cert_callback()
-        if isinstance(leaf_cert_data, str):
-            leaf_cert_data = leaf_cert_data.encode("utf-8")
-        leaf_cert = x509.load_pem_x509_certificate(leaf_cert_data)
+        try:
+            leaf_cert_data = self._leaf_cert_callback()
+            if isinstance(leaf_cert_data, str):
+                leaf_cert_data = leaf_cert_data.encode("utf-8")
+            leaf_cert = x509.load_pem_x509_certificate(leaf_cert_data)
+        except Exception as e:
+            raise exceptions.RefreshError("Failed to parse leaf certificate.") from e
         trust_chain = self._read_trust_chain()
         cert_chain = []
 
@@ -210,10 +213,10 @@ class _X509Supplier(SubjectTokenSupplier):
                                 )
                             ) from e
                 return certificate_trust_chain
-        except FileNotFoundError:
+        except OSError as e:
             raise exceptions.RefreshError(
-                "Trust chain file '{}' was not found.".format(self._trust_chain_path)
-            )
+                "Error accessing trust chain file '{}'.".format(self._trust_chain_path)
+            ) from e
 
     def _encode_cert(cert):
         from cryptography.hazmat.primitives import serialization
