@@ -295,4 +295,3 @@ def test_cast_ssl_ctx_to_void_p_stdlib_unsupported_runtime_trace_refs():
             match="Custom TLS signing is only supported",
         ):
             _custom_tls_signer._cast_ssl_ctx_to_void_p_stdlib(context)
-

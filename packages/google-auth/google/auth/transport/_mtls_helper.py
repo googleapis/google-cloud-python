@@ -279,7 +279,7 @@ def _tempfile_cert_key_paths(
         if os.path.isdir("/dev/shm") and os.access("/dev/shm", os.W_OK)
         else None
     )
-    cleanup_files = [None, None]
+    cleanup_files: List[Optional[str]] = [None, None]
     new_passphrase = passphrase
     cert_data = cert_bytes
     key_data = None
