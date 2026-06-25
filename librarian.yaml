@@ -75,7 +75,7 @@ libraries:
     python:
       library_type: INTEGRATION
   - name: gapic-generator
-    version: 1.35.0
+    version: 1.36.0
     python:
       library_type: CORE
   - name: gcp-sphinx-docfx-yaml
@@ -89,7 +89,7 @@ libraries:
     python:
       default_version: v1
   - name: google-ads-datamanager
-    version: 0.9.0
+    version: 0.9.1
     apis:
       - path: google/ads/datamanager/v1
     python:
@@ -116,7 +116,7 @@ libraries:
       metadata_name_override: generativelanguage
       default_version: v1beta
   - name: google-analytics-admin
-    version: 0.30.0
+    version: 0.30.1
     apis:
       - path: google/analytics/admin/v1beta
       - path: google/analytics/admin/v1alpha
@@ -147,7 +147,7 @@ libraries:
     python:
       default_version: v1
   - name: google-apps-chat
-    version: 0.10.0
+    version: 0.10.1
     apis:
       - path: google/chat/v1
     python:
@@ -228,7 +228,7 @@ libraries:
       metadata_name_override: area120tables
       default_version: v1alpha1
   - name: google-auth
-    version: 2.55.0
+    version: 2.55.1
     python:
       library_type: AUTH
   - name: google-auth-httplib2
@@ -632,7 +632,7 @@ libraries:
       metadata_name_override: bigquerystorage
       default_version: v1
   - name: google-cloud-bigtable
-    version: 2.39.0
+    version: 2.40.0
     apis:
       - path: google/bigtable/v2
       - path: google/bigtable/admin/v2
@@ -679,7 +679,7 @@ libraries:
       metadata_name_override: binaryauthorization
       default_version: v1
   - name: google-cloud-build
-    version: 3.37.0
+    version: 3.38.0
     apis:
       - path: google/devtools/cloudbuild/v2
       - path: google/devtools/cloudbuild/v1
@@ -708,7 +708,7 @@ libraries:
       metadata_name_override: certificatemanager
       default_version: v1
   - name: google-cloud-ces
-    version: 0.7.0
+    version: 0.7.1
     apis:
       - path: google/cloud/ces/v1
       - path: google/cloud/ces/v1beta
@@ -722,7 +722,7 @@ libraries:
       metadata_name_override: cloudchannel
       default_version: v1
   - name: google-cloud-chronicle
-    version: 0.6.0
+    version: 0.6.1
     apis:
       - path: google/cloud/chronicle/v1
     python:
@@ -759,7 +759,7 @@ libraries:
       metadata_name_override: common
       default_version: apiVersion
   - name: google-cloud-compute
-    version: 1.48.0
+    version: 1.49.0
     apis:
       - path: google/cloud/compute/v1
     python:
@@ -898,7 +898,7 @@ libraries:
       metadata_name_override: dataflow
       default_version: v1beta3
   - name: google-cloud-dataform
-    version: 0.11.0
+    version: 0.11.1
     apis:
       - path: google/cloud/dataform/v1
       - path: google/cloud/dataform/v1beta1
@@ -920,7 +920,7 @@ libraries:
       metadata_name_override: dataplex
       default_version: v1
   - name: google-cloud-dataproc
-    version: 5.28.0
+    version: 5.29.0
     apis:
       - path: google/cloud/dataproc/v1
     python:
@@ -979,7 +979,7 @@ libraries:
     python:
       default_version: v1
   - name: google-cloud-dialogflow
-    version: 2.48.0
+    version: 2.49.0
     apis:
       - path: google/cloud/dialogflow/v2
       - path: google/cloud/dialogflow/v2beta1
@@ -992,7 +992,7 @@ libraries:
       metadata_name_override: dialogflow
       default_version: v2
   - name: google-cloud-dialogflow-cx
-    version: 2.6.0
+    version: 2.7.0
     apis:
       - path: google/cloud/dialogflow/cx/v3
       - path: google/cloud/dialogflow/cx/v3beta1
@@ -1005,7 +1005,7 @@ libraries:
       metadata_name_override: dialogflow-cx
       default_version: v3
   - name: google-cloud-discoveryengine
-    version: 0.20.0
+    version: 0.20.1
     apis:
       - path: google/cloud/discoveryengine/v1
       - path: google/cloud/discoveryengine/v1beta
@@ -1131,7 +1131,7 @@ libraries:
     python:
       default_version: v1
   - name: google-cloud-firestore
-    version: 2.27.0
+    version: 2.28.0
     apis:
       - path: google/firestore/v1
       - path: google/firestore/admin/v1
@@ -1507,7 +1507,7 @@ libraries:
       metadata_name_override: networkconnectivity
       default_version: v1
   - name: google-cloud-network-management
-    version: 1.36.0
+    version: 1.37.0
     apis:
       - path: google/cloud/networkmanagement/v1
     python:
@@ -1517,7 +1517,7 @@ libraries:
       metadata_name_override: networkmanagement
       default_version: v1
   - name: google-cloud-network-security
-    version: 0.13.1
+    version: 0.13.2
     apis:
       - path: google/cloud/networksecurity/v1
       - path: google/cloud/networksecurity/v1beta1
@@ -1533,7 +1533,7 @@ libraries:
       metadata_name_override: networksecurity
       default_version: v1
   - name: google-cloud-network-services
-    version: 0.10.0
+    version: 0.10.1
     apis:
       - path: google/cloud/networkservices/v1
     python:
@@ -1559,7 +1559,7 @@ libraries:
       metadata_name_override: optimization
       default_version: v1
   - name: google-cloud-oracledatabase
-    version: 0.6.0
+    version: 0.6.1
     apis:
       - path: google/cloud/oracledatabase/v1
     python:
@@ -1914,7 +1914,7 @@ libraries:
       metadata_name_override: source
       default_version: v1
   - name: google-cloud-spanner
-    version: 3.68.0
+    version: 3.69.0
     apis:
       - path: google/spanner/v1
       - path: google/spanner/admin/instance/v1
@@ -2080,7 +2080,7 @@ libraries:
       metadata_name_override: translate
       default_version: v3
   - name: google-cloud-vectorsearch
-    version: 0.11.0
+    version: 0.11.1
     apis:
       - path: google/cloud/vectorsearch/v1
       - path: google/cloud/vectorsearch/v1beta

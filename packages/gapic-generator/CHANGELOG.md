@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/gapic-generator/#history
 
+## [1.36.0](https://github.com/googleapis/google-cloud-python/compare/gapic-generator-v1.35.0...gapic-generator-v1.36.0) (2026-06-25)
+
+
+### Features
+
+* **mypy:** centralize mypy.ini and update templates ([#17523](https://github.com/googleapis/google-cloud-python/issues/17523)) ([3a67b7f](https://github.com/googleapis/google-cloud-python/commit/3a67b7f05f0e24d2e3fb826e79a5ed69257a49cd))
+
 ## [1.35.0](https://github.com/googleapis/google-cloud-python/compare/gapic-generator-v1.34.1...gapic-generator-v1.35.0) (2026-06-11)
 
 
