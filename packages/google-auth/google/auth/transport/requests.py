@@ -217,12 +217,12 @@ class _MutualTlsAdapter(requests.adapters.HTTPAdapter):
         ctx_proxymanager = create_urllib3_context()
         ctx_proxymanager.load_verify_locations(cafile=certifi.where())
 
-        with _mtls_helper.secure_cert_key_paths(cert, key) as (
-            cert_path,
-            key_path,
-            passphrase,
-        ):
-            try:
+        try:
+            with _mtls_helper.secure_cert_key_paths(cert, key) as (
+                cert_path,
+                key_path,
+                passphrase,
+            ):
                 ctx_poolmanager.load_cert_chain(
                     certfile=cert_path,
                     keyfile=key_path,
@@ -233,10 +233,10 @@ class _MutualTlsAdapter(requests.adapters.HTTPAdapter):
                     keyfile=key_path,
                     password=passphrase or "",
                 )
-            except (ssl.SSLError, OSError, IOError, ValueError, RuntimeError) as exc:
-                raise exceptions.MutualTLSChannelError(
-                    "Failed to configure client certificate and key for mTLS."
-                ) from exc
+        except (ssl.SSLError, OSError, IOError, ValueError, RuntimeError) as exc:
+            raise exceptions.MutualTLSChannelError(
+                "Failed to configure client certificate and key for mTLS."
+            ) from exc
 
         self._ctx_poolmanager = ctx_poolmanager
         self._ctx_proxymanager = ctx_proxymanager

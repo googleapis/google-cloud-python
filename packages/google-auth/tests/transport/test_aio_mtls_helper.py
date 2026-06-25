@@ -182,3 +182,18 @@ class TestMTLS:
 
         with pytest.raises(exceptions.ClientCertError, match="Failed to read metadata"):
             await mtls.get_client_ssl_credentials()
+
+    @pytest.mark.asyncio
+    @mock.patch("google.auth.aio.transport.mtls.secure_cert_key_paths")
+    async def test_make_client_cert_ssl_context_setup_error(self, mock_secure_paths):
+        """Verifies that TransportError is raised when temp file creation fails."""
+        cert_bytes = b"cert_data"
+        key_bytes = b"key_data"
+
+        mock_secure_paths.side_effect = OSError("Temp file error")
+
+        with pytest.raises(exceptions.TransportError) as exc_info:
+            mtls.make_client_cert_ssl_context(cert_bytes, key_bytes)
+
+        assert "Failed to load client certificate" in str(exc_info.value)
+        assert isinstance(exc_info.value.__cause__, OSError)

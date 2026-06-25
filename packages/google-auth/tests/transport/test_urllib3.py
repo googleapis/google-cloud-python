@@ -106,6 +106,14 @@ class TestMakeMutualTlsHttp(object):
                 b"invalid cert", b"invalid key"
             )
 
+    @mock.patch("google.auth.transport.urllib3._mtls_helper.secure_cert_key_paths")
+    def test_setup_error_raises_mutual_tls_channel_error(self, mock_secure_paths):
+        mock_secure_paths.side_effect = OSError("Disk full")
+        with pytest.raises(exceptions.MutualTLSChannelError) as exc_info:
+            google.auth.transport.urllib3._make_mutual_tls_http(b"cert", b"key")
+        assert "Failed to configure client certificate" in str(exc_info.value)
+        assert isinstance(exc_info.value.__cause__, OSError)
+
 
 class TestAuthorizedHttp(object):
     TEST_URL = "http://example.com"
@@ -322,6 +330,15 @@ class TestAuthorizedHttp(object):
 
     @mock.patch(
         "google.auth.transport._mtls_helper.get_client_cert_and_key", autospec=True
+    )
+    @mock.patch.dict(
+        os.environ,
+        {
+            "GOOGLE_API_USE_CLIENT_CERTIFICATE": "false",
+            "CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE": "false",
+            "GOOGLE_API_CERTIFICATE_CONFIG": "",
+            "CLOUDSDK_CONTEXT_AWARE_CERTIFICATE_CONFIG_FILE_PATH": "",
+        },
     )
     def test_configure_mtls_channel_without_client_cert_env(
         self, get_client_cert_and_key

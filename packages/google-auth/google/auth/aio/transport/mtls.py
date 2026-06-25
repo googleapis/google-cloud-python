@@ -46,12 +46,12 @@ def make_client_cert_ssl_context(
     Raises:
         google.auth.exceptions.TransportError: If there is an error loading the certificate.
     """
-    with secure_cert_key_paths(cert_bytes, key_bytes, passphrase=passphrase) as (
-        cert_path,
-        key_path,
-        passphrase_val,
-    ):
-        try:
+    try:
+        with secure_cert_key_paths(cert_bytes, key_bytes, passphrase=passphrase) as (
+            cert_path,
+            key_path,
+            passphrase_val,
+        ):
             context = ssl.create_default_context(ssl.Purpose.SERVER_AUTH)
             context.load_cert_chain(
                 certfile=cert_path,
@@ -59,10 +59,10 @@ def make_client_cert_ssl_context(
                 password=passphrase_val or "",
             )
             return context
-        except (ssl.SSLError, OSError, IOError, ValueError, RuntimeError) as exc:
-            raise exceptions.TransportError(
-                "Failed to load client certificate and key for mTLS."
-            ) from exc
+    except (ssl.SSLError, OSError, IOError, ValueError, RuntimeError) as exc:
+        raise exceptions.TransportError(
+            "Failed to load client certificate and key for mTLS."
+        ) from exc
 
 
 async def _run_in_executor(func, *args):

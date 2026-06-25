@@ -182,21 +182,21 @@ def _make_mutual_tls_http(cert, key):
     ctx = urllib3.util.ssl_.create_urllib3_context()
     ctx.load_verify_locations(cafile=certifi.where())
 
-    with _mtls_helper.secure_cert_key_paths(cert, key) as (
-        cert_path,
-        key_path,
-        passphrase,
-    ):
-        try:
+    try:
+        with _mtls_helper.secure_cert_key_paths(cert, key) as (
+            cert_path,
+            key_path,
+            passphrase,
+        ):
             ctx.load_cert_chain(
                 certfile=cert_path,
                 keyfile=key_path,
                 password=passphrase or "",
             )
-        except (ssl.SSLError, OSError, IOError, ValueError, RuntimeError) as exc:
-            raise exceptions.MutualTLSChannelError(
-                "Failed to configure client certificate and key for mTLS."
-            ) from exc
+    except (ssl.SSLError, OSError, IOError, ValueError, RuntimeError) as exc:
+        raise exceptions.MutualTLSChannelError(
+            "Failed to configure client certificate and key for mTLS."
+        ) from exc
 
     http = urllib3.PoolManager(ssl_context=ctx)
     return http
