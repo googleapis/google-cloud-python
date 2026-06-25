@@ -19,50 +19,68 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { WidgetStateService } from './widget-state.service';
 
 @Component({
-  selector: 'app-root',
+  selector: '[app-root]',
   standalone: true,
   imports: [],
+  providers: [WidgetStateService],
   template: `
     <div class="bigframes-widget" [class.bigframes-dark-mode]="isDarkMode()">
       @if (errorMessage()) {
         <div class="bigframes-error-message">{{ errorMessage() }}</div>
       }
 
-      <div #tableContainer
-           class="table-container"
-           [innerHTML]="sanitizedHtml()"
-           (click)="handleTableClick($event)">
-      </div>
-
-      <footer class="footer">
-        <span class="row-count">{{ rowCountText() }}</span>
-
-        <div class="pagination">
-          <button [disabled]="prevPageDisabled()" (click)="handlePageChange(-1)">&lt;</button>
-          <span class="page-indicator">{{ pageIndicatorText() }}</span>
-          <button [disabled]="nextPageDisabled()" (click)="handlePageChange(1)">&gt;</button>
-        </div>
-
-        <div class="settings">
-          <div class="max-columns">
-            <label for="max-cols-select">Max columns:</label>
-            <select id="max-cols-select" [value]="maxColumns()" (change)="handleMaxColumnsChange($event)">
-              @for (cols of maxColumnOptions; track cols) {
-                <option [value]="cols">{{ cols === 0 ? 'All' : cols }}</option>
+      @if (isDeferredMode()) {
+        <div class="deferred-container">
+          <div class="deferred-card">
+            <p class="deferred-estimate">{{ dryRunInfo() }}</p>
+            <button class="run-query-button"
+                    [disabled]="isLoading()"
+                    (click)="handleRunQuery()">
+              @if (isLoading()) {
+                <span class="spinner"></span> Run Query
+              } @else {
+                Run Query
               }
-            </select>
-          </div>
-
-          <div class="page-size">
-            <label for="page-size-select">Page size:</label>
-            <select id="page-size-select" [value]="pageSize()" (change)="handlePageSizeChange($event)">
-              @for (size of pageSizeOptions; track size) {
-                <option [value]="size">{{ size }}</option>
-              }
-            </select>
+            </button>
           </div>
         </div>
-      </footer>
+      } @else {
+        <div #tableContainer
+             class="table-container"
+             [innerHTML]="sanitizedHtml()"
+             (click)="handleTableClick($event)">
+        </div>
+
+        <footer class="footer">
+          <span class="row-count">{{ rowCountText() }}</span>
+
+          <div class="pagination">
+            <button [disabled]="prevPageDisabled()" (click)="handlePageChange(-1)">&lt;</button>
+            <span class="page-indicator">{{ pageIndicatorText() }}</span>
+            <button [disabled]="nextPageDisabled()" (click)="handlePageChange(1)">&gt;</button>
+          </div>
+
+          <div class="settings">
+            <div class="max-columns">
+              <label for="max-cols-select">Max columns:</label>
+              <select id="max-cols-select" [value]="maxColumns()" (change)="handleMaxColumnsChange($event)">
+                @for (cols of maxColumnOptions; track cols) {
+                  <option [value]="cols">{{ cols === 0 ? 'All' : cols }}</option>
+                }
+              </select>
+            </div>
+
+            <div class="page-size">
+              <label for="page-size-select">Page size:</label>
+              <select id="page-size-select" [value]="pageSize()" (change)="handlePageSizeChange($event)">
+                @for (size of pageSizeOptions; track size) {
+                  <option [value]="size">{{ size }}</option>
+                }
+              </select>
+            </div>
+          </div>
+        </footer>
+      }
     </div>
   `,
   styles: [`
@@ -89,6 +107,7 @@ import { WidgetStateService } from './widget-state.service';
         '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', sans-serif;
       margin: 0;
       padding: 0;
+      width: 100%;
     }
 
     .bigframes-widget * {
@@ -127,7 +146,6 @@ import { WidgetStateService } from './widget-state.service';
     .bigframes-widget .table-container {
       background-color: var(--bf-bg);
       margin: 0;
-      max-height: 620px;
       overflow: auto;
       padding: 0;
     }
@@ -292,6 +310,113 @@ import { WidgetStateService } from './widget-state.service';
     .bigframes-widget ::ng-deep .debug-info {
       border-top: 1px solid var(--bf-border-color);
     }
+
+    .bigframes-widget .deferred-container {
+      align-items: center;
+      display: flex;
+      justify-content: center;
+      min-height: 220px;
+      padding: 24px;
+      width: 100%;
+    }
+
+    .bigframes-widget .deferred-card {
+      background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.6),
+        rgba(255, 255, 255, 0.3)
+      );
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      border-radius: 16px;
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      max-width: 500px;
+      padding: 32px;
+      text-align: center;
+      transition: all 0.3s ease-in-out;
+    }
+
+    .bigframes-widget.bigframes-dark-mode .deferred-card {
+      background: linear-gradient(
+        135deg,
+        rgba(32, 33, 36, 0.6),
+        rgba(32, 33, 36, 0.3)
+      );
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .bigframes-widget .deferred-card {
+        background: linear-gradient(
+          135deg,
+          rgba(32, 33, 36, 0.6),
+          rgba(32, 33, 36, 0.3)
+        );
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+      }
+    }
+
+    .bigframes-widget .deferred-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    .bigframes-widget .deferred-estimate {
+      color: var(--bf-null-fg);
+      font-size: 0.9rem;
+      margin: 0;
+    }
+
+    .bigframes-widget .run-query-button {
+      align-items: center;
+      background-color: var(--bf-fg);
+      border: 1px solid var(--bf-fg);
+      border-radius: 8px;
+      color: var(--bf-bg);
+      cursor: pointer;
+      display: inline-flex;
+      font-size: 14px;
+      font-weight: 600;
+      gap: 8px;
+      justify-content: center;
+      padding: 10px 20px;
+      transition: transform 0.20s ease, opacity 0.20s ease;
+    }
+
+    .bigframes-widget .run-query-button:hover {
+      opacity: 0.90;
+      transform: translateY(-1px);
+    }
+
+    .bigframes-widget .run-query-button:active {
+      transform: translateY(0);
+    }
+
+    .bigframes-widget .run-query-button:disabled {
+      cursor: not-allowed;
+      opacity: 0.60;
+    }
+
+    .bigframes-widget .spinner {
+      animation: spin 1s linear infinite;
+      border: 2px solid currentColor;
+      border-radius: 50%;
+      border-top-color: transparent;
+      display: inline-block;
+      height: 12px;
+      width: 12px;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
   `]
 })
 export class App {
@@ -307,6 +432,9 @@ export class App {
   protected readonly pageSize = this.state.pageSize;
   protected readonly page = this.state.page;
   protected readonly rowCount = this.state.rowCount;
+  protected readonly isDeferredMode = this.state.isDeferredMode;
+  protected readonly dryRunInfo = this.state.dryRunInfo;
+  protected readonly isLoading = signal(false);
 
   // Computed properties for formatting and display states
   protected readonly sanitizedHtml = computed(() =>
@@ -357,8 +485,10 @@ export class App {
   protected readonly isDarkMode = signal(false);
   private themeObserver: MutationObserver | null = null;
 
-  @ViewChild('tableContainer', { static: true })
+  @ViewChild('tableContainer')
   tableContainerRef!: ElementRef<HTMLDivElement>;
+
+  private isHeightInitialized = false;
 
   constructor() {
     effect(() => {
@@ -366,11 +496,39 @@ export class App {
       const _html = this.state.tableHtml();
       const _sort = this.state.sortContext();
       const _orderable = this.state.orderableColumns();
+      const deferred = this.isDeferredMode();
+      if (deferred) {
+        this.isHeightInitialized = false;
+      }
 
       // Schedule DOM post-processing once the innerHTML render completes
       setTimeout(() => {
         this.applySortIndicators();
+        this.lockInitialHeight();
       }, 0);
+    });
+
+    effect(() => {
+      if (!this.state.startExecution()) {
+        this.isLoading.set(false);
+      }
+    });
+
+    effect((onCleanup) => {
+      const executing = this.state.startExecution();
+      if (executing) {
+        const intervalId = setInterval(() => {
+          if (this.state.startExecution()) {
+            const currentPing = this.state.ping();
+            this.state.setPing(currentPing + 1);
+          } else {
+            clearInterval(intervalId);
+          }
+        }, 500);
+        onCleanup(() => {
+          clearInterval(intervalId);
+        });
+      }
     });
   }
 
@@ -380,6 +538,11 @@ export class App {
 
   ngOnDestroy() {
     this.themeObserver?.disconnect();
+  }
+
+  protected handleRunQuery() {
+    this.isLoading.set(true);
+    this.state.setStartExecution(true);
   }
 
   protected handlePageChange(direction: number) {
@@ -504,6 +667,20 @@ export class App {
     });
   }
 
+  private lockInitialHeight() {
+    if (this.isHeightInitialized) return;
+    const container = this.tableContainerRef?.nativeElement;
+    if (!container) return;
+
+    const table = container.querySelector('table');
+    if (table && (table as HTMLElement).offsetHeight > 0) {
+      const currentHeight = container.offsetHeight;
+      if (currentHeight > 0) {
+        container.style.height = `${currentHeight}px`;
+        this.isHeightInitialized = true;
+      }
+    }
+  }
 
   private initThemeDetection() {
     this.updateTheme();
