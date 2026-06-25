@@ -45,6 +45,10 @@ SIGN_CALLBACK_CTYPE = ctypes.CFUNCTYPE(
 
 # Cast SSL_CTX* to void*
 def _cast_ssl_ctx_to_void_p_stdlib(context):
+    if sys.implementation.name != "cpython" or hasattr(sys, "getobjects"):
+        raise exceptions.MutualTLSChannelError(
+            "Custom TLS signing is only supported on standard release CPython runtimes."
+        )
     return ctypes.c_void_p.from_address(
         id(context) + ctypes.sizeof(ctypes.c_void_p) * 2
     )

@@ -14,6 +14,7 @@
 import base64
 import ctypes
 import os
+import sys
 from unittest import mock
 
 import pytest  # type: ignore
@@ -258,3 +259,40 @@ def test_custom_tls_signer_failed_to_attach_no_libs():
         signer_object._signer_lib = None
         signer_object.attach_to_ssl_context(mock.MagicMock())
     assert excinfo.match("Invalid ECP configuration.")
+
+
+def test_cast_ssl_ctx_to_void_p_stdlib_success():
+    context = mock.MagicMock()
+    with mock.patch.object(sys.implementation, "name", "cpython"):
+        if hasattr(sys, "getobjects"):
+            with mock.patch.delattr(sys, "getobjects"):
+                res = _custom_tls_signer._cast_ssl_ctx_to_void_p_stdlib(context)
+                assert isinstance(res, ctypes.c_void_p)
+        else:
+            res = _custom_tls_signer._cast_ssl_ctx_to_void_p_stdlib(context)
+            assert isinstance(res, ctypes.c_void_p)
+
+
+def test_cast_ssl_ctx_to_void_p_stdlib_unsupported_runtime_pypy():
+    context = mock.MagicMock()
+
+    with mock.patch.object(sys.implementation, "name", "pypy"):
+        with pytest.raises(
+            exceptions.MutualTLSChannelError,
+            match="Custom TLS signing is only supported",
+        ):
+            _custom_tls_signer._cast_ssl_ctx_to_void_p_stdlib(context)
+
+
+def test_cast_ssl_ctx_to_void_p_stdlib_unsupported_runtime_trace_refs():
+    context = mock.MagicMock()
+
+    with mock.patch.object(sys.implementation, "name", "cpython"), mock.patch(
+        "sys.getobjects", create=True
+    ):
+        with pytest.raises(
+            exceptions.MutualTLSChannelError,
+            match="Custom TLS signing is only supported",
+        ):
+            _custom_tls_signer._cast_ssl_ctx_to_void_p_stdlib(context)
+
