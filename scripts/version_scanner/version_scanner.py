@@ -221,7 +221,7 @@ def scan_file(file_path: str, compiled_rules: List[Dict[str, re.Pattern]]) -> Li
                     if match:
                         version = rule.get("version")
                         if version:
-                            pragma_pattern = rf"version-scanner\s*:\s*ignore-rule\s*=\s*{re.escape(rule['name'])}\s*:\s*{re.escape(version)}"
+                            pragma_pattern = rf"version-scanner\s*:\s*ignore-rule\s*=\s*{re.escape(str(rule['name']))}\s*:\s*{re.escape(str(version))}"
                             if re.search(pragma_pattern, line, re.IGNORECASE):
                                 continue
                         results.append({

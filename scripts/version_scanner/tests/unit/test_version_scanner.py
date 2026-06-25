@@ -165,6 +165,24 @@ def test_scan_file_ignores_targeted_pragma(tmp_path):
     assert len(results) == 0
 
 
+def test_scan_file_handles_non_string_rule_name_and_version(tmp_path):
+    test_file = tmp_path / "test.py"
+    test_file.write_text("python_requires = '>=3.7'  # version-scanner: ignore-rule=123:3.7\n")
+    
+    rules = [
+        {
+            "name": 123,  # Integer rule name
+            "pattern": re.compile(r"python_requires\s*=\s*['\"]>=3\.7['\"]"),
+            "version": 3.7 # Float version
+        }
+    ]
+    
+    # This should not raise TypeError
+    results = scan_file(str(test_file), rules)
+    assert len(results) == 0
+
+
+
 def test_scan_file_does_not_ignore_mismatched_targeted_pragma(tmp_path):
     test_file = tmp_path / "test.py"
     test_file.write_text("python_requires = '>=3.7'  # version-scanner: ignore-rule=python_requires_check:3.8\n")
