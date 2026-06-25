@@ -204,6 +204,7 @@
   "packages/google-cloud-servicehealth": "0.5.0",
   "packages/google-cloud-shell": "1.16.0",
   "packages/google-cloud-source-context": "1.11.0",
+  "packages/google-cloud-spanner": "3.68.0",
   "packages/google-cloud-speech": "2.40.0",
   "packages/google-cloud-storage": "3.12.0",
   "packages/google-cloud-storage-control": "1.12.0",
