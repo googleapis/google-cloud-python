@@ -194,11 +194,11 @@ rules:
       - |
         {name}\s+{major}\.(?!\d)
       - |
-        \b{major}\.{minor}(?!\d)
+        {name}\s+{major}\.{minor}(?!\d)
       - |
-        \b{major}\.{minor}\.(?!\d)
+        {name}\s+{major}\.{minor}\.(?!\d)
       - |
-        \b{major}\.{minor}\.{patch}(?!\d)
+        {name}\s+{major}\.{minor}\.{patch}(?!\d)
 
   - name: generic_dependency_check_call
     description: Finds generic function or class calls checking dependency and version.
