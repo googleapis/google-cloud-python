@@ -4,6 +4,21 @@
 
 [1]: https://pypi.org/project/google-cloud-firestore/#history
 
+## [2.28.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-firestore-v2.27.0...google-cloud-firestore-v2.28.0) (2026-06-25)
+
+
+### Features
+
+* **firestore:** drop Python 3.7-3.9 support and regenerate  ([#17247](https://github.com/googleapis/google-cloud-python/issues/17247)) ([b11224f](https://github.com/googleapis/google-cloud-python/commit/b11224ff3ed76718b079dd9a44226cfea52c6562))
+* regenerate google-cloud-[e-i] packages ([#17079](https://github.com/googleapis/google-cloud-python/issues/17079)) ([5239b18](https://github.com/googleapis/google-cloud-python/commit/5239b1814f216676bf02dea08726313ad355439d))
+
+
+### Bug Fixes
+
+* **firestore:** Imropve improper pipeline aliases ([#16651](https://github.com/googleapis/google-cloud-python/issues/16651)) ([f728bd6](https://github.com/googleapis/google-cloud-python/commit/f728bd6120c47f45f8e380a1e8c8d763e5e0c361))
+* **firestore:** remove usage of typing_extensions ([#17357](https://github.com/googleapis/google-cloud-python/issues/17357)) ([cdaf213](https://github.com/googleapis/google-cloud-python/commit/cdaf2139d26fab2a063b8cc530c7d1a61544e097))
+* make test_utils unique_resource_id parallel-safe ([#17440](https://github.com/googleapis/google-cloud-python/issues/17440)) ([ac1f5d5](https://github.com/googleapis/google-cloud-python/commit/ac1f5d55900d4787f2ced6b5350ef530f700794b))
+
 ## [2.26.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-firestore-v2.25.0...google-cloud-firestore-v2.26.0) (2026-03-23)
 
 
