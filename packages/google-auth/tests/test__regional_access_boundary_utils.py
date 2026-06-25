@@ -496,7 +496,8 @@ class TestCredentialsWithRegionalAccessBoundary(object):
         # RAB failures should be logged at DEBUG level.
         assert any(
             t[1] == logging.DEBUG
-            and "Asynchronous Regional Access Boundary lookup raised an exception" in t[2]
+            and "Asynchronous Regional Access Boundary lookup raised an exception"
+            in t[2]
             for t in rab_caplog.record_tuples
         )
         assert any(
