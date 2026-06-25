@@ -146,6 +146,7 @@ class MdsMtlsAdapter(HTTPAdapter):
             ssl.SSLError,
             requests.exceptions.SSLError,
             requests.exceptions.HTTPError,
+            requests.exceptions.ConnectionError,
         ) as e:
             _LOGGER.warning(
                 "mTLS connection to Compute Engine Metadata server failed. "
