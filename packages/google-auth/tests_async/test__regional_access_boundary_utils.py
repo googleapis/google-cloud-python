@@ -208,13 +208,13 @@ async def test_async_worker_exception_logging():
     )
 
     with mock.patch.object(
-        _regional_access_boundary_utils._LOGGER, "info"
-    ) as mock_info:
+        _regional_access_boundary_utils._LOGGER, "debug"
+    ) as mock_debug:
         manager.start_refresh(credentials, request, rab_manager)
         await manager._worker_task
 
-        mock_info.assert_called_once()
-        assert "lookup raised an exception" in mock_info.call_args[0][0]
+        mock_debug.assert_called_once()
+        assert "lookup raised an exception" in mock_debug.call_args[0][0]
         rab_manager.process_regional_access_boundary_info.assert_called_once_with(None)
 
 

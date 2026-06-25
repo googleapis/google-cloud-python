@@ -29,7 +29,9 @@ from google.oauth2 import credentials as oauth2_credentials
 def rab_caplog(caplog):
     """Fixture to configure logging capture and ensure propagation for RAB utilities."""
 
-    caplog.set_level(logging.INFO, logger="google.auth._regional_access_boundary_utils")
+    caplog.set_level(
+        logging.DEBUG, logger="google.auth._regional_access_boundary_utils"
+    )
 
     google_logger = logging.getLogger("google")
     original_propagate = google_logger.propagate
