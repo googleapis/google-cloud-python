@@ -764,8 +764,6 @@ libraries:
     version: 1.48.0
     apis:
       - path: google/cloud/compute/v1
-    skip_generate: true
-    skip_release: true
     python:
       metadata_name_override: compute
       default_version: v1
