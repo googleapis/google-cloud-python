@@ -1,6 +1,6 @@
 {
   "packages/bigframes": "2.43.0",
-  "packages/google-cloud-bigtable": "2.39.0",
+  "packages/google-cloud-bigtable": "2.39.1",
   "packages/google-cloud-compute": "1.48.0",
   "packages/google-cloud-firestore": "2.27.0",
   "packages/google-cloud-spanner": "3.68.0",
