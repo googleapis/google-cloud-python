@@ -795,6 +795,20 @@
         }
       ]
     },
+    "packages/google-cloud-bigtable": {
+      "component": "google-cloud-bigtable",
+      "extra-files": [
+        "google/cloud/bigtable/gapic_version.py",
+        "google/cloud/bigtable_admin/gapic_version.py",
+        "google/cloud/bigtable_admin_v2/gapic_version.py",
+        "google/cloud/bigtable_v2/gapic_version.py",
+        {
+          "jsonpath": "$.clientLibrary.version",
+          "path": "samples/generated_samples/snippet_metadata_google.bigtable.admin.v2.json",
+          "type": "json"
+        }
+      ]
+    },
     "packages/google-cloud-billing": {
       "component": "google-cloud-billing",
       "extra-files": [
