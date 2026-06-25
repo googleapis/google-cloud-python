@@ -20,7 +20,7 @@ import pytest
 def test_integration_scan(tmp_path):
     # Paths to real tools
     scanner_path = os.path.abspath("version_scanner.py")
-    config_path = os.path.abspath("regex_config.yaml")
+    config_path = os.path.abspath("regex_pattern_config.yaml")
     
     # Static data directory
     data_dir = os.path.abspath("tests/data")

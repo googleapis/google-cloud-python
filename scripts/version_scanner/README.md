@@ -17,7 +17,7 @@ python3 scripts/version_scanner/version_scanner.py -d <dependency> -v <version> 
 *   `-p`, `--path`: Root directory to scan (defaults to current directory)
 *   `--package`: Specific subdirectory filter (useful for monorepos)
 *   `--package-file`: Path to a file containing a list of package directories to scan (e.g., `scripts/version_scanner/small_package_list.txt`)
-*   `--config`: Path to the regex configuration file (defaults to scripts/version_scanner/regex_config.yaml)
+*   `--config`: Path to the regex configuration file (defaults to scripts/version_scanner/regex_pattern_config.yaml)
 *   `-o`, `--output`: Path to the output CSV file (defaults to <dependency>-<version>-<timestamp>.csv)
 *   `--github-repo`: GitHub repository URL base (defaults to https://github.com/googleapis/google-cloud-python)
 *   `--branch`: GitHub branch for links (defaults to main)
@@ -43,7 +43,7 @@ pip install -r scripts/version_scanner/requirements.txt
 
 ## Configuration
 
-The scanner uses a YAML configuration file (`regex_config.yaml`) to define rules and regex patterns.
+The scanner uses a YAML configuration file (`regex_pattern_config.yaml`) to define rules and regex patterns.
 
 ## Ignoring Directories
 
