@@ -163,7 +163,7 @@ rules:
       - 'PROTOBUF_VERSION[0:2] in ("3.", "4.")'
     rules:
       - |
-        {name}_VERSION(?:\[.*?\])?\s+in\s+[\(\[\{{].*?['"]?{major}\b.*?[\)\]\}}]
+        {name}_VERSION(?:\[.*?\])?\s+in\s+[\(\[\{{].*?['"]?(?<!\.)\b{major}\b.*?[\)\]\}}]
 
   - name: dependency_wildcard_assignment
     description: Finds wildcard version specifications in code assignments or requirements.
@@ -181,7 +181,7 @@ rules:
       - "protobuf 3.*"
     rules:
       - |
-        {name}\s+.*{major}\.[x\*](?!\w)
+        {name}\s+(?:version\s+)?{major}\.[x\*](?!\w)
 
   - name: dependency_flexible_version
     description: Finds versions with varying levels of specificity with accompanying qualifier.
@@ -215,7 +215,7 @@ rules:
       - "protobuf.__version__"
       - "importlib.metadata.version('protobuf')"
       - "pkg_resources.get_distribution('protobuf')"
-      - "packaging.version"
+      - "packaging.version # protobuf"
       - "dist.metadata['Name'] == 'protobuf'"
     rules:
       - |
@@ -225,7 +225,7 @@ rules:
       - |
         pkg_resources\.get_distribution\s*\(\s*['"]{name}['"]\s*\)
       - |
-        packaging\.version
+        packaging\.version(?=.*{name})
       - |
         dist\.metadata\s*\[\s*['"]Name['"]\s*\]\s*==\s*['"]{name}['"]
 
