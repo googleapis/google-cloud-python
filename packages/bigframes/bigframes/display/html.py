@@ -231,6 +231,7 @@ def get_anywidget_bundle(
     obj: Union[bigframes.dataframe.DataFrame, bigframes.series.Series],
     include=None,
     exclude=None,
+    dry_run_info: str | None = None,
 ) -> tuple[dict[str, Any], dict[str, Any]]:
     """
     Helper method to create and return the anywidget mimebundle.
@@ -244,9 +245,17 @@ def get_anywidget_bundle(
     else:
         df = obj
 
-    df = df._prepare_display_df()
+    from bigframes.session import deferred
 
-    widget = display.TableWidget(df)
+    if (
+        not isinstance(df, deferred.DeferredBigQueryDataFrame)
+        and bigframes.options.display.repr_mode != "deferred"
+    ):
+        display_df = df._prepare_display_df()
+    else:
+        display_df = df
+
+    widget = display.TableWidget(display_df, dry_run_info=dry_run_info)
     widget_repr_result = widget._repr_mimebundle_(include=include, exclude=exclude)
 
     if isinstance(widget_repr_result, tuple):
@@ -262,20 +271,23 @@ def get_anywidget_bundle(
     total_rows = widget.row_count
     total_columns = len(df.columns)
 
-    widget_repr["text/html"] = create_html_representation(
-        obj,
-        cached_pd,
-        total_rows,
-        total_columns,
-    )
-    is_series, has_index = _get_obj_metadata(obj)
-    widget_repr["text/plain"] = plaintext.create_text_representation(
-        cached_pd,
-        total_rows,
-        is_series=is_series,
-        has_index=has_index,
-        column_count=len(df.columns) if not is_series else 0,
-    )
+    if dry_run_info:
+        widget_repr["text/plain"] = dry_run_info
+    else:
+        widget_repr["text/html"] = create_html_representation(
+            obj,
+            cached_pd,
+            total_rows,
+            total_columns,
+        )
+        is_series, has_index = _get_obj_metadata(obj)
+        widget_repr["text/plain"] = plaintext.create_text_representation(
+            cached_pd,
+            total_rows,
+            is_series=is_series,
+            has_index=has_index,
+            column_count=len(df.columns) if not is_series else 0,
+        )
 
     return widget_repr, widget_metadata
 
@@ -332,10 +344,11 @@ def repr_mimebundle(
     # BQ Studio, but there is a known compatibility issue with Marimo that needs to be addressed.
 
     opts = options.display
-    if opts.repr_mode == "deferred":
-        return repr_mimebundle_deferred(obj)
-
-    if opts.render_mode == "anywidget" or opts.repr_mode == "anywidget":
+    if (
+        opts.render_mode == "anywidget"
+        or opts.repr_mode == "anywidget"
+        or opts.repr_mode == "deferred"
+    ):
         try:
             with bigframes.option_context("display.progress_bar", None):
                 with warnings.catch_warnings():
@@ -343,16 +356,28 @@ def repr_mimebundle(
                         "ignore", category=bigframes.exceptions.JSONDtypeWarning
                     )
                     warnings.simplefilter("ignore", category=FutureWarning)
-                    return get_anywidget_bundle(obj, include=include, exclude=exclude)
-        except ImportError:
+                    dry_run_info = None
+                    if opts.repr_mode == "deferred":
+                        dry_run_job = obj._compute_dry_run()
+                        dry_run_info = formatter.repr_query_job(dry_run_job)
+                    return get_anywidget_bundle(
+                        obj,
+                        include=include,
+                        exclude=exclude,
+                        dry_run_info=dry_run_info,
+                    )
+        except Exception:
             # Anywidget is an optional dependency, so warn rather than fail.
             # TODO(shuowei): When Anywidget becomes the default for all repr modes,
             # remove this warning.
             warnings.warn(
-                "Anywidget mode is not available. "
-                "Please `pip install anywidget traitlets` or `pip install 'bigframes[anywidget]'` to use interactive tables. "
+                "Anywidget mode is not available or failed to load. "
+                "Please `pip install anywidget traitlets` or "
+                "`pip install 'bigframes[anywidget]'` to use interactive tables. "
                 f"Falling back to static HTML. Error: {traceback.format_exc()}"
             )
+            if opts.repr_mode == "deferred":
+                return repr_mimebundle_deferred(obj)
 
     bundle = repr_mimebundle_head(obj)
     if opts.render_mode == "plaintext":
