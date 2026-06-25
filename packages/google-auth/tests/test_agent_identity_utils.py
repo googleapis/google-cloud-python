@@ -289,7 +289,7 @@ class TestAgentIdentityUtils:
         assert result is None
 
     @mock.patch("time.sleep")
-    @mock.patch("os.path.exists")
+    @mock.patch("google.auth._agent_identity_utils.os.path.exists")
     def test_get_agent_identity_certificate_path_cert_not_found(
         self, mock_exists, mock_sleep, tmpdir, monkeypatch
     ):
@@ -379,7 +379,7 @@ class TestAgentIdentityUtils:
         mock_sleep.assert_not_called()
 
     @mock.patch("time.sleep")
-    @mock.patch("os.path.exists")
+    @mock.patch("google.auth._agent_identity_utils.os.path.exists")
     @mock.patch("google.auth._agent_identity_utils._is_certificate_file_ready")
     def test_get_agent_identity_certificate_path_no_config_but_has_well_known_dir(
         self, mock_is_ready, mock_exists, mock_sleep, monkeypatch
@@ -399,7 +399,7 @@ class TestAgentIdentityUtils:
         mock_sleep.assert_not_called()
 
     @mock.patch("time.sleep")
-    @mock.patch("os.path.exists")
+    @mock.patch("google.auth._agent_identity_utils.os.path.exists")
     def test_get_agent_identity_certificate_path_no_config_no_well_known_dir(
         self, mock_exists, mock_sleep, monkeypatch
     ):
@@ -417,7 +417,7 @@ class TestAgentIdentityUtils:
         mock_sleep.assert_not_called()
 
     @mock.patch("time.sleep")
-    @mock.patch("os.path.exists")
+    @mock.patch("google.auth._agent_identity_utils.os.path.exists")
     @mock.patch("google.auth._agent_identity_utils._is_certificate_file_ready")
     def test_get_agent_identity_certificate_path_no_config_well_known_polling_success(
         self, mock_is_ready, mock_exists, mock_sleep, monkeypatch
@@ -436,7 +436,7 @@ class TestAgentIdentityUtils:
         assert mock_sleep.call_count == 1
 
     @mock.patch("time.sleep")
-    @mock.patch("os.path.exists")
+    @mock.patch("google.auth._agent_identity_utils.os.path.exists")
     @mock.patch("google.auth._agent_identity_utils._is_certificate_file_ready")
     def test_get_agent_identity_certificate_path_no_config_well_known_polling_timeout(
         self, mock_is_ready, mock_exists, mock_sleep, monkeypatch
@@ -456,7 +456,7 @@ class TestAgentIdentityUtils:
 
     @mock.patch("time.sleep")
     @mock.patch("google.auth._agent_identity_utils._is_certificate_file_ready")
-    @mock.patch("os.path.exists")
+    @mock.patch("google.auth._agent_identity_utils.os.path.exists")
     def test_get_agent_identity_certificate_path_permission_error_well_known(
         self, mock_exists, mock_is_ready, mock_sleep, monkeypatch
     ):
@@ -472,7 +472,7 @@ class TestAgentIdentityUtils:
         mock_sleep.assert_not_called()
 
     @mock.patch("time.sleep")
-    @mock.patch("os.path.exists")
+    @mock.patch("google.auth._agent_identity_utils.os.path.exists")
     def test_get_agent_identity_certificate_path_permission_error_config(
         self, mock_exists, mock_sleep, tmpdir, monkeypatch
     ):
