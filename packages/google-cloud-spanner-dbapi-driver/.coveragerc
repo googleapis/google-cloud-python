@@ -3,6 +3,7 @@ branch = True
 
 [report]
 show_missing = True
+fail_under = 85
 omit =
     google/cloud/spanner_driver/__init__.py
 exclude_lines =
