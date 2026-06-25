@@ -1250,12 +1250,14 @@ class TestMemfdCertKeyPaths(object):
 
 
 class TestTempfileCertKeyPaths(object):
+    @mock.patch.object(os, "access", return_value=True)
     @mock.patch.object(os.path, "isdir", return_value=True)
     @mock.patch.object(_mtls_helper, "_encrypt_key_if_plaintext", autospec=True)
     def test_success_shm(
         self,
         mock_encrypt,
         mock_isdir,
+        mock_access,
         tmpdir,
     ):
         original_mkstemp = tempfile.mkstemp
@@ -1291,12 +1293,14 @@ class TestTempfileCertKeyPaths(object):
                 [mock.call(dir="/dev/shm"), mock.call(dir="/dev/shm")]
             )
 
+    @mock.patch.object(os, "access", return_value=True)
     @mock.patch.object(os.path, "isdir", return_value=True)
     @mock.patch.object(_mtls_helper, "_encrypt_key_if_plaintext", autospec=True)
     def test_mkstemp_shm_oserror_fallback(
         self,
         mock_encrypt,
         mock_isdir,
+        mock_access,
         tmpdir,
     ):
         original_mkstemp = tempfile.mkstemp
@@ -1334,6 +1338,7 @@ class TestTempfileCertKeyPaths(object):
             assert not os.path.exists(cert_path)
             assert not os.path.exists(key_path)
 
+    @mock.patch.object(os, "access", return_value=True)
     @mock.patch.object(os.path, "isdir", return_value=True)
     @mock.patch.object(_mtls_helper, "_encrypt_key_if_plaintext", autospec=True)
     @mock.patch.object(_mtls_helper, "_secure_wipe_and_remove", autospec=True)
@@ -1342,6 +1347,7 @@ class TestTempfileCertKeyPaths(object):
         mock_wipe,
         mock_encrypt,
         mock_isdir,
+        mock_access,
         tmpdir,
     ):
         original_mkstemp = tempfile.mkstemp

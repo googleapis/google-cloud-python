@@ -213,6 +213,10 @@ class _X509Supplier(SubjectTokenSupplier):
                                 )
                             ) from e
                 return certificate_trust_chain
+        except FileNotFoundError as e:
+            raise exceptions.RefreshError(
+                "Trust chain file '{}' was not found.".format(self._trust_chain_path)
+            ) from e
         except OSError as e:
             raise exceptions.RefreshError(
                 "Error accessing trust chain file '{}'.".format(self._trust_chain_path)
