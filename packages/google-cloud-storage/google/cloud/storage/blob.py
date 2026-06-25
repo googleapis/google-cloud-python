@@ -1125,21 +1125,23 @@ class Blob(_PropertyMixin):
                     response = download.consume_next_chunk(transport, timeout=timeout)
 
         requested_length = None
-        if end is not None:
-            start_offset = start if start is not None else 0
-            requested_length = end - start_offset + 1
+        if start is None:
+            if end is None:
+                total_bytes = getattr(download, "total_bytes", None)
+                if isinstance(total_bytes, (int, float)):
+                    requested_length = total_bytes
+            else:
+                requested_length = end + 1
         else:
-            if start is not None:
+            if end is not None:
+                requested_length = end - start + 1
+            else:
                 if start < 0:
                     requested_length = -start
                 else:
                     total_bytes = getattr(download, "total_bytes", None)
                     if isinstance(total_bytes, (int, float)):
                         requested_length = total_bytes - start
-            else:
-                total_bytes = getattr(download, "total_bytes", None)
-                if isinstance(total_bytes, (int, float)):
-                    requested_length = total_bytes
 
         if isinstance(requested_length, (int, float)) and requested_length >= 0:
             received_bytes = getattr(download, "_bytes_downloaded", 0)
