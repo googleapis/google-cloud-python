@@ -20,7 +20,8 @@ import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZonelessC
 
 function render({ model, el }: { model: any, el: HTMLElement }) {
   // Create a container for the Angular app
-  const appRoot = document.createElement('app-root');
+  const appRoot = document.createElement('div');
+  appRoot.setAttribute('app-root', '');
   el.appendChild(appRoot);
 
   const appConfig: ApplicationConfig = {
@@ -34,6 +35,7 @@ function render({ model, el }: { model: any, el: HTMLElement }) {
   createApplication(appConfig)
     .then((appRef) => {
       appRef.bootstrap(App, appRoot);
+      appRoot.removeAttribute('app-root');
     })
     .catch((err) => console.error(err));
 }

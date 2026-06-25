@@ -21,9 +21,7 @@ export interface SortItem {
   ascending: boolean;
 }
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class WidgetStateService {
   readonly page = signal<number>(0);
   readonly pageSize = signal<number>(10);
@@ -33,6 +31,10 @@ export class WidgetStateService {
   readonly sortContext = signal<SortItem[]>([]);
   readonly orderableColumns = signal<string[]>([]);
   readonly errorMessage = signal<string | null>(null);
+  readonly startExecution = signal<boolean>(false);
+  readonly isDeferredMode = signal<boolean>(false);
+  readonly dryRunInfo = signal<string>('');
+  readonly ping = signal<number>(0);
 
   constructor(@Inject('ANYWIDGET_MODEL') private model: any) {
     if (model) {
@@ -49,6 +51,10 @@ export class WidgetStateService {
         model.get('_error_message') ??
         null;
       this.errorMessage.set(initialError);
+      this.startExecution.set(model.get('start_execution') ?? false);
+      this.isDeferredMode.set(model.get('is_deferred_mode') ?? false);
+      this.dryRunInfo.set(model.get('dry_run_info') ?? '');
+      this.ping.set(model.get('ping') ?? 0);
 
       // Register event listeners for anywidget updates
       model.on('change:page', () => {
@@ -71,6 +77,18 @@ export class WidgetStateService {
       });
       model.on('change:orderable_columns', () => {
         this.orderableColumns.set(model.get('orderable_columns'));
+      });
+      model.on('change:start_execution', () => {
+        this.startExecution.set(model.get('start_execution') ?? false);
+      });
+      model.on('change:is_deferred_mode', () => {
+        this.isDeferredMode.set(model.get('is_deferred_mode') ?? false);
+      });
+      model.on('change:dry_run_info', () => {
+        this.dryRunInfo.set(model.get('dry_run_info') ?? '');
+      });
+      model.on('change:ping', () => {
+        this.ping.set(model.get('ping') ?? 0);
       });
 
       // Robust dual-listen pattern for error messages (with/without underscore)
@@ -117,6 +135,22 @@ export class WidgetStateService {
     this.sortContext.set(context);
     if (this.model) {
       this.model.set('sort_context', context);
+      this.model.save_changes();
+    }
+  }
+
+  setStartExecution(startExecution: boolean) {
+    this.startExecution.set(startExecution);
+    if (this.model) {
+      this.model.set('start_execution', startExecution);
+      this.model.save_changes();
+    }
+  }
+
+  setPing(ping: number) {
+    this.ping.set(ping);
+    if (this.model) {
+      this.model.set('ping', ping);
       this.model.save_changes();
     }
   }
