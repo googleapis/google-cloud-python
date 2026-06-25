@@ -122,7 +122,7 @@ rules:
   # ==========================================
 
   - name: explicit_version_string
-    description: Finds explicit version strings in code or configs.
+    description: Finds explicit version strings in code or configs (this may result in a lot of noise/false positives but can also catch edge cases that more specific rules do not).
     examples:
       - "'3.7'"
       - '"3.7.1"'
