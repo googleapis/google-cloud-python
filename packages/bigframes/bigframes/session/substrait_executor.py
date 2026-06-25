@@ -115,13 +115,18 @@ class SubstraitExecutor(semi_executor.SemiExecutor):
             return cls(
                 AceroSubstraitConsumer(),
                 substrait_compiler.SubstraitCompiler(
-                    duration_type="int", use_precision_types=False
+                    duration_type="int",
+                    use_precision_types=False,
+                    dialect="substrait-acero",
                 ),
             )
         elif engine_name == "datafusion":
             return cls(
                 DataFusionSubstraitConsumer(),
-                substrait_compiler.SubstraitCompiler(duration_type="int"),
+                substrait_compiler.SubstraitCompiler(
+                    duration_type="int",
+                    dialect="substrait-datafusion",
+                ),
             )
         else:
             raise ValueError(f"Unknown engine: {engine_name}")

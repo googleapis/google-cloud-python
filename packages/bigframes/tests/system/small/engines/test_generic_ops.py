@@ -178,10 +178,18 @@ def test_engines_astype_bool(scalars_array_value: array_value.ArrayValue, engine
 )
 def test_engines_astype_string(scalars_array_value: array_value.ArrayValue, engine):
     # floats work slightly different with trailing zeroes rn
+    excluded_cols = ["float64_col"]
+
+    # Acero's Substrait consumer lacks support for string functions like replace/replace_substring
+    # and precision_time, so we cannot format time_col and timestamp_col inside the Substrait plan.
+    from bigframes.session.substrait_executor import SubstraitExecutor
+    if isinstance(engine, SubstraitExecutor) and not engine._compiler._use_precision_types:
+        excluded_cols.extend(["time_col", "timestamp_col"])
+
     arr = apply_op(
         scalars_array_value,
         ops.AsTypeOp(to_type=bigframes.dtypes.STRING_DTYPE),
-        excluded_cols=["float64_col"],
+        excluded_cols=excluded_cols,
     )
 
     assert_equivalence_execution(arr.node, REFERENCE_ENGINE, engine)

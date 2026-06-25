@@ -30,6 +30,7 @@ import bigframes.operations.comparison_ops as comparison_ops
 import bigframes.operations.generic_ops as generic_ops
 import bigframes.operations.numeric_ops as numeric_ops
 import bigframes.operations.struct_ops as struct_ops
+import bigframes.operations.string_ops as string_ops
 from bigframes.core import agg_expressions, bigframe_node, nodes, rewrite
 from bigframes.core.compile import lowering
 
@@ -43,9 +44,11 @@ class SubstraitCompiler:
         self,
         duration_type: Literal["interval_day", "int"],
         use_precision_types: bool = True,
+        dialect: Literal["substrait-datafusion", "substrait-acero"] = "substrait-datafusion",
     ):
         self._duration_type = duration_type
         self._use_precision_types = use_precision_types
+        self._dialect = dialect
 
     def compile(self, plan: bigframe_node.BigFrameNode) -> Optional[bytes]:
         """
@@ -56,7 +59,7 @@ class SubstraitCompiler:
 
         # Need to bind types in before lowering
         plan = rewrite.bind_schema_to_tree(plan)
-        plan = lowering.lower_ops_to_substrait(plan)
+        plan = lowering.lower_ops_to_substrait(plan, dialect=self._dialect)
         pb_rel = self._compile_node(plan)
 
         pb_plan = plan_pb2.Plan()
@@ -73,10 +76,26 @@ class SubstraitCompiler:
                 )
             )
 
-        for name, anchor in self._EXTENSIONS.items():
+        # Determine extensions dynamically based on execution engine
+        extensions = dict(self._EXTENSIONS)
+        if self._use_precision_types:
+            # DataFusion supports standard "replace"
+            extensions["replace"] = 76
+        else:
+            # Acero expects Arrow simple extension function URN for "replace_substring"
+            extensions["replace_substring"] = 76
+
+            # Register Arrow simple extension URN at anchor 1
+            arrow_uri = pb_plan.extension_urns.add()
+            arrow_uri.extension_urn_anchor = 1
+            arrow_uri.urn = "urn:arrow:substrait_simple_extension_function"
+
+        for name, anchor in extensions.items():
             ext = pb_plan.extensions.add()
             ext.extension_function.function_anchor = anchor
             ext.extension_function.name = name
+            if name == "replace_substring" and not self._use_precision_types:
+                ext.extension_function.extension_urn_reference = 1
 
         return pb_plan.SerializeToString()
 
@@ -848,7 +867,63 @@ class SubstraitCompiler:
         child: nodes.BigFrameNode,
     ) -> algebra_pb2.Expression:
         arg_expr = self._compile_expression(inputs[0], child)
+        from_dtype = self._get_expression_dtype(inputs[0], child)
+
+        if op.to_type == dtypes.STRING_DTYPE:
+            if from_dtype == dtypes.DATETIME_DTYPE:
+                # This is only reached for Acero (dialect="substrait-acero"),
+                # because DataFusion was lowered to ReplaceStrOp in lowering.py!
+                if not self._use_precision_types:
+                    # Cast to precision_timestamp with precision 0 first, then to string
+                    second_ts_expr = self._compile_cast_with_type_dict(
+                        arg_expr, {"precision_timestamp": {"precision": 0}}
+                    )
+                    return self._compile_cast(second_ts_expr, dtypes.STRING_DTYPE)
+
         return self._compile_cast(arg_expr, op.to_type)
+
+    @_compile_op.register(string_ops.ReplaceStrOp)
+    def _compile_replace_str(
+        self,
+        op: string_ops.ReplaceStrOp,
+        inputs: Sequence[ex.Expression],
+        child: nodes.BigFrameNode,
+    ) -> algebra_pb2.Expression:
+        arg_expr = self._compile_expression(inputs[0], child)
+        return self._compile_replace(arg_expr, op.pat, op.repl)
+
+    def _compile_cast_with_type_dict(
+        self, input_expr: algebra_pb2.Expression, type_dict: Dict[str, Any]
+    ) -> algebra_pb2.Expression:
+        pb_expr = algebra_pb2.Expression()
+        cast = pb_expr.cast
+        cast.input.CopyFrom(input_expr)
+        json_format.ParseDict(type_dict, cast.type)
+        cast.failure_behavior = (
+            algebra_pb2.Expression.Cast.FAILURE_BEHAVIOR_THROW_EXCEPTION
+        )
+        return pb_expr
+
+    def _compile_replace(
+        self,
+        str_expr: algebra_pb2.Expression,
+        search: str,
+        replacement: str,
+    ) -> algebra_pb2.Expression:
+        pb_expr = algebra_pb2.Expression()
+        pb_expr.scalar_function.function_reference = 76  # "replace" or "replace_substring"
+        
+        pb_expr.scalar_function.arguments.add().value.CopyFrom(str_expr)
+        
+        search_expr = algebra_pb2.Expression()
+        search_expr.literal.string = search
+        pb_expr.scalar_function.arguments.add().value.CopyFrom(search_expr)
+        
+        replace_expr = algebra_pb2.Expression()
+        replace_expr.literal.string = replacement
+        pb_expr.scalar_function.arguments.add().value.CopyFrom(replace_expr)
+        
+        return pb_expr
 
     @_compile_op.register(struct_ops.StructOp)
     def _compile_struct_op(

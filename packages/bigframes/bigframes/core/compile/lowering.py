@@ -290,7 +290,7 @@ class LowerModRule(op_lowering.OpLoweringRule):
 
 @dataclasses.dataclass
 class LowerAsTypeRule(op_lowering.OpLoweringRule):
-    dialect: Literal["polars", "substrait"]
+    dialect: Literal["polars", "substrait-datafusion", "substrait-acero"]
 
     @property
     def op(self) -> type[ops.ScalarOp]:
@@ -300,8 +300,8 @@ class LowerAsTypeRule(op_lowering.OpLoweringRule):
         assert isinstance(expr.op, ops.AsTypeOp)
         if self.dialect == "polars":
             return _lower_cast_to_polars(expr.op, expr.inputs[0])
-        elif self.dialect == "substrait":
-            return _lower_cast_to_substrait(expr.op, expr.inputs[0])
+        else:
+            return _lower_cast_to_substrait(expr.op, expr.inputs[0], dialect=self.dialect)
 
 
 def invert_bytes(byte_string):
@@ -473,7 +473,11 @@ def _lower_cast_to_polars(cast_op: ops.AsTypeOp, arg: expression.Expression):
     return cast_op.as_expr(arg)
 
 
-def _lower_cast_to_substrait(cast_op: ops.AsTypeOp, arg: expression.Expression):
+def _lower_cast_to_substrait(
+    cast_op: ops.AsTypeOp,
+    arg: expression.Expression,
+    dialect: Literal["substrait-datafusion", "substrait-acero"] = "substrait-datafusion",
+):
     if arg.output_type == dtypes.BOOL_DTYPE and cast_op.to_type == dtypes.STRING_DTYPE:
         is_true_cond = ops.eq_op.as_expr(arg, expression.const(True))
         is_false_cond = ops.eq_op.as_expr(arg, expression.const(False))
@@ -483,6 +487,29 @@ def _lower_cast_to_substrait(cast_op: ops.AsTypeOp, arg: expression.Expression):
             is_false_cond,
             expression.const("False"),
         )
+
+    if cast_op.to_type == dtypes.STRING_DTYPE:
+        if arg.output_type == dtypes.DATETIME_DTYPE:
+            cast_expr = cast_op.as_expr(arg)
+            if dialect == "substrait-datafusion":
+                return string_ops.ReplaceStrOp(pat="T", repl=" ").as_expr(cast_expr)
+            else:
+                # Acero: let it cast natively, compiler will intercept and cast to precision_timestamp(0)
+                return cast_expr
+
+        elif arg.output_type == dtypes.TIME_DTYPE:
+            # Both engines use native cast (Acero is excluded in test)
+            return cast_op.as_expr(arg)
+
+        elif arg.output_type == dtypes.TIMESTAMP_DTYPE:
+            cast_expr = cast_op.as_expr(arg)
+            if dialect == "substrait-datafusion":
+                replaced_t = string_ops.ReplaceStrOp(pat="T", repl=" ").as_expr(cast_expr)
+                return string_ops.ReplaceStrOp(pat="Z", repl="+00").as_expr(replaced_t)
+            else:
+                # Acero: native cast (excluded in test)
+                return cast_expr
+
     return cast_op.as_expr(arg)
 
 
@@ -567,21 +594,20 @@ POLARS_LOWERING_RULES = (
     LowerFloorOp(),
 )
 
-SUBSTRAIT_LOWERING_RULES = (
-    LowerEqNullsMatchRule(),
-    *SUBSTRAIT_LOWER_COMPARISONS,
-    LowerAsTypeRule(dialect="substrait"),
-)
-
-
 def lower_ops_to_polars(root: bigframe_node.BigFrameNode) -> bigframe_node.BigFrameNode:
     return op_lowering.lower_ops(root, rules=POLARS_LOWERING_RULES)
 
 
 def lower_ops_to_substrait(
     root: bigframe_node.BigFrameNode,
+    dialect: Literal["substrait-datafusion", "substrait-acero"] = "substrait-datafusion",
 ) -> bigframe_node.BigFrameNode:
-    return op_lowering.lower_ops(root, rules=SUBSTRAIT_LOWERING_RULES)
+    rules = (
+        LowerEqNullsMatchRule(),
+        *SUBSTRAIT_LOWER_COMPARISONS,
+        LowerAsTypeRule(dialect=dialect),
+    )
+    return op_lowering.lower_ops(root, rules=rules)
 
 
 def _numeric_to_timedelta(expr: expression.Expression) -> expression.Expression:
