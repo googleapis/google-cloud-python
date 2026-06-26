@@ -226,12 +226,12 @@ class _MutualTlsAdapter(requests.adapters.HTTPAdapter):
                 ctx_poolmanager.load_cert_chain(
                     certfile=cert_path,
                     keyfile=key_path,
-                    password=passphrase or "",
+                    password=passphrase,
                 )
                 ctx_proxymanager.load_cert_chain(
                     certfile=cert_path,
                     keyfile=key_path,
-                    password=passphrase or "",
+                    password=passphrase,
                 )
         except (ssl.SSLError, OSError, IOError, ValueError, RuntimeError) as exc:
             raise exceptions.MutualTLSChannelError(

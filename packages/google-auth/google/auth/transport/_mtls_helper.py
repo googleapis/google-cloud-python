@@ -201,8 +201,6 @@ def _secure_wipe_and_remove(file_path: str):
     the original private key bytes might still physically remain on the storage chips
     until the drive cleans them up.
     """
-    import os
-
     if not os.path.exists(file_path):
         return
     try:
