@@ -591,9 +591,8 @@ class TestGetWorkloadCertAndKey(object):
             "cert_configs": {"workload": {"key_path": "path/to/key"}}
         }
 
-        actual_cert, actual_key = _mtls_helper._get_workload_cert_and_key("")
-        assert actual_cert is None
-        assert actual_key is None
+        with pytest.raises(exceptions.ClientCertError):
+            _mtls_helper._get_workload_cert_and_key("")
 
     @mock.patch("google.auth.transport._mtls_helper._load_json_file", autospec=True)
     @mock.patch(
@@ -605,9 +604,8 @@ class TestGetWorkloadCertAndKey(object):
             "cert_configs": {"workload": {"cert_path": "path/to/key"}}
         }
 
-        actual_cert, actual_key = _mtls_helper._get_workload_cert_and_key("")
-        assert actual_cert is None
-        assert actual_key is None
+        with pytest.raises(exceptions.ClientCertError):
+            _mtls_helper._get_workload_cert_and_key("")
 
 
 class TestReadCertAndKeyFile(object):
@@ -771,6 +769,38 @@ class TestDecryptPrivateKey(object):
             _mtls_helper.decrypt_private_key(
                 ENCRYPTED_EC_PRIVATE_KEY, b"wrong_password"
             )
+
+
+class TestCheckUseClientCertEnv(object):
+    @mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"})
+    def test_env_var_explicit_true(self):
+        assert _mtls_helper._check_use_client_cert_env() is True
+
+    @mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "True"})
+    def test_env_var_explicit_true_capitalized(self):
+        assert _mtls_helper._check_use_client_cert_env() is True
+
+    @mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"})
+    def test_env_var_explicit_false(self):
+        assert _mtls_helper._check_use_client_cert_env() is False
+
+    @mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "garbage"})
+    def test_env_var_explicit_garbage(self):
+        assert _mtls_helper._check_use_client_cert_env() is False
+
+    @mock.patch.dict(os.environ, {}, clear=True)
+    def test_env_var_unset(self):
+        assert _mtls_helper._check_use_client_cert_env() is None
+
+    @mock.patch.dict(
+        os.environ,
+        {
+            "GOOGLE_API_USE_CLIENT_CERTIFICATE": "",
+            "CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE": "true",
+        },
+    )
+    def test_env_var_fallback_true(self):
+        assert _mtls_helper._check_use_client_cert_env() is True
 
 
 class TestCheckUseClientCert(object):

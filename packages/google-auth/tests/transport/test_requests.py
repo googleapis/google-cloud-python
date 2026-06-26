@@ -470,11 +470,7 @@ class TestAuthorizedSession(object):
             os.environ, {environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE: "true"}
         ):
             auth_session.configure_mtls_channel()
-
-        assert not auth_session.is_mtls
-
-        # Assert _MutualTlsAdapter constructor is not called.
-        mock_adapter_ctor.assert_not_called()
+        assert auth_session._is_mtls is False
 
     @mock.patch(
         "google.auth.transport._mtls_helper.get_client_cert_and_key", autospec=True

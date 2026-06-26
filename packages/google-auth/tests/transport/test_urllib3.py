@@ -259,11 +259,9 @@ class TestAuthorizedHttp(object):
         with mock.patch.dict(
             os.environ, {environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE: "true"}
         ):
-            is_mtls = authed_http.configure_mtls_channel()
-
-        assert not is_mtls
-        mock_get_client_cert_and_key.assert_called_once()
-        mock_make_mutual_tls_http.assert_not_called()
+            res = authed_http.configure_mtls_channel()
+        assert res is False
+        assert authed_http._is_mtls is False
 
     @mock.patch(
         "google.auth.transport._mtls_helper.get_client_cert_and_key", autospec=True

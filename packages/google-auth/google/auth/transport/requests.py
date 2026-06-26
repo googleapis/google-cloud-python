@@ -428,11 +428,11 @@ class AuthorizedSession(requests.Session):
     def configure_mtls_channel(self, client_cert_callback=None):
         """Configure the client certificate and key for SSL connection.
 
-        The function does nothing unless `GOOGLE_API_USE_CLIENT_CERTIFICATE` is
-        explicitly set to `true`. In this case if client certificate and key are
-        successfully obtained (from the given client_cert_callback or from application
-        default SSL credentials), a :class:`_MutualTlsAdapter` instance will be mounted
-        to "https://" prefix.
+        This method configures mTLS if client certificates are explicitly enabled
+        (via GOOGLE_API_USE_CLIENT_CERTIFICATE=true) or auto-enabled (when the env
+        variable is unset and workload certificates are discovered). In these cases,
+        if the client certificate and key are successfully obtained, a
+        :class:`_MutualTlsAdapter` instance will be mounted to the "https://" prefix.
 
         Args:
             client_cert_callback (Optional[Callable[[], (bytes, bytes)]]):
@@ -452,6 +452,7 @@ class AuthorizedSession(requests.Session):
         try:
             import OpenSSL
         except ImportError as caught_exc:
+            self._is_mtls = False
             new_exc = exceptions.MutualTLSChannelError(caught_exc)
             raise new_exc from caught_exc
 
@@ -471,8 +472,10 @@ class AuthorizedSession(requests.Session):
         except (
             exceptions.ClientCertError,
             ImportError,
+            OSError,
             OpenSSL.crypto.Error,
         ) as caught_exc:
+            self._is_mtls = False
             new_exc = exceptions.MutualTLSChannelError(caught_exc)
             raise new_exc from caught_exc
 

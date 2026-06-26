@@ -313,13 +313,12 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
 
     def configure_mtls_channel(self, client_cert_callback=None):
         """Configures mutual TLS channel using the given client_cert_callback or
-        application default SSL credentials. The behavior is controlled by
-        `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable.
-        (1) If the environment variable value is `true`, the function returns True
-        if the channel is mutual TLS and False otherwise. The `http` provided
-        in the constructor will be overwritten.
-        (2) If the environment variable is not set or `false`, the function does
-        nothing and it always return False.
+        application default SSL credentials.
+
+        The channel is configured if GOOGLE_API_USE_CLIENT_CERTIFICATE is "true",
+        or if it is unset and workload certificates are detected in the environment.
+        If client_cert_callback is None, default SSL credentials (workload or SecureConnect)
+        are loaded.
 
         Args:
             client_cert_callback (Optional[Callable[[], (bytes, bytes)]]):
@@ -344,6 +343,7 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
         try:
             import OpenSSL
         except ImportError as caught_exc:
+            self._is_mtls = False
             new_exc = exceptions.MutualTLSChannelError(caught_exc)
             raise new_exc from caught_exc
 
@@ -357,11 +357,14 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
                 self._cached_cert = cert
             else:
                 self.http = _make_default_http()
+                self._is_mtls = False
         except (
             exceptions.ClientCertError,
             ImportError,
+            OSError,
             OpenSSL.crypto.Error,
         ) as caught_exc:
+            self._is_mtls = False
             new_exc = exceptions.MutualTLSChannelError(caught_exc)
             raise new_exc from caught_exc
 

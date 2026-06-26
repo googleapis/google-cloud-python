@@ -17,6 +17,7 @@ from contextlib import asynccontextmanager
 import functools
 import time
 from typing import Mapping, Optional, TYPE_CHECKING, Union
+import warnings
 
 from google.auth import _exponential_backoff, exceptions
 from google.auth.aio import transport
@@ -35,6 +36,7 @@ else:
         from aiohttp import ClientTimeout
     except (ImportError, AttributeError):
         ClientTimeout = None
+
 
 # Tracks the internal aiohttp installation and usage
 try:
@@ -150,11 +152,11 @@ class AsyncAuthorizedSession:
     async def configure_mtls_channel(self, client_cert_callback=None):
         """Configure the client certificate and key for SSL connection.
 
-        The function does nothing unless `GOOGLE_API_USE_CLIENT_CERTIFICATE` is
-        explicitly set to `true`. In this case if client certificate and key are
-        successfully obtained (from the given client_cert_callback or from application
-        default SSL credentials), the underlying transport will be reconfigured
-        to use mTLS.
+        This method configures mTLS if client certificates are explicitly enabled
+        (via GOOGLE_API_USE_CLIENT_CERTIFICATE=true) or auto-enabled (when the env
+        variable is unset and workload certificates are discovered). In these cases,
+        the underlying transport will be reconfigured to use mTLS.
+
         Note: This function does nothing if the `aiohttp` library is not
         installed.
         Important: Calling this method will close any ongoing API requests associated
@@ -207,12 +209,23 @@ class AsyncAuthorizedSession:
                             self._auth_request = AiohttpRequest(session=new_session)
 
                             await old_auth_request.close()
+                        else:
+                            self._is_mtls = False
+                            warnings.warn(
+                                "Attempted to establish mTLS, but a custom async transport was provided. "
+                                "google-auth cannot automatically configure custom transports for mTLS. "
+                                "Falling back to standard TLS. If your custom transport is not manually "
+                                "configured for mTLS, you may encounter 401 Unauthorized errors when "
+                                "using Certificate-Bound Tokens.",
+                                UserWarning,
+                            )
 
                 except (
                     exceptions.ClientCertError,
                     ImportError,
                     OSError,
                 ) as caught_exc:
+                    self._is_mtls = False
                     new_exc = exceptions.MutualTLSChannelError(caught_exc)
                     raise new_exc from caught_exc
 

@@ -201,6 +201,13 @@ def get_and_parse_agent_identity_certificate():
     if is_opted_out:
         return None
 
+    # Respect explicit opt-out of mTLS / client certs
+    from google.auth.transport import _mtls_helper
+
+    env_override = _mtls_helper._check_use_client_cert_env()
+    if env_override is False:
+        return None
+
     cert_path = get_agent_identity_certificate_path()
     if not cert_path:
         return None
@@ -312,7 +319,17 @@ def should_request_bound_token(cert):
         ).lower()
         == "true"
     )
-    return is_agent_cert and is_opted_in
+    if not (is_agent_cert and is_opted_in):
+        return False
+
+    # Respect explicit opt-out of mTLS / client certs
+    from google.auth.transport import _mtls_helper
+
+    env_override = _mtls_helper._check_use_client_cert_env()
+    if env_override is False:
+        return False
+
+    return True
 
 
 def get_cached_cert_fingerprint(cached_cert):

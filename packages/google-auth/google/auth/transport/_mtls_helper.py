@@ -46,6 +46,12 @@ _KEY_REGEX = re.compile(
 _LOGGER = logging.getLogger(__name__)
 
 
+# A flag to track if we have already logged a warning about mTLS auto-enablement failures.
+# This prevents log spam when client libraries create transports or session instances
+# frequently within a single process.
+_has_logged_mtls_warning = False
+
+
 _PASSPHRASE_REGEX = re.compile(
     b"-----BEGIN PASSPHRASE-----(.+)-----END PASSPHRASE-----", re.DOTALL
 )
@@ -200,12 +206,13 @@ def _get_workload_cert_and_key_paths(config_path, include_context_aware=True):
         return None, None
     workload = cert_configs["workload"]
 
-    if "cert_path" not in workload:
-        return None, None
+    if "cert_path" not in workload or "key_path" not in workload:
+        raise exceptions.ClientCertError(
+            'Workload certificate configuration is missing "cert_path" or "key_path" in {}'.format(
+                absolute_path
+            )
+        )
     cert_path = workload["cert_path"]
-
-    if "key_path" not in workload:
-        return None, None
     key_path = workload["key_path"]
 
     # == BEGIN Temporary Cloud Run PATCH ==
@@ -448,6 +455,16 @@ def decrypt_private_key(key, passphrase):
     return crypto.dump_privatekey(crypto.FILETYPE_PEM, pkey)
 
 
+def _check_use_client_cert_env():
+    use_client_cert = getenv(
+        environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE
+    ) or getenv(environment_vars.CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE)
+
+    if use_client_cert:
+        return use_client_cert.lower() == "true"
+    return None
+
+
 def check_use_client_cert():
     """Returns boolean for whether the client certificate should be used for mTLS.
 
@@ -455,46 +472,53 @@ def check_use_client_cert():
     bool value will be returned. If the value is set to an unexpected string, it
     will default to False.
     If GOOGLE_API_USE_CLIENT_CERTIFICATE is unset, the value will be inferred
-    by reading a file pointed at by GOOGLE_API_CERTIFICATE_CONFIG, and verifying
-    it contains a "workload" section. If so, the function will return True,
-    otherwise False.
+    as True (auto-enabled) if a workload config file exists (pointed at by
+    GOOGLE_API_CERTIFICATE_CONFIG) containing a "workload" section.
+    Otherwise, it returns False.
 
     Returns:
         bool: Whether the client certificate should be used for mTLS connection.
     """
-    use_client_cert = getenv(environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE)
-    if use_client_cert is None or use_client_cert == "":
-        use_client_cert = getenv(
-            environment_vars.CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE
-        )
+    global _has_logged_mtls_warning
+    env_override = _check_use_client_cert_env()
+    if env_override is not None:
+        return env_override
 
-    # Check if the value of GOOGLE_API_USE_CLIENT_CERTIFICATE is set.
-    if use_client_cert:
-        return use_client_cert.lower() == "true"
-    else:
-        # Check if the value of GOOGLE_API_CERTIFICATE_CONFIG is set.
-        cert_path = getenv(environment_vars.GOOGLE_API_CERTIFICATE_CONFIG)
-        if cert_path is None:
-            cert_path = getenv(
-                environment_vars.CLOUDSDK_CONTEXT_AWARE_CERTIFICATE_CONFIG_FILE_PATH
+    # Auto-enablement checks (when GOOGLE_API_USE_CLIENT_CERTIFICATE is not set)
+
+    # Check if the value of GOOGLE_API_CERTIFICATE_CONFIG is set.
+    cert_path = getenv(environment_vars.GOOGLE_API_CERTIFICATE_CONFIG) or getenv(
+        environment_vars.CLOUDSDK_CONTEXT_AWARE_CERTIFICATE_CONFIG_FILE_PATH
+    )
+
+    if cert_path:
+        try:
+            with open(cert_path, "r") as f:
+                content = json.load(f)
+        except (FileNotFoundError, OSError, json.JSONDecodeError) as e:
+            if not _has_logged_mtls_warning:
+                _LOGGER.warning(
+                    "mTLS auto-enablement failed: Could not read/parse certificate file at %s. Error: %s",
+                    cert_path,
+                    e,
+                )
+                _has_logged_mtls_warning = True
+            return False
+
+        # Structural validation
+        if isinstance(content, dict):
+            cert_configs = content.get("cert_configs")
+            if isinstance(cert_configs, dict) and "workload" in cert_configs:
+                return True
+
+        # If we got here, the file exists but the expected structure is missing
+        if not _has_logged_mtls_warning:
+            _LOGGER.warning(
+                "mTLS auto-enablement failed: Certificate configuration file at %s is missing the required ['cert_configs']['workload'] section.",
+                cert_path,
             )
-
-        if cert_path:
-            try:
-                with open(cert_path, "r") as f:
-                    content = json.load(f)
-                    # verify json has workload key
-                    content["cert_configs"]["workload"]
-                    return True
-            except (
-                FileNotFoundError,
-                OSError,
-                KeyError,
-                TypeError,
-                json.JSONDecodeError,
-            ) as e:
-                _LOGGER.debug("error decoding certificate: %s", e)
-        return False
+            _has_logged_mtls_warning = True
+    return False
 
 
 def check_parameters_for_unauthorized_response(cached_cert):

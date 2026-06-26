@@ -48,6 +48,17 @@ NON_AGENT_IDENTITY_CERT_BYTES = (
 
 
 class TestAgentIdentityUtils:
+    @pytest.fixture(autouse=True)
+    def clean_env(self, monkeypatch):
+        monkeypatch.delenv(
+            environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE,
+            raising=False,
+        )
+        monkeypatch.delenv(
+            environment_vars.CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE,
+            raising=False,
+        )
+
     @mock.patch("cryptography.x509.load_pem_x509_certificate")
     def test_parse_certificate(self, mock_load_cert):
         result = _agent_identity_utils.parse_certificate(b"cert_bytes")
@@ -149,6 +160,33 @@ class TestAgentIdentityUtils:
             "true",
         )
         assert not _agent_identity_utils.should_request_bound_token(mock.sentinel.cert)
+
+    @mock.patch("google.auth._agent_identity_utils._is_agent_identity_certificate")
+    def test_should_request_bound_token_explicit_use_client_cert_false(
+        self, mock_is_agent, monkeypatch
+    ):
+        mock_is_agent.return_value = True
+        monkeypatch.setenv(
+            environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE,
+            "false",
+        )
+        assert not _agent_identity_utils.should_request_bound_token(mock.sentinel.cert)
+
+    @mock.patch("google.auth._agent_identity_utils._is_agent_identity_certificate")
+    def test_should_request_bound_token_explicit_use_client_cert_invalid(
+        self, mock_is_agent, monkeypatch
+    ):
+        mock_is_agent.return_value = True
+        monkeypatch.setenv(
+            environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE,
+            "foo",
+        )
+        assert not _agent_identity_utils.should_request_bound_token(mock.sentinel.cert)
+
+    @mock.patch("google.auth._agent_identity_utils._is_agent_identity_certificate")
+    def test_should_request_bound_token_auto_enablement(self, mock_is_agent):
+        mock_is_agent.return_value = True
+        assert _agent_identity_utils.should_request_bound_token(mock.sentinel.cert)
 
     def test_get_agent_identity_certificate_path_success(self, tmpdir, monkeypatch):
         cert_path = tmpdir.join("cert.pem")
@@ -438,6 +476,30 @@ class TestAgentIdentityUtils:
         mock_open.assert_called_once_with("/fake/cert.pem", "rb")
         mock_parse_certificate.assert_called_once_with(b"cert_bytes")
         assert result == mock_parse_certificate.return_value
+
+    @mock.patch("google.auth._agent_identity_utils.get_agent_identity_certificate_path")
+    def test_get_and_parse_agent_identity_certificate_use_client_cert_false(
+        self, mock_get_path, monkeypatch
+    ):
+        monkeypatch.setenv(
+            environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE,
+            "false",
+        )
+        result = _agent_identity_utils.get_and_parse_agent_identity_certificate()
+        assert result is None
+        mock_get_path.assert_not_called()
+
+    @mock.patch("google.auth._agent_identity_utils.get_agent_identity_certificate_path")
+    def test_get_and_parse_agent_identity_certificate_use_client_cert_invalid(
+        self, mock_get_path, monkeypatch
+    ):
+        monkeypatch.setenv(
+            environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE,
+            "foo",
+        )
+        result = _agent_identity_utils.get_and_parse_agent_identity_certificate()
+        assert result is None
+        mock_get_path.assert_not_called()
 
     def test_get_cached_cert_fingerprint_no_cert(self):
         with pytest.raises(ValueError, match="mTLS connection is not configured."):
