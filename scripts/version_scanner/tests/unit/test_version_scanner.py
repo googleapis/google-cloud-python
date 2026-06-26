@@ -366,6 +366,50 @@ def test_scan_repository_ignores_version_scanner(tmp_path):
     assert len(results) == 0
 
 
+def test_scan_repository_wildcard_ignores(tmp_path):
+    # Create files
+    (tmp_path / "test.jpg").write_text("dummy version 3.7\n")
+    (tmp_path / "test.py").write_text("python_requires = '>=3.7'\n")
+    
+    rules = [
+        {"name": "python_requires_check", "pattern": "python_requires\\s*=\\s*['\"]>=3\\.7['\"]"},
+        {"name": "explicit_version_string", "pattern": "3\\.7"}
+    ]
+    
+    from version_scanner import scan_repository
+    # Without ignore
+    results = scan_repository(str(tmp_path), rules)
+    assert len(results) >= 2
+    
+    # With wildcard ignore for *.jpg
+    results_ignored = scan_repository(str(tmp_path), rules, ignore_dirs=["*.jpg"])
+    # test.jpg should be ignored completely
+    for match in results_ignored:
+        assert not match["file_path"].endswith("test.jpg")
+
+
+DEFAULT_IGNORE_PATTERNS = [".git", "*.jpg", "packages/pkg_a/.nox", "*.egg-info"]
+
+@pytest.mark.parametrize(
+    "rel_path, name, ignore_patterns, expected",
+    [
+        pytest.param(".git", ".git", DEFAULT_IGNORE_PATTERNS, True, id="exact_match"),
+        pytest.param(".GIT", ".GIT", DEFAULT_IGNORE_PATTERNS, True, id="case_insensitive_match"),
+        pytest.param("some/path/image.jpg", "image.jpg", DEFAULT_IGNORE_PATTERNS, True, id="wildcard_subpath_match"),
+        pytest.param("image.JPG", "image.JPG", DEFAULT_IGNORE_PATTERNS, True, id="wildcard_case_insensitive_match"),
+        pytest.param("packages/pkg_a/.nox", ".nox", DEFAULT_IGNORE_PATTERNS, True, id="subpath_exact_match"),
+        pytest.param("google_cloud_pubsub.egg-info", "google_cloud_pubsub.egg-info", DEFAULT_IGNORE_PATTERNS, True, id="wildcard_directory_match"),
+        pytest.param("setup.py", "setup.py", DEFAULT_IGNORE_PATTERNS, False, id="no_match"),
+        pytest.param("packages", "packages", ["/packages"], True, id="anchored_root_match"),
+        pytest.param("some/other/packages", "packages", ["/packages"], False, id="anchored_root_nested_no_match"),
+    ]
+)
+def test__should_ignore(rel_path, name, ignore_patterns, expected):
+    from version_scanner import _should_ignore, _preprocess_ignore_patterns
+    preprocessed = _preprocess_ignore_patterns(ignore_patterns)
+    assert _should_ignore(rel_path, name, preprocessed) is expected
+
+
 def test_load_ignore_file(tmp_path):
     from version_scanner import load_ignore_file
     

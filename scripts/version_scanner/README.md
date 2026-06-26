@@ -45,12 +45,32 @@ pip install -r scripts/version_scanner/requirements.txt
 
 The scanner uses a YAML configuration file (`regex_pattern_config.yaml`) to define rules and regex patterns.
 
-## Ignoring Directories
+## Matrix File Format
 
-You can create a `.scannerignore` file in the directory you are scanning (usually the repo root) to list directories to skip, one per line.
+When using `--matrix-file`, you must provide a YAML file specifying dependencies and versions.
 
-## Known Issues & Future Investigations
-- **Binary Ignores in `.scannerignore`**: Recursive wildcard ignores (e.g., `*.jpg`) currently do not effectively ignore deeply nested binary files. The scanner logic should be investigated to support robust globbing or full-path suffix matching.
+### Example
+```yaml
+python:
+  - "3.10"
+  - "3.11"
+protobuf: "4.25.8"
+```
+
+> [!IMPORTANT]
+> **Versions must be specified as quoted strings** (e.g., `"3.10"`, not `3.10`). This prevents YAML parsers from converting them to floats (which would truncate `3.10` to `3.1`).
+
+## Ignoring Directories and Files
+
+In order to ignore files OR entire directories, you can add ignore patterns to the `.scannerignore` file located in the same directory as the script (`scripts/version_scanner/.scannerignore`). Ignore patterns should be added one per line.
+
+### Features
+- **Case-insensitive**: All patterns are matched case-insensitively.
+- **Globbing**: Supports standard shell globbing patterns (e.g., `*.jpg`, `test_*`).
+- **Subpaths**: You can specify subpaths (e.g., `packages/pkg_a/.nox`).
+- **Root Anchoring**: Patterns starting with a slash `/` are anchored to the root of the scan (e.g., `/packages` ignores the `packages` directory at root, but not `some/other/packages`).
+
+---
 
 ---
 
