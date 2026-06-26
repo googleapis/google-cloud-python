@@ -191,6 +191,7 @@ def topological_sort(blocks: dict[int, BasicBlock]) -> list[int]:
             if in_degree[succ] == 0:
                 queue.append(succ)
 
+    # TODO(b/521549179): Support limited loop analysis (eg unroll loops over a constant range).
     if len(order) != len(blocks):
         raise ValueError(
             "Loops are not supported in the Python function for transpilation."
