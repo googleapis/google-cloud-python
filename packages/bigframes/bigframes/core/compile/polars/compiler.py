@@ -766,7 +766,9 @@ if polars_installed:
             for left_ex, right_ex in node.conditions:
                 from bigframes.core.compile import lowering
 
-                left_ex, right_ex = lowering._coerce_comparables(left_ex, right_ex)
+                left_ex, right_ex = lowering._coerce_comparables(
+                    left_ex, right_ex, dialect="polars"
+                )
                 left_on.append(self.expr_compiler.compile_expression(left_ex))
                 right_on.append(self.expr_compiler.compile_expression(right_ex))
 
@@ -787,7 +789,9 @@ if polars_installed:
             right_col = ex.ResolvedDerefOp.from_field(node.right_child.fields[0])
             from bigframes.core.compile import lowering
 
-            left_ex, right_ex = lowering._coerce_comparables(node.left_col, right_col)
+            left_ex, right_ex = lowering._coerce_comparables(
+                node.left_col, right_col, dialect="polars"
+            )
 
             left_pl_ex = self.expr_compiler.compile_expression(left_ex)
             right_pl_ex = self.expr_compiler.compile_expression(right_ex)

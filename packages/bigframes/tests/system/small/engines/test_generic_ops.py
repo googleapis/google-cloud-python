@@ -183,7 +183,11 @@ def test_engines_astype_string(scalars_array_value: array_value.ArrayValue, engi
     # Acero's Substrait consumer lacks support for string functions like replace/replace_substring
     # and precision_time, so we cannot format time_col and timestamp_col inside the Substrait plan.
     from bigframes.session.substrait_executor import SubstraitExecutor
-    if isinstance(engine, SubstraitExecutor) and not engine._compiler._use_precision_types:
+
+    if (
+        isinstance(engine, SubstraitExecutor)
+        and not engine._compiler._use_precision_types
+    ):
         excluded_cols.extend(["time_col", "timestamp_col"])
 
     arr = apply_op(

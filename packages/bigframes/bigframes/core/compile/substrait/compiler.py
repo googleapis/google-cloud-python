@@ -29,8 +29,8 @@ import bigframes.operations.bool_ops as bool_ops
 import bigframes.operations.comparison_ops as comparison_ops
 import bigframes.operations.generic_ops as generic_ops
 import bigframes.operations.numeric_ops as numeric_ops
-import bigframes.operations.struct_ops as struct_ops
 import bigframes.operations.string_ops as string_ops
+import bigframes.operations.struct_ops as struct_ops
 from bigframes.core import agg_expressions, bigframe_node, nodes, rewrite
 from bigframes.core.compile import lowering
 
@@ -44,7 +44,9 @@ class SubstraitCompiler:
         self,
         duration_type: Literal["interval_day", "int"],
         use_precision_types: bool = True,
-        dialect: Literal["substrait-datafusion", "substrait-acero"] = "substrait-datafusion",
+        dialect: Literal[
+            "substrait-datafusion", "substrait-acero"
+        ] = "substrait-datafusion",
     ):
         self._duration_type = duration_type
         self._use_precision_types = use_precision_types
@@ -911,18 +913,20 @@ class SubstraitCompiler:
         replacement: str,
     ) -> algebra_pb2.Expression:
         pb_expr = algebra_pb2.Expression()
-        pb_expr.scalar_function.function_reference = 76  # "replace" or "replace_substring"
-        
+        pb_expr.scalar_function.function_reference = (
+            76  # "replace" or "replace_substring"
+        )
+
         pb_expr.scalar_function.arguments.add().value.CopyFrom(str_expr)
-        
+
         search_expr = algebra_pb2.Expression()
         search_expr.literal.string = search
         pb_expr.scalar_function.arguments.add().value.CopyFrom(search_expr)
-        
+
         replace_expr = algebra_pb2.Expression()
         replace_expr.literal.string = replacement
         pb_expr.scalar_function.arguments.add().value.CopyFrom(replace_expr)
-        
+
         return pb_expr
 
     @_compile_op.register(struct_ops.StructOp)
