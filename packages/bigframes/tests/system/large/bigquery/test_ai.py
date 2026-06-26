@@ -33,7 +33,7 @@ def text_model(bq_connection, dataset_id):
     model_name = f"{dataset_id}.text_model"
     return ml.create_model(
         model_name=model_name,
-        options={"endpoint": "gemini-2.5-flash"},
+        options={"endpoint": "gemini-3.5-flash"},
         connection_name=bq_connection,
     )
 

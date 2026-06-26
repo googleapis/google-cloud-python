@@ -15,9 +15,10 @@
 import operator
 import os
 import time
+import uuid
 
 from google.api_core import exceptions
-from test_utils import retry, system
+from test_utils import retry
 
 from google.cloud.spanner_v1 import instance as instance_mod
 from tests import _fixtures
@@ -159,7 +160,9 @@ def cleanup_old_instances(spanner_client):
 
 
 def unique_id(prefix, separator="-"):
-    return f"{prefix}{system.unique_resource_id(separator)}"
+    # Database name size: Spanner database names are limited to 30 characters.
+    # See: https://docs.cloud.google.com/spanner/docs/reference/rpc/google.spanner.admin.database.v1#createdatabaserequest
+    return f"{prefix}{separator}{uuid.uuid4().hex[:13]}"
 
 
 class FauxCall:

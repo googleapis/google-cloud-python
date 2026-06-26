@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-bigtable/#history
 
+## [2.40.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigtable-v2.39.0...google-cloud-bigtable-v2.40.0) (2026-06-25)
+
+
+### Features
+
+* regenerate google-cloud-bigtable ([#17575](https://github.com/googleapis/google-cloud-python/issues/17575)) ([bd782cf](https://github.com/googleapis/google-cloud-python/commit/bd782cf279ae700f56d40702d4ef25ef89e2ff9b))
+
+
+### Bug Fixes
+
+* **bigtable:** populate Value type in _format_execute_query_view_params ([#17547](https://github.com/googleapis/google-cloud-python/issues/17547)) ([8cb77d9](https://github.com/googleapis/google-cloud-python/commit/8cb77d99103ba94d6e4ff488ddcdbccd37b2770c))
+
 ## [2.39.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigtable-v2.38.0...google-cloud-bigtable-v2.39.0) (2026-06-22)
 
 
