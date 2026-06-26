@@ -55,7 +55,7 @@ def _create_mock_obj_ref_df(session, uris, name="image", connection=None):
     return session.read_gbq(table_id)
 
 
-def test_ai_function_pandas_input(session):
+def test_ai_function_pandas_tuple_input(session):
     s1 = pd.Series(["apple", "bear"])
     s2 = bpd.Series(["fruit", "tree"], session=session)
     prompt = (s1, " is a ", s2)
@@ -72,6 +72,17 @@ def test_ai_function_pandas_input(session):
             )
         )
     )
+
+
+def test_ai_function_pandas_series_input(session):
+    s = pd.Series(["cat", "lavender"])
+
+    result = bbq.ai.classify(
+        s, categories=["animal", "plant"], endpoint="gemini-2.5-flash"
+    )
+
+    assert len(result) == len(s)
+    assert result.dtype == dtypes.STRING_DTYPE
 
 
 def test_ai_function_string_input(session):

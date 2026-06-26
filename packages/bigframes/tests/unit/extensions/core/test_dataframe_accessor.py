@@ -335,3 +335,191 @@ def test_bigframes_ai_generate_double(scalar_types_df: bpd.DataFrame, monkeypatc
     }
     result_series.to_pandas.assert_not_called()
     assert actual_result is result_series
+
+
+def test_ai_classify(monkeypatch):
+    mock_classify = mock.MagicMock()
+    result_series = mock.create_autospec(bpd.Series)
+    mock_classify.return_value = result_series
+    expected_result = mock.create_autospec(pd.Series)
+    result_series.to_pandas.return_value = expected_result
+
+    monkeypatch.setattr(bigframes.bigquery.ai, "classify", mock_classify)
+
+    input_prompt = mock.create_autospec(pd.Series)
+    df = pd.DataFrame({"text_input": ["Is this a positive review?"]})
+    actual_result = df.bigquery.ai.classify(
+        input_prompt,
+        categories=["Mammal", "Fish"],
+        examples=[("Cat", "Mammal")],
+        connection_id="conn",
+        endpoint="endpoint",
+        output_mode="single",
+        optimization_mode="minimize_cost",
+        max_error_ratio=0.1,
+    )
+
+    mock_classify.assert_called_once_with(
+        input_prompt,
+        ["Mammal", "Fish"],
+        examples=[("Cat", "Mammal")],
+        connection_id="conn",
+        endpoint="endpoint",
+        output_mode="single",
+        optimization_mode="minimize_cost",
+        max_error_ratio=0.1,
+    )
+    result_series.to_pandas.assert_called_once()
+    assert actual_result is expected_result
+
+
+def test_bigframes_ai_classify(scalar_types_df: bpd.DataFrame, monkeypatch):
+    bf_series = mock.create_autospec(bpd.Series)
+    result_series = mock.create_autospec(bpd.Series)
+
+    mock_classify = mock.MagicMock()
+    mock_classify.return_value = result_series
+
+    monkeypatch.setattr(bigframes.bigquery.ai, "classify", mock_classify)
+
+    actual_result = scalar_types_df.bigquery.ai.classify(
+        bf_series,
+        categories=["Mammal", "Fish"],
+        examples=[("Cat", "Mammal")],
+        connection_id="conn",
+        endpoint="endpoint",
+        output_mode="single",
+        optimization_mode="minimize_cost",
+        max_error_ratio=0.1,
+    )
+
+    mock_classify.assert_called_once()
+    args, kwargs = mock_classify.call_args
+    assert args[0] is bf_series
+    assert args[1] == ["Mammal", "Fish"]
+    assert kwargs == {
+        "examples": [("Cat", "Mammal")],
+        "connection_id": "conn",
+        "endpoint": "endpoint",
+        "output_mode": "single",
+        "optimization_mode": "minimize_cost",
+        "max_error_ratio": 0.1,
+    }
+    result_series.to_pandas.assert_not_called()
+    assert actual_result is result_series
+
+
+def test_ai_if(monkeypatch):
+    mock_if = mock.MagicMock()
+    result_series = mock.create_autospec(bpd.Series)
+    mock_if.return_value = result_series
+    expected_result = mock.create_autospec(pd.Series)
+    result_series.to_pandas.return_value = expected_result
+
+    monkeypatch.setattr(bigframes.bigquery.ai, "if_", mock_if)
+
+    prompt = mock.create_autospec(pd.Series)
+    df = pd.DataFrame({"text_input": ["Is this a positive review?"]})
+    actual_result = df.bigquery.ai.if_(
+        prompt,
+        connection_id="conn",
+        endpoint="endpoint",
+        optimization_mode="minimize_cost",
+        max_error_ratio=0.1,
+    )
+
+    mock_if.assert_called_once_with(
+        prompt,
+        connection_id="conn",
+        endpoint="endpoint",
+        optimization_mode="minimize_cost",
+        max_error_ratio=0.1,
+    )
+    result_series.to_pandas.assert_called_once()
+    assert actual_result is expected_result
+
+
+def test_bigframes_ai_if(scalar_types_df: bpd.DataFrame, monkeypatch):
+    bf_series = mock.create_autospec(bpd.Series)
+    result_series = mock.create_autospec(bpd.Series)
+
+    mock_if = mock.MagicMock()
+    mock_if.return_value = result_series
+
+    monkeypatch.setattr(bigframes.bigquery.ai, "if_", mock_if)
+
+    actual_result = scalar_types_df.bigquery.ai.if_(
+        bf_series,
+        connection_id="conn",
+        endpoint="endpoint",
+        optimization_mode="minimize_cost",
+        max_error_ratio=0.1,
+    )
+
+    mock_if.assert_called_once()
+    args, kwargs = mock_if.call_args
+    assert args[0] is bf_series
+    assert kwargs == {
+        "connection_id": "conn",
+        "endpoint": "endpoint",
+        "optimization_mode": "minimize_cost",
+        "max_error_ratio": 0.1,
+    }
+    result_series.to_pandas.assert_not_called()
+    assert actual_result is result_series
+
+
+def test_ai_score(monkeypatch):
+    mock_score = mock.MagicMock()
+    result_series = mock.create_autospec(bpd.Series)
+    mock_score.return_value = result_series
+    expected_result = mock.create_autospec(pd.Series)
+    result_series.to_pandas.return_value = expected_result
+
+    monkeypatch.setattr(bigframes.bigquery.ai, "score", mock_score)
+
+    prompt = mock.create_autospec(pd.Series)
+    df = pd.DataFrame({"text_input": ["Is this a positive review?"]})
+    actual_result = df.bigquery.ai.score(
+        prompt,
+        connection_id="conn",
+        endpoint="endpoint",
+        max_error_ratio=0.1,
+    )
+
+    mock_score.assert_called_once_with(
+        prompt,
+        connection_id="conn",
+        endpoint="endpoint",
+        max_error_ratio=0.1,
+    )
+    result_series.to_pandas.assert_called_once()
+    assert actual_result is expected_result
+
+
+def test_bigframes_ai_score(scalar_types_df: bpd.DataFrame, monkeypatch):
+    bf_series = mock.create_autospec(bpd.Series)
+    result_series = mock.create_autospec(bpd.Series)
+
+    mock_score = mock.MagicMock()
+    mock_score.return_value = result_series
+
+    monkeypatch.setattr(bigframes.bigquery.ai, "score", mock_score)
+
+    actual_result = scalar_types_df.bigquery.ai.score(
+        bf_series,
+        connection_id="conn",
+        endpoint="endpoint",
+        max_error_ratio=0.1,
+    )
+
+    mock_score.assert_called_once()
+    args, kwargs = mock_score.call_args
+    assert args[0] is bf_series
+    assert kwargs == {
+        "connection_id": "conn",
+        "endpoint": "endpoint",
+        "max_error_ratio": 0.1,
+    }
+    result_series.to_pandas.assert_not_called()
+    assert actual_result is result_series

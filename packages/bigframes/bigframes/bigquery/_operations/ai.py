@@ -1178,11 +1178,14 @@ def _separate_context_and_series(
     Input: ("str1", series1, "str2", "str3", series2)
     Output: ["str1", None, "str2", "str3", None], [series1, series2]
     """
-    if not isinstance(prompt, (str, list, tuple, series.Series)):
+    if not isinstance(prompt, (str, list, tuple, series.Series, pd.Series)):
         raise ValueError(f"Unsupported prompt type: {type(prompt)}")
 
     if isinstance(prompt, str):
         return [None], [series.Series([prompt])]
+
+    if isinstance(prompt, pd.Series):
+        return [None], [bpd.read_pandas(prompt)]
 
     if isinstance(prompt, series.Series):
         if prompt.dtype == dtypes.OBJ_REF_DTYPE:
