@@ -532,6 +532,12 @@ if polars_installed:
 
             if bigframes.dtypes.is_struct_like(from_type):
                 result = preprocessed.struct.json_encode()
+            elif from_type == bigframes.dtypes.INT_DTYPE:
+                result = preprocessed.cast(pl.String)
+            elif from_type == bigframes.dtypes.BOOL_DTYPE:
+                result = pl.when(preprocessed).then(pl.lit("true")).otherwise(pl.lit("false"))
+            elif from_type == bigframes.dtypes.BYTES_DTYPE:
+                result = pl.lit('"') + preprocessed + pl.lit('"')
             else:
                 wrapped = pl.struct(value=preprocessed).struct.json_encode()
                 result = wrapped.str.slice(9, wrapped.str.len_chars() - 10)
@@ -570,11 +576,11 @@ if polars_installed:
 
         @compile_op.register(struct_ops.StructOp)
         def _(self, op: struct_ops.StructOp, *inputs: pl.Expr) -> pl.Expr:
-            return pl.struct(**{col: inp for col, inp in zip(op.column_names, inputs)})
+            return pl.struct(**{col: inp for col, inp in zip(op.column_names, inputs)})  # type: ignore
 
         @compile_op.register(struct_ops.StructFieldOp)
         def _(self, op: struct_ops.StructFieldOp, *inputs: pl.Expr) -> pl.Expr:
-            return inputs[0][op.name_or_index]
+            return inputs[0].struct[op.name_or_index]
 
         @compile_op.register(remote_function_ops.PythonUdfOp)
         def _(self, op: ops.PythonUdfOp, *inputs: pl.Expr) -> pl.Expr:

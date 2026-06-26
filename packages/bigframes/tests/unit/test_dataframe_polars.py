@@ -1301,6 +1301,34 @@ def test_df_map_with_udf(session):
     assert_series_equal(bf_result, pd_result, check_dtype=False)
 
 
+def test_df_apply_complex_udf(session):
+    df = bpd.DataFrame(
+        {"x": [1, 2, 3], "y": ["a", "b", "c"]},
+        index=["row0", "row1", "row2"],
+    )
+
+    @session.udf()
+    def foo(row: pd.Series) -> str:
+        idx = str(row.name)
+        items_str = ";".join(f"{k}={v}" for k, v in row.items())
+        return f"({idx}) -> {items_str}"
+
+    bf_result = df.apply(foo, axis=1).to_pandas()
+
+    pd_df = pd.DataFrame(
+        {"x": [1, 2, 3], "y": ["a", "b", "c"]},
+        index=["row0", "row1", "row2"],
+    )
+    def pd_foo(row):
+        idx = str(row.name)
+        items_str = ";".join(f"{k}={v}" for k, v in row.items())
+        return f"({idx}) -> {items_str}"
+
+    pd_result = pd_df.apply(pd_foo, axis=1)
+
+    assert_series_equal(bf_result, pd_result, check_dtype=False, check_index_type=False)
+
+
 def test_df_pipe(
     scalars_df_index,
     scalars_pandas_df_index,
