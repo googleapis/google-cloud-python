@@ -450,11 +450,9 @@ def decrypt_private_key(key, passphrase):
 
 
 def _check_use_client_cert_env():
-    use_client_cert = getenv(environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE)
-    if use_client_cert is None or use_client_cert == "":
-        use_client_cert = getenv(
-            environment_vars.CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE
-        )
+    use_client_cert = getenv(
+        environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE
+    ) or getenv(environment_vars.CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE)
 
     if use_client_cert:
         return use_client_cert.lower() == "true"
@@ -482,28 +480,33 @@ def check_use_client_cert():
     # Auto-enablement checks (when GOOGLE_API_USE_CLIENT_CERTIFICATE is not set)
 
     # Check if the value of GOOGLE_API_CERTIFICATE_CONFIG is set.
-    cert_path = getenv(environment_vars.GOOGLE_API_CERTIFICATE_CONFIG)
-    if cert_path is None:
-        cert_path = getenv(
-            environment_vars.CLOUDSDK_CONTEXT_AWARE_CERTIFICATE_CONFIG_FILE_PATH
-        )
+    cert_path = getenv(environment_vars.GOOGLE_API_CERTIFICATE_CONFIG) or getenv(
+        environment_vars.CLOUDSDK_CONTEXT_AWARE_CERTIFICATE_CONFIG_FILE_PATH
+    )
 
     if cert_path:
         try:
             with open(cert_path, "r") as f:
                 content = json.load(f)
-                # verify json has workload key
-                content["cert_configs"]["workload"]
-                return True
-        except (
-            FileNotFoundError,
-            OSError,
-            KeyError,
-            TypeError,
-            json.JSONDecodeError,
-        ) as e:
-            _LOGGER.debug("error decoding certificate: %s", e)
+        except (FileNotFoundError, OSError, json.JSONDecodeError) as e:
+            _LOGGER.debug(
+                "mTLS auto-enablement failed: Could not read/parse certificate file at %s. Error: %s",
+                cert_path,
+                e,
+            )
+            return False
 
+        # Structural validation
+        if isinstance(content, dict):
+            cert_configs = content.get("cert_configs")
+            if isinstance(cert_configs, dict) and "workload" in cert_configs:
+                return True
+
+        # If we got here, the file exists but the expected structure is missing
+        _LOGGER.debug(
+            "mTLS auto-enablement failed: Certificate configuration file at %s is missing the required ['cert_configs']['workload'] section.",
+            cert_path,
+        )
     return False
 
 

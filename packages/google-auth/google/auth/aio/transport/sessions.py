@@ -15,9 +15,9 @@
 import asyncio
 from contextlib import asynccontextmanager
 import functools
-import logging
 import time
 from typing import Mapping, Optional, TYPE_CHECKING, Union
+import warnings
 
 from google.auth import _exponential_backoff, exceptions
 from google.auth.aio import transport
@@ -25,7 +25,6 @@ from google.auth.aio.credentials import Credentials
 from google.auth.aio.transport import mtls
 from google.auth.exceptions import TimeoutError
 import google.auth.transport._mtls_helper
-
 
 if TYPE_CHECKING:  # pragma: NO COVER
     import aiohttp
@@ -37,9 +36,6 @@ else:
         from aiohttp import ClientTimeout
     except (ImportError, AttributeError):
         ClientTimeout = None
-
-
-_LOGGER = logging.getLogger(__name__)
 
 
 # Tracks the internal aiohttp installation and usage
@@ -215,12 +211,13 @@ class AsyncAuthorizedSession:
                             await old_auth_request.close()
                         else:
                             self._is_mtls = False
-                            _LOGGER.warning(
+                            warnings.warn(
                                 "Attempted to establish mTLS, but a custom async transport was provided. "
                                 "google-auth cannot automatically configure custom transports for mTLS. "
                                 "Falling back to standard TLS. If your custom transport is not manually "
                                 "configured for mTLS, you may encounter 401 Unauthorized errors when "
-                                "using Certificate-Bound Tokens."
+                                "using Certificate-Bound Tokens.",
+                                UserWarning,
                             )
 
                 except (

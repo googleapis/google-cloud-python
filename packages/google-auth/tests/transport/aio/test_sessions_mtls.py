@@ -139,7 +139,7 @@ class TestSessionsMtls:
     @pytest.mark.asyncio
     async def test_configure_mtls_channel_custom_request(self):
         """
-        Tests that if _auth_request is not an AiohttpRequest, a MutualTLSChannelError is raised.
+        Tests that if _auth_request is not an AiohttpRequest, it gracefully falls back to tLS.
         """
         with mock.patch.dict(
             os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}

@@ -48,6 +48,17 @@ NON_AGENT_IDENTITY_CERT_BYTES = (
 
 
 class TestAgentIdentityUtils:
+    @pytest.fixture(autouse=True)
+    def clean_env(self, monkeypatch):
+        monkeypatch.delenv(
+            environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE,
+            raising=False,
+        )
+        monkeypatch.delenv(
+            environment_vars.CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE,
+            raising=False,
+        )
+
     @mock.patch("cryptography.x509.load_pem_x509_certificate")
     def test_parse_certificate(self, mock_load_cert):
         result = _agent_identity_utils.parse_certificate(b"cert_bytes")
@@ -173,14 +184,8 @@ class TestAgentIdentityUtils:
         assert not _agent_identity_utils.should_request_bound_token(mock.sentinel.cert)
 
     @mock.patch("google.auth._agent_identity_utils._is_agent_identity_certificate")
-    def test_should_request_bound_token_auto_enablement(
-        self, mock_is_agent, monkeypatch
-    ):
+    def test_should_request_bound_token_auto_enablement(self, mock_is_agent):
         mock_is_agent.return_value = True
-        monkeypatch.delenv(
-            environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE,
-            raising=False,
-        )
         assert _agent_identity_utils.should_request_bound_token(mock.sentinel.cert)
 
     def test_get_agent_identity_certificate_path_success(self, tmpdir, monkeypatch):
