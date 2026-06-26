@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-language/#history
 
+## [2.21.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-language-v2.20.0...google-cloud-language-v2.21.0) (2026-06-22)
+
+
+### Features
+
+* regenerate google-cloud-[k-n] packages ([#17074](https://github.com/googleapis/google-cloud-python/issues/17074)) ([ec54f78](https://github.com/googleapis/google-cloud-python/commit/ec54f78e37bb3b48e0794d544784b99fa13d6f85))
+
 ## [2.20.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-language-v2.19.0...google-cloud-language-v2.20.0) (2026-03-26)
 
 

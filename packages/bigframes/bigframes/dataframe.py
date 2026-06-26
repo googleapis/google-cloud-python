@@ -442,17 +442,41 @@ class DataFrame:
         if errors not in ["raise", "null"]:
             raise ValueError("Arg 'error' must be one of 'raise' or 'null'")
 
+        if isinstance(dtype, dict):
+            for col in dtype:
+                if col not in self.columns:
+                    raise KeyError(
+                        f"Only Column Names are allowed in dtypes dict. '{col}' is not in the columns."
+                    )
+
         safe_cast = errors == "null"
 
-        if isinstance(dtype, dict):
-            result = self.copy()
-            for col, to_type in dtype.items():
-                result[col] = result[col].astype(to_type)
-            return result
+        exprs: list[ex.Expression] = []
+        for col_id, col_label in zip(
+            self._block.value_columns, self._block.column_labels
+        ):
+            from_type = self._block._column_type(col_id)
 
-        dtype = bigframes.dtypes.bigframes_type(dtype)
+            if isinstance(dtype, dict):
+                if col_label not in dtype:
+                    exprs.append(ex.deref(col_id))
+                    continue
+                to_type = bigframes.dtypes.bigframes_type(dtype[col_label])
+            else:
+                to_type = bigframes.dtypes.bigframes_type(dtype)
 
-        return self._apply_unary_op(ops.AsTypeOp(dtype, safe_cast))
+            op: ops.UnaryOp
+            if to_type == bigframes.dtypes.JSON_DTYPE:
+                op = ops.ToJSON(safe=safe_cast)
+            elif from_type == bigframes.dtypes.JSON_DTYPE:
+                op = ops.JSONDecode(to_type=to_type, safe=safe_cast)
+            else:
+                op = ops.AsTypeOp(to_type=to_type, safe=safe_cast)
+
+            exprs.append(op.as_expr(ex.deref(col_id)))
+
+        block = self._block.project_exprs(exprs, labels=self.columns, drop=True)
+        return DataFrame(block)
 
     def _should_sql_have_index(self) -> bool:
         """Should the SQL we pass to BQML and other I/O include the index?"""
@@ -4692,13 +4716,17 @@ class DataFrame:
         return array_value, id_overrides
 
     def map(self, func, na_action: Optional[str] = None) -> DataFrame:
-        if not isinstance(func, bigframes.functions.Udf):
+        from bigframes._config import options
+
+        if not isinstance(func, bigframes.functions.Udf) and not (
+            options.experiments.enable_python_transpiler and callable(func)
+        ):
             raise TypeError("the first argument must be callable")
 
         if na_action not in {None, "ignore"}:
             raise ValueError(f"na_action={na_action} not supported")
 
-        expr = ops.func_to_op(func).as_expr(ex.free_var("input"))
+        expr = ops.func_to_expr(func).apply(ex.free_var("input"))
         if na_action == "ignore":
             # True case, predicate, False case
             expr = ops.where_op.as_expr(
@@ -4718,10 +4746,24 @@ class DataFrame:
             )
             warnings.warn(msg, category=bfe.FunctionAxisOnePreviewWarning)
 
-            if not isinstance(func, bigframes.functions.Udf):
+            from bigframes._config import options
+
+            if not isinstance(func, bigframes.functions.Udf) and not (
+                options.experiments.enable_python_transpiler and callable(func)
+            ):
                 raise ValueError(
                     "For axis=1 a BigFrames BigQuery function must be used."
                 )
+
+            if (
+                not isinstance(func, bigframes.functions.Udf)
+                and options.experiments.enable_python_transpiler
+                and callable(func)
+            ):
+                result_block = block_ops.apply_to_block_rows(
+                    func, self._block, *args, **kwargs
+                )
+                return bigframes.series.Series(result_block)
 
             if func.udf_def.signature.is_row_processor:
                 # Early check whether the dataframe dtypes are currently supported
@@ -4776,8 +4818,14 @@ class DataFrame:
                 )
 
                 # Apply the function
+                expr = ops.func_to_expr(func).expr
+                if not (
+                    isinstance(expr, ex.OpExpression)
+                    and isinstance(expr.op, ops.NaryOp)
+                ):
+                    raise TypeError(f"Expected OpExpression with NaryOp, got {expr}")
                 result_series = rows_as_json_series._apply_nary_op(
-                    ops.func_to_op(func),
+                    expr.op,
                     list(args),
                 )
 
@@ -4837,8 +4885,8 @@ class DataFrame:
 
                 series_list = [self[col] for col in self.columns]
                 op_list = series_list[1:] + list(args)
-                result_series = series_list[0]._apply_nary_op(
-                    ops.func_to_op(func), op_list
+                result_series = series_list[0]._apply_callable_expr(
+                    ops.func_to_expr(func), op_list
                 )
             result_series.name = None
 

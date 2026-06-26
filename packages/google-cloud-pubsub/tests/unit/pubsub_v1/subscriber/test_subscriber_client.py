@@ -11,8 +11,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-import sys
 from unittest import mock
 
 import grpc
@@ -345,17 +343,9 @@ def test_opentelemetry_subscriber_setting(creds, enable_open_telemetry):
     options = types.SubscriberOptions(
         enable_open_telemetry_tracing=enable_open_telemetry,
     )
-    if sys.version_info >= (3, 8) or enable_open_telemetry is False:
-        client = subscriber.Client(credentials=creds, subscriber_options=options)
-        assert client.subscriber_options == options
-        assert client._open_telemetry_enabled == enable_open_telemetry
-    else:
-        with pytest.warns(
-            RuntimeWarning,
-            match="Open Telemetry for Python version 3.7 or lower is not supported. Disabling Open Telemetry tracing.",
-        ):
-            client = subscriber.Client(credentials=creds, subscriber_options=options)
-            assert client._open_telemetry_enabled is False
+    client = subscriber.Client(credentials=creds, subscriber_options=options)
+    assert client.subscriber_options == options
+    assert client._open_telemetry_enabled == enable_open_telemetry
 
 
 def test_opentelemetry_propagator_get():

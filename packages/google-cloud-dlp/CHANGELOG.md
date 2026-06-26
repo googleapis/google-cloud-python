@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-dlp/#history
 
+## [3.38.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dlp-v3.37.0...google-cloud-dlp-v3.38.0) (2026-06-22)
+
+
+### Features
+
+* update googleapis and regenerate ([33ba3af](https://github.com/googleapis/google-cloud-python/commit/33ba3afe520e2f64ac7464f1b4ee31c0624a65ac))
+
 ## [3.37.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dlp-v3.36.0...google-cloud-dlp-v3.37.0) (2026-06-02)
 
 

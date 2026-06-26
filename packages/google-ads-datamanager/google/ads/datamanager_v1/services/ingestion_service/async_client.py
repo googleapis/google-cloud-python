@@ -328,6 +328,7 @@ class IngestionServiceAsyncClient:
                 # Initialize request argument(s)
                 destinations = datamanager_v1.Destination()
                 destinations.operating_account.account_id = "account_id_value"
+                destinations.operating_account.account_type = "FLOODLIGHT_CONFIG"
                 destinations.product_destination_id = "product_destination_id_value"
 
                 audience_members = datamanager_v1.AudienceMember()
@@ -422,6 +423,7 @@ class IngestionServiceAsyncClient:
                 # Initialize request argument(s)
                 destinations = datamanager_v1.Destination()
                 destinations.operating_account.account_id = "account_id_value"
+                destinations.operating_account.account_type = "FLOODLIGHT_CONFIG"
                 destinations.product_destination_id = "product_destination_id_value"
 
                 audience_members = datamanager_v1.AudienceMember()
@@ -513,6 +515,7 @@ class IngestionServiceAsyncClient:
                 # Initialize request argument(s)
                 destinations = datamanager_v1.Destination()
                 destinations.operating_account.account_id = "account_id_value"
+                destinations.operating_account.account_type = "FLOODLIGHT_CONFIG"
                 destinations.product_destination_id = "product_destination_id_value"
 
                 request = datamanager_v1.IngestEventsRequest(
@@ -554,6 +557,105 @@ class IngestionServiceAsyncClient:
         # and friendly error handling.
         rpc = self._client._transport._wrapped_methods[
             self._client._transport.ingest_events
+        ]
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def ingest_ad_events(
+        self,
+        request: Optional[Union[ingestion_service.IngestAdEventsRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> ingestion_service.IngestAdEventsResponse:
+        r"""Uploads a list of [AdEvent][google.ads.datamanager.v1.AdEvent]
+        resources to Google Analytics.
+
+        This feature is only available to accounts on an allowlist.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.ads import datamanager_v1
+
+            async def sample_ingest_ad_events():
+                # Create a client
+                client = datamanager_v1.IngestionServiceAsyncClient()
+
+                # Initialize request argument(s)
+                ad_events = datamanager_v1.AdEvent()
+                ad_events.event_subtype = "EVENT_SUBTYPE_OUTBOUND_CLICK"
+                ad_events.ad_type = "AD_TYPE_VIDEO"
+                ad_events.ad_format = "AD_FORMAT_VIDEO"
+                ad_events.ad_placement = "AD_PLACEMENT_STORY"
+                ad_events.targeting_type = "TARGETING_TYPE_REMARKETING"
+                ad_events.platform_type = "PLATFORM_TYPE_TABLET"
+                ad_events.platform = "PLATFORM_WEB"
+                ad_events.advertiser_id = "advertiser_id_value"
+                ad_events.event_type = "EVENT_TYPE_CLICK"
+                ad_events.campaign_id = "campaign_id_value"
+                ad_events.campaign_name = "campaign_name_value"
+                ad_events.region_code = "region_code_value"
+                ad_events.source = "source_value"
+                ad_events.medium = "medium_value"
+                ad_events.viewability_info.view_type = "VIEW_TYPE_MRC_RENDERED"
+
+                request = datamanager_v1.IngestAdEventsRequest(
+                    ad_events=ad_events,
+                )
+
+                # Make the request
+                response = await client.ingest_ad_events(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.ads.datamanager_v1.types.IngestAdEventsRequest, dict]]):
+                The request object. Request to upload ad events.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.ads.datamanager_v1.types.IngestAdEventsResponse:
+                Response from an ad event ingestion
+                operation.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, ingestion_service.IngestAdEventsRequest):
+            request = ingestion_service.IngestAdEventsRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.ingest_ad_events
         ]
 
         # Validate the universe domain.

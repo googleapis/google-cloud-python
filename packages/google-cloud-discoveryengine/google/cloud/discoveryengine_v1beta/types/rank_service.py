@@ -51,7 +51,10 @@ class RankingRecord(proto.Message):
             should be set otherwise an INVALID_ARGUMENT error is thrown.
         score (float):
             The score of this record based on the given
-            query and selected model.
+            query and selected model. The score will be
+            rounded to 4 decimal places. If the score is
+            close to 0, it will be rounded to 0.00001 to
+            avoid returning unset.
     """
 
     id: str = proto.Field(
@@ -86,7 +89,7 @@ class RankRequest(proto.Message):
             The identifier of the model to use. It is one of:
 
             - ``semantic-ranker-512@latest``: Semantic ranking model
-              with maxiumn input token size 512.
+              with maximum input token size 512.
 
             It is set to ``semantic-ranker-512@latest`` by default if
             unspecified.
@@ -97,8 +100,7 @@ class RankRequest(proto.Message):
         query (str):
             The query to use.
         records (MutableSequence[google.cloud.discoveryengine_v1beta.types.RankingRecord]):
-            Required. A list of records to rank. At most
-            200 records to rank.
+            Required. A list of records to rank.
         ignore_record_details_in_response (bool):
             If true, the response will contain only
             record ID and score. By default, it is false,

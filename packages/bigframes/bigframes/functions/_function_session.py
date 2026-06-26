@@ -592,7 +592,9 @@ class FunctionSession:
             if reuse is not None:
                 cf_endpoint = self._function_client.get_cloud_function_endpoint(cf_name)
 
-            if cf_endpoint is None:
+            # If the endpoint is empty, the function might exist but the URL propagation is pending.
+            # Running create_cloud_function will handle AlreadyExists and retry endpoint fetching.
+            if not cf_endpoint:
                 cf_endpoint = self._function_client.create_cloud_function(
                     cf_name, cloud_func_spec
                 )

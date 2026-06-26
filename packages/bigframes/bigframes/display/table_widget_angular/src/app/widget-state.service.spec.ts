@@ -52,6 +52,7 @@ describe('WidgetStateService', () => {
 
     TestBed.configureTestingModule({
       providers: [
+        WidgetStateService,
         { provide: 'ANYWIDGET_MODEL', useValue: mockModel }
       ]
     });

@@ -45,6 +45,7 @@ import google.protobuf.any_pb2 as any_pb2  # type: ignore
 import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import google.type.date_pb2 as date_pb2  # type: ignore
+import google.type.latlng_pb2 as latlng_pb2  # type: ignore
 from google.api_core import (
     client_options,
     future,
@@ -70,8 +71,10 @@ from google.cloud.discoveryengine_v1beta.services.user_event_service import (
 )
 from google.cloud.discoveryengine_v1beta.types import (
     common,
+    feedback,
     import_config,
     purge_config,
+    session,
     user_event,
     user_event_service,
 )
@@ -1358,7 +1361,12 @@ def test_user_event_service_client_create_channel_credentials_file(
             credentials=file_creds,
             credentials_file=None,
             quota_project_id=None,
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/discoveryengine.assist.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.serving.readwrite",
+            ),
             scopes=None,
             default_host="discoveryengine.googleapis.com",
             ssl_credentials=None,
@@ -1391,6 +1399,7 @@ def test_write_user_event(request_type, transport: str = "grpc"):
         # Designate an appropriate return value for the call.
         call.return_value = user_event.UserEvent(
             event_type="event_type_value",
+            conversion_type="conversion_type_value",
             user_pseudo_id="user_pseudo_id_value",
             engine="engine_value",
             data_store="data_store_value",
@@ -1400,6 +1409,7 @@ def test_write_user_event(request_type, transport: str = "grpc"):
             filter="filter_value",
             tag_ids=["tag_ids_value"],
             promotion_ids=["promotion_ids_value"],
+            entity="entity_value",
         )
         response = client.write_user_event(request)
 
@@ -1412,6 +1422,7 @@ def test_write_user_event(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, user_event.UserEvent)
     assert response.event_type == "event_type_value"
+    assert response.conversion_type == "conversion_type_value"
     assert response.user_pseudo_id == "user_pseudo_id_value"
     assert response.engine == "engine_value"
     assert response.data_store == "data_store_value"
@@ -1421,6 +1432,7 @@ def test_write_user_event(request_type, transport: str = "grpc"):
     assert response.filter == "filter_value"
     assert response.tag_ids == ["tag_ids_value"]
     assert response.promotion_ids == ["promotion_ids_value"]
+    assert response.entity == "entity_value"
 
 
 def test_write_user_event_non_empty_request_with_auto_populated_field():
@@ -1555,6 +1567,7 @@ async def test_write_user_event_async(request_type, transport: str = "grpc_async
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             user_event.UserEvent(
                 event_type="event_type_value",
+                conversion_type="conversion_type_value",
                 user_pseudo_id="user_pseudo_id_value",
                 engine="engine_value",
                 data_store="data_store_value",
@@ -1564,6 +1577,7 @@ async def test_write_user_event_async(request_type, transport: str = "grpc_async
                 filter="filter_value",
                 tag_ids=["tag_ids_value"],
                 promotion_ids=["promotion_ids_value"],
+                entity="entity_value",
             )
         )
         response = await client.write_user_event(request)
@@ -1577,6 +1591,7 @@ async def test_write_user_event_async(request_type, transport: str = "grpc_async
     # Establish that the response is the type that we expect.
     assert isinstance(response, user_event.UserEvent)
     assert response.event_type == "event_type_value"
+    assert response.conversion_type == "conversion_type_value"
     assert response.user_pseudo_id == "user_pseudo_id_value"
     assert response.engine == "engine_value"
     assert response.data_store == "data_store_value"
@@ -1586,6 +1601,7 @@ async def test_write_user_event_async(request_type, transport: str = "grpc_async
     assert response.filter == "filter_value"
     assert response.tag_ids == ["tag_ids_value"]
     assert response.promotion_ids == ["promotion_ids_value"]
+    assert response.entity == "entity_value"
 
 
 def test_write_user_event_field_headers():
@@ -3206,6 +3222,7 @@ async def test_write_user_event_empty_call_grpc_asyncio():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             user_event.UserEvent(
                 event_type="event_type_value",
+                conversion_type="conversion_type_value",
                 user_pseudo_id="user_pseudo_id_value",
                 engine="engine_value",
                 data_store="data_store_value",
@@ -3215,6 +3232,7 @@ async def test_write_user_event_empty_call_grpc_asyncio():
                 filter="filter_value",
                 tag_ids=["tag_ids_value"],
                 promotion_ids=["promotion_ids_value"],
+                entity="entity_value",
             )
         )
         await client.write_user_event(request=None)
@@ -3356,11 +3374,20 @@ def test_write_user_event_rest_call_success(request_type):
     request_init = {"parent": "projects/sample1/locations/sample2/dataStores/sample3"}
     request_init["user_event"] = {
         "event_type": "event_type_value",
+        "conversion_type": "conversion_type_value",
         "user_pseudo_id": "user_pseudo_id_value",
         "engine": "engine_value",
         "data_store": "data_store_value",
         "event_time": {"seconds": 751, "nanos": 543},
-        "user_info": {"user_id": "user_id_value", "user_agent": "user_agent_value"},
+        "user_info": {
+            "user_id": "user_id_value",
+            "user_agent": "user_agent_value",
+            "time_zone": "time_zone_value",
+            "precise_location": {
+                "point": {"latitude": 0.86, "longitude": 0.971},
+                "address": "address_value",
+            },
+        },
         "direct_user_request": True,
         "session_id": "session_id_value",
         "page_info": {
@@ -3379,6 +3406,7 @@ def test_write_user_event_rest_call_success(request_type):
                 "quantity": 895,
                 "promotion_ids": ["promotion_ids_value1", "promotion_ids_value2"],
                 "joined": True,
+                "conversion_value": 0.17300000000000001,
             }
         ],
         "panel": {
@@ -3413,6 +3441,23 @@ def test_write_user_event_rest_call_success(request_type):
             "media_progress_percentage": 0.2641,
         },
         "panels": {},
+        "feedback": {
+            "feedback_type": 1,
+            "reasons": [1],
+            "comment": "comment_value",
+            "conversation_info": {
+                "question_index": 1519,
+                "session": "session_value",
+                "query": {"text": "text_value", "query_id": "query_id_value"},
+                "assist_token": "assist_token_value",
+                "answer_query_token": "answer_query_token_value",
+            },
+            "llm_model_version": "llm_model_version_value",
+            "feedback_source": 1,
+            "component_version": "component_version_value",
+            "data_terms_accepted": True,
+        },
+        "entity": "entity_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -3488,6 +3533,7 @@ def test_write_user_event_rest_call_success(request_type):
         # Designate an appropriate value for the returned response.
         return_value = user_event.UserEvent(
             event_type="event_type_value",
+            conversion_type="conversion_type_value",
             user_pseudo_id="user_pseudo_id_value",
             engine="engine_value",
             data_store="data_store_value",
@@ -3497,6 +3543,7 @@ def test_write_user_event_rest_call_success(request_type):
             filter="filter_value",
             tag_ids=["tag_ids_value"],
             promotion_ids=["promotion_ids_value"],
+            entity="entity_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -3514,6 +3561,7 @@ def test_write_user_event_rest_call_success(request_type):
     # Establish that the response is the type that we expect.
     assert isinstance(response, user_event.UserEvent)
     assert response.event_type == "event_type_value"
+    assert response.conversion_type == "conversion_type_value"
     assert response.user_pseudo_id == "user_pseudo_id_value"
     assert response.engine == "engine_value"
     assert response.data_store == "data_store_value"
@@ -3523,6 +3571,7 @@ def test_write_user_event_rest_call_success(request_type):
     assert response.filter == "filter_value"
     assert response.tag_ids == ["tag_ids_value"]
     assert response.promotion_ids == ["promotion_ids_value"]
+    assert response.entity == "entity_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -4363,7 +4412,12 @@ def test_user_event_service_base_transport_with_credentials_file():
         load_creds.assert_called_once_with(
             "credentials.json",
             scopes=None,
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/discoveryengine.assist.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.serving.readwrite",
+            ),
             quota_project_id="octopus",
         )
 
@@ -4389,7 +4443,12 @@ def test_user_event_service_auth_adc():
         UserEventServiceClient()
         adc.assert_called_once_with(
             scopes=None,
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/discoveryengine.assist.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.serving.readwrite",
+            ),
             quota_project_id=None,
         )
 
@@ -4409,7 +4468,12 @@ def test_user_event_service_transport_auth_adc(transport_class):
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
         adc.assert_called_once_with(
             scopes=["1", "2"],
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/discoveryengine.assist.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.serving.readwrite",
+            ),
             quota_project_id="octopus",
         )
 
@@ -4462,7 +4526,12 @@ def test_user_event_service_transport_create_channel(transport_class, grpc_helpe
             credentials=creds,
             credentials_file=None,
             quota_project_id="octopus",
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/discoveryengine.assist.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.serving.readwrite",
+            ),
             scopes=["1", "2"],
             default_host="discoveryengine.googleapis.com",
             ssl_credentials=None,
