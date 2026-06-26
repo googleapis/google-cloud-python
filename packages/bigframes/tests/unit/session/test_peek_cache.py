@@ -19,7 +19,6 @@ from unittest import mock
 
 import google.cloud.bigquery
 import pyarrow as pa
-import pytest
 
 import bigframes
 from bigframes.core import identifiers, local_data, nodes
@@ -78,7 +77,7 @@ def test_substitute_peek_cached_subplans():
     cache.put(leaf, cached_ds)
 
     # Now perform the tree substitution
-    rewritten = substitute_peek_cached_subplans(leaf, cache)
+    rewritten = substitute_peek_cached_subplans(leaf, cache, min_rows_required=1)
 
     # The leaf should be replaced by a new ReadLocalNode containing cached_ds
     assert isinstance(rewritten, nodes.ReadLocalNode)
@@ -220,10 +219,14 @@ def test_substitute_peek_cached_subplans_incompatible_ancestors():
     # FilterNode is a compatible ancestor.
     plan_compatible = nodes.FilterNode(
         child=leaf,
-        predicate=bigframes.core.expression.ScalarConstantExpression(True),  # Dummy expression
+        predicate=bigframes.core.expression.ScalarConstantExpression(
+            True
+        ),  # Dummy expression
     )
 
-    rewritten_compatible = substitute_peek_cached_subplans(plan_compatible, cache)
+    rewritten_compatible = substitute_peek_cached_subplans(
+        plan_compatible, cache, min_rows_required=1
+    )
     # The leaf child of FilterNode should be replaced by ReadLocalNode with cached_ds
     assert isinstance(rewritten_compatible, nodes.FilterNode)
     assert isinstance(rewritten_compatible.child, nodes.ReadLocalNode)
@@ -233,8 +236,35 @@ def test_substitute_peek_cached_subplans_incompatible_ancestors():
     # ReversedNode is an incompatible ancestor.
     plan_incompatible = nodes.ReversedNode(child=leaf)
 
-    rewritten_incompatible = substitute_peek_cached_subplans(plan_incompatible, cache)
+    rewritten_incompatible = substitute_peek_cached_subplans(
+        plan_incompatible, cache, min_rows_required=1
+    )
     # The leaf child should NOT be replaced by ReadLocalNode
     assert isinstance(rewritten_incompatible, nodes.ReversedNode)
     assert rewritten_incompatible.child == leaf
     assert rewritten_incompatible.child.local_data_source == ds
+
+
+def test_substitute_peek_cached_subplans_insufficient_rows():
+    session = mocks.create_bigquery_session()
+    table = pa.Table.from_pydict({"a": [1, 2]})
+    ds = local_data.ManagedArrowTable.from_pyarrow(table)
+
+    # Leaf node (cached with a 2-row sample)
+    leaf = nodes.ReadLocalNode(
+        local_data_source=ds,
+        scan_list=nodes.ScanList((nodes.ScanItem(identifiers.ColumnId("col_a"), "a"),)),
+        session=session,
+    )
+
+    cache = PeekCache()
+    cache.put(leaf, ds)
+
+    # Request min_rows_required = 2 -> Should substitute
+    rewritten_ok = substitute_peek_cached_subplans(leaf, cache, min_rows_required=2)
+    assert isinstance(rewritten_ok, nodes.ReadLocalNode)
+    assert rewritten_ok.local_data_source == ds
+
+    # Request min_rows_required = 3 -> Should NOT substitute (insufficient rows)
+    rewritten_ng = substitute_peek_cached_subplans(leaf, cache, min_rows_required=3)
+    assert rewritten_ng == leaf

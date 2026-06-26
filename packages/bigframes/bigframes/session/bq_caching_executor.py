@@ -168,6 +168,7 @@ class BigQueryCachingExecutor(executor.Executor):
         )
         self._function_manager = function_manager
         from bigframes.session.peek_cache import PeekCache
+
         self._peek_cache = PeekCache()
 
     def to_sql(
@@ -220,7 +221,12 @@ class BigQueryCachingExecutor(executor.Executor):
 
         if execution_spec.peek is not None and enable_peek_cache:
             from bigframes.session.peek_cache import substitute_peek_cached_subplans
-            rewritten_node = substitute_peek_cached_subplans(array_value.node, self._peek_cache)
+
+            rewritten_node = substitute_peek_cached_subplans(
+                array_value.node,
+                self._peek_cache,
+                min_rows_required=execution_spec.peek,
+            )
             if rewritten_node != array_value.node:
                 rewritten_array_value = bigframes.core.ArrayValue(rewritten_node)
                 maybe_result = await self._try_execute_semi_executors(
@@ -235,7 +241,9 @@ class BigQueryCachingExecutor(executor.Executor):
                 else 10000
             )
             actual_sample_size = max(execution_spec.peek, sample_size)
-            cache_execution_spec = dataclasses.replace(execution_spec, peek=actual_sample_size)
+            cache_execution_spec = dataclasses.replace(
+                execution_spec, peek=actual_sample_size
+            )
 
             bq_result = await self._execute_bigquery(
                 array_value,
@@ -243,7 +251,9 @@ class BigQueryCachingExecutor(executor.Executor):
             )
 
             arrow_table = await asyncio.to_thread(bq_result.batches().to_arrow_table)
-            managed_table = local_data.ManagedArrowTable.from_pyarrow(arrow_table, bq_result.schema)
+            managed_table = local_data.ManagedArrowTable.from_pyarrow(
+                arrow_table, bq_result.schema
+            )
             self._peek_cache.put(array_value.node, managed_table)
 
             sliced_table = arrow_table.slice(0, execution_spec.peek)

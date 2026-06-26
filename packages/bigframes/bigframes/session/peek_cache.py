@@ -14,8 +14,8 @@
 
 from __future__ import annotations
 
-from collections import OrderedDict
 import threading
+from collections import OrderedDict
 from typing import Optional
 
 from bigframes.core import local_data, nodes
@@ -29,7 +29,9 @@ class PeekCache:
 
     def __init__(self, capacity: int = 100):
         self.capacity = capacity
-        self._cache: OrderedDict[nodes.BigFrameNode, local_data.ManagedArrowTable] = OrderedDict()
+        self._cache: OrderedDict[nodes.BigFrameNode, local_data.ManagedArrowTable] = (
+            OrderedDict()
+        )
         self._lock = threading.Lock()
 
     def get(self, key: nodes.BigFrameNode) -> Optional[local_data.ManagedArrowTable]:
@@ -56,11 +58,13 @@ class PeekCache:
 def substitute_peek_cached_subplans(
     root: nodes.BigFrameNode,
     peek_cache: PeekCache,
+    min_rows_required: int,
 ) -> nodes.BigFrameNode:
     """
     Recursively replaces subplans in the tree that have a cached local sample
     in the peek cache with a ReadLocalNode, provided that all ancestors
-    of the subplan are compatible with running on a sample.
+    of the subplan are compatible with running on a sample, and the cached
+    sample contains at least the required number of rows.
     """
     # Intermediate nodes that preserve the semantic validity of a sample.
     # WindowOpNode, AggregateNode, OrderByNode, JoinNode, etc. are excluded
@@ -72,13 +76,20 @@ def substitute_peek_cached_subplans(
         nodes.PromoteOffsetsNode,
     )
 
-    def traverse(node: nodes.BigFrameNode, ancestors_compatible: bool) -> nodes.BigFrameNode:
+    def traverse(
+        node: nodes.BigFrameNode, ancestors_compatible: bool
+    ) -> nodes.BigFrameNode:
         if ancestors_compatible:
             cached_sample = peek_cache.get(node)
-            if cached_sample is not None:
+            if (
+                cached_sample is not None
+                and cached_sample.data.num_rows >= min_rows_required
+            ):
                 # Replace the node with a ReadLocalNode containing the cached sample
                 scan_list = nodes.ScanList(
-                    tuple(nodes.ScanItem(field.id, field.id.sql) for field in node.fields)
+                    tuple(
+                        nodes.ScanItem(field.id, field.id.name) for field in node.fields
+                    )
                 )
                 session = node.session if node.session is not None else root.session
                 return nodes.ReadLocalNode(
@@ -91,6 +102,8 @@ def substitute_peek_cached_subplans(
         is_current_compatible = isinstance(node, _COMPATIBLE_ANCESTOR_CLASSES)
         next_ancestors_compatible = ancestors_compatible and is_current_compatible
 
-        return node.transform_children(lambda child: traverse(child, next_ancestors_compatible))
+        return node.transform_children(
+            lambda child: traverse(child, next_ancestors_compatible)
+        )
 
     return traverse(root, True)
