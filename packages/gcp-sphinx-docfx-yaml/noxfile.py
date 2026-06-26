@@ -17,7 +17,7 @@ import os
 import nox
 
 DEFAULT_PYTHON_VERSION = "3.14"
-UNIT_TEST_PYTHON_VERSIONS = ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
+UNIT_TEST_PYTHON_VERSIONS = ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13", "3.14", "3.15"]
 RUFF_VERSION = "ruff==0.14.14"
 
 ALL_PYTHON = list(UNIT_TEST_PYTHON_VERSIONS)
@@ -138,7 +138,7 @@ def unit(session):
     # Re-enable 3.8, 3.9, 3.11, 3.12, and 3.13 after environment verification.
     # TODO(https://github.com/googleapis/google-cloud-python/issues/16176):
     # Track 3.14 compatibility as upstream dependencies stabilize.
-    _skip_python_session(session, ["3.7", "3.8", "3.9", "3.11", "3.12", "3.13", "3.14"])
+    _skip_python_session(session, ["3.7", "3.8", "3.9", "3.11", "3.12", "3.13", "3.14", "3.15"])
     session.install("-r", "requirements.txt")
     session.install("pytest", "pytest-cov")
     session.run(
