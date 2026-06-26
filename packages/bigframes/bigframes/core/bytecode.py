@@ -63,6 +63,47 @@ _OLD_BINARY_OP_MAP = {
 _NULL = py_exprs.PyObject(None)
 
 
+_RETURN_OPNAMES = {"RETURN_VALUE", "RETURN_CONST"}
+
+_UNCONDITIONAL_JUMP_OPNAMES = {
+    "JUMP_FORWARD",
+    "JUMP_ABSOLUTE",
+    "JUMP_BACKWARD",
+    "JUMP_BACKWARD_NO_INTERRUPT",
+    "JUMP",
+    "JUMP_NO_INTERRUPT",
+}
+
+_JUMP_IF_FALSE_OPNAMES = {
+    "POP_JUMP_IF_FALSE",
+    "POP_JUMP_FORWARD_IF_FALSE",
+    "POP_JUMP_BACKWARD_IF_FALSE",
+}
+
+_JUMP_IF_TRUE_OPNAMES = {
+    "POP_JUMP_IF_TRUE",
+    "POP_JUMP_FORWARD_IF_TRUE",
+    "POP_JUMP_BACKWARD_IF_TRUE",
+}
+
+_CONDITIONAL_JUMP_OPNAMES = (
+    _JUMP_IF_FALSE_OPNAMES
+    | _JUMP_IF_TRUE_OPNAMES
+    | {
+        "JUMP_IF_FALSE_OR_POP",
+        "JUMP_IF_TRUE_OR_POP",
+        "POP_JUMP_IF_NONE",
+        "POP_JUMP_IF_NOT_NONE",
+        "POP_JUMP_FORWARD_IF_NONE",
+        "POP_JUMP_FORWARD_IF_NOT_NONE",
+        "POP_JUMP_BACKWARD_IF_NONE",
+        "POP_JUMP_BACKWARD_IF_NOT_NONE",
+    }
+)
+
+_ALL_JUMP_OPNAMES = _UNCONDITIONAL_JUMP_OPNAMES | _CONDITIONAL_JUMP_OPNAMES
+
+
 @dataclasses.dataclass
 class BasicBlock:
     start_offset: int
@@ -75,12 +116,12 @@ def get_block_starts(instructions: list[dis.Instruction]) -> set[int]:
     starts = {0}
     for i, inst in enumerate(instructions):
         opname = inst.opname
-        if "JUMP" in opname:
+        if opname in _ALL_JUMP_OPNAMES:
             if isinstance(inst.argval, int):
                 starts.add(inst.argval)
             if i + 1 < len(instructions):
                 starts.add(instructions[i + 1].offset)
-        elif opname in ("RETURN_VALUE", "RETURN_CONST"):
+        elif opname in _RETURN_OPNAMES:
             if i + 1 < len(instructions):
                 starts.add(instructions[i + 1].offset)
     return starts
@@ -95,18 +136,13 @@ def get_block_successors(block: BasicBlock, next_offsets: dict[int, int]) -> lis
 
     next_offset = next_offsets.get(offset)
 
-    if opname in ("RETURN_VALUE", "RETURN_CONST"):
+    if opname in _RETURN_OPNAMES:
         return []
 
-    if opname in (
-        "JUMP_FORWARD",
-        "JUMP_ABSOLUTE",
-        "JUMP_BACKWARD",
-        "JUMP_BACKWARD_NO_INTERRUPT",
-    ):
+    if opname in _UNCONDITIONAL_JUMP_OPNAMES:
         return [last_inst.argval]
 
-    if "JUMP" in opname and ("IF" in opname or "OR_POP" in opname):
+    if opname in _CONDITIONAL_JUMP_OPNAMES:
         successors = [last_inst.argval]
         if next_offset is not None:
             successors.append(next_offset)
@@ -565,8 +601,8 @@ def _compile_bytecode_to_py_expr(func: Callable) -> expression.Expression:
                     if stack:
                         stack.pop()
 
-                case name if "JUMP" in name:
-                    if opname in ("JUMP_FORWARD", "JUMP_ABSOLUTE", "JUMP_BACKWARD"):
+                case name if name in _ALL_JUMP_OPNAMES:
+                    if opname in _UNCONDITIONAL_JUMP_OPNAMES:
                         dest = inst.argval
                         edge_conditions[(offset, dest)] = reach_cond
                         edge_stacks[(offset, dest)] = stack.copy()
@@ -610,7 +646,10 @@ def _compile_bytecode_to_py_expr(func: Callable) -> expression.Expression:
                                     (reach_cond, not_cond_bool),
                                 )
                                 edge_stacks[(offset, next_offset)] = stack[:-1]
-                    elif "IF" in opname:
+                    elif (
+                        opname in _JUMP_IF_FALSE_OPNAMES
+                        or opname in _JUMP_IF_TRUE_OPNAMES
+                    ):
                         if not stack:
                             raise ValueError("Stack is empty")
                         cond_expr = stack.pop()
@@ -620,10 +659,9 @@ def _compile_bytecode_to_py_expr(func: Callable) -> expression.Expression:
                         )
 
                         dest = inst.argval
-
                         next_offset = next_offsets.get(inst.offset)
 
-                        if "IF_FALSE" in opname:
+                        if opname in _JUMP_IF_FALSE_OPNAMES:
                             not_cond_expr = py_exprs.Call(
                                 py_exprs.PyObject(operator.not_), (cond_expr,)
                             )
@@ -638,7 +676,7 @@ def _compile_bytecode_to_py_expr(func: Callable) -> expression.Expression:
                                     (reach_cond, cond_expr),
                                 )
                                 edge_stacks[(offset, next_offset)] = stack.copy()
-                        elif "IF_TRUE" in opname:
+                        else:  # opname in _JUMP_IF_TRUE_OPNAMES
                             not_cond_expr = py_exprs.Call(
                                 py_exprs.PyObject(operator.not_), (cond_expr,)
                             )
@@ -653,8 +691,6 @@ def _compile_bytecode_to_py_expr(func: Callable) -> expression.Expression:
                                     (reach_cond, not_cond_expr),
                                 )
                                 edge_stacks[(offset, next_offset)] = stack.copy()
-                        else:
-                            raise ValueError(f"Unsupported conditional jump: {opname}")
                     else:
                         raise ValueError(f"Unsupported jump opcode: {opname}")
                     jumped = True
