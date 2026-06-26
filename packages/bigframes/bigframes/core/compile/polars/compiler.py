@@ -504,6 +504,31 @@ if polars_installed:
             else:
                 return input.cast(pl.String())
 
+        @compile_op.register(json_ops.ToJSONString)
+        def _(self, op: json_ops.ToJSONString, input: pl.Expr) -> pl.Expr:
+            import json
+            import base64
+
+            def to_json_str(val):
+                if val is None:
+                    return None
+                
+                # Helper to recursively convert bytes to base64 strings
+                def convert(obj):
+                    if isinstance(obj, bytes):
+                        return base64.b64encode(obj).decode("utf-8")
+                    if isinstance(obj, dict):
+                        return {k: convert(v) for k, v in obj.items()}
+                    if isinstance(obj, list):
+                        return [convert(i) for i in obj]
+                    if isinstance(obj, tuple):
+                        return tuple(convert(i) for i in obj)
+                    return obj
+
+                return json.dumps(convert(val))
+
+            return input.map_elements(to_json_str, return_dtype=pl.String)
+
         @compile_op.register(arr_ops.ToArrayOp)
         def _(self, op: ops.ToArrayOp, *inputs: pl.Expr) -> pl.Expr:
             return pl.concat_list(*inputs)
@@ -550,7 +575,7 @@ if polars_installed:
                 def handler(py_struct):
                     code = op.function_def.code.to_callable()
                     args = list(py_struct.values())
-                    series_arg = function_template.get_pd_series(py_struct)
+                    series_arg = function_template.get_pd_series(args[0])
                     return code(series_arg, *args[1:])
             else:
                 def handler(py_struct):

@@ -112,7 +112,13 @@ class TestSession(bigframes.session.Session):
 
         return bf_df
 
-    def udf(self, input_types=None, output_type=None):
+    def udf(
+        self,
+        *,
+        input_types=None,
+        output_type=None,
+        **kwargs,
+    ):
         def wrapper(func):
             udf_sig = _utils.get_func_signature(
                 func,
