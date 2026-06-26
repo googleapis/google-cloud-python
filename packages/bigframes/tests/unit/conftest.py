@@ -178,6 +178,9 @@ def nested_structs_types_df(compiler_session_w_nested_structs_types) -> bpd.Data
 def nested_structs_pandas_df() -> pd.DataFrame:
     """Returns a pandas DataFrame containing STRUCT types and using the `id`
     column as the index."""
+    import json
+
+    import numpy as np
 
     df = pd.read_json(
         DATA_DIR / "nested_structs.jsonl",
@@ -196,6 +199,14 @@ def nested_structs_pandas_df() -> pd.DataFrame:
         ]
     )
     df["person"] = df["person"].astype(pd.ArrowDtype(person_struct_schema))
+
+    def to_json_str(val):
+        if val is None or (isinstance(val, float) and np.isnan(val)):
+            return None
+        return json.dumps(val)
+
+    df["json_col"] = df["json_col"].apply(to_json_str).astype(dtypes.JSON_DTYPE)
+
     return df
 
 
