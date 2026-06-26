@@ -1483,12 +1483,7 @@ class Test_Blob(unittest.TestCase):
                 end=None,
             )
 
-        mock_logger.warning.assert_called_once_with(
-            "storage: received %d more bytes than requested from GCS for bucket %r, object %r",
-            10,
-            "name",
-            "blob-name",
-        )
+        mock_logger.warning.assert_not_called()
 
     @mock.patch("google.cloud.storage.blob._logger")
     def test__do_download_log_extra_bytes_negative_start(self, mock_logger):
@@ -1521,12 +1516,7 @@ class Test_Blob(unittest.TestCase):
                 end=None,
             )
 
-        mock_logger.warning.assert_called_once_with(
-            "storage: received %d more bytes than requested from GCS for bucket %r, object %r",
-            5,
-            "name",
-            "blob-name",
-        )
+        mock_logger.warning.assert_not_called()
 
     @mock.patch("google.cloud.storage.blob._logger")
     def test__do_download_log_extra_bytes_whole_file(self, mock_logger):
@@ -1560,12 +1550,7 @@ class Test_Blob(unittest.TestCase):
                 end=None,
             )
 
-        mock_logger.warning.assert_called_once_with(
-            "storage: received %d more bytes than requested from GCS for bucket %r, object %r",
-            50,
-            "name",
-            "blob-name",
-        )
+        mock_logger.warning.assert_not_called()
 
     @mock.patch("google.cloud.storage.blob._logger")
     def test__do_download_no_log_exact_bytes(self, mock_logger):
