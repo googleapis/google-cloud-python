@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import datetime
 import hashlib
 import logging
 import math
@@ -19,7 +20,6 @@ import pathlib
 import textwrap
 import traceback
 import typing
-from datetime import datetime
 from typing import Dict, Generator, Optional
 
 import fsspec  # type: ignore[import-untyped]
@@ -501,12 +501,11 @@ def nested_structs_pandas_df(nested_structs_pandas_type: pd.ArrowDtype) -> pd.Da
     Manually parses using json.loads to preserve data types.
     """
     import base64
-    import datetime
     import decimal
     import json
 
-    import db_dtypes
-    import geopandas as gpd
+    import db_dtypes  # type: ignore[import-untyped]
+    import geopandas as gpd  # type: ignore[import-untyped]
 
     with open(DATA_DIR / "nested_structs.jsonl") as f:
         raw_rows = [json.loads(line) for line in f]
@@ -518,7 +517,7 @@ def nested_structs_pandas_df(nested_structs_pandas_type: pd.ArrowDtype) -> pd.Da
 
     # person
     person_struct_schema = nested_structs_pandas_type.pyarrow_dtype
-    processed_person = []
+    processed_person: list[Optional[dict[str, typing.Any]]] = []
     for row in raw_rows:
         x = get_val(row, "person")
         if x is None:
@@ -555,13 +554,7 @@ def nested_structs_pandas_df(nested_structs_pandas_type: pd.ArrowDtype) -> pd.Da
         for row in raw_rows
     ]
     arr = pa.array(float64_vals, type=pa.float64())
-    mask = pa.compute.is_null(arr)
-    nonnull = pa.compute.fill_null(arr, float("nan"))
-    pd_array = pd.arrays.FloatingArray(
-        nonnull.to_numpy(zero_copy_only=False),
-        mask.to_numpy(zero_copy_only=False),
-    )
-    float64_ser = pd.Series(pd_array, index=ids, dtype=pd.Float64Dtype())
+    float64_ser = pd.Series(arr, index=ids, dtype=pd.Float64Dtype())
 
     # string_col
     string_vals = [
@@ -575,7 +568,7 @@ def nested_structs_pandas_df(nested_structs_pandas_type: pd.ArrowDtype) -> pd.Da
     )
 
     # json_col
-    json_strs = []
+    json_strs: list[Optional[str]] = []
     for row in raw_rows:
         if "json_col" not in row:
             json_strs.append(None)
@@ -611,7 +604,7 @@ def nested_structs_pandas_df(nested_structs_pandas_type: pd.ArrowDtype) -> pd.Da
     time_ser = pd.Series(time_arr, index=ids, dtype=pd.ArrowDtype(pa.time64("us")))
 
     # datetime_col
-    datetime_vals = []
+    datetime_vals: list[Optional[datetime.datetime]] = []
     for row in raw_rows:
         val = get_val(row, "datetime_col")
         if val is None:
@@ -636,7 +629,7 @@ def nested_structs_pandas_df(nested_structs_pandas_type: pd.ArrowDtype) -> pd.Da
     )
 
     # bytes_col
-    bytes_vals = []
+    bytes_vals: list[Optional[bytes]] = []
     for row in raw_rows:
         val = get_val(row, "bytes_col")
         if val is None:
@@ -1041,9 +1034,9 @@ def new_time_series_pandas_df():
     return pd.DataFrame(
         {
             "parsed_date": [
-                datetime(2017, 8, 2, tzinfo=utc),
-                datetime(2017, 8, 3, tzinfo=utc),
-                datetime(2017, 8, 4, tzinfo=utc),
+                datetime.datetime(2017, 8, 2, tzinfo=utc),
+                datetime.datetime(2017, 8, 3, tzinfo=utc),
+                datetime.datetime(2017, 8, 4, tzinfo=utc),
             ],
             "total_visits": [2500, 2500, 2500],
         }
@@ -1062,12 +1055,12 @@ def new_time_series_pandas_df_w_id():
     return pd.DataFrame(
         {
             "parsed_date": [
-                datetime(2017, 8, 2, tzinfo=utc),
-                datetime(2017, 8, 2, tzinfo=utc),
-                datetime(2017, 8, 3, tzinfo=utc),
-                datetime(2017, 8, 3, tzinfo=utc),
-                datetime(2017, 8, 4, tzinfo=utc),
-                datetime(2017, 8, 4, tzinfo=utc),
+                datetime.datetime(2017, 8, 2, tzinfo=utc),
+                datetime.datetime(2017, 8, 2, tzinfo=utc),
+                datetime.datetime(2017, 8, 3, tzinfo=utc),
+                datetime.datetime(2017, 8, 3, tzinfo=utc),
+                datetime.datetime(2017, 8, 4, tzinfo=utc),
+                datetime.datetime(2017, 8, 4, tzinfo=utc),
             ],
             "id": ["1", "2", "1", "2", "1", "2"],
             "total_visits": [2500, 2500, 2500, 2500, 2500, 2500],
@@ -1680,7 +1673,7 @@ def cleanup_cloud_functions(session, cloudfunctions_client, dataset_id_permanent
                 continue
 
             # Ignore the functions less than one day old
-            age = datetime.now() - datetime.fromtimestamp(
+            age = datetime.datetime.now() - datetime.datetime.fromtimestamp(
                 cloud_function.update_time.timestamp()
             )
             if age.days <= 0:
