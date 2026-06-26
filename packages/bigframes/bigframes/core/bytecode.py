@@ -339,7 +339,12 @@ def _compile_bytecode_to_py_expr(func: Callable) -> expression.Expression:
                         local_vars.get(var2, expression.UnboundVariableExpression(var2))
                     )
 
-                case name if name.startswith("LOAD_FAST"):
+                case (
+                    "LOAD_FAST"
+                    | "LOAD_FAST_CHECK"
+                    | "LOAD_FAST_AND_CLEAR"
+                    | "LOAD_FAST_BORROW"
+                ):
                     stack.append(
                         local_vars.get(
                             inst.argval,
@@ -602,100 +607,105 @@ def _compile_bytecode_to_py_expr(func: Callable) -> expression.Expression:
                     if stack:
                         stack.pop()
 
-                case name if name in _ALL_JUMP_OPNAMES:
-                    if opname in _UNCONDITIONAL_JUMP_OPNAMES:
-                        dest = inst.argval
-                        edge_conditions[(offset, dest)] = reach_cond
-                        edge_stacks[(offset, dest)] = stack.copy()
-                    elif opname in ("JUMP_IF_FALSE_OR_POP", "JUMP_IF_TRUE_OR_POP"):
-                        if not stack:
-                            raise ValueError("Stack is empty")
-                        cond_expr = stack[-1]
-                        cond_bool = py_exprs.Call(
-                            py_exprs.PyObject(generic_ops.coerce_to_bool_op),
-                            (cond_expr,),
+                case name if name in _UNCONDITIONAL_JUMP_OPNAMES:
+                    dest = inst.argval
+                    edge_conditions[(offset, dest)] = reach_cond
+                    edge_stacks[(offset, dest)] = stack.copy()
+                    jumped = True
+                    break
+
+                case "JUMP_IF_FALSE_OR_POP" | "JUMP_IF_TRUE_OR_POP":
+                    if not stack:
+                        raise ValueError("Stack is empty")
+                    cond_expr = stack[-1]
+                    cond_bool = py_exprs.Call(
+                        py_exprs.PyObject(generic_ops.coerce_to_bool_op),
+                        (cond_expr,),
+                    )
+                    dest = inst.argval
+                    next_offset = next_offsets.get(inst.offset)
+                    if opname == "JUMP_IF_FALSE_OR_POP":
+                        not_cond_bool = py_exprs.Call(
+                            py_exprs.PyObject(operator.not_), (cond_bool,)
                         )
-                        dest = inst.argval
-                        next_offset = next_offsets.get(inst.offset)
-                        if opname == "JUMP_IF_FALSE_OR_POP":
-                            not_cond_bool = py_exprs.Call(
-                                py_exprs.PyObject(operator.not_), (cond_bool,)
-                            )
-                            edge_conditions[(offset, dest)] = py_exprs.Call(
-                                py_exprs.PyObject(operator.and_),
-                                (reach_cond, not_cond_bool),
-                            )
-                            edge_stacks[(offset, dest)] = stack.copy()
-                            if next_offset is not None:
-                                edge_conditions[(offset, next_offset)] = py_exprs.Call(
-                                    py_exprs.PyObject(operator.and_),
-                                    (reach_cond, cond_bool),
-                                )
-                                edge_stacks[(offset, next_offset)] = stack[:-1]
-                        else:  # JUMP_IF_TRUE_OR_POP
-                            edge_conditions[(offset, dest)] = py_exprs.Call(
+                        edge_conditions[(offset, dest)] = py_exprs.Call(
+                            py_exprs.PyObject(operator.and_),
+                            (reach_cond, not_cond_bool),
+                        )
+                        edge_stacks[(offset, dest)] = stack.copy()
+                        if next_offset is not None:
+                            edge_conditions[(offset, next_offset)] = py_exprs.Call(
                                 py_exprs.PyObject(operator.and_),
                                 (reach_cond, cond_bool),
                             )
-                            edge_stacks[(offset, dest)] = stack.copy()
-                            if next_offset is not None:
-                                not_cond_bool = py_exprs.Call(
-                                    py_exprs.PyObject(operator.not_), (cond_bool,)
-                                )
-                                edge_conditions[(offset, next_offset)] = py_exprs.Call(
-                                    py_exprs.PyObject(operator.and_),
-                                    (reach_cond, not_cond_bool),
-                                )
-                                edge_stacks[(offset, next_offset)] = stack[:-1]
-                    elif (
-                        opname in _JUMP_IF_FALSE_OPNAMES
-                        or opname in _JUMP_IF_TRUE_OPNAMES
-                    ):
-                        if not stack:
-                            raise ValueError("Stack is empty")
-                        cond_expr = stack.pop()
-                        cond_expr = py_exprs.Call(
-                            py_exprs.PyObject(generic_ops.coerce_to_bool_op),
-                            (cond_expr,),
+                            edge_stacks[(offset, next_offset)] = stack[:-1]
+                    else:  # JUMP_IF_TRUE_OR_POP
+                        edge_conditions[(offset, dest)] = py_exprs.Call(
+                            py_exprs.PyObject(operator.and_),
+                            (reach_cond, cond_bool),
                         )
-
-                        dest = inst.argval
-                        next_offset = next_offsets.get(inst.offset)
-
-                        if opname in _JUMP_IF_FALSE_OPNAMES:
-                            not_cond_expr = py_exprs.Call(
-                                py_exprs.PyObject(operator.not_), (cond_expr,)
+                        edge_stacks[(offset, dest)] = stack.copy()
+                        if next_offset is not None:
+                            not_cond_bool = py_exprs.Call(
+                                py_exprs.PyObject(operator.not_), (cond_bool,)
                             )
-                            edge_conditions[(offset, dest)] = py_exprs.Call(
+                            edge_conditions[(offset, next_offset)] = py_exprs.Call(
                                 py_exprs.PyObject(operator.and_),
-                                (reach_cond, not_cond_expr),
+                                (reach_cond, not_cond_bool),
                             )
-                            edge_stacks[(offset, dest)] = stack.copy()
-                            if next_offset is not None:
-                                edge_conditions[(offset, next_offset)] = py_exprs.Call(
-                                    py_exprs.PyObject(operator.and_),
-                                    (reach_cond, cond_expr),
-                                )
-                                edge_stacks[(offset, next_offset)] = stack.copy()
-                        else:  # opname in _JUMP_IF_TRUE_OPNAMES
-                            not_cond_expr = py_exprs.Call(
-                                py_exprs.PyObject(operator.not_), (cond_expr,)
-                            )
-                            edge_conditions[(offset, dest)] = py_exprs.Call(
+                            edge_stacks[(offset, next_offset)] = stack[:-1]
+                    jumped = True
+                    break
+
+                case name if (
+                    name in _JUMP_IF_FALSE_OPNAMES or name in _JUMP_IF_TRUE_OPNAMES
+                ):
+                    if not stack:
+                        raise ValueError("Stack is empty")
+                    cond_expr = stack.pop()
+                    cond_expr = py_exprs.Call(
+                        py_exprs.PyObject(generic_ops.coerce_to_bool_op),
+                        (cond_expr,),
+                    )
+
+                    dest = inst.argval
+                    next_offset = next_offsets.get(inst.offset)
+
+                    if opname in _JUMP_IF_FALSE_OPNAMES:
+                        not_cond_expr = py_exprs.Call(
+                            py_exprs.PyObject(operator.not_), (cond_expr,)
+                        )
+                        edge_conditions[(offset, dest)] = py_exprs.Call(
+                            py_exprs.PyObject(operator.and_),
+                            (reach_cond, not_cond_expr),
+                        )
+                        edge_stacks[(offset, dest)] = stack.copy()
+                        if next_offset is not None:
+                            edge_conditions[(offset, next_offset)] = py_exprs.Call(
                                 py_exprs.PyObject(operator.and_),
                                 (reach_cond, cond_expr),
                             )
-                            edge_stacks[(offset, dest)] = stack.copy()
-                            if next_offset is not None:
-                                edge_conditions[(offset, next_offset)] = py_exprs.Call(
-                                    py_exprs.PyObject(operator.and_),
-                                    (reach_cond, not_cond_expr),
-                                )
-                                edge_stacks[(offset, next_offset)] = stack.copy()
-                    else:
-                        raise ValueError(f"Unsupported jump opcode: {opname}")
+                            edge_stacks[(offset, next_offset)] = stack.copy()
+                    else:  # opname in _JUMP_IF_TRUE_OPNAMES
+                        not_cond_expr = py_exprs.Call(
+                            py_exprs.PyObject(operator.not_), (cond_expr,)
+                        )
+                        edge_conditions[(offset, dest)] = py_exprs.Call(
+                            py_exprs.PyObject(operator.and_),
+                            (reach_cond, cond_expr),
+                        )
+                        edge_stacks[(offset, dest)] = stack.copy()
+                        if next_offset is not None:
+                            edge_conditions[(offset, next_offset)] = py_exprs.Call(
+                                py_exprs.PyObject(operator.and_),
+                                (reach_cond, not_cond_expr),
+                            )
+                            edge_stacks[(offset, next_offset)] = stack.copy()
                     jumped = True
                     break
+
+                case name if name in _ALL_JUMP_OPNAMES:
+                    raise ValueError(f"Unsupported jump opcode: {opname}")
 
                 case _:
                     raise ValueError(f"Unsupported opcode: {opname}")
