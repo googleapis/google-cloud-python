@@ -38,8 +38,8 @@ import bigframes.operations.generic_ops as gen_ops
 import bigframes.operations.json_ops as json_ops
 import bigframes.operations.numeric_ops as num_ops
 import bigframes.operations.remote_function_ops as remote_function_ops
-import bigframes.operations.struct_ops as struct_ops
 import bigframes.operations.string_ops as string_ops
+import bigframes.operations.struct_ops as struct_ops
 from bigframes.core import agg_expressions, identifiers, nodes, ordering, window_spec
 from bigframes.core.compile.polars import lowering
 
@@ -506,13 +506,13 @@ if polars_installed:
 
         @compile_op.register(json_ops.ToJSONString)
         def _(self, op: json_ops.ToJSONString, input: pl.Expr) -> pl.Expr:
-            import json
             import base64
+            import json
 
             def to_json_str(val):
                 if val is None:
                     return None
-                
+
                 # Helper to recursively convert bytes to base64 strings
                 def convert(obj):
                     if isinstance(obj, bytes):
@@ -572,16 +572,18 @@ if polars_installed:
             from bigframes.functions import function_template
 
             if op.function_def.signature.is_row_processor:
+
                 def handler(py_struct):
                     code = op.function_def.code.to_callable()
                     args = list(py_struct.values())
                     series_arg = function_template.get_pd_series(args[0])
                     return code(series_arg, *args[1:])
             else:
+
                 def handler(py_struct):
                     code = op.function_def.code.to_callable()
                     return code(*(field for field in py_struct.values()))
-                
+
             return pl.struct(*inputs).map_elements(
                 handler,
                 return_dtype=_DTYPE_MAPPING[op.output_type()],
