@@ -535,7 +535,11 @@ if polars_installed:
             elif from_type == bigframes.dtypes.INT_DTYPE:
                 result = preprocessed.cast(pl.String)
             elif from_type == bigframes.dtypes.BOOL_DTYPE:
-                result = pl.when(preprocessed).then(pl.lit("true")).otherwise(pl.lit("false"))
+                result = (
+                    pl.when(preprocessed)
+                    .then(pl.lit("true"))
+                    .otherwise(pl.lit("false"))
+                )
             elif from_type == bigframes.dtypes.BYTES_DTYPE:
                 result = pl.lit('"') + preprocessed + pl.lit('"')
             else:

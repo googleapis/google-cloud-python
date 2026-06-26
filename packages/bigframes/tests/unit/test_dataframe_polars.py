@@ -1319,6 +1319,7 @@ def test_df_apply_complex_udf(session):
         {"x": [1, 2, 3], "y": ["a", "b", "c"]},
         index=["row0", "row1", "row2"],
     )
+
     def pd_foo(row):
         idx = str(row.name)
         items_str = ";".join(f"{k}={v}" for k, v in row.items())
