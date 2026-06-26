@@ -46,6 +46,12 @@ _KEY_REGEX = re.compile(
 _LOGGER = logging.getLogger(__name__)
 
 
+# A flag to track if we have already logged a warning about mTLS auto-enablement failures.
+# This prevents log spam when client libraries create transports or session instances
+# frequently within a single process.
+_has_logged_mtls_warning = False
+
+
 _PASSPHRASE_REGEX = re.compile(
     b"-----BEGIN PASSPHRASE-----(.+)-----END PASSPHRASE-----", re.DOTALL
 )
@@ -473,6 +479,7 @@ def check_use_client_cert():
     Returns:
         bool: Whether the client certificate should be used for mTLS connection.
     """
+    global _has_logged_mtls_warning
     env_override = _check_use_client_cert_env()
     if env_override is not None:
         return env_override
@@ -489,11 +496,13 @@ def check_use_client_cert():
             with open(cert_path, "r") as f:
                 content = json.load(f)
         except (FileNotFoundError, OSError, json.JSONDecodeError) as e:
-            _LOGGER.debug(
-                "mTLS auto-enablement failed: Could not read/parse certificate file at %s. Error: %s",
-                cert_path,
-                e,
-            )
+            if not _has_logged_mtls_warning:
+                _LOGGER.warning(
+                    "mTLS auto-enablement failed: Could not read/parse certificate file at %s. Error: %s",
+                    cert_path,
+                    e,
+                )
+                _has_logged_mtls_warning = True
             return False
 
         # Structural validation
@@ -503,10 +512,12 @@ def check_use_client_cert():
                 return True
 
         # If we got here, the file exists but the expected structure is missing
-        _LOGGER.debug(
-            "mTLS auto-enablement failed: Certificate configuration file at %s is missing the required ['cert_configs']['workload'] section.",
-            cert_path,
-        )
+        if not _has_logged_mtls_warning:
+            _LOGGER.warning(
+                "mTLS auto-enablement failed: Certificate configuration file at %s is missing the required ['cert_configs']['workload'] section.",
+                cert_path,
+            )
+            _has_logged_mtls_warning = True
     return False
 
 
