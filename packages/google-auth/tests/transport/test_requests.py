@@ -793,13 +793,14 @@ class TestAuthorizedSession(object):
             "google.auth.transport._mtls_helper.get_client_cert_and_key", autospec=True
         ) as mock_get_client_cert_and_key:
             mock_get_client_cert_and_key.side_effect = exceptions.ClientCertError()
-            
+
             with pytest.raises(exceptions.MutualTLSChannelError):
                 with mock.patch.dict(
-                    os.environ, {environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE: "true"}
+                    os.environ,
+                    {environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE: "true"},
                 ):
                     auth_session.configure_mtls_channel()
-        
+
         # 3. Verify it falls back to standard HTTPAdapter and is_mtls becomes False
         assert not auth_session.is_mtls
         assert not isinstance(
@@ -833,7 +834,7 @@ class TestAuthorizedSession(object):
             "google.auth.transport._mtls_helper.get_client_cert_and_key", autospec=True
         ) as mock_get_client_cert_and_key:
             mock_get_client_cert_and_key.return_value = (False, None, None)
-            
+
             with mock.patch.dict(
                 os.environ, {environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE: "true"}
             ):

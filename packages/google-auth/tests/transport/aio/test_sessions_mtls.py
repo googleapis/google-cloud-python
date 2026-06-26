@@ -235,4 +235,3 @@ class TestSessionsMtls:
 
             assert session._is_mtls is False
             await session.close()
-
