@@ -32,6 +32,11 @@ jobs:
       uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
       with:
         python-version: ${{ matrix.python }}
+        allow-prereleases: true
+        # Caches compiled wheels locally to prevent building heavy libraries
+        # such as grpcio, which we build from scratch on every run for Python 3.15+.
+        # Follow https://github.com/grpc/grpc/issues/41010 for updates.
+        cache: 'pip'
     - name: Install nox
       run: |
         python -m pip install --upgrade setuptools pip wheel
