@@ -618,7 +618,7 @@ def nested_structs_pandas_df(nested_structs_pandas_type: pd.ArrowDtype) -> pd.Da
 
     # timestamp_col
     timestamp_vals = [
-        datetime.datetime.fromisoformat(get_val(row, "timestamp_col"))
+        datetime.datetime.fromisoformat(get_val(row, "timestamp_col").replace("Z", "+00:00"))
         if get_val(row, "timestamp_col") is not None
         else None
         for row in raw_rows
