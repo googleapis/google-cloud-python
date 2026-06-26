@@ -337,10 +337,19 @@ class TestAuthorizedHttp(object):
         authed_http.__del__()
         # Expect it to not crash
 
-    def test_cert_rotation_when_cert_mismatch_and_mtls_endpoint_used(self):
+    @mock.patch("google.auth.transport.urllib3._make_mutual_tls_http", autospec=True)
+    @mock.patch("google.auth.transport.urllib3._make_default_http", autospec=True)
+    def test_cert_rotation_when_cert_mismatch_and_mtls_endpoint_used(
+        self, mock_make_default_http, mock_make_mutual_tls_http
+    ):
         credentials = mock.Mock(wraps=CredentialsStub())
         final_response = ResponseStub(status=http_client.OK)
-        http = HttpStub([ResponseStub(status=http_client.UNAUTHORIZED), final_response])
+        
+        # We simulate the HTTP stub rotation. When mTLS http is created, we return rotated_http.
+        rotated_http = HttpStub([final_response])
+        mock_make_mutual_tls_http.return_value = rotated_http
+
+        http = HttpStub([ResponseStub(status=http_client.UNAUTHORIZED)])
 
         authed_http = google.auth.transport.urllib3.AuthorizedHttp(
             credentials, http=http
@@ -349,8 +358,8 @@ class TestAuthorizedHttp(object):
         old_cert = b"-----BEGIN CERTIFICATE-----\nMIIBdTCCARqgAwIBAgIJAOYVvu/axMxvMAoGCCqGSM49BAMCMCcxJTAjBgNVBAMM\nHEdvb2dsZSBFbmRwb2ludCBWZXJpZmljYXRpb24wHhcNMjUwNzMwMjMwNjA4WhcN\nMjYwNzMxMjMwNjA4WjAnMSUwIwYDVQQDDBxHb29nbGUgRW5kcG9pbnQgVmVyaWZp\nY2F0aW9uMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEbtr18gkEtwPow2oqyZsU\n4KLwFaLFlRlYv55UATS3QTDykDnIufC42TJCnqFRYhwicwpE2jnUV+l9g3Voias8\nraMvMC0wCQYDVR0TBAIwADALBgNVHQ8EBAMCB4AwEwYDVR0lBAwwCgYIKwYBBQUH\nAwIwCgYIKoZIzj0EAwIDSQAwRgIhAKcjW6dmF1YCksXPgDPlPu/nSnOjb3qCcivz\n/Jxq2zoeAiEA7/aNxcEoCGS3hwMIXoaaD/vPcZOOopKSyqXCvxRooKQ=\n-----END CERTIFICATE-----\n"
 
         # New certificate and key to simulate rotation.
-        new_cert = CERT_MOCK_VAL
-        new_key = KEY_MOCK_VAL
+        new_cert = pytest.public_cert_bytes
+        new_key = pytest.private_key_bytes
         # Set _cached_cert to a callable that returns the old certificate.
         authed_http._cached_cert = old_cert
         authed_http._is_mtls = True
@@ -360,14 +369,20 @@ class TestAuthorizedHttp(object):
             "call_client_cert_callback",
             return_value=(new_cert, new_key),
         ) as mock_callback:
-            # mTLS endpoint is used
-            result = authed_http.urlopen("GET", "http://example.mtls.googleapis.com")
+            # mTLS endpoint is used, and client cert env var is true
+            with mock.patch.dict(
+                os.environ, {environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE: "true"}
+            ):
+                result = authed_http.urlopen("GET", "http://example.mtls.googleapis.com")
 
         # Asserts to verify the behavior.
         assert result == final_response
         assert credentials.refresh.called
         assert credentials.refresh.call_count == 1
         assert mock_callback.called
+        mock_make_mutual_tls_http.assert_called_once_with(
+            cert=new_cert, key=new_key
+        )
 
     def test_no_cert_rotation_when_cert_match_and_mtls_endpoint_used(self):
         credentials = mock.Mock(wraps=CredentialsStub())
@@ -541,3 +556,70 @@ class TestAuthorizedHttp(object):
 
             # Assert mTLS check logic was SKIPPED (Inner Check was False)
             assert not mock_helper.check_parameters_for_unauthorized_response.called
+
+    @mock.patch("google.auth.transport.urllib3._make_mutual_tls_http", autospec=True)
+    def test_configure_mtls_channel_subsequent_failure(self, mock_make_mutual_tls_http):
+        callback = mock.Mock()
+        callback.return_value = (pytest.public_cert_bytes, pytest.private_key_bytes)
+
+        authed_http = google.auth.transport.urllib3.AuthorizedHttp(
+            credentials=mock.Mock()
+        )
+
+        with mock.patch.dict(
+            os.environ, {environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE: "true"}
+        ):
+            is_mtls = authed_http.configure_mtls_channel(callback)
+
+        assert is_mtls
+        assert authed_http._is_mtls
+
+        # Subsequent call fails
+        with mock.patch(
+            "google.auth.transport._mtls_helper.get_client_cert_and_key", autospec=True
+        ) as mock_get_client_cert_and_key:
+            mock_get_client_cert_and_key.side_effect = exceptions.ClientCertError()
+            
+            with pytest.raises(exceptions.MutualTLSChannelError):
+                with mock.patch.dict(
+                    os.environ, {environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE: "true"}
+                ):
+                    authed_http.configure_mtls_channel()
+        
+        # Verify it was reset to default HTTP connection pool and _is_mtls is False
+        assert not authed_http._is_mtls
+        assert not isinstance(authed_http.http, mock.Mock)
+        assert isinstance(authed_http.http, urllib3.PoolManager)
+
+    @mock.patch("google.auth.transport.urllib3._make_mutual_tls_http", autospec=True)
+    def test_configure_mtls_channel_subsequent_disabled(self, mock_make_mutual_tls_http):
+        callback = mock.Mock()
+        callback.return_value = (pytest.public_cert_bytes, pytest.private_key_bytes)
+
+        authed_http = google.auth.transport.urllib3.AuthorizedHttp(
+            credentials=mock.Mock()
+        )
+
+        with mock.patch.dict(
+            os.environ, {environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE: "true"}
+        ):
+            is_mtls = authed_http.configure_mtls_channel(callback)
+
+        assert is_mtls
+        assert authed_http._is_mtls
+
+        # Subsequent call returns no client certificate (disabled)
+        with mock.patch(
+            "google.auth.transport._mtls_helper.get_client_cert_and_key", autospec=True
+        ) as mock_get_client_cert_and_key:
+            mock_get_client_cert_and_key.return_value = (False, None, None)
+            
+            with mock.patch.dict(
+                os.environ, {environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE: "true"}
+            ):
+                is_mtls = authed_http.configure_mtls_channel()
+        
+        # Verify mTLS is disabled and standard PoolManager is restored
+        assert not is_mtls
+        assert not authed_http._is_mtls
+        assert isinstance(authed_http.http, urllib3.PoolManager)

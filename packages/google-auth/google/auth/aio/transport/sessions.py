@@ -219,11 +219,7 @@ class AsyncAuthorizedSession:
                                 UserWarning,
                             )
 
-                except (
-                    exceptions.ClientCertError,
-                    ImportError,
-                    OSError,
-                ) as caught_exc:
+                except Exception as caught_exc:
                     self._is_mtls = False
                     new_exc = exceptions.MutualTLSChannelError(caught_exc)
                     raise new_exc from caught_exc
@@ -585,4 +581,10 @@ class AsyncAuthorizedSession:
         """
         Close the underlying auth request session.
         """
+        if self._mtls_init_task and not self._mtls_init_task.done():
+            self._mtls_init_task.cancel()
+            try:
+                await self._mtls_init_task
+            except asyncio.CancelledError:
+                pass
         await self._auth_request.close()

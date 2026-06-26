@@ -334,16 +334,16 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
             google.auth.exceptions.MutualTLSChannelError: If mutual TLS channel
                 creation failed for any reason.
         """
+        self._is_mtls = False
+        self.http = _make_default_http()
+
         use_client_cert = transport._mtls_helper.check_use_client_cert()
         if not use_client_cert:
-            self._is_mtls = False
             return False
-        else:
-            self._is_mtls = True
+
         try:
             import OpenSSL
         except ImportError as caught_exc:
-            self._is_mtls = False
             new_exc = exceptions.MutualTLSChannelError(caught_exc)
             raise new_exc from caught_exc
 
@@ -355,16 +355,13 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
             if found_cert_key:
                 self.http = _make_mutual_tls_http(cert, key)
                 self._cached_cert = cert
-            else:
-                self.http = _make_default_http()
-                self._is_mtls = False
+                self._is_mtls = True
         except (
             exceptions.ClientCertError,
             ImportError,
             OSError,
             OpenSSL.crypto.Error,
         ) as caught_exc:
-            self._is_mtls = False
             new_exc = exceptions.MutualTLSChannelError(caught_exc)
             raise new_exc from caught_exc
 

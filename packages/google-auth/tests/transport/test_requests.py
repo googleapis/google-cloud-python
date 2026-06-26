@@ -563,8 +563,8 @@ class TestAuthorizedSession(object):
         old_cert = b"-----BEGIN CERTIFICATE-----\nMIIBdTCCARqgAwIBAgIJAOYVvu/axMxvMAoGCCqGSM49BAMCMCcxJTAjBgNVBAMM\nHEdvb2dsZSBFbmRwb2ludCBWZXJpZmljYXRpb24wHhcNMjUwNzMwMjMwNjA4WhcN\nMjYwNzMxMjMwNjA4WjAnMSUwIwYDVQQDDBxHb29nbGUgRW5kcG9pbnQgVmVyaWZp\nY2F0aW9uMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEbtr18gkEtwPow2oqyZsU\n4KLwFaLFlRlYv55UATS3QTDykDnIufC42TJCnqFRYhwicwpE2jnUV+l9g3Voias8\nraMvMC0wCQYDVR0TBAIwADALBgNVHQ8EBAMCB4AwEwYDVR0lBAwwCgYIKwYBBQUH\nAwIwCgYIKoZIzj0EAwIDSQAwRgIhAKcjW6dmF1YCksXPgDPlPu/nSnOjb3qCcivz\n/Jxq2zoeAiEA7/aNxcEoCGS3hwMIXoaaD/vPcZOOopKSyqXCvxRooKQ=\n-----END CERTIFICATE-----\n"
 
         # New certificate and key to simulate rotation.
-        new_cert = CERT_MOCK_VAL
-        new_key = KEY_MOCK_VAL
+        new_cert = pytest.public_cert_bytes
+        new_key = pytest.private_key_bytes
 
         # Set _cached_cert to a callable that returns the old certificate.
         authed_session._cached_cert = old_cert
@@ -766,6 +766,85 @@ class TestAuthorizedSession(object):
 
             # Assert mTLS check logic was SKIPPED (Inner Check was False)
             assert not mock_helper.check_parameters_for_unauthorized_response.called
+
+    def test_configure_mtls_channel_subsequent_failure(self):
+        # 1. Setup successful mTLS configuration
+        mock_callback = mock.Mock()
+        mock_callback.return_value = (
+            pytest.public_cert_bytes,
+            pytest.private_key_bytes,
+        )
+        auth_session = google.auth.transport.requests.AuthorizedSession(
+            credentials=mock.Mock()
+        )
+        with mock.patch.dict(
+            os.environ, {environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE: "true"}
+        ):
+            auth_session.configure_mtls_channel(mock_callback)
+
+        assert auth_session.is_mtls
+        assert isinstance(
+            auth_session.adapters["https://"],
+            google.auth.transport.requests._MutualTlsAdapter,
+        )
+
+        # 2. Trigger a failure on a subsequent configuration call
+        with mock.patch(
+            "google.auth.transport._mtls_helper.get_client_cert_and_key", autospec=True
+        ) as mock_get_client_cert_and_key:
+            mock_get_client_cert_and_key.side_effect = exceptions.ClientCertError()
+            
+            with pytest.raises(exceptions.MutualTLSChannelError):
+                with mock.patch.dict(
+                    os.environ, {environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE: "true"}
+                ):
+                    auth_session.configure_mtls_channel()
+        
+        # 3. Verify it falls back to standard HTTPAdapter and is_mtls becomes False
+        assert not auth_session.is_mtls
+        assert not isinstance(
+            auth_session.adapters["https://"],
+            google.auth.transport.requests._MutualTlsAdapter,
+        )
+        assert isinstance(
+            auth_session.adapters["https://"],
+            requests.adapters.HTTPAdapter,
+        )
+
+    def test_configure_mtls_channel_subsequent_disabled(self):
+        # 1. Setup successful mTLS configuration
+        mock_callback = mock.Mock()
+        mock_callback.return_value = (
+            pytest.public_cert_bytes,
+            pytest.private_key_bytes,
+        )
+        auth_session = google.auth.transport.requests.AuthorizedSession(
+            credentials=mock.Mock()
+        )
+        with mock.patch.dict(
+            os.environ, {environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE: "true"}
+        ):
+            auth_session.configure_mtls_channel(mock_callback)
+
+        assert auth_session.is_mtls
+
+        # 2. Subsequent call returns no client certificate (disabled)
+        with mock.patch(
+            "google.auth.transport._mtls_helper.get_client_cert_and_key", autospec=True
+        ) as mock_get_client_cert_and_key:
+            mock_get_client_cert_and_key.return_value = (False, None, None)
+            
+            with mock.patch.dict(
+                os.environ, {environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE: "true"}
+            ):
+                auth_session.configure_mtls_channel()
+
+        # 3. Verify mTLS is disabled and standard HTTPAdapter is restored
+        assert not auth_session.is_mtls
+        assert isinstance(
+            auth_session.adapters["https://"],
+            requests.adapters.HTTPAdapter,
+        )
 
 
 class TestMutualTlsOffloadAdapter(object):

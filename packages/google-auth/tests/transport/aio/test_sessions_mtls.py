@@ -64,6 +64,7 @@ class TestSessionsMtls:
             mock_make_context.assert_called_once_with(
                 b"fake_cert_data", b"fake_key_data"
             )
+            await session.close()
 
     @pytest.mark.asyncio
     async def test_configure_mtls_channel_disabled(self):
@@ -78,6 +79,7 @@ class TestSessionsMtls:
             session = sessions.AsyncAuthorizedSession(mock_creds)
             await session.configure_mtls_channel()
             assert session._is_mtls is False
+            await session.close()
 
     @pytest.mark.asyncio
     async def test_configure_mtls_channel_invalid_format(self):
@@ -95,6 +97,7 @@ class TestSessionsMtls:
 
             with pytest.raises(exceptions.MutualTLSChannelError):
                 await session.configure_mtls_channel()
+            await session.close()
 
     @pytest.mark.asyncio
     async def test_configure_mtls_channel_invalud_fields(self):
@@ -111,6 +114,7 @@ class TestSessionsMtls:
             session = sessions.AsyncAuthorizedSession(mock_creds)
             await session.configure_mtls_channel()
             assert session._is_mtls is False
+            await session.close()
 
     @pytest.mark.asyncio
     async def test_configure_mtls_channel_mock_callback(self):
@@ -135,6 +139,7 @@ class TestSessionsMtls:
             await session.configure_mtls_channel(client_cert_callback=mock_callback)
 
             assert session._is_mtls is True
+            await session.close()
 
     @pytest.mark.asyncio
     async def test_configure_mtls_channel_custom_request(self):
@@ -173,6 +178,7 @@ class TestSessionsMtls:
             mock_make_context.assert_called_once_with(
                 b"fake_cert_data", b"fake_key_data"
             )
+            await session.close()
 
     @pytest.mark.asyncio
     async def test_configure_mtls_channel_exception_resets_flag(self):
@@ -200,3 +206,33 @@ class TestSessionsMtls:
                 await session.configure_mtls_channel()
 
             assert session._is_mtls is False
+            await session.close()
+
+    @pytest.mark.asyncio
+    async def test_configure_mtls_channel_transport_error_resets_flag(self):
+        """
+        Tests that self._is_mtls is reset to False if a TransportError is raised
+        during configuration.
+        """
+        with mock.patch.dict(
+            os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}
+        ), mock.patch("os.path.exists") as mock_exists, mock.patch(
+            "builtins.open", mock.mock_open(read_data=json.dumps(VALID_WORKLOAD_CONFIG))
+        ), mock.patch(
+            "google.auth.aio.transport.mtls.get_client_cert_and_key"
+        ) as mock_helper, mock.patch(
+            "google.auth.aio.transport.mtls.make_client_cert_ssl_context"
+        ) as mock_make_context:
+            mock_exists.return_value = True
+            mock_helper.return_value = (True, b"fake_cert_data", b"fake_key_data")
+            mock_make_context.side_effect = exceptions.TransportError("Mock error")
+
+            mock_creds = mock.AsyncMock(spec=credentials.Credentials)
+            session = sessions.AsyncAuthorizedSession(mock_creds)
+
+            with pytest.raises(exceptions.MutualTLSChannelError):
+                await session.configure_mtls_channel()
+
+            assert session._is_mtls is False
+            await session.close()
+

@@ -445,14 +445,15 @@ class AuthorizedSession(requests.Session):
             google.auth.exceptions.MutualTLSChannelError: If mutual TLS channel
                 creation failed for any reason.
         """
+        self._is_mtls = False
+        self.mount("https://", requests.adapters.HTTPAdapter())
+
         use_client_cert = google.auth.transport._mtls_helper.check_use_client_cert()
         if not use_client_cert:
-            self._is_mtls = False
             return
         try:
             import OpenSSL
         except ImportError as caught_exc:
-            self._is_mtls = False
             new_exc = exceptions.MutualTLSChannelError(caught_exc)
             raise new_exc from caught_exc
 
@@ -475,7 +476,6 @@ class AuthorizedSession(requests.Session):
             OSError,
             OpenSSL.crypto.Error,
         ) as caught_exc:
-            self._is_mtls = False
             new_exc = exceptions.MutualTLSChannelError(caught_exc)
             raise new_exc from caught_exc
 
