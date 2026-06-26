@@ -106,6 +106,14 @@ class ReferenceListServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_verify_reference_list(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_verify_reference_list(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
         transport = ReferenceListServiceRestTransport(interceptor=MyCustomReferenceListServiceInterceptor())
         client = ReferenceListServiceClient(transport=transport)
 
@@ -311,6 +319,58 @@ class ReferenceListServiceRestInterceptor:
         `post_update_reference_list` interceptor. The (possibly modified) response returned by
         `post_update_reference_list` will be passed to
         `post_update_reference_list_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_verify_reference_list(
+        self,
+        request: reference_list.VerifyReferenceListRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        reference_list.VerifyReferenceListRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for verify_reference_list
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ReferenceListService server.
+        """
+        return request, metadata
+
+    def post_verify_reference_list(
+        self, response: reference_list.VerifyReferenceListResponse
+    ) -> reference_list.VerifyReferenceListResponse:
+        """Post-rpc interceptor for verify_reference_list
+
+        DEPRECATED. Please use the `post_verify_reference_list_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the ReferenceListService server but before
+        it is returned to user code. This `post_verify_reference_list` interceptor runs
+        before the `post_verify_reference_list_with_metadata` interceptor.
+        """
+        return response
+
+    def post_verify_reference_list_with_metadata(
+        self,
+        response: reference_list.VerifyReferenceListResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        reference_list.VerifyReferenceListResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for verify_reference_list
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ReferenceListService server but before it is returned to user code.
+
+        We recommend only using this `post_verify_reference_list_with_metadata`
+        interceptor in new development instead of the `post_verify_reference_list` interceptor.
+        When both interceptors are used, this `post_verify_reference_list_with_metadata` interceptor runs after the
+        `post_verify_reference_list` interceptor. The (possibly modified) response returned by
+        `post_verify_reference_list` will be passed to
+        `post_verify_reference_list_with_metadata`.
         """
         return response, metadata
 
@@ -1127,6 +1187,161 @@ class ReferenceListServiceRestTransport(_BaseReferenceListServiceRestTransport):
                 )
             return resp
 
+    class _VerifyReferenceList(
+        _BaseReferenceListServiceRestTransport._BaseVerifyReferenceList,
+        ReferenceListServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("ReferenceListServiceRestTransport.VerifyReferenceList")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: reference_list.VerifyReferenceListRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> reference_list.VerifyReferenceListResponse:
+            r"""Call the verify reference list method over HTTP.
+
+            Args:
+                request (~.reference_list.VerifyReferenceListRequest):
+                    The request object. VerifyReferenceList request message.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.reference_list.VerifyReferenceListResponse:
+                    VerifyListResponse response message.
+            """
+
+            http_options = _BaseReferenceListServiceRestTransport._BaseVerifyReferenceList._get_http_options()
+
+            request, metadata = self._interceptor.pre_verify_reference_list(
+                request, metadata
+            )
+            transcoded_request = _BaseReferenceListServiceRestTransport._BaseVerifyReferenceList._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseReferenceListServiceRestTransport._BaseVerifyReferenceList._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseReferenceListServiceRestTransport._BaseVerifyReferenceList._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.chronicle_v1.ReferenceListServiceClient.VerifyReferenceList",
+                    extra={
+                        "serviceName": "google.cloud.chronicle.v1.ReferenceListService",
+                        "rpcName": "VerifyReferenceList",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = (
+                ReferenceListServiceRestTransport._VerifyReferenceList._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = reference_list.VerifyReferenceListResponse()
+            pb_resp = reference_list.VerifyReferenceListResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_verify_reference_list(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_verify_reference_list_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        reference_list.VerifyReferenceListResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.chronicle_v1.ReferenceListServiceClient.verify_reference_list",
+                    extra={
+                        "serviceName": "google.cloud.chronicle.v1.ReferenceListService",
+                        "rpcName": "VerifyReferenceList",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     @property
     def create_reference_list(
         self,
@@ -1169,6 +1384,17 @@ class ReferenceListServiceRestTransport(_BaseReferenceListServiceRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateReferenceList(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def verify_reference_list(
+        self,
+    ) -> Callable[
+        [reference_list.VerifyReferenceListRequest],
+        reference_list.VerifyReferenceListResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._VerifyReferenceList(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def cancel_operation(self):

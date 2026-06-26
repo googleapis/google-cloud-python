@@ -768,10 +768,7 @@ class RecrawlUrisRequest(proto.Message):
             [TargetSite][google.cloud.discoveryengine.v1beta.TargetSite]
             in ``site_search_engine``.
         site_credential (str):
-            Optional. Full resource name of the [SiteCredential][], such
-            as
-            ``projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine/siteCredentials/*``.
-            Only set to crawl private URIs.
+            Optional. Credential id to use for crawling.
     """
 
     site_search_engine: str = proto.Field(
@@ -896,6 +893,12 @@ class RecrawlUrisMetadata(proto.Message):
         invalid_uris_count (int):
             Total number of unique URIs in the request
             that have invalid format.
+        noindex_uris (MutableSequence[str]):
+            URIs that have no index meta tag. Sample
+            limited to 1000.
+        noindex_uris_count (int):
+            Total number of URIs that have no index meta
+            tag.
         uris_not_matching_target_sites (MutableSequence[str]):
             Unique URIs in the request that don't match
             any TargetSite in the DataStore, only match
@@ -936,6 +939,14 @@ class RecrawlUrisMetadata(proto.Message):
     invalid_uris_count: int = proto.Field(
         proto.INT32,
         number=8,
+    )
+    noindex_uris: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=11,
+    )
+    noindex_uris_count: int = proto.Field(
+        proto.INT32,
+        number=12,
     )
     uris_not_matching_target_sites: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,

@@ -128,6 +128,7 @@ from bigframes.operations.geo_ops import (
 )
 from bigframes.operations.googlesql import GoogleSqlScalarOp
 from bigframes.operations.json_ops import (
+    JSONDecode,
     JSONExtract,
     JSONExtractArray,
     JSONExtractStringArray,
@@ -229,7 +230,7 @@ from bigframes.operations.timedelta_ops import (
     timestamp_add_op,
     timestamp_sub_op,
 )
-from bigframes.operations.to_op import func_to_op
+from bigframes.operations.to_op import func_to_expr
 
 __all__ = [
     # Base ops
@@ -382,6 +383,7 @@ __all__ = [
     "FloorDtOp",
     "IntegerLabelToDatetimeOp",
     # JSON ops
+    "JSONDecode",
     "JSONExtract",
     "JSONExtractArray",
     "JSONExtractStringArray",
@@ -437,7 +439,7 @@ __all__ = [
     "AIScore",
     "AISimilarity",
     # Helper functions
-    "func_to_op",
+    "func_to_expr",
     # Numpy ops mapping
     "NUMPY_TO_BINOP",
     "NUMPY_TO_OP",

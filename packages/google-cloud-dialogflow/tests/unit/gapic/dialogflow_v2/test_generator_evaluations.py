@@ -4387,7 +4387,12 @@ def test_create_generator_evaluation_rest_call_success(request_type):
                 {"ces_tool": "ces_tool_value", "confirmation_requirement": 1}
             ],
             "ces_app_specs": [
-                {"ces_app": "ces_app_value", "confirmation_requirement": 1}
+                {
+                    "ces_app": "ces_app_value",
+                    "confirmation_requirement": 1,
+                    "proactive_enabled": True,
+                    "reactive_enabled": True,
+                }
             ],
         },
         "summarization_metrics": {

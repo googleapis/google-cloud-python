@@ -1031,6 +1031,152 @@ class OracleDatabaseAsyncClient:
         # Done; return the response.
         return response
 
+    async def configure_exascale_cloud_exadata_infrastructure(
+        self,
+        request: Optional[
+            Union[
+                exadata_infra.ConfigureExascaleCloudExadataInfrastructureRequest, dict
+            ]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        total_storage_size_gb: Optional[int] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Configures Exascale for a single Exadata
+        Infrastructure.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import oracledatabase_v1
+
+            async def sample_configure_exascale_cloud_exadata_infrastructure():
+                # Create a client
+                client = oracledatabase_v1.OracleDatabaseAsyncClient()
+
+                # Initialize request argument(s)
+                request = oracledatabase_v1.ConfigureExascaleCloudExadataInfrastructureRequest(
+                    name="name_value",
+                    total_storage_size_gb=2234,
+                )
+
+                # Make the request
+                operation = await client.configure_exascale_cloud_exadata_infrastructure(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = await operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.oracledatabase_v1.types.ConfigureExascaleCloudExadataInfrastructureRequest, dict]]):
+                The request object. The request for
+                ``CloudExadataInfrastructure.ConfigureExascale``.
+            name (:class:`str`):
+                Required. The name of the Cloud Exadata Infrastructure
+                in the following format:
+                projects/{project}/locations/{location}/cloudExadataInfrastructures/{cloud_exadata_infrastructure}.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            total_storage_size_gb (:class:`int`):
+                Required. The total storage to be
+                allocated to Exascale in GBs.
+
+                This corresponds to the ``total_storage_size_gb`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.oracledatabase_v1.types.CloudExadataInfrastructure` Represents CloudExadataInfrastructure resource.
+                   https://docs.oracle.com/en-us/iaas/api/#/en/database/20160918/CloudExadataInfrastructure/
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name, total_storage_size_gb]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, exadata_infra.ConfigureExascaleCloudExadataInfrastructureRequest
+        ):
+            request = exadata_infra.ConfigureExascaleCloudExadataInfrastructureRequest(
+                request
+            )
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+        if total_storage_size_gb is not None:
+            request.total_storage_size_gb = total_storage_size_gb
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.configure_exascale_cloud_exadata_infrastructure
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            exadata_infra.CloudExadataInfrastructure,
+            metadata_type=oracledatabase.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
     async def list_cloud_vm_clusters(
         self,
         request: Optional[
@@ -9276,129 +9422,6 @@ class OracleDatabaseAsyncClient:
         # Done; return the response.
         return response
 
-    async def get_goldengate_deployment_version(
-        self,
-        request: Optional[
-            Union[
-                goldengate_deployment_version.GetGoldengateDeploymentVersionRequest,
-                dict,
-            ]
-        ] = None,
-        *,
-        name: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> goldengate_deployment_version.GoldengateDeploymentVersion:
-        r"""Gets details of a single GoldengateDeploymentVersion.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import oracledatabase_v1
-
-            async def sample_get_goldengate_deployment_version():
-                # Create a client
-                client = oracledatabase_v1.OracleDatabaseAsyncClient()
-
-                # Initialize request argument(s)
-                request = oracledatabase_v1.GetGoldengateDeploymentVersionRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                response = await client.get_goldengate_deployment_version(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Optional[Union[google.cloud.oracledatabase_v1.types.GetGoldengateDeploymentVersionRequest, dict]]):
-                The request object. Message for getting a
-                GoldengateDeploymentVersion.
-            name (:class:`str`):
-                Required. The name of the GoldengateDeploymentVersion to
-                retrieve. Format:
-                projects/{project}/locations/{location}/goldengateDeploymentVersions/{goldengate_deployment_version}
-
-                This corresponds to the ``name`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                sent along with the request as metadata. Normally, each value must be of type `str`,
-                but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                be of type `bytes`.
-
-        Returns:
-            google.cloud.oracledatabase_v1.types.GoldengateDeploymentVersion:
-                Details of the Goldengate Deployment
-                Version resource.
-
-        """
-        # Create or coerce a protobuf request object.
-        # - Quick check: If we got a request object, we should *not* have
-        #   gotten any keyword arguments that map to the request.
-        flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, goldengate_deployment_version.GetGoldengateDeploymentVersionRequest
-        ):
-            request = (
-                goldengate_deployment_version.GetGoldengateDeploymentVersionRequest(
-                    request
-                )
-            )
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if name is not None:
-            request.name = name
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_goldengate_deployment_version
-        ]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
-
-        # Validate the universe domain.
-        self._client._validate_universe_domain()
-
-        # Send the request.
-        response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
     async def list_goldengate_deployment_versions(
         self,
         request: Optional[
@@ -9532,124 +9555,6 @@ class OracleDatabaseAsyncClient:
             method=rpc,
             request=request,
             response=response,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    async def get_goldengate_deployment_type(
-        self,
-        request: Optional[
-            Union[goldengate_deployment_type.GetGoldengateDeploymentTypeRequest, dict]
-        ] = None,
-        *,
-        name: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> goldengate_deployment_type.GoldengateDeploymentType:
-        r"""Gets details of a single GoldenGateDeploymentType.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import oracledatabase_v1
-
-            async def sample_get_goldengate_deployment_type():
-                # Create a client
-                client = oracledatabase_v1.OracleDatabaseAsyncClient()
-
-                # Initialize request argument(s)
-                request = oracledatabase_v1.GetGoldengateDeploymentTypeRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                response = await client.get_goldengate_deployment_type(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Optional[Union[google.cloud.oracledatabase_v1.types.GetGoldengateDeploymentTypeRequest, dict]]):
-                The request object. Message for getting a
-                GoldengateDeploymentType.
-            name (:class:`str`):
-                Required. The name of the GoldengateDeploymentType to
-                retrieve. Format:
-                projects/{project}/locations/{location}/goldengateDeploymentTypes/{goldengate_deployment_type}
-
-                This corresponds to the ``name`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                sent along with the request as metadata. Normally, each value must be of type `str`,
-                but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                be of type `bytes`.
-
-        Returns:
-            google.cloud.oracledatabase_v1.types.GoldengateDeploymentType:
-                Details of the Goldengate Deployment
-                Type resource.
-
-        """
-        # Create or coerce a protobuf request object.
-        # - Quick check: If we got a request object, we should *not* have
-        #   gotten any keyword arguments that map to the request.
-        flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, goldengate_deployment_type.GetGoldengateDeploymentTypeRequest
-        ):
-            request = goldengate_deployment_type.GetGoldengateDeploymentTypeRequest(
-                request
-            )
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if name is not None:
-            request.name = name
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_goldengate_deployment_type
-        ]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
-
-        # Validate the universe domain.
-        self._client._validate_universe_domain()
-
-        # Send the request.
-        response = await rpc(
-            request,
             retry=retry,
             timeout=timeout,
             metadata=metadata,
@@ -9792,128 +9697,6 @@ class OracleDatabaseAsyncClient:
         # Done; return the response.
         return response
 
-    async def get_goldengate_deployment_environment(
-        self,
-        request: Optional[
-            Union[
-                goldengate_deployment_environment.GetGoldengateDeploymentEnvironmentRequest,
-                dict,
-            ]
-        ] = None,
-        *,
-        name: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> goldengate_deployment_environment.GoldengateDeploymentEnvironment:
-        r"""Gets details of a single
-        GoldengateDeploymentEnvironment.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import oracledatabase_v1
-
-            async def sample_get_goldengate_deployment_environment():
-                # Create a client
-                client = oracledatabase_v1.OracleDatabaseAsyncClient()
-
-                # Initialize request argument(s)
-                request = oracledatabase_v1.GetGoldengateDeploymentEnvironmentRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                response = await client.get_goldengate_deployment_environment(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Optional[Union[google.cloud.oracledatabase_v1.types.GetGoldengateDeploymentEnvironmentRequest, dict]]):
-                The request object. Message for getting a
-                GoldengateDeploymentEnvironment.
-            name (:class:`str`):
-                Required. Name of the resource with the format:
-                projects/{project}/locations/{location}/goldengateDeploymentEnvironments/{goldengate_deployment_environment}
-
-                This corresponds to the ``name`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                sent along with the request as metadata. Normally, each value must be of type `str`,
-                but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                be of type `bytes`.
-
-        Returns:
-            google.cloud.oracledatabase_v1.types.GoldengateDeploymentEnvironment:
-                Details of the Goldengate Deployment
-                Environment resource.
-
-        """
-        # Create or coerce a protobuf request object.
-        # - Quick check: If we got a request object, we should *not* have
-        #   gotten any keyword arguments that map to the request.
-        flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(
-            request,
-            goldengate_deployment_environment.GetGoldengateDeploymentEnvironmentRequest,
-        ):
-            request = goldengate_deployment_environment.GetGoldengateDeploymentEnvironmentRequest(
-                request
-            )
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if name is not None:
-            request.name = name
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_goldengate_deployment_environment
-        ]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
-
-        # Validate the universe domain.
-        self._client._validate_universe_domain()
-
-        # Send the request.
-        response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
     async def list_goldengate_deployment_environments(
         self,
         request: Optional[
@@ -10047,123 +9830,6 @@ class OracleDatabaseAsyncClient:
             method=rpc,
             request=request,
             response=response,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    async def get_goldengate_connection_type(
-        self,
-        request: Optional[
-            Union[goldengate_connection_type.GetGoldengateConnectionTypeRequest, dict]
-        ] = None,
-        *,
-        name: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> goldengate_connection_type.GoldengateConnectionType:
-        r"""Gets details of a single GoldengateConnectionType.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import oracledatabase_v1
-
-            async def sample_get_goldengate_connection_type():
-                # Create a client
-                client = oracledatabase_v1.OracleDatabaseAsyncClient()
-
-                # Initialize request argument(s)
-                request = oracledatabase_v1.GetGoldengateConnectionTypeRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                response = await client.get_goldengate_connection_type(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Optional[Union[google.cloud.oracledatabase_v1.types.GetGoldengateConnectionTypeRequest, dict]]):
-                The request object. Message for getting a
-                GoldengateConnectionType.
-            name (:class:`str`):
-                Required. Name of the resource in the format:
-                projects/{project}/locations/{location}/goldengateConnectionTypes/{goldengate_connection_type}
-
-                This corresponds to the ``name`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                sent along with the request as metadata. Normally, each value must be of type `str`,
-                but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                be of type `bytes`.
-
-        Returns:
-            google.cloud.oracledatabase_v1.types.GoldengateConnectionType:
-                Details of the Goldengate Connection
-                Type resource.
-
-        """
-        # Create or coerce a protobuf request object.
-        # - Quick check: If we got a request object, we should *not* have
-        #   gotten any keyword arguments that map to the request.
-        flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, goldengate_connection_type.GetGoldengateConnectionTypeRequest
-        ):
-            request = goldengate_connection_type.GetGoldengateConnectionTypeRequest(
-                request
-            )
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if name is not None:
-            request.name = name
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_goldengate_connection_type
-        ]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
-
-        # Validate the universe domain.
-        self._client._validate_universe_domain()
-
-        # Send the request.
-        response = await rpc(
-            request,
             retry=retry,
             timeout=timeout,
             metadata=metadata,

@@ -28,6 +28,7 @@ class ExperimentOptions:
         self._semantic_operators: bool = False
         self._ai_operators: bool = False
         self._sql_compiler: Literal["legacy", "stable", "experimental"] = "stable"
+        self._enable_python_transpiler: bool = False
 
     @property
     def semantic_operators(self) -> bool:
@@ -166,3 +167,17 @@ class ExperimentOptions:
         warnings.warn(msg, category=bfe.ApiDeprecationWarning)
 
         bigframes.options.display.blob_display_height = value
+
+    @property
+    def enable_python_transpiler(self) -> bool:
+        return self._enable_python_transpiler
+
+    @enable_python_transpiler.setter
+    def enable_python_transpiler(self, value: bool):
+        if value:
+            msg = bfe.format_message(
+                "Python transpiler is an unstable, experimental feature, and not yet fully "
+                "validated, use at your own risk."
+            )
+            warnings.warn(msg, category=bfe.PythonTranspilerPreviewWarning)
+        self._enable_python_transpiler = value

@@ -3684,6 +3684,8 @@ class BuildOptions(proto.Message):
                 Highcpu e2 machine with 32 CPUs.
             E2_MEDIUM (7):
                 E2 machine with 1 CPU.
+            E2_STANDARD_2 (11):
+                E2 machine with 2 CPUs.
         """
 
         UNSPECIFIED = 0
@@ -3692,6 +3694,7 @@ class BuildOptions(proto.Message):
         E2_HIGHCPU_8 = 5
         E2_HIGHCPU_32 = 6
         E2_MEDIUM = 7
+        E2_STANDARD_2 = 11
 
     class SubstitutionOption(proto.Enum):
         r"""Specifies the behavior when there is an error in the

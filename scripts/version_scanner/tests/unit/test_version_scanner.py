@@ -500,7 +500,7 @@ def test_upload_to_drive(mock_auth, mock_build):
 
 def test_regex_examples_from_config():
     """Test that examples in config match at least one rule in the group."""
-    config_path = "regex_config.yaml"
+    config_path = "regex_pattern_config.yaml"
     
     try:
         with open(config_path, 'r') as f:
@@ -551,7 +551,7 @@ def test_regex_examples_from_config():
 
 def test_regex_negative_cases():
     """Verify regex patterns prevent false positives (lookaheads, patch bounds) and support whitespace."""
-    config_path = "regex_config.yaml"
+    config_path = "regex_pattern_config.yaml"
     with open(config_path, 'r') as f:
         config = yaml.safe_load(f)
         
@@ -692,7 +692,7 @@ def test_scan_file_truncation_bug(tmp_path):
     from version_scanner import ConfigManager, scan_file
     
     # Init config for 3.1
-    config_manager = ConfigManager("regex_config.yaml", "python", "3.1")
+    config_manager = ConfigManager("regex_pattern_config.yaml", "python", "3.1")
     rules = config_manager.load_config()
     import re
     compiled_rules = [{"name": r["name"], "pattern": re.compile(r["pattern"], re.IGNORECASE)} for r in rules]
@@ -876,7 +876,7 @@ def test_scan_repository_multi_targets(tmp_path):
     file2.write_text("protobuf==4.25.8\n")
     
     # Let's mock a config file with rules for both python and protobuf
-    config_file = tmp_path / "regex_config.yaml"
+    config_file = tmp_path / "regex_pattern_config.yaml"
     config_file.write_text("""
 rules:
   - name: python_requires_check

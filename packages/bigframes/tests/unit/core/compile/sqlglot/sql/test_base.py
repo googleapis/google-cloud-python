@@ -159,3 +159,15 @@ def test_literal_explicit_dtype(value, dtype, expected):
 def test_literal_for_list(value: list, expected: str):
     got = sql.to_sql(sql.literal(value))
     assert got == expected
+
+
+def test_literal_null_type():
+    import unittest.mock as mock
+
+    mock_dtype = mock.Mock()
+    with mock.patch(
+        "bigframes.core.compile.sqlglot.sql.base.sgt.from_bigframes_dtype",
+        return_value="NULL",
+    ):
+        got = sql.to_sql(sql.literal(None, dtype=mock_dtype))
+    assert got == "NULL"

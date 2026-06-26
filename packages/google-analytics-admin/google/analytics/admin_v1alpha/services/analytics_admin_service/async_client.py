@@ -14759,6 +14759,121 @@ class AnalyticsAdminServiceAsyncClient:
         # Done; return the response.
         return response
 
+    async def update_reporting_identity_settings(
+        self,
+        request: Optional[
+            Union[analytics_admin.UpdateReportingIdentitySettingsRequest, dict]
+        ] = None,
+        *,
+        reporting_identity_settings: Optional[
+            resources.ReportingIdentitySettings
+        ] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> resources.ReportingIdentitySettings:
+        r"""Updates the reporting identity settings for this
+        property.
+
+        Args:
+            request (Optional[Union[google.analytics.admin_v1alpha.types.UpdateReportingIdentitySettingsRequest, dict]]):
+                The request object. Request message for
+                UpdateReportingIdentitySettings RPC.
+            reporting_identity_settings (:class:`google.analytics.admin_v1alpha.types.ReportingIdentitySettings`):
+                Required. The reporting identity settings to update. The
+                settings' ``name`` field is used to identify the
+                settings.
+
+                This corresponds to the ``reporting_identity_settings`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
+                Optional. The list of fields to be updated. Field names
+                must be in snake case (for example, "field_to_update").
+                Omitted fields will not be updated. To replace the
+                entire entity, use one path with the string "\*" to
+                match all fields. If omitted, the service will treat it
+                as an implied field mask equivalent to all fields that
+                are populated.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.analytics.admin_v1alpha.types.ReportingIdentitySettings:
+                A resource containing settings
+                related to reporting identity.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [reporting_identity_settings, update_mask]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, analytics_admin.UpdateReportingIdentitySettingsRequest
+        ):
+            request = analytics_admin.UpdateReportingIdentitySettingsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if reporting_identity_settings is not None:
+            request.reporting_identity_settings = reporting_identity_settings
+        if update_mask is not None:
+            request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_reporting_identity_settings
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    (
+                        "reporting_identity_settings.name",
+                        request.reporting_identity_settings.name,
+                    ),
+                )
+            ),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
     async def get_user_provided_data_settings(
         self,
         request: Optional[

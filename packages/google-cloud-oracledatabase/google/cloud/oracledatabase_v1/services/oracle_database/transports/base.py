@@ -222,6 +222,11 @@ class OracleDatabaseTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.configure_exascale_cloud_exadata_infrastructure: gapic_v1.method.wrap_method(
+                self.configure_exascale_cloud_exadata_infrastructure,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.list_cloud_vm_clusters: gapic_v1.method.wrap_method(
                 self.list_cloud_vm_clusters,
                 default_retry=retries.Retry(
@@ -852,11 +857,6 @@ class OracleDatabaseTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_goldengate_deployment_version: gapic_v1.method.wrap_method(
-                self.get_goldengate_deployment_version,
-                default_timeout=None,
-                client_info=client_info,
-            ),
             self.list_goldengate_deployment_versions: gapic_v1.method.wrap_method(
                 self.list_goldengate_deployment_versions,
                 default_retry=retries.Retry(
@@ -870,11 +870,6 @@ class OracleDatabaseTransport(abc.ABC):
                     deadline=60.0,
                 ),
                 default_timeout=60.0,
-                client_info=client_info,
-            ),
-            self.get_goldengate_deployment_type: gapic_v1.method.wrap_method(
-                self.get_goldengate_deployment_type,
-                default_timeout=None,
                 client_info=client_info,
             ),
             self.list_goldengate_deployment_types: gapic_v1.method.wrap_method(
@@ -892,11 +887,6 @@ class OracleDatabaseTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_goldengate_deployment_environment: gapic_v1.method.wrap_method(
-                self.get_goldengate_deployment_environment,
-                default_timeout=None,
-                client_info=client_info,
-            ),
             self.list_goldengate_deployment_environments: gapic_v1.method.wrap_method(
                 self.list_goldengate_deployment_environments,
                 default_retry=retries.Retry(
@@ -910,11 +900,6 @@ class OracleDatabaseTransport(abc.ABC):
                     deadline=60.0,
                 ),
                 default_timeout=60.0,
-                client_info=client_info,
-            ),
-            self.get_goldengate_connection_type: gapic_v1.method.wrap_method(
-                self.get_goldengate_connection_type,
-                default_timeout=None,
                 client_info=client_info,
             ),
             self.list_goldengate_connection_types: gapic_v1.method.wrap_method(
@@ -1091,6 +1076,15 @@ class OracleDatabaseTransport(abc.ABC):
         self,
     ) -> Callable[
         [oracledatabase.DeleteCloudExadataInfrastructureRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def configure_exascale_cloud_exadata_infrastructure(
+        self,
+    ) -> Callable[
+        [exadata_infra.ConfigureExascaleCloudExadataInfrastructureRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
@@ -1737,18 +1731,6 @@ class OracleDatabaseTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def get_goldengate_deployment_version(
-        self,
-    ) -> Callable[
-        [goldengate_deployment_version.GetGoldengateDeploymentVersionRequest],
-        Union[
-            goldengate_deployment_version.GoldengateDeploymentVersion,
-            Awaitable[goldengate_deployment_version.GoldengateDeploymentVersion],
-        ],
-    ]:
-        raise NotImplementedError()
-
-    @property
     def list_goldengate_deployment_versions(
         self,
     ) -> Callable[
@@ -1758,18 +1740,6 @@ class OracleDatabaseTransport(abc.ABC):
             Awaitable[
                 goldengate_deployment_version.ListGoldengateDeploymentVersionsResponse
             ],
-        ],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def get_goldengate_deployment_type(
-        self,
-    ) -> Callable[
-        [goldengate_deployment_type.GetGoldengateDeploymentTypeRequest],
-        Union[
-            goldengate_deployment_type.GoldengateDeploymentType,
-            Awaitable[goldengate_deployment_type.GoldengateDeploymentType],
         ],
     ]:
         raise NotImplementedError()
@@ -1787,20 +1757,6 @@ class OracleDatabaseTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def get_goldengate_deployment_environment(
-        self,
-    ) -> Callable[
-        [goldengate_deployment_environment.GetGoldengateDeploymentEnvironmentRequest],
-        Union[
-            goldengate_deployment_environment.GoldengateDeploymentEnvironment,
-            Awaitable[
-                goldengate_deployment_environment.GoldengateDeploymentEnvironment
-            ],
-        ],
-    ]:
-        raise NotImplementedError()
-
-    @property
     def list_goldengate_deployment_environments(
         self,
     ) -> Callable[
@@ -1810,18 +1766,6 @@ class OracleDatabaseTransport(abc.ABC):
             Awaitable[
                 goldengate_deployment_environment.ListGoldengateDeploymentEnvironmentsResponse
             ],
-        ],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def get_goldengate_connection_type(
-        self,
-    ) -> Callable[
-        [goldengate_connection_type.GetGoldengateConnectionTypeRequest],
-        Union[
-            goldengate_connection_type.GoldengateConnectionType,
-            Awaitable[goldengate_connection_type.GoldengateConnectionType],
         ],
     ]:
         raise NotImplementedError()

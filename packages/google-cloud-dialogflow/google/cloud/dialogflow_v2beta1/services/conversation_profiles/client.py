@@ -258,28 +258,6 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def conversation_model_path(
-        project: str,
-        location: str,
-        conversation_model: str,
-    ) -> str:
-        """Returns a fully-qualified conversation_model string."""
-        return "projects/{project}/locations/{location}/conversationModels/{conversation_model}".format(
-            project=project,
-            location=location,
-            conversation_model=conversation_model,
-        )
-
-    @staticmethod
-    def parse_conversation_model_path(path: str) -> Dict[str, str]:
-        """Parses a conversation_model path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/conversationModels/(?P<conversation_model>.+?)$",
-            path,
-        )
-        return m.groupdict() if m else {}
-
-    @staticmethod
     def conversation_profile_path(
         project: str,
         conversation_profile: str,

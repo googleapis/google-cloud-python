@@ -44,6 +44,7 @@ import google.protobuf.any_pb2 as any_pb2  # type: ignore
 import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import google.rpc.status_pb2 as status_pb2  # type: ignore
+import google.type.latlng_pb2 as latlng_pb2  # type: ignore
 from google.api_core import (
     client_options,
     future,
@@ -1366,7 +1367,12 @@ def test_evaluation_service_client_create_channel_credentials_file(
             credentials=file_creds,
             credentials_file=None,
             quota_project_id=None,
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/discoveryengine.assist.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.serving.readwrite",
+            ),
             scopes=None,
             default_host="discoveryengine.googleapis.com",
             ssl_credentials=None,
@@ -4667,6 +4673,7 @@ def test_create_evaluation_rest_call_success(request_type):
                 "serving_config": "serving_config_value",
                 "branch": "branch_value",
                 "query": "query_value",
+                "page_categories": ["page_categories_value1", "page_categories_value2"],
                 "image_query": {"image_bytes": "image_bytes_value"},
                 "page_size": 951,
                 "page_token": "page_token_value",
@@ -4695,14 +4702,22 @@ def test_create_evaluation_rest_call_success(request_type):
                                 }
                             ]
                         },
+                        "custom_search_operators": "custom_search_operators_value",
+                        "num_results": 1217,
                     }
                 ],
+                "num_results_per_data_store": 2796,
                 "filter": "filter_value",
                 "canonical_filter": "canonical_filter_value",
                 "order_by": "order_by_value",
                 "user_info": {
                     "user_id": "user_id_value",
                     "user_agent": "user_agent_value",
+                    "time_zone": "time_zone_value",
+                    "precise_location": {
+                        "point": {"latitude": 0.86, "longitude": 0.971},
+                        "address": "address_value",
+                    },
                 },
                 "language_code": "language_code_value",
                 "region_code": "region_code_value",
@@ -4756,6 +4771,7 @@ def test_create_evaluation_rest_call_success(request_type):
                         "ignore_non_summary_seeking_query": True,
                         "ignore_low_relevant_content": True,
                         "ignore_jail_breaking_query": True,
+                        "multimodal_spec": {"image_source": 1},
                         "model_prompt_spec": {"preamble": "preamble_value"},
                         "language_code": "language_code_value",
                         "model_spec": {"version": "version_value"},
@@ -4780,7 +4796,7 @@ def test_create_evaluation_rest_call_success(request_type):
                     ]
                 },
                 "ranking_expression": "ranking_expression_value",
-                "ranking_expression_backend": 3,
+                "ranking_expression_backend": 1,
                 "safe_search": True,
                 "user_labels": {},
                 "natural_language_query_understanding_spec": {
@@ -4789,15 +4805,44 @@ def test_create_evaluation_rest_call_success(request_type):
                         "geo_search_query_detection_field_names_value1",
                         "geo_search_query_detection_field_names_value2",
                     ],
+                    "extracted_filter_behavior": 1,
+                    "allowed_field_names": [
+                        "allowed_field_names_value1",
+                        "allowed_field_names_value2",
+                    ],
                 },
                 "search_as_you_type_spec": {"condition": 1},
+                "display_spec": {"match_highlighting_condition": 1},
+                "crowding_specs": [
+                    {"field": "field_value", "max_count": 974, "mode": 1}
+                ],
                 "session": "session_value",
                 "session_spec": {
                     "query_id": "query_id_value",
                     "search_result_persistence_count": 3328,
                 },
                 "relevance_threshold": 1,
+                "relevance_filter_spec": {
+                    "keyword_search_threshold": {
+                        "relevance_threshold": 1,
+                        "semantic_relevance_threshold": 0.2964,
+                    },
+                    "semantic_search_threshold": {},
+                },
                 "personalization_spec": {"mode": 1},
+                "relevance_score_spec": {"return_relevance_score": True},
+                "search_addon_spec": {
+                    "disable_semantic_add_on": True,
+                    "disable_kpi_personalization_add_on": True,
+                    "disable_generative_answer_add_on": True,
+                },
+                "custom_ranking_params": {
+                    "expressions_to_precompute": [
+                        "expressions_to_precompute_value1",
+                        "expressions_to_precompute_value2",
+                    ]
+                },
+                "entity": "entity_value",
             },
             "query_set_spec": {"sample_query_set": "sample_query_set_value"},
         },
@@ -5510,7 +5555,12 @@ def test_evaluation_service_base_transport_with_credentials_file():
         load_creds.assert_called_once_with(
             "credentials.json",
             scopes=None,
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/discoveryengine.assist.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.serving.readwrite",
+            ),
             quota_project_id="octopus",
         )
 
@@ -5536,7 +5586,12 @@ def test_evaluation_service_auth_adc():
         EvaluationServiceClient()
         adc.assert_called_once_with(
             scopes=None,
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/discoveryengine.assist.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.serving.readwrite",
+            ),
             quota_project_id=None,
         )
 
@@ -5556,7 +5611,12 @@ def test_evaluation_service_transport_auth_adc(transport_class):
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
         adc.assert_called_once_with(
             scopes=["1", "2"],
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/discoveryengine.assist.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.serving.readwrite",
+            ),
             quota_project_id="octopus",
         )
 
@@ -5609,7 +5669,12 @@ def test_evaluation_service_transport_create_channel(transport_class, grpc_helpe
             credentials=creds,
             credentials_file=None,
             quota_project_id="octopus",
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/discoveryengine.assist.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.serving.readwrite",
+            ),
             scopes=["1", "2"],
             default_host="discoveryengine.googleapis.com",
             ssl_credentials=None,

@@ -6030,8 +6030,10 @@ def test_create_workflow_template_rest_call_success(request_type):
                             "enable_integrity_monitoring": True,
                         },
                         "confidential_instance_config": {
-                            "enable_confidential_compute": True
+                            "enable_confidential_compute": True,
+                            "confidential_instance_type": 1,
                         },
+                        "resource_manager_tags": {},
                     },
                     "master_config": {
                         "num_instances": 1399,
@@ -6826,8 +6828,10 @@ def test_instantiate_inline_workflow_template_rest_call_success(request_type):
                             "enable_integrity_monitoring": True,
                         },
                         "confidential_instance_config": {
-                            "enable_confidential_compute": True
+                            "enable_confidential_compute": True,
+                            "confidential_instance_type": 1,
                         },
+                        "resource_manager_tags": {},
                     },
                     "master_config": {
                         "num_instances": 1399,
@@ -7340,8 +7344,10 @@ def test_update_workflow_template_rest_call_success(request_type):
                             "enable_integrity_monitoring": True,
                         },
                         "confidential_instance_config": {
-                            "enable_confidential_compute": True
+                            "enable_confidential_compute": True,
+                            "confidential_instance_type": 1,
                         },
+                        "resource_manager_tags": {},
                     },
                     "master_config": {
                         "num_instances": 1399,

@@ -171,11 +171,14 @@ from .reference_list import (
     ListReferenceListsResponse,
     ReferenceList,
     ReferenceListEntry,
+    ReferenceListError,
     ReferenceListScope,
     ReferenceListSyntaxType,
     ReferenceListView,
     ScopeInfo,
     UpdateReferenceListRequest,
+    VerifyReferenceListRequest,
+    VerifyReferenceListResponse,
 )
 from .rule import (
     CompilationDiagnostic,
@@ -205,6 +208,13 @@ from .rule import (
     Severity,
     UpdateRuleDeploymentRequest,
     UpdateRuleRequest,
+    VerifyRuleTextRequest,
+    VerifyRuleTextResponse,
+)
+from .rule_execution_error import (
+    ListRuleExecutionErrorsRequest,
+    ListRuleExecutionErrorsResponse,
+    RuleExecutionError,
 )
 
 __all__ = (
@@ -345,9 +355,12 @@ __all__ = (
     "ListReferenceListsResponse",
     "ReferenceList",
     "ReferenceListEntry",
+    "ReferenceListError",
     "ReferenceListScope",
     "ScopeInfo",
     "UpdateReferenceListRequest",
+    "VerifyReferenceListRequest",
+    "VerifyReferenceListResponse",
     "ReferenceListSyntaxType",
     "ReferenceListView",
     "CompilationDiagnostic",
@@ -374,7 +387,12 @@ __all__ = (
     "Severity",
     "UpdateRuleDeploymentRequest",
     "UpdateRuleRequest",
+    "VerifyRuleTextRequest",
+    "VerifyRuleTextResponse",
     "RuleType",
     "RuleView",
     "RunFrequency",
+    "ListRuleExecutionErrorsRequest",
+    "ListRuleExecutionErrorsResponse",
+    "RuleExecutionError",
 )

@@ -23,47 +23,76 @@ from typing import Optional, TypeVar, cast
 import pandas
 import pandas.api.extensions
 
-import bigframes.core.global_session as bf_session
-import bigframes.extensions.core.series_accessor as core_accessor
-import bigframes.series
-import bigframes.session
+from bigframes import dataframe, series, session
+from bigframes.core import global_session as bf_session
 from bigframes.core.logging import log_adapter
+from bigframes.extensions.core import series_accessor as core_accessor
 
+T = TypeVar("T", bound="pandas.DataFrame")
 S = TypeVar("S", bound="pandas.Series")
 
 
 @pandas.api.extensions.register_series_accessor("bigquery")
 @log_adapter.class_logger
-class PandasBigQuerySeriesAccessor(core_accessor.BigQuerySeriesAccessor[S]):
+class PandasBigQuerySeriesAccessor(core_accessor.BigQuerySeriesAccessor[T, S]):
     def __init__(self, pandas_obj: S):
         super().__init__(pandas_obj)
 
     def _bf_from_series(
-        self, session: Optional[bigframes.session.Session] = None
-    ) -> bigframes.series.Series:
+        self, session: Optional[session.Session] = None
+    ) -> series.Series:
         if session is None:
             session = bf_session.get_global_session()
-        return cast(bigframes.series.Series, session.read_pandas(self._obj))
+        return cast(series.Series, session.read_pandas(self._obj))
 
-    def _to_series(self, bf_series: bigframes.series.Series) -> S:
+    def _to_dataframe(self, bf_df: dataframe.DataFrame) -> T:
+        return cast(T, bf_df.to_pandas(ordered=True))
+
+    def _to_series(self, bf_series: series.Series) -> S:
         return cast(S, bf_series.to_pandas(ordered=True))
 
     @property
-    def aead(self) -> PandasAeadSeriesAccessor[S]:
+    def ai(self) -> PandasAiSeriesAccessor[T, S]:
+        return PandasAiSeriesAccessor(self._obj)
+
+    @property
+    def aead(self) -> PandasAeadSeriesAccessor[T, S]:
         return PandasAeadSeriesAccessor(self._obj)
 
 
 @log_adapter.class_logger
-class PandasAeadSeriesAccessor(core_accessor.AeadSeriesAccessor[S]):
+class PandasAiSeriesAccessor(core_accessor.AiSeriesAccessor[T, S]):
     def __init__(self, pandas_obj: S):
         super().__init__(pandas_obj)
 
     def _bf_from_series(
-        self, session: Optional[bigframes.session.Session] = None
-    ) -> bigframes.series.Series:
+        self, session: Optional[session.Session] = None
+    ) -> series.Series:
         if session is None:
             session = bf_session.get_global_session()
-        return cast(bigframes.series.Series, session.read_pandas(self._obj))
+        return cast(series.Series, session.read_pandas(self._obj))
 
-    def _to_series(self, bf_series: bigframes.series.Series) -> S:
+    def _to_dataframe(self, bf_df: dataframe.DataFrame) -> T:
+        return cast(T, bf_df.to_pandas(ordered=True))
+
+    def _to_series(self, bf_series: series.Series) -> S:
+        return cast(S, bf_series.to_pandas(ordered=True))
+
+
+@log_adapter.class_logger
+class PandasAeadSeriesAccessor(core_accessor.AeadSeriesAccessor[T, S]):
+    def __init__(self, pandas_obj: S):
+        super().__init__(pandas_obj)
+
+    def _bf_from_series(
+        self, session: Optional[session.Session] = None
+    ) -> series.Series:
+        if session is None:
+            session = bf_session.get_global_session()
+        return cast(series.Series, session.read_pandas(self._obj))
+
+    def _to_dataframe(self, bf_df: dataframe.DataFrame) -> T:
+        return cast(T, bf_df.to_pandas(ordered=True))
+
+    def _to_series(self, bf_series: series.Series) -> S:
         return cast(S, bf_series.to_pandas(ordered=True))
