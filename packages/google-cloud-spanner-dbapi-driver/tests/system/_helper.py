@@ -14,19 +14,21 @@
 """Helper functions for system tests."""
 
 import os
+import pytest
 
 SPANNER_EMULATOR_HOST = os.environ.get("SPANNER_EMULATOR_HOST")
 TEST_ON_PROD = not bool(SPANNER_EMULATOR_HOST)
 
 if TEST_ON_PROD:
-    PROJECT_ID = os.environ.get("SPANNER_PROJECT_ID")
-    INSTANCE_ID = os.environ.get("SPANNER_INSTANCE_ID")
+    PROJECT_ID = os.environ.get("SPANNER_PROJECT_ID") or os.environ.get("GOOGLE_CLOUD_PROJECT") or os.environ.get("PROJECT_ID")
+    INSTANCE_ID = os.environ.get("SPANNER_INSTANCE_ID") or os.environ.get("GOOGLE_CLOUD_TESTS_SPANNER_INSTANCE")
     DATABASE_ID = os.environ.get("SPANNER_DATABASE_ID")
 
     if not PROJECT_ID or not INSTANCE_ID or not DATABASE_ID:
-        raise ValueError(
-            "SPANNER_PROJECT_ID, SPANNER_INSTANCE_ID, and SPANNER_DATABASE_ID "
-            "must be set when running tests on production."
+        pytest.skip(
+            "SPANNER_PROJECT_ID, SPANNER_INSTANCE_ID, and SPANNER_DATABASE_ID (or standard fallbacks) "
+            "must be set when running tests on production.",
+            allow_module_level=True
         )
 else:
     PROJECT_ID = "test-project"
