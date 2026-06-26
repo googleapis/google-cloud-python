@@ -242,6 +242,9 @@ def unit(session, protobuf_implementation):
     if session.python == "3.15":
         session.skip("Skipping 3.15 until wheels are available for google-crc32c.")
 
+    if session.python == "3.15":
+        session.skip("Skipping 3.15 until wheels are available for google-crc32c.")
+
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
     )
