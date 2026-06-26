@@ -3805,6 +3805,9 @@ def test_list_target_sites_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, site_search_engine.TargetSite) for i in results)
@@ -3897,6 +3900,8 @@ async def test_list_target_sites_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -6295,6 +6300,9 @@ def test_fetch_domain_verification_status_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, site_search_engine.TargetSite) for i in results)
@@ -6387,6 +6395,8 @@ async def test_fetch_domain_verification_status_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -7760,6 +7770,9 @@ def test_list_target_sites_rest_pager(transport: str = "rest"):
 
         pager = client.list_target_sites(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, site_search_engine.TargetSite) for i in results)
@@ -9039,6 +9052,9 @@ def test_fetch_domain_verification_status_rest_pager(transport: str = "rest"):
         }
 
         pager = client.fetch_domain_verification_status(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6

@@ -3279,6 +3279,9 @@ def test_get_xpn_resources_rest_pager(transport: str = "rest"):
 
         pager = client.get_xpn_resources(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, compute.XpnResourceId) for i in results)
@@ -3552,6 +3555,9 @@ def test_list_xpn_hosts_rest_pager(transport: str = "rest"):
         )
 
         pager = client.list_xpn_hosts(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6

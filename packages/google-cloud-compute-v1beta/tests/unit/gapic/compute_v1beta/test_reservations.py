@@ -1398,6 +1398,9 @@ def test_aggregated_list_rest_pager(transport: str = "rest"):
 
         pager = client.aggregated_list(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         assert isinstance(pager.get("a"), compute.ReservationsScopedList)
         assert pager.get("h") is None
 
@@ -2918,6 +2921,9 @@ def test_list_rest_pager(transport: str = "rest"):
         sample_request = {"project": "sample1", "zone": "sample2"}
 
         pager = client.list(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
