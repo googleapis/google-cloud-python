@@ -123,14 +123,14 @@ jobs:
                 # If fail_under is specified in the package-specific .coveragerc, coverage report
                 # will automatically enforce it. Otherwise, we enforce the default.
                 if grep -q "fail_under" ".coveragerc"; then
-                  COVERAGE_FILE=../../.coverage coverage report
+                  COVERAGE_FILE=../../.coverage coverage report --include="$PWD/**"
                 else
                   echo "No fail_under specified in ${pkg}/.coveragerc, enforcing default"
-                  COVERAGE_FILE=../../.coverage coverage report --fail-under="${DEFAULT_FAIL_UNDER}"
+                  COVERAGE_FILE=../../.coverage coverage report --include="$PWD/**" --fail-under="${DEFAULT_FAIL_UNDER}"
                 fi
               else
                 echo "No .coveragerc found for ${pkg}, enforcing default"
-                COVERAGE_FILE=../../.coverage coverage report --fail-under="${DEFAULT_FAIL_UNDER}"
+                COVERAGE_FILE=../../.coverage coverage report --include="$PWD/**" --fail-under="${DEFAULT_FAIL_UNDER}"
               fi
               status=$?
               popd > /dev/null
