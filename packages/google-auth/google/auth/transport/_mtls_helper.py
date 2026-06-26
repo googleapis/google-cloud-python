@@ -167,7 +167,9 @@ def _encrypt_key_if_plaintext(
 ) -> Tuple[bytes, Optional[bytes]]:
     """Encrypts a plaintext PEM key if necessary, returning the bytes and passphrase.
 
-    If the key is already encrypted, returns it as-is.
+    If the key is already encrypted, or if parsing/encryption fails, the key is
+    returned as-is (plaintext) as a fallback. This allows the caller (underlying SSL
+    context) to attempt loading the key directly and handle any failures.
     """
     from cryptography.hazmat.primitives import serialization
     import secrets
