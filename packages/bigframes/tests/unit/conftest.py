@@ -207,6 +207,24 @@ def nested_structs_pandas_df() -> pd.DataFrame:
 
     df["json_col"] = df["json_col"].apply(to_json_str).astype(dtypes.JSON_DTYPE)
 
+    # timestamp_col
+    import datetime
+
+    def parse_timestamp(val):
+        if pd.isna(val):
+            return None
+        if isinstance(val, str):
+            return datetime.datetime.fromisoformat(val.replace("Z", "+00:00"))
+        if hasattr(val, "to_pydatetime"):
+            return val.to_pydatetime()
+        return val
+
+    timestamp_vals = [parse_timestamp(x) for x in df["timestamp_col"]]
+    timestamp_arr = pa.array(timestamp_vals, type=dtypes.TIMESTAMP_DTYPE.pyarrow_dtype)
+    df["timestamp_col"] = pd.Series(
+        timestamp_arr, index=df.index, dtype=dtypes.TIMESTAMP_DTYPE
+    )
+
     return df
 
 

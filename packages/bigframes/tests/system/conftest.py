@@ -34,6 +34,7 @@ import google.cloud.resourcemanager_v3 as resourcemanager_v3
 import google.cloud.storage as storage  # type: ignore
 import numpy as np
 import pandas as pd
+import pandas.arrays
 import pyarrow as pa
 import pytest
 import pytz
@@ -553,8 +554,12 @@ def nested_structs_pandas_df(nested_structs_pandas_type: pd.ArrowDtype) -> pd.Da
         else None
         for row in raw_rows
     ]
-    arr = pa.array(float64_vals, type=pa.float64())
-    float64_ser = pd.Series(arr, index=ids, dtype=pd.Float64Dtype())
+    np_vals = np.array(
+        [x if x is not None else np.nan for x in float64_vals], dtype=np.float64
+    )
+    mask = np.array([x is None for x in float64_vals], dtype=bool)
+    float64_arr = pd.arrays.FloatingArray(np_vals, mask)  # type: ignore
+    float64_ser = pd.Series(float64_arr, index=ids)
 
     # string_col
     string_vals = [
