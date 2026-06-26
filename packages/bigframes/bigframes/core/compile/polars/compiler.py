@@ -506,28 +506,37 @@ if polars_installed:
 
         @compile_op.register(json_ops.ToJSONString)
         def _(self, op: json_ops.ToJSONString, input: pl.Expr) -> pl.Expr:
-            import base64
-            import json
+            from_type = self._expr_types.get(id(input))
 
-            def to_json_str(val):
-                if val is None:
-                    return None
+            def preprocess_binary(
+                expr: pl.Expr, dtype: bigframes.dtypes.ExpressionType
+            ) -> pl.Expr:
+                if dtype == bigframes.dtypes.BYTES_DTYPE:
+                    return expr.bin.encode("base64")
+                if bigframes.dtypes.is_struct_like(dtype):
+                    fields = bigframes.dtypes.get_struct_fields(dtype)
+                    return pl.struct(
+                        *[
+                            preprocess_binary(
+                                expr.struct.field(name), field_type
+                            ).alias(name)
+                            for name, field_type in fields.items()
+                        ]
+                    )
+                if bigframes.dtypes.is_array_like(dtype):
+                    inner_type = bigframes.dtypes.get_array_inner_type(dtype)
+                    return expr.list.eval(preprocess_binary(pl.element(), inner_type))
+                return expr
 
-                # Helper to recursively convert bytes to base64 strings
-                def convert(obj):
-                    if isinstance(obj, bytes):
-                        return base64.b64encode(obj).decode("utf-8")
-                    if isinstance(obj, dict):
-                        return {k: convert(v) for k, v in obj.items()}
-                    if isinstance(obj, list):
-                        return [convert(i) for i in obj]
-                    if isinstance(obj, tuple):
-                        return tuple(convert(i) for i in obj)
-                    return obj
+            preprocessed = preprocess_binary(input, from_type)
 
-                return json.dumps(convert(val))
+            if bigframes.dtypes.is_struct_like(from_type):
+                result = preprocessed.struct.json_encode()
+            else:
+                wrapped = pl.struct(value=preprocessed).struct.json_encode()
+                result = wrapped.str.slice(9, wrapped.str.len_chars() - 10)
 
-            return input.map_elements(to_json_str, return_dtype=pl.String)
+            return pl.when(input.is_null()).then(pl.lit("null")).otherwise(result)
 
         @compile_op.register(arr_ops.ToArrayOp)
         def _(self, op: ops.ToArrayOp, *inputs: pl.Expr) -> pl.Expr:
