@@ -18,6 +18,8 @@ from unittest import mock
 import os
 import pytest
 import pytest_asyncio
+from requests.adapters import HTTPAdapter
+from urllib3.poolmanager import PoolManager
 
 from typing import Sequence, Tuple
 
@@ -328,7 +330,7 @@ class EchoMetadataClientGrpcInterceptor(
     def intercept_unary_unary(self, continuation, client_call_details, request):
         self._add_request_metadata(client_call_details)
         response = continuation(client_call_details, request)
-        metadata = [(k, str(v)) for k, v in response.trailing_metadata()]
+        metadata = [(k, str(v)) for k, v in response.initial_metadata()] + [(k, str(v)) for k, v in response.trailing_metadata()]
         self.response_metadata = metadata
         return response
 
@@ -453,24 +455,44 @@ async def intercepted_echo_grpc_async():
     return EchoAsyncClient(transport=transport), interceptor
 
 
+class HostNameIgnoringAdapter(HTTPAdapter):
+    """Custom HTTPAdapter that disables hostname verification for local self-signed certs."""
+    def init_poolmanager(self, connections, maxsize, block=False, **pool_kwargs):
+        self.poolmanager = PoolManager(
+            num_pools=connections,
+            maxsize=maxsize,
+            block=block,
+            assert_hostname=False,
+            **pool_kwargs
+        )
+
+
 @pytest.fixture
-def intercepted_echo_rest():
+def intercepted_echo_rest(use_mtls):
     transport_name = "rest"
     transport_cls = EchoClient.get_transport_class(transport_name)
     interceptor = EchoMetadataClientRestInterceptor()
 
-    # The custom host explicitly bypasses https.
+    url_scheme = "https" if use_mtls else "http"
     transport = transport_cls(
         credentials=ga_credentials.AnonymousCredentials(),
         host="localhost:7469",
-        url_scheme="http",
+        url_scheme=url_scheme,
         interceptor=interceptor,
     )
+    if use_mtls:
+        dir = os.path.dirname(__file__)
+        cert_path = os.path.join(dir, "../cert/mtls.crt")
+        key_path = os.path.join(dir, "../cert/mtls.key")
+        transport._session.verify = cert_path
+        transport._session.cert = (cert_path, key_path)
+        transport._session.mount("https://", HostNameIgnoringAdapter())
+
     return EchoClient(transport=transport), interceptor
 
 
 @pytest.fixture
-def intercepted_echo_rest_async():
+def intercepted_echo_rest_async(use_mtls):
     if not HAS_ASYNC_REST_ECHO_TRANSPORT:
         pytest.skip("Skipping test with async rest.")
 
@@ -478,11 +500,19 @@ def intercepted_echo_rest_async():
     transport_cls = EchoAsyncClient.get_transport_class(transport_name)
     interceptor = EchoMetadataClientRestAsyncInterceptor()
 
-    # The custom host explicitly bypasses https.
+    url_scheme = "https" if use_mtls else "http"
     transport = transport_cls(
         credentials=async_anonymous_credentials(),
         host="localhost:7469",
-        url_scheme="http",
+        url_scheme=url_scheme,
         interceptor=interceptor,
     )
+    if use_mtls:
+        dir = os.path.dirname(__file__)
+        cert_path = os.path.join(dir, "../cert/mtls.crt")
+        key_path = os.path.join(dir, "../cert/mtls.key")
+        transport._session.verify = cert_path
+        transport._session.cert = (cert_path, key_path)
+        transport._session.mount("https://", HostNameIgnoringAdapter())
+
     return EchoAsyncClient(transport=transport), interceptor
