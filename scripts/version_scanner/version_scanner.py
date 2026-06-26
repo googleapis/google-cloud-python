@@ -661,7 +661,7 @@ def parse_matrix_file(file_path: str) -> List[Tuple[str, str]]:
 
 def main():
     script_dir = os.path.dirname(os.path.abspath(__file__))
-    default_config = os.path.join(script_dir, "regex_config.yaml")
+    default_config = os.path.join(script_dir, "regex_pattern_config.yaml")
     
     parser = argparse.ArgumentParser(
         description="Scan repository for references to specific dependency versions."
@@ -705,7 +705,7 @@ def main():
     parser.add_argument(
         "--config",
         default=default_config,
-        help="Path to the regex configuration file (defaults to scripts/version_scanner/regex_config.yaml)"
+        help="Path to the regex configuration file (defaults to scripts/version_scanner/regex_pattern_config.yaml)"
     )
     
     parser.add_argument(
