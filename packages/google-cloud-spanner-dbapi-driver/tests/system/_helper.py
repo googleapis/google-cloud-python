@@ -16,9 +16,10 @@
 import os
 import pytest
 
-SPANNER_EMULATOR_HOST = os.environ.get("SPANNER_EMULATOR_HOST")
-TEST_ON_PROD = not bool(SPANNER_EMULATOR_HOST)
-
+# As of June 2026, this package is in 'Planning' status.
+# The CI/CD system does not yet have a SPANNER_EMULATOR_HOST active for this package,
+# so running tests on production is the default. This fallback and skip logic acts
+# as a safety measure until an emulator is available or production credentials are fully configured.
 if TEST_ON_PROD:
     PROJECT_ID = os.environ.get("SPANNER_PROJECT_ID") or os.environ.get("GOOGLE_CLOUD_PROJECT") or os.environ.get("PROJECT_ID")
     INSTANCE_ID = os.environ.get("SPANNER_INSTANCE_ID") or os.environ.get("GOOGLE_CLOUD_TESTS_SPANNER_INSTANCE")
