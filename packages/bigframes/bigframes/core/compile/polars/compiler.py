@@ -590,22 +590,21 @@ if polars_installed:
         def _(self, op: ops.PythonUdfOp, *inputs: pl.Expr) -> pl.Expr:
             from bigframes.functions import function_template
 
+            code = op.function_def.code.to_callable()
             if op.function_def.signature.is_row_processor:
 
                 def handler(py_struct):
-                    code = op.function_def.code.to_callable()
                     args = list(py_struct.values())
                     series_arg = function_template.get_pd_series(args[0])
                     return code(series_arg, *args[1:])
             else:
 
                 def handler(py_struct):
-                    code = op.function_def.code.to_callable()
                     return code(*(field for field in py_struct.values()))
 
             return pl.struct(*inputs).map_elements(
                 handler,
-                return_dtype=_DTYPE_MAPPING[op.output_type()],
+                return_dtype=_bigframes_dtype_to_polars_dtype(op.output_type()),
                 skip_nulls=False,
             )
 
