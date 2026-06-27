@@ -573,4 +573,37 @@ class TestSslCredentials(object):
         with pytest.raises(exceptions.MutualTLSChannelError):
             _ = ssl_credentials.ssl_credentials
 
-        assert not ssl_credentials.is_mtls
+        assert ssl_credentials.is_mtls
+
+    def test_get_client_ssl_credentials_transient_error_retry(
+        self,
+        mock_check_config_path,
+        mock_load_json_file,
+        mock_get_client_ssl_credentials,
+        mock_ssl_channel_credentials,
+    ):
+        mock_check_config_path.return_value = METADATA_PATH
+        mock_load_json_file.return_value = {"cert_provider_command": ["some command"]}
+        # First call fails with OSError, second succeeds
+        mock_get_client_ssl_credentials.side_effect = [
+            OSError("Mock transient error"),
+            (True, b"cert", b"key", None),
+        ]
+
+        with mock.patch.dict(
+            os.environ, {environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE: "true"}
+        ):
+            ssl_credentials = google.auth.transport.grpc.SslCredentials()
+
+        # First call raises error
+        with pytest.raises(exceptions.MutualTLSChannelError):
+            _ = ssl_credentials.ssl_credentials
+
+        assert ssl_credentials.is_mtls  # Should remain True
+
+        # Second call succeeds
+        assert ssl_credentials.ssl_credentials is not None
+        assert ssl_credentials.is_mtls
+        mock_ssl_channel_credentials.assert_called_with(
+            certificate_chain=b"cert", private_key=b"key"
+        )

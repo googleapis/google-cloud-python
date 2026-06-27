@@ -513,20 +513,24 @@ class TestAuthorizedSession(object):
     def test_configure_mtls_channel_without_client_cert_env(
         self, get_client_cert_and_key
     ):
-        # Test client cert won't be used if GOOGLE_API_USE_CLIENT_CERTIFICATE
-        # environment variable is not set.
-        auth_session = google.auth.transport.requests.AuthorizedSession(
-            credentials=mock.Mock()
-        )
+        env_to_patch = {
+            environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE: "",
+            environment_vars.CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE: "",
+            environment_vars.GOOGLE_API_CERTIFICATE_CONFIG: "",
+            environment_vars.CLOUDSDK_CONTEXT_AWARE_CERTIFICATE_CONFIG_FILE_PATH: "",
+        }
+        with mock.patch.dict(os.environ, env_to_patch):
+            auth_session = google.auth.transport.requests.AuthorizedSession(
+                credentials=mock.Mock()
+            )
+            auth_session.configure_mtls_channel()
+            assert not auth_session.is_mtls
+            get_client_cert_and_key.assert_not_called()
 
-        auth_session.configure_mtls_channel()
-        assert not auth_session.is_mtls
-        get_client_cert_and_key.assert_not_called()
-
-        mock_callback = mock.Mock()
-        auth_session.configure_mtls_channel(mock_callback)
-        assert not auth_session.is_mtls
-        mock_callback.assert_not_called()
+            mock_callback = mock.Mock()
+            auth_session.configure_mtls_channel(mock_callback)
+            assert not auth_session.is_mtls
+            mock_callback.assert_not_called()
 
     def test_close_wo_passed_in_auth_request(self):
         authed_session = google.auth.transport.requests.AuthorizedSession(
@@ -801,15 +805,11 @@ class TestAuthorizedSession(object):
                 ):
                     auth_session.configure_mtls_channel()
 
-        # 3. Verify it falls back to standard HTTPAdapter and is_mtls becomes False
-        assert not auth_session.is_mtls
-        assert not isinstance(
-            auth_session.adapters["https://"],
-            google.auth.transport.requests._MutualTlsAdapter,
-        )
+        # 3. Verify it retains its previous mTLS state and MutualTlsAdapter
+        assert auth_session.is_mtls
         assert isinstance(
             auth_session.adapters["https://"],
-            requests.adapters.HTTPAdapter,
+            google.auth.transport.requests._MutualTlsAdapter,
         )
 
     def test_configure_mtls_channel_subsequent_disabled(self):

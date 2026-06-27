@@ -315,15 +315,22 @@ class TestAuthorizedHttp(object):
             credentials=mock.Mock(), http=mock.Mock()
         )
 
-        # Test the callback is not called if GOOGLE_API_USE_CLIENT_CERTIFICATE is not set.
-        is_mtls = authed_http.configure_mtls_channel(callback)
-        assert not is_mtls
-        callback.assert_not_called()
+        env_to_patch = {
+            environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE: "",
+            environment_vars.CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE: "",
+            environment_vars.GOOGLE_API_CERTIFICATE_CONFIG: "",
+            environment_vars.CLOUDSDK_CONTEXT_AWARE_CERTIFICATE_CONFIG_FILE_PATH: "",
+        }
+        with mock.patch.dict(os.environ, env_to_patch):
+            # Test the callback is not called if GOOGLE_API_USE_CLIENT_CERTIFICATE is not set.
+            is_mtls = authed_http.configure_mtls_channel(callback)
+            assert not is_mtls
+            callback.assert_not_called()
 
-        # Test ADC client cert is not used if GOOGLE_API_USE_CLIENT_CERTIFICATE is not set.
-        is_mtls = authed_http.configure_mtls_channel(callback)
-        assert not is_mtls
-        get_client_cert_and_key.assert_not_called()
+            # Test ADC client cert is not used if GOOGLE_API_USE_CLIENT_CERTIFICATE is not set.
+            is_mtls = authed_http.configure_mtls_channel(callback)
+            assert not is_mtls
+            get_client_cert_and_key.assert_not_called()
 
     def test_clear_pool_on_del(self):
         http = mock.create_autospec(urllib3.PoolManager)
@@ -587,10 +594,9 @@ class TestAuthorizedHttp(object):
                 ):
                     authed_http.configure_mtls_channel()
 
-        # Verify it was reset to default HTTP connection pool and _is_mtls is False
-        assert not authed_http._is_mtls
-        assert not isinstance(authed_http.http, mock.Mock)
-        assert isinstance(authed_http.http, urllib3.PoolManager)
+        # Verify it retains its previous mTLS state and connection pool
+        assert authed_http._is_mtls
+        assert isinstance(authed_http.http, mock.Mock)
 
     @mock.patch("google.auth.transport.urllib3._make_mutual_tls_http", autospec=True)
     def test_configure_mtls_channel_subsequent_disabled(

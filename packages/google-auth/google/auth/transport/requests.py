@@ -443,14 +443,13 @@ class AuthorizedSession(requests.Session):
 
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If mutual TLS channel
-                creation failed for any reason.
+                creation failed for any reason. The existing session state (such
+                as adapter mounts) remains unmodified if this error is raised.
         """
-        self._is_mtls = False
-        self.mount("https://", requests.adapters.HTTPAdapter())
-
         use_client_cert = google.auth.transport._mtls_helper.check_use_client_cert()
         if not use_client_cert:
             return
+
         try:
             import OpenSSL
         except ImportError as caught_exc:
@@ -459,17 +458,17 @@ class AuthorizedSession(requests.Session):
 
         try:
             (
-                self._is_mtls,
+                is_mtls,
                 cert,
                 key,
             ) = google.auth.transport._mtls_helper.get_client_cert_and_key(
                 client_cert_callback
             )
 
-            if self._is_mtls:
-                mtls_adapter = _MutualTlsAdapter(cert, key)
-                self._cached_cert = cert
-                self.mount("https://", mtls_adapter)
+            if is_mtls:
+                new_adapter = _MutualTlsAdapter(cert, key)
+            else:
+                new_adapter = requests.adapters.HTTPAdapter()
         except (
             exceptions.ClientCertError,
             ImportError,
@@ -478,6 +477,14 @@ class AuthorizedSession(requests.Session):
         ) as caught_exc:
             new_exc = exceptions.MutualTLSChannelError(caught_exc)
             raise new_exc from caught_exc
+
+        self.mount("https://", new_adapter)
+        self._is_mtls = is_mtls
+        if is_mtls:
+            self._cached_cert = cert
+        else:
+            if hasattr(self, "_cached_cert"):
+                del self._cached_cert
 
     def request(
         self,

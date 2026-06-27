@@ -329,7 +329,6 @@ class SslCredentials:
                     self._ssl_credentials = grpc.ssl_channel_credentials()
                     self._is_mtls = False
             except (exceptions.ClientCertError, OSError) as caught_exc:
-                self._is_mtls = False
                 new_exc = exceptions.MutualTLSChannelError(caught_exc)
                 raise new_exc from caught_exc
         else:

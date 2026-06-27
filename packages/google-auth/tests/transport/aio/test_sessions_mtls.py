@@ -143,9 +143,7 @@ class TestSessionsMtls:
 
     @pytest.mark.asyncio
     async def test_configure_mtls_channel_custom_request(self):
-        """
-        """
-        Tests that if _auth_request is not an AiohttpRequest, _is_mtls is set to False
+        """Tests that if _auth_request is not an AiohttpRequest, _is_mtls is set to False
         because we can't configure the custom request with mTLS.
         """
         with mock.patch.dict(
@@ -168,7 +166,6 @@ class TestSessionsMtls:
             session = sessions.AsyncAuthorizedSession(
                 mock_creds, auth_request=mock_auth_request
             )
-
 
             await session.configure_mtls_channel()
 
