@@ -1,0 +1,53 @@
+---
+type: com.google.api.codegen.samplegen.v1p2.SampleConfigProto
+schema_version: 1.2.0
+samples:
+- id: showcase_echo
+  region_tag: showcase_echo
+  rpc: Echo
+  service: google.showcase.v1beta1.Echo
+  request:
+  - field: content
+    value: "hello world"
+- id: showcase_wait
+  region_tag: showcase_wait
+  rpc: Wait
+  service: google.showcase.v1beta1.Echo
+  request:
+  - field: end_time
+    value: "2030-01-01T00:00:00Z"
+- id: showcase_paged
+  region_tag: showcase_paged
+  rpc: PagedExpand
+  service: google.showcase.v1beta1.Echo
+  request:
+  - field: content
+    value: "expand me"
+- id: showcase_client_stream
+  region_tag: showcase_client_stream
+  rpc: Collect
+  service: google.showcase.v1beta1.Echo
+  request:
+  - field: content
+    value: "collect me"
+- id: showcase_server_stream
+  region_tag: showcase_server_stream
+  rpc: Expand
+  service: google.showcase.v1beta1.Echo
+  request:
+  - field: content
+    value: "expand me"
+- id: showcase_bidi_stream
+  region_tag: showcase_bidi_stream
+  rpc: Chat
+  service: google.showcase.v1beta1.Echo
+  request:
+  - field: content
+    value: "chat with me"
+- id: showcase_delete_user
+  region_tag: showcase_delete_user
+  rpc: DeleteUser
+  service: google.showcase.v1beta1.Identity
+  request:
+  - field: name
+    value: "users/123"

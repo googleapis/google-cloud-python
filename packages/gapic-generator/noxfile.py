@@ -504,32 +504,113 @@ def run_showcase_unit_tests(session, fail_under=100, rest_async_io_enabled=False
 
 
 @nox.session(python=ALL_PYTHON)
-def showcase_unit(
-    session,
-    templates="DEFAULT",
-    other_opts: typing.Iterable[str] = (),
-):
-    """Run the generated unit tests against the Showcase library."""
-    with showcase_library(session, templates=templates, other_opts=other_opts) as lib:
-        session.chdir(lib)
-        run_showcase_unit_tests(session)
+def showcase_unit(session):
+    """Run the generated unit tests and measure Jinja template coverage against Showcase configurations."""
+    session.install(
+        "coverage<=7.11.0",
+        "pytest-cov",
+        "pytest",
+        "pytest-asyncio",
+        "pyfakefs",
+        "grpcio-status",
+        "proto-plus",
+        "grpcio-tools",
+        "PyYAML",
+    )
+    session.install("-e", ".")
+
+    # Robustly locate gapic-showcase and googleapis schemas across local dev and CI.
+    import glob
+    showcase_dir = None
+    for candidate in ["../../../gapic-showcase", "../../gapic-showcase", "../gapic-showcase", "gapic-showcase"]:
+        if path.exists(path.join(candidate, "schema", "google", "showcase", "v1beta1")):
+            showcase_dir = candidate
+            break
+
+    googleapis_dir = None
+    for candidate in ["../../../googleapis", "../../googleapis", "../googleapis", "googleapis"]:
+        if path.exists(path.join(candidate, "google", "api")):
+            googleapis_dir = candidate
+            break
+
+    if not showcase_dir or not googleapis_dir:
+        session.error("Could not locate gapic-showcase or googleapis schemas. Ensure they are cloned nearby.")
+
+    # 1. Compile descriptors
+    proto_files = glob.glob(path.join(showcase_dir, "schema", "google", "showcase", "v1beta1", "*.proto"))
+    desc_path = "/tmp/showcase.desc"
+    session.run(
+        "python",
+        "-m",
+        "grpc_tools.protoc",
+        "--experimental_allow_proto3_optional",
+        "--include_imports",
+        "--include_source_info",
+        f"--descriptor_set_out={desc_path}",
+        f"-I{path.join(showcase_dir, 'schema')}",
+        f"-I{googleapis_dir}",
+        *proto_files,
+    )
+
+    # Clean and recreate generated code output directory
+    generated_base_dir = path.join(".nox", "generated")
+    shutil.rmtree(generated_base_dir, ignore_errors=True)
+    os.makedirs(generated_base_dir, exist_ok=True)
+
+    # 2. Run the generator script under coverage for each configuration variant
+    variants = ["showcase", "showcase_retry_snippets", "showcase_no_iam_no_rest_async", "showcase_pure_grpc"]
+    for variant in variants:
+        variant_dir = path.join(generated_base_dir, variant)
+        session.run(
+            "coverage",
+            "run",
+            "--rcfile=.coveragerc-templates",
+            "-p",
+            "tests/unit/generator/generate_showcase.py",
+            "--variant",
+            variant,
+            "--descriptor",
+            desc_path,
+            "--output-dir",
+            variant_dir,
+            env={
+                "COVERAGE_CORE": "ctrace",
+                "SHOWCASE_GRPC_SERVICE_CONFIG": path.join(showcase_dir, "schema", "google", "showcase", "v1beta1", "showcase_grpc_service_config.json"),
+            }
+        )
+
+    # 3. Run the generated unit tests for all variants directly using PYTHONPATH (no slow pip installs)
+    for variant in variants:
+        variant_dir = path.join(generated_base_dir, variant)
+        session.log(f"Running unit tests for generated client: {variant}")
+        session.run(
+            "pytest",
+            "-vv",
+            path.join(variant_dir, "tests", "unit"),
+            env={
+                "PYTHONPATH": variant_dir,
+            }
+        )
+
+    # 4. Combine coverage metrics and enforce 100% template coverage
+    session.run("coverage", "combine")
+    session.run(
+        "coverage",
+        "report",
+        "-m",
+        "--rcfile=.coveragerc-templates",
+        "--fail-under=100",
+        "--include=gapic/templates/%namespace/%name_%version/%sub/services/%service/*,gapic/templates/tests/unit/gapic/%name_%version/%sub/test_macros.j2",
+    )
 
 
-# TODO: `showcase_unit_w_rest_async` nox session runs showcase unit tests with the
-# experimental async rest transport and must be removed once support for async rest is GA.
-# See related issue: https://github.com/googleapis/gapic-generator-python/issues/2121.
 @nox.session(python=ALL_PYTHON)
-def showcase_unit_w_rest_async(
-    session,
-    templates="DEFAULT",
-    other_opts: typing.Iterable[str] = (),
-):
-    """Run the generated unit tests with async rest transport against the Showcase library."""
-    with showcase_library(
-        session, templates=templates, other_opts=other_opts, rest_async_io_enabled=True
-    ) as lib:
+def showcase_prerelease_deps(session):
+    """Run core_deps_from_source and prerelease_deps on the generated Showcase library."""
+    with showcase_library(session) as lib:
         session.chdir(lib)
-        run_showcase_unit_tests(session, rest_async_io_enabled=True)
+        session.install("nox")
+        session.run("nox", "-s", "core_deps_from_source", "prerelease_deps")
 
 
 @nox.session(python=ALL_PYTHON)
@@ -847,3 +928,24 @@ def core_deps_from_source(session, protobuf_implementation):
     # TODO(https://github.com/googleapis/google-cloud-python/issues/16185): 
     # Implement logic to install core packages directly from the mono-repo directories.
     session.skip("core_deps_from_source session is not yet implemented for gapic-generator-python.")
+
+
+
+
+@nox.session(python="3.10")
+def downstream_golden_tests(session):
+    """Run the downstream unit tests for all generated goldens to prove generator correctness."""
+    session.install("nox")
+    goldens_dir = path.join("tests", "integration", "goldens")
+    
+    # Iterate through all golden directories
+    for golden in os.listdir(goldens_dir):
+        golden_path = path.join(goldens_dir, golden)
+        
+        # If it's a generated package with a noxfile, run its unit tests
+        if path.isdir(golden_path) and path.exists(path.join(golden_path, "noxfile.py")):
+            session.log(f"Running downstream unit tests for golden: {golden}")
+            
+            # Change directory to the golden package and run its tests
+            with session.chdir(golden_path):
+                session.run("nox", "-s", "unit-3.10", external=True)

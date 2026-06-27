@@ -1,0 +1,28 @@
+[run]
+branch = True
+parallel = True
+plugins =
+    gapic.jinja_coverage
+source =
+    gapic/templates
+omit =
+  gapic/cli/*.py
+  *_pb2.py
+  gapic/jinja_coverage.py
+
+[gapic.jinja_coverage]
+template_directory = gapic/templates
+
+[report]
+show_missing = True
+fail_under = 71
+exclude_lines =
+    pragma: no cover
+    \{#.*#\}
+    \{%.*endif.*%\}
+    \{%.*else.*%\}
+    \{%.*elif.*%\}
+    \{%.*endfor.*%\}
+    \{%.*endwith.*%\}
+    \{%.*endblock.*%\}
+    \{%.*endmacro.*%\}

@@ -3,6 +3,7 @@ branch = True
 omit =
   gapic/cli/*.py
   *_pb2.py
+  gapic/jinja_coverage.py
 
 [report]
 fail_under = 100
@@ -17,4 +18,3 @@ exclude_lines =
     # Abstract methods by definition are not invoked
     @abstractmethod
     @abc.abstractmethod
-    
