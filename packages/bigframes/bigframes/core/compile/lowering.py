@@ -482,6 +482,11 @@ def _lower_cast_to_substrait(
         "substrait-datafusion", "substrait-acero"
     ] = "substrait-datafusion",
 ):
+    if arg.output_type == dtypes.BOOL_DTYPE and dtypes.is_numeric(cast_op.to_type):
+        # bool -> decimal/numeric needs two-step cast
+        new_arg = ops.AsTypeOp(to_type=dtypes.INT_DTYPE).as_expr(arg)
+        return cast_op.as_expr(new_arg)
+
     if arg.output_type == dtypes.BOOL_DTYPE and cast_op.to_type == dtypes.STRING_DTYPE:
         is_true_cond = ops.eq_op.as_expr(arg, expression.const(True))
         is_false_cond = ops.eq_op.as_expr(arg, expression.const(False))
