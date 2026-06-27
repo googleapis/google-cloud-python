@@ -25,8 +25,13 @@ from bigframes.core.rewrite.scan_reduction import (
     try_reduce_to_local_scan,
     try_reduce_to_table_scan,
 )
+from bigframes.core.rewrite.schema_binding import bind_schema_to_tree
 from bigframes.core.rewrite.select_pullup import defer_selection
 from bigframes.core.rewrite.slices import pull_out_limit, pull_up_limits, rewrite_slice
+from bigframes.core.rewrite.substrait_agg import (
+    rewrite_substrait_aggregations,
+    rewrite_substrait_windows,
+)
 from bigframes.core.rewrite.timedeltas import rewrite_timedelta_expressions
 from bigframes.core.rewrite.udfs import lower_udfs
 from bigframes.core.rewrite.windows import (
@@ -37,10 +42,13 @@ from bigframes.core.rewrite.windows import (
 
 __all__ = [
     "as_sql_nodes",
+    "bind_schema_to_tree",
     "extract_ctes",
     "legacy_join_as_projection",
     "try_row_join",
     "rewrite_slice",
+    "rewrite_substrait_aggregations",
+    "rewrite_substrait_windows",
     "rewrite_timedelta_expressions",
     "pull_up_limits",
     "pull_out_limit",

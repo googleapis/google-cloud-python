@@ -17,6 +17,18 @@ from typing import Generator
 import google.cloud.bigquery_storage_v1
 import pandas as pd
 import pytest
+
+# Skip the entire engines test directory if required libraries are missing
+try:
+    import datafusion  # noqa: F401
+    import polars  # noqa: F401
+    import substrait  # noqa: F401
+except ImportError as e:
+    pytest.skip(
+        f"Skipping engines tests because dependencies are missing: {e}",
+        allow_module_level=True,
+    )
+
 from google.cloud import bigquery
 
 import bigframes
@@ -26,6 +38,7 @@ from bigframes.session import (
     local_scan_executor,
     polars_executor,
     semi_executor,
+    substrait_executor,
 )
 
 CURRENT_DIR = pathlib.Path(__file__).parent
@@ -80,9 +93,35 @@ def sqlglot_engine(
     )
 
 
-@pytest.fixture(scope="session", params=["pyarrow", "polars", "bq", "bq-sqlglot"])
+@pytest.fixture(scope="session")
+def substrait_datafusion_engine() -> semi_executor.SemiExecutor:
+    return substrait_executor.SubstraitExecutor.default_for_engine("datafusion")
+
+
+@pytest.fixture(scope="session")
+def substrait_acero_engine() -> semi_executor.SemiExecutor:
+    return substrait_executor.SubstraitExecutor.default_for_engine("acero")
+
+
+@pytest.fixture(
+    scope="session",
+    params=[
+        "pyarrow",
+        "polars",
+        "bq",
+        "bq-sqlglot",
+        "substrait-datafusion",
+        "substrait-acero",
+    ],
+)
 def engine(
-    request, pyarrow_engine, polars_engine, bq_engine, sqlglot_engine
+    request,
+    pyarrow_engine,
+    polars_engine,
+    bq_engine,
+    sqlglot_engine,
+    substrait_datafusion_engine,
+    substrait_acero_engine,
 ) -> semi_executor.SemiExecutor:
     if request.param == "pyarrow":
         return pyarrow_engine
@@ -92,6 +131,10 @@ def engine(
         return bq_engine
     if request.param == "bq-sqlglot":
         return sqlglot_engine
+    if request.param == "substrait-datafusion":
+        return substrait_datafusion_engine
+    if request.param == "substrait-acero":
+        return substrait_acero_engine
     raise ValueError(f"Unrecognized param: {request.param}")
 
 

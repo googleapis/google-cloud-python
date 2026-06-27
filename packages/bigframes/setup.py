@@ -42,9 +42,9 @@ dependencies = [
     "google-cloud-bigquery[bqstorage,pandas] >=3.36.0",
     # 2.30 needed for arrow support.
     "google-cloud-bigquery-storage >= 2.30.0, < 3.0.0",
-    "google-cloud-functions >=1.12.0",
-    "google-cloud-bigquery-connection >=1.12.0",
-    "google-cloud-resource-manager >=1.10.3",
+    "google-cloud-functions >=1.20.0",
+    "google-cloud-bigquery-connection >=1.20.0",
+    "google-cloud-resource-manager >=1.14.0",
     "google-cloud-storage >=2.0.0",
     "google-crc32c >=1.0.0,<2.0.0",
     "grpc-google-iam-v1 >= 0.14.2",
@@ -73,12 +73,14 @@ extras = {
     "tests": [
         "freezegun",
         "pytest-snapshot",
-        "google-cloud-bigtable >=2.24.0",
-        "google-cloud-pubsub >=2.21.4",
+        "google-cloud-bigtable >=2.28.0",
+        "google-cloud-pubsub >=2.28.0",
         "tzdata",
     ],
     # used for local engine
     "polars": ["polars >= 1.21.0"],
+    "datafusion": ["datafusion >= 45.2.0", "substrait >= 0.29"],
+    "substrait": ["substrait >= 0.29"],
     "scikit-learn": ["scikit-learn>=1.2.2"],
     # Packages required for basic development flow.
     "dev": [

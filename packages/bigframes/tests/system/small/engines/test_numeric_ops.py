@@ -94,7 +94,15 @@ def test_engines_project_floor(
     assert_equivalence_execution(arr.node, REFERENCE_ENGINE, engine)
 
 
-@pytest.mark.parametrize("engine", ["polars", "bq", "bq-sqlglot"], indirect=True)
+@pytest.mark.parametrize(
+    "engine",
+    [
+        "polars",
+        "bq",
+        "bq-sqlglot",
+    ],
+    indirect=True,
+)
 def test_engines_project_add(
     scalars_array_value: array_value.ArrayValue,
     engine,

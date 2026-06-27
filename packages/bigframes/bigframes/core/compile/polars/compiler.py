@@ -39,7 +39,6 @@ import bigframes.operations.json_ops as json_ops
 import bigframes.operations.numeric_ops as num_ops
 import bigframes.operations.string_ops as string_ops
 from bigframes.core import agg_expressions, identifiers, nodes, ordering, window_spec
-from bigframes.core.compile.polars import lowering
 
 polars_installed = True
 if TYPE_CHECKING:
@@ -672,6 +671,8 @@ if polars_installed:
             node = nodes.bottom_up(node, bigframes.core.rewrite.rewrite_slice)
             node = bigframes.core.rewrite.pull_out_window_order(node)
             node = bigframes.core.rewrite.schema_binding.bind_schema_to_tree(node)
+            from bigframes.core.compile import lowering
+
             node = lowering.lower_ops_to_polars(node)
             return self.compile_node(node)
 
@@ -763,7 +764,11 @@ if polars_installed:
             left_on = []
             right_on = []
             for left_ex, right_ex in node.conditions:
-                left_ex, right_ex = lowering._coerce_comparables(left_ex, right_ex)
+                from bigframes.core.compile import lowering
+
+                left_ex, right_ex = lowering._coerce_comparables(
+                    left_ex, right_ex, dialect="polars"
+                )
                 left_on.append(self.expr_compiler.compile_expression(left_ex))
                 right_on.append(self.expr_compiler.compile_expression(right_ex))
 
@@ -782,7 +787,11 @@ if polars_installed:
             right = right.with_columns(pl.lit(True).alias(node.indicator_col.sql))
 
             right_col = ex.ResolvedDerefOp.from_field(node.right_child.fields[0])
-            left_ex, right_ex = lowering._coerce_comparables(node.left_col, right_col)
+            from bigframes.core.compile import lowering
+
+            left_ex, right_ex = lowering._coerce_comparables(
+                node.left_col, right_col, dialect="polars"
+            )
 
             left_pl_ex = self.expr_compiler.compile_expression(left_ex)
             right_pl_ex = self.expr_compiler.compile_expression(right_ex)
