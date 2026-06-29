@@ -59,7 +59,6 @@ default:
 libraries:
   - name: bigframes
     version: 2.44.0
-    skip_release: true
     python:
       library_type: INTEGRATION
   - name: bigquery-magics
@@ -2227,7 +2226,6 @@ libraries:
       default_version: v1
   - name: google-crc32c
     version: 1.8.0
-    skip_release: true
     python:
       library_type: OTHER
   - name: google-developer-knowledge
@@ -2572,7 +2570,6 @@ libraries:
       default_version: apiVersion
   - name: pandas-gbq
     version: 0.35.0
-    skip_release: true
     python:
       library_type: INTEGRATION
   - name: proto-plus
@@ -2581,7 +2578,6 @@ libraries:
       library_type: CORE
   - name: sqlalchemy-bigquery
     version: 1.17.0
-    skip_release: true
     python:
       library_type: INTEGRATION
   - name: sqlalchemy-spanner
