@@ -12,7 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import os
 import pytest
+import requests
 from google import showcase
 
 @pytest.fixture
@@ -50,3 +52,46 @@ def test_pqc_negotiated_group(run_pqc_test, request, transport_fixture):
     # Enforce PQC compliance (this will fail if not using MLKEM/Kyber)
     assert "MLKEM" in negotiated_group or "Kyber" in negotiated_group, \
         f"Failed: {transport_fixture} Connection is NOT PQC-compliant! Negotiated: {negotiated_group}"
+
+
+def test_google_auth_transport_pqc(run_pqc_test):
+    """Verifies that the google-auth HTTP transport adapter negotiates PQC with the Showcase server."""
+    import google.auth.transport.requests
+    from conftest import HostNameIgnoringAdapter
+
+    # 1. Initialize a standard requests Session with mTLS certs
+    session = requests.Session()
+    cert_path = "/usr/local/google/home/omairn/git/googleapis/google-cloud-python-dev2/packages/gapic-generator/tests/cert/mtls.crt"
+    key_path = "/usr/local/google/home/omairn/git/googleapis/google-cloud-python-dev2/packages/gapic-generator/tests/cert/mtls.key"
+
+    session.verify = cert_path
+    session.cert = (cert_path, key_path)
+    
+    # Bypass localhost hostname mismatch
+    session.mount("https://", HostNameIgnoringAdapter())
+
+    # 2. Wrap it in google-auth's Transport Request adapter
+    # This is the exact object google-auth uses to execute its own HTTP/REST requests.
+    auth_transport = google.auth.transport.requests.Request(session=session)
+
+    # 3. Make secure call using the google-auth transport adapter
+    url = "https://localhost:7469/v1beta1/echo:echo"
+    method = "POST"
+    headers = {"Content-Type": "application/json"}
+    body = b'{"content": "Verify google-auth transport PQC connection."}'
+
+    # Execute the request through google-auth's transport layer
+    response = auth_transport(url=url, method=method, body=body, headers=headers)
+    assert response.status == 200
+
+    # 4. Extract TLS group from response headers returned by Showcase
+    negotiated_group = response.headers.get("x-showcase-tls-group")
+    supported_groups = response.headers.get("x-showcase-tls-client-supported-groups")
+
+    assert negotiated_group is not None, "Failed: Showcase server did not return negotiated TLS group header."
+    print(f"\n[google-auth Transport PQC] Negotiated TLS Group: {negotiated_group}")
+    print(f"[google-auth Transport PQC] Client Advertised Supported Groups: {supported_groups}")
+
+    # Assert PQC compliance
+    assert "MLKEM" in negotiated_group or "Kyber" in negotiated_group, \
+        f"Failed: google-auth Transport is NOT PQC-compliant! Negotiated: {negotiated_group}"

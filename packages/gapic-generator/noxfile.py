@@ -457,7 +457,7 @@ def showcase_mtls(
     """Run the Showcase mtls test suite."""
 
     with showcase_library(session, templates=templates, other_opts=other_opts):
-        session.install("pytest", "pytest-asyncio")
+        session.install("pytest", "pytest-asyncio", "pyopenssl")
         test_directory = Path("tests", "system")
         ignore_file = env.get("IGNORE_FILE")
         pytest_command = [
