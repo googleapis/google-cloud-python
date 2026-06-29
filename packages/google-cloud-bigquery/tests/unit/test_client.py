@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import copy
 import collections
+import copy
 import datetime
 import decimal
 import gzip
@@ -24,13 +24,12 @@ import json
 import operator
 import os
 import unittest
-from unittest import mock
 import warnings
+from unittest import mock
 
 import packaging
 import pytest
 import requests
-
 
 try:
     import opentelemetry
@@ -50,19 +49,17 @@ if opentelemetry is not None:
         raise ImportError(msg) from exc
 
 import google.api_core.exceptions
-from google.api_core import client_info
 import google.cloud._helpers
-from google.cloud import bigquery
-
-from google.cloud.bigquery.dataset import DatasetReference, Dataset
-from google.cloud.bigquery.enums import UpdateMode, DatasetView, TimestampPrecision
-from google.cloud.bigquery import exceptions
-from google.cloud.bigquery import ParquetOptions
 import google.cloud.bigquery.retry
-from google.cloud.bigquery.retry import DEFAULT_TIMEOUT
 import google.cloud.bigquery.table
-
+from google.api_core import client_info
+from google.cloud import bigquery
+from google.cloud.bigquery import ParquetOptions, exceptions
+from google.cloud.bigquery.dataset import Dataset, DatasetReference
+from google.cloud.bigquery.enums import DatasetView, TimestampPrecision, UpdateMode
+from google.cloud.bigquery.retry import DEFAULT_TIMEOUT
 from test_utils.imports import maybe_fail_import
+
 from tests.unit.helpers import make_connection
 
 
@@ -234,8 +231,8 @@ class TestClient(unittest.TestCase):
         self.assertEqual(client.location, location)
 
     def test_ctor_w_query_job_config(self):
-        from google.cloud.bigquery._http import Connection
         from google.cloud.bigquery import QueryJobConfig
+        from google.cloud.bigquery._http import Connection
 
         creds = _make_credentials()
         http = object()
@@ -259,8 +256,8 @@ class TestClient(unittest.TestCase):
         self.assertTrue(client._default_query_job_config.dry_run)
 
     def test_ctor_w_load_job_config(self):
-        from google.cloud.bigquery._http import Connection
         from google.cloud.bigquery import LoadJobConfig
+        from google.cloud.bigquery._http import Connection
 
         creds = _make_credentials()
         http = object()
@@ -309,6 +306,7 @@ class TestClient(unittest.TestCase):
 
     def test__call_api_span_creator_not_called(self):
         from concurrent.futures import TimeoutError
+
         from google.cloud.bigquery.retry import DEFAULT_RETRY
 
         creds = _make_credentials()
@@ -333,6 +331,7 @@ class TestClient(unittest.TestCase):
 
     def test__call_api_span_creator_called(self):
         from concurrent.futures import TimeoutError
+
         from google.cloud.bigquery.retry import DEFAULT_RETRY
 
         creds = _make_credentials()
@@ -482,8 +481,8 @@ class TestClient(unittest.TestCase):
         self.assertTrue(query_results.complete)
 
     def test__list_rows_from_query_results_w_none_timeout(self):
-        from google.cloud.exceptions import NotFound
         from google.cloud.bigquery.schema import SchemaField
+        from google.cloud.exceptions import NotFound
 
         creds = _make_credentials()
         client = self._make_one(self.PROJECT, creds)
@@ -517,8 +516,8 @@ class TestClient(unittest.TestCase):
 
     def test__list_rows_from_query_results_w_default_timeout(self):
         import google.cloud.bigquery.client
-        from google.cloud.exceptions import NotFound
         from google.cloud.bigquery.schema import SchemaField
+        from google.cloud.exceptions import NotFound
 
         creds = _make_credentials()
         client = self._make_one(self.PROJECT, creds)
@@ -814,6 +813,7 @@ class TestClient(unittest.TestCase):
 
     def test_ensure_bqstorage_client_creating_new_instance(self):
         bigquery_storage = pytest.importorskip("google.cloud.bigquery_storage")
+        import google.api_core.gapic_v1.client_info
 
         mock_client = mock.create_autospec(bigquery_storage.BigQueryReadClient)
         mock_client_instance = object()
@@ -821,20 +821,112 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
 
+        client_info = google.api_core.gapic_v1.client_info.ClientInfo(
+            user_agent="test-agent"
+        )
+
         with mock.patch(
             "google.cloud.bigquery_storage.BigQueryReadClient", mock_client
         ):
             bqstorage_client = client._ensure_bqstorage_client(
                 client_options=mock.sentinel.client_options,
-                client_info=mock.sentinel.client_info,
+                client_info=client_info,
             )
 
         self.assertIs(bqstorage_client, mock_client_instance)
-        mock_client.assert_called_once_with(
-            credentials=creds,
-            client_options=mock.sentinel.client_options,
-            client_info=mock.sentinel.client_info,
+        mock_client.assert_called_once()
+        _, kwargs = mock_client.call_args
+        self.assertIs(kwargs["credentials"], creds)
+        self.assertIs(kwargs["client_options"], mock.sentinel.client_options)
+        self.assertIn("test-agent", kwargs["client_info"].user_agent)
+        self.assertIn("pandas-gbq", kwargs["client_info"].user_agent)
+
+    def test_ensure_bqstorage_client_pandas_gbq_installed(self):
+        bigquery_storage = pytest.importorskip("google.cloud.bigquery_storage")
+        import sys
+
+        import google.api_core.gapic_v1.client_info
+
+        mock_client = mock.create_autospec(bigquery_storage.BigQueryReadClient)
+        creds = _make_credentials()
+        client = self._make_one(project=self.PROJECT, credentials=creds)
+        client_info = google.api_core.gapic_v1.client_info.ClientInfo(
+            user_agent="app-agent"
         )
+
+        mock_pandas = mock.Mock()
+        mock_pandas.__version__ = "0.13.0"
+
+        with mock.patch(
+            "google.cloud.bigquery_storage.BigQueryReadClient", mock_client
+        ), mock.patch.dict(sys.modules, {"pandas_gbq": mock_pandas}):
+            client._ensure_bqstorage_client(client_info=client_info)
+
+        mock_client.assert_called_once()
+        _, kwargs = mock_client.call_args
+        self.assertEqual(
+            kwargs["client_info"].user_agent, "app-agent pandas-gbq/0.13.0"
+        )
+
+    def test_ensure_bqstorage_client_pandas_gbq_not_installed(self):
+        bigquery_storage = pytest.importorskip("google.cloud.bigquery_storage")
+        import sys
+
+        import google.api_core.gapic_v1.client_info
+
+        mock_client = mock.create_autospec(bigquery_storage.BigQueryReadClient)
+        creds = _make_credentials()
+        client = self._make_one(project=self.PROJECT, credentials=creds)
+        client_info = google.api_core.gapic_v1.client_info.ClientInfo(
+            user_agent="app-agent"
+        )
+
+        with mock.patch(
+            "google.cloud.bigquery_storage.BigQueryReadClient", mock_client
+        ), mock.patch.dict(sys.modules, {"pandas_gbq": None}):
+            client._ensure_bqstorage_client(client_info=client_info)
+
+        mock_client.assert_called_once()
+        _, kwargs = mock_client.call_args
+        self.assertEqual(kwargs["client_info"].user_agent, "app-agent pandas-gbq/0.0.0")
+
+    def test_ensure_bqstorage_client_client_info_none(self):
+        bigquery_storage = pytest.importorskip("google.cloud.bigquery_storage")
+        import sys
+
+        mock_client = mock.create_autospec(bigquery_storage.BigQueryReadClient)
+        creds = _make_credentials()
+        client = self._make_one(project=self.PROJECT, credentials=creds)
+
+        with mock.patch(
+            "google.cloud.bigquery_storage.BigQueryReadClient", mock_client
+        ), mock.patch.dict(sys.modules, {"pandas_gbq": None}):
+            client._ensure_bqstorage_client(client_info=None)
+
+        mock_client.assert_called_once()
+        _, kwargs = mock_client.call_args
+        self.assertEqual(kwargs["client_info"].user_agent, "pandas-gbq/0.0.0")
+
+    def test_ensure_bqstorage_client_client_info_user_agent_none(self):
+        bigquery_storage = pytest.importorskip("google.cloud.bigquery_storage")
+        import sys
+
+        import google.api_core.gapic_v1.client_info
+
+        mock_client = mock.create_autospec(bigquery_storage.BigQueryReadClient)
+        creds = _make_credentials()
+        client = self._make_one(project=self.PROJECT, credentials=creds)
+
+        client_info = google.api_core.gapic_v1.client_info.ClientInfo(user_agent=None)
+
+        with mock.patch(
+            "google.cloud.bigquery_storage.BigQueryReadClient", mock_client
+        ), mock.patch.dict(sys.modules, {"pandas_gbq": None}):
+            client._ensure_bqstorage_client(client_info=client_info)
+
+        mock_client.assert_called_once()
+        _, kwargs = mock_client.call_args
+        self.assertEqual(kwargs["client_info"].user_agent, "pandas-gbq/0.0.0")
 
     def test_ensure_bqstorage_client_missing_dependency(self):
         creds = _make_credentials()
@@ -925,8 +1017,7 @@ class TestClient(unittest.TestCase):
         assert matching_warnings, "Obsolete dependency warning not raised."
 
     def test_create_routine_w_minimal_resource(self):
-        from google.cloud.bigquery.routine import Routine
-        from google.cloud.bigquery.routine import RoutineReference
+        from google.cloud.bigquery.routine import Routine, RoutineReference
 
         creds = _make_credentials()
         path = "/projects/test-routine-project/datasets/test_routines/routines"
@@ -1082,8 +1173,7 @@ class TestClient(unittest.TestCase):
         )
 
     def test_create_table_w_day_partition(self):
-        from google.cloud.bigquery.table import Table
-        from google.cloud.bigquery.table import TimePartitioning
+        from google.cloud.bigquery.table import Table, TimePartitioning
 
         path = "projects/%s/datasets/%s/tables" % (self.PROJECT, self.DS_ID)
         creds = _make_credentials()
@@ -1198,8 +1288,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(got.table_id, self.TABLE_ID)
 
     def test_create_table_w_day_partition_and_expire(self):
-        from google.cloud.bigquery.table import Table
-        from google.cloud.bigquery.table import TimePartitioning
+        from google.cloud.bigquery.table import Table, TimePartitioning
 
         path = "projects/%s/datasets/%s/tables" % (self.PROJECT, self.DS_ID)
         creds = _make_credentials()
@@ -1610,8 +1699,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(got.model_id, self.MODEL_ID)
 
     def test_get_routine(self):
-        from google.cloud.bigquery.routine import Routine
-        from google.cloud.bigquery.routine import RoutineReference
+        from google.cloud.bigquery.routine import Routine, RoutineReference
 
         full_routine_id = "test-routine-project.test_routines.minimal_routine"
         routines = [
@@ -1721,10 +1809,12 @@ class TestClient(unittest.TestCase):
         self.assertIn("my-application/1.2.3", expected_user_agent)
 
     def test_get_iam_policy(self):
-        from google.cloud.bigquery.iam import BIGQUERY_DATA_OWNER_ROLE
-        from google.cloud.bigquery.iam import BIGQUERY_DATA_EDITOR_ROLE
-        from google.cloud.bigquery.iam import BIGQUERY_DATA_VIEWER_ROLE
         from google.api_core.iam import Policy
+        from google.cloud.bigquery.iam import (
+            BIGQUERY_DATA_EDITOR_ROLE,
+            BIGQUERY_DATA_OWNER_ROLE,
+            BIGQUERY_DATA_VIEWER_ROLE,
+        )
 
         PATH = "/projects/{}/datasets/{}/tables/{}:getIamPolicy".format(
             self.PROJECT,
@@ -1797,10 +1887,12 @@ class TestClient(unittest.TestCase):
             client.get_iam_policy(self.TABLE_REF, requested_policy_version=2)
 
     def test_set_iam_policy(self):
-        from google.cloud.bigquery.iam import BIGQUERY_DATA_OWNER_ROLE
-        from google.cloud.bigquery.iam import BIGQUERY_DATA_EDITOR_ROLE
-        from google.cloud.bigquery.iam import BIGQUERY_DATA_VIEWER_ROLE
         from google.api_core.iam import Policy
+        from google.cloud.bigquery.iam import (
+            BIGQUERY_DATA_EDITOR_ROLE,
+            BIGQUERY_DATA_OWNER_ROLE,
+            BIGQUERY_DATA_VIEWER_ROLE,
+        )
 
         PATH = "/projects/%s/datasets/%s/tables/%s:setIamPolicy" % (
             self.PROJECT,
@@ -1851,10 +1943,12 @@ class TestClient(unittest.TestCase):
         self.assertEqual(dict(returned_policy), dict(policy))
 
     def test_set_iam_policy_updateMask(self):
-        from google.cloud.bigquery.iam import BIGQUERY_DATA_OWNER_ROLE
-        from google.cloud.bigquery.iam import BIGQUERY_DATA_EDITOR_ROLE
-        from google.cloud.bigquery.iam import BIGQUERY_DATA_VIEWER_ROLE
         from google.api_core.iam import Policy
+        from google.cloud.bigquery.iam import (
+            BIGQUERY_DATA_EDITOR_ROLE,
+            BIGQUERY_DATA_OWNER_ROLE,
+            BIGQUERY_DATA_VIEWER_ROLE,
+        )
 
         PATH = "/projects/%s/datasets/%s/tables/%s:setIamPolicy" % (
             self.PROJECT,
@@ -2029,7 +2123,7 @@ class TestClient(unittest.TestCase):
             )
 
     def test_update_dataset(self):
-        from google.cloud.bigquery.dataset import Dataset, AccessEntry
+        from google.cloud.bigquery.dataset import AccessEntry, Dataset
 
         PATH = "projects/%s/datasets/%s" % (self.PROJECT, self.DS_ID)
         DESCRIPTION = "DESCRIPTION"
@@ -2301,8 +2395,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req[1]["headers"]["If-Match"], "etag")
 
     def test_update_routine(self):
-        from google.cloud.bigquery.routine import Routine
-        from google.cloud.bigquery.routine import RoutineArgument
+        from google.cloud.bigquery.routine import Routine, RoutineArgument
 
         full_routine_id = "routines-project.test_routines.updated_routine"
         resource = {
@@ -2385,8 +2478,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req[1]["headers"]["If-Match"], "im-an-etag")
 
     def test_update_table(self):
-        from google.cloud.bigquery.schema import SchemaField
-        from google.cloud.bigquery.schema import PolicyTagList
+        from google.cloud.bigquery.schema import PolicyTagList, SchemaField
         from google.cloud.bigquery.table import Table
 
         path = "projects/%s/datasets/%s/tables/%s" % (
@@ -2577,8 +2669,8 @@ class TestClient(unittest.TestCase):
 
     def test_update_table_w_query(self):
         import datetime
-        from google.cloud._helpers import UTC
-        from google.cloud._helpers import _millis
+
+        from google.cloud._helpers import UTC, _millis
         from google.cloud.bigquery.schema import SchemaField
         from google.cloud.bigquery.table import Table
 
@@ -2918,8 +3010,7 @@ class TestClient(unittest.TestCase):
         )
 
     def test_delete_routine(self):
-        from google.cloud.bigquery.routine import Routine
-        from google.cloud.bigquery.routine import RoutineReference
+        from google.cloud.bigquery.routine import Routine, RoutineReference
 
         full_routine_id = "test-routine-project.test_routines.minimal_routine"
         routines = [
@@ -3201,8 +3292,8 @@ class TestClient(unittest.TestCase):
         self._create_job_helper(configuration)
 
     def test_create_job_query_config_w_rateLimitExceeded_error(self):
-        from google.cloud.exceptions import Forbidden
         from google.cloud.bigquery.retry import DEFAULT_RETRY
+        from google.cloud.exceptions import Forbidden
 
         query = "select count(*) from persons"
         configuration = {
@@ -3283,8 +3374,8 @@ class TestClient(unittest.TestCase):
         self.assertEqual(got.project, self.PROJECT)
 
     def test_get_job_miss_w_explict_project(self):
-        from google.cloud.exceptions import NotFound
         from google.cloud.bigquery.retry import DEFAULT_GET_JOB_TIMEOUT
+        from google.cloud.exceptions import NotFound
 
         OTHER_PROJECT = "OTHER_PROJECT"
         JOB_ID = "NONESUCH"
@@ -3303,8 +3394,8 @@ class TestClient(unittest.TestCase):
         )
 
     def test_get_job_miss_w_client_location(self):
-        from google.cloud.exceptions import NotFound
         from google.cloud.bigquery.retry import DEFAULT_GET_JOB_TIMEOUT
+        from google.cloud.exceptions import NotFound
 
         JOB_ID = "NONESUCH"
         creds = _make_credentials()
@@ -3322,9 +3413,11 @@ class TestClient(unittest.TestCase):
         )
 
     def test_get_job_hit_w_timeout(self):
-        from google.cloud.bigquery.job import CreateDisposition
-        from google.cloud.bigquery.job import QueryJob
-        from google.cloud.bigquery.job import WriteDisposition
+        from google.cloud.bigquery.job import (
+            CreateDisposition,
+            QueryJob,
+            WriteDisposition,
+        )
 
         JOB_ID = "query_job"
         QUERY_DESTINATION_TABLE = "query_destination_table"
@@ -4237,9 +4330,11 @@ class TestClient(unittest.TestCase):
         )
 
     def test_extract_table_generated_job_id(self):
-        from google.cloud.bigquery.job import ExtractJob
-        from google.cloud.bigquery.job import ExtractJobConfig
-        from google.cloud.bigquery.job import DestinationFormat
+        from google.cloud.bigquery.job import (
+            DestinationFormat,
+            ExtractJob,
+            ExtractJobConfig,
+        )
 
         JOB = "job_id"
         SOURCE = "source_table"
@@ -4740,7 +4835,7 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         http = object()
 
-        from google.cloud.bigquery import QueryJobConfig, DatasetReference
+        from google.cloud.bigquery import DatasetReference, QueryJobConfig
 
         default_job_config = QueryJobConfig()
         default_job_config.default_dataset = DatasetReference(
@@ -4860,7 +4955,7 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         http = object()
 
-        from google.cloud.bigquery import QueryJobConfig, DatasetReference
+        from google.cloud.bigquery import DatasetReference, QueryJobConfig
 
         default_job_config = QueryJobConfig()
         default_job_config.default_dataset = DatasetReference(
@@ -4897,8 +4992,7 @@ class TestClient(unittest.TestCase):
         assert default_job_config.to_api_repr() == default_config_copy.to_api_repr()
 
     def test_query_w_invalid_job_config(self):
-        from google.cloud.bigquery import QueryJobConfig, DatasetReference
-        from google.cloud.bigquery import job
+        from google.cloud.bigquery import DatasetReference, QueryJobConfig, job
 
         job_id = "some-job-id"
         query = "select count(*) from persons"
@@ -4952,7 +5046,7 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         http = object()
 
-        from google.cloud.bigquery import QueryJobConfig, DatasetReference
+        from google.cloud.bigquery import DatasetReference, QueryJobConfig
 
         default_job_config = QueryJobConfig()
         default_job_config.default_dataset = DatasetReference(
@@ -5103,8 +5197,7 @@ class TestClient(unittest.TestCase):
         self.assertIsNone(sent["jobReference"].get("location"))
 
     def test_query_w_udf_resources(self):
-        from google.cloud.bigquery.job import QueryJob
-        from google.cloud.bigquery.job import QueryJobConfig
+        from google.cloud.bigquery.job import QueryJob, QueryJobConfig
         from google.cloud.bigquery.query import UDFResource
 
         RESOURCE_URI = "gs://some-bucket/js/lib.js"
@@ -5155,8 +5248,7 @@ class TestClient(unittest.TestCase):
         )
 
     def test_query_w_query_parameters(self):
-        from google.cloud.bigquery.job import QueryJob
-        from google.cloud.bigquery.job import QueryJobConfig
+        from google.cloud.bigquery.job import QueryJob, QueryJobConfig
         from google.cloud.bigquery.query import ScalarQueryParameter
 
         JOB = "job_name"
@@ -5297,8 +5389,7 @@ class TestClient(unittest.TestCase):
                 client.query("SELECT 1;", job_id="123", job_retry=None)
 
     def test_query_job_rpc_fail_w_conflict_random_id_job_fetch_fails(self):
-        from google.api_core.exceptions import Conflict
-        from google.api_core.exceptions import DataLoss
+        from google.api_core.exceptions import Conflict, DataLoss
         from google.cloud.bigquery.job import QueryJob
 
         creds = _make_credentials()
@@ -5321,8 +5412,7 @@ class TestClient(unittest.TestCase):
                 client.query("SELECT 1;", job_id=None)
 
     def test_query_job_rpc_fail_w_conflict_random_id_job_fetch_fails_no_retries(self):
-        from google.api_core.exceptions import Conflict
-        from google.api_core.exceptions import DataLoss
+        from google.api_core.exceptions import Conflict, DataLoss
         from google.cloud.bigquery.job import QueryJob
 
         creds = _make_credentials()
@@ -5693,9 +5783,8 @@ class TestClient(unittest.TestCase):
 
     def test_insert_rows_w_schema(self):
         import datetime
-        from google.cloud._helpers import UTC
-        from google.cloud._helpers import _datetime_to_rfc3339
-        from google.cloud._helpers import _RFC3339_MICROS
+
+        from google.cloud._helpers import _RFC3339_MICROS, UTC, _datetime_to_rfc3339
         from google.cloud.bigquery.schema import SchemaField
 
         WHEN_TS = 1437767599.006
@@ -5753,9 +5842,8 @@ class TestClient(unittest.TestCase):
 
     def test_insert_rows_w_list_of_dictionaries(self):
         import datetime
-        from google.cloud._helpers import UTC
-        from google.cloud._helpers import _datetime_to_rfc3339
-        from google.cloud._helpers import _RFC3339_MICROS
+
+        from google.cloud._helpers import _RFC3339_MICROS, UTC, _datetime_to_rfc3339
         from google.cloud.bigquery.schema import SchemaField
         from google.cloud.bigquery.table import Table
 
@@ -5822,8 +5910,7 @@ class TestClient(unittest.TestCase):
 
     def test_insert_rows_w_list_of_Rows(self):
         from google.cloud.bigquery.schema import SchemaField
-        from google.cloud.bigquery.table import Table
-        from google.cloud.bigquery.table import Row
+        from google.cloud.bigquery.table import Row, Table
 
         PATH = "projects/%s/datasets/%s/tables/%s/insertAll" % (
             self.PROJECT,
@@ -6797,10 +6884,10 @@ class TestClient(unittest.TestCase):
 
     def test_list_rows(self):
         import datetime
+
         from google.cloud._helpers import UTC
         from google.cloud.bigquery.schema import SchemaField
-        from google.cloud.bigquery.table import Table
-        from google.cloud.bigquery.table import Row
+        from google.cloud.bigquery.table import Row, Table
 
         PATH = "projects/%s/datasets/%s/tables/%s/data" % (
             self.PROJECT,
@@ -6902,8 +6989,7 @@ class TestClient(unittest.TestCase):
 
     def test_list_rows_w_start_index_w_page_size(self):
         from google.cloud.bigquery.schema import SchemaField
-        from google.cloud.bigquery.table import Table
-        from google.cloud.bigquery.table import Row
+        from google.cloud.bigquery.table import Row, Table
 
         PATH = "projects/%s/datasets/%s/tables/%s/data" % (
             self.PROJECT,
@@ -7312,8 +7398,7 @@ class TestClientUpload(object):
 
     @classmethod
     def _make_client(cls, transport=None, location=None):
-        from google.cloud.bigquery import _http
-        from google.cloud.bigquery import client
+        from google.cloud.bigquery import _http, client
 
         cl = client.Client(
             project=cls.PROJECT,
@@ -7375,8 +7460,7 @@ class TestClientUpload(object):
 
     @staticmethod
     def _make_config():
-        from google.cloud.bigquery.job import LoadJobConfig
-        from google.cloud.bigquery.job import SourceFormat
+        from google.cloud.bigquery.job import LoadJobConfig, SourceFormat
 
         config = LoadJobConfig()
         config.source_format = SourceFormat.CSV
@@ -7480,8 +7564,7 @@ class TestClientUpload(object):
 
     def test_load_table_from_file_resumable_metadata(self):
         from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
-        from google.cloud.bigquery.job import CreateDisposition
-        from google.cloud.bigquery.job import WriteDisposition
+        from google.cloud.bigquery.job import CreateDisposition, WriteDisposition
 
         client = self._make_client()
         file_obj = self._make_file_obj()
@@ -7644,8 +7727,8 @@ class TestClientUpload(object):
             )
 
     def test_load_table_from_file_failure(self):
-        from google.resumable_media import InvalidResponse
         from google.cloud import exceptions
+        from google.resumable_media import InvalidResponse
 
         client = self._make_client()
         file_obj = self._make_file_obj()
@@ -7800,8 +7883,8 @@ class TestClientUpload(object):
     def test_load_table_from_dataframe(self):
         pandas = pytest.importorskip("pandas")
         pytest.importorskip("pyarrow")
-        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
         from google.cloud.bigquery import job
+        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
         from google.cloud.bigquery.schema import PolicyTagList, SchemaField
 
         client = self._make_client()
@@ -7896,8 +7979,8 @@ class TestClientUpload(object):
     def test_load_table_from_dataframe_w_client_location(self):
         pandas = pytest.importorskip("pandas")
         pytest.importorskip("pyarrow")
-        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
         from google.cloud.bigquery import job
+        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
         from google.cloud.bigquery.schema import SchemaField
 
         client = self._make_client(location=self.LOCATION)
@@ -7941,8 +8024,8 @@ class TestClientUpload(object):
     def test_load_table_from_dataframe_w_custom_job_config_wihtout_source_format(self):
         pandas = pytest.importorskip("pandas")
         pytest.importorskip("pyarrow")
-        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
         from google.cloud.bigquery import job
+        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
         from google.cloud.bigquery.schema import SchemaField
 
         client = self._make_client()
@@ -7996,8 +8079,8 @@ class TestClientUpload(object):
     def test_load_table_from_dataframe_w_custom_job_config_w_source_format(self):
         pandas = pytest.importorskip("pandas")
         pytest.importorskip("pyarrow")
-        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
         from google.cloud.bigquery import job
+        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
         from google.cloud.bigquery.schema import SchemaField
 
         client = self._make_client()
@@ -8052,8 +8135,8 @@ class TestClientUpload(object):
     def test_load_table_from_dataframe_w_parquet_options_none(self):
         pandas = pytest.importorskip("pandas")
         pytest.importorskip("pyarrow")
-        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
         from google.cloud.bigquery import job
+        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
         from google.cloud.bigquery.schema import SchemaField
 
         client = self._make_client()
@@ -8104,8 +8187,8 @@ class TestClientUpload(object):
     def test_load_table_from_dataframe_w_list_inference_none(self):
         pandas = pytest.importorskip("pandas")
         pytest.importorskip("pyarrow")
-        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
         from google.cloud.bigquery import job
+        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
         from google.cloud.bigquery.schema import SchemaField
 
         client = self._make_client()
@@ -8164,8 +8247,8 @@ class TestClientUpload(object):
     def test_load_table_from_dataframe_w_explicit_job_config_override(self):
         pandas = pytest.importorskip("pandas")
         pytest.importorskip("pyarrow")
-        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
         from google.cloud.bigquery import job
+        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
         from google.cloud.bigquery.schema import SchemaField
 
         client = self._make_client()
@@ -8225,8 +8308,8 @@ class TestClientUpload(object):
     def test_load_table_from_dataframe_w_default_load_config(self):
         pandas = pytest.importorskip("pandas")
         pytest.importorskip("pyarrow")
-        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
         from google.cloud.bigquery import job
+        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
         from google.cloud.bigquery.schema import SchemaField
 
         client = self._make_client()
@@ -8275,8 +8358,8 @@ class TestClientUpload(object):
     def test_load_table_from_dataframe_w_list_inference_false(self):
         pandas = pytest.importorskip("pandas")
         pytest.importorskip("pyarrow")
-        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
         from google.cloud.bigquery import job
+        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
         from google.cloud.bigquery.schema import SchemaField
 
         client = self._make_client()
@@ -8356,8 +8439,8 @@ class TestClientUpload(object):
     def test_load_table_from_dataframe_w_automatic_schema(self):
         pandas = pytest.importorskip("pandas")
         pytest.importorskip("pyarrow")
-        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
         from google.cloud.bigquery import job
+        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
         from google.cloud.bigquery.schema import SchemaField
 
         client = self._make_client()
@@ -8457,8 +8540,8 @@ class TestClientUpload(object):
     def test_load_table_from_dataframe_w_automatic_schema_detection_fails(self):
         pandas = pytest.importorskip("pandas")
         pytest.importorskip("pyarrow")
-        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
         from google.cloud.bigquery import job
+        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
 
         client = self._make_client()
 
@@ -8521,8 +8604,8 @@ class TestClientUpload(object):
     def test_load_table_from_dataframe_w_index_and_auto_schema(self):
         pandas = pytest.importorskip("pandas")
         pytest.importorskip("pyarrow")
-        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
         from google.cloud.bigquery import job
+        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
         from google.cloud.bigquery.schema import SchemaField
 
         client = self._make_client()
@@ -8619,8 +8702,8 @@ class TestClientUpload(object):
     def test_load_table_from_dataframe_w_nullable_int64_datatype(self):
         pandas = pytest.importorskip("pandas")
         pytest.importorskip("pyarrow")
-        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
         from google.cloud.bigquery import job
+        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
         from google.cloud.bigquery.schema import SchemaField
 
         client = self._make_client()
@@ -8663,8 +8746,8 @@ class TestClientUpload(object):
 
     def test_load_table_from_dataframe_w_nullable_int64_datatype_automatic_schema(self):
         pandas = pytest.importorskip("pandas")
-        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
         from google.cloud.bigquery import job
+        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
         from google.cloud.bigquery.schema import SchemaField
 
         client = self._make_client()
@@ -8711,8 +8794,8 @@ class TestClientUpload(object):
     def test_load_table_from_dataframe_struct_fields(self):
         pandas = pytest.importorskip("pandas")
         pytest.importorskip("pyarrow")
-        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
         from google.cloud.bigquery import job
+        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
         from google.cloud.bigquery.schema import SchemaField
 
         client = self._make_client()
@@ -8775,8 +8858,8 @@ class TestClientUpload(object):
         """
         pandas = pytest.importorskip("pandas")
         pytest.importorskip("pyarrow")
-        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
         from google.cloud.bigquery import job
+        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
         from google.cloud.bigquery.schema import SchemaField
 
         client = self._make_client()
@@ -8840,8 +8923,8 @@ class TestClientUpload(object):
         """
         pandas = pytest.importorskip("pandas")
         pytest.importorskip("pyarrow")
-        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
         from google.cloud.bigquery import job
+        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
         from google.cloud.bigquery.schema import SchemaField
 
         client = self._make_client()
@@ -8910,8 +8993,8 @@ class TestClientUpload(object):
     def test_load_table_from_dataframe_w_partial_schema(self):
         pandas = pytest.importorskip("pandas")
         pytest.importorskip("pyarrow")
-        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
         from google.cloud.bigquery import job
+        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
         from google.cloud.bigquery.schema import SchemaField
 
         client = self._make_client()
@@ -9126,9 +9209,9 @@ class TestClientUpload(object):
         """
         pandas = pytest.importorskip("pandas")
         pytest.importorskip("pyarrow")
-        from google.cloud.bigquery.schema import SchemaField
-        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
         from google.cloud.bigquery import job
+        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
+        from google.cloud.bigquery.schema import SchemaField
 
         client = self._make_client()
         records = [{"name": None, "age": None}, {"name": None, "age": None}]
@@ -9183,8 +9266,8 @@ class TestClientUpload(object):
 
     def test_load_table_from_dataframe_with_csv_source_format(self):
         pandas = pytest.importorskip("pandas")
-        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
         from google.cloud.bigquery import job
+        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
         from google.cloud.bigquery.schema import SchemaField
 
         client = self._make_client()
@@ -9234,10 +9317,11 @@ class TestClientUpload(object):
     def test_load_table_from_dataframe_w_higher_scale_decimal128_datatype(self):
         pandas = pytest.importorskip("pandas")
         pytest.importorskip("pyarrow")
-        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
-        from google.cloud.bigquery import job
-        from google.cloud.bigquery.schema import SchemaField
         from decimal import Decimal
+
+        from google.cloud.bigquery import job
+        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
+        from google.cloud.bigquery.schema import SchemaField
 
         client = self._make_client()
         dataframe = pandas.DataFrame({"x": [Decimal("0.1234567891")]})
@@ -9277,8 +9361,8 @@ class TestClientUpload(object):
     # With autodetect specified, we pass the value as is. For more info, see
     # https://github.com/googleapis/python-bigquery/issues/1228#issuecomment-1910946297
     def test_load_table_from_json_basic_use(self):
-        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
         from google.cloud.bigquery import job
+        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
 
         client = self._make_client()
 
@@ -9415,8 +9499,8 @@ class TestClientUpload(object):
     # client sets autodetect == False
     # For more details, see https://github.com/googleapis/python-bigquery/issues/1228#issuecomment-1910946297
     def test_load_table_from_json_wo_schema_wo_autodetect_write_append_w_table(self):
-        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
         from google.cloud.bigquery import job
+        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
         from google.cloud.bigquery.job import WriteDisposition
 
         client = self._make_client()
@@ -9477,8 +9561,8 @@ class TestClientUpload(object):
     # For more details, see https://github.com/googleapis/python-bigquery/issues/1228#issuecomment-1910946297
     def test_load_table_from_json_wo_schema_wo_autodetect_write_append_wo_table(self):
         import google.api_core.exceptions as core_exceptions
-        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
         from google.cloud.bigquery import job
+        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
         from google.cloud.bigquery.job import WriteDisposition
 
         client = self._make_client()
@@ -9532,8 +9616,8 @@ class TestClientUpload(object):
     # client sets autodetect == True
     # For more details, see https://github.com/googleapis/python-bigquery/issues/1228#issuecomment-1910946297
     def test_load_table_from_json_wo_schema_wo_autodetect_others(self):
-        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
         from google.cloud.bigquery import job
+        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
         from google.cloud.bigquery.job import WriteDisposition
 
         client = self._make_client()
