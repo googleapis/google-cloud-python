@@ -57,6 +57,7 @@ def test_pqc_negotiated_group(run_pqc_test, request, transport_fixture):
 def test_google_auth_transport_pqc(run_pqc_test):
     """Verifies that the google-auth HTTP transport adapter negotiates PQC with the Showcase server."""
     import google.auth.transport.requests
+    from google.protobuf.json_format import MessageToJson
     from conftest import HostNameIgnoringAdapter
 
     # 1. Initialize a standard requests Session with mTLS certs
@@ -64,28 +65,29 @@ def test_google_auth_transport_pqc(run_pqc_test):
     cert_path = "/usr/local/google/home/omairn/git/googleapis/google-cloud-python-dev2/packages/gapic-generator/tests/cert/mtls.crt"
     key_path = "/usr/local/google/home/omairn/git/googleapis/google-cloud-python-dev2/packages/gapic-generator/tests/cert/mtls.key"
 
-    # Disable verification temporarily to isolate hostname/cert validation errors
-    session.verify = False
+    session.verify = cert_path
     session.cert = (cert_path, key_path)
     
     # Bypass localhost hostname mismatch
     session.mount("https://", HostNameIgnoringAdapter())
 
     # 2. Wrap it in google-auth's Transport Request adapter
-    # This is the exact object google-auth uses to execute its own HTTP/REST requests.
     auth_transport = google.auth.transport.requests.Request(session=session)
 
-    # 3. Make secure call using the google-auth transport adapter
+    # 3. Serialize the request body using the official protobuf JSON serializer
+    req = showcase.EchoRequest(content="Verify google-auth transport PQC connection.")
+    body = MessageToJson(req, including_default_value_fields=True).encode("utf-8")
+
+    # 4. Make secure call using the google-auth transport adapter
     url = "https://localhost:7469/v1beta1/echo:echo"
     method = "POST"
     headers = {"Content-Type": "application/json"}
-    body = b'{"content": "Verify google-auth transport PQC connection."}'
 
     # Execute the request through google-auth's transport layer
     response = auth_transport(url=url, method=method, body=body, headers=headers)
     assert response.status == 200
 
-    # 4. Extract TLS group from response headers returned by Showcase
+    # 5. Extract TLS group from response headers returned by Showcase
     negotiated_group = response.headers.get("x-showcase-tls-group")
     supported_groups = response.headers.get("x-showcase-tls-client-supported-groups")
 
