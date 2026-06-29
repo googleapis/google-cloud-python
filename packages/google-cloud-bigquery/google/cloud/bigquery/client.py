@@ -626,9 +626,9 @@ class Client(ClientWithProject):
         import google.api_core.gapic_v1.client_info
 
         try:
-            import pandas_gbq
+            import pandas_gbq  # type: ignore
         except ImportError:
-            pandas_gbq = None  # type: ignore[assignment]
+            pandas_gbq = None  # type: ignore
 
         if pandas_gbq is None:
             user_agent = "pandas-gbq/0.0.0"
