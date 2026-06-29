@@ -628,7 +628,7 @@ class Client(ClientWithProject):
         try:
             import pandas_gbq
         except ImportError:
-            pandas_gbq = None
+            pandas_gbq = None  # type: ignore[assignment]
 
         if pandas_gbq is None:
             user_agent = "pandas-gbq/0.0.0"
