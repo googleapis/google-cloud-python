@@ -14,6 +14,7 @@
 
 from __future__ import annotations
 
+import dataclasses
 import threading
 from collections import OrderedDict
 from typing import Optional
@@ -21,20 +22,24 @@ from typing import Optional
 from bigframes.core import local_data, nodes
 
 
+@dataclasses.dataclass(frozen=True)
+class CachedRelation:
+    table: local_data.ManagedArrowTable
+    is_complete: bool = False
+
+
 class PeekCache:
     """
-    Thread-safe LRU cache for storing local samples of query relations.
+    Thread-safe LRU cache for storing local samples or complete copies of query relations.
     This enables fast iteration on subsequent compatible operations.
     """
 
     def __init__(self, capacity: int = 100):
         self.capacity = capacity
-        self._cache: OrderedDict[nodes.BigFrameNode, local_data.ManagedArrowTable] = (
-            OrderedDict()
-        )
+        self._cache: OrderedDict[nodes.BigFrameNode, CachedRelation] = OrderedDict()
         self._lock = threading.Lock()
 
-    def get(self, key: nodes.BigFrameNode) -> Optional[local_data.ManagedArrowTable]:
+    def get(self, key: nodes.BigFrameNode) -> Optional[CachedRelation]:
         with self._lock:
             if key not in self._cache:
                 return None
@@ -42,8 +47,14 @@ class PeekCache:
             self._cache.move_to_end(key)
             return self._cache[key]
 
-    def put(self, key: nodes.BigFrameNode, value: local_data.ManagedArrowTable) -> None:
+    def put(
+        self,
+        key: nodes.BigFrameNode,
+        table: local_data.ManagedArrowTable,
+        is_complete: bool = False,
+    ) -> None:
         with self._lock:
+            value = CachedRelation(table, is_complete)
             if key in self._cache:
                 self._cache.move_to_end(key)
             self._cache[key] = value
@@ -58,13 +69,14 @@ class PeekCache:
 def substitute_peek_cached_subplans(
     root: nodes.BigFrameNode,
     peek_cache: PeekCache,
-    min_rows_required: int,
+    min_rows_required: Optional[int],
 ) -> nodes.BigFrameNode:
     """
-    Recursively replaces subplans in the tree that have a cached local sample
-    in the peek cache with a ReadLocalNode, provided that all ancestors
-    of the subplan are compatible with running on a sample, and the cached
-    sample contains at least the required number of rows.
+    Recursively replaces subplans in the tree that have a cached local relation
+    in the peek cache with a ReadLocalNode, provided that:
+    1. The cached relation is complete (contains the entire dataset).
+    2. Or, all ancestors of the subplan are compatible with running on a sample,
+       and the cached sample contains at least the required number of rows.
     """
     # Intermediate nodes that preserve the semantic validity of a sample.
     # WindowOpNode, AggregateNode, OrderByNode, JoinNode, etc. are excluded
@@ -79,13 +91,14 @@ def substitute_peek_cached_subplans(
     def traverse(
         node: nodes.BigFrameNode, ancestors_compatible: bool
     ) -> nodes.BigFrameNode:
-        if ancestors_compatible:
-            cached_sample = peek_cache.get(node)
-            if (
-                cached_sample is not None
-                and cached_sample.data.num_rows >= min_rows_required
+        cached_entry = peek_cache.get(node)
+        if cached_entry is not None:
+            if cached_entry.is_complete or (
+                ancestors_compatible
+                and min_rows_required is not None
+                and cached_entry.table.data.num_rows >= min_rows_required
             ):
-                # Replace the node with a ReadLocalNode containing the cached sample
+                # Replace the node with a ReadLocalNode containing the cached relation
                 scan_list = nodes.ScanList(
                     tuple(
                         nodes.ScanItem(field.id, field.id.name) for field in node.fields
@@ -93,7 +106,7 @@ def substitute_peek_cached_subplans(
                 )
                 session = node.session if node.session is not None else root.session
                 return nodes.ReadLocalNode(
-                    local_data_source=cached_sample,
+                    local_data_source=cached_entry.table,
                     scan_list=scan_list,
                     session=session,
                 )

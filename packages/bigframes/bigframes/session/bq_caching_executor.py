@@ -18,7 +18,6 @@ import asyncio
 import concurrent.futures
 import dataclasses
 import math
-import threading
 from typing import Literal, Optional, Sequence, Tuple
 
 import google.api_core.exceptions
@@ -71,41 +70,7 @@ _MAX_CLUSTER_COLUMNS = 4
 MAX_SMALL_RESULT_BYTES = 10 * 1024 * 1024 * 1024  # 10G
 
 
-_bg_loop = None
-_bg_thread = None
-_bg_lock = threading.Lock()
-
-
-def _get_bg_loop():
-    global _bg_loop, _bg_thread
-    with _bg_lock:
-        if _bg_loop is None:
-            loop = asyncio.new_event_loop()
-            _bg_loop = loop
-
-            def run():
-                asyncio.set_event_loop(loop)
-                loop.run_forever()
-
-            _bg_thread = threading.Thread(
-                target=run, daemon=True, name="bigframes-bg-loop"
-            )
-            _bg_thread.start()
-    return _bg_loop
-
-
-def _run_sync(coro):
-    try:
-        loop = asyncio.get_running_loop()
-    except RuntimeError:
-        loop = None
-
-    if loop is None:
-        return asyncio.run(coro)
-    else:
-        bg_loop = _get_bg_loop()
-        future = asyncio.run_coroutine_threadsafe(coro, bg_loop)
-        return future.result()
+from bigframes.session._async import run_sync
 
 
 class BigQueryCachingExecutor(executor.Executor):
@@ -167,9 +132,6 @@ class BigQueryCachingExecutor(executor.Executor):
             labels=dict(labels),
         )
         self._function_manager = function_manager
-        from bigframes.session.peek_cache import PeekCache
-
-        self._peek_cache = PeekCache()
 
     def to_sql(
         self,
@@ -185,7 +147,7 @@ class BigQueryCachingExecutor(executor.Executor):
             if enable_cache
             else array_value.node
         )
-        node = _run_sync(self._substitute_large_local_sources(node))
+        node = run_sync(self._substitute_large_local_sources(node))
         compiled = compile.compile_sql(
             compile.CompileRequest(node, sort_rows=ordered),
             compiler_name=self._compiler_name,
@@ -199,7 +161,7 @@ class BigQueryCachingExecutor(executor.Executor):
     ) -> executor.ExecuteResult:
         # Need to grab thread local before starting async execution.
         execution_spec = execution_spec.with_compute_options(bigframes.options.compute)
-        return _run_sync(
+        return run_sync(
             self._execute_async(
                 array_value,
                 execution_spec,
@@ -212,64 +174,6 @@ class BigQueryCachingExecutor(executor.Executor):
         execution_spec: ex_spec.ExecutionSpec,
     ) -> executor.ExecuteResult:
         await self._publisher.publish_async(bigframes.core.events.ExecutionStarted())
-
-        enable_peek_cache = (
-            execution_spec.bigquery_config.enable_peek_cache
-            if execution_spec.bigquery_config
-            else False
-        )
-
-        if execution_spec.peek is not None and enable_peek_cache:
-            from bigframes.session.peek_cache import substitute_peek_cached_subplans
-
-            rewritten_node = substitute_peek_cached_subplans(
-                array_value.node,
-                self._peek_cache,
-                min_rows_required=execution_spec.peek,
-            )
-            if rewritten_node != array_value.node:
-                rewritten_array_value = bigframes.core.ArrayValue(rewritten_node)
-                maybe_result = await self._try_execute_semi_executors(
-                    rewritten_array_value, execution_spec
-                )
-                if maybe_result is not None:
-                    return maybe_result
-
-            sample_size = (
-                execution_spec.bigquery_config.peek_cache_size
-                if execution_spec.bigquery_config
-                else 10000
-            )
-            actual_sample_size = max(execution_spec.peek, sample_size)
-            cache_execution_spec = dataclasses.replace(
-                execution_spec, peek=actual_sample_size
-            )
-
-            bq_result = await self._execute_bigquery(
-                array_value,
-                cache_execution_spec,
-            )
-
-            arrow_table = await asyncio.to_thread(bq_result.batches().to_arrow_table)
-            managed_table = local_data.ManagedArrowTable.from_pyarrow(
-                arrow_table, bq_result.schema
-            )
-            self._peek_cache.put(array_value.node, managed_table)
-
-            sliced_table = arrow_table.slice(0, execution_spec.peek)
-            result: executor.ExecuteResult = executor.LocalExecuteResult(
-                sliced_table,
-                bq_result.schema,
-                execution_metadata=bq_result.execution_metadata,
-            )
-
-            await self._publisher.publish_async(
-                bigframes.core.events.EventEnvelope(
-                    event=bigframes.core.events.ExecutionFinished(result=result),
-                    cell_execution_count=execution_spec.cell_execution_count,
-                )
-            )
-            return result
 
         maybe_result = await self._try_execute_semi_executors(
             array_value, execution_spec
@@ -480,7 +384,7 @@ class BigQueryCachingExecutor(executor.Executor):
         bq_compute_options = ex_spec.BqComputeOptions.from_compute_options(
             bigframes.options.compute
         )
-        return _run_sync(
+        return run_sync(
             self._cached_async(
                 array_value, config=config, compute_options=bq_compute_options
             )

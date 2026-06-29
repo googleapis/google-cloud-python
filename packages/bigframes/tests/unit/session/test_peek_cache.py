@@ -14,15 +14,13 @@
 
 from __future__ import annotations
 
-import asyncio
 from unittest import mock
 
-import google.cloud.bigquery
 import pyarrow as pa
 
 import bigframes
 from bigframes.core import identifiers, local_data, nodes
-from bigframes.session import bq_caching_executor, execution_spec, executor
+from bigframes.session import execution_spec, executor
 from bigframes.session.peek_cache import PeekCache, substitute_peek_cached_subplans
 from bigframes.testing import mocks
 
@@ -48,14 +46,14 @@ def test_peek_cache_lru():
     cache.put(node2, ds2)
 
     # Access node1 to make it most recently used, leaving node2 as least recently used (LRU)
-    assert cache.get(node1) == ds1
+    assert cache.get(node1).table == ds1
 
     # Put node3, which should evict node2
     cache.put(node3, ds3)
 
     assert cache.get(node2) is None
-    assert cache.get(node1) == ds1
-    assert cache.get(node3) == ds3
+    assert cache.get(node1).table == ds1
+    assert cache.get(node3).table == ds3
 
 
 def test_substitute_peek_cached_subplans():
@@ -89,22 +87,16 @@ def test_substitute_peek_cached_subplans():
 
 
 def test_executor_peek_cache_integration():
-    # Mock all arguments to BigQueryCachingExecutor
-    bqclient = mock.create_autospec(google.cloud.bigquery.Client, instance=True)
-    bqclient.project = "test-project"
-    storage_manager = mock.Mock()
-    bqstoragereadclient = mock.Mock()
-    loader = mock.Mock()
-    publisher = mock.AsyncMock()
-    function_manager = mock.Mock()
+    from bigframes.session import semi_executor
+    from bigframes.session.peek_cache_executor import PeekCacheExecutor
 
-    executor_obj = bq_caching_executor.BigQueryCachingExecutor(
-        bqclient=bqclient,
-        storage_manager=storage_manager,
-        bqstoragereadclient=bqstoragereadclient,
-        loader=loader,
-        publisher=publisher,
-        function_manager=function_manager,
+    # Mock target executor
+    mock_target = mock.create_autospec(executor.Executor, instance=True)
+    publisher = mock.AsyncMock()
+
+    # Mock PolarsExecutor
+    mock_polars_executor = mock.create_autospec(
+        semi_executor.SemiExecutor, instance=True
     )
 
     table = pa.Table.from_pydict({"col": [1, 2, 3, 4, 5]})
@@ -118,25 +110,30 @@ def test_executor_peek_cache_integration():
     )
     arr_value = bigframes.core.ArrayValue(node)
 
-    # Mock _execute_bigquery of the executor to return a mock 3-row table
+    # Mock target.execute to return a mock 3-row table
     mock_bq_table = pa.Table.from_pydict({"col": [10, 20, 30]})
     mock_bq_result = executor.LocalExecuteResult(mock_bq_table, arr_value.schema)
-
-    execute_bq_mock = mock.AsyncMock(return_value=mock_bq_result)
-    executor_obj._execute_bigquery = execute_bq_mock
+    mock_target.execute.return_value = mock_bq_result
 
     # Enable peek cache options
     compute_options = bigframes.options.compute
     compute_options.enable_peek_cache = True
     compute_options.peek_cache_size = 3
 
+    # Patch PolarsExecutor
+    with mock.patch(
+        "bigframes.session.polars_executor.PolarsExecutor",
+        return_value=mock_polars_executor,
+    ):
+        peek_cache_executor = PeekCacheExecutor(mock_target, publisher=publisher)
+
     # Call execute with peek=1 (cache miss path)
     spec = execution_spec.ExecutionSpec(peek=1).with_compute_options(compute_options)
-    result = asyncio.run(executor_obj._execute_async(arr_value, spec))
+    result = peek_cache_executor.execute(arr_value, spec)
 
-    # Verify BQ was called with peek=3 (cache size)
-    assert execute_bq_mock.call_count == 1
-    called_spec = execute_bq_mock.call_args[0][1]
+    # Verify target.execute was called with peek=3 (cache size)
+    assert mock_target.execute.call_count == 1
+    called_spec = mock_target.execute.call_args[0][1]
     assert called_spec.peek == 3
 
     # Verify returned result has exactly 1 row
@@ -145,17 +142,34 @@ def test_executor_peek_cache_integration():
     assert result_table["col"].to_pylist() == [10]
 
     # Verify peek cache has been populated with the 3-row table
-    cached_entry = executor_obj._peek_cache.get(node)
+    cached_entry = peek_cache_executor._peek_cache.get(node)
     assert cached_entry is not None
-    assert cached_entry.to_pyarrow_table()["col"].to_pylist() == [10, 20, 30]
+    assert cached_entry.table.to_pyarrow_table()["col"].to_pylist() == [10, 20, 30]
+
+    # Mock polars executor to return a 2-row table on cache hit
+    mock_polars_table = pa.Table.from_pydict({"col": [10, 20]})
+    mock_polars_result = executor.LocalExecuteResult(
+        mock_polars_table, arr_value.schema
+    )
+    mock_polars_executor.execute = mock.AsyncMock(return_value=mock_polars_result)
 
     # Call execute again with peek=2 (cache hit path)
-    execute_bq_mock.reset_mock()
+    mock_target.execute.reset_mock()
     spec2 = execution_spec.ExecutionSpec(peek=2).with_compute_options(compute_options)
-    result2 = asyncio.run(executor_obj._execute_async(arr_value, spec2))
+    result2 = peek_cache_executor.execute(arr_value, spec2)
 
-    # Verify BQ was NOT called
-    assert execute_bq_mock.call_count == 0
+    # Verify target.execute was NOT called
+    assert mock_target.execute.call_count == 0
+
+    # Verify polars executor was called with the rewritten node
+    assert mock_polars_executor.execute.call_count == 1
+    called_node = mock_polars_executor.execute.call_args[0][0]
+    assert isinstance(called_node, nodes.ReadLocalNode)
+    assert called_node.local_data_source.to_pyarrow_table()["col"].to_pylist() == [
+        10,
+        20,
+        30,
+    ]
 
     # Verify returned result has exactly 2 rows
     result_table2 = pa.Table.from_batches(result2.batches().arrow_batches)
@@ -268,3 +282,196 @@ def test_substitute_peek_cached_subplans_insufficient_rows():
     # Request min_rows_required = 3 -> Should NOT substitute (insufficient rows)
     rewritten_ng = substitute_peek_cached_subplans(leaf, cache, min_rows_required=3)
     assert rewritten_ng == leaf
+
+
+def test_executor_peek_cache_populates_from_full_execution():
+    from bigframes.session.peek_cache_executor import PeekCacheExecutor
+
+    # Mock target executor
+    mock_target = mock.create_autospec(executor.Executor, instance=True)
+    publisher = mock.AsyncMock()
+
+    table = pa.Table.from_pydict({"col": [1, 2, 3, 4, 5]})
+    ds = local_data.ManagedArrowTable.from_pyarrow(table)
+    session = mocks.create_bigquery_session()
+
+    node = nodes.ReadLocalNode(
+        local_data_source=ds,
+        scan_list=nodes.ScanList((nodes.ScanItem(identifiers.ColumnId("col"), "col"),)),
+        session=session,
+    )
+    arr_value = bigframes.core.ArrayValue(node)
+
+    # Mock target.execute to return a mock 5-row local result
+    mock_result = executor.LocalExecuteResult(table, arr_value.schema)
+    mock_target.execute.return_value = mock_result
+
+    # Enable peek cache options with cache size = 3 (smaller than 5)
+    compute_options = bigframes.options.compute
+    compute_options.enable_peek_cache = True
+    compute_options.peek_cache_size = 3
+
+    # Mock PolarsExecutor to avoid ImportError if it's not installed in test env,
+    # though it is not called on full execution path, but PeekCacheExecutor.__init__ tries to instantiate it.
+    mock_polars_executor = mock.Mock()
+    with mock.patch(
+        "bigframes.session.polars_executor.PolarsExecutor",
+        return_value=mock_polars_executor,
+    ):
+        peek_cache_executor = PeekCacheExecutor(mock_target, publisher=publisher)
+
+    # Call execute with peek=None (full execution)
+    spec = execution_spec.ExecutionSpec(peek=None).with_compute_options(compute_options)
+    _ = peek_cache_executor.execute(arr_value, spec)
+
+    # Verify target.execute was called
+    assert mock_target.execute.call_count == 1
+
+    # Verify peek cache has been populated and sliced to peek_cache_size (3)
+    cached_entry = peek_cache_executor._peek_cache.get(node)
+    assert cached_entry is not None
+    assert not cached_entry.is_complete  # Sliced, so not complete
+    assert cached_entry.table.to_pyarrow_table().num_rows == 3
+    assert cached_entry.table.to_pyarrow_table()["col"].to_pylist() == [1, 2, 3]
+
+    # Now test when full result is smaller than peek_cache_size (cache size = 10)
+    compute_options.peek_cache_size = 10
+    with mock.patch(
+        "bigframes.session.polars_executor.PolarsExecutor",
+        return_value=mock_polars_executor,
+    ):
+        peek_cache_executor2 = PeekCacheExecutor(mock_target, publisher=publisher)
+    _ = peek_cache_executor2.execute(arr_value, spec)
+
+    cached_entry2 = peek_cache_executor2._peek_cache.get(node)
+    assert cached_entry2 is not None
+    assert cached_entry2.is_complete  # Fits entirely, so complete!
+    assert cached_entry2.table.to_pyarrow_table().num_rows == 5
+    assert cached_entry2.table.to_pyarrow_table()["col"].to_pylist() == [1, 2, 3, 4, 5]
+
+
+def test_executor_peek_cache_falls_back_on_insufficient_rows():
+    from bigframes.session import semi_executor
+    from bigframes.session.peek_cache_executor import PeekCacheExecutor
+
+    # Mock target executor
+    mock_target = mock.create_autospec(executor.Executor, instance=True)
+    publisher = mock.AsyncMock()
+
+    # Mock PolarsExecutor
+    mock_polars_executor = mock.create_autospec(
+        semi_executor.SemiExecutor, instance=True
+    )
+
+    table = pa.Table.from_pydict({"col": [1, 2, 3, 4, 5]})
+    ds = local_data.ManagedArrowTable.from_pyarrow(table)
+    session = mocks.create_bigquery_session()
+
+    node = nodes.ReadLocalNode(
+        local_data_source=ds,
+        scan_list=nodes.ScanList((nodes.ScanItem(identifiers.ColumnId("col"), "col"),)),
+        session=session,
+    )
+    arr_value = bigframes.core.ArrayValue(node)
+
+    # Mock target.execute to return a mock 5-row BQ result
+    mock_bq_table = pa.Table.from_pydict({"col": [10, 20, 30, 40, 50]})
+    mock_bq_result = executor.LocalExecuteResult(mock_bq_table, arr_value.schema)
+    mock_target.execute.return_value = mock_bq_result
+
+    # Enable peek cache options
+    compute_options = bigframes.options.compute
+    compute_options.enable_peek_cache = True
+    compute_options.peek_cache_size = 5
+
+    with mock.patch(
+        "bigframes.session.polars_executor.PolarsExecutor",
+        return_value=mock_polars_executor,
+    ):
+        peek_cache_executor = PeekCacheExecutor(mock_target, publisher=publisher)
+
+    # Populate the cache first with a different data source object to trigger rewrite
+    cached_ds = local_data.ManagedArrowTable.from_pyarrow(table)
+    peek_cache_executor._peek_cache.put(node, cached_ds)
+
+    # Mock polars executor to return a 2-row table (insufficient for peek=5)
+    mock_polars_table = pa.Table.from_pydict({"col": [1, 2]})
+    mock_polars_result = executor.LocalExecuteResult(
+        mock_polars_table, arr_value.schema
+    )
+    mock_polars_executor.execute = mock.AsyncMock(return_value=mock_polars_result)
+
+    # Call execute with peek=5 (should trigger fallback because 2 < 5)
+    spec = execution_spec.ExecutionSpec(peek=5).with_compute_options(compute_options)
+    result = peek_cache_executor.execute(arr_value, spec)
+
+    # Verify polars executor was called
+    assert mock_polars_executor.execute.call_count == 1
+
+    # Verify target.execute WAS called (fallback)
+    assert mock_target.execute.call_count == 1
+    called_spec = mock_target.execute.call_args[0][1]
+    assert called_spec.peek == 5
+
+    # Verify returned result is the BQ result
+    result_table = pa.Table.from_batches(result.batches().arrow_batches)
+    assert result_table.num_rows == 5
+    assert result_table["col"].to_pylist() == [10, 20, 30, 40, 50]
+
+
+def test_executor_complete_cache_local_execution():
+    from bigframes.session import semi_executor
+    from bigframes.session.peek_cache_executor import PeekCacheExecutor
+
+    # Mock target executor
+    mock_target = mock.create_autospec(executor.Executor, instance=True)
+    publisher = mock.AsyncMock()
+
+    # Mock PolarsExecutor
+    mock_polars_executor = mock.create_autospec(
+        semi_executor.SemiExecutor, instance=True
+    )
+
+    table = pa.Table.from_pydict({"col": [1, 2, 3, 4, 5]})
+    ds = local_data.ManagedArrowTable.from_pyarrow(table)
+    session = mocks.create_bigquery_session()
+
+    node = nodes.ReadLocalNode(
+        local_data_source=ds,
+        scan_list=nodes.ScanList((nodes.ScanItem(identifiers.ColumnId("col"), "col"),)),
+        session=session,
+    )
+    arr_value = bigframes.core.ArrayValue(node)
+
+    # Enable peek cache options
+    compute_options = bigframes.options.compute
+    compute_options.enable_peek_cache = True
+
+    with mock.patch(
+        "bigframes.session.polars_executor.PolarsExecutor",
+        return_value=mock_polars_executor,
+    ):
+        peek_cache_executor = PeekCacheExecutor(mock_target, publisher=publisher)
+
+    # Populate the cache first as COMPLETE
+    cached_ds = local_data.ManagedArrowTable.from_pyarrow(table)
+    peek_cache_executor._peek_cache.put(node, cached_ds, is_complete=True)
+
+    # Mock polars executor to return the full 5-row table
+    mock_polars_result = executor.LocalExecuteResult(table, arr_value.schema)
+    mock_polars_executor.execute = mock.AsyncMock(return_value=mock_polars_result)
+
+    # Call execute with peek=None (full execution!)
+    spec = execution_spec.ExecutionSpec(peek=None).with_compute_options(compute_options)
+    result = peek_cache_executor.execute(arr_value, spec)
+
+    # Verify polars executor was called
+    assert mock_polars_executor.execute.call_count == 1
+
+    # Verify target.execute was NOT called (no BQ query!)
+    assert mock_target.execute.call_count == 0
+
+    # Verify returned result is the local polars result
+    result_table = pa.Table.from_batches(result.batches().arrow_batches)
+    assert result_table.num_rows == 5
+    assert result_table["col"].to_pylist() == [1, 2, 3, 4, 5]
