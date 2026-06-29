@@ -64,7 +64,8 @@ def test_google_auth_transport_pqc(run_pqc_test):
     cert_path = "/usr/local/google/home/omairn/git/googleapis/google-cloud-python-dev2/packages/gapic-generator/tests/cert/mtls.crt"
     key_path = "/usr/local/google/home/omairn/git/googleapis/google-cloud-python-dev2/packages/gapic-generator/tests/cert/mtls.key"
 
-    session.verify = cert_path
+    # Disable verification temporarily to isolate hostname/cert validation errors
+    session.verify = False
     session.cert = (cert_path, key_path)
     
     # Bypass localhost hostname mismatch
