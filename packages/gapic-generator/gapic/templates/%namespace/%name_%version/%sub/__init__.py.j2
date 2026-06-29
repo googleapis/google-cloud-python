@@ -12,6 +12,23 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+if sys.version_info >= (3, 15):
+    __lazy_modules__ = {
+        {% filter sort_lines -%}
+        {% for subpackage, _ in api.subpackages|dictsort -%}
+        f"{__name__}.{{ subpackage }}",
+        {% endfor -%}
+        {% for service in api.services.values()
+                if service.meta.address.subpackage == api.subpackage_view -%}
+        f"{__name__}.services.{{ service.name|snake_case }}",
+        {% endfor -%}
+        {% for proto in api.protos.values()
+                if proto.meta.address.subpackage == api.subpackage_view -%}
+        f"{__name__}.types.{{ proto.module_name }}",
+        {% endfor -%}
+        {% endfilter %}
+    }
+
 {#  Import subpackages. -#}
 {% for subpackage, _ in api.subpackages|dictsort %}
 from . import {{ subpackage }}
