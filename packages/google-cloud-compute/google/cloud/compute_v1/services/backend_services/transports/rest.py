@@ -1149,6 +1149,7 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1329,6 +1330,7 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1477,6 +1479,7 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1656,6 +1659,7 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1828,6 +1832,7 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1996,6 +2001,7 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2152,6 +2158,7 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2310,6 +2317,7 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2530,6 +2538,7 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2712,6 +2721,7 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2862,6 +2872,7 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3010,6 +3021,7 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3195,6 +3207,7 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3377,6 +3390,7 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3604,6 +3618,7 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3785,6 +3800,7 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3937,6 +3953,7 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)

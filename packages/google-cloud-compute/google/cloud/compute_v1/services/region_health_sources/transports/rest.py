@@ -638,6 +638,7 @@ class RegionHealthSourcesRestTransport(_BaseRegionHealthSourcesRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -786,6 +787,7 @@ class RegionHealthSourcesRestTransport(_BaseRegionHealthSourcesRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -960,6 +962,7 @@ class RegionHealthSourcesRestTransport(_BaseRegionHealthSourcesRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1116,6 +1119,7 @@ class RegionHealthSourcesRestTransport(_BaseRegionHealthSourcesRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1264,6 +1268,7 @@ class RegionHealthSourcesRestTransport(_BaseRegionHealthSourcesRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1444,6 +1449,7 @@ class RegionHealthSourcesRestTransport(_BaseRegionHealthSourcesRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1592,6 +1598,7 @@ class RegionHealthSourcesRestTransport(_BaseRegionHealthSourcesRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1777,6 +1784,7 @@ class RegionHealthSourcesRestTransport(_BaseRegionHealthSourcesRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)

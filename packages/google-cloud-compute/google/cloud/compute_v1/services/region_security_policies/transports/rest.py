@@ -746,6 +746,7 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -925,6 +926,7 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1100,6 +1102,7 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1251,6 +1254,7 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1400,6 +1404,7 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1581,6 +1586,7 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1726,6 +1732,7 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1907,6 +1914,7 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2086,6 +2094,7 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2259,6 +2268,7 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)

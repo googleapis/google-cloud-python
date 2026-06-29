@@ -583,6 +583,7 @@ class FutureReservationsRestTransport(_BaseFutureReservationsRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -733,6 +734,7 @@ class FutureReservationsRestTransport(_BaseFutureReservationsRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -909,6 +911,7 @@ class FutureReservationsRestTransport(_BaseFutureReservationsRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1085,6 +1088,7 @@ class FutureReservationsRestTransport(_BaseFutureReservationsRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1233,6 +1237,7 @@ class FutureReservationsRestTransport(_BaseFutureReservationsRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1417,6 +1422,7 @@ class FutureReservationsRestTransport(_BaseFutureReservationsRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1567,6 +1573,7 @@ class FutureReservationsRestTransport(_BaseFutureReservationsRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)

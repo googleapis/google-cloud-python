@@ -464,6 +464,7 @@ class CrossSiteNetworksRestTransport(_BaseCrossSiteNetworksRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -640,6 +641,7 @@ class CrossSiteNetworksRestTransport(_BaseCrossSiteNetworksRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -794,6 +796,7 @@ class CrossSiteNetworksRestTransport(_BaseCrossSiteNetworksRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -980,6 +983,7 @@ class CrossSiteNetworksRestTransport(_BaseCrossSiteNetworksRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1130,6 +1134,7 @@ class CrossSiteNetworksRestTransport(_BaseCrossSiteNetworksRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)

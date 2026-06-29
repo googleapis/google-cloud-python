@@ -673,6 +673,7 @@ class SnapshotsRestTransport(_BaseSnapshotsRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -847,6 +848,7 @@ class SnapshotsRestTransport(_BaseSnapshotsRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -996,6 +998,7 @@ class SnapshotsRestTransport(_BaseSnapshotsRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1218,6 +1221,7 @@ class SnapshotsRestTransport(_BaseSnapshotsRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1398,6 +1402,7 @@ class SnapshotsRestTransport(_BaseSnapshotsRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1543,6 +1548,7 @@ class SnapshotsRestTransport(_BaseSnapshotsRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1771,6 +1777,7 @@ class SnapshotsRestTransport(_BaseSnapshotsRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1955,6 +1962,7 @@ class SnapshotsRestTransport(_BaseSnapshotsRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2109,6 +2117,7 @@ class SnapshotsRestTransport(_BaseSnapshotsRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
