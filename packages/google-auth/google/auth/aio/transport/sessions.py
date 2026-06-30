@@ -206,7 +206,11 @@ class AsyncAuthorizedSession:
                             old_auth_request = self._auth_request
                             self._auth_request = AiohttpRequest(session=new_session)
 
-                            await old_auth_request.close()
+                            try:
+                                await old_auth_request.close()
+                            except Exception:
+                                # Suppress so it doesn't abort the mTLS configuration
+                                pass
                         else:
                             is_mtls = False
                             warnings.warn(
