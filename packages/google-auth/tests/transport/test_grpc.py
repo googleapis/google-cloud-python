@@ -607,3 +607,40 @@ class TestSslCredentials(object):
         mock_ssl_channel_credentials.assert_called_with(
             certificate_chain=b"cert", private_key=b"key"
         )
+
+    @mock.patch(
+        "google.auth.transport.mtls.has_default_client_cert_source", autospec=True
+    )
+    def test_get_client_ssl_credentials_auto_enablement(
+        self,
+        mock_has_default_client_cert_source,
+        mock_check_config_path,
+        mock_load_json_file,
+        mock_get_client_ssl_credentials,
+        mock_ssl_channel_credentials,
+    ):
+        fake_config_content = '{"version": 1, "cert_configs": {"workload": {"cert_path": "/tmp/mock_cert.pem", "key_path": "/tmp/mock_key.pem"}}}'
+        mock_has_default_client_cert_source.return_value = True
+        mock_get_client_ssl_credentials.return_value = (
+            True,
+            PUBLIC_CERT_BYTES,
+            PRIVATE_KEY_BYTES,
+            None,
+        )
+
+        with mock.patch.dict(
+            os.environ,
+            {
+                environment_vars.GOOGLE_API_CERTIFICATE_CONFIG: "fake_config_path.json",
+            },
+        ), mock.patch("builtins.open", mock.mock_open(read_data=fake_config_content)):
+            # Ensure GOOGLE_API_USE_CLIENT_CERTIFICATE is not present in the environment
+            os.environ.pop(environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE, None)
+            ssl_credentials = google.auth.transport.grpc.SslCredentials()
+
+        assert ssl_credentials.ssl_credentials is not None
+        assert ssl_credentials.is_mtls
+        mock_get_client_ssl_credentials.assert_called_once()
+        mock_ssl_channel_credentials.assert_called_once_with(
+            certificate_chain=PUBLIC_CERT_BYTES, private_key=PRIVATE_KEY_BYTES
+        )

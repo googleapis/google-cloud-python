@@ -280,14 +280,14 @@ def secure_authorized_channel(
 class SslCredentials:
     """Class for application default SSL credentials.
 
-    The client certificate usage (mutual TLS) is determined by the
-    `should_use_client_cert` helper. Client certificate will not be used
-    unless client certificate usage is enabled. This is true if the
-    `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is explicitly
-    set to `"true"`, or if the environment variable is unset/empty but a client
-    certificate configuration is found (e.g. via the `GOOGLE_API_CERTIFICATE_CONFIG`
-    environment variable containing a `"workload"` certificate configuration).
-    See https://google.aip.dev/auth/4114
+    Mutual TLS (mTLS) is enabled if either:
+    1. The `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is explicitly
+       set to `"true"`.
+    2. The `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is unset or empty,
+       but a valid workload certificate configuration is found (e.g., via the
+       `GOOGLE_API_CERTIFICATE_CONFIG` environment variable or the default gcloud config path).
+
+    See https://google.aip.dev/auth/4114 for client certificate discovery details.
 
     If client certificate usage is enabled, then for devices with endpoint
     verification support, a device certificate will be automatically loaded and
