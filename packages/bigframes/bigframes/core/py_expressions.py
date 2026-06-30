@@ -468,6 +468,7 @@ def resolve_py_exprs(
         if (
             col_series_args is not None
             and isinstance(expression, UnboundVariableExpression)
+            and isinstance(expression.id, str)
             and expression.id in col_series_args
         ):
             return deref(col_series_args[expression.id])
@@ -513,8 +514,8 @@ def resolve_call(call: Call) -> Expression:
                 pass
 
             # Support common scalar method calls on Series/expressions
-            if (op := python_op_maps.series_method_to_op(attr)) is not None:
-                return OpExpression(op, (callable.input,))
+            if (method_op := python_op_maps.series_method_to_op(attr)) is not None:
+                return OpExpression(method_op, (callable.input,))
 
     elif isinstance(callable, PyObject):
         if isinstance(callable.value, ScalarOp):

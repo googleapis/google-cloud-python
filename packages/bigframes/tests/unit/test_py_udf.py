@@ -555,3 +555,65 @@ def test_groupby_apply_series_unsupported_method_raises(scalars_df_index):
         NotImplementedError, match="No implementation available for call expression"
     ):
         scalars_df_index.groupby("bool_col")["int64_col"].apply(unsupported_method)
+
+
+def test_groupby_apply_constant(scalars_df_index, scalars_pandas_df_index):
+    def const_func(df):
+        return 42
+
+    bf_df = scalars_df_index.dropna(subset=["int64_col"])
+    pd_df = scalars_pandas_df_index.dropna(subset=["int64_col"])
+
+    bf_result = bf_df.groupby("int64_col").apply(const_func).to_pandas()
+    pd_result = pd_df.groupby("int64_col").apply(const_func)
+
+    assert_series_equal(bf_result, pd_result, check_dtype=False)
+
+
+def test_groupby_apply_conflicting_column_name(
+    scalars_df_index, scalars_pandas_df_index
+):
+    bf_df = scalars_df_index.rename(columns={"int64_col": "sum"})
+    pd_df = scalars_pandas_df_index.rename(columns={"int64_col": "sum"})
+
+    def my_metric(df):
+        return df["sum"].sum() - df.int64_too.mean()
+
+    bf_result = bf_df.groupby("bool_col").apply(my_metric).to_pandas()
+    pd_result = pd_df.groupby("bool_col").apply(my_metric)
+
+    assert_series_equal(bf_result, pd_result, check_dtype=False)
+
+
+def test_groupby_apply_post_agg_scalar_op(scalars_df_index, scalars_pandas_df_index):
+    import math
+
+    def complex_metric(df):
+        return math.sin(abs(df.int64_col.sum() - df.int64_too.mean()))
+
+    bf_df = scalars_df_index.dropna(subset=["int64_col", "int64_too", "bool_col"])
+    pd_df = scalars_pandas_df_index.dropna(
+        subset=["int64_col", "int64_too", "bool_col"]
+    )
+
+    bf_result = bf_df.groupby("bool_col").apply(complex_metric).to_pandas()
+    pd_result = pd_df.groupby("bool_col").apply(complex_metric)
+
+    assert_series_equal(bf_result, pd_result, check_dtype=False)
+
+
+def test_groupby_apply_conditional_aggs(scalars_df_index, scalars_pandas_df_index):
+    def conditional_metric(df):
+        return df.int64_col.sum() if df.int64_too.mean() > 0 else df.float64_col.std()
+
+    bf_df = scalars_df_index.dropna(
+        subset=["int64_col", "int64_too", "float64_col", "bool_col"]
+    )
+    pd_df = scalars_pandas_df_index.dropna(
+        subset=["int64_col", "int64_too", "float64_col", "bool_col"]
+    )
+
+    bf_result = bf_df.groupby("bool_col").apply(conditional_metric).to_pandas()
+    pd_result = pd_df.groupby("bool_col").apply(conditional_metric)
+
+    assert_series_equal(bf_result, pd_result, check_dtype=False)
