@@ -12,13 +12,14 @@ name: unittest
 permissions:
   contents: read
 
+
 jobs:
   unit:
     runs-on: ubuntu-22.04
     strategy:
       fail-fast: true
       matrix:
-        python: ['3.9', '3.10', "3.11", "3.12", "3.13", "3.14", "3.15"]
+        python: ["3.10", "3.11", "3.12", "3.13", "3.14", "3.15"]
     steps:
     - name: Checkout
       uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
@@ -33,14 +34,25 @@ jobs:
       with:
         python-version: ${{ matrix.python }}
         allow-prereleases: true
-        # Caches compiled wheels locally to prevent building heavy libraries
-        # such as grpcio, which we build from scratch on every run for Python 3.15+.
-        # Follow https://github.com/grpc/grpc/issues/41010 for updates.
-        cache: 'pip'
+    - name: Setup uv
+      uses: astral-sh/setup-uv@v5
+      with:
+        enable-cache: true
+        cache-dependency-glob: 'packages/**/testing/constraints*.txt'
     - name: Install nox
       run: |
-        python -m pip install --upgrade setuptools pip wheel
-        python -m pip install nox
+        uv pip install --system nox nox-uv
+    # Caches compiled wheels locally to prevent building heavy libraries
+    # such as grpcio, which we build from scratch on every run for Python 3.15+.
+    # Follow https://github.com/grpc/grpc/issues/41010 for updates.
+    - name: Cache Built Python 3.15 Wheels
+      if: matrix.python == '3.15'
+      uses: actions/cache@v4
+      with:
+        path: .uv-wheel-cache
+        key: ${{ runner.os }}-uv-wheels-3.15-${{ hashFiles('packages/**/testing/constraints*.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-uv-wheels-3.15-
     - name: Run unit tests
       env:
         COVERAGE_FILE: ${{ github.workspace }}/.coverage-${{ matrix.python }}
@@ -48,7 +60,20 @@ jobs:
         TARGET_BRANCH: ${{ github.base_ref || github.event.merge_group.base_ref }}
         TEST_TYPE: unit
         PY_VERSION: ${{ matrix.python }}
+        # Workaround: Allows libcst to compile on Python 3.15+ while PyO3 catches up
+        # Can be removed once libcst releases a version with native Python 3.15 wheels
+        # Follow https://github.com/Instagram/LibCST/issues/1445 for updates.
+        PYO3_USE_ABI3_FORWARD_COMPATIBILITY: "1"
       run: |
+        # Only inject overrides if we are strictly on the 3.15 pre-release
+        # This is needed to speed up builds
+        if [ "${{ matrix.python }}" = "3.15" ]; then
+          # Tell uv it is allowed to use the pre-release 3.15 toolchain
+          export UV_PRERELEASE="allow"
+
+          # Route uv's wheel and environment cache to our persistent workspace directory
+          export UV_CACHE_DIR="${{ github.workspace }}/.uv-wheel-cache"
+        fi
         ci/run_conditional_tests.sh
     - name: Upload coverage results
       uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
