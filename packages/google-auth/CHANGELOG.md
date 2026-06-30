@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.55.2](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.55.1...google-auth-v2.55.2) (2026-06-30)
+
+
+### Bug Fixes
+
+* **auth:** align mTLS discovery and enforce fail-fast transport configuration. ([#17470](https://github.com/googleapis/google-cloud-python/issues/17470)) ([f492d3d](https://github.com/googleapis/google-cloud-python/commit/f492d3d5e5a4b693caf7c9a8fbfdfc073a1bcda8))
+
 ## [2.55.1](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.55.0...google-auth-v2.55.1) (2026-06-25)
 
 

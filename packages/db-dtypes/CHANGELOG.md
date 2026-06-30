@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/db-dtypes/#history
 
+## [1.7.1](https://github.com/googleapis/google-cloud-python/compare/db-dtypes-v1.7.0...db-dtypes-v1.7.1) (2026-06-30)
+
+
+### Bug Fixes
+
+* avoid deprecated unitless operations for NumPy 2.5 compatibility ([#17589](https://github.com/googleapis/google-cloud-python/issues/17589)) ([d0b2abc](https://github.com/googleapis/google-cloud-python/commit/d0b2abc2aef8d95402c026cccbc866d812b819b8))
+
 ## [1.7.0](https://github.com/googleapis/google-cloud-python/compare/db-dtypes-v1.6.0...db-dtypes-v1.7.0) (2026-06-02)
 
 
