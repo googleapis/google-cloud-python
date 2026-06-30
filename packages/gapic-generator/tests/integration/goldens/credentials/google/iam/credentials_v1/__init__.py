@@ -22,6 +22,13 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+if sys.version_info >= (3, 15):  # pragma: NO COVER
+    __lazy_modules__ = {
+f"{__name__}.services.iam_credentials",
+f"{__name__}.types.common",
+f"{__name__}.types.iamcredentials",
+    }
+
 
 from .services.iam_credentials import IAMCredentialsClient
 from .services.iam_credentials import IAMCredentialsAsyncClient

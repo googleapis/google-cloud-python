@@ -22,6 +22,17 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+if sys.version_info >= (3, 15):  # pragma: NO COVER
+    __lazy_modules__ = {
+f"{__name__}.services.config_service_v2",
+f"{__name__}.services.logging_service_v2",
+f"{__name__}.services.metrics_service_v2",
+f"{__name__}.types.log_entry",
+f"{__name__}.types.logging",
+f"{__name__}.types.logging_config",
+f"{__name__}.types.logging_metrics",
+    }
+
 
 from .services.config_service_v2 import BaseConfigServiceV2Client
 from .services.config_service_v2 import BaseConfigServiceV2AsyncClient

@@ -22,6 +22,14 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+if sys.version_info >= (3, 15):  # pragma: NO COVER
+    __lazy_modules__ = {
+f"{__name__}.services.asset_service",
+f"{__name__}.types.asset_enrichment_resourceowners",
+f"{__name__}.types.asset_service",
+f"{__name__}.types.assets",
+    }
+
 
 from .services.asset_service import AssetServiceClient
 from .services.asset_service import AssetServiceAsyncClient

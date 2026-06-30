@@ -22,6 +22,13 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+if sys.version_info >= (3, 15):  # pragma: NO COVER
+    __lazy_modules__ = {
+f"{__name__}.services.storage_batch_operations",
+f"{__name__}.types.storage_batch_operations",
+f"{__name__}.types.storage_batch_operations_types",
+    }
+
 
 from .services.storage_batch_operations import StorageBatchOperationsClient
 from .services.storage_batch_operations import StorageBatchOperationsAsyncClient

@@ -22,6 +22,23 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+if sys.version_info >= (3, 15):  # pragma: NO COVER
+    __lazy_modules__ = {
+f"{__name__}.services.eventarc",
+f"{__name__}.types.channel",
+f"{__name__}.types.channel_connection",
+f"{__name__}.types.discovery",
+f"{__name__}.types.enrollment",
+f"{__name__}.types.eventarc",
+f"{__name__}.types.google_api_source",
+f"{__name__}.types.google_channel_config",
+f"{__name__}.types.logging_config",
+f"{__name__}.types.message_bus",
+f"{__name__}.types.network_config",
+f"{__name__}.types.pipeline",
+f"{__name__}.types.trigger",
+    }
+
 
 from .services.eventarc import EventarcClient
 from .services.eventarc import EventarcAsyncClient

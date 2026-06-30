@@ -22,6 +22,12 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+if sys.version_info >= (3, 15):  # pragma: NO COVER
+    __lazy_modules__ = {
+f"{__name__}.services.cloud_redis",
+f"{__name__}.types.cloud_redis",
+    }
+
 
 from .services.cloud_redis import CloudRedisClient
 from .services.cloud_redis import CloudRedisAsyncClient
