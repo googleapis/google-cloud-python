@@ -13,11 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import pytest
-
 import warnings
 
-try:
+import pytest
+
+try:  # pragma: NO COVER
     import proto
 except ImportError:
     proto = None  # type: ignore
