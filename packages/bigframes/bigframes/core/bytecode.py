@@ -508,6 +508,13 @@ def _compile_bytecode_to_py_expr(func: Callable) -> expression.Expression:
                         )
                     )
 
+                case "BINARY_SUBSCR":
+                    if len(stack) < 2:
+                        raise ValueError("Stack has < 2 elements")
+                    key = stack.pop()
+                    container = stack.pop()
+                    stack.append(py_exprs.GetItem(container, key))
+
                 case name if name in _OLD_BINARY_OP_MAP:
                     if len(stack) < 2:
                         raise ValueError("Stack has < 2 elements")

@@ -451,3 +451,87 @@ def test_local_series_apply_w_compare_chain(scalars_df_index, scalars_pandas_df_
     pd_result = scalars_pandas_df_index["int64_col"].dropna().apply(compare_chain)
 
     assert_series_equal(bf_result, pd_result, check_dtype=False)
+
+
+def test_groupby_apply_dataframe_transpile(scalars_df_index, scalars_pandas_df_index):
+    def composite_metric(df):
+        return (df.int64_col.sum() - df.int64_too.mean()) / df.float64_col.std()
+
+    # Drop nulls to avoid NaN comparison differences
+    bf_df = scalars_df_index.dropna(
+        subset=["int64_col", "int64_too", "float64_col", "bool_col"]
+    )
+    pd_df = scalars_pandas_df_index.dropna(
+        subset=["int64_col", "int64_too", "float64_col", "bool_col"]
+    )
+
+    bf_result = bf_df.groupby("bool_col").apply(composite_metric).to_pandas()
+    pd_result = pd_df.groupby("bool_col").apply(composite_metric)
+
+    assert_series_equal(bf_result, pd_result, check_dtype=False)
+
+
+def test_groupby_apply_series_transpile(scalars_df_index, scalars_pandas_df_index):
+    def series_metric(s):
+        return s.sum() - s.mean()
+
+    bf_df = scalars_df_index.dropna(subset=["int64_col", "bool_col"])
+    pd_df = scalars_pandas_df_index.dropna(subset=["int64_col", "bool_col"])
+
+    bf_result = bf_df.groupby("bool_col")["int64_col"].apply(series_metric).to_pandas()
+    pd_result = pd_df.groupby("bool_col")["int64_col"].apply(series_metric)
+
+    assert_series_equal(bf_result, pd_result, check_dtype=False)
+
+
+def test_groupby_apply_with_subscript(scalars_df_index, scalars_pandas_df_index):
+    def subscript_metric(df):
+        return df["int64_col"].sum() - df["int64_too"].mean()
+
+    bf_df = scalars_df_index.dropna(subset=["int64_col", "int64_too", "bool_col"])
+    pd_df = scalars_pandas_df_index.dropna(
+        subset=["int64_col", "int64_too", "bool_col"]
+    )
+
+    bf_result = bf_df.groupby("bool_col").apply(subscript_metric).to_pandas()
+    pd_result = pd_df.groupby("bool_col").apply(subscript_metric)
+
+    assert_series_equal(bf_result, pd_result, check_dtype=False)
+
+
+def test_groupby_apply_as_index_false(scalars_df_index, scalars_pandas_df_index):
+    def composite_metric(df):
+        return df.int64_col.sum() - df.int64_too.mean()
+
+    bf_df = scalars_df_index.dropna(subset=["int64_col", "int64_too", "bool_col"])
+    pd_df = scalars_pandas_df_index.dropna(
+        subset=["int64_col", "int64_too", "bool_col"]
+    )
+
+    bf_result = (
+        bf_df.groupby("bool_col", as_index=False).apply(composite_metric).to_pandas()
+    )
+    pd_result = pd_df.groupby("bool_col", as_index=False).apply(composite_metric)
+
+    if isinstance(pd_result, pd.DataFrame):
+        assert_frame_equal(
+            bf_result, pd_result, check_dtype=False, check_index_type=False
+        )
+    else:
+        assert_series_equal(
+            bf_result, pd_result, check_dtype=False, check_index_type=False
+        )
+
+
+def test_groupby_apply_agg_of_agg(scalars_df_index, scalars_pandas_df_index):
+    # This is a variance-like metric: sum((x - mean(x)) ** 2) / count(x)
+    def var_metric(df):
+        return ((df.int64_col - df.int64_col.mean()) ** 2).sum() / df.int64_col.count()
+
+    bf_df = scalars_df_index.dropna(subset=["int64_col", "bool_col"])
+    pd_df = scalars_pandas_df_index.dropna(subset=["int64_col", "bool_col"])
+
+    bf_result = bf_df.groupby("bool_col").apply(var_metric).to_pandas()
+    pd_result = pd_df.groupby("bool_col").apply(var_metric)
+
+    assert_series_equal(bf_result, pd_result, check_dtype=False)

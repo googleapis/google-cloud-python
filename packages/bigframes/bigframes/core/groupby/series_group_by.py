@@ -286,6 +286,52 @@ class SeriesGroupBy(vendored_pandas_groupby.SeriesGroupBy):
 
     aggregate = agg
 
+    def apply(self, func, *args, **kwargs):
+        import inspect
+
+        import bigframes.core.bytecode as bytecode
+        import bigframes.core.expression as ex
+        import bigframes.core.py_expressions as py_expressions
+        from bigframes._config import options
+
+        if (
+            options.experiments.enable_python_transpiler
+            and callable(func)
+            and not isinstance(func, bigframes.functions.Udf)
+        ):
+            try:
+                expr = bytecode._compile_bytecode_to_py_expr(func)
+                sig = inspect.signature(func)
+
+                bindings: dict[typing.Hashable, ex.Expression] = {}
+                bound_args = sig.bind(*(None, *args), **kwargs)
+                bound_args.apply_defaults()
+                bound_params = bound_args.arguments
+                for name, value in bound_params.items():
+                    bindings[name] = ex.const(value)
+
+                series_arg = next(iter(sig.parameters.keys()))
+                expr = py_expressions.resolve_py_exprs(
+                    expr,
+                    series_arg=series_arg,
+                    col_series_args={series_arg: self._value_column},
+                )
+                expr = expr.bind_variables(bindings)
+
+                result_block = self._block.aggregate(
+                    [expr],
+                    by_column_ids=self._by_col_ids,
+                    dropna=self._dropna,
+                    column_labels=pandas.Index([self._value_name]),
+                )
+                return series.Series(result_block)
+            except Exception as e:
+                raise e
+
+        raise NotImplementedError(
+            "groupby.apply is only supported when experiments.enable_python_transpiler is True and a transpiler-compatible python function is provided."
+        )
+
     def value_counts(
         self,
         normalize: bool = False,

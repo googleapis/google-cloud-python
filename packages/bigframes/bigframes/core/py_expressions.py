@@ -124,6 +124,81 @@ class GetAttr(Expression):
 
 
 @dataclasses.dataclass(frozen=True)
+class GetItem(Expression):
+    input: Expression
+    key: Expression
+
+    @property
+    def column_references(self) -> Tuple[identifiers.ColumnId, ...]:
+        return self.input.column_references + self.key.column_references
+
+    @property
+    def free_variables(self) -> tuple[Hashable, ...]:
+        return self.input.free_variables + self.key.free_variables
+
+    @property
+    def is_const(self) -> bool:
+        return False
+
+    @property
+    def children(self):
+        return (self.input, self.key)
+
+    @property
+    def nullable(self) -> bool:
+        return True
+
+    @property
+    def is_resolved(self) -> bool:
+        return False
+
+    @property
+    def output_type(self) -> dtypes.ExpressionType:
+        raise ValueError(f"Type of expression {self} has not been fixed.")
+
+    @property
+    def is_bijective(self) -> bool:
+        return False
+
+    @property
+    def deterministic(self) -> bool:
+        return True
+
+    def transform_children(self, t: Callable[[Expression], Expression]) -> Expression:
+        new_input = t(self.input)
+        new_key = t(self.key)
+        if new_input != self.input or new_key != self.key:
+            return dataclasses.replace(self, input=new_input, key=new_key)
+        return self
+
+    def bind_variables(
+        self,
+        bindings: Mapping[Hashable, Expression],
+        allow_partial_bindings: bool = False,
+    ) -> GetItem:
+        return GetItem(
+            self.input.bind_variables(
+                bindings, allow_partial_bindings=allow_partial_bindings
+            ),
+            self.key.bind_variables(
+                bindings, allow_partial_bindings=allow_partial_bindings
+            ),
+        )
+
+    def bind_refs(
+        self,
+        bindings: Mapping[identifiers.ColumnId, Expression],
+        allow_partial_bindings: bool = False,
+    ) -> GetItem:
+        return GetItem(
+            self.input.bind_refs(
+                bindings, allow_partial_bindings=allow_partial_bindings
+            ),
+            self.key.bind_refs(bindings, allow_partial_bindings=allow_partial_bindings),
+        )
+
+
+@dataclasses.dataclass(frozen=True)
 class Module(Expression):
     """An expression representing a module reference."""
 
@@ -321,8 +396,30 @@ def resolve_py_exprs(
     expression: Expression,
     series_arg: Optional[str] = None,
     series_attrs: Mapping[Hashable, str] | None = None,
+    col_series_args: Mapping[str, str] | None = None,
 ) -> Expression:
-    """Replace all PyObject, attribute, call expressions. Bottom-up."""
+    """
+    Replace all PyObject, attribute, item, and call expressions bottom-up.
+
+    This function translates unresolved python expressions (like GetAttr, GetItem,
+    Call, PyObject) into resolved BigQuery expressions (like OpExpression, DerefOp,
+    Aggregation, ScalarConstantExpression) by binding them to the specified context.
+
+    Args:
+        expression: The unresolved python expression to translate.
+        series_arg: The name of the parameter representing the row (for row-wise UDFs like
+            apply axis=1) or the DataFrame group (for DataFrameGroupBy.apply).
+        series_attrs: A mapping of attribute/item names to column IDs for the series_arg.
+            When GetAttr(series_arg, attr) or GetItem(series_arg, key) is encountered,
+            it is resolved to deref(column_id).
+        col_series_args: A mapping of parameter names to column IDs for parameters that
+            represent a single Series/column directly (for SeriesGroupBy.apply). When
+            UnboundVariableExpression(arg_name) is encountered and arg_name is in
+            col_series_args, it is resolved directly to deref(column_id).
+
+    Returns:
+        The resolved BigQuery Expression.
+    """
 
     def resolve_expr_if_call(expression: Expression) -> Expression:
         if isinstance(expression, Call):
@@ -336,7 +433,7 @@ def resolve_py_exprs(
             if isinstance(expression.input, Module):
                 # resolves things like Math.pi
                 return PyObject(getattr(expression.input.module, expression.attr))
-            # TODO: Resolve some series methods
+            # Resolve attribute access on the series/row argument
             if (
                 series_arg is not None
                 and series_attrs is not None
@@ -345,6 +442,35 @@ def resolve_py_exprs(
                 and expression.attr in series_attrs
             ):
                 return deref(series_attrs[expression.attr])
+
+        elif isinstance(expression, GetItem):
+            # Resolve subscript/item access on the series/row argument
+            # The key might be a PyObject or a ScalarConstantExpression
+            from bigframes.core.expression import ScalarConstantExpression
+
+            key_val = None
+            if isinstance(expression.key, PyObject):
+                key_val = expression.key.value
+            elif isinstance(expression.key, ScalarConstantExpression):
+                key_val = expression.key.value
+
+            if (
+                series_arg is not None
+                and series_attrs is not None
+                and isinstance(expression.input, UnboundVariableExpression)
+                and expression.input.id == series_arg
+                and key_val in series_attrs
+            ):
+                return deref(series_attrs[key_val])
+        return expression
+
+    def resolve_series_var(expression: Expression) -> Expression:
+        if (
+            col_series_args is not None
+            and isinstance(expression, UnboundVariableExpression)
+            and expression.id in col_series_args
+        ):
+            return deref(col_series_args[expression.id])
         return expression
 
     def resolve_pyobjs(expression: Expression) -> Expression:
@@ -354,7 +480,8 @@ def resolve_py_exprs(
 
     wo_calls = expression.bottom_up(resolve_expr_if_call)
     wo_attrs = wo_calls.bottom_up(resolve_attrs)
-    wo_pyobjs = wo_attrs.bottom_up(resolve_pyobjs)
+    wo_vars = wo_attrs.bottom_up(resolve_series_var)
+    wo_pyobjs = wo_vars.bottom_up(resolve_pyobjs)
     return wo_pyobjs
 
 
@@ -370,6 +497,27 @@ def resolve_call(call: Call) -> Expression:
             if fn in _CALLABLE_TO_OP:
                 op = _CALLABLE_TO_OP[fn]
                 return OpExpression(op, call.inputs)
+        else:
+            # Method call on an expression (e.g. df.col.sum() or s.mean())
+            try:
+                import bigframes.operations.aggregations as agg_ops
+
+                op, _ = agg_ops.lookup_agg_func(attr)
+                import bigframes.core.agg_expressions as agg_exprs
+
+                if isinstance(op, agg_ops.UnaryAggregateOp):
+                    return agg_exprs.UnaryAggregation(op, callable.input)
+                elif isinstance(op, agg_ops.NullaryAggregateOp):
+                    return agg_exprs.NullaryAggregation(op)
+            except ValueError:
+                pass
+
+            # Support some common scalar method calls on Series/expressions
+            if attr == "abs":
+                return OpExpression(numeric_ops.abs_op, (callable.input,))
+            elif attr == "sqrt":
+                return OpExpression(numeric_ops.sqrt_op, (callable.input,))
+
     elif isinstance(callable, PyObject):
         if isinstance(callable.value, ScalarOp):
             return OpExpression(callable.value, call.inputs)
