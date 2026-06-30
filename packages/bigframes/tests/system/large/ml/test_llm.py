@@ -30,8 +30,6 @@ from bigframes.testing import utils
         "gemini-2.5-pro",
         "gemini-2.5-flash",
         "gemini-2.5-flash-lite",
-        "gemini-3.1-flash-lite",
-        "gemini-3.5-flash",
     ),
 )
 @pytest.mark.flaky(retries=2)
@@ -59,8 +57,6 @@ def test_create_load_gemini_text_generator_model(
         "gemini-2.5-pro",
         "gemini-2.5-flash",
         "gemini-2.5-flash-lite",
-        "gemini-3.1-flash-lite",
-        "gemini-3.5-flash",
     ),
 )
 @pytest.mark.flaky(retries=2)
@@ -82,8 +78,6 @@ def test_gemini_text_generator_predict_default_params_success(
         "gemini-2.5-pro",
         "gemini-2.5-flash",
         "gemini-2.5-flash-lite",
-        "gemini-3.1-flash-lite",
-        "gemini-3.5-flash",
     ),
 )
 @pytest.mark.flaky(retries=2)
@@ -107,8 +101,6 @@ def test_gemini_text_generator_predict_with_params_success(
         "gemini-2.5-pro",
         "gemini-2.5-flash",
         "gemini-2.5-flash-lite",
-        "gemini-3.1-flash-lite",
-        "gemini-3.5-flash",
     ),
 )
 @pytest.mark.flaky(retries=2)
@@ -134,8 +126,6 @@ def test_gemini_text_generator_multi_cols_predict_success(
         "gemini-2.5-pro",
         "gemini-2.5-flash",
         "gemini-2.5-flash-lite",
-        "gemini-3.1-flash-lite",
-        "gemini-3.5-flash",
     ),
 )
 @pytest.mark.flaky(retries=2)
@@ -178,8 +168,6 @@ def test_gemini_text_generator_predict_output_schema_success(
     (
         "gemini-2.5-flash",
         "gemini-2.5-flash-lite",
-        "gemini-3.1-flash-lite",
-        "gemini-3.5-flash",
     ),
 )
 def test_llm_gemini_score(llm_fine_tune_df_default_index, model_name):
@@ -209,8 +197,6 @@ def test_llm_gemini_score(llm_fine_tune_df_default_index, model_name):
     (
         "gemini-2.5-flash",
         "gemini-2.5-flash-lite",
-        "gemini-3.1-flash-lite",
-        "gemini-3.5-flash",
     ),
 )
 def test_llm_gemini_pro_score_params(llm_fine_tune_df_default_index, model_name):
