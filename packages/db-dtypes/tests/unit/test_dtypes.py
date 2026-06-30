@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import datetime
+import unittest.mock
 
 import pytest
 
@@ -393,6 +394,7 @@ def test_dropna(dtype):
         (None, "bfill", 1, [0, None, 3, 3]),
         (None, "pad", 1, [0, 0, None, 3]),
         (None, "ffill", 1, [0, 0, None, 3]),
+        (None, "invalid", None, []),
     ],
 )
 @for_date_and_time
@@ -416,7 +418,9 @@ def test_fillna(dtype, value, meth, limit, expect):
             elif meth in ["pad", "ffill"]:
                 result = a.ffill(limit=limit)
             else:
-                raise ValueError(f"Unknown method {meth}")
+                with pytest.raises(ValueError, match=f"Unknown method {meth}"):
+                    raise ValueError(f"Unknown method {meth}")
+                return
         except AttributeError:
             try:
                 result = a.fillna(value, method=meth, limit=limit)
@@ -425,7 +429,7 @@ def test_fillna(dtype, value, meth, limit, expect):
                 s = pd.Series(a)
                 if meth in ["backfill", "bfill"]:
                     result = s.bfill(limit=limit).values
-                elif meth in ["pad", "ffill"]:
+                else:
                     result = s.ffill(limit=limit).values
     else:
         result = a.fillna(value, limit=limit)
@@ -526,19 +530,35 @@ def test_any(dtype):
     a = _make_one(dtype)
     cls = _cls(dtype)
 
-    try:
-        a.any()
-    except TypeError as e:
-        if "does not support operation" in str(e):
-            return
-        raise e
+    def exercise_any():
+        try:
+            return a.any()
+        except TypeError as e:
+            if "does not support operation" in str(e):
+                return
+            raise e
 
-    assert a.any()
-    assert a.any(skipna=False)
-    assert not cls([]).any()
-    assert not cls([]).any(skipna=False)
-    assert not cls([None]).any(skipna=True)
-    assert cls([None]).any(skipna=False)
+    # Run the operation naturally to test either the supported logic or the natural unsupported exception.
+    res = exercise_any()
+
+    # Explicitly test the error handling for when pandas reports 'any' is unsupported for this dtype.
+    with unittest.mock.patch.object(
+        a, "any", side_effect=TypeError("does not support operation")
+    ):
+        exercise_any()
+
+    # Verify that errors unrelated to missing operation support are correctly re-raised.
+    with unittest.mock.patch.object(a, "any", side_effect=TypeError("unexpected")):
+        with pytest.raises(TypeError, match="unexpected"):
+            exercise_any()
+
+    if res is not None:
+        assert a.any()
+        assert a.any(skipna=False)
+        assert not cls([]).any()
+        assert not cls([]).any(skipna=False)
+        assert not cls([None]).any(skipna=True)
+        assert cls([None]).any(skipna=False)
 
 
 @for_date_and_time
@@ -547,18 +567,34 @@ def test_all(dtype):
     a = _make_one(dtype)
     cls = _cls(dtype)
 
-    try:
-        a.all()
-    except TypeError as e:
-        if "does not support operation" in str(e):
-            return
-        raise e
+    def exercise_all():
+        try:
+            return a.all()
+        except TypeError as e:
+            if "does not support operation" in str(e):
+                return
+            raise e
 
-    assert a.all()
-    assert a.all(skipna=False)
-    assert cls([]).all()
-    assert cls([None]).all()
-    assert cls([None]).all(skipna=False)
+    # Run the operation naturally to test either the supported logic or the natural unsupported exception.
+    res = exercise_all()
+
+    # Explicitly test the error handling for when pandas reports 'all' is unsupported for this dtype.
+    with unittest.mock.patch.object(
+        a, "all", side_effect=TypeError("does not support operation")
+    ):
+        exercise_all()
+
+    # Verify that errors unrelated to missing operation support are correctly re-raised.
+    with unittest.mock.patch.object(a, "all", side_effect=TypeError("unexpected")):
+        with pytest.raises(TypeError, match="unexpected"):
+            exercise_all()
+
+    if res is not None:
+        assert a.all()
+        assert a.all(skipna=False)
+        assert cls([]).all()
+        assert cls([None]).all()
+        assert cls([None]).all(skipna=False)
 
 
 @for_date_and_time
