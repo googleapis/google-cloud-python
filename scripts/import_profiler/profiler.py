@@ -292,8 +292,15 @@ def run_mprofile(target_module):
 
 if __name__ == "__main__":
     import argparse
+
+    def validate_module_name(module_name):
+        """Validates that the input is a structurally valid Python module identifier to prevent arbitrary code execution."""
+        if not all(part.isidentifier() for part in module_name.split('.')):
+            raise argparse.ArgumentTypeError(f"'{module_name}' is not a valid Python module identifier.")
+        return module_name
+
     parser = argparse.ArgumentParser(description="Python SDK Import Profiler")
-    parser.add_argument("--module", default="google.cloud.compute_v1", help="Target module to profile")
+    parser.add_argument("--module", type=validate_module_name, default="google.cloud.compute_v1", help="Target module to profile")
     parser.add_argument("--iterations", type=int, default=50, help="Number of iterations")
     default_cpu = 0 if sys.platform.startswith("linux") else NO_CPU_PINNING
     parser.add_argument("--cpu", type=int, default=default_cpu, help="CPU core to pin to (or -1 for no pinning)")
