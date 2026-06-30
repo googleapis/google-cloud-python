@@ -281,6 +281,7 @@ class SslCredentials:
     """Class for application default SSL credentials.
 
     Mutual TLS (mTLS) is enabled if either:
+
     1. The `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is explicitly
        set to `"true"`.
     2. The `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is unset or empty,

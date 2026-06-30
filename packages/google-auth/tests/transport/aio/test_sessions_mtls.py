@@ -271,7 +271,7 @@ class TestSessionsMtls:
             "google.auth.aio.transport.mtls.make_client_cert_ssl_context"
         ) as mock_make_context, mock.patch(
             "aiohttp.TCPConnector"
-        ) as mock_connector, mock.patch(
+        ), mock.patch(
             "aiohttp.ClientSession"
         ) as mock_session:
             mock_session.return_value.close = mock.AsyncMock()
@@ -322,7 +322,7 @@ class TestSessionsMtls:
             "google.auth.aio.transport.mtls.make_client_cert_ssl_context"
         ) as mock_make_context, mock.patch(
             "aiohttp.TCPConnector"
-        ) as mock_connector, mock.patch(
+        ), mock.patch(
             "aiohttp.ClientSession"
         ) as mock_session:
             mock_session.return_value.close = mock.AsyncMock()
