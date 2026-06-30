@@ -8,7 +8,6 @@ import importlib
 import importlib.util
 import csv
 import os
-import logging
 import shutil
 import pathlib
 import multiprocessing
@@ -19,14 +18,17 @@ def clean_bytecode():
     """Recursively deletes all __pycache__ directories and .pyc files to ensure disk-level cold starts."""
     print("Sweeping directory to delete __pycache__ and force bytecode recompilation...")
     count = 0
-    for p in pathlib.Path('.').rglob('__pycache__'):
-        if p.is_dir():
-            shutil.rmtree(p)
+    # Walk the directory avoiding hidden directories (e.g. .git, .venv, .nox)
+    for root, dirs, files in os.walk('.'):
+        dirs[:] = [d for d in dirs if not d.startswith('.')]
+        if '__pycache__' in dirs:
+            shutil.rmtree(os.path.join(root, '__pycache__'))
+            dirs.remove('__pycache__')
             count += 1
-    for p in pathlib.Path('.').rglob('*.pyc'):
-        if p.is_file():
-            p.unlink()
-            count += 1
+        for f in files:
+            if f.endswith('.pyc'):
+                os.remove(os.path.join(root, f))
+                count += 1
     print(f"Cleared {count} cached bytecode locations.")
 
 def get_rss_mb():
@@ -87,9 +89,11 @@ def run_worker(target_module):
                 except OSError as e:
                     logging.warning(f"Failed to read lines from {file_path}: {e}")
         except KeyError:
-            logging.debug(f"Module {m} disappeared from sys.modules during execution.")
+            # Module disappeared from sys.modules during execution
+            pass
         except AttributeError:
-            logging.debug(f"Module {m} has no __file__ attribute (likely a C-extension or built-in). Skipping.")
+            # Module has no __file__ attribute (likely a C-extension or built-in)
+            pass
     
     # Output to stdout for the Master to capture
     metrics = {
@@ -136,7 +140,8 @@ def _print_outputs(target_module, iterations, loaded_modules_val, loaded_lines_v
                    rss_memories, p50_rss, p90_rss, p99_rss):
     """Helper method to format and print the final benchmark results."""
     def _format_stats(title, data, p50, p90, p99, fmt):
-        if not data: return ""
+        if not data:
+            return ""
         std_str = f"  StdDev:       {statistics.stdev(data):{fmt}}\n" if len(data) > 1 else ""
         return f"{title}:\n  P50 (Median): {p50:{fmt}}\n  P90:          {p90:{fmt}}\n  P99:          {p99:{fmt}}\n  Mean:         {statistics.mean(data):{fmt}}\n  Min:          {min(data):{fmt}}\n  Max:          {max(data):{fmt}}\n{std_str}"
 
@@ -166,7 +171,11 @@ def run_master(iterations, target_module, cpu=0, csv_path=None, clear_cache=True
         python_exe = [sys.executable]
         
     if cpu != NO_CPU_PINNING:
-        print(f"CPU Pinning enabled: Pinning processes to core {cpu} using taskset.")
+        if not sys.platform.startswith("linux"):
+            print("WARNING: CPU pinning is only supported on Linux. Falling back to unpinned execution.")
+            cpu = NO_CPU_PINNING
+        else:
+            print(f"CPU Pinning enabled: Pinning processes to core {cpu} using taskset.")
     else:
         print("CPU Pinning disabled.")
     
@@ -316,8 +325,10 @@ if __name__ == "__main__":
     if args.worker:
         run_worker(args.module)
     elif args.trace:
+        if not args.keep_pycache: clean_bytecode()
         run_trace(args.module)
     elif args.cprofile:
+        if not args.keep_pycache: clean_bytecode()
         run_cprofile(args.module)
     elif args.mprofile:
         if not args.keep_pycache: clean_bytecode()
