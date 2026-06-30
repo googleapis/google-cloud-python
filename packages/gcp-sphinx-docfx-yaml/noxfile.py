@@ -13,11 +13,24 @@
 # limitations under the License.
 
 import os
+import pathlib
 
 import nox
 
 DEFAULT_PYTHON_VERSION = "3.14"
 UNIT_TEST_PYTHON_VERSIONS = ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
+CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
+# Path to the centralized mypy configuration file at the repository root.
+# Search upwards to support running nox from both monorepo packages and integration test goldens.
+MYPY_CONFIG_FILE = next(
+    (
+        str(p / "mypy.ini")
+        for p in CURRENT_DIRECTORY.parents
+        if (p / "mypy.ini").exists()
+    ),
+    str(CURRENT_DIRECTORY.parent.parent / "mypy.ini"),
+)
+
 RUFF_VERSION = "ruff==0.14.14"
 
 ALL_PYTHON = list(UNIT_TEST_PYTHON_VERSIONS)

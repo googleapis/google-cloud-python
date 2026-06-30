@@ -27,6 +27,17 @@ RUFF_VERSION = "ruff==0.14.14"
 LINT_PATHS = ["docs", "proto", "tests", "noxfile.py", "setup.py"]
 
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
+# Path to the centralized mypy configuration file at the repository root.
+# Search upwards to support running nox from both monorepo packages and integration test goldens.
+MYPY_CONFIG_FILE = next(
+    (
+        str(p / "mypy.ini")
+        for p in CURRENT_DIRECTORY.parents
+        if (p / "mypy.ini").exists()
+    ),
+    str(CURRENT_DIRECTORY.parent.parent / "mypy.ini"),
+)
+
 
 DEFAULT_PYTHON_VERSION = "3.14"
 

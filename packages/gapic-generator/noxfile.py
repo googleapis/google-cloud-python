@@ -36,6 +36,18 @@ nox.options.error_on_missing_interpreters = True
 
 showcase_version = os.environ.get("SHOWCASE_VERSION", "0.35.0")
 ADS_TEMPLATES = path.join(path.dirname(__file__), "gapic", "ads-templates")
+CURRENT_DIRECTORY = Path(__file__).parent.absolute()
+# Path to the centralized mypy configuration file at the repository root.
+# Search upwards to support running nox from both monorepo packages and integration test goldens.
+MYPY_CONFIG_FILE = next(
+    (
+        str(p / "mypy.ini")
+        for p in CURRENT_DIRECTORY.parents
+        if (p / "mypy.ini").exists()
+    ),
+    str(CURRENT_DIRECTORY.parent.parent / "mypy.ini"),
+)
+
 RUFF_VERSION = "ruff==0.14.14"
 LINT_PATHS = ["docs", "gapic", "tests", "test_utils", "noxfile.py", "setup.py"]
 # Ruff uses globs for excludes (different from Black's regex)
@@ -714,7 +726,9 @@ def mypy(session):
         "click==8.1.3",
     )
     session.install(".")
-    session.run("mypy", "-p", "gapic")
+    session.run(
+        \"mypy\",
+        f\"--config-file={MYPY_CONFIG_FILE}\", "-p", "gapic")
 
 
 @nox.session(python=NEWEST_PYTHON)
