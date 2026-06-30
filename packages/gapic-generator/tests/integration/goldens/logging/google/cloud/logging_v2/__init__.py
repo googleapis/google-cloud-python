@@ -22,8 +22,11 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
-if sys.version_info >= (3, 15):  # pragma: NO COVER
-    __lazy_modules__ = {
+# PEP 0810: Global Lazy Imports Control
+# This variable provides a migration path for library maintainers.
+# Python 3.15+ natively intercepts and defers these imports.
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
 f"{__name__}.services.config_service_v2",
 f"{__name__}.services.logging_service_v2",
 f"{__name__}.services.metrics_service_v2",
@@ -31,7 +34,7 @@ f"{__name__}.types.log_entry",
 f"{__name__}.types.logging",
 f"{__name__}.types.logging_config",
 f"{__name__}.types.logging_metrics",
-    }
+}
 
 
 from .services.config_service_v2 import ConfigServiceV2Client

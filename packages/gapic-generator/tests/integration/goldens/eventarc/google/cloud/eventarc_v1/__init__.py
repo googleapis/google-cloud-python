@@ -22,8 +22,11 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
-if sys.version_info >= (3, 15):  # pragma: NO COVER
-    __lazy_modules__ = {
+# PEP 0810: Global Lazy Imports Control
+# This variable provides a migration path for library maintainers.
+# Python 3.15+ natively intercepts and defers these imports.
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
 f"{__name__}.services.eventarc",
 f"{__name__}.types.channel",
 f"{__name__}.types.channel_connection",
@@ -37,7 +40,7 @@ f"{__name__}.types.message_bus",
 f"{__name__}.types.network_config",
 f"{__name__}.types.pipeline",
 f"{__name__}.types.trigger",
-    }
+}
 
 
 from .services.eventarc import EventarcClient
