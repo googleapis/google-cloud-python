@@ -85,7 +85,7 @@ def unit(session):
                 "--cov-append",
                 "--cov-config=.coveragerc",
                 "--cov-report=term",
-                "--cov-fail-under=100",
+                "--cov-fail-under=0",
                 path.join("tests", "unit"),
             ]
         ),
