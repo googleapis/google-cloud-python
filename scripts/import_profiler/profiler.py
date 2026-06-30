@@ -87,7 +87,7 @@ def run_worker(target_module):
                     with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
                         loaded_lines += sum(1 for _ in f)
                 except OSError as e:
-                    logging.warning(f"Failed to read lines from {file_path}: {e}")
+                    print(f"WARNING: Failed to read lines from {file_path}: {e}", file=sys.stderr)
         except KeyError:
             # Module disappeared from sys.modules during execution
             pass
