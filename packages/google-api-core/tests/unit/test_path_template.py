@@ -63,6 +63,17 @@ from google.api_core import path_template
             {"name": "parent/child/object"},
             "/v1/a/parent/child/object",
         ],
+        # Encoding / Metacharacters in positional and named params
+        ["/v1/*", ["..?$httpMethod=DELETE#"], {}, "/v1/..%3F%24httpMethod%3DDELETE%23"],
+        ["/v1/**", ["path/../with/?and#"], {}, "/v1/path/../with/%3Fand%23"],
+        ["/v1/{name}", [], {"name": "..?$httpMethod=DELETE#"}, "/v1/..%3F%24httpMethod%3DDELETE%23"],
+        ["/v1/{name=**}", [], {"name": "path/../with/?and#"}, "/v1/path/../with/%3Fand%23"],
+        [
+            "/v3/{session=projects/*/locations/*/agents/*/sessions/*}:detectIntent",
+            [],
+            {"session": "projects/cx/locations/global/agents/a1/sessions/..?$httpMethod=DELETE#"},
+            "/v3/projects/cx/locations/global/agents/a1/sessions/..%3F%24httpMethod%3DDELETE%23:detectIntent",
+        ],
     ],
 )
 def test_expand_success(tmpl, args, kwargs, expected_result):

@@ -29,6 +29,7 @@ from collections import deque
 import copy
 import functools
 import re
+import urllib.parse
 
 # Regular expression for extracting variable parts from a path template.
 # The variables can be expressed as:
@@ -83,7 +84,9 @@ def _expand_variable_match(positional_vars, named_vars, match):
     name = match.group("name")
     if name is not None:
         try:
-            return str(named_vars[name])
+            val = str(named_vars[name])
+            # Percent-encode while keeping '/' safe to preserve existing route and slash validation
+            return urllib.parse.quote(val, safe="/")
         except KeyError:
             raise ValueError(
                 "Named variable '{}' not specified and needed by template "
@@ -91,7 +94,9 @@ def _expand_variable_match(positional_vars, named_vars, match):
             )
     elif positional is not None:
         try:
-            return str(positional_vars.pop(0))
+            val = str(positional_vars.pop(0))
+            # Percent-encode while keeping '/' safe to preserve existing route and slash validation
+            return urllib.parse.quote(val, safe="/")
         except IndexError:
             raise ValueError(
                 "Positional variable not specified and needed by template "
