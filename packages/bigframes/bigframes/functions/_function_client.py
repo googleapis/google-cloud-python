@@ -198,15 +198,12 @@ class FunctionClient:
         )
         self._create_bq_function(create_function_ddl)
 
-    def provision_bq_managed_function(
+    def generate_bq_managed_function_ddl(
         self,
         routine_ref: bigquery.RoutineReference,
         config: udf_def.ManagedFunctionConfig,
-    ):
-        """Create a BigQuery managed function."""
-
-        # TODO(b/406283812): Expose the capability to pass down
-        # capture_references=True in the public udf API.
+    ) -> str:
+        """Generate the CREATE FUNCTION DDL for a BigQuery managed function."""
         if (
             config.capture_references
             and (python_version := _utils.get_python_version())
@@ -232,8 +229,7 @@ class FunctionClient:
         if config.container_memory:
             managed_function_options["container_memory"] = config.container_memory
 
-        # Augment user package requirements with any internal package
-        # requirements.
+        # Augment user package requirements with any internal package requirements.
         packages = _utils.get_updated_package_requirements(
             config.code.package_requirements or [],
             config.signature.is_row_processor,
@@ -258,9 +254,6 @@ class FunctionClient:
             else ""
         )
 
-        # Generate the complete Python code block for the managed Python UDF,
-        # including the user's function, necessary imports, and the BigQuery
-        # handler wrapper.
         python_code_block = bff_template.generate_managed_function_code(
             config.code, config.signature, config.capture_references
         )
@@ -281,7 +274,15 @@ class FunctionClient:
             .strip()
             .replace("__UDF_PLACE_HOLDER__", python_code_block)
         )
+        return create_function_ddl
 
+    def provision_bq_managed_function(
+        self,
+        routine_ref: bigquery.RoutineReference,
+        config: udf_def.ManagedFunctionConfig,
+    ):
+        """Create a BigQuery managed function."""
+        create_function_ddl = self.generate_bq_managed_function_ddl(routine_ref, config)
         self._ensure_dataset_exists(
             bigquery.DatasetReference(routine_ref.project, routine_ref.dataset_id)
         )

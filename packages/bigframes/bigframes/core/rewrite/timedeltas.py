@@ -104,6 +104,9 @@ def _rewrite_expressions(expr: ex.Expression, schema: schema.ArraySchema) -> _Ty
     if isinstance(expr, ex.ScalarConstantExpression):
         return _rewrite_scalar_constant_expr(expr)
 
+    if isinstance(expr, ex.ParameterExpression):
+        return _TypedExpr(expr, expr.dtype)
+
     if isinstance(expr, ex.OpExpression):
         updated_inputs = tuple(
             map(lambda x: _rewrite_expressions(x, schema), expr.inputs)
