@@ -45,6 +45,21 @@ NotNullOp = base_ops.create_unary_op(
 )
 notnull_op = NotNullOp()
 
+
+# Semantics match Python's truth value testing (truthy and falsey objects).
+# See https://docs.python.org/3/library/stdtypes.html#truth-value-testing
+CoerceToBoolOp = base_ops.create_unary_op(
+    name="coerce_to_bool",
+    type_signature=op_typing.FixedOutputType(
+        dtypes.is_bool_coercable, dtypes.BOOL_DTYPE, description="coercable to bool"
+    ),
+)
+CoerceToBoolOp.__doc__ = (
+    "Coerce a value to a boolean, matching Python's truth value testing semantics "
+    "(truthy/falsey). See https://docs.python.org/3/library/stdtypes.html#truth-value-testing"
+)
+coerce_to_bool_op = CoerceToBoolOp()
+
 HashOp = base_ops.create_unary_op(
     name="hash",
     type_signature=op_typing.FixedOutputType(

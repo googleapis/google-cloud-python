@@ -29,7 +29,13 @@ from bigframes.core.expression import (
     const,
     deref,
 )
-from bigframes.operations import NUMPY_TO_BINOP, NUMPY_TO_OP, generic_ops, numeric_ops
+from bigframes.operations import (
+    NUMPY_TO_BINOP,
+    NUMPY_TO_OP,
+    ScalarOp,
+    generic_ops,
+    numeric_ops,
+)
 
 _CALLABLE_TO_OP = {
     **NUMPY_TO_OP,
@@ -365,6 +371,8 @@ def resolve_call(call: Call) -> Expression:
                 op = _CALLABLE_TO_OP[fn]
                 return OpExpression(op, call.inputs)
     elif isinstance(callable, PyObject):
+        if isinstance(callable.value, ScalarOp):
+            return OpExpression(callable.value, call.inputs)
         if callable.value in python_op_maps.PYTHON_TO_BIGFRAMES:
             op = python_op_maps.PYTHON_TO_BIGFRAMES[callable.value]  # type: ignore
             return OpExpression(op, call.inputs)
