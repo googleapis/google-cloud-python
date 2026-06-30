@@ -82,6 +82,7 @@ def unit(session):
                 "-vv",
                 "-n=auto",
                 "--cov=gapic",
+                #"--cov-append",
                 "--cov-config=.coveragerc",
                 "--cov-report=term",
                 "--cov-fail-under=100",

@@ -82,6 +82,7 @@ def unit(session, implementation):
             session.posargs  # Coverage info when running individual tests is annoying.
             or [
                 "--cov=proto",
+                # "--cov-append",
                 "--cov-config=.coveragerc",
                 "--cov-report=term",
                 "--cov-report=html",
