@@ -512,11 +512,9 @@ def resolve_call(call: Call) -> Expression:
             except ValueError:
                 pass
 
-            # Support some common scalar method calls on Series/expressions
-            if attr == "abs":
-                return OpExpression(numeric_ops.abs_op, (callable.input,))
-            elif attr == "sqrt":
-                return OpExpression(numeric_ops.sqrt_op, (callable.input,))
+            # Support common scalar method calls on Series/expressions
+            if (op := python_op_maps.series_method_to_op(attr)) is not None:
+                return OpExpression(op, (callable.input,))
 
     elif isinstance(callable, PyObject):
         if isinstance(callable.value, ScalarOp):

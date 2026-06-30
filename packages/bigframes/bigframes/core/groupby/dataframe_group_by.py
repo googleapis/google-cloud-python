@@ -593,42 +593,38 @@ class DataFrameGroupBy:
             and callable(func)
             and not isinstance(func, bigframes.functions.Udf)
         ):
-            try:
-                expr = bytecode._compile_bytecode_to_py_expr(func)
-                sig = inspect.signature(func)
+            expr = bytecode._compile_bytecode_to_py_expr(func)
+            sig = inspect.signature(func)
 
-                bindings: dict[typing.Hashable, ex.Expression] = {}
-                bound_args = sig.bind(*(None, *args), **kwargs)
-                bound_args.apply_defaults()
-                bound_params = bound_args.arguments
-                for name, value in bound_params.items():
-                    bindings[name] = ex.const(value)
+            bindings: dict[typing.Hashable, ex.Expression] = {}
+            bound_args = sig.bind(*(None, *args), **kwargs)
+            bound_args.apply_defaults()
+            bound_params = bound_args.arguments
+            for name, value in bound_params.items():
+                bindings[name] = ex.const(value)
 
-                expr = py_expressions.resolve_py_exprs(
-                    expr,
-                    series_arg=next(iter(sig.parameters.keys())),
-                    series_attrs={
-                        label: col_id
-                        for label in self._block.column_labels
-                        if (col_id := self._block.resolve_label_exact(label))
-                        is not None
-                    },
-                )
-                expr = expr.bind_variables(bindings)
+            expr = py_expressions.resolve_py_exprs(
+                expr,
+                series_arg=next(iter(sig.parameters.keys())),
+                series_attrs={
+                    label: col_id
+                    for label in self._block.column_labels
+                    if (col_id := self._block.resolve_label_exact(label)) is not None
+                },
+            )
+            expr = expr.bind_variables(bindings)
 
-                result_block = self._block.aggregate(
-                    [expr],
-                    by_column_ids=self._by_col_ids,
-                    dropna=self._dropna,
-                    column_labels=pd.Index([None]),
-                )
+            result_block = self._block.aggregate(
+                [expr],
+                by_column_ids=self._by_col_ids,
+                dropna=self._dropna,
+                column_labels=pd.Index([None]),
+            )
 
-                if self._as_index:
-                    return series.Series(result_block)
-                else:
-                    return self._convert_index(df.DataFrame(result_block))
-            except Exception as e:
-                raise e
+            if self._as_index:
+                return series.Series(result_block)
+            else:
+                return self._convert_index(df.DataFrame(result_block))
 
         raise NotImplementedError(
             "groupby.apply is only supported when experiments.enable_python_transpiler is True and a transpiler-compatible python function is provided."

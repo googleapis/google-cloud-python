@@ -535,3 +535,23 @@ def test_groupby_apply_agg_of_agg(scalars_df_index, scalars_pandas_df_index):
     pd_result = pd_df.groupby("bool_col").apply(var_metric)
 
     assert_series_equal(bf_result, pd_result, check_dtype=False)
+
+
+def test_groupby_apply_unsupported_method_raises(scalars_df_index):
+    def unsupported_method(df):
+        return df.int64_col.unsupported_method_xyz()
+
+    with pytest.raises(
+        NotImplementedError, match="No implementation available for call expression"
+    ):
+        scalars_df_index.groupby("bool_col").apply(unsupported_method)
+
+
+def test_groupby_apply_series_unsupported_method_raises(scalars_df_index):
+    def unsupported_method(s):
+        return s.unsupported_method_xyz()
+
+    with pytest.raises(
+        NotImplementedError, match="No implementation available for call expression"
+    ):
+        scalars_df_index.groupby("bool_col")["int64_col"].apply(unsupported_method)
