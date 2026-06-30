@@ -301,6 +301,25 @@ def test_engines_astype_to_json(scalars_array_value: array_value.ArrayValue, eng
 
 
 @pytest.mark.parametrize("engine", ["polars", "bq", "bq-sqlglot"], indirect=True)
+def test_engines_to_json_string(scalars_array_value: array_value.ArrayValue, engine):
+    exprs = [
+        ops.ToJSONString().as_expr(expression.deref("int64_col")),
+        ops.ToJSONString().as_expr(
+            # Use a const since float to json has precision issues
+            expression.const(5.2, bigframes.dtypes.FLOAT_DTYPE)
+        ),
+        ops.ToJSONString().as_expr(expression.deref("bool_col")),
+        ops.ToJSONString().as_expr(
+            # Use a const since "str_col" has special chars.
+            expression.const('"hello world"', bigframes.dtypes.STRING_DTYPE)
+        ),
+    ]
+    arr, _ = scalars_array_value.compute_values(exprs)
+
+    assert_equivalence_execution(arr.node, REFERENCE_ENGINE, engine)
+
+
+@pytest.mark.parametrize("engine", ["polars", "bq", "bq-sqlglot"], indirect=True)
 def test_engines_astype_timedelta(scalars_array_value: array_value.ArrayValue, engine):
     arr = apply_op(
         scalars_array_value,
@@ -400,6 +419,39 @@ def test_engines_isnull_op(scalars_array_value: array_value.ArrayValue, engine):
 def test_engines_notnull_op(scalars_array_value: array_value.ArrayValue, engine):
     arr, _ = scalars_array_value.compute_values(
         [ops.notnull_op.as_expr(expression.deref("string_col"))]
+    )
+
+    assert_equivalence_execution(arr.node, REFERENCE_ENGINE, engine)
+
+
+@pytest.mark.parametrize("engine", ["polars", "bq", "bq-sqlglot"], indirect=True)
+def test_engines_coerce_to_bool_op_scalars(
+    scalars_array_value: array_value.ArrayValue, engine
+):
+    arr, _ = scalars_array_value.compute_values(
+        [
+            ops.coerce_to_bool_op.as_expr(expression.deref("bool_col")),
+            ops.coerce_to_bool_op.as_expr(expression.deref("int64_col")),
+            ops.coerce_to_bool_op.as_expr(expression.deref("float64_col")),
+            ops.coerce_to_bool_op.as_expr(expression.deref("string_col")),
+            ops.coerce_to_bool_op.as_expr(expression.deref("bytes_col")),
+        ]
+    )
+
+    assert_equivalence_execution(arr.node, REFERENCE_ENGINE, engine)
+
+
+@pytest.mark.parametrize("engine", ["polars", "bq", "bq-sqlglot"], indirect=True)
+def test_engines_coerce_to_bool_op_arrays(
+    arrays_array_value: array_value.ArrayValue, engine
+):
+    arr, _ = arrays_array_value.compute_values(
+        [
+            ops.coerce_to_bool_op.as_expr(expression.deref("int_list_col")),
+            ops.coerce_to_bool_op.as_expr(expression.deref("bool_list_col")),
+            ops.coerce_to_bool_op.as_expr(expression.deref("float_list_col")),
+            ops.coerce_to_bool_op.as_expr(expression.deref("string_list_col")),
+        ]
     )
 
     assert_equivalence_execution(arr.node, REFERENCE_ENGINE, engine)

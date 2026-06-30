@@ -36,14 +36,15 @@ jobs:
       - name: Get current date
         id: date
         run: echo "current_date=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
         # Use a fetch-depth of 2
         # See https://github.com/googleapis/google-cloud-python/issues/12013
         # and https://github.com/actions/checkout#checkout-head.
         with:
           fetch-depth: 2
+          persist-credentials: false
       - name: Set up Python 3.10
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
         with:
           python-version: "3.14"
       - name: Install script dependencies
@@ -53,7 +54,7 @@ jobs:
         run: python3 scripts/updateapilist.py
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - uses: googleapis/code-suggester@v5
+      - uses: googleapis/code-suggester@f9fef85aa02459e30e62526abe950341cbbd768b # v5
         env:
           ACCESS_TOKEN: ${{ secrets.YOSHI_CODE_BOT_TOKEN }}
         with:

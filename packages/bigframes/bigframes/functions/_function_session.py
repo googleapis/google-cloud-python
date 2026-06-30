@@ -15,21 +15,16 @@
 
 from __future__ import annotations
 
-import collections.abc
 import functools
-import inspect
 import logging
 import random
 import string
-import sys
 import threading
 import time
 import warnings
 from typing import (
     TYPE_CHECKING,
-    Any,
     Literal,
-    Mapping,
     Optional,
     Sequence,
     Union,
@@ -512,22 +507,10 @@ class FunctionSession:
                     TypeError, f"func must be a callable, got {func}"
                 )
 
-            if sys.version_info >= (3, 10):
-                # Add `eval_str = True` so that deferred annotations are turned into their
-                # corresponding type objects. Need Python 3.10 for eval_str parameter.
-                # https://docs.python.org/3/library/inspect.html#inspect.signature
-                signature_kwargs: Mapping[str, Any] = {"eval_str": True}
-            else:
-                signature_kwargs = {}  # type: ignore
-
-            py_sig = _resolve_signature(
-                inspect.signature(func, **signature_kwargs),
+            udf_sig = _utils.get_func_signature(
+                func,
                 input_types,
                 output_type,
-            )
-
-            udf_sig = udf_def.UdfSignature.from_py_signature(
-                py_sig
             ).to_remote_function_compatible()
 
             full_package_requirements = _utils.get_updated_package_requirements(
@@ -786,23 +769,11 @@ class FunctionSession:
                     TypeError, f"func must be a callable, got {func}"
                 )
 
-            if sys.version_info >= (3, 10):
-                # Add `eval_str = True` so that deferred annotations are turned into their
-                # corresponding type objects. Need Python 3.10 for eval_str parameter.
-                # https://docs.python.org/3/library/inspect.html#inspect.signature
-                signature_kwargs: Mapping[str, Any] = {"eval_str": True}
-            else:
-                signature_kwargs = {}  # type: ignore
-
-            py_sig = inspect.signature(
+            udf_sig = _utils.get_func_signature(
                 func,
-                **signature_kwargs,
+                input_types,
+                output_type,
             )
-            py_sig = _resolve_signature(py_sig, input_types, output_type)
-
-            # The function will actually be receiving a pandas Series, but allow
-            # both BigQuery DataFrames and pandas object types for compatibility.
-            udf_sig = udf_def.UdfSignature.from_py_signature(py_sig)
 
             code_def = udf_def.CodeDef.from_func(func, package_requirements=packages)
             requirements = udf_def.RuntimeRequirements(
@@ -876,36 +847,6 @@ class FunctionSession:
             :meth:`~bigframes.series.Series.apply`.
         """
         return self.udf(_force_deploy=True, **kwargs)(func)
-
-
-def _resolve_signature(
-    py_sig: inspect.Signature,
-    input_types: Union[None, type, Sequence[type]] = None,
-    output_type: Optional[type] = None,
-) -> inspect.Signature:
-    if input_types is not None:
-        if not isinstance(input_types, collections.abc.Sequence):
-            input_types = [input_types]
-        if _utils.has_conflict_input_type(py_sig, input_types):
-            msg = bfe.format_message(
-                "Conflicting input types detected, using the one from the decorator."
-            )
-            warnings.warn(msg, category=bfe.FunctionConflictTypeHintWarning)
-        py_sig = py_sig.replace(
-            parameters=[
-                par.replace(annotation=itype)
-                for par, itype in zip(py_sig.parameters.values(), input_types)
-            ]
-        )
-    if output_type:
-        if _utils.has_conflict_output_type(py_sig, output_type):
-            msg = bfe.format_message(
-                "Conflicting return type detected, using the one from the decorator."
-            )
-            warnings.warn(msg, category=bfe.FunctionConflictTypeHintWarning)
-        py_sig = py_sig.replace(return_annotation=output_type)
-
-    return py_sig
 
 
 def get_cloud_function_name(

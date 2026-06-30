@@ -22,6 +22,22 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+f"{__name__}.services.config_service_v2",
+f"{__name__}.services.logging_service_v2",
+f"{__name__}.services.metrics_service_v2",
+f"{__name__}.types.log_entry",
+f"{__name__}.types.logging",
+f"{__name__}.types.logging_config",
+f"{__name__}.types.logging_metrics",
+}
+
 
 from .services.config_service_v2 import ConfigServiceV2Client
 from .services.config_service_v2 import ConfigServiceV2AsyncClient

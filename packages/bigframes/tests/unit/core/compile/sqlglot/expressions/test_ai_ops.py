@@ -30,7 +30,7 @@ def test_ai_generate(scalar_types_df: dataframe.DataFrame, snapshot):
 
     op = ops.AIGenerate(
         prompt_context=(None, " is the same as ", None),
-        endpoint="gemini-3.5-flash",
+        endpoint="gemini-2.5-flash",
         request_type="SHARED",
     )
 
@@ -47,7 +47,7 @@ def test_ai_generate_with_connection_id(scalar_types_df: dataframe.DataFrame, sn
     op = ops.AIGenerate(
         prompt_context=(None, " is the same as ", None),
         connection_id=CONNECTION_ID,
-        endpoint="gemini-3.5-flash",
+        endpoint="gemini-2.5-flash",
     )
 
     sql = utils._apply_ops_to_sql(
@@ -63,7 +63,7 @@ def test_ai_generate_with_output_schema(scalar_types_df: dataframe.DataFrame, sn
     op = ops.AIGenerate(
         prompt_context=(None, " is the same as ", None),
         connection_id=None,
-        endpoint="gemini-3.5-flash",
+        endpoint="gemini-2.5-flash",
         output_schema="x INT64, y FLOAT64",
     )
 
@@ -94,7 +94,7 @@ def test_ai_generate_bool(scalar_types_df: dataframe.DataFrame, snapshot):
 
     op = ops.AIGenerateBool(
         prompt_context=(None, " is the same as ", None),
-        endpoint="gemini-3.5-flash",
+        endpoint="gemini-2.5-flash",
     )
 
     sql = utils._apply_ops_to_sql(
@@ -112,7 +112,7 @@ def test_ai_generate_bool_with_connection_id(
     op = ops.AIGenerateBool(
         prompt_context=(None, " is the same as ", None),
         connection_id=CONNECTION_ID,
-        endpoint="gemini-3.5-flash",
+        endpoint="gemini-2.5-flash",
     )
 
     sql = utils._apply_ops_to_sql(
@@ -145,7 +145,7 @@ def test_ai_generate_int(scalar_types_df: dataframe.DataFrame, snapshot):
     op = ops.AIGenerateInt(
         # The prompt does not make semantic sense but we only care about syntax correctness.
         prompt_context=(None, " is the same as ", None),
-        endpoint="gemini-3.5-flash",
+        endpoint="gemini-2.5-flash",
     )
 
     sql = utils._apply_ops_to_sql(
@@ -164,7 +164,7 @@ def test_ai_generate_int_with_connection_id(
         # The prompt does not make semantic sense but we only care about syntax correctness.
         prompt_context=(None, " is the same as ", None),
         connection_id=CONNECTION_ID,
-        endpoint="gemini-3.5-flash",
+        endpoint="gemini-2.5-flash",
     )
 
     sql = utils._apply_ops_to_sql(
@@ -198,7 +198,7 @@ def test_ai_generate_double(scalar_types_df: dataframe.DataFrame, snapshot):
     op = ops.AIGenerateDouble(
         # The prompt does not make semantic sense but we only care about syntax correctness.
         prompt_context=(None, " is the same as ", None),
-        endpoint="gemini-3.5-flash",
+        endpoint="gemini-2.5-flash",
     )
 
     sql = utils._apply_ops_to_sql(
@@ -217,7 +217,7 @@ def test_ai_generate_double_with_connection_id(
         # The prompt does not make semantic sense but we only care about syntax correctness.
         prompt_context=(None, " is the same as ", None),
         connection_id=CONNECTION_ID,
-        endpoint="gemini-3.5-flash",
+        endpoint="gemini-2.5-flash",
     )
 
     sql = utils._apply_ops_to_sql(
@@ -322,7 +322,7 @@ def test_ai_if_with_endpoint(scalar_types_df: dataframe.DataFrame, snapshot):
 
     op = ops.AIIf(
         prompt_context=(None, " is the same as ", None),
-        endpoint="gemini-3.5-flash",
+        endpoint="gemini-2.5-flash",
     )
 
     sql = utils._apply_ops_to_sql(
@@ -354,7 +354,7 @@ def test_ai_classify_with_params(scalar_types_df: dataframe.DataFrame, snapshot)
         prompt_context=(None,),
         categories=("greeting", "rejection"),
         examples=(("hi", "greeting"), ("bye", "rejection")),
-        endpoint="gemini-3.5-flash",
+        endpoint="gemini-2.5-flash",
         max_error_ratio=0.1,
     )
 
@@ -421,7 +421,7 @@ def test_ai_score_with_endpoint_and_max_error_ratio(
 
     op = ops.AIScore(
         prompt_context=(None, " is the same as ", None),
-        endpoint="gemini-3.5-flash",
+        endpoint="gemini-2.5-flash",
         max_error_ratio=0.5,
     )
 
