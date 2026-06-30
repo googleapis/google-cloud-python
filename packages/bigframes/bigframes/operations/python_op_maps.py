@@ -86,3 +86,25 @@ def python_callable_to_op(obj) -> Optional[bigframes.operations.RowOp]:
     if obj in PYTHON_TO_BIGFRAMES:
         return PYTHON_TO_BIGFRAMES[obj]
     return None
+
+
+SERIES_METHOD_TO_OP = {
+    "abs": numeric_ops.abs_op,
+    "sqrt": numeric_ops.sqrt_op,
+    "sin": numeric_ops.sin_op,
+    "cos": numeric_ops.cos_op,
+    "tan": numeric_ops.tan_op,
+    "log": numeric_ops.ln_op,
+    "log10": numeric_ops.log10_op,
+    "exp": numeric_ops.exp_op,
+    "floor": numeric_ops.floor_op,
+    "ceil": numeric_ops.ceil_op,
+    "isnull": generic_ops.isnull_op,
+    "isna": generic_ops.isnull_op,
+    "notnull": generic_ops.notnull_op,
+    "notna": generic_ops.notnull_op,
+}
+
+
+def series_method_to_op(method_name: str) -> Optional[bigframes.operations.RowOp]:
+    return SERIES_METHOD_TO_OP.get(method_name)
