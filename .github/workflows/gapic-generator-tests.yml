@@ -1,3 +1,6 @@
+permissions:
+  contents: read
+
 name: Gapic Generator Specialized Tests
 
 on:
@@ -36,8 +39,10 @@ jobs:
     outputs:
       run_generator: ${{ steps.filter.outputs.generator }}
     steps:
-      - uses: actions/checkout@v6
-      - uses: dorny/paths-filter@v4
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+        with:
+          persist-credentials: false
+      - uses: dorny/paths-filter@fbd0ab8f3e69293af611ebaee6363fc25e6d187d # v4
         id: filter
         with:
           filters: |
@@ -68,9 +73,11 @@ jobs:
         logging_scope: ["", "google"]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+        with:
+          persist-credentials: false
       - name: Set up Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
         with:
           python-version: "${{ matrix.python }}"
           allow-prereleases: true
@@ -89,18 +96,21 @@ jobs:
       - name: Run Nox
         env:
           GOOGLE_SDK_PYTHON_LOGGING_SCOPE: ${{ matrix.logging_scope }}
+          MATRIX_PYTHON: ${{ matrix.python }}
         run: |
           pip install nox
           cd packages/gapic-generator
-          nox -s showcase_unit${{ matrix.variant }}-${{ matrix.python }}
+          nox -s showcase_unit${{ matrix.variant }}-${MATRIX_PYTHON}
 
   showcase-mypy:
     needs: python_config
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+        with:
+          persist-credentials: false
       - name: Set up Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
         with:
           python-version: ${{ needs.python_config.outputs.latest_stable_python }}
       - name: Install System Deps
@@ -115,9 +125,11 @@ jobs:
     needs: python_config
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+        with:
+          persist-credentials: false
       - name: Set up Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
         with:
           python-version: ${{ needs.python_config.outputs.latest_stable_python }}
       - name: Install System Deps
@@ -145,9 +157,11 @@ jobs:
     needs: python_config
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+        with:
+          persist-credentials: false
       - name: Set up Python ${{ needs.python_config.outputs.prerelease_python }}
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
         with:
           python-version: ${{ needs.python_config.outputs.prerelease_python }}
           allow-prereleases: true
@@ -173,9 +187,11 @@ jobs:
         python: ${{ fromJSON(needs.python_config.outputs.trimmed_python) }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+        with:
+          persist-credentials: false
       - name: Set up Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
         with:
           python-version: ${{ matrix.python }}
           allow-prereleases: true
@@ -196,23 +212,27 @@ jobs:
           pip install nox
           cd packages/gapic-generator
           # Run fragment for current matrix python
-          nox -s fragment-${{ matrix.python }}
+          nox -s fragment-${MATRIX_PYTHON}
           # Run snippetgen only on the latest stable to avoid the "Python not found" error
-          if [ "${{ matrix.python }}" == "${{ needs.python_config.outputs.latest_stable_python }}" ]; then
+          if [ "${MATRIX_PYTHON}" == "${{ needs.python_config.outputs.latest_stable_python }}" ]; then
             nox -s snippetgen
           fi
+        env:
+          MATRIX_PYTHON: ${{ matrix.python }}
   integration:
     needs: python_config
     # Only runs if the Gatekeeper passed
     if: ${{ needs.python_config.result == 'success' }}
     runs-on: ubuntu-latest
-    container: gcr.io/gapic-images/googleapis
+    container: gcr.io/gapic-images/googleapis # zizmor: ignore[unpinned-images]
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+        with:
+          persist-credentials: false
       
       - name: Cache Bazel files
         id: cache-bazel
-        uses: actions/cache@v5
+        uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5
         with:
           path: ~/.cache/bazel
           # Ensure CACHE_VERSION is defined in the mono-repo secrets!
