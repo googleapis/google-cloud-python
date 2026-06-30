@@ -1,0 +1,28 @@
+{% set rest_async_io_enabled = api.all_library_settings[api.naming.proto_package].python_settings.experimental_features.rest_async_io_enabled %}
+{% from '_pypi_packages.j2' import pypi_packages %}
+# This requirements file is required for unit tests.
+# List all library dependencies and extras in this file.
+google-api-core
+google-auth
+grpcio
+proto-plus
+protobuf
+# cryptography is a direct dependency of google-auth
+cryptography
+# pytest-asyncio is needed for tests otherwise async tests are skipped
+pytest-asyncio
+# pytest/pytest-cov are needed for tests
+pytest
+pytest-cov
+{% if rest_async_io_enabled %}
+aiohttp
+requests
+{% endif %}
+{% for package_tuple, package_info in pypi_packages.items() %}
+{# Quick check to make sure `package_info.package_name` is not the package being generated so we don't circularly include this package in its own requirements file. #}
+{% if api.naming.warehouse_package_name != package_info.package_name %}
+{% if api.requires_package(package_tuple) %}
+{{ package_info.package_name }}
+{% endif %}
+{% endif %}
+{% endfor %}

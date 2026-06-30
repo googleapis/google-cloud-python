@@ -1,0 +1,21 @@
+# -*- coding: utf-8 -*-
+# We use the requirements file for the latest Python version
+# to check that the latest major versions of dependencies are supported
+# in setup.py.
+# List all library dependencies and extras in this file.
+# Require the latest major version be installed for each dependency.
+# e.g., if setup.py has "google-cloud-foo >= 1.14.0, < 2.0.0",
+# Then this file should have google-cloud-foo>=1
+google-api-core>=2
+google-auth>=2
+grpcio>=1
+proto-plus>=1
+protobuf>=7
+# pytest-asyncio is needed for tests otherwise async tests are skipped
+pytest-asyncio>=1
+# pytest/pytest-cov are needed for tests
+pytest>=9
+pytest-cov>=7
+google-cloud-access-context-manager>=0
+google-cloud-os-config>=1
+grpc-google-iam-v1>=0

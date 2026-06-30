@@ -46,7 +46,7 @@ dependencies = [
     {# Explicitly exclude protobuf versions mentioned in https://cloud.google.com/support/bulletins#GCP-2022-019 #}
     "protobuf >= 6.33.5, < 8.0.0",
     {% for package_tuple, package_info in pypi_packages.items() %}
-    {# Quick check to make sure `package_info.package_name` is not the package being generated so we don't circularly include this package in its own constraints file. #}
+    {# Quick check to make sure `package_info.package_name` is not the package being generated so we don't circularly include this package in its own requirements file. #}
     {% if api.naming.warehouse_package_name != package_info.package_name %}
     {% if api.requires_package(package_tuple) %}
     "{{ package_info.package_name }} >= {{ package_info.lower_bound }}, <{{ package_info.upper_bound }}",

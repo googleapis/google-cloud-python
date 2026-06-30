@@ -52,38 +52,12 @@ MYPY_CONFIG_FILE = next(
     str(CURRENT_DIRECTORY.parent.parent / "mypy.ini"),
 )
 
-if (CURRENT_DIRECTORY / "testing").exists():
-    LOWER_BOUND_CONSTRAINTS_FILE = (
-        CURRENT_DIRECTORY / "testing" / f"constraints-{ALL_PYTHON[0]}.txt"
-    )
-else:
-    LOWER_BOUND_CONSTRAINTS_FILE = CURRENT_DIRECTORY / "constraints.txt"
+LOWER_BOUND_REQUIREMENTS_FILE = (
+    CURRENT_DIRECTORY / "testing" / f"requirements-{ALL_PYTHON[0]}.txt"
+)
 PACKAGE_NAME = "google-cloud-redis"
 
-UNIT_TEST_STANDARD_DEPENDENCIES = [
-    "mock",
-    "asyncmock",
-    "pytest",
-    "pytest-cov",
-    "pytest-asyncio",
-]
-UNIT_TEST_EXTERNAL_DEPENDENCIES: List[str] = []
-UNIT_TEST_LOCAL_DEPENDENCIES: List[str] = []
-UNIT_TEST_DEPENDENCIES: List[str] = []
-UNIT_TEST_EXTRAS: List[str] = []
-UNIT_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {}
-
 SYSTEM_TEST_PYTHON_VERSIONS: List[str] = ALL_PYTHON
-SYSTEM_TEST_STANDARD_DEPENDENCIES = [
-    "mock",
-    "pytest",
-    "google-cloud-testutils",
-]
-SYSTEM_TEST_EXTERNAL_DEPENDENCIES: List[str] = []
-SYSTEM_TEST_LOCAL_DEPENDENCIES: List[str] = []
-SYSTEM_TEST_DEPENDENCIES: List[str] = []
-SYSTEM_TEST_EXTRAS: List[str] = []
-SYSTEM_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {}
 
 nox.options.sessions = [
     "unit",
@@ -122,9 +96,11 @@ def mypy(session):
 
 @nox.session
 def update_lower_bounds(session):
-    """Update lower bounds in constraints.txt to match setup.py"""
+    """Update lower bounds in requirements.txt to match setup.py"""
     session.install("google-cloud-testutils")
     session.install(".")
+
+    requirements_in = CURRENT_DIRECTORY / "testing" / f"requirements-{ALL_PYTHON[0]}.in"
 
     session.run(
         "lower-bound-checker",
@@ -132,15 +108,28 @@ def update_lower_bounds(session):
         "--package-name",
         PACKAGE_NAME,
         "--constraints-file",
-        str(LOWER_BOUND_CONSTRAINTS_FILE),
+        str(requirements_in),
+    )
+
+    session.install("pip-tools")
+    session.run(
+        "pip-compile",
+        "--allow-unsafe",
+        "--generate-hashes",
+        "--no-strip-extras",
+        "--output-file",
+        str(LOWER_BOUND_REQUIREMENTS_FILE),
+        str(requirements_in),
     )
 
 
 @nox.session
 def check_lower_bounds(session):
-    """Check lower bounds in setup.py are reflected in constraints file"""
+    """Check lower bounds in setup.py are reflected in requirements file"""
     session.install("google-cloud-testutils")
     session.install(".")
+
+    requirements_in = CURRENT_DIRECTORY / "testing" / f"requirements-{ALL_PYTHON[0]}.in"
 
     session.run(
         "lower-bound-checker",
@@ -148,7 +137,7 @@ def check_lower_bounds(session):
         "--package-name",
         PACKAGE_NAME,
         "--constraints-file",
-        str(LOWER_BOUND_CONSTRAINTS_FILE),
+        str(requirements_in),
     )
 
 
@@ -224,32 +213,17 @@ def lint_setup_py(session):
     session.run("python", "setup.py", "check", "--restructuredtext", "--strict")
 
 
-def install_unittest_dependencies(session, *constraints):
-    standard_deps = UNIT_TEST_STANDARD_DEPENDENCIES + UNIT_TEST_DEPENDENCIES
-    session.install(*standard_deps, *constraints)
-
-    if UNIT_TEST_EXTERNAL_DEPENDENCIES:
-        warnings.warn(
-            "'unit_test_external_dependencies' is deprecated. Instead, please "
-            "use 'unit_test_dependencies' or 'unit_test_local_dependencies'.",
-            DeprecationWarning,
+def install_unittest_dependencies(session, prerelease=False):
+    if prerelease:
+        requirements_path = str(
+            CURRENT_DIRECTORY / "testing" / "requirements-prerelease.txt"
         )
-        session.install(*UNIT_TEST_EXTERNAL_DEPENDENCIES, *constraints)
-
-    if UNIT_TEST_LOCAL_DEPENDENCIES:
-        session.install(*UNIT_TEST_LOCAL_DEPENDENCIES, *constraints)
-
-    if UNIT_TEST_EXTRAS_BY_PYTHON:
-        extras = UNIT_TEST_EXTRAS_BY_PYTHON.get(session.python, [])
-    elif UNIT_TEST_EXTRAS:
-        extras = UNIT_TEST_EXTRAS
     else:
-        extras = []
-
-    if extras:
-        session.install("-e", f".[{','.join(extras)}]", *constraints)
-    else:
-        session.install("-e", ".", *constraints)
+        requirements_path = str(
+            CURRENT_DIRECTORY / "testing" / f"requirements-{session.python}.txt"
+        )
+    session.install("-r", requirements_path)
+    session.install("-e", ".", "--no-deps")
 
 
 @nox.session(python=ALL_PYTHON)
@@ -260,10 +234,7 @@ def install_unittest_dependencies(session, *constraints):
 def unit(session, protobuf_implementation):
     # Install all test dependencies, then install this package in-place.
 
-    constraints_path = str(
-        CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
-    )
-    install_unittest_dependencies(session, "-c", constraints_path)
+    install_unittest_dependencies(session)
 
     # Run py.test against the unit tests.
     session.run(
@@ -284,41 +255,11 @@ def unit(session, protobuf_implementation):
     )
 
 
-def install_systemtest_dependencies(session, *constraints):
-    if session.python >= "3.12":
-        session.install("--pre", "grpcio>=1.75.1")
-    else:
-        session.install("--pre", "grpcio<=1.62.2")
-
-    session.install(*SYSTEM_TEST_STANDARD_DEPENDENCIES, *constraints)
-
-    if SYSTEM_TEST_EXTERNAL_DEPENDENCIES:
-        session.install(*SYSTEM_TEST_EXTERNAL_DEPENDENCIES, *constraints)
-
-    if SYSTEM_TEST_LOCAL_DEPENDENCIES:
-        session.install("-e", *SYSTEM_TEST_LOCAL_DEPENDENCIES, *constraints)
-
-    if SYSTEM_TEST_DEPENDENCIES:
-        session.install("-e", *SYSTEM_TEST_DEPENDENCIES, *constraints)
-
-    if SYSTEM_TEST_EXTRAS_BY_PYTHON:
-        extras = SYSTEM_TEST_EXTRAS_BY_PYTHON.get(session.python, [])
-    elif SYSTEM_TEST_EXTRAS:
-        extras = SYSTEM_TEST_EXTRAS
-    else:
-        extras = []
-
-    if extras:
-        session.install("-e", f".[{','.join(extras)}]", *constraints)
-    else:
-        session.install("-e", ".", *constraints)
-
-
 @nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
 def system(session):
     """Run the system test suite."""
-    constraints_path = str(
-        CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
+    requirements_path = str(
+        CURRENT_DIRECTORY / "testing" / f"requirements-{session.python}.txt"
     )
     system_test_path = os.path.join("tests", "system.py")
     system_test_folder_path = os.path.join("tests", "system")
@@ -336,7 +277,7 @@ def system(session):
     if not system_test_exists and not system_test_folder_exists:
         session.skip("System tests were not found")
 
-    install_systemtest_dependencies(session, "-c", constraints_path)
+    install_systemtest_dependencies(session, "-r", requirements_path)
 
     # Run py.test against the system tests.
     if system_test_exists:
@@ -462,32 +403,7 @@ def prerelease_deps(session, protobuf_implementation):
     `pip install --pre <package>`.
     """
 
-    # Install all dependencies
-    session.install("-e", ".")
-
-    # Install dependencies for the unit test environment
-    unit_deps_all = UNIT_TEST_STANDARD_DEPENDENCIES + UNIT_TEST_EXTERNAL_DEPENDENCIES
-    session.install(*unit_deps_all)
-
-    # Because we test minimum dependency versions on the minimum Python
-    # version, the first version we test with in the unit tests sessions has a
-    # constraints file containing all dependencies and extras.
-    with open(
-        CURRENT_DIRECTORY / "testing" / f"constraints-{ALL_PYTHON[0]}.txt",
-        encoding="utf-8",
-    ) as constraints_file:
-        constraints_text = constraints_file.read()
-
-    # Ignore leading whitespace and comment lines.
-    constraints_deps = [
-        match.group(1)
-        for match in re.finditer(
-            r"^\s*(\S+)(?===\S+)", constraints_text, flags=re.MULTILINE
-        )
-    ]
-
-    # Install dependencies specified in `testing/constraints-X.txt`.
-    session.install(*constraints_deps)
+    install_unittest_dependencies(session, prerelease=True)
 
     # Note: If a dependency is added to the `prerel_deps` list,
     # the `core_dependencies_from_source` list in the `core_deps_from_source`
@@ -513,22 +429,6 @@ def prerelease_deps(session, protobuf_implementation):
         dep: re.match(r"^([a-zA-Z0-9_-]+)", dep).group(1)
         for dep in prerel_deps
     }
-
-    # Dynamically sort local packages vs PyPI dependencies
-    local_paths = []
-    pypi_deps = []
-
-    for dep, pkg_name in parsed_deps.items():
-        if (deps_dir / pkg_name).exists():
-            local_paths.append(str(deps_dir / pkg_name))
-        else:
-            pypi_deps.append(dep)
-
-    # Batch pip installations to avoid sequential overhead
-    if local_paths:
-        session.install(*local_paths, "--no-deps", "--ignore-installed")
-    if pypi_deps:
-        session.install(*pypi_deps, "--pre", "--no-deps", "--ignore-installed")
 
     # TODO(https://github.com/grpc/grpc/issues/38965): Add `grpcio-status``
     # to the dictionary below once this bug is fixed.
@@ -564,6 +464,14 @@ def prerelease_deps(session, protobuf_implementation):
     )
 
 
+@nox.session(python=ALL_PYTHON[0])
+def security_check_minimum_version(session):
+    # Do not pin `pip-audit` since we need the latest version to be aware of new vulnerabilities
+    session.install("pip-audit")
+    session.run("pip-audit", "--version")
+    session.run("pip-audit", "-r", CURRENT_DIRECTORY / "testing" / f"requirements-{ALL_PYTHON[0]}.txt")
+
+
 @nox.session(python=PREVIEW_PYTHON_VERSION)
 @nox.parametrize(
     "protobuf_implementation",
@@ -574,32 +482,7 @@ def core_deps_from_source(session, protobuf_implementation):
     rather than pulling the dependencies from PyPI.
     """
 
-    # Install all dependencies
-    session.install("-e", ".")
-
-    # Install dependencies for the unit test environment
-    unit_deps_all = UNIT_TEST_STANDARD_DEPENDENCIES + UNIT_TEST_EXTERNAL_DEPENDENCIES
-    session.install(*unit_deps_all)
-
-    # Because we test minimum dependency versions on the minimum Python
-    # version, the first version we test with in the unit tests sessions has a
-    # constraints file containing all dependencies and extras.
-    with open(
-        CURRENT_DIRECTORY / "testing" / f"constraints-{ALL_PYTHON[0]}.txt",
-        encoding="utf-8",
-    ) as constraints_file:
-        constraints_text = constraints_file.read()
-
-    # Ignore leading whitespace and comment lines.
-    constraints_deps = [
-        match.group(1)
-        for match in re.finditer(
-            r"^\s*(\S+)(?===\S+)", constraints_text, flags=re.MULTILINE
-        )
-    ]
-
-    # Install dependencies specified in `testing/constraints-X.txt`.
-    session.install(*constraints_deps)
+    install_unittest_dependencies(session, prerelease=True)
 
     # TODO(https://github.com/googleapis/gapic-generator-python/issues/2358): `grpcio` and
     # `grpcio-status` should be added to the list below so that they are installed from source,
