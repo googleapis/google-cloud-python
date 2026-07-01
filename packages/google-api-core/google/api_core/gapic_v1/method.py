@@ -91,14 +91,17 @@ class _GapicCallable(object):
         self._timeout = timeout
         self._compression = compression
         self._metadata = metadata
-        # separate x-goog-api-client header from provided metadata
+        
+        # Pre-extract the client metrics header from the initialized metadata.
+        # This avoids repeating this work on every single RPC request invocation.
         self._arbitrary_metadata = []
         self._metrics_values = ""
-        for key, val in metadata:
-            if key == client_info.METRICS_METADATA_KEY:
-                self._metrics_values = val
-            else:
-                self._arbitrary_metadata.append((key, val))
+        if metadata:
+            for key, val in metadata:
+                if key == client_info.METRICS_METADATA_KEY:
+                    self._metrics_values = val
+                else:
+                    self._arbitrary_metadata.append((key, val))
 
     def __call__(
         self, *args, timeout=DEFAULT, retry=DEFAULT, compression=DEFAULT, **kwargs
@@ -124,22 +127,28 @@ class _GapicCallable(object):
         if self._metadata is not None:
             metadata = kwargs.get("metadata")
             if not metadata:
+                # Fast path: in 99% of calls, the user did not pass any custom metadata,
+                # so we can directly assign the pre-extracted metadata and skip any merging overhead.
                 if self._metrics_values:
-                    kwargs["metadata"] = [(client_info.METRICS_METADATA_KEY, self._metrics_values), *self._arbitrary_metadata]
+                    kwargs["metadata"] = [(client_info.METRICS_METADATA_KEY, self._metrics_values)] + self._arbitrary_metadata
                 else:
                     kwargs["metadata"] = self._arbitrary_metadata
             else:
                 # Merge user-supplied metadata with library-supplied metadata.
+                # All keys in gRPC metadata are already lowercase.
                 metadata = list(metadata)
-                metric_values = [self._metrics_values] if self._metrics_values else []
+                api_client_values = []
                 merged_metadata = []
                 for key, val in metadata:
                     if key == client_info.METRICS_METADATA_KEY:
-                        metric_values.append(val)
+                        api_client_values.append(val)
                     else:
                         merged_metadata.append((key, val))
-                if metric_values:
-                    merged_metadata.append((client_info.METRICS_METADATA_KEY, " ".join(metric_values)))
+                if self._metrics_values:
+                    api_client_values.append(self._metrics_values)
+                if api_client_values:
+                    merged_metadata.append((client_info.METRICS_METADATA_KEY, " ".join(api_client_values)))
+                merged_metadata.extend(self._arbitrary_metadata)
                 kwargs["metadata"] = merged_metadata
 
         if self._compression is not None:
