@@ -250,29 +250,48 @@ def test_mds_mtls_adapter_send_fallback_http_error(
     assert fallback_request.url == "http://fake-mds.com/"
 
 
-@mock.patch("google.auth.compute_engine._mtls.HTTPAdapter")
 @mock.patch("google.auth.compute_engine._mtls._parse_mds_mode")
 @mock.patch("ssl.create_default_context")
 def test_mds_mtls_adapter_send_fallback_connection_error(
-    mock_ssl_context, mock_parse_mds_mode, mock_http_adapter_class, mock_mds_mtls_config
+    mock_ssl_context, mock_parse_mds_mode, mock_mds_mtls_config
 ):
     mock_parse_mds_mode.return_value = _mtls.MdsMtlsMode.DEFAULT
     adapter = _mtls.MdsMtlsAdapter(mock_mds_mtls_config)
 
-    mock_fallback_send = mock.Mock()
-    mock_http_adapter_class.return_value.send = mock_fallback_send
+    mock_mtls_response = mock.Mock(spec=requests.Response)
+    mock_mtls_response.status_code = 200
 
     with mock.patch(
         "requests.adapters.HTTPAdapter.send",
-        side_effect=requests.exceptions.ConnectionError,
+        side_effect=[requests.exceptions.ConnectionError, mock_mtls_response],
     ):
         request = requests.Request(method="GET", url="https://fake-mds.com").prepare()
-        adapter.send(request)
+        response = adapter.send(request)
 
-    mock_http_adapter_class.assert_called_once()
-    mock_fallback_send.assert_called_once()
-    fallback_request = mock_fallback_send.call_args[0][0]
-    assert fallback_request.url == "http://fake-mds.com/"
+    assert response == mock_mtls_response
+    assert request.url == "http://fake-mds.com/"
+
+
+@mock.patch("google.auth.compute_engine._mtls._parse_mds_mode")
+@mock.patch("ssl.create_default_context")
+def test_mds_mtls_adapter_send_fallback_timeout(
+    mock_ssl_context, mock_parse_mds_mode, mock_mds_mtls_config
+):
+    mock_parse_mds_mode.return_value = _mtls.MdsMtlsMode.DEFAULT
+    adapter = _mtls.MdsMtlsAdapter(mock_mds_mtls_config)
+
+    mock_mtls_response = mock.Mock(spec=requests.Response)
+    mock_mtls_response.status_code = 200
+
+    with mock.patch(
+        "requests.adapters.HTTPAdapter.send",
+        side_effect=[requests.exceptions.Timeout, mock_mtls_response],
+    ):
+        request = requests.Request(method="GET", url="https://fake-mds.com").prepare()
+        response = adapter.send(request)
+
+    assert response == mock_mtls_response
+    assert request.url == "http://fake-mds.com/"
 
 
 @mock.patch("requests.adapters.HTTPAdapter.send")

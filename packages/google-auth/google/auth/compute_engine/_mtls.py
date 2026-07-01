@@ -122,6 +122,7 @@ class MdsMtlsAdapter(HTTPAdapter):
         self.ssl_context.load_cert_chain(
             certfile=mds_mtls_config.client_combined_cert_path, password=""
         )
+        self._fallback_adapter = HTTPAdapter()
         super(MdsMtlsAdapter, self).__init__(*args, **kwargs)
 
     def init_poolmanager(self, *args, **kwargs):
@@ -147,6 +148,7 @@ class MdsMtlsAdapter(HTTPAdapter):
             requests.exceptions.SSLError,
             requests.exceptions.HTTPError,
             requests.exceptions.ConnectionError,
+            requests.exceptions.Timeout,
         ) as e:
             _LOGGER.warning(
                 "mTLS connection to Compute Engine Metadata server failed. "
@@ -158,6 +160,5 @@ class MdsMtlsAdapter(HTTPAdapter):
             http_fallback_url = urlunparse(parsed_original_url._replace(scheme="http"))
             request.url = http_fallback_url
 
-            # Use a standard HTTPAdapter for the fallback
-            http_adapter = HTTPAdapter()
-            return http_adapter.send(request, **kwargs)
+            # Use the cached standard HTTPAdapter for the fallback
+            return self._fallback_adapter.send(request, **kwargs)
