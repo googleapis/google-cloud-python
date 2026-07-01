@@ -35,9 +35,9 @@ def test_array_to_string(repeated_types_df: bpd.DataFrame, snapshot):
 
 def test_array_index(scalar_types_df: bpd.DataFrame, snapshot):
     ops_map = {
-        "string_index": ops.ArrayIndexOp(index=1).as_expr("string_col"),
+        "string_index": ops.GetItemOp(key=1).as_expr("string_col"),
         "array_index": expression.OpExpression(
-            ops.ArrayIndexOp(index=1),
+            ops.GetItemOp(key=1),
             (ops.ToArrayOp().as_expr("int64_col", "int64_too"),),
         ),
     }

@@ -363,14 +363,6 @@ def contains_regex_op_impl(x: ibis_types.Value, op: ops.StrContainsRegexOp):
     return typing.cast(ibis_types.StringValue, x).re_search(op.pat)
 
 
-@scalar_op_compiler.register_unary_op(ops.StrGetOp, pass_op=True)
-def strget_op_impl(x: ibis_types.Value, op: ops.StrGetOp):
-    substr = typing.cast(
-        ibis_types.StringValue, typing.cast(ibis_types.StringValue, x)[op.i]
-    )
-    return substr.nullif(ibis_types.literal(""))
-
-
 @scalar_op_compiler.register_unary_op(ops.StrPadOp, pass_op=True)
 def strpad_op_impl(x: ibis_types.Value, op: ops.StrPadOp):
     str_val = typing.cast(ibis_types.StringValue, x)
@@ -1088,15 +1080,6 @@ def dynamic_getitem_op_impl(left: ibis_types.Value, right: ibis_types.Value):
         return _null_or_value(res, res != ibis_types.literal(""))
     else:
         raise TypeError(f"Cannot dynamically subscript input of type {left.type()}")
-
-
-@scalar_op_compiler.register_unary_op(ops.ArrayIndexOp, pass_op=True)
-def array_index_op_impl(x: ibis_types.Value, op: ops.ArrayIndexOp):
-    res = typing.cast(ibis_types.ArrayValue, x)[op.index]
-    if x.type().is_string():
-        return _null_or_value(res, res != ibis_types.literal(""))
-    else:
-        return res
 
 
 @scalar_op_compiler.register_unary_op(ops.ArraySliceOp, pass_op=True)

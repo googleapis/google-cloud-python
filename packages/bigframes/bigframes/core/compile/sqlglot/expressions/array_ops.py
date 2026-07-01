@@ -86,19 +86,6 @@ def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
         raise TypeError(f"Cannot dynamically subscript input of type {left.dtype}")
 
 
-@register_unary_op(ops.ArrayIndexOp, pass_op=True)
-def _(expr: TypedExpr, op: ops.ArrayIndexOp) -> sge.Expression:
-    if expr.dtype == dtypes.STRING_DTYPE:
-        return string_index(expr, op.index)
-
-    return sge.Bracket(
-        this=expr.expr,
-        expressions=[sge.convert(op.index)],
-        safe=True,
-        offset=False,
-    )
-
-
 @register_unary_op(ops.ArrayReduceOp, pass_op=True)
 def _(expr: TypedExpr, op: ops.ArrayReduceOp) -> sge.Expression:
     sub_expr = sg.to_identifier("bf_arr_reduce_uid")

@@ -22,7 +22,7 @@ from typing import TYPE_CHECKING
 
 import bigframes.core.compile.polars.compiler as polars_compiler
 import bigframes.dtypes as dtypes
-from bigframes.operations import array_ops, generic_ops
+from bigframes.operations import generic_ops
 
 if TYPE_CHECKING:
     import polars as pl
@@ -58,12 +58,3 @@ def dynamic_getitem_op_impl(
         return left.str.slice(right, 1)
     else:
         return left.list.get(right)
-
-
-@polars_compiler.register_op(array_ops.ArrayIndexOp)
-def array_index_op_impl(
-    compiler: polars_compiler.PolarsExpressionCompiler,
-    op: array_ops.ArrayIndexOp,  # type: ignore
-    input: pl.Expr,
-) -> pl.Expr:
-    return input.list.get(op.index)
