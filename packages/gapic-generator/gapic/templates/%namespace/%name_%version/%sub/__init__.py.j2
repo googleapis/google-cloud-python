@@ -123,6 +123,19 @@ else:   # pragma: NO COVER
                           "using a supported version of Python; see " +
                           "https://devguide.python.org/versions/")
 
+if _USE_LAZY_IMPORTS or sys.version_info >= (3, 15):
+    # We use a set for O(1) membership checking as requested by PEP 0810
+    __lazy_modules__ = {
+        {% for service in api.services.values()|sort(attribute='name')
+                if service.meta.address.subpackage == api.subpackage_view -%}
+        "{{package_path}}.services.{{ service.name|snake_case }}",
+        {% endfor -%}
+        {% for proto in api.protos.values()|sort(attribute='name')
+                if proto.meta.address.subpackage == api.subpackage_view -%}
+        "{{package_path}}.types.{{ proto.module_name }}",
+        {% endfor -%}
+    }
+
 {#  Define __all__.
     This requires the full set of imported names, so we iterate over
     them again.
