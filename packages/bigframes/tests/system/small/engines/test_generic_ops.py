@@ -521,9 +521,9 @@ def test_engines_isin_op_nested_filter(
 def test_engines_getitem_ops(arrays_array_value: array_value.ArrayValue, engine):
     arr, _ = arrays_array_value.compute_values(
         [
-            ops.GetItemOp(1).as_expr(expression.deref("float_list_col")),
+            ops.GetItemOp(0).as_expr(expression.deref("float_list_col")),
             ops.DynamicGetItemOp().as_expr(
-                expression.deref("float_list_col"), expression.const(1)
+                expression.deref("float_list_col"), expression.const(0)
             ),
             ops.GetItemOp(0).as_expr(expression.deref("string_list_col")),
             ops.DynamicGetItemOp().as_expr(

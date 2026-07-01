@@ -687,7 +687,7 @@ def test_series_map_with_struct_and_array_subscript(session):
         return x["str_field"]
 
     bf_struct_res = bf_struct_series.map(get_struct_val).to_pandas()
-    pd_struct_res = pd_struct_series.map(get_struct_val)
+    pd_struct_res: pd.Series = pd_struct_series.map(get_struct_val)
     assert_series_equal(bf_struct_res, pd_struct_res, check_dtype=False)
 
     # Array subscripting in UDF
@@ -695,7 +695,7 @@ def test_series_map_with_struct_and_array_subscript(session):
         return x[1]
 
     bf_array_res = bf_array_series.map(get_array_val).to_pandas()
-    pd_array_res = pd_array_series.map(get_array_val)
+    pd_array_res: pd.Series = pd_array_series.map(get_array_val)
     assert_series_equal(bf_array_res, pd_array_res, check_dtype=False)
 
 

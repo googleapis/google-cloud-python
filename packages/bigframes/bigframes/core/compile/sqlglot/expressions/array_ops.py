@@ -56,12 +56,12 @@ def _(expr: TypedExpr, op: ops.GetItemOp) -> sge.Expression:
             offset=False,
         )
     elif expr.dtype == dtypes.STRING_DTYPE:
-        return string_index(expr, op.key)
+        return string_index(expr, typing.cast(int, op.key))
     else:
         raise TypeError(f"Cannot subscript input of type {expr.dtype}")
 
 
-@register_nary_op(ops.DynamicGetItemOp)
+@register_nary_op(ops.DynamicGetItemOp)  # type: ignore[arg-type]
 def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
     if dtypes.is_array_like(left.dtype):
         return sge.Bracket(
@@ -71,7 +71,7 @@ def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
             offset=False,
         )
     elif left.dtype == dtypes.STRING_DTYPE:
-        start_expr = sge.ADD(this=right.expr, expression=sge.convert(1))
+        start_expr = sge.Add(this=right.expr, expression=sge.convert(1))
         sub_str = sge.Substring(
             this=left.expr,
             start=start_expr,

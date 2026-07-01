@@ -548,19 +548,20 @@ def resolve_call(call: Call) -> Expression:
             try:
                 import bigframes.operations.aggregations as agg_ops
 
-                op, _ = agg_ops.lookup_agg_func(attr)
+                agg_op, _ = agg_ops.lookup_agg_func(attr)
                 import bigframes.core.agg_expressions as agg_exprs
 
-                if isinstance(op, agg_ops.UnaryAggregateOp):
-                    return agg_exprs.UnaryAggregation(op, callable.input)
-                elif isinstance(op, agg_ops.NullaryAggregateOp):
-                    return agg_exprs.NullaryAggregation(op)
+                if isinstance(agg_op, agg_ops.UnaryAggregateOp):
+                    return agg_exprs.UnaryAggregation(agg_op, callable.input)
+                elif isinstance(agg_op, agg_ops.NullaryAggregateOp):
+                    return agg_exprs.NullaryAggregation(agg_op)
             except ValueError:
                 pass
 
             # Support common scalar method calls on Series/expressions
             if (method_op := python_op_maps.series_method_to_op(attr)) is not None:
-                return OpExpression(method_op, (callable.input,))
+                if isinstance(method_op, ScalarOp):
+                    return OpExpression(method_op, (callable.input,))
 
     elif isinstance(callable, PyObject):
         if callable.value == operator.getitem:

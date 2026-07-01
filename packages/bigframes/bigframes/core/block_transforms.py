@@ -38,7 +38,7 @@ def compile_udf(
     block: blocks.Block,
     func: Callable,
     args: tuple = (),
-    kwargs: dict = None,
+    kwargs: dict | None = None,
     col_series_args: typing.Mapping[str, str] | None = None,
 ) -> ex.Expression:
     """Compile a python function to a BigFrames expression in the context of a block."""

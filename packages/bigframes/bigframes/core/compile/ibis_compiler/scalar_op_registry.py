@@ -1062,10 +1062,12 @@ def getitem_op_impl(x: ibis_types.Value, op: ops.GetItemOp):
         result = struct_value[name]
         return result.cast(result.type()(nullable=True)).name(name)
     elif x.type().is_array():
-        res = typing.cast(ibis_types.ArrayValue, x)[op.key]
+        key = typing.cast(int, op.key)
+        res = typing.cast(ibis_types.ArrayValue, x)[key]
         return res
     elif x.type().is_string():
-        res = typing.cast(ibis_types.StringValue, x)[op.key]
+        key = typing.cast(int, op.key)
+        res = typing.cast(ibis_types.StringValue, x)[key]
         return _null_or_value(res, res != ibis_types.literal(""))
     else:
         raise TypeError(f"Cannot subscript input of type {x.type()}")
@@ -1074,9 +1076,11 @@ def getitem_op_impl(x: ibis_types.Value, op: ops.GetItemOp):
 @scalar_op_compiler.register_binary_op(ops.DynamicGetItemOp)
 def dynamic_getitem_op_impl(left: ibis_types.Value, right: ibis_types.Value):
     if left.type().is_array():
-        return typing.cast(ibis_types.ArrayValue, left)[right]
+        int_right = typing.cast(ibis_types.IntegerValue, right)
+        return typing.cast(ibis_types.ArrayValue, left)[int_right]
     elif left.type().is_string():
-        res = typing.cast(ibis_types.StringValue, left)[right]
+        scalar_right = typing.cast(ibis_types.IntegerScalar, right)
+        res = typing.cast(ibis_types.StringValue, left)[scalar_right]
         return _null_or_value(res, res != ibis_types.literal(""))
     else:
         raise TypeError(f"Cannot dynamically subscript input of type {left.type()}")
