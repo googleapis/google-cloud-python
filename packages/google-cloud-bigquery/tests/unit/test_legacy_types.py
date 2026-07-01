@@ -17,9 +17,9 @@ import warnings
 
 import pytest
 
-try:  # pragma: NO COVER
+try:
     import proto
-except ImportError:
+except ImportError:  # pragma: NO COVER
     proto = None  # type: ignore
 
 
