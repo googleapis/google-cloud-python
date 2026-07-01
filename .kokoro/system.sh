@@ -46,6 +46,10 @@ run_package_test() {
   # Inherit NOX_SESSION from environment to allow configs (like prerelease.cfg) to pass it in
   local NOX_SESSION="${NOX_SESSION}"
 
+  # ISOLATION: Create a unique gcloud config dir for this run
+  local gcloud_config_dir=$(mktemp -d -t "gcloud-config-${package_name}-XXXXXX")
+  export CLOUDSDK_CONFIG="${gcloud_config_dir}"
+
   echo "------------------------------------------------------------"
   echo "Configuring environment for: ${package_name}"
   echo "------------------------------------------------------------"
@@ -94,11 +98,14 @@ run_package_test() {
   set -e
   popd > /dev/null
   
+  rm -rf "${gcloud_config_dir}"
   return $res
 }
 
 # A file for running system tests
 system_test_script="${PROJECT_ROOT}/.kokoro/system-single.sh"
+
+PACKAGES_TO_TEST=()
 
 # Run system tests for each package with directory packages/*/tests/system
 for path in `find 'packages' \
@@ -147,10 +154,112 @@ for path in `find 'packages' \
   set -e
 
   if [[ "${package_modified}" -gt 0 || "$KOKORO_BUILD_ARTIFACTS_SUBDIR" == *"continuous"* ]]; then
-      # Call the function - its internal exports won't affect the next loop
-      run_package_test "$package_name" || RETVAL=$?
+      PACKAGES_TO_TEST+=("$package_name")
   else
       echo "No changes in ${package_name} and not a continuous build, skipping."
   fi
 done
-exit ${RETVAL}
+
+# Parallel Execution Logic
+MAX_JOBS=${MAX_JOBS:-4}
+active_jobs=0
+declare -A job_pids
+declare -A job_pkgs
+failed_packages=()
+passed_packages=()
+
+# Temporary directory for clean log segregation
+LOG_DIR=$(mktemp -d -t test-logs-XXXXXX)
+# Clean up logs on exit
+trap 'rm -rf "$LOG_DIR"' EXIT
+
+if [ ${#PACKAGES_TO_TEST[@]} -eq 0 ]; then
+  echo "No packages to test."
+  exit 0
+fi
+
+echo "=================================================="
+echo "Starting parallel test execution for ${#PACKAGES_TO_TEST[@]} packages"
+echo "Concurrency limit: ${MAX_JOBS}"
+echo "=================================================="
+
+for pkg in "${PACKAGES_TO_TEST[@]}"; do
+  # Maintain concurrency limit
+  while [ "$active_jobs" -ge "$MAX_JOBS" ]; do
+    for pid in "${!job_pids[@]}"; do
+      if ! kill -0 "$pid" 2>/dev/null; then
+        wait "$pid" && status=0 || status=$?
+        finished_pkg=${job_pkgs[$pid]}
+        if [ "$status" -eq 0 ]; then
+          echo "✔ [SUCCESS] ${finished_pkg}"
+          passed_packages+=("$finished_pkg")
+        else
+          echo "✘ [FAILURE] ${finished_pkg} (Exit Code: ${status})"
+          failed_packages+=("$finished_pkg")
+        fi
+        unset "job_pids[$pid]"
+        unset "job_pkgs[$pid]"
+        active_jobs=$((active_jobs - 1))
+      fi
+    done
+    sleep 0.1
+  done
+
+  safe_pkg_name=$(echo "$pkg" | tr '/' '_')
+  log_file="${LOG_DIR}/${safe_pkg_name}.log"
+
+  echo "Spawning tests for ${pkg}..."
+  run_package_test "$pkg" > "$log_file" 2>&1 &
+  pid=$!
+  job_pids["$pid"]=$pid
+  job_pkgs["$pid"]=$pkg
+  active_jobs=$((active_jobs + 1))
+done
+
+# Reap remaining processes
+while [ "$active_jobs" -gt 0 ]; do
+  for pid in "${!job_pids[@]}"; do
+    if ! kill -0 "$pid" 2>/dev/null; then
+      wait "$pid" && status=0 || status=$?
+      finished_pkg=${job_pkgs[$pid]}
+      if [ "$status" -eq 0 ]; then
+        echo "✔ [SUCCESS] ${finished_pkg}"
+        passed_packages+=("$finished_pkg")
+      else
+        echo "✘ [FAILURE] ${finished_pkg} (Exit Code: ${status})"
+        failed_packages+=("$finished_pkg")
+      fi
+      unset "job_pids[$pid]"
+      unset "job_pkgs[$pid]"
+      active_jobs=$((active_jobs - 1))
+    fi
+  done
+  sleep 0.1
+done
+
+echo ""
+echo "=================================================="
+echo "               TEST RUN SUMMARY                   "
+echo "=================================================="
+echo "Total tested: ${#PACKAGES_TO_TEST[@]}"
+echo "Passed:       ${#passed_packages[@]}"
+echo "Failed:       ${#failed_packages[@]}"
+echo "=================================================="
+
+if [ ${#failed_packages[@]} -gt 0 ]; then
+  echo ""
+  echo "!!! DETAILED LOGS FOR FAILED PACKAGES !!!"
+  for pkg in "${failed_packages[@]}"; do
+    safe_pkg_name=$(echo "$pkg" | tr '/' '_')
+    log_file="${LOG_DIR}/${safe_pkg_name}.log"
+    echo "--------------------------------------------------"
+    echo "LOGS FOR: ${pkg}"
+    echo "--------------------------------------------------"
+    [ -f "$log_file" ] && cat "$log_file"
+    echo ""
+  done
+  exit 1
+fi
+
+echo "All tests passed successfully!"
+exit 0
