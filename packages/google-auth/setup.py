@@ -67,6 +67,8 @@ testing_extra_require = [
 extras = {
     # Note: cryptography was made into a required dependency. Extra is kept for backwards compatibility
     "cryptography": cryptography_base_require,
+    # pyopenssl is deprecated, kept for backwards compatibility
+    "pyopenssl": cryptography_base_require,
     "aiohttp": aiohttp_extra_require,
     "enterprise_cert": enterprise_cert_extra_require,
     "pyjwt": pyjwt_extra_require,

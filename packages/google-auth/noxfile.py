@@ -289,7 +289,6 @@ def prerelease_deps(session, protobuf_implementation):
         "grpcio",
         "pyasn1-modules",
         "pyjwt",
-        "pyopenssl",
         "requests",
         "rsa",
         "urllib3",
