@@ -174,7 +174,7 @@ def _make_mutual_tls_http(cert, key):
         urllib3.PoolManager: Mutual TLS HTTP connection.
 
     Raises:
-        ValueError: If the cert or key is invalid.
+        google.auth.exceptions.MutualTLSChannelError: If the cert or key is invalid.
     """
     import certifi
     import ssl

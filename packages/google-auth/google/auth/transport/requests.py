@@ -205,6 +205,7 @@ class _MutualTlsAdapter(requests.adapters.HTTPAdapter):
 
     Raises:
         ImportError: if certifi is not installed
+        google.auth.exceptions.MutualTLSChannelError: If the cert or key is invalid.
     """
 
     def __init__(self, cert, key):

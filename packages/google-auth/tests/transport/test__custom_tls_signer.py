@@ -265,13 +265,14 @@ def test_custom_tls_signer_failed_to_attach_no_libs():
 def test_cast_ssl_ctx_to_void_p_stdlib_success():
     context = ssl.SSLContext()
     with mock.patch.object(sys.implementation, "name", "cpython"):
-        if hasattr(sys, "getobjects"):
-            with mock.patch.delattr(sys, "getobjects"):
+        with mock.patch("sysconfig.get_config_var", return_value=0):
+            if hasattr(sys, "getobjects"):
+                with mock.patch.delattr(sys, "getobjects"):
+                    res = _custom_tls_signer._cast_ssl_ctx_to_void_p_stdlib(context)
+                    assert isinstance(res, ctypes.c_void_p)
+            else:
                 res = _custom_tls_signer._cast_ssl_ctx_to_void_p_stdlib(context)
                 assert isinstance(res, ctypes.c_void_p)
-        else:
-            res = _custom_tls_signer._cast_ssl_ctx_to_void_p_stdlib(context)
-            assert isinstance(res, ctypes.c_void_p)
 
 
 def test_cast_ssl_ctx_to_void_p_stdlib_unsupported_runtime_pypy():

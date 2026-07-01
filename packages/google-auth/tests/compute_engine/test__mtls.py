@@ -305,10 +305,10 @@ def test_mds_mtls_adapter_send_no_fallback_other_exception(
 
     with mock.patch(
         "requests.adapters.HTTPAdapter.send",
-        side_effect=requests.exceptions.Timeout,
+        side_effect=ValueError("Unhandled exception"),
     ):
         request = requests.Request(method="GET", url="https://fake-mds.com").prepare()
-        with pytest.raises(requests.exceptions.Timeout):
+        with pytest.raises(ValueError, match="Unhandled exception"):
             adapter.send(request)
 
     mock_http_adapter_send.assert_not_called()
