@@ -131,7 +131,6 @@ MYPY_CONFIG_FILE = next(
 )
 
 
-
 def _calculate_duration(func):
     """This decorator prints the execution time for the decorated function."""
 

@@ -186,7 +186,9 @@ def mypy(session):
         "types-requests",
     )
     session.install("google-cloud-testutils")
-    session.run("mypy", f"--config-file={MYPY_CONFIG_FILE}", "-p", "google.cloud.bigtable.data")
+    session.run(
+        "mypy", f"--config-file={MYPY_CONFIG_FILE}", "-p", "google.cloud.bigtable.data"
+    )
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)

@@ -227,8 +227,12 @@ def mypy(session):
     session.run("python", "-m", "pip", "freeze")
     with log_package_context(session):
         session.run(
-        "mypy",
-        f"--config-file={MYPY_CONFIG_FILE}", "-p", "google", "--show-traceback")
+            "mypy",
+            f"--config-file={MYPY_CONFIG_FILE}",
+            "-p",
+            "google",
+            "--show-traceback",
+        )
 
 
 @nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)

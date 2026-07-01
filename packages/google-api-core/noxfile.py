@@ -51,7 +51,6 @@ MYPY_CONFIG_FILE = next(
 )
 
 
-
 # Error if a python version is missing
 nox.options.error_on_missing_interpreters = True
 
@@ -381,9 +380,7 @@ def mypy(session):
         "types-requests",
         "types-protobuf",
     )
-    session.run(
-        "mypy",
-        f"--config-file={MYPY_CONFIG_FILE}", "google", "tests")
+    session.run("mypy", f"--config-file={MYPY_CONFIG_FILE}", "google", "tests")
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)

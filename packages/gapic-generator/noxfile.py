@@ -726,9 +726,7 @@ def mypy(session):
         "click==8.1.3",
     )
     session.install(".")
-    session.run(
-        "mypy",
-        f"--config-file={MYPY_CONFIG_FILE}", "-p", "gapic")
+    session.run("mypy", f"--config-file={MYPY_CONFIG_FILE}", "-p", "gapic")
 
 
 @nox.session(python=NEWEST_PYTHON)
@@ -740,7 +738,7 @@ def lint(session):
     """
 
     # TODO(https://github.com/googleapis/google-cloud-python/issues/16186):
-    # SKIP: This session was not enforced in the standalone (split) repo 
+    # SKIP: This session was not enforced in the standalone (split) repo
     # and is disabled here to ensure a "move-only" migration.
     session.skip(
         "Linting was not enforced in the split repo. "
@@ -770,9 +768,11 @@ def lint(session):
 @nox.session(python=NEWEST_PYTHON)
 def lint_setup_py(session):
     # TODO(https://github.com/googleapis/google-cloud-python/issues/16186):
-    # SKIP: This session was not enforced in the standalone (split) repo 
+    # SKIP: This session was not enforced in the standalone (split) repo
     # and is disabled here to ensure a "move-only" migration.
-    session.skip("Skipping now to avoid changing code during migration. See Issue #16186")
+    session.skip(
+        "Skipping now to avoid changing code during migration. See Issue #16186"
+    )
 
 
 @nox.session(python="3.10")
@@ -847,9 +847,11 @@ def prerelease_deps(session, protobuf_implementation):
     """
     Run all tests with pre-release versions of dependencies installed.
     """
-    # TODO(https://github.com/googleapis/google-cloud-python/issues/16184): 
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/16184):
     # Implement pre-release dependency logic to test against upcoming runtime changes.
-    session.skip("prerelease_deps session is not yet implemented for gapic-generator-python.")
+    session.skip(
+        "prerelease_deps session is not yet implemented for gapic-generator-python."
+    )
 
 
 @nox.session(python=NEWEST_PYTHON)
@@ -859,6 +861,8 @@ def prerelease_deps(session, protobuf_implementation):
 )
 def core_deps_from_source(session, protobuf_implementation):
     """Run all tests with core dependencies installed from source."""
-    # TODO(https://github.com/googleapis/google-cloud-python/issues/16185): 
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/16185):
     # Implement logic to install core packages directly from the mono-repo directories.
-    session.skip("core_deps_from_source session is not yet implemented for gapic-generator-python.")
+    session.skip(
+        "core_deps_from_source session is not yet implemented for gapic-generator-python."
+    )
