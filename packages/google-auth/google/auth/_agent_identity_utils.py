@@ -16,16 +16,14 @@
 
 import base64
 import hashlib
-import logging
 import os
 import re
 import stat
 import time
 from urllib.parse import quote, urlparse
+import warnings
 
 from google.auth import environment_vars, exceptions
-
-_LOGGER = logging.getLogger(__name__)
 
 CRYPTOGRAPHY_NOT_FOUND_ERROR = (
     "The cryptography library is required for certificate-based authentication."
@@ -154,18 +152,15 @@ def get_agent_identity_certificate_path():
 
             # Log a warning on the first failed attempt to load the certificate file
             if not has_logged_cert_warning:
-                _LOGGER.warning(
-                    "Certificate file not ready at %s. Retrying until startup timeout (up to %s seconds total)...",
-                    target_path,
-                    _TOTAL_TIMEOUT,
+                warnings.warn(
+                    f"Certificate file not ready at {target_path}. Retrying until startup timeout (up to {_TOTAL_TIMEOUT} seconds total)..."
                 )
                 has_logged_cert_warning = True
 
         except PermissionError as e:
-            _LOGGER.warning(
-                "Permission denied when accessing certificate config or certificate file: %s. "
-                "Token binding protection cannot be enabled. Falling back to unbound tokens.",
-                e,
+            warnings.warn(
+                f"Permission denied when accessing certificate config or certificate file: {e}. "
+                "Token binding protection cannot be enabled. Falling back to unbound tokens."
             )
             return None
         except (IOError, ValueError, KeyError) as e:
@@ -175,12 +170,10 @@ def get_agent_identity_certificate_path():
                 return None
 
             if not has_logged_config_warning and cert_config_path:
-                _LOGGER.warning(
-                    "Certificate config file not found or incomplete: %s (from %s "
-                    "environment variable). Retrying until startup timeout (up to %s seconds total)...",
-                    e,
-                    environment_vars.GOOGLE_API_CERTIFICATE_CONFIG,
-                    _TOTAL_TIMEOUT,
+                warnings.warn(
+                    f"Certificate config file not found or incomplete: {e} (from "
+                    f"{environment_vars.GOOGLE_API_CERTIFICATE_CONFIG} environment variable). "
+                    f"Retrying until startup timeout (up to {_TOTAL_TIMEOUT} seconds total)..."
                 )
                 has_logged_config_warning = True
             pass
@@ -235,12 +228,10 @@ def get_and_parse_agent_identity_certificate():
     try:
         with open(cert_path, "rb") as cert_file:
             cert_bytes = cert_file.read()
-    except OSError as e:
-        _LOGGER.warning(
-            "Failed to read agent identity certificate file at %s: %s. "
-            "Token binding protection cannot be enabled. Falling back to unbound tokens.",
-            cert_path,
-            e,
+    except PermissionError as e:
+        warnings.warn(
+            f"Failed to read agent identity certificate file at {cert_path}: {e}. "
+            "Token binding protection cannot be enabled. Falling back to unbound tokens."
         )
         return None
 
