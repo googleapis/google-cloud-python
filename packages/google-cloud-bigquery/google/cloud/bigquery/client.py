@@ -4046,15 +4046,22 @@ class Client(ClientWithProject):
         path = "%s/insertAll" % table.path
         # We can always retry, because every row has an insert ID.
         span_attributes = {"path": path}
-        response = self._call_api(
-            retry,
-            span_name="BigQuery.insertRowsJson",
-            span_attributes=span_attributes,
-            method="POST",
-            path=path,
-            data=data,
-            timeout=timeout,
-        )
+        try:
+            response = self._call_api(
+                retry,
+                span_name="BigQuery.insertRowsJson",
+                span_attributes=span_attributes,
+                method="POST",
+                path=path,
+                data=data,
+                timeout=timeout,
+            )
+        except requests.exceptions.SSLError as exc:
+            msg = (
+                "An SSL/Connection error occurred while streaming rows. This "
+                "could be due to an invalid request (e.g., invalid table schema)."
+            )
+            raise requests.exceptions.SSLError(msg) from exc
         errors = []
 
         for error in response.get("insertErrors", ()):
