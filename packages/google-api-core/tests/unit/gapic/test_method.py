@@ -121,6 +121,39 @@ def test_invoke_wrapped_method_with_metadata_as_none():
     assert len(metadata) == 1
 
 
+def test_invoke_wrapped_method_with_duplicate_x_goog_api_client_metadata():
+    method = mock.Mock(spec=["__call__"])
+
+    # Create a custom ClientInfo with defined properties so we know exactly what is returned
+    client_info = google.api_core.gapic_v1.client_info.ClientInfo(
+        user_agent="custom-user-agent/1.0",
+        python_version="3.14.0",
+        grpc_version="1.76.0",
+        api_core_version="2.29.0"
+    )
+
+    wrapped_method = google.api_core.gapic_v1.method.wrap_method(method, client_info=client_info)
+
+    # Invoke the wrapped method with an explicit user-provided custom header
+    wrapped_method(
+        mock.sentinel.request,
+        metadata=[("x-goog-api-client", "override-client/2.0"), ("other-header", "value")]
+    )
+
+    method.assert_called_once_with(mock.sentinel.request, metadata=mock.ANY)
+    metadata = method.call_args[1]["metadata"]
+
+    # There should only be one "x-goog-api-client" header, containing both values joined by space,
+    # plus the other-header.
+    assert len(metadata) == 2
+    metadata_dict = dict(metadata)
+    assert "other-header" in metadata_dict
+    assert metadata_dict["other-header"] == "value"
+    assert "x-goog-api-client" in metadata_dict
+    # Verify both the user-provided override value and the library system telemetry are merged explicitly
+    assert metadata_dict["x-goog-api-client"] == "override-client/2.0 custom-user-agent/1.0 gl-python/3.14.0 grpc/1.76.0 gax/2.29.0" 
+
+
 @mock.patch("time.sleep")
 def test_wrap_method_with_default_retry_and_timeout_and_compression(unused_sleep):
     method = mock.Mock(
