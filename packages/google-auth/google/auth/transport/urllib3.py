@@ -346,7 +346,6 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
         if not use_client_cert:
             return False
 
-
         try:
             found_cert_key, cert, key = transport._mtls_helper.get_client_cert_and_key(
                 client_cert_callback

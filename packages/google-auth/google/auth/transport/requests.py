@@ -457,7 +457,6 @@ class AuthorizedSession(requests.Session):
         if not use_client_cert:
             return
 
-
         try:
             (
                 is_mtls,

@@ -158,7 +158,7 @@ class _X509Supplier(SubjectTokenSupplier):
             leaf_cert_data = self._leaf_cert_callback()
         except Exception as e:
             raise exceptions.RefreshError("Failed to retrieve leaf certificate.") from e
-            
+
         try:
             if isinstance(leaf_cert_data, str):
                 leaf_cert_data = leaf_cert_data.encode("utf-8")
@@ -168,18 +168,18 @@ class _X509Supplier(SubjectTokenSupplier):
         trust_chain = self._read_trust_chain()
         cert_chain = []
 
-        cert_chain.append(_X509Supplier._encode_cert(leaf_cert))
+        cert_chain.append(_encode_cert(leaf_cert))
 
         if trust_chain is None or len(trust_chain) == 0:
             return json.dumps(cert_chain)
 
         # Append the first cert if it is not the leaf cert.
-        first_cert = _X509Supplier._encode_cert(trust_chain[0])
+        first_cert = _encode_cert(trust_chain[0])
         if first_cert != cert_chain[0]:
             cert_chain.append(first_cert)
 
         for i in range(1, len(trust_chain)):
-            encoded = _X509Supplier._encode_cert(trust_chain[i])
+            encoded = _encode_cert(trust_chain[i])
             # Check if the current cert is the leaf cert and raise an exception if it is.
             if encoded == cert_chain[0]:
                 raise exceptions.RefreshError(
@@ -226,12 +226,13 @@ class _X509Supplier(SubjectTokenSupplier):
                 "Error accessing trust chain file '{}'.".format(self._trust_chain_path)
             ) from e
 
-    def _encode_cert(cert):
-        from cryptography.hazmat.primitives import serialization
 
-        return base64.b64encode(cert.public_bytes(serialization.Encoding.DER)).decode(
-            "utf-8"
-        )
+def _encode_cert(cert):
+    from cryptography.hazmat.primitives import serialization
+
+    return base64.b64encode(cert.public_bytes(serialization.Encoding.DER)).decode(
+        "utf-8"
+    )
 
 
 def _parse_token_data(token_content, format_type="text", subject_token_field_name=None):
