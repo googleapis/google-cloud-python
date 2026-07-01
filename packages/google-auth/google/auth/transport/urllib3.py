@@ -332,18 +332,16 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
 
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If mutual TLS channel
-                creation failed for any reason.
+                creation failed for any reason. The existing channel state (the
+                HTTP client) remains unmodified if this error is raised.
         """
         use_client_cert = transport._mtls_helper.check_use_client_cert()
         if not use_client_cert:
-            self._is_mtls = False
             return False
-        else:
-            self._is_mtls = True
+
         try:
             import OpenSSL
         except ImportError as caught_exc:
-            self._is_mtls = False
             new_exc = exceptions.MutualTLSChannelError(caught_exc)
             raise new_exc from caught_exc
 
@@ -353,20 +351,28 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
             )
 
             if found_cert_key:
-                self.http = _make_mutual_tls_http(cert, key)
-                self._cached_cert = cert
+                new_http = _make_mutual_tls_http(cert, key)
+                new_is_mtls = True
             else:
-                self.http = _make_default_http()
-                self._is_mtls = False
+                new_http = _make_default_http()
+                new_is_mtls = False
         except (
             exceptions.ClientCertError,
             ImportError,
             OSError,
             OpenSSL.crypto.Error,
         ) as caught_exc:
-            self._is_mtls = False
             new_exc = exceptions.MutualTLSChannelError(caught_exc)
             raise new_exc from caught_exc
+
+        self.http = new_http
+        self._is_mtls = new_is_mtls
+        self._request.http = new_http
+        if new_is_mtls:
+            self._cached_cert = cert
+        else:
+            if hasattr(self, "_cached_cert"):
+                del self._cached_cert
 
         if self._has_user_provided_http:
             self._has_user_provided_http = False
