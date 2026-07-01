@@ -43,9 +43,7 @@ _DEFAULT_RETRY_DEADLINE = 10.0 * 60.0  # 10 minutes
 # Exceptions that are subclasses of types in _UNSTRUCTURED_RETRYABLE_TYPES
 # but should not be retried because they typically indicate persistent
 # configuration or security issues.
-_UNSTRUCTURED_NON_RETRYABLE_TYPES = (
-    requests.exceptions.SSLError,
-)
+_UNSTRUCTURED_NON_RETRYABLE_TYPES = (requests.exceptions.SSLError,)
 
 # Ambiguous errors (e.g. internalError, backendError, rateLimitExceeded) retry
 # until the full `_DEFAULT_RETRY_DEADLINE`. This is because the
