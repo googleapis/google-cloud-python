@@ -554,8 +554,8 @@ def mypy(session):
     )
     session.install(".")
     session.run(
-        \"mypy\",
-        f\"--config-file={MYPY_CONFIG_FILE}\",
+        "mypy",
+        f"--config-file={MYPY_CONFIG_FILE}",
         "pandas_gbq",
         "--check-untyped-defs",
         *session.posargs,

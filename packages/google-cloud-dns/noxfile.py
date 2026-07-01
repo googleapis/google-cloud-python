@@ -165,8 +165,8 @@ def mypy(session):
     )
     session.install(".")
     session.run(
-        \"mypy\",
-        f\"--config-file={MYPY_CONFIG_FILE}\",
+        "mypy",
+        f"--config-file={MYPY_CONFIG_FILE}",
         "-p",
         "google",
     )

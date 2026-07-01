@@ -382,8 +382,8 @@ def mypy(session):
         "types-protobuf",
     )
     session.run(
-        \"mypy\",
-        f\"--config-file={MYPY_CONFIG_FILE}\", "google", "tests")
+        "mypy",
+        f"--config-file={MYPY_CONFIG_FILE}", "google", "tests")
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)

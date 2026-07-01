@@ -727,8 +727,8 @@ def mypy(session):
     )
     session.install(".")
     session.run(
-        \"mypy\",
-        f\"--config-file={MYPY_CONFIG_FILE}\", "-p", "gapic")
+        "mypy",
+        f"--config-file={MYPY_CONFIG_FILE}", "-p", "gapic")
 
 
 @nox.session(python=NEWEST_PYTHON)

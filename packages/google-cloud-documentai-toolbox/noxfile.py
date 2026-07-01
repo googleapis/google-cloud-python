@@ -508,8 +508,8 @@ def mypy(session):
     )
     session.install("-e", ".")
     session.run(
-        \"mypy\",
-        f\"--config-file={MYPY_CONFIG_FILE}\",
+        "mypy",
+        f"--config-file={MYPY_CONFIG_FILE}",
         "-p",
         "google.cloud.documentai_toolbox",
         "--check-untyped-defs",
