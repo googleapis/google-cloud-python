@@ -775,6 +775,13 @@ class TestDecryptPrivateKey(object):
         signature = private_key.sign(b"data", ec.ECDSA(hashes.SHA256()))
         public_key.verify(signature, b"data", ec.ECDSA(hashes.SHA256()))
 
+    def test_success_string_inputs(self):
+        decrypted_key = _mtls_helper.decrypt_private_key(
+            ENCRYPTED_EC_PRIVATE_KEY.decode("utf-8"), PASSPHRASE_VALUE.decode("utf-8")
+        )
+        private_key = serialization.load_pem_private_key(decrypted_key, password=None)
+        assert private_key
+
     def test_crypto_error(self):
         with pytest.raises(ValueError):
             _mtls_helper.decrypt_private_key(
@@ -1052,6 +1059,32 @@ class TestSecureCertKeyPaths(object):
             assert key_path == "/path/to/key"
             assert passphrase == b"passphrase"
 
+    @mock.patch.object(_mtls_helper, "_tempfile_cert_key_paths", autospec=True)
+    def test_string_pem_payloads_converted_to_bytes(self, mock_tempfile_cm):
+        mock_tempfile_ctx = mock.MagicMock()
+        mock_tempfile_ctx.__enter__.return_value = (
+            "/tmp/cert",
+            "/tmp/key",
+            b"new_pass",
+        )
+        mock_tempfile_cm.return_value = mock_tempfile_ctx
+
+        cert_str = "-----BEGIN CERTIFICATE-----\n..."
+        key_str = "-----BEGIN PRIVATE KEY-----\n..."
+
+        # Temporarily mock sys.platform to something other than linux so memfd is skipped
+        with mock.patch.object(sys, "platform", "win32"):
+            with _mtls_helper.secure_cert_key_paths(
+                cert_str, key_str, b"passphrase"
+            ) as (cert_path, key_path, passphrase):
+                assert cert_path == "/tmp/cert"
+                assert key_path == "/tmp/key"
+                assert passphrase == b"new_pass"
+
+        mock_tempfile_cm.assert_called_once_with(
+            cert_str.encode("utf-8"), key_str.encode("utf-8"), b"passphrase"
+        )
+
     @mock.patch.object(sys, "platform", "linux")
     @mock.patch.object(os, "memfd_create", create=True)
     @mock.patch.object(_mtls_helper, "_memfd_cert_key_paths", autospec=True)
@@ -1262,6 +1295,15 @@ class TestMemfdCertKeyPaths(object):
         mock_file.write.assert_called_once_with(b"cert")
         mock_close.assert_called_once_with(15)
 
+    @mock.patch.object(os, "memfd_create", create=True)
+    def test_memfd_attribute_error(self, mock_memfd_create):
+        # MFD_CLOEXEC missing on the system
+        with mock.patch("os.MFD_CLOEXEC", create=True):
+            del os.MFD_CLOEXEC
+            with pytest.raises(_mtls_helper._MemfdCreationError):
+                with _mtls_helper._memfd_cert_key_paths(b"cert", None):
+                    pass
+
 
 class TestTempfileCertKeyPaths(object):
     @mock.patch.object(os, "access", return_value=True)
@@ -1306,6 +1348,35 @@ class TestTempfileCertKeyPaths(object):
             mock_mkstemp.assert_has_calls(
                 [mock.call(dir="/dev/shm"), mock.call(dir="/dev/shm")]
             )
+
+    @mock.patch.object(os, "access", return_value=True)
+    @mock.patch.object(os.path, "isdir", return_value=True)
+    @mock.patch.object(_mtls_helper, "_encrypt_key_if_plaintext", autospec=True)
+    def test_cleanup_on_keyboard_interrupt(
+        self, mock_encrypt, mock_isdir, mock_access, tmpdir
+    ):
+        original_mkstemp = tempfile.mkstemp
+
+        def _redirect_mkstemp(dir=None):
+            return original_mkstemp(dir=str(tmpdir))
+
+        with mock.patch.object(tempfile, "mkstemp", side_effect=_redirect_mkstemp):
+            mock_encrypt.return_value = (b"encrypted_key", b"new_pass")
+
+            with pytest.raises(KeyboardInterrupt):
+                with mock.patch.object(
+                    _mtls_helper,
+                    "_secure_wipe_and_remove",
+                    side_effect=KeyboardInterrupt("ctrl-c"),
+                ):
+                    with _mtls_helper._tempfile_cert_key_paths(
+                        b"cert", b"key", b"pass"
+                    ) as (cert_path, key_path, pwd):
+                        # exiting the context manager triggers cleanup and raises KeyboardInterrupt
+                        pass
+
+            # Verify cert file is still cleaned up even if key cleanup raised KeyboardInterrupt
+            assert not os.path.exists(cert_path)
 
     @mock.patch.object(os, "access", return_value=True)
     @mock.patch.object(os.path, "isdir", return_value=True)
@@ -1415,6 +1486,30 @@ class TestEncryptKeyIfPlaintext(object):
         )
         assert encrypted_bytes == ENCRYPTED_EC_PRIVATE_KEY
         assert passphrase == b"passphrase"
+
+    def test_encrypts_plaintext_key_string_passphrase(self):
+        encrypted_bytes, passphrase = _mtls_helper._encrypt_key_if_plaintext(
+            pytest.private_key_bytes, "my_passphrase_str"
+        )
+        assert passphrase == b"my_passphrase_str"
+        assert encrypted_bytes != pytest.private_key_bytes
+        assert b"ENCRYPTED PRIVATE KEY" in encrypted_bytes
+
+    def test_returns_unsupported_algorithm_asis(self):
+        import cryptography.exceptions
+
+        invalid_bytes = b"not a valid key"
+        with mock.patch(
+            "cryptography.hazmat.primitives.serialization.load_pem_private_key"
+        ) as load_mock:
+            load_mock.side_effect = cryptography.exceptions.UnsupportedAlgorithm(
+                "unsupported"
+            )
+            encrypted_bytes, passphrase = _mtls_helper._encrypt_key_if_plaintext(
+                invalid_bytes, b"passphrase"
+            )
+            assert encrypted_bytes == invalid_bytes
+            assert passphrase == b"passphrase"
 
     def test_returns_invalid_key_asis(self):
         invalid_bytes = b"not a valid key"

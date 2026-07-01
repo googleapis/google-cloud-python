@@ -122,6 +122,13 @@ def secure_cert_key_paths(
     Raises:
         OSError: If temporary file creation or writing fails during the Tier 3 fallback.
     """
+    # Normalize PEM strings to bytes so they are written to temporary storage.
+    # We check for "-----BEGIN " to distinguish between file paths and PEM payloads.
+    if isinstance(cert, str) and "-----BEGIN " in cert:
+        cert = cert.encode("utf-8")
+    if isinstance(key, str) and "-----BEGIN " in key:
+        key = key.encode("utf-8")
+
     # Tier 1: Pass-through (No-op). If the caller already provided file paths,
     # we yield them directly to avoid any unnecessary file creation.
     if isinstance(cert, str) and isinstance(key, str):
@@ -171,17 +178,19 @@ def _encrypt_key_if_plaintext(
     returned as-is (plaintext) as a fallback. This allows the caller (underlying SSL
     context) to attempt loading the key directly and handle any failures.
     """
+    import cryptography
     from cryptography.hazmat.primitives import serialization
     import secrets
 
     try:
         pkey = serialization.load_pem_private_key(key_bytes, password=None)
         # It's plaintext, encrypt it.
-        target_passphrase = (
-            passphrase
-            if passphrase is not None
-            else secrets.token_hex(32).encode("utf-8")
-        )
+        target_passphrase = passphrase
+        if target_passphrase is None:
+            target_passphrase = secrets.token_hex(32).encode("utf-8")
+        elif isinstance(target_passphrase, str):
+            target_passphrase = target_passphrase.encode("utf-8")
+
         encrypted_content = pkey.private_bytes(
             encoding=serialization.Encoding.PEM,
             format=serialization.PrivateFormat.PKCS8,
@@ -190,7 +199,7 @@ def _encrypt_key_if_plaintext(
             ),
         )
         return encrypted_content, target_passphrase
-    except Exception:
+    except (ValueError, TypeError, cryptography.exceptions.UnsupportedAlgorithm):
         # Likely already encrypted, invalid, or unsupported algorithm, return as-is.
         return key_bytes, passphrase
 
@@ -245,7 +254,7 @@ def _memfd_cert_key_paths(
                     paths.append(f"/proc/self/fd/{fd}")
                 else:
                     paths.append(None)
-        except OSError as exc:
+        except (OSError, AttributeError) as exc:
             raise _MemfdCreationError(
                 "Failed to create in-memory virtual files"
             ) from exc
@@ -293,38 +302,42 @@ def _tempfile_cert_key_paths(
                     fd, path = tempfile.mkstemp(dir=tmp_dir)
                 except OSError:
                     fd, path = tempfile.mkstemp(dir=None)
-                cleanup_files[i] = path
-                f = None
                 try:
-                    f = os.fdopen(fd, "wb")
-                    f.write(data)
-                    f.flush()
-                    os.fsync(f.fileno())
-                finally:
-                    if f is not None:
-                        f.close()
-                    else:
-                        try:
-                            os.close(fd)
-                        except OSError:
-                            pass
+                    cleanup_files[i] = path
+                    f = None
+                    try:
+                        f = os.fdopen(fd, "wb")
+                        f.write(data)
+                        f.flush()
+                        os.fsync(f.fileno())
+                    finally:
+                        if f is not None:
+                            f.close()
+                        else:
+                            try:
+                                os.close(fd)
+                            except OSError:
+                                pass
+                except BaseException:
+                    raise
 
         yield cleanup_files[0], cleanup_files[1], new_passphrase
     finally:
         cert_cleanup_path = cleanup_files[0]
         key_cleanup_path = cleanup_files[1]
 
-        if key_cleanup_path:
-            try:
+        try:
+            if key_cleanup_path:
                 _secure_wipe_and_remove(key_cleanup_path)
-            except OSError:
-                pass
-        if cert_cleanup_path:
-            try:
-                if os.path.exists(cert_cleanup_path):
-                    os.remove(cert_cleanup_path)
-            except OSError:
-                pass
+        except Exception:
+            pass
+        finally:
+            if cert_cleanup_path:
+                try:
+                    if os.path.exists(cert_cleanup_path):
+                        os.remove(cert_cleanup_path)
+                except OSError:
+                    pass
 
 
 def _check_config_path(config_path):
@@ -670,6 +683,11 @@ def get_client_cert_and_key(client_cert_callback=None):
 
 
 def decrypt_private_key(key, passphrase):
+    if isinstance(key, str):
+        key = key.encode("utf-8")
+    if isinstance(passphrase, str):
+        passphrase = passphrase.encode("utf-8")
+
     """A helper function to decrypt the private key with the given passphrase.
     google-auth library doesn't support passphrase protected private key for
     mutual TLS channel. This helper function can be used to decrypt the

@@ -57,7 +57,7 @@ def make_client_cert_ssl_context(
                 context.load_cert_chain(
                     certfile=cert_path,
                     keyfile=key_path,
-                    password=passphrase_val or "",
+                    password=passphrase_val,
                 )
             return context
     except (ssl.SSLError, OSError, IOError, ValueError, RuntimeError) as exc:

@@ -56,6 +56,26 @@ class TestMTLS:
             assert not os.path.exists(kwargs["keyfile"])
 
     @pytest.mark.asyncio
+    async def test_make_client_cert_ssl_context_success_no_passphrase(self):
+        """Tests successful creation of an SSLContext with no passphrase."""
+        cert_bytes = b"cert_data"
+        key_bytes = b"key_data"
+
+        mock_context = mock.Mock(spec=ssl.SSLContext)
+
+        with mock.patch(
+            "ssl.create_default_context", return_value=mock_context
+        ) as mock_create:
+            context = mtls.make_client_cert_ssl_context(
+                cert_bytes, key_bytes, passphrase=None
+            )
+
+            assert context == mock_context
+            mock_create.assert_called_once_with(ssl.Purpose.SERVER_AUTH)
+            kwargs = mock_context.load_cert_chain.call_args.kwargs
+            assert kwargs["password"] is None
+
+    @pytest.mark.asyncio
     async def test_make_client_cert_ssl_context_error(self):
         """Verifies that TransportError is raised when SSL loading fails."""
         cert_bytes = b"cert_data"

@@ -299,7 +299,9 @@ def test_cast_ssl_ctx_to_void_p_stdlib_unsupported_runtime_trace_refs():
 
 
 def test_cast_ssl_ctx_to_void_p_stdlib_type_error():
-    with pytest.raises(TypeError, match="context must be an instance of ssl.SSLContext"):
+    with pytest.raises(
+        TypeError, match="context must be an instance of ssl.SSLContext"
+    ):
         _custom_tls_signer._cast_ssl_ctx_to_void_p_stdlib("not an SSLContext")
 
 
@@ -317,6 +319,7 @@ def test_cast_ssl_ctx_to_void_p_stdlib_unsupported_runtime_debug_flag():
 
 def test_cast_ssl_ctx_to_void_p_stdlib_unsupported_runtime_free_threaded():
     context = ssl.SSLContext()
+
     def mock_get_config_var(var):
         if var == "Py_GIL_DISABLED":
             return 1
@@ -341,7 +344,10 @@ def test_cast_ssl_ctx_to_void_p_stdlib_dynamic_offset():
             expected_address = id(context) + 40
             mock_from_address.assert_called_once_with(expected_address)
 
+
 def test_cast_ssl_ctx_to_void_p_stdlib_mock_error():
     context = mock.MagicMock(spec=ssl.SSLContext)
-    with pytest.raises(TypeError, match="context must be an instance of ssl.SSLContext, not a mock"):
+    with pytest.raises(
+        TypeError, match="context must be an instance of ssl.SSLContext, not a mock"
+    ):
         _custom_tls_signer._cast_ssl_ctx_to_void_p_stdlib(context)
