@@ -190,8 +190,8 @@ def _encrypt_key_if_plaintext(
             ),
         )
         return encrypted_content, target_passphrase
-    except (ValueError, TypeError):
-        # Likely already encrypted or invalid, return as-is.
+    except Exception:
+        # Likely already encrypted, invalid, or unsupported algorithm, return as-is.
         return key_bytes, passphrase
 
 
@@ -294,10 +294,20 @@ def _tempfile_cert_key_paths(
                 except OSError:
                     fd, path = tempfile.mkstemp(dir=None)
                 cleanup_files[i] = path
-                with os.fdopen(fd, "wb") as f:
+                f = None
+                try:
+                    f = os.fdopen(fd, "wb")
                     f.write(data)
                     f.flush()
                     os.fsync(f.fileno())
+                finally:
+                    if f is not None:
+                        f.close()
+                    else:
+                        try:
+                            os.close(fd)
+                        except OSError:
+                            pass
 
         yield cleanup_files[0], cleanup_files[1], new_passphrase
     finally:
