@@ -91,6 +91,14 @@ class _GapicCallable(object):
         self._timeout = timeout
         self._compression = compression
         self._metadata = metadata
+        # separate x-goog-api-client header from provided metadata
+        self._arbitrary_metadata = []
+        self._metrics_values = ""
+        for key, val in metadata:
+            if key == client_info.METRICS_METADATA_KEY:
+                self._metrics_values = val
+            else:
+                self._arbitrary_metadata.append((key, val))
 
     def __call__(
         self, *args, timeout=DEFAULT, retry=DEFAULT, compression=DEFAULT, **kwargs
@@ -116,21 +124,22 @@ class _GapicCallable(object):
         if self._metadata is not None:
             metadata = kwargs.get("metadata")
             if not metadata:
-                kwargs["metadata"] = self._metadata
+                if self._metrics_values:
+                    kwargs["metadata"] = [(client_info.METRICS_METADATA_KEY, self._metrics_values), *self._arbitrary_metadata]
+                else:
+                    kwargs["metadata"] = self._arbitrary_metadata
             else:
                 # Merge user-supplied metadata with library-supplied metadata.
-                # All keys in gRPC metadata are already lowercase.
-                from itertools import chain
                 metadata = list(metadata)
-                api_client_values = []
+                metric_values = [self._metrics_values] if self._metrics_values else []
                 merged_metadata = []
-                for key, val in chain(metadata, self._metadata):
-                    if key == "x-goog-api-client":
-                        api_client_values.append(val)
+                for key, val in metadata:
+                    if key == client_info.METRICS_METADATA_KEY:
+                        metric_values.append(val)
                     else:
                         merged_metadata.append((key, val))
-                if api_client_values:
-                    merged_metadata.append(("x-goog-api-client", " ".join(api_client_values)))
+                if metric_values:
+                    merged_metadata.append((client_info.METRICS_METADATA_KEY, " ".join(metric_values)))
                 kwargs["metadata"] = merged_metadata
 
         if self._compression is not None:
