@@ -21,7 +21,9 @@ import ctypes
 import json
 import logging
 import os
+import ssl
 import sys
+import sysconfig
 
 from google.auth import exceptions
 
@@ -45,13 +47,21 @@ SIGN_CALLBACK_CTYPE = ctypes.CFUNCTYPE(
 
 # Cast SSL_CTX* to void*
 def _cast_ssl_ctx_to_void_p_stdlib(context):
-    if sys.implementation.name != "cpython" or hasattr(sys, "getobjects"):
+    if not isinstance(context, ssl.SSLContext) or type(context).__module__ == "unittest.mock":
+        raise TypeError("context must be an instance of ssl.SSLContext, not a mock")
+
+    if (
+        sys.implementation.name != "cpython"
+        or hasattr(sys, "getobjects")
+        or sysconfig.get_config_var("Py_DEBUG")
+        or sysconfig.get_config_var("Py_GIL_DISABLED") == 1
+    ):
         raise exceptions.MutualTLSChannelError(
             "Custom TLS signing is only supported on standard release CPython runtimes."
         )
-    return ctypes.c_void_p.from_address(
-        id(context) + ctypes.sizeof(ctypes.c_void_p) * 2
-    )
+
+    offset = sys.getsizeof(object())
+    return ctypes.c_void_p.from_address(id(context) + offset)
 
 
 # Load offload library and set up the function types.
