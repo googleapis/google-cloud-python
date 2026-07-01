@@ -48,7 +48,7 @@ run_package_test() {
 
   # ISOLATION: Create a unique gcloud config dir for this run
   local gcloud_config_dir=$(mktemp -d -t "gcloud-config-${package_name}-XXXXXX")
-  export CLOUDSDK_CONFIG="${gcloud_config_dir}"
+  local CLOUDSDK_CONFIG="${gcloud_config_dir}"
 
   echo "------------------------------------------------------------"
   echo "Configuring environment for: ${package_name}"
@@ -84,7 +84,7 @@ run_package_test() {
   esac
 
   # Export variables for the duration of this function's sub-processes
-  export PROJECT_ID GOOGLE_APPLICATION_CREDENTIALS NOX_FILE NOX_SESSION
+  export PROJECT_ID GOOGLE_APPLICATION_CREDENTIALS NOX_FILE NOX_SESSION CLOUDSDK_CONFIG
   export GOOGLE_CLOUD_PROJECT="${PROJECT_ID}"
 
   gcloud auth activate-service-account --key-file="$GOOGLE_APPLICATION_CREDENTIALS"
