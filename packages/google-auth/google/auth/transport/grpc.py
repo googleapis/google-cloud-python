@@ -47,9 +47,11 @@ class AuthMetadataPlugin(grpc.AuthMetadataPlugin):
         default_host (Optional[str]): A host like "pubsub.googleapis.com".
             This is used when a self-signed JWT is created from service
             account credentials.
+        suppress_metrics_header (bool): When enabled, ``x-goog-api-client``
+            will be stripped from authorization headers.
     """
 
-    def __init__(self, credentials, request, default_host=None, suppress_metrics_header=False):
+    def __init__(self, credentials, request, default_host=None, *, suppress_metrics_header=False):
         # pylint: disable=no-value-for-parameter
         # pylint doesn't realize that the super method takes no arguments
         # because this class is the same name as the superclass.
