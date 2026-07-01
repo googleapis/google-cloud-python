@@ -114,14 +114,25 @@ class _GapicCallable(object):
 
         # Add the user agent metadata to the call.
         if self._metadata is not None:
-            metadata = kwargs.get("metadata", [])
-            # Due to the nature of invocation, None should be treated the same
-            # as not specified.
-            if metadata is None:
-                metadata = []
-            metadata = list(metadata)
-            metadata.extend(self._metadata)
-            kwargs["metadata"] = metadata
+            metadata = kwargs.get("metadata")
+            if not metadata:
+                kwargs["metadata"] = self._metadata
+            else:
+                # Merge user-supplied metadata with library-supplied metadata.
+                # All keys in gRPC metadata are already lowercase.
+                from itertools import chain
+                metadata = list(metadata)
+                api_client_values = []
+                merged_metadata = []
+                for key, val in chain(metadata, self._metadata):
+                    if key == "x-goog-api-client":
+                        api_client_values.append(val)
+                    else:
+                        merged_metadata.append((key, val))
+                if api_client_values:
+                    merged_metadata.append(("x-goog-api-client", " ".join(api_client_values)))
+                kwargs["metadata"] = merged_metadata
+
         if self._compression is not None:
             kwargs["compression"] = compression
 

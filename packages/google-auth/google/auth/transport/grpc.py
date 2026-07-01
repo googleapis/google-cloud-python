@@ -49,7 +49,7 @@ class AuthMetadataPlugin(grpc.AuthMetadataPlugin):
             account credentials.
     """
 
-    def __init__(self, credentials, request, default_host=None):
+    def __init__(self, credentials, request, default_host=None, suppress_metrics_header=False):
         # pylint: disable=no-value-for-parameter
         # pylint doesn't realize that the super method takes no arguments
         # because this class is the same name as the superclass.
@@ -57,6 +57,7 @@ class AuthMetadataPlugin(grpc.AuthMetadataPlugin):
         self._credentials = credentials
         self._request = request
         self._default_host = default_host
+        self._suppress_metrics_header = suppress_metrics_header
 
     def _get_authorization_headers(self, context):
         """Gets the authorization headers for a request.
@@ -79,6 +80,9 @@ class AuthMetadataPlugin(grpc.AuthMetadataPlugin):
         self._credentials.before_request(
             self._request, context.method_name, context.service_url, headers
         )
+
+        if self._suppress_metrics_header and "x-goog-api-client" in headers:
+            del headers["x-goog-api-client"]
 
         return list(headers.items())
 

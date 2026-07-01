@@ -132,6 +132,33 @@ class TestAuthMetadataPlugin(object):
             "https://{}/".format(default_host)
         )
 
+    def test_suppress_metrics_header(self):
+        credentials = mock.create_autospec(service_account.Credentials)
+        # Mock credentials before_request that adds metric and authorization
+        def mock_before_request(request, method, url, headers):
+            headers["x-goog-api-client"] = "foo"
+            headers["authorization"] = "Bearer token"
+        credentials.before_request.side_effect = mock_before_request
+        request = mock.create_autospec(transport.Request)
+
+        # By default, suppress_metrics_header=False
+        plugin = google.auth.transport.grpc.AuthMetadataPlugin(credentials, request)
+        context = mock.create_autospec(grpc.AuthMetadataContext, instance=True)
+        context.method_name = "methodName"
+        context.service_url = "https://pubsub.googleapis.com/methodName"
+
+        headers = dict(plugin._get_authorization_headers(context))
+        assert "x-goog-api-client" in headers
+        assert headers["x-goog-api-client"] == "foo"
+
+        # With suppress_metrics_header=True
+        plugin_suppressed = google.auth.transport.grpc.AuthMetadataPlugin(
+            credentials, request, suppress_metrics_header=True
+        )
+        headers_suppressed = dict(plugin_suppressed._get_authorization_headers(context))
+        assert "x-goog-api-client" not in headers_suppressed
+        assert headers_suppressed["authorization"] == "Bearer token"
+
 
 @mock.patch(
     "google.auth.transport._mtls_helper.get_client_ssl_credentials", autospec=True
