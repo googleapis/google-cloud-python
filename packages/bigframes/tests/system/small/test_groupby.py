@@ -984,3 +984,94 @@ def test_series_groupby_last(
         numeric_only=numeric_only, min_count=min_count
     )
     bigframes.testing.utils.assert_series_equal(pd_result, bf_result)
+
+
+def test_series_groupby_agg_transpile_system(
+    scalars_df_index, scalars_pandas_df_index
+):
+    def custom_agg(s):
+        return s.sum() - s.mean()
+
+    bf_df = scalars_df_index.dropna(subset=["int64_col", "bool_col"])
+    pd_df = scalars_pandas_df_index.dropna(subset=["int64_col", "bool_col"])
+
+    with bpd.option_context("experiments.enable_python_transpiler", True):
+        bf_result = bf_df.groupby("bool_col")["int64_col"].agg(custom_agg).to_pandas()
+    pd_result = pd_df.groupby("bool_col")["int64_col"].agg(custom_agg)
+
+    bigframes.testing.utils.assert_series_equal(pd_result, bf_result, check_dtype=False)
+
+
+def test_dataframe_groupby_agg_transpile_system(
+    scalars_df_index, scalars_pandas_df_index
+):
+    def custom_agg(s):
+        return (s.max() - s.min()) / s.count()
+
+    bf_df = scalars_df_index.dropna(subset=["int64_col", "int64_too", "bool_col"])
+    pd_df = scalars_pandas_df_index.dropna(
+        subset=["int64_col", "int64_too", "bool_col"]
+    )
+
+    with bpd.option_context("experiments.enable_python_transpiler", True):
+        bf_result = (
+            bf_df[["int64_col", "int64_too", "bool_col"]]
+            .groupby("bool_col")
+            .agg(custom_agg)
+            .to_pandas()
+        )
+    pd_result = (
+        pd_df[["int64_col", "int64_too", "bool_col"]]
+        .groupby("bool_col")
+        .agg(custom_agg)
+    )
+
+    bigframes.testing.utils.assert_frame_equal(pd_result, bf_result, check_dtype=False)
+
+
+def test_series_groupby_transform_transpile_system(
+    scalars_df_index, scalars_pandas_df_index
+):
+    def custom_transform(s):
+        return s - s.mean()
+
+    bf_df = scalars_df_index.dropna(subset=["int64_col", "bool_col"])
+    pd_df = scalars_pandas_df_index.dropna(subset=["int64_col", "bool_col"])
+
+    with bpd.option_context("experiments.enable_python_transpiler", True):
+        bf_result = (
+            bf_df.groupby("bool_col")["int64_col"]
+            .transform(custom_transform)
+            .to_pandas()
+        )
+    pd_result = pd_df.groupby("bool_col")["int64_col"].transform(custom_transform)
+
+    bigframes.testing.utils.assert_series_equal(pd_result, bf_result, check_dtype=False)
+
+
+def test_dataframe_groupby_transform_transpile_system(
+    scalars_df_index, scalars_pandas_df_index
+):
+    def custom_transform(s):
+        return (s - s.min()) / (s.max() - s.min())
+
+    bf_df = scalars_df_index.dropna(subset=["int64_col", "int64_too", "bool_col"])
+    pd_df = scalars_pandas_df_index.dropna(
+        subset=["int64_col", "int64_too", "bool_col"]
+    )
+
+    with bpd.option_context("experiments.enable_python_transpiler", True):
+        bf_result = (
+            bf_df[["int64_col", "int64_too", "bool_col"]]
+            .groupby("bool_col")
+            .transform(custom_transform)
+            .to_pandas()
+        )
+    pd_result = (
+        pd_df[["int64_col", "int64_too", "bool_col"]]
+        .groupby("bool_col")
+        .transform(custom_transform)
+    )
+
+    bigframes.testing.utils.assert_frame_equal(pd_result, bf_result, check_dtype=False)
+
