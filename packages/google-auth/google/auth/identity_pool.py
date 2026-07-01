@@ -156,6 +156,10 @@ class _X509Supplier(SubjectTokenSupplier):
 
         try:
             leaf_cert_data = self._leaf_cert_callback()
+        except Exception as e:
+            raise exceptions.RefreshError("Failed to retrieve leaf certificate.") from e
+            
+        try:
             if isinstance(leaf_cert_data, str):
                 leaf_cert_data = leaf_cert_data.encode("utf-8")
             leaf_cert = x509.load_pem_x509_certificate(leaf_cert_data)
