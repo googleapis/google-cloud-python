@@ -18,6 +18,8 @@ import typing
 
 import bigframes_vendored.sqlglot as sg
 import bigframes_vendored.sqlglot.expressions as sge
+import pandas as pd
+import pyarrow as pa
 
 import bigframes.core.compile.sqlglot.expression_compiler as expression_compiler
 import bigframes.dtypes as dtypes
@@ -30,6 +32,58 @@ from bigframes.core.compile.sqlglot.expressions.typed_expr import TypedExpr
 
 register_unary_op = expression_compiler.expression_compiler.register_unary_op
 register_nary_op = expression_compiler.expression_compiler.register_nary_op
+
+
+@register_unary_op(ops.GetItemOp, pass_op=True)
+def _(expr: TypedExpr, op: ops.GetItemOp) -> sge.Expression:
+    if dtypes.is_struct_like(expr.dtype):
+        if isinstance(op.key, str):
+            name = op.key
+        else:
+            pa_type = typing.cast(pd.ArrowDtype, expr.dtype)
+            pa_struct_type = typing.cast(pa.StructType, pa_type.pyarrow_dtype)
+            name = pa_struct_type.field(op.key).name
+
+        return sge.Column(
+            this=sge.to_identifier(name, quoted=True),
+            catalog=expr.expr,
+        )
+    elif dtypes.is_array_like(expr.dtype):
+        return sge.Bracket(
+            this=expr.expr,
+            expressions=[sge.convert(op.key)],
+            safe=True,
+            offset=False,
+        )
+    elif expr.dtype == dtypes.STRING_DTYPE:
+        return string_index(expr, op.key)
+    else:
+        raise TypeError(f"Cannot subscript input of type {expr.dtype}")
+
+
+@register_nary_op(ops.DynamicGetItemOp)
+def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
+    if dtypes.is_array_like(left.dtype):
+        return sge.Bracket(
+            this=left.expr,
+            expressions=[right.expr],
+            safe=True,
+            offset=False,
+        )
+    elif left.dtype == dtypes.STRING_DTYPE:
+        start_expr = sge.ADD(this=right.expr, expression=sge.convert(1))
+        sub_str = sge.Substring(
+            this=left.expr,
+            start=start_expr,
+            length=sge.convert(1),
+        )
+        return sge.If(
+            this=sge.NEQ(this=sub_str, expression=sge.convert("")),
+            true=sub_str,
+            false=sge.Null(),
+        )
+    else:
+        raise TypeError(f"Cannot dynamically subscript input of type {left.dtype}")
 
 
 @register_unary_op(ops.ArrayIndexOp, pass_op=True)

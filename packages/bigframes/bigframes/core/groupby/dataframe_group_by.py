@@ -581,11 +581,7 @@ class DataFrameGroupBy:
             return self._agg_named(**kwargs)
 
     def apply(self, func, *args, **kwargs):
-        import inspect
 
-        import bigframes.core.bytecode as bytecode
-        import bigframes.core.expression as ex
-        import bigframes.core.py_expressions as py_expressions
         from bigframes._config import options
 
         if (
@@ -593,26 +589,9 @@ class DataFrameGroupBy:
             and callable(func)
             and not isinstance(func, bigframes.functions.Udf)
         ):
-            expr = bytecode._compile_bytecode_to_py_expr(func)
-            sig = inspect.signature(func)
+            import bigframes.core.block_transforms as block_transforms
 
-            bindings: dict[typing.Hashable, ex.Expression] = {}
-            bound_args = sig.bind(*(None, *args), **kwargs)
-            bound_args.apply_defaults()
-            bound_params = bound_args.arguments
-            for name, value in bound_params.items():
-                bindings[name] = ex.const(value)
-
-            expr = py_expressions.resolve_py_exprs(
-                expr,
-                series_arg=next(iter(sig.parameters.keys())),
-                series_attrs={
-                    label: col_id
-                    for label in self._block.column_labels
-                    if (col_id := self._block.resolve_label_exact(label)) is not None
-                },
-            )
-            expr = expr.bind_variables(bindings)
+            expr = block_transforms.compile_udf(self._block, func, args, kwargs)
 
             result_block = self._block.aggregate(
                 [expr],

@@ -31,6 +31,7 @@ _BINARY_OP_MAP = {
     "//": operator.floordiv,
     "%": operator.mod,
     "**": operator.pow,
+    "[]": operator.getitem,
 }
 
 _COMPARE_OP_MAP = {
@@ -513,7 +514,12 @@ def _compile_bytecode_to_py_expr(func: Callable) -> expression.Expression:
                         raise ValueError("Stack has < 2 elements")
                     key = stack.pop()
                     container = stack.pop()
-                    stack.append(py_exprs.GetItem(container, key))
+                    stack.append(
+                        py_exprs.Call(
+                            py_exprs.PyObject(operator.getitem),
+                            (container, key),
+                        )
+                    )
 
                 case name if name in _OLD_BINARY_OP_MAP:
                     if len(stack) < 2:

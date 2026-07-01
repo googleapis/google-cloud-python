@@ -34,15 +34,16 @@ import bigframes.operations.aggregations as agg_ops
 from bigframes.core import agg_expressions, py_expressions
 
 
-def apply_to_block_rows(
-    func: Callable, block: blocks.Block, *args, **kwargs
-) -> blocks.Block:
-    """
-    Apply the given function to each row of the block.
-
-    The function is applied to each row of the block, and the result is returned
-    as a new block with the same index.
-    """
+def compile_udf(
+    block: blocks.Block,
+    func: Callable,
+    args: tuple = (),
+    kwargs: dict = None,
+    col_series_args: typing.Mapping[str, str] | None = None,
+) -> ex.Expression:
+    """Compile a python function to a BigFrames expression in the context of a block."""
+    if kwargs is None:
+        kwargs = {}
     expr = bytecode._compile_bytecode_to_py_expr(func)
     sig = inspect.signature(func)
 
@@ -54,17 +55,43 @@ def apply_to_block_rows(
     for name, value in bound_params.items():
         bindings[name] = ex.const(value)
 
-    expr = py_expressions.resolve_py_exprs(
-        expr,
-        series_arg=next(iter(sig.parameters.keys())),
-        series_attrs={
-            label: col_id
-            for label in block.column_labels
-            if (col_id := block.resolve_label_exact(label)) is not None
-        },
-    )
-    expr = expr.bind_variables(bindings)
+    series_arg = next(iter(sig.parameters.keys()))
 
+    if col_series_args is not None:
+        expr = py_expressions.resolve_py_exprs(
+            expr,
+            series_arg=series_arg,
+            col_series_args=col_series_args,
+        )
+    else:
+        series_attrs: dict = {}
+        for i, (col_id, label) in enumerate(
+            zip(block.value_columns, block.column_labels)
+        ):
+            series_attrs[i] = col_id
+            if label is not None:
+                series_attrs[label] = col_id
+
+        expr = py_expressions.resolve_py_exprs(
+            expr,
+            series_arg=series_arg,
+            series_attrs=series_attrs,
+        )
+
+    expr = expr.bind_variables(bindings)
+    return expr
+
+
+def apply_to_block_rows(
+    func: Callable, block: blocks.Block, *args, **kwargs
+) -> blocks.Block:
+    """
+    Apply the given function to each row of the block.
+
+    The function is applied to each row of the block, and the result is returned
+    as a new block with the same index.
+    """
+    expr = compile_udf(block, func, args, kwargs)
     return block.project_exprs([expr], labels=[None], drop=True)
 
 

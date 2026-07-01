@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import dataclasses
 import itertools
+import operator
 from types import ModuleType
 from typing import Callable, Hashable, Mapping, Optional, Tuple
 
@@ -421,69 +422,113 @@ def resolve_py_exprs(
         The resolved BigQuery Expression.
     """
 
-    def resolve_expr_if_call(expression: Expression) -> Expression:
-        if isinstance(expression, Call):
-            return resolve_call(expression)
-        return expression
+    def resolve_expr_if_call(expr: Expression) -> Expression:
+        if isinstance(expr, Call):
+            return resolve_call(expr)
+        return expr
 
-    # this function assumes attrs that become callables have been resolved
-    # also, we don't yet handle resolving attrs that are column accesses
-    def resolve_attrs(expression: Expression) -> Expression:
-        if isinstance(expression, GetAttr):
-            if isinstance(expression.input, Module):
-                # resolves things like Math.pi
-                return PyObject(getattr(expression.input.module, expression.attr))
-            # Resolve attribute access on the series/row argument
-            if (
-                series_arg is not None
-                and series_attrs is not None
-                and isinstance(expression.input, UnboundVariableExpression)
-                and expression.input.id == series_arg
-                and expression.attr in series_attrs
-            ):
-                return deref(series_attrs[expression.attr])
+    def resolve_attrs(expr: Expression) -> Expression:
+        if isinstance(expr, GetAttr):
+            return _resolve_getattr(expr, series_arg, series_attrs)
+        if isinstance(expr, GetItem):
+            return _resolve_getitem(expr, series_arg, series_attrs, col_series_args)
+        return expr
 
-        elif isinstance(expression, GetItem):
-            # Resolve subscript/item access on the series/row argument
-            # The key might be a PyObject or a ScalarConstantExpression
-            from bigframes.core.expression import ScalarConstantExpression
-
-            key_val = None
-            if isinstance(expression.key, PyObject):
-                key_val = expression.key.value
-            elif isinstance(expression.key, ScalarConstantExpression):
-                key_val = expression.key.value
-
-            if (
-                series_arg is not None
-                and series_attrs is not None
-                and isinstance(expression.input, UnboundVariableExpression)
-                and expression.input.id == series_arg
-                and key_val in series_attrs
-            ):
-                return deref(series_attrs[key_val])
-        return expression
-
-    def resolve_series_var(expression: Expression) -> Expression:
+    def resolve_series_var(expr: Expression) -> Expression:
         if (
             col_series_args is not None
-            and isinstance(expression, UnboundVariableExpression)
-            and isinstance(expression.id, str)
-            and expression.id in col_series_args
+            and isinstance(expr, UnboundVariableExpression)
+            and isinstance(expr.id, str)
+            and expr.id in col_series_args
         ):
-            return deref(col_series_args[expression.id])
-        return expression
+            return deref(col_series_args[expr.id])
+        return expr
 
-    def resolve_pyobjs(expression: Expression) -> Expression:
-        if isinstance(expression, PyObject):
-            return const(expression.value)
-        return expression
+    def resolve_pyobjs(expr: Expression) -> Expression:
+        if isinstance(expr, PyObject):
+            return const(expr.value)
+        return expr
 
     wo_calls = expression.bottom_up(resolve_expr_if_call)
     wo_attrs = wo_calls.bottom_up(resolve_attrs)
     wo_vars = wo_attrs.bottom_up(resolve_series_var)
-    wo_pyobjs = wo_vars.bottom_up(resolve_pyobjs)
-    return wo_pyobjs
+    return wo_vars.bottom_up(resolve_pyobjs)
+
+
+def _resolve_getattr(
+    expression: GetAttr,
+    series_arg: Optional[str],
+    series_attrs: Mapping[Hashable, str] | None,
+) -> Expression:
+    if isinstance(expression.input, Module):
+        # resolves things like Math.pi
+        return PyObject(getattr(expression.input.module, expression.attr))
+    # Resolve attribute access on the series/row argument
+    if (
+        series_arg is not None
+        and series_attrs is not None
+        and isinstance(expression.input, UnboundVariableExpression)
+        and expression.input.id == series_arg
+        and expression.attr in series_attrs
+    ):
+        return deref(series_attrs[expression.attr])
+    return expression
+
+
+def _resolve_getitem(
+    expression: GetItem,
+    series_arg: Optional[str],
+    series_attrs: Mapping[Hashable, str] | None,
+    col_series_args: Mapping[str, str] | None,
+) -> Expression:
+    # Resolve subscript/item access on the series/row argument
+    from bigframes.core.expression import ScalarConstantExpression
+
+    key_val = None
+    if isinstance(expression.key, PyObject):
+        key_val = expression.key.value
+    elif isinstance(expression.key, ScalarConstantExpression):
+        key_val = expression.key.value
+
+    is_series_var = (
+        series_arg is not None
+        and isinstance(expression.input, UnboundVariableExpression)
+        and expression.input.id == series_arg
+    )
+
+    if is_series_var and series_attrs is not None:
+        if key_val is None:
+            raise NotImplementedError("Dynamic column lookup is not supported.")
+        if key_val in series_attrs:
+            return deref(series_attrs[key_val])
+        else:
+            raise KeyError(f"Column '{key_val}' not found.")
+
+    is_columnar_var = (
+        col_series_args is not None
+        and isinstance(expression.input, UnboundVariableExpression)
+        and expression.input.id in col_series_args
+    )
+
+    if is_columnar_var:
+        raise NotImplementedError(
+            "Subscripting a Series/column is not supported in this UDF context."
+        )
+
+    # Scalar context (struct/array getitem ops)
+    import bigframes.operations.generic_ops as generic_ops
+
+    if key_val is not None:
+        if isinstance(key_val, (str, int)):
+            return OpExpression(generic_ops.GetItemOp(key_val), (expression.input,))
+        else:
+            raise NotImplementedError(
+                f"Subscript key of type '{type(key_val).__name__}' is not supported."
+            )
+    else:
+        return OpExpression(
+            generic_ops.DynamicGetItemOp(), (expression.input, expression.key)
+        )
 
 
 def resolve_call(call: Call) -> Expression:
@@ -518,6 +563,8 @@ def resolve_call(call: Call) -> Expression:
                 return OpExpression(method_op, (callable.input,))
 
     elif isinstance(callable, PyObject):
+        if callable.value == operator.getitem:
+            return GetItem(call.inputs[0], call.inputs[1])
         if isinstance(callable.value, ScalarOp):
             return OpExpression(callable.value, call.inputs)
         if callable.value in python_op_maps.PYTHON_TO_BIGFRAMES:
