@@ -57,6 +57,34 @@ def _apply_decorators(func, decorators):
     return func
 
 
+def _extract_metrics_header(metadata):
+    """Extract x-google-api-client header from metadata list.
+
+    Args:
+        metadata (Sequence[Tuple[str, str]]): The metadata to extract from.
+
+    Returns:
+        Tuple[List[Tuple[str, str]], List[str]]: A tuple containing:
+            - A list of remaining metadata tuples.
+            - A list of metrics header values found.
+    """
+    if not metadata:
+        return [], []
+
+    for i, (key, val) in enumerate(metadata):
+        if key == client_info.METRICS_METADATA_KEY:
+            # Key located. Check the rest of the list for duplicate entries
+            arbitrary_metadata = list(metadata[:i])
+            metric_values = [val]
+            for k, v in metadata[i+1:]:
+                if k == client_info.METRICS_METADATA_KEY:
+                    metric_values.append(v)
+                else:
+                    arbitrary_metadata.append((k, v))
+            return arbitrary_metadata, metric_values
+    # No key found
+    return list(metadata), []
+
 class _GapicCallable(object):
     """Callable that applies retry, timeout, and metadata logic.
 
@@ -91,17 +119,9 @@ class _GapicCallable(object):
         self._timeout = timeout
         self._compression = compression
         self._metadata = metadata
-        
-        # Pre-extract the client metrics header from the initialized metadata.
-        # This avoids repeating this work on every single RPC request invocation.
-        self._arbitrary_metadata = []
-        self._metrics_values = ""
-        if metadata:
-            for key, val in metadata:
-                if key == client_info.METRICS_METADATA_KEY:
-                    self._metrics_values = val
-                else:
-                    self._arbitrary_metadata.append((key, val))
+        # Pre-extract the x-goog-api-client header from the initialized metadata.
+        self._arbitrary_metadata, metric_values = _extract_metrics_header(metadata)
+        self._metrics_values = " ".join(metric_values) if metric_values else ""
 
     def __call__(
         self, *args, timeout=DEFAULT, retry=DEFAULT, compression=DEFAULT, **kwargs
@@ -127,23 +147,13 @@ class _GapicCallable(object):
         if self._metadata is not None:
             metadata = kwargs.get("metadata")
             if not metadata:
-                # Fast path: in 99% of calls, the user did not pass any custom metadata,
-                # so we can directly assign the pre-extracted metadata and skip any merging overhead.
                 if self._metrics_values:
                     kwargs["metadata"] = [(client_info.METRICS_METADATA_KEY, self._metrics_values)] + self._arbitrary_metadata
                 else:
                     kwargs["metadata"] = self._arbitrary_metadata
             else:
                 # Merge user-supplied metadata with library-supplied metadata.
-                # All keys in gRPC metadata are already lowercase.
-                metadata = list(metadata)
-                api_client_values = []
-                merged_metadata = []
-                for key, val in metadata:
-                    if key == client_info.METRICS_METADATA_KEY:
-                        api_client_values.append(val)
-                    else:
-                        merged_metadata.append((key, val))
+                merged_metadata, api_client_values = _extract_metrics_header(metadata)
                 if self._metrics_values:
                     api_client_values.append(self._metrics_values)
                 if api_client_values:
