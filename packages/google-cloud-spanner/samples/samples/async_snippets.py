@@ -18,8 +18,6 @@
 Cloud Spanner.
 """
 
-import asyncio
-
 from google.cloud.spanner_v1 import AsyncClient, KeySet
 
 
