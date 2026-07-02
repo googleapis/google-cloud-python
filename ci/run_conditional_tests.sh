@@ -94,7 +94,7 @@ RETVAL=0
 
 for subdir in ${subdirs[@]}; do
     # If a specific package path was passed directly, use it; otherwise scan the parent folder
-    if [ -d "${subdir}" ] && [[ "${subdir}" != "packages" ]]; then
+    if [ -d "${subdir}" ] && [[ "${subdir%/}" != "packages" ]]; then
         loop_dirs=("${subdir}")
     else
         loop_dirs=(`ls -d ${subdir}/*/`)
