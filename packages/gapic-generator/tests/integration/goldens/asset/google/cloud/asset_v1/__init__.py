@@ -28,12 +28,11 @@ from importlib import metadata
 # For more information, see:
 # https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
 # Older Python versions safely ignore this variable.
-# We use absolute paths (via package_path) rather than __name__ to avoid runtime evaluation overhead.
 __lazy_modules__ = {
-"google.cloud.asset_v1.services.asset_service",
-"google.cloud.asset_v1.types.asset_enrichment_resourceowners",
-"google.cloud.asset_v1.types.asset_service",
-"google.cloud.asset_v1.types.assets",
+    "google.cloud.asset_v1.services.asset_service",
+    "google.cloud.asset_v1.types.asset_enrichment_resourceowners",
+    "google.cloud.asset_v1.types.asset_service",
+    "google.cloud.asset_v1.types.assets",
 }
 
 

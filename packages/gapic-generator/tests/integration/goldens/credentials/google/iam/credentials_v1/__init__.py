@@ -28,11 +28,10 @@ from importlib import metadata
 # For more information, see:
 # https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
 # Older Python versions safely ignore this variable.
-# We use absolute paths (via package_path) rather than __name__ to avoid runtime evaluation overhead.
 __lazy_modules__ = {
-"google.iam.credentials_v1.services.iam_credentials",
-"google.iam.credentials_v1.types.common",
-"google.iam.credentials_v1.types.iamcredentials",
+    "google.iam.credentials_v1.services.iam_credentials",
+    "google.iam.credentials_v1.types.common",
+    "google.iam.credentials_v1.types.iamcredentials",
 }
 
 
