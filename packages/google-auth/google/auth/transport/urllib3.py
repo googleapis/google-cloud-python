@@ -174,22 +174,34 @@ def _make_mutual_tls_http(cert, key):
         urllib3.PoolManager: Mutual TLS HTTP connection.
 
     Raises:
-        ImportError: If certifi or pyOpenSSL is not installed.
-        OpenSSL.crypto.Error: If the cert or key is invalid.
+        google.auth.exceptions.MutualTLSChannelError: If the cert or key is invalid.
     """
     import certifi
-    from OpenSSL import crypto
-    import urllib3.contrib.pyopenssl  # type: ignore
+    import ssl
 
-    urllib3.contrib.pyopenssl.inject_into_urllib3()
     ctx = urllib3.util.ssl_.create_urllib3_context()
     ctx.load_verify_locations(cafile=certifi.where())
 
-    pkey = crypto.load_privatekey(crypto.FILETYPE_PEM, key)
-    x509 = crypto.load_certificate(crypto.FILETYPE_PEM, cert)
-
-    ctx._ctx.use_certificate(x509)
-    ctx._ctx.use_privatekey(pkey)
+    try:
+        with _mtls_helper.secure_cert_key_paths(cert, key) as (
+            cert_path,
+            key_path,
+            passphrase,
+        ):
+            password = (
+                passphrase.decode("utf-8")
+                if isinstance(passphrase, bytes)
+                else passphrase
+            )
+            ctx.load_cert_chain(
+                certfile=cert_path,
+                keyfile=key_path,
+                password=password,
+            )
+    except (ssl.SSLError, OSError, IOError, ValueError, RuntimeError, TypeError) as exc:
+        raise exceptions.MutualTLSChannelError(
+            "Failed to configure client certificate and key for mTLS."
+        ) from exc
 
     http = urllib3.PoolManager(ssl_context=ctx)
     return http
@@ -340,12 +352,6 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
             return False
 
         try:
-            import OpenSSL
-        except ImportError as caught_exc:
-            new_exc = exceptions.MutualTLSChannelError(caught_exc)
-            raise new_exc from caught_exc
-
-        try:
             found_cert_key, cert, key = transport._mtls_helper.get_client_cert_and_key(
                 client_cert_callback
             )
@@ -360,7 +366,7 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
             exceptions.ClientCertError,
             ImportError,
             OSError,
-            OpenSSL.crypto.Error,
+            ValueError,
         ) as caught_exc:
             new_exc = exceptions.MutualTLSChannelError(caught_exc)
             raise new_exc from caught_exc
