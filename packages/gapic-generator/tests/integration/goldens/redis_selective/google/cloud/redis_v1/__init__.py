@@ -29,8 +29,8 @@ from importlib import metadata
 # https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
 # Older Python versions safely ignore this variable.
 __lazy_modules__ = {
-f"{__name__}.services.cloud_redis",
-f"{__name__}.types.cloud_redis",
+    "google.cloud.redis_v1.services.cloud_redis",
+    "google.cloud.redis_v1.types.cloud_redis",
 }
 
 
