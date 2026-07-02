@@ -12,13 +12,71 @@ name: unittest
 permissions:
   contents: read
 
+# Configurable global environment variables for batching
+env:
+  BATCH_SIZE: 10
+  TEST_ALL_PACKAGES: "true" # Set to "false" to only run tests for packages with a git diff
+
 jobs:
+  # Dynamic package discovery job to calculate required matrix size automatically
+  discover-packages:
+    runs-on: ubuntu-latest
+    outputs:
+      batch-indices: ${{ steps.set-matrix.outputs.indices }}
+    steps:
+    - name: Checkout
+      uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+      with:
+        persist-credentials: false
+    - name: Generate Batch Indices
+      id: set-matrix
+      run: |
+        # Testing all monorepo packages sequentially on a single runner node is 
+        # too slow and creates a severe CI bottleneck as the repository expands.
+        #
+        # To scale efficiently, we chunk the workload into parallel batch slices.
+        # Instead of using a fixed, hardcoded matrix array (which risks silently 
+        # skipping newly added packages if the repository outgrows the array size), 
+        # this step dynamically audits the 'packages/' directory at runtime.
+        #
+        # It calculates exactly how many concurrent runners are required based on
+        # the current repository size and the configured BATCH_SIZE variable, 
+        # ensuring 100% test coverage with zero manual YAML maintenance.
+
+        # 1. Count the number of total directories matching the 'packages/*' pattern.
+        #    Redirect stderr to /dev/null so empty repos do not print unneeded errors.
+        TOTAL_PACKAGES=$(ls -d packages/*/ 2>/dev/null | wc -l | tr -d ' ')
+        
+        # 2. Safety fallback: If no packages are detected, assign a single slice index [0]
+        #    so subsequent matrix-dependent jobs do not break or fail validation on an empty matrix.
+        if [ "$TOTAL_PACKAGES" -eq 0 ]; then
+          echo "indices=[0]" >> "$GITHUB_OUTPUT"
+          exit 0
+        fi
+
+        # 3. Calculate the number of batches required using ceiling division: ceil(TOTAL_PACKAGES / BATCH_SIZE).
+        #    The formula ((A + B - 1) / B) ensures integer division rounds up if there's any remaining package leftover.
+        #    Example: 251 packages with a batch size of 10 gives ((251 + 10 - 1) / 10) = 260 / 10 = 26 batches.
+        NUM_BATCHES=$(( (TOTAL_PACKAGES + ${{ env.BATCH_SIZE }} - 1) / ${{ env.BATCH_SIZE }} ))
+        
+        # 4. Generate a zero-indexed sequence from 0 to (NUM_BATCHES - 1).
+        #    Use jq to securely parse the raw numbers and compile them into a compacted JSON array string.
+        #    Example output format: [0,1,2,3,...,25]
+        INDICES=$(seq 0 $((NUM_BATCHES - 1)) | jq -R . | jq -s -c .)
+        
+        # 5. Output the finished JSON string to the GitHub environment outputs pipeline.
+        #    This will safely feed directly into the execution matrix downstream.
+        echo "indices=${INDICES}" >> "$GITHUB_OUTPUT"
+
   unit:
+    name: "unit-run (${{ matrix.python }}, Batch ${{ matrix.batch-index }})"
     runs-on: ubuntu-22.04
+    needs: discover-packages
     strategy:
-      fail-fast: true
       matrix:
-        python: ['3.9', '3.10', "3.11", "3.12", "3.13", "3.14"]
+        python: ['3.9', '3.10', "3.11", "3.12", "3.13", "3.14", "3.15"]
+        # Dynamically scales to fit every package perfectly without hardcoding array indices
+        batch-index: ${{ fromJson(needs.discover-packages.outputs.batch-indices) }}
     steps:
     - name: Checkout
       uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
@@ -39,23 +97,41 @@ jobs:
     - name: Run unit tests
       env:
         COVERAGE_FILE: ${{ github.workspace }}/.coverage-${{ matrix.python }}
-        BUILD_TYPE: presubmit
+        # Dynamically set BUILD_TYPE to an empty string to skip the diff calculation if TEST_ALL_PACKAGES is true
+        BUILD_TYPE: ${{ env.TEST_ALL_PACKAGES == 'true' && '' || 'presubmit' }}
         TARGET_BRANCH: ${{ github.base_ref || github.event.merge_group.base_ref }}
         TEST_TYPE: unit
         PY_VERSION: ${{ matrix.python }}
       run: |
-        ci/run_conditional_tests.sh
+        # Gather all packages in alphabetical order
+        ALL_PACKAGES=($(ls -d packages/*/ | sort))
+        TOTAL_PACKAGES=${#ALL_PACKAGES[@]}
+
+        # Determine this runner's slice window
+        START_INDEX=$(( ${{ matrix.batch-index }} * ${{ env.BATCH_SIZE }} ))
+        
+        if [ $START_INDEX -ge $TOTAL_PACKAGES ]; then
+          exit 0
+        fi
+
+        BATCH_PACKAGES=("${ALL_PACKAGES[@]:$START_INDEX:${{ env.BATCH_SIZE }}}")
+
+        # Strip trailing slashes to pass down directly into ci/run_conditional_tests.sh
+        subdirs=("${BATCH_PACKAGES[@]%/}")
+
+        ci/run_conditional_tests.sh "${subdirs[@]}"
     - name: Upload coverage results
       uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
       with:
-        name: coverage-artifact-${{ matrix.python }}
+        # Appended batch-index to separate parallel coverage uploads cleanly
+        name: coverage-artifact-${{ matrix.python }}-${{ matrix.batch-index }}
         path: .coverage-${{ matrix.python }}
         include-hidden-files: true
 
   cover:
     runs-on: ubuntu-latest
     needs:
-        - unit
+      - unit
     steps:
     - name: Checkout
       uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
@@ -167,3 +243,22 @@ jobs:
           echo "This usually means the unit tests did not run or failed to upload their coverage files."
           exit 1
         fi
+
+  unittest-runtime-result:
+    name: "unit (${{ matrix.python }})"
+    needs: unit
+    if: always()
+    strategy:
+      matrix:
+        python: ['3.9', '3.10', '3.11', '3.12', '3.13', '3.14', '3.15']
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check unit tests results
+        run: |
+          UNIT_STATUS="${{ needs.unit.result }}"
+
+        if [[ "$UNIT_STATUS" == "success" ]]; then
+            echo "Python ${{ matrix.python }} tests passed."
+          else
+            echo "Error: Python ${{ matrix.python }} status is '$UNIT_STATUS'."
+            exit 1

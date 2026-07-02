@@ -21,6 +21,10 @@
 
 # `TEST_TYPE` and `PY_VERSION` are required by the script `ci/run_single_test.sh`
 
+# Optional Arguments:
+# Pass specific space-separated package paths (e.g., "packages/google-cloud-storage") to only test those directories.
+# If no arguments are provided, the script automatically determines which directories have changed
+#
 # This script will determine which directories have changed
 # under the `packages` folder. For `BUILD_TYPE=="presubmit"`,
 # we'll compare against the `packages` folder in HEAD,
@@ -78,14 +82,29 @@ set -e
 # Now we have a fixed list, but we can change it to autodetect if
 # necessary.
 
-subdirs=(
-    packages
-)
+if [ $# -gt 0 ]; then
+    subdirs=("$@")
+else
+    subdirs=(
+        packages
+    )
+fi
 
 RETVAL=0
 
 for subdir in ${subdirs[@]}; do
-    for d in `ls -d ${subdir}/*/`; do
+    # If a specific package path was passed directly, use it; otherwise scan the parent folder
+    if [ -d "${subdir}" ] && [[ "${subdir}" != "packages" ]]; then
+        loop_dirs=("${subdir}")
+    else
+        loop_dirs=(`ls -d ${subdir}/*/`)
+    fi
+
+    for d in "${loop_dirs[@]}"; do
+        # Ensure the directory path always ends with a trailing slash for git diff safety
+        if [[ "$d" != */ ]]; then
+            d="$d/"
+        fi
         should_test=false
         if [ -n "${GIT_DIFF_ARG}" ]; then
             echo "checking changes with 'git diff --quiet ${GIT_DIFF_ARG} ${d}'"
