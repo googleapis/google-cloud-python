@@ -78,13 +78,13 @@ def test__parse_mds_mode_invalid(monkeypatch):
         _mtls._parse_mds_mode()
 
 
-@mock.patch("os.path.exists")
+@mock.patch("google.auth.compute_engine._mtls.os.path.exists")
 def test__certs_exist_true(mock_exists, mock_mds_mtls_config):
     mock_exists.return_value = True
     assert _mtls._certs_exist(mock_mds_mtls_config) is True
 
 
-@mock.patch("os.path.exists")
+@mock.patch("google.auth.compute_engine._mtls.os.path.exists")
 def test__certs_exist_false(mock_exists, mock_mds_mtls_config):
     mock_exists.return_value = False
     assert _mtls._certs_exist(mock_mds_mtls_config) is False
@@ -101,7 +101,7 @@ def test__certs_exist_false(mock_exists, mock_mds_mtls_config):
         ("default", False, False),
     ],
 )
-@mock.patch("os.path.exists")
+@mock.patch("google.auth.compute_engine._mtls.os.path.exists")
 def test_should_use_mds_mtls(
     mock_exists, monkeypatch, mtls_mode, certs_exist, expected_result
 ):
