@@ -257,7 +257,7 @@ jobs:
         run: |
           UNIT_STATUS="${{ needs.unit.result }}"
 
-        if [[ "$UNIT_STATUS" == "success" ]]; then
+          if [[ "$UNIT_STATUS" == "success" ]]; then
             echo "Python ${{ matrix.python }} tests passed."
           else
             echo "Error: Python ${{ matrix.python }} status is '$UNIT_STATUS'."
