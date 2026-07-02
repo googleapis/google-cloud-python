@@ -101,6 +101,9 @@ for subdir in ${subdirs[@]}; do
     fi
 
     for d in "${loop_dirs[@]}"; do
+        if [ ! -d "$d" ]; then
+            continue
+        fi
         # Ensure the directory path always ends with a trailing slash for git diff safety
         if [[ "$d" != */ ]]; then
             d="$d/"
