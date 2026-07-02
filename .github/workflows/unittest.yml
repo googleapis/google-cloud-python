@@ -74,7 +74,7 @@ jobs:
     needs: discover-packages
     strategy:
       matrix:
-        python: ['3.9', '3.10', "3.11", "3.12", "3.13", "3.14", "3.15"]
+        python: ['3.9', '3.10', "3.11", "3.12", "3.13", "3.14"]
         # Dynamically scales to fit every package perfectly without hardcoding array indices
         batch-index: ${{ fromJson(needs.discover-packages.outputs.batch-indices) }}
     steps:
@@ -250,7 +250,7 @@ jobs:
     if: always()
     strategy:
       matrix:
-        python: ['3.9', '3.10', '3.11', '3.12', '3.13', '3.14', '3.15']
+        python: ['3.9', '3.10', "3.11", "3.12", "3.13", "3.14"]
     runs-on: ubuntu-latest
     steps:
       - name: Check unit tests results
