@@ -93,11 +93,15 @@ fi
 RETVAL=0
 
 for subdir in ${subdirs[@]}; do
-    # If a specific package path was passed directly, use it; otherwise scan the parent folder
-    if [ -d "${subdir}" ] && [[ "${subdir%/}" != "packages" ]]; then
-        loop_dirs=("${subdir}")
-    else
+    if [ ! -d "${subdir}" ]; then
+        echo "Error: Directory '${subdir}' does not exist." >&2
+        exit 1
+    fi
+
+    if [[ "${subdir%/}" == "packages" ]]; then
         loop_dirs=("${subdir}"/*/)
+    else
+        loop_dirs=("${subdir}")
     fi
 
     for d in "${loop_dirs[@]}"; do
