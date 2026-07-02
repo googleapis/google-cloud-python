@@ -188,7 +188,11 @@ def _make_mutual_tls_http(cert, key):
             key_path,
             passphrase,
         ):
-            password = passphrase.decode("utf-8") if isinstance(passphrase, bytes) else passphrase
+            password = (
+                passphrase.decode("utf-8")
+                if isinstance(passphrase, bytes)
+                else passphrase
+            )
             ctx.load_cert_chain(
                 certfile=cert_path,
                 keyfile=key_path,

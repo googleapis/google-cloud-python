@@ -224,7 +224,11 @@ class _MutualTlsAdapter(requests.adapters.HTTPAdapter):
                 key_path,
                 passphrase,
             ):
-                password = passphrase.decode("utf-8") if isinstance(passphrase, bytes) else passphrase
+                password = (
+                    passphrase.decode("utf-8")
+                    if isinstance(passphrase, bytes)
+                    else passphrase
+                )
                 ctx_poolmanager.load_cert_chain(
                     certfile=cert_path,
                     keyfile=key_path,
@@ -235,7 +239,14 @@ class _MutualTlsAdapter(requests.adapters.HTTPAdapter):
                     keyfile=key_path,
                     password=password,
                 )
-        except (ssl.SSLError, OSError, IOError, ValueError, RuntimeError, TypeError) as exc:
+        except (
+            ssl.SSLError,
+            OSError,
+            IOError,
+            ValueError,
+            RuntimeError,
+            TypeError,
+        ) as exc:
             raise exceptions.MutualTLSChannelError(
                 "Failed to configure client certificate and key for mTLS."
             ) from exc

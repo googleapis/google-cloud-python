@@ -280,7 +280,7 @@ def _write_secure_tempfile(fd: int, data: bytes) -> None:
         except OSError:
             pass
         raise
-    
+
     with f:
         f.write(data)
         f.flush()
@@ -322,7 +322,7 @@ def _tempfile_cert_key_paths(
                     fd, path = tempfile.mkstemp(dir=tmp_dir)
                 except OSError:
                     fd, path = tempfile.mkstemp(dir=None)
-                
+
                 cleanup_files[i] = path
                 _write_secure_tempfile(fd, data)
 
