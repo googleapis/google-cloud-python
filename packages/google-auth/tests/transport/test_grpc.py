@@ -134,10 +134,12 @@ class TestAuthMetadataPlugin(object):
 
     def test_suppress_metrics_header(self):
         credentials = mock.create_autospec(service_account.Credentials)
+
         # Mock credentials before_request that adds metric and authorization
         def mock_before_request(request, method, url, headers):
             headers["x-goog-api-client"] = "foo"
             headers["authorization"] = "Bearer token"
+
         credentials.before_request.side_effect = mock_before_request
         request = mock.create_autospec(transport.Request)
 

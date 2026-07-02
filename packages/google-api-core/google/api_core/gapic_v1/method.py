@@ -76,7 +76,7 @@ def _extract_metrics_header(metadata):
             # Key located. Check the rest of the list for duplicate entries
             arbitrary_metadata = list(metadata[:i])
             metric_values = [val]
-            for k, v in metadata[i+1:]:
+            for k, v in metadata[i + 1 :]:
                 if k == client_info.METRICS_METADATA_KEY:
                     metric_values.append(v)
                 else:
@@ -84,6 +84,7 @@ def _extract_metrics_header(metadata):
             return arbitrary_metadata, metric_values
     # No key found
     return list(metadata), []
+
 
 class _GapicCallable(object):
     """Callable that applies retry, timeout, and metadata logic.
@@ -148,7 +149,9 @@ class _GapicCallable(object):
             metadata = kwargs.get("metadata")
             if not metadata:
                 if self._metrics_values:
-                    kwargs["metadata"] = [(client_info.METRICS_METADATA_KEY, self._metrics_values)] + self._arbitrary_metadata
+                    kwargs["metadata"] = [
+                        (client_info.METRICS_METADATA_KEY, self._metrics_values)
+                    ] + self._arbitrary_metadata
                 else:
                     kwargs["metadata"] = self._arbitrary_metadata
             else:
@@ -157,7 +160,9 @@ class _GapicCallable(object):
                 if self._metrics_values:
                     api_client_values.append(self._metrics_values)
                 if api_client_values:
-                    merged_metadata.append((client_info.METRICS_METADATA_KEY, " ".join(api_client_values)))
+                    merged_metadata.append(
+                        (client_info.METRICS_METADATA_KEY, " ".join(api_client_values))
+                    )
                 merged_metadata.extend(self._arbitrary_metadata)
                 kwargs["metadata"] = merged_metadata
 
