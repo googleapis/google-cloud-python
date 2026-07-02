@@ -97,7 +97,7 @@ for subdir in ${subdirs[@]}; do
     if [ -d "${subdir}" ] && [[ "${subdir%/}" != "packages" ]]; then
         loop_dirs=("${subdir}")
     else
-        loop_dirs=(`ls -d ${subdir}/*/`)
+        loop_dirs=("${subdir}"/*/)
     fi
 
     for d in "${loop_dirs[@]}"; do
