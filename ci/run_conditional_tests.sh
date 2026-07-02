@@ -113,7 +113,12 @@ for subdir in ${subdirs[@]}; do
             d="$d/"
         fi
         should_test=false
-        if [ -n "${GIT_DIFF_ARG}" ]; then
+        
+        # Override check: Force test if explicitly asked to test all packages
+        if [[ "${TEST_ALL_PACKAGES}" == "true" ]]; then
+            echo "TEST_ALL_PACKAGES is true, forcing execution for ${d}"
+            should_test=true
+        elif [ -n "${GIT_DIFF_ARG}" ]; then
             echo "checking changes with 'git diff --quiet ${GIT_DIFF_ARG} ${d}'"
             set +e
             git diff --quiet ${GIT_DIFF_ARG} ${d}
