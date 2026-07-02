@@ -303,15 +303,12 @@ def test_mds_mtls_adapter_send_no_fallback_other_exception(
     mock_parse_mds_mode.return_value = _mtls.MdsMtlsMode.DEFAULT
     adapter = _mtls.MdsMtlsAdapter(mock_mds_mtls_config)
 
-    with mock.patch(
-        "requests.adapters.HTTPAdapter.send",
-        side_effect=ValueError("Unhandled exception"),
-    ):
-        request = requests.Request(method="GET", url="https://fake-mds.com").prepare()
-        with pytest.raises(ValueError, match="Unhandled exception"):
-            adapter.send(request)
+    mock_http_adapter_send.side_effect = ValueError("Unhandled exception")
+    request = requests.Request(method="GET", url="https://fake-mds.com").prepare()
+    with pytest.raises(ValueError, match="Unhandled exception"):
+        adapter.send(request)
 
-    mock_http_adapter_send.assert_not_called()
+    mock_http_adapter_send.assert_called_once()
 
 
 @mock.patch("google.auth.compute_engine._mtls._parse_mds_mode")

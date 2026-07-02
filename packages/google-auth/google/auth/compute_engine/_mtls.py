@@ -162,3 +162,7 @@ class MdsMtlsAdapter(HTTPAdapter):
 
             # Use the cached standard HTTPAdapter for the fallback
             return self._fallback_adapter.send(request, **kwargs)
+
+    def close(self):
+        self._fallback_adapter.close()
+        super(MdsMtlsAdapter, self).close()

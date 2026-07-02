@@ -17,6 +17,7 @@ Helper functions for mTLS in async for discovery of certs.
 """
 
 import asyncio
+import inspect
 import logging
 import ssl
 from typing import Optional
@@ -54,13 +55,14 @@ def make_client_cert_ssl_context(
         ):
             context = ssl.create_default_context(ssl.Purpose.SERVER_AUTH)
             if cert_path:
+                password = passphrase_val.decode("utf-8") if isinstance(passphrase_val, bytes) else passphrase_val
                 context.load_cert_chain(
                     certfile=cert_path,
                     keyfile=key_path,
-                    password=passphrase_val,
+                    password=password,
                 )
             return context
-    except (ssl.SSLError, OSError, IOError, ValueError, RuntimeError) as exc:
+    except (ssl.SSLError, OSError, IOError, ValueError, RuntimeError, TypeError) as exc:
         raise exceptions.TransportError(
             "Failed to load client certificate and key for mTLS."
         ) from exc
@@ -167,9 +169,9 @@ async def get_client_cert_and_key(client_cert_callback=None):
     """
     if client_cert_callback:
         result = client_cert_callback()
-        try:
+        if inspect.isawaitable(result):
             cert, key = await result
-        except TypeError:
+        else:
             cert, key = result
         return True, cert, key
 

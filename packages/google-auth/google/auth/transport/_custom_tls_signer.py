@@ -47,10 +47,7 @@ SIGN_CALLBACK_CTYPE = ctypes.CFUNCTYPE(
 
 # Cast SSL_CTX* to void*
 def _cast_ssl_ctx_to_void_p_stdlib(context):
-    if (
-        not isinstance(context, ssl.SSLContext)
-        or type(context).__module__ == "unittest.mock"
-    ):
+    if not issubclass(type(context), ssl.SSLContext):
         raise TypeError("context must be an instance of ssl.SSLContext, not a mock")
 
     if (

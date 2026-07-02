@@ -50,7 +50,7 @@ class TestMTLS:
             kwargs = mock_context.load_cert_chain.call_args.kwargs
             assert "certfile" in kwargs
             assert "keyfile" in kwargs
-            assert kwargs["password"] == passphrase
+            assert kwargs["password"] == passphrase.decode("utf-8")
 
             assert not os.path.exists(kwargs["certfile"])
             assert not os.path.exists(kwargs["keyfile"])

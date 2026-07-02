@@ -264,12 +264,18 @@ def test_custom_tls_signer_failed_to_attach_no_libs():
 
 def test_cast_ssl_ctx_to_void_p_stdlib_success():
     context = ssl.SSLContext()
-    with mock.patch.object(sys.implementation, "name", "cpython"):
+    fake_impl = mock.Mock()
+    fake_impl.name = "cpython"
+    with mock.patch("sys.implementation", fake_impl):
         with mock.patch("sysconfig.get_config_var", return_value=0):
             if hasattr(sys, "getobjects"):
-                with mock.patch.delattr(sys, "getobjects"):
+                orig_getobjects = getattr(sys, "getobjects")
+                delattr(sys, "getobjects")
+                try:
                     res = _custom_tls_signer._cast_ssl_ctx_to_void_p_stdlib(context)
                     assert isinstance(res, ctypes.c_void_p)
+                finally:
+                    setattr(sys, "getobjects", orig_getobjects)
             else:
                 res = _custom_tls_signer._cast_ssl_ctx_to_void_p_stdlib(context)
                 assert isinstance(res, ctypes.c_void_p)
@@ -277,8 +283,10 @@ def test_cast_ssl_ctx_to_void_p_stdlib_success():
 
 def test_cast_ssl_ctx_to_void_p_stdlib_unsupported_runtime_pypy():
     context = ssl.SSLContext()
+    fake_impl = mock.Mock()
+    fake_impl.name = "pypy"
 
-    with mock.patch.object(sys.implementation, "name", "pypy"):
+    with mock.patch("sys.implementation", fake_impl):
         with pytest.raises(
             exceptions.MutualTLSChannelError,
             match="Custom TLS signing is only supported",
@@ -288,8 +296,10 @@ def test_cast_ssl_ctx_to_void_p_stdlib_unsupported_runtime_pypy():
 
 def test_cast_ssl_ctx_to_void_p_stdlib_unsupported_runtime_trace_refs():
     context = ssl.SSLContext()
+    fake_impl = mock.Mock()
+    fake_impl.name = "cpython"
 
-    with mock.patch.object(sys.implementation, "name", "cpython"), mock.patch(
+    with mock.patch("sys.implementation", fake_impl), mock.patch(
         "sys.getobjects", create=True
     ):
         with pytest.raises(
@@ -308,7 +318,9 @@ def test_cast_ssl_ctx_to_void_p_stdlib_type_error():
 
 def test_cast_ssl_ctx_to_void_p_stdlib_unsupported_runtime_debug_flag():
     context = ssl.SSLContext()
-    with mock.patch.object(sys.implementation, "name", "cpython"), mock.patch(
+    fake_impl = mock.Mock()
+    fake_impl.name = "cpython"
+    with mock.patch("sys.implementation", fake_impl), mock.patch(
         "sysconfig.get_config_var", return_value=1
     ):
         with pytest.raises(
@@ -326,7 +338,9 @@ def test_cast_ssl_ctx_to_void_p_stdlib_unsupported_runtime_free_threaded():
             return 1
         return None
 
-    with mock.patch.object(sys.implementation, "name", "cpython"), mock.patch(
+    fake_impl = mock.Mock()
+    fake_impl.name = "cpython"
+    with mock.patch("sys.implementation", fake_impl), mock.patch(
         "sysconfig.get_config_var", side_effect=mock_get_config_var
     ):
         with pytest.raises(

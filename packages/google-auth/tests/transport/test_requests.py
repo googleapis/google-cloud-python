@@ -934,7 +934,7 @@ class TestMutualTlsOffloadAdapter(object):
             enterprise_cert_file_path
         )
 
-        mock_should_use_provider.side_effect = True
+        mock_should_use_provider.return_value = True
         mock_load_libraries.assert_called_once()
         assert mock_attach_to_ssl_context.call_count == 2
 

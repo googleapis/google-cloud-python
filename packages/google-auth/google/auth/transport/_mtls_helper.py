@@ -270,6 +270,26 @@ def _memfd_cert_key_paths(
                 pass
 
 
+def _write_secure_tempfile(fd: int, data: bytes) -> None:
+    """Writes data to a file descriptor, securely flushes to disk, and closes it."""
+    try:
+        f = os.fdopen(fd, "wb")
+    except BaseException:
+        try:
+            os.close(fd)
+        except OSError:
+            pass
+        raise
+    
+    with f:
+        f.write(data)
+        f.flush()
+        try:
+            os.fsync(f.fileno())
+        except OSError:
+            pass
+
+
 @contextlib.contextmanager
 def _tempfile_cert_key_paths(
     cert_bytes: Optional[bytes],
@@ -302,24 +322,9 @@ def _tempfile_cert_key_paths(
                     fd, path = tempfile.mkstemp(dir=tmp_dir)
                 except OSError:
                     fd, path = tempfile.mkstemp(dir=None)
-                try:
-                    cleanup_files[i] = path
-                    f = None
-                    try:
-                        f = os.fdopen(fd, "wb")
-                        f.write(data)
-                        f.flush()
-                        os.fsync(f.fileno())
-                    finally:
-                        if f is not None:
-                            f.close()
-                        else:
-                            try:
-                                os.close(fd)
-                            except OSError:
-                                pass
-                except BaseException:
-                    raise
+                
+                cleanup_files[i] = path
+                _write_secure_tempfile(fd, data)
 
         yield cleanup_files[0], cleanup_files[1], new_passphrase
     finally:
@@ -683,11 +688,6 @@ def get_client_cert_and_key(client_cert_callback=None):
 
 
 def decrypt_private_key(key, passphrase):
-    if isinstance(key, str):
-        key = key.encode("utf-8")
-    if isinstance(passphrase, str):
-        passphrase = passphrase.encode("utf-8")
-
     """A helper function to decrypt the private key with the given passphrase.
     google-auth library doesn't support passphrase protected private key for
     mutual TLS channel. This helper function can be used to decrypt the
@@ -719,6 +719,11 @@ def decrypt_private_key(key, passphrase):
     Raises:
         ValueError: If there is any problem decrypting the private key.
     """
+    if isinstance(key, str):
+        key = key.encode("utf-8")
+    if isinstance(passphrase, str):
+        passphrase = passphrase.encode("utf-8")
+
     from cryptography.hazmat.primitives import serialization
 
     # First convert encrypted_key_bytes to PKey object
