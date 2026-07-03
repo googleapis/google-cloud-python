@@ -371,8 +371,6 @@ def test_get_default_ssl_context_unconfigured(mock_create_context, mock_load_def
         ("NEVER", False, False),
         ("AUTO", True, True),
         ("AUTO", False, False),
-        ("invalid_val", True, True),
-        ("invalid_val", False, False),
     ],
 )
 @mock.patch(
@@ -397,23 +395,16 @@ def test_should_use_mtls_endpoint(
     "GOOGLE_API_USE_MTLS_ENDPOINT",
 )
 @mock.patch("google.auth.transport.mtls.getenv", autospec=True)
-def test_should_use_mtls_endpoint_invalid_value(mock_getenv, caplog):
+def test_should_use_mtls_endpoint_invalid_value(mock_getenv):
     mock_getenv.side_effect = (
         lambda var, default=None: "invalid_value"
         if var == "GOOGLE_API_USE_MTLS_ENDPOINT"
         else default
     )
-    with caplog.at_level("WARNING"):
-        assert mtls.should_use_mtls_endpoint(True) is True
-        assert "Unsupported GOOGLE_API_USE_MTLS_ENDPOINT value" in caplog.text
-        assert "Defaulting to auto" in caplog.text
-
-    caplog.clear()
-
-    with caplog.at_level("WARNING"):
-        assert mtls.should_use_mtls_endpoint(False) is False
-        assert "Unsupported GOOGLE_API_USE_MTLS_ENDPOINT value" in caplog.text
-        assert "Defaulting to auto" in caplog.text
+    with pytest.raises(exceptions.MutualTLSChannelError) as exc_info:
+        mtls.should_use_mtls_endpoint(True)
+    assert "Unsupported GOOGLE_API_USE_MTLS_ENDPOINT value" in str(exc_info.value)
+    assert "'invalid_value'" in str(exc_info.value)
 
 
 @mock.patch(

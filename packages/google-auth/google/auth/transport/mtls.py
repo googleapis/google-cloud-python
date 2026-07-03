@@ -286,6 +286,9 @@ def get_default_ssl_context() -> Optional[ssl.SSLContext]:
         google.auth.exceptions.MutualTLSChannelError: If the default client certificate
             or key is malformed.
     """
+    if not should_use_client_cert() or not has_default_client_cert_source():
+        return None
+
     ctx = ssl.create_default_context(ssl.Purpose.SERVER_AUTH)
     return ctx if load_default_client_cert(ctx) else None
 
@@ -300,9 +303,9 @@ def should_use_mtls_endpoint(
     or unset, returns whether a client certificate is available.
 
     Args:
-        client_cert_available (bool): indicating if a client certificate
+        client_cert_available (Optional[bool]): indicating if a client certificate
             is available. If None, this is determined by checking if client
-            certificates are enabled and a default source is present.
+            certificates are enabled using :func:`should_use_client_cert`.
 
     Returns:
         bool: indicating if an mTLS endpoint should be used.
@@ -311,7 +314,7 @@ def should_use_mtls_endpoint(
         client_cert_available = should_use_client_cert()
 
     use_mtls_endpoint = getenv(environment_vars.GOOGLE_API_USE_MTLS_ENDPOINT, "auto")
-    use_mtls_endpoint = use_mtls_endpoint.lower()
+    use_mtls_endpoint = use_mtls_endpoint.strip().lower()
     if use_mtls_endpoint == "always":
         return True
     if use_mtls_endpoint == "never":
@@ -319,9 +322,7 @@ def should_use_mtls_endpoint(
     if use_mtls_endpoint == "auto":
         return client_cert_available
 
-    _LOGGER.warning(
-        "Unsupported GOOGLE_API_USE_MTLS_ENDPOINT value %r. Accepted "
-        "values: never, auto, always. Defaulting to auto.",
-        use_mtls_endpoint,
+    raise exceptions.MutualTLSChannelError(
+        f"Unsupported {environment_vars.GOOGLE_API_USE_MTLS_ENDPOINT} value "
+        f"'{use_mtls_endpoint}'. Accepted values: never, auto, always."
     )
-    return client_cert_available
