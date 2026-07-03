@@ -77,10 +77,8 @@ def test_has_default_client_cert_source_falls_back(mock_check):
 @mock.patch("google.auth.transport._mtls_helper._check_config_path", autospec=True)
 def test_has_default_client_cert_source_env_var_success(check_config_path, mock_getenv):
     # 1. Mock getenv to return our test path
-    mock_getenv.side_effect = (
-        lambda var: "path/to/cert.json"
-        if var == "GOOGLE_API_CERTIFICATE_CONFIG"
-        else None
+    mock_getenv.side_effect = lambda var: (
+        "path/to/cert.json" if var == "GOOGLE_API_CERTIFICATE_CONFIG" else None
     )
 
     # 2. Mock _check_config_path side effect
@@ -105,8 +103,8 @@ def test_has_default_client_cert_source_env_var_invalid_config_path(
     check_config_path, mock_getenv
 ):
     # Set the env var but make the check fail
-    mock_getenv.side_effect = (
-        lambda var: "invalid/path" if var == "GOOGLE_API_CERTIFICATE_CONFIG" else None
+    mock_getenv.side_effect = lambda var: (
+        "invalid/path" if var == "GOOGLE_API_CERTIFICATE_CONFIG" else None
     )
     check_config_path.return_value = None
 
@@ -406,8 +404,8 @@ def test_get_default_ssl_context_exception(mock_create_context, mock_load_defaul
 def test_should_use_mtls_endpoint(
     mock_getenv, env_val, client_cert_available, expected
 ):
-    mock_getenv.side_effect = (
-        lambda var, default=None: env_val
+    mock_getenv.side_effect = lambda var, default=None: (
+        env_val
         if (var == "GOOGLE_API_USE_MTLS_ENDPOINT" and env_val is not None)
         else default
     )
@@ -417,10 +415,8 @@ def test_should_use_mtls_endpoint(
 
 @mock.patch("google.auth.transport.mtls.getenv", autospec=True)
 def test_should_use_mtls_endpoint_invalid_value(mock_getenv):
-    mock_getenv.side_effect = (
-        lambda var, default=None: "invalid_value"
-        if var == "GOOGLE_API_USE_MTLS_ENDPOINT"
-        else default
+    mock_getenv.side_effect = lambda var, default=None: (
+        "invalid_value" if var == "GOOGLE_API_USE_MTLS_ENDPOINT" else default
     )
     with pytest.raises(exceptions.MutualTLSChannelError) as exc_info:
         mtls.should_use_mtls_endpoint(True)
@@ -433,10 +429,8 @@ def test_should_use_mtls_endpoint_invalid_value(mock_getenv):
 def test_should_use_mtls_endpoint_default_client_cert(
     mock_getenv, mock_should_use_client_cert
 ):
-    mock_getenv.side_effect = (
-        lambda var, default=None: "auto"
-        if var == "GOOGLE_API_USE_MTLS_ENDPOINT"
-        else default
+    mock_getenv.side_effect = lambda var, default=None: (
+        "auto" if var == "GOOGLE_API_USE_MTLS_ENDPOINT" else default
     )
     mock_should_use_client_cert.return_value = True
     assert mtls.should_use_mtls_endpoint() is True
@@ -447,3 +441,23 @@ def test_should_use_mtls_endpoint_default_client_cert(
     mock_should_use_client_cert.return_value = False
     assert mtls.should_use_mtls_endpoint() is False
     mock_should_use_client_cert.assert_called_once()
+
+
+@mock.patch("google.auth.transport.mtls.should_use_client_cert", autospec=True)
+@mock.patch("google.auth.transport.mtls.has_default_client_cert_source", autospec=True)
+def test_get_default_ssl_context_not_should_use(mock_has_default, mock_should_use):
+    mock_should_use.return_value = False
+    mock_has_default.return_value = True
+
+    result = mtls.get_default_ssl_context()
+    assert result is None
+
+
+@mock.patch("google.auth.transport.mtls.should_use_client_cert", autospec=True)
+@mock.patch("google.auth.transport.mtls.has_default_client_cert_source", autospec=True)
+def test_get_default_ssl_context_no_default_source(mock_has_default, mock_should_use):
+    mock_should_use.return_value = True
+    mock_has_default.return_value = False
+
+    result = mtls.get_default_ssl_context()
+    assert result is None

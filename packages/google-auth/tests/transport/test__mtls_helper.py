@@ -1409,8 +1409,6 @@ class TestTempfileCertKeyPaths(object):
     def test_cleanup_on_key_write_error(
         self, mock_encrypt, mock_isdir, mock_access, tmpdir
     ):
-        import builtins
-
         original_mkstemp = tempfile.mkstemp
 
         cert_path_ref = []
@@ -1423,7 +1421,6 @@ class TestTempfileCertKeyPaths(object):
         with mock.patch.object(tempfile, "mkstemp", side_effect=_redirect_mkstemp):
             mock_encrypt.return_value = (b"encrypted_key", b"new_pass")
 
-            import os
             original_fdopen = os.fdopen
             call_count = [0]
 
