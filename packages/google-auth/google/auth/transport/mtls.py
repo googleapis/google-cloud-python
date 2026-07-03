@@ -186,18 +186,22 @@ def _load_client_cert_into_context(
             key_path,
             passphrase_val,
         ):
+            password_val = (
+                passphrase_val.decode("utf-8")
+                if isinstance(passphrase_val, bytes)
+                else passphrase_val
+            )
             ctx.load_cert_chain(
-                certfile=cert_path, keyfile=key_path, password=passphrase_val
+                certfile=cert_path, keyfile=key_path, password=password_val
             )
     except (
         ssl.SSLError,
         OSError,
         ValueError,
         RuntimeError,
+        TypeError,
     ) as caught_exc:
-        new_exc = exceptions.MutualTLSChannelError(
-            "Failed to load client certificate and key for mTLS."
-        )
+        new_exc = exceptions.MutualTLSChannelError(caught_exc)
         raise new_exc from caught_exc
 
 
@@ -247,12 +251,21 @@ def load_default_client_cert(ctx: ssl.SSLContext) -> bool:
     """
     if not should_use_client_cert() or not has_default_client_cert_source():
         return False
-    (
-        has_cert,
-        cert_bytes,
-        key_bytes,
-        passphrase,
-    ) = _mtls_helper.get_client_ssl_credentials()
+    try:
+        (
+            has_cert,
+            cert_bytes,
+            key_bytes,
+            passphrase,
+        ) = _mtls_helper.get_client_ssl_credentials()
+    except (
+        exceptions.ClientCertError,
+        OSError,
+        RuntimeError,
+        ValueError,
+    ) as caught_exc:
+        new_exc = exceptions.MutualTLSChannelError(caught_exc)
+        raise new_exc from caught_exc
     if not has_cert:
         return False
     _load_client_cert_into_context(ctx, cert_bytes, key_bytes, passphrase)

@@ -199,7 +199,7 @@ def test_load_client_cert_into_context_success(mock_secure_paths):
     )
     assert result is None
     mock_ctx.load_cert_chain.assert_called_once_with(
-        certfile="cert_path", keyfile="key_path", password=b"passphrase"
+        certfile="cert_path", keyfile="key_path", password="passphrase"
     )
 
 
@@ -212,7 +212,7 @@ def test_load_client_cert_into_context_error(mock_secure_paths):
     mock_ctx.load_cert_chain.side_effect = ssl.SSLError("boom")
     with pytest.raises(exceptions.MutualTLSChannelError) as exc_info:
         mtls._load_client_cert_into_context(mock_ctx, b"cert", b"key")
-    assert "Failed to load client certificate and key" in str(exc_info.value)
+    assert "boom" in str(exc_info.value)
     assert isinstance(exc_info.value.__cause__, ssl.SSLError)
 
 
@@ -234,9 +234,10 @@ def test_load_client_cert_into_context_invalid_ctx(invalid_ctx):
 def test_load_client_cert_into_context_load_chain_type_error(mock_secure_paths):
     mock_ctx = mock.Mock(spec=ssl.SSLContext)
     mock_ctx.load_cert_chain.side_effect = TypeError("invalid password type")
-    with pytest.raises(TypeError) as exc_info:
+    with pytest.raises(exceptions.MutualTLSChannelError) as exc_info:
         mtls._load_client_cert_into_context(mock_ctx, b"cert", b"key")
     assert "invalid password type" in str(exc_info.value)
+    assert isinstance(exc_info.value.__cause__, TypeError)
 
 
 @mock.patch("google.auth.transport.mtls._load_client_cert_into_context", autospec=True)
@@ -319,9 +320,10 @@ def test_load_default_client_cert_propagates_client_cert_error(
     mock_get_credentials.side_effect = exceptions.ClientCertError("credentials failure")
     mock_ctx = mock.Mock(spec=ssl.SSLContext)
 
-    with pytest.raises(exceptions.ClientCertError) as exc_info:
+    with pytest.raises(exceptions.MutualTLSChannelError) as exc_info:
         mtls.load_default_client_cert(mock_ctx)
     assert "credentials failure" in str(exc_info.value)
+    assert isinstance(exc_info.value.__cause__, exceptions.ClientCertError)
 
 
 @mock.patch("google.auth.transport.mtls.load_default_client_cert", autospec=True)
