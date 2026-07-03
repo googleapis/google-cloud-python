@@ -1204,6 +1204,31 @@ class TestSecureCertKeyPaths(object):
             assert key_path == "/tmp/key"
             assert passphrase == b"new_pass"
 
+    @mock.patch.object(sys, "platform", "linux")
+    @mock.patch.object(os, "memfd_create", create=True)
+    @mock.patch.object(_mtls_helper, "_memfd_cert_key_paths", autospec=True)
+    @mock.patch.object(_mtls_helper, "_tempfile_cert_key_paths", autospec=True)
+    def test_tier3_fallback_failure_propagation(
+        self, mock_tempfile_cm, mock_memfd_cm, mock_memfd_create
+    ):
+        mock_memfd_ctx = mock.MagicMock()
+        mock_memfd_ctx.__enter__.side_effect = _mtls_helper._MemfdCreationError(
+            "memfd failed"
+        )
+        mock_memfd_cm.return_value = mock_memfd_ctx
+
+        mock_tempfile_ctx = mock.MagicMock()
+        mock_tempfile_ctx.__enter__.side_effect = OSError("tempfile failed")
+        mock_tempfile_cm.return_value = mock_tempfile_ctx
+
+        with pytest.raises(OSError) as exc_info:
+            with _mtls_helper.secure_cert_key_paths(
+                pytest.public_cert_bytes, pytest.private_key_bytes, b"passphrase"
+            ):
+                pass
+
+        assert "tempfile failed" in str(exc_info.value)
+
     @mock.patch.object(sys, "platform", "darwin")
     @mock.patch.object(_mtls_helper, "_tempfile_cert_key_paths", autospec=True)
     def test_uses_tempfile_directly_on_unsupported_os(self, mock_tempfile_cm):
@@ -1381,6 +1406,46 @@ class TestTempfileCertKeyPaths(object):
     @mock.patch.object(os, "access", return_value=True)
     @mock.patch.object(os.path, "isdir", return_value=True)
     @mock.patch.object(_mtls_helper, "_encrypt_key_if_plaintext", autospec=True)
+    def test_cleanup_on_key_write_error(
+        self, mock_encrypt, mock_isdir, mock_access, tmpdir
+    ):
+        import builtins
+
+        original_mkstemp = tempfile.mkstemp
+
+        cert_path_ref = []
+
+        def _redirect_mkstemp(dir=None):
+            fd, path = original_mkstemp(dir=str(tmpdir))
+            cert_path_ref.append(path)
+            return fd, path
+
+        with mock.patch.object(tempfile, "mkstemp", side_effect=_redirect_mkstemp):
+            mock_encrypt.return_value = (b"encrypted_key", b"new_pass")
+
+            import os
+            original_fdopen = os.fdopen
+            call_count = [0]
+
+            def _failing_fdopen(fd, *args, **kwargs):
+                call_count[0] += 1
+                if call_count[0] == 2:
+                    raise OSError("key write failed")
+                return original_fdopen(fd, *args, **kwargs)
+
+            with pytest.raises(OSError):
+                with mock.patch("os.fdopen", side_effect=_failing_fdopen):
+                    with _mtls_helper._tempfile_cert_key_paths(
+                        b"cert", b"key", b"pass"
+                    ):
+                        pass
+
+            assert len(cert_path_ref) > 0
+            assert not os.path.exists(cert_path_ref[0])
+
+    @mock.patch.object(os, "access", return_value=True)
+    @mock.patch.object(os.path, "isdir", return_value=True)
+    @mock.patch.object(_mtls_helper, "_encrypt_key_if_plaintext", autospec=True)
     def test_mkstemp_shm_oserror_fallback(
         self,
         mock_encrypt,
@@ -1472,6 +1537,21 @@ class TestEncryptKeyIfPlaintext(object):
         )
         assert decrypted
 
+        original_key = serialization.load_pem_private_key(
+            pytest.private_key_bytes, password=None
+        )
+        decrypted_bytes = decrypted.private_bytes(
+            encoding=serialization.Encoding.PEM,
+            format=serialization.PrivateFormat.PKCS8,
+            encryption_algorithm=serialization.NoEncryption(),
+        )
+        original_bytes = original_key.private_bytes(
+            encoding=serialization.Encoding.PEM,
+            format=serialization.PrivateFormat.PKCS8,
+            encryption_algorithm=serialization.NoEncryption(),
+        )
+        assert decrypted_bytes == original_bytes
+
     @mock.patch("secrets.token_hex", return_value="0123456789abcdef0123456789abcdef")
     def test_default_passphrase_generation(self, mock_secrets):
         encrypted_bytes, passphrase = _mtls_helper._encrypt_key_if_plaintext(
@@ -1494,6 +1574,24 @@ class TestEncryptKeyIfPlaintext(object):
         assert passphrase == b"my_passphrase_str"
         assert encrypted_bytes != pytest.private_key_bytes
         assert b"ENCRYPTED PRIVATE KEY" in encrypted_bytes
+
+        decrypted = serialization.load_pem_private_key(
+            encrypted_bytes, password=b"my_passphrase_str"
+        )
+        original_key = serialization.load_pem_private_key(
+            pytest.private_key_bytes, password=None
+        )
+        decrypted_bytes = decrypted.private_bytes(
+            encoding=serialization.Encoding.PEM,
+            format=serialization.PrivateFormat.PKCS8,
+            encryption_algorithm=serialization.NoEncryption(),
+        )
+        original_bytes = original_key.private_bytes(
+            encoding=serialization.Encoding.PEM,
+            format=serialization.PrivateFormat.PKCS8,
+            encryption_algorithm=serialization.NoEncryption(),
+        )
+        assert decrypted_bytes == original_bytes
 
     def test_returns_unsupported_algorithm_asis(self):
         import cryptography.exceptions
@@ -1537,6 +1635,7 @@ class TestSecureWipeAndRemove(object):
 
         mock_open.assert_called_once_with("/path/to/secret", "r+b")
         mock_fh.write.assert_called_once_with(b"\0" * 10)
+        mock_fh.flush.assert_called_once()
         mock_fsync.assert_called_once()
         mock_remove.assert_called_once_with("/path/to/secret")
 
@@ -1583,5 +1682,6 @@ class TestSecureWipeAndRemove(object):
         _mtls_helper._secure_wipe_and_remove("/path/to/secret")
 
         mock_open.assert_called_once_with("/path/to/secret", "r+b")
+        mock_fh.flush.assert_called_once()
         mock_fsync.assert_called_once()
         mock_remove.assert_called_once_with("/path/to/secret")
