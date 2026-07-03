@@ -154,7 +154,7 @@ def should_use_client_cert():
     return _mtls_helper.check_use_client_cert()
 
 
-def load_client_cert_into_context(
+def _load_client_cert_into_context(
     ctx: ssl.SSLContext,
     cert_bytes: bytes,
     key_bytes: bytes,
@@ -172,7 +172,7 @@ def load_client_cert_into_context(
         google.auth.exceptions.MutualTLSChannelError: If the SSL context is invalid,
             or if loading the certificate and key fails.
     """
-    if ctx is None or not hasattr(ctx, "load_cert_chain"):
+    if not isinstance(ctx, ssl.SSLContext):
         raise exceptions.MutualTLSChannelError(
             "Failed to load client certificate and key for mTLS. The provided context "
             "object is invalid or does not support loading certificate chains."
@@ -201,7 +201,7 @@ def load_client_cert_into_context(
         raise new_exc from caught_exc
 
 
-def make_client_cert_ssl_context(
+def _make_client_cert_ssl_context(
     cert_bytes: bytes,
     key_bytes: bytes,
     passphrase: Optional[bytes] = None,
@@ -220,7 +220,7 @@ def make_client_cert_ssl_context(
         google.auth.exceptions.MutualTLSChannelError: If loading the certificate and key fails.
     """
     ctx = ssl.create_default_context(ssl.Purpose.SERVER_AUTH)
-    load_client_cert_into_context(ctx, cert_bytes, key_bytes, passphrase=passphrase)
+    _load_client_cert_into_context(ctx, cert_bytes, key_bytes, passphrase=passphrase)
     return ctx
 
 
@@ -255,7 +255,7 @@ def load_default_client_cert(ctx: ssl.SSLContext) -> bool:
     ) = _mtls_helper.get_client_ssl_credentials()
     if not has_cert:
         return False
-    load_client_cert_into_context(ctx, cert_bytes, key_bytes, passphrase)
+    _load_client_cert_into_context(ctx, cert_bytes, key_bytes, passphrase)
     return True
 
 

@@ -194,7 +194,7 @@ def _fake_secure_paths(cert_bytes, key_bytes, passphrase=None):
 )
 def test_load_client_cert_into_context_success(mock_secure_paths):
     mock_ctx = mock.Mock(spec=ssl.SSLContext)
-    result = mtls.load_client_cert_into_context(
+    result = mtls._load_client_cert_into_context(
         mock_ctx, b"cert", b"key", passphrase=b"passphrase"
     )
     assert result is None
@@ -211,14 +211,15 @@ def test_load_client_cert_into_context_error(mock_secure_paths):
     mock_ctx = mock.Mock(spec=ssl.SSLContext)
     mock_ctx.load_cert_chain.side_effect = ssl.SSLError("boom")
     with pytest.raises(exceptions.MutualTLSChannelError) as exc_info:
-        mtls.load_client_cert_into_context(mock_ctx, b"cert", b"key")
+        mtls._load_client_cert_into_context(mock_ctx, b"cert", b"key")
     assert "Failed to load client certificate and key" in str(exc_info.value)
     assert isinstance(exc_info.value.__cause__, ssl.SSLError)
 
 
-def test_load_client_cert_into_context_invalid_ctx():
+@pytest.mark.parametrize("invalid_ctx", [None, object()])
+def test_load_client_cert_into_context_invalid_ctx(invalid_ctx):
     with pytest.raises(exceptions.MutualTLSChannelError) as exc_info:
-        mtls.load_client_cert_into_context(None, b"cert", b"key")
+        mtls._load_client_cert_into_context(invalid_ctx, b"cert", b"key")
     assert (
         "The provided context object is invalid or does not support loading certificate chains"
         in str(exc_info.value)
@@ -234,17 +235,17 @@ def test_load_client_cert_into_context_load_chain_type_error(mock_secure_paths):
     mock_ctx = mock.Mock(spec=ssl.SSLContext)
     mock_ctx.load_cert_chain.side_effect = TypeError("invalid password type")
     with pytest.raises(TypeError) as exc_info:
-        mtls.load_client_cert_into_context(mock_ctx, b"cert", b"key")
+        mtls._load_client_cert_into_context(mock_ctx, b"cert", b"key")
     assert "invalid password type" in str(exc_info.value)
 
 
-@mock.patch("google.auth.transport.mtls.load_client_cert_into_context", autospec=True)
+@mock.patch("google.auth.transport.mtls._load_client_cert_into_context", autospec=True)
 @mock.patch("ssl.create_default_context", autospec=True)
 def test_make_client_cert_ssl_context(mock_create_context, mock_load_cert):
     mock_ctx = mock.Mock(spec=ssl.SSLContext)
     mock_create_context.return_value = mock_ctx
 
-    result = mtls.make_client_cert_ssl_context(b"cert", b"key", b"passphrase")
+    result = mtls._make_client_cert_ssl_context(b"cert", b"key", b"passphrase")
 
     assert result == mock_ctx
     mock_create_context.assert_called_once_with(ssl.Purpose.SERVER_AUTH)
@@ -287,7 +288,7 @@ def test_load_default_client_cert_no_cert(
     mock_ctx.load_cert_chain.assert_not_called()
 
 
-@mock.patch("google.auth.transport.mtls.load_client_cert_into_context", autospec=True)
+@mock.patch("google.auth.transport.mtls._load_client_cert_into_context", autospec=True)
 @mock.patch(
     "google.auth.transport._mtls_helper.get_client_ssl_credentials", autospec=True
 )
