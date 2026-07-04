@@ -291,7 +291,7 @@ def should_use_mtls_endpoint(
         client_cert_available = should_use_client_cert()
 
     use_mtls_endpoint = getenv(environment_vars.GOOGLE_API_USE_MTLS_ENDPOINT, "auto")
-    use_mtls_endpoint = use_mtls_endpoint.strip().lower()
+    use_mtls_endpoint = (use_mtls_endpoint or "auto").strip().lower()
     if use_mtls_endpoint == "always":
         return True
     if use_mtls_endpoint == "never":

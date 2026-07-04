@@ -383,6 +383,8 @@ def test_get_default_ssl_context_exception(mock_create_context, mock_load_defaul
         ("NEVER", False, False),
         ("AUTO", True, True),
         ("AUTO", False, False),
+        ("", True, True),
+        ("", False, False),
     ],
 )
 @mock.patch("google.auth.transport.mtls.getenv", autospec=True)
