@@ -250,21 +250,6 @@ def test_load_client_cert_into_context_invalid_ctx(invalid_ctx):
     assert exc_info.value.__cause__ is None
 
 
-@mock.patch("google.auth.transport.mtls._load_client_cert_into_context", autospec=True)
-@mock.patch("ssl.create_default_context", autospec=True)
-def test_make_client_cert_ssl_context(mock_create_context, mock_load_cert):
-    mock_ctx = mock.Mock(spec=ssl.SSLContext)
-    mock_create_context.return_value = mock_ctx
-
-    result = mtls._make_client_cert_ssl_context(b"cert", b"key", b"passphrase")
-
-    assert result == mock_ctx
-    mock_create_context.assert_called_once_with(ssl.Purpose.SERVER_AUTH)
-    mock_load_cert.assert_called_once_with(
-        mock_ctx, b"cert", b"key", passphrase=b"passphrase"
-    )
-
-
 @mock.patch("google.auth.transport.mtls.should_use_client_cert", autospec=True)
 def test_load_default_client_cert_disabled(mock_should_use):
     mock_should_use.return_value = False

@@ -205,29 +205,6 @@ def _load_client_cert_into_context(
         raise new_exc from caught_exc
 
 
-def _make_client_cert_ssl_context(
-    cert_bytes: bytes,
-    key_bytes: bytes,
-    passphrase: Optional[bytes] = None,
-) -> ssl.SSLContext:
-    """Create a default SSL context loaded with the client certificate and key.
-
-    Args:
-        cert_bytes (bytes): The client certificate bytes in PEM format.
-        key_bytes (bytes): The client private key bytes in PEM format.
-        passphrase (Optional[bytes]): The passphrase for the client private key.
-
-    Returns:
-        ssl.SSLContext: The SSL context loaded with the client certificate and key.
-
-    Raises:
-        google.auth.exceptions.MutualTLSChannelError: If loading the certificate and key fails.
-    """
-    ctx = ssl.create_default_context(ssl.Purpose.SERVER_AUTH)
-    _load_client_cert_into_context(ctx, cert_bytes, key_bytes, passphrase=passphrase)
-    return ctx
-
-
 def load_default_client_cert(ctx: ssl.SSLContext) -> bool:
     """Load the default client certificate and key into an SSL context if configured.
 
