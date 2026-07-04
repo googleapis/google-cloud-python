@@ -191,6 +191,10 @@ def _load_client_cert_into_context(
                 if isinstance(passphrase_val, bytes)
                 else passphrase_val
             )
+            if cert_path is None or key_path is None:
+                raise exceptions.MutualTLSChannelError(
+                    "Failed to generate temporary file paths for the client certificate and key."
+                )
             ctx.load_cert_chain(
                 certfile=cert_path, keyfile=key_path, password=password_val
             )
