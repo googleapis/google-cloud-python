@@ -326,9 +326,15 @@ def test_load_default_client_cert_propagates_client_cert_error(
     assert isinstance(exc_info.value.__cause__, exceptions.ClientCertError)
 
 
+@mock.patch("google.auth.transport.mtls.has_default_client_cert_source", autospec=True)
+@mock.patch("google.auth.transport.mtls.should_use_client_cert", autospec=True)
 @mock.patch("google.auth.transport.mtls.load_default_client_cert", autospec=True)
 @mock.patch("ssl.create_default_context", autospec=True)
-def test_get_default_ssl_context_configured(mock_create_context, mock_load_default):
+def test_get_default_ssl_context_configured(
+    mock_create_context, mock_load_default, mock_should_use, mock_has_source
+):
+    mock_should_use.return_value = True
+    mock_has_source.return_value = True
     mock_ctx = mock.Mock(spec=ssl.SSLContext)
     mock_create_context.return_value = mock_ctx
     mock_load_default.return_value = True
@@ -340,9 +346,15 @@ def test_get_default_ssl_context_configured(mock_create_context, mock_load_defau
     mock_load_default.assert_called_once_with(mock_ctx)
 
 
+@mock.patch("google.auth.transport.mtls.has_default_client_cert_source", autospec=True)
+@mock.patch("google.auth.transport.mtls.should_use_client_cert", autospec=True)
 @mock.patch("google.auth.transport.mtls.load_default_client_cert", autospec=True)
 @mock.patch("ssl.create_default_context", autospec=True)
-def test_get_default_ssl_context_unconfigured(mock_create_context, mock_load_default):
+def test_get_default_ssl_context_unconfigured(
+    mock_create_context, mock_load_default, mock_should_use, mock_has_source
+):
+    mock_should_use.return_value = True
+    mock_has_source.return_value = True
     mock_ctx = mock.Mock(spec=ssl.SSLContext)
     mock_create_context.return_value = mock_ctx
     mock_load_default.return_value = False
@@ -354,9 +366,15 @@ def test_get_default_ssl_context_unconfigured(mock_create_context, mock_load_def
     mock_load_default.assert_called_once_with(mock_ctx)
 
 
+@mock.patch("google.auth.transport.mtls.has_default_client_cert_source", autospec=True)
+@mock.patch("google.auth.transport.mtls.should_use_client_cert", autospec=True)
 @mock.patch("google.auth.transport.mtls.load_default_client_cert", autospec=True)
 @mock.patch("ssl.create_default_context", autospec=True)
-def test_get_default_ssl_context_exception(mock_create_context, mock_load_default):
+def test_get_default_ssl_context_exception(
+    mock_create_context, mock_load_default, mock_should_use, mock_has_source
+):
+    mock_should_use.return_value = True
+    mock_has_source.return_value = True
     mock_ctx = mock.Mock(spec=ssl.SSLContext)
     mock_create_context.return_value = mock_ctx
     mock_load_default.side_effect = exceptions.ClientCertError("mock error message")
