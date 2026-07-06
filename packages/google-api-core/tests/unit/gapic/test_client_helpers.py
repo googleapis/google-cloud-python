@@ -23,48 +23,66 @@ from google.auth.exceptions import MutualTLSChannelError
 
 def test__get_default_mtls_endpoint():
     # Test valid API endpoints
-    assert client_helpers._get_default_mtls_endpoint("foo.googleapis.com") == "foo.mtls.googleapis.com"
-    assert client_helpers._get_default_mtls_endpoint("foo.sandbox.googleapis.com") == "foo.mtls.sandbox.googleapis.com"
-    
+    assert (
+        client_helpers._get_default_mtls_endpoint("foo.googleapis.com")
+        == "foo.mtls.googleapis.com"
+    )
+    assert (
+        client_helpers._get_default_mtls_endpoint("foo.sandbox.googleapis.com")
+        == "foo.mtls.sandbox.googleapis.com"
+    )
+
     # Test endpoints that shouldn't be converted
-    assert client_helpers._get_default_mtls_endpoint("foo.mtls.googleapis.com") == "foo.mtls.googleapis.com"
+    assert (
+        client_helpers._get_default_mtls_endpoint("foo.mtls.googleapis.com")
+        == "foo.mtls.googleapis.com"
+    )
     assert client_helpers._get_default_mtls_endpoint("foo.com") == "foo.com"
-    
+
     # Test empty/None endpoints
     assert client_helpers._get_default_mtls_endpoint("") == ""
     assert client_helpers._get_default_mtls_endpoint(None) is None
 
 
 @mock.patch("google.auth.transport.mtls.should_use_client_cert", autospec=True)
-def test__use_client_cert_effective_with_google_auth(mock_should_use_client_cert):
+def test__use_client_cert_effective_with_google_auth(mock_method):
     # Test when google-auth supports the method
-    mock_should_use_client_cert.return_value = True
+    mock_method.return_value = True
     assert client_helpers._use_client_cert_effective() is True
-    
-    mock_should_use_client_cert.return_value = False
+
+    mock_method.return_value = False
     assert client_helpers._use_client_cert_effective() is False
 
 
 @mock.patch.dict(os.environ, {}, clear=True)
 def test__use_client_cert_effective_fallback():
     # We must patch hasattr to simulate google-auth lacking the method
-    with mock.patch("google.api_core.gapic_v1.client_helpers.hasattr", return_value=False):
+    with mock.patch(
+        "google.api_core.gapic_v1.client_helpers.hasattr", return_value=False
+    ):
         # Default is false
         assert client_helpers._use_client_cert_effective() is False
-        
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
+
+        env_true = {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}
+        with mock.patch.dict(os.environ, env_true):
             assert client_helpers._use_client_cert_effective() is True
-            
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
+
+        with mock.patch.dict(
+            os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}
+        ):
             assert client_helpers._use_client_cert_effective() is False
-            
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "invalid"}):
-            with pytest.raises(ValueError, match="must be either `true` or `false`"):
+
+        with mock.patch.dict(
+            os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "invalid"}
+        ):
+            match_str = "must be either `true` or `false`"
+            with pytest.raises(ValueError, match=match_str):
                 client_helpers._use_client_cert_effective()
 
 
 def test__get_api_endpoint_override():
-    # If api_override is provided, it should be returned regardless of other args
+    # If api_override is provided, it should be returned
+    # regardless of other args
     endpoint = client_helpers._get_api_endpoint(
         api_override="custom.endpoint.com",
         client_cert_source=None,
