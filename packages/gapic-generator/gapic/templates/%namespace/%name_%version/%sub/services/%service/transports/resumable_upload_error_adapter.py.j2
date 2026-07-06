@@ -48,6 +48,8 @@ class ResumableUploadErrorAdapter(grpc.RpcError, grpc.Call):
     def add_callback(self, callback: Any) -> None:
         pass
 
+_ADS_ERROR_CODE_UNKNOWN = 1 # Ads-specific error code to be used with the `ErrorCode`'s `request_error`.
+
 def raise_formatted_ads_exception(response: requests.Response):
     """Converts a RUP HTTP response into a rich GoogleAdsException.
 
@@ -66,8 +68,7 @@ def raise_formatted_ads_exception(response: requests.Response):
 
     # 2. Build the ErrorCode using the specific oneof member 'request_error'
     # Setting this automatically sets the 'error_code' oneof group.
-    # We use '1' (UNSPECIFIED/UNKNOWN) for the enum value within RequestError.
-    e_code = ErrorCode(request_error=1)
+    e_code = ErrorCode(request_error=_ADS_ERROR_CODE_UNKNOWN)
 
     # 3. Build the GoogleAdsError
     # Message is populated from the RUP response text

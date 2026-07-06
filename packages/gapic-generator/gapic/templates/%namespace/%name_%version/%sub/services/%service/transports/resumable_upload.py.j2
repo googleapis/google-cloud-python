@@ -94,7 +94,7 @@ class ResumableUpload:
             now = datetime.datetime.now(datetime.timezone.utc)
             timeout = (self.deadline - now).total_seconds()
             if timeout <= 0:
-                raise Exception(f"Upload deadline {self.deadline} (as calculated from the timeout argument) was exceeded")
+                raise RuntimeError(f"Upload deadline {self.deadline} (as calculated from the timeout argument) was exceeded")
             return timeout
         return None
 
