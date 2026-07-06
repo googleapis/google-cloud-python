@@ -133,7 +133,7 @@ fsspec==2025.3.0
 future==1.0.0
 gast==0.6.0
 gcsfs==2025.3.0
-GDAL==3.13.0
+GDAL==3.13.1
 gdown==5.2.0
 geemap==0.35.3
 geocoder==1.38.1
@@ -172,7 +172,7 @@ google-pasta==0.2.0
 google-resumable-media==2.7.2
 googleapis-common-protos==1.70.0
 googledrivedownloader==1.1.0
-gradio==5.39.0
+gradio==6.15.0
 gradio_client==1.11.0
 graphviz==0.21
 greenlet==3.2.3
@@ -569,7 +569,7 @@ tornado==6.4.2
 tqdm==4.67.1
 traitlets==5.7.1
 traittypes==0.2.1
-transformers==4.54.1
+transformers==5.3.0
 treelite==4.4.1
 treescope==0.1.9
 triton==3.2.0

@@ -135,11 +135,13 @@ jobs:
       - name: Install System Deps
         run: sudo apt-get update && sudo apt-get install -y pandoc
       - name: Run Goldens
+        env:
+          LATEST_STABLE_PYTHON: ${{ needs.python_config.outputs.latest_stable_python }}
         run: |
           pip install nox
           cd packages/gapic-generator
           for pkg in credentials eventarc logging redis; do
-            nox -f tests/integration/goldens/$pkg/noxfile.py -s format lint unit-${{ needs.python_config.outputs.latest_stable_python }}
+            nox -f tests/integration/goldens/$pkg/noxfile.py -s format lint unit-${LATEST_STABLE_PYTHON}
           done
       # Run pylint (errors-only) over the goldens so generator regressions
       # like undefined names or import-time breakage that ruff/flake8 do
@@ -214,11 +216,12 @@ jobs:
           # Run fragment for current matrix python
           nox -s fragment-${MATRIX_PYTHON}
           # Run snippetgen only on the latest stable to avoid the "Python not found" error
-          if [ "${MATRIX_PYTHON}" == "${{ needs.python_config.outputs.latest_stable_python }}" ]; then
+          if [ "${MATRIX_PYTHON}" == "${LATEST_STABLE_PYTHON}" ]; then
             nox -s snippetgen
           fi
         env:
           MATRIX_PYTHON: ${{ matrix.python }}
+          LATEST_STABLE_PYTHON: ${{ needs.python_config.outputs.latest_stable_python }}
   integration:
     needs: python_config
     # Only runs if the Gatekeeper passed

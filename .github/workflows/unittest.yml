@@ -12,14 +12,48 @@ name: unittest
 permissions:
   contents: read
 
+# Configurable global environment variables for batching
+env:
+  TEST_ALL_PACKAGES: "false" # Set to "false" to only run tests for packages with a git diff
+  ALL_PYTHON: "['3.9', '3.10', '3.11', '3.12', '3.13', '3.14', '3.15']"
 
 jobs:
+  # Dynamic package discovery job to calculate required matrix size automatically
+  python_config:
+    runs-on: ubuntu-latest
+    outputs:
+      all_python: ${{ steps.export.outputs.python_list }}
+    steps:
+      - id: export
+        run: echo "python_list=${{ env.ALL_PYTHON }}" >> "$GITHUB_OUTPUT"
+
+  discover-packages:
+    runs-on: ubuntu-latest
+    outputs:
+      batch-indices: ${{ steps.set-matrix.outputs.indices }}
+    steps:
+    - name: Checkout
+      uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+      with:
+        persist-credentials: false
+    - name: Setup Python
+      uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+      with:
+        python-version: "3.14"
+    - name: Generate Batch Indices
+      id: set-matrix
+      run: |
+        INDICES=$(python -c 'import sys; sys.path.append("ci"); import get_batches; print(get_batches.get_batch_indices())')
+        echo "indices=${INDICES}" >> "$GITHUB_OUTPUT"
+
   unit:
+    name: "unit-run (${{ matrix.python }}, Batch ${{ matrix.batch-index }})"
     runs-on: ubuntu-22.04
+    needs: [python_config, discover-packages]
     strategy:
-      fail-fast: true
       matrix:
-        python: ["3.10", "3.11", "3.12", "3.13", "3.14", "3.15"]
+        python: ${{ fromJSON(needs.python_config.outputs.all_python) }}
+        batch-index: ${{ fromJson(needs.discover-packages.outputs.batch-indices) }}
     steps:
     - name: Checkout
       uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
@@ -54,9 +88,11 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-uv-wheels-3.15-
     - name: Run unit tests
+      id: run-tests
       env:
-        COVERAGE_FILE: ${{ github.workspace }}/.coverage-${{ matrix.python }}
-        BUILD_TYPE: presubmit
+        COVERAGE_FILE: ${{ github.workspace }}/.coverage-${{ matrix.python }}-${{ matrix.batch-index }}
+        # Dynamically set BUILD_TYPE to an empty string to skip the diff calculation if TEST_ALL_PACKAGES is true
+        BUILD_TYPE: ${{ env.TEST_ALL_PACKAGES == 'true' && '' || 'presubmit' }}
         TARGET_BRANCH: ${{ github.base_ref || github.event.merge_group.base_ref }}
         TEST_TYPE: unit
         PY_VERSION: ${{ matrix.python }}
@@ -65,6 +101,15 @@ jobs:
         # Follow https://github.com/Instagram/LibCST/issues/1445 for updates.
         PYO3_USE_ABI3_FORWARD_COMPATIBILITY: "1"
       run: |
+        UNIQUE_BATCH_PACKAGES=$(python -c 'import sys; sys.path.append("ci"); import get_batches; print(get_batches.get_batch_slice(${{ matrix.batch-index }}))')
+
+        if [ -z "$UNIQUE_BATCH_PACKAGES" ]; then
+          echo "No structural units allocated to this matrix slice."
+          exit 0
+        fi
+
+        echo "Running tests for packages in this weighted batch: ${UNIQUE_BATCH_PACKAGES}"
+
         # Only inject overrides if we are strictly on the 3.15 pre-release
         # This is needed to speed up builds
         if [ "${{ matrix.python }}" = "3.15" ]; then
@@ -74,18 +119,31 @@ jobs:
           # Route uv's wheel and environment cache to our persistent workspace directory
           export UV_CACHE_DIR="${{ github.workspace }}/.uv-wheel-cache"
         fi
-        ci/run_conditional_tests.sh
+
+        ci/run_conditional_tests.sh ${UNIQUE_BATCH_PACKAGES}
+
+    - name: Save Status Footprint
+      run: |
+        mkdir -p footprints
+        echo "${{ steps.run-tests.outcome }}" > footprints/status.txt
+
+    - name: Upload Status Footprint
+      uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+      with:
+        name: footprint-${{ matrix.python }}-${{ matrix.batch-index }}
+        path: footprints/
+
     - name: Upload coverage results
       uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
       with:
-        name: coverage-artifact-${{ matrix.python }}
-        path: .coverage-${{ matrix.python }}
+        # Appended batch-index to separate parallel coverage uploads cleanly
+        name: coverage-artifact-${{ matrix.python }}-${{ matrix.batch-index }}
+        path: .coverage-${{ matrix.python }}-${{ matrix.batch-index }}
         include-hidden-files: true
 
   cover:
     runs-on: ubuntu-latest
-    needs:
-        - unit
+    needs: [unit]
     steps:
     - name: Checkout
       uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
@@ -197,3 +255,52 @@ jobs:
           echo "This usually means the unit tests did not run or failed to upload their coverage files."
           exit 1
         fi
+
+  unittest-runtime-result:
+    name: "unit (${{ matrix.python }})"
+    needs: [python_config, discover-packages, unit]
+    if: always()
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ${{ fromJSON(needs.python_config.outputs.all_python) }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download all status footprints for this runtime
+        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5
+        with:
+          pattern: footprint-${{ matrix.python }}-*
+          path: footprint-results/
+
+      - name: Validate complete batch execution footprint status
+        run: |
+          EXPECTED_BATCHES=$(echo '${{ needs.discover-packages.outputs.batch-indices }}' | jq '. | length')
+          
+          if [ -d "footprint-results" ]; then
+            ACTUAL_BATCHES=$(find footprint-results -type f -name 'status.txt' | wc -l | tr -d ' ')
+          else
+            ACTUAL_BATCHES=0
+          fi
+
+          echo "Validation metrics for Python ${{ matrix.python }}:"
+          echo " -> Expected footprint files: $EXPECTED_BATCHES"
+          echo " -> Downloaded footprint files: $ACTUAL_BATCHES"
+
+          if [ "$ACTUAL_BATCHES" -ne "$EXPECTED_BATCHES" ]; then
+            echo "Error: Footprint count mismatch! Expected $EXPECTED_BATCHES files, but found $ACTUAL_BATCHES."
+            exit 1
+          fi
+
+          FAILED_RUNS=0
+          while read -r STATUS_FILE; do
+            RUN_STATUS=$(cat "$STATUS_FILE" | tr -d '[:space:]')
+            if [[ "$RUN_STATUS" != "success" ]]; then
+              echo "Failure detected in batch profile path: $STATUS_FILE (Status: $RUN_STATUS)"
+              FAILED_RUNS=$((FAILED_RUNS + 1))
+            fi
+          done < <(find footprint-results -type f -name 'status.txt' 2>/dev/null)
+
+          if [ "$FAILED_RUNS" -gt 0 ]; then
+            echo "Error: Validation failed. Found $FAILED_RUNS failing test batches."
+            exit 1
+          fi
