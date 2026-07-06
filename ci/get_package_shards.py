@@ -92,45 +92,43 @@ def group_packages(packages):
         package_weights.append((pkg, weight))
         total_weight += weight
 
-    # Determine number of shards based on total weight
-    # 1. Base shard count on weight capacity of 10 per shard
-    num_shards = math.ceil(total_weight / 10)
+    # Dynamically determine target weight to balance across max 16 shards.
+    # 1. Base shard count has a target weight capacity of 10 per shard.
+    # 2. To avoid exceeding 16 shards, we scale the target weight dynamically
+    #    based on the total workload.
+    max_shards = 16
+    target_weight = max(10, math.ceil(total_weight / max_shards))
 
-    # Ensure at least 1 shard if we have packages
-    num_shards = max(1, num_shards)
+    shards_list = []
+    current_shard_packages = []
+    current_shard_weight = 0
 
-    # 2. Top out at 16 shards
-    num_shards = min(16, num_shards)
+    # Pack packages alphabetically and contiguously.
+    for pkg, weight in package_weights:
+        # Check if adding this package would exceed the target weight
+        if current_shard_packages and (current_shard_weight + weight > target_weight):
+            shards_list.append(current_shard_packages)
+            current_shard_packages = [pkg]
+            current_shard_weight = weight
+        else:
+            current_shard_packages.append(pkg)
+            current_shard_weight += weight
 
-    # Initialize shards as empty lists of packages with their current total weight
-    shard_buckets = [{"packages": [], "weight": 0} for _ in range(num_shards)]
-
-    # Sort packages descending by weight (LPT heuristic)
-    # If weights are equal, sort alphabetically for stability
-    sorted_packages = sorted(package_weights, key=lambda x: (-x[1], x[0]))
-
-    # Distribute greedily to the bucket with the minimum current weight
-    for pkg, weight in sorted_packages:
-        min_bucket = min(shard_buckets, key=lambda b: b["weight"])
-        min_bucket["packages"].append(pkg)
-        min_bucket["weight"] += weight
+    if current_shard_packages:
+        shards_list.append(current_shard_packages)
 
     # Construct the final shards output list
     shards = []
-    index = 1
-    for bucket in shard_buckets:
-        shard_packages = bucket["packages"]
-        if not shard_packages:
-            continue
+    for i, shard_packages in enumerate(shards_list):
+        index = i + 1
         name = f"Shard {index}"
         num_in_shard = len(shard_packages)
-
-        # Sort packages alphabetically for a cleaner description
-        sorted_shard_pkgs = sorted(shard_packages)
-        if len(sorted_shard_pkgs) == 1:
-            desc = sorted_shard_pkgs[0].strip('/').split('/')[-1]
+        
+        # Calculate contiguous range description
+        if len(shard_packages) == 1:
+            desc = shard_packages[0].strip('/').split('/')[-1]
         else:
-            desc = f"{sorted_shard_pkgs[0].strip('/').split('/')[-1]}...{sorted_shard_pkgs[-1].strip('/').split('/')[-1]} ({num_in_shard} packages)"
+            desc = f"{shard_packages[0].strip('/').split('/')[-1]}...{shard_packages[-1].strip('/').split('/')[-1]} ({num_in_shard} packages)"
 
         shards.append({
             "name": name,
@@ -139,7 +137,6 @@ def group_packages(packages):
             "packages": " ".join(shard_packages),
             "is_sharded": True
         })
-        index += 1
 
     # Set is_sharded dynamically based on the total number of shards
     total_shards = len(shards)
