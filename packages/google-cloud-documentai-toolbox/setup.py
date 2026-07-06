@@ -68,7 +68,7 @@ setuptools.setup(
         "intervaltree>=3.0.0",
         "pikepdf>=8.0.0, <11.0.0",
         "immutabledict>=2.0.0, <5.0.0",
-        "Pillow>=10.0.0, <12.0.0",
+        "Pillow>=10.0.0, <13.0.0",
         "Jinja2>=3.1.0, <4.0.0",
     ),
     python_requires=">=3.10",
