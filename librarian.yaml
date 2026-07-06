@@ -718,6 +718,7 @@ libraries:
     apis:
       - path: google/cloud/ces/v1
       - path: google/cloud/ces/v1beta
+    skip_generate: true
     python:
       default_version: v1
   - name: google-cloud-channel

@@ -646,13 +646,6 @@ class SessionServiceAsyncClient:
             self._client._transport.bidi_run_session
         ]
 
-        header_params = {}
-
-        if header_params:
-            metadata = tuple(metadata) + (
-                gapic_v1.routing_header.to_grpc_metadata(header_params),
-            )
-
         # Validate the universe domain.
         self._client._validate_universe_domain()
 
