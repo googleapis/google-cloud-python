@@ -135,7 +135,7 @@ def test_get_env_bool_with_dev_fallback_other_prefix(monkeypatch):
             False,
             True,
         ),
-        # Programmatic boolean flags are NOT supported in client_options 
+        # Programmatic boolean flags are NOT supported in client_options
         # (should default/fallback to False)
         (
             "tracing",
