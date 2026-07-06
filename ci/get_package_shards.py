@@ -18,12 +18,17 @@ import json
 import math
 import sys
 
-# Define set of long-running unit tests to run in isolated shard
-ISOLATED_PACKAGES = {
-    "google-cloud-compute",
-    "google-cloud-compute-v1beta",
-    "google-cloud-dialogflow",
-    "google-cloud-dialogflow-cx",
+# Define weights for long-running packages to balance shard execution time.
+# Default weight for any package not listed is 1.
+PACKAGE_WEIGHTS = {
+    "bigframes": 6,
+    "google-auth": 5,
+    "google-cloud-compute": 12,
+    "google-cloud-compute-v1beta": 12,
+    "google-cloud-dialogflow": 6,
+    "google-cloud-dialogflow-cx": 6,
+    "google-cloud-discoveryengine": 8,
+    "google-cloud-retail": 5,
 }
 
 
@@ -37,6 +42,7 @@ def get_packages():
         pkg_dirs = [os.path.join(subdir, d) + '/' for d in os.listdir(subdir) if os.path.isdir(os.path.join(subdir, d))]
         packages.extend(sorted(pkg_dirs))
     return packages
+
 
 def get_packages_to_test():
     build_type = os.environ.get('BUILD_TYPE', 'presubmit')
@@ -74,73 +80,63 @@ def group_packages(packages):
     if not packages:
         return []
 
-    isolated_to_test = []
-    normal_to_test = []
-
+    # Map packages to their weights
+    package_weights = []
+    total_weight = 0
     for pkg in packages:
         pkg_name = pkg.strip('/').split('/')[-1]
-        if pkg_name in ISOLATED_PACKAGES:
-            isolated_to_test.append(pkg)
-        else:
-            normal_to_test.append(pkg)
+        weight = PACKAGE_WEIGHTS.get(pkg_name, 1)
+        package_weights.append((pkg, weight))
+        total_weight += weight
 
+    # Determine number of shards based on total weight
+    # 1. Base shard count on weight capacity of 10 per shard
+    num_shards = math.ceil(total_weight / 10)
+
+    # Ensure at least 1 shard if we have packages
+    num_shards = max(1, num_shards)
+
+    # 2. Top out at 16 shards
+    num_shards = min(16, num_shards)
+
+    # Initialize shards as empty lists of packages with their current total weight
+    shard_buckets = [{"packages": [], "weight": 0} for _ in range(num_shards)]
+
+    # Sort packages descending by weight (LPT heuristic)
+    # If weights are equal, sort alphabetically for stability
+    sorted_packages = sorted(package_weights, key=lambda x: (-x[1], x[0]))
+
+    # Distribute greedily to the bucket with the minimum current weight
+    for pkg, weight in sorted_packages:
+        min_bucket = min(shard_buckets, key=lambda b: b["weight"])
+        min_bucket["packages"].append(pkg)
+        min_bucket["weight"] += weight
+
+    # Construct the final shards output list
     shards = []
     index = 1
+    for bucket in shard_buckets:
+        shard_packages = bucket["packages"]
+        if not shard_packages:
+            continue
+        name = f"Shard {index}"
+        num_in_shard = len(shard_packages)
 
-    # Add isolated packages to their own shards
-    for pkg in isolated_to_test:
-        pkg_name = pkg.strip('/').split('/')[-1]
-        clean_name = pkg_name.replace("google-cloud-", "")
+        # Sort packages alphabetically for a cleaner description
+        sorted_shard_pkgs = sorted(shard_packages)
+        if len(sorted_shard_pkgs) == 1:
+            desc = sorted_shard_pkgs[0].strip('/').split('/')[-1]
+        else:
+            desc = f"{sorted_shard_pkgs[0].strip('/').split('/')[-1]}...{sorted_shard_pkgs[-1].strip('/').split('/')[-1]} ({num_in_shard} packages)"
+
         shards.append({
-            "name": f"Shard {index}: {clean_name}",
+            "name": name,
             "index": index,
-            "description": pkg_name,
-            "packages": pkg,
+            "description": desc,
+            "packages": " ".join(shard_packages),
             "is_sharded": True
         })
         index += 1
-
-    # Group the remaining packages
-    if normal_to_test:
-        num_packages = len(normal_to_test)
-        
-        # 1. Only shard if > 10 packages are being touched
-        # 2. Only add a new shard if any shard would have > 10 packages.
-        # To guarantee that no shard contains more than 10 packages (when distributed evenly),
-        # we need S >= N / 10, which means S = ceil(N / 10).
-        num_shards = math.ceil(num_packages / 10)
-        
-        # Ensure at least 1 shard if we have packages
-        num_shards = max(1, num_shards)
-        
-        # 3. Top out at the remaining budget (total 16 shards minus isolated shards)
-        max_normal_shards = max(1, 16 - len(isolated_to_test))
-        num_shards = min(max_normal_shards, num_shards)
-        
-        # Distribute packages between them as evenly as possible
-        shard_size = math.ceil(num_packages / num_shards)
-
-        for i in range(num_shards):
-            start = i * shard_size
-            end = min((i + 1) * shard_size, num_packages)
-            if start >= num_packages:
-                break
-            shard_packages = normal_to_test[start:end]
-            name = f"Shard {index}"
-            num_in_shard = len(shard_packages)
-            if len(shard_packages) == 1:
-                desc = shard_packages[0].strip('/').split('/')[-1]
-            else:
-                desc = f"{shard_packages[0].strip('/').split('/')[-1]}...{shard_packages[-1].strip('/').split('/')[-1]} ({num_in_shard} packages)"
-
-            shards.append({
-                "name": name,
-                "index": index,
-                "description": desc,
-                "packages": " ".join(shard_packages),
-                "is_sharded": True
-            })
-            index += 1
 
     # Set is_sharded dynamically based on the total number of shards
     total_shards = len(shards)
@@ -148,6 +144,7 @@ def group_packages(packages):
         shard["is_sharded"] = total_shards > 1
 
     return shards
+
 
 if __name__ == "__main__":
     packages = get_packages_to_test()
