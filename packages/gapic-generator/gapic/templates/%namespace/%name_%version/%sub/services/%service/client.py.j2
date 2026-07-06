@@ -15,7 +15,7 @@ import json
 import logging as std_logging
 import os
 import re
-from typing import Dict, Callable, Mapping, MutableMapping, MutableSequence, Optional, {% if service.any_server_streaming %}Iterable, {% endif %}{% if service.any_client_streaming %}Iterator, {% endif %}Sequence, Tuple, Type, Union, cast
+from typing import Dict, Callable, Mapping, MutableMapping, MutableSequence, Optional, {% if service.any_server_streaming %}Iterable, {% endif %}{% if service.any_client_streaming %}Iterator, {% endif %}{% if service.has_resumable_upload %}BinaryIO, {% endif %}Sequence, Tuple, Type, Union, cast
 {% if api.all_method_settings.values()|map(attribute="auto_populated_fields", default=[])|select|list %}
 import uuid
 {% endif %}
@@ -70,6 +70,9 @@ from google.longrunning import operations_pb2 # type: ignore
 {% endif %}
 {% endfilter %}
 from .transports.base import {{ service.name }}Transport, DEFAULT_CLIENT_INFO
+{% if service.has_resumable_upload %}
+from .transports.rest_resumable import {{ service.name }}RestResumableTransport
+{% endif %}
 {% if 'grpc' in opts.transport %}
 from .transports.grpc import {{ service.grpc_transport_name }}
 from .transports.grpc_asyncio import {{ service.grpc_asyncio_transport_name }}
@@ -529,6 +532,12 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
     
     def __init__(self, *,
             credentials: Optional[ga_credentials.Credentials] = None,
+            {% if service.has_resumable_upload %}
+            developer_token: Optional[str] = None,
+            login_customer_id: Optional[str] = None,
+            linked_customer_id: Optional[str] = None,
+            use_cloud_org_for_api_access: bool = False,
+            {% endif %}
             transport: Optional[Union[str, {{ service.name }}Transport, Callable[..., {{ service.name }}Transport]]] = None,
             client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
             client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
@@ -541,6 +550,21 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
+            {% if service.has_resumable_upload %}
+            {% set resumable_methods = service.methods.values() | selectattr("is_resumable_upload") | map(attribute="name") | map("snake_case") | list %}
+            developer_token (Optional[str]): The developer token to use for the
+                resumable upload transport. This will be used by the resumable upload methods
+                ({{ resumable_methods | join(", ") }}) ONLY!
+            login_customer_id (Optional[str]): The login customer ID to use for
+                the resumable upload transport. This will be used by the resumable upload methods
+                ({{ resumable_methods | join(", ") }}) ONLY!
+            linked_customer_id (Optional[str]): The linked customer ID to use for
+                the resumable upload transport. This will be used by the resumable upload methods
+                ({{ resumable_methods | join(", ") }}) ONLY!
+            use_cloud_org_for_api_access (bool): Whether to use the cloud org for
+                API access for the resumable upload transport. This will be used by the resumable upload methods
+                ({{ resumable_methods | join(", ") }}) ONLY!
+            {% endif %}
             transport (Optional[Union[str,{{ service.name }}Transport,Callable[..., {{ service.name }}Transport]]]):
                 The transport to use, or a Callable that constructs and returns a new transport.
                 If a Callable is given, it will be called with the same set of initialization
@@ -619,9 +643,15 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
         transport_provided = isinstance(transport, {{ service.name }}Transport)
         if transport_provided:
             # transport is a {{ service.name }}Transport instance.
+            {% if service.has_resumable_upload %}
+            if (self._client_options.credentials_file or api_key_value):
+                raise ValueError("When providing a transport instance, "
+                                 "provide its credentials directly.")
+            {% else %}
             if credentials or self._client_options.credentials_file or api_key_value:
                 raise ValueError("When providing a transport instance, "
                                  "provide its credentials directly.")
+            {% endif %}
             if self._client_options.scopes:
                 raise ValueError(
                     "When providing a transport instance, provide its scopes "
@@ -629,6 +659,25 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
                 )
             self._transport = cast({{ service.name }}Transport, transport)
             self._api_endpoint = self._transport.host
+            {% if service.has_resumable_upload %}
+            resumable_creds = credentials or getattr(self._transport, "_credentials", None)
+
+            if resumable_creds is None:
+                raise ValueError(
+                    "For the correct REST resumable transport initialization, either the credentials should be explicitly provided as a `credentials` parameter, or the transport passed should contain readable `_credentials` property. E.g. passing a GRPC channel as a transport does not satisfy this since the credentials cannot be extracted from it. This requirement is unique to the {{ service.name }}."
+                )
+
+            self._rest_resumable_transport = {{ service.name }}RestResumableTransport(
+                credentials=resumable_creds,
+                credentials_file=None,
+                host=self._transport.host,
+                scopes=self._transport._scopes,
+                developer_token=developer_token,
+                login_customer_id=login_customer_id,
+                linked_customer_id=linked_customer_id,
+                use_cloud_org_for_api_access=use_cloud_org_for_api_access,
+            )
+            {% endif %}
 
         self._api_endpoint = (self._api_endpoint or
             {{ service.client_name }}._get_api_endpoint(
@@ -695,6 +744,27 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
                 always_use_jwt_access=True,
                 api_audience=self._client_options.api_audience,
             )
+            {% if service.has_resumable_upload %}
+            
+            # Initialize a separate transport for the rest resumable uploads
+            self._rest_resumable_transport = {{ service.name }}RestResumableTransport(
+                credentials=credentials,
+                credentials_file=self._client_options.credentials_file,
+                host=self._api_endpoint,
+                scopes=self._client_options.scopes,
+                client_cert_source_for_mtls=self._client_cert_source,
+                quota_project_id=self._client_options.quota_project_id,
+                client_info=client_info,
+                always_use_jwt_access=True,
+                api_audience=self._client_options.api_audience,
+                {% if service.has_resumable_upload %}
+                developer_token=developer_token,
+                login_customer_id=login_customer_id,
+                linked_customer_id=linked_customer_id,
+                use_cloud_org_for_api_access=use_cloud_org_for_api_access,
+                {% endif %}
+            )
+            {% endif %}
         
         if "async" not in str(self._transport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
