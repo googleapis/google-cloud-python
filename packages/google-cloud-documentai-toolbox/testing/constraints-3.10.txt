@@ -18,5 +18,5 @@ numpy==1.23.5
 intervaltree==3.0.0
 pikepdf==8.0.0
 immutabledict==2.0.0
-Pillow==10.0.0
+Pillow==12.2.0
 Jinja2==3.1.0
