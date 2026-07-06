@@ -138,7 +138,7 @@ def test_default_client_cert_source(
     # Test bad callback which throws ClientCertError.
     get_client_cert_and_key.side_effect = exceptions.ClientCertError()
     callback = mtls.default_client_cert_source()
-    with pytest.raises(exceptions.MutualTLSChannelError):
+    with pytest.raises(exceptions.ClientCertError):
         callback()
 
 
@@ -377,9 +377,11 @@ def test_get_default_ssl_context_exception(
     mock_has_source.return_value = True
     mock_ctx = mock.Mock(spec=ssl.SSLContext)
     mock_create_context.return_value = mock_ctx
-    mock_load_default.side_effect = exceptions.ClientCertError("mock error message")
+    mock_load_default.side_effect = exceptions.MutualTLSChannelError(
+        "mock error message"
+    )
 
-    with pytest.raises(exceptions.ClientCertError) as exc_info:
+    with pytest.raises(exceptions.MutualTLSChannelError) as exc_info:
         mtls.get_default_ssl_context()
     assert "mock error message" in str(exc_info.value)
 

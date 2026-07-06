@@ -78,12 +78,7 @@ def default_client_cert_source():
     def callback():
         try:
             _, cert_bytes, key_bytes = _mtls_helper.get_client_cert_and_key()
-        except (
-            exceptions.ClientCertError,
-            OSError,
-            RuntimeError,
-            ValueError,
-        ) as caught_exc:
+        except (OSError, RuntimeError, ValueError) as caught_exc:
             new_exc = exceptions.MutualTLSChannelError(caught_exc)
             raise new_exc from caught_exc
 
@@ -225,8 +220,6 @@ def load_default_client_cert(ctx: ssl.SSLContext) -> bool:
             are disabled or if no default certificate source is configured.
 
     Raises:
-        google.auth.exceptions.ClientCertError: If the default client certificate
-            source exists but cannot be loaded or parsed.
         google.auth.exceptions.MutualTLSChannelError: If the default client certificate
             or key is malformed.
     """
@@ -262,8 +255,6 @@ def get_default_ssl_context() -> Optional[ssl.SSLContext]:
             or available.
 
     Raises:
-        google.auth.exceptions.ClientCertError: If the default client certificate
-            source exists but cannot be loaded or parsed.
         google.auth.exceptions.MutualTLSChannelError: If the default client certificate
             or key is malformed.
     """
