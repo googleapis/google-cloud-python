@@ -1,5 +1,6 @@
 on:
   pull_request:
+    types: [opened, synchronize, reopened, labeled, unlabeled]
     branches:
       - main
       - preview
@@ -15,6 +16,7 @@ permissions:
 jobs:
   initialize:
     runs-on: ubuntu-latest
+    if: github.event.action != 'labeled' || github.event.label.name == 'unit_test:all_packages'
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
       is_full_run: ${{ steps.check-label.outputs.is_full_run }}
