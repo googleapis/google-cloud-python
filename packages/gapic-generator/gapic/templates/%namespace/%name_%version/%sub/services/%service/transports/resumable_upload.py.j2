@@ -1,0 +1,386 @@
+{% if service.has_resumable_upload %}
+{% extends "_base.py.j2" %}
+
+{% block content %}
+
+import datetime
+import logging
+
+from dataclasses import dataclass
+from typing import Any, BinaryIO, Callable, Dict, Optional, Sequence, Tuple, Union
+
+import google.api_core.retry
+import requests
+from .resumable_upload_error_adapter import raise_formatted_for_status
+
+_LOGGER = logging.getLogger(__name__)
+
+_DEFAULT_CHUNK_SIZE = 10 * 1024 * 1024 # 10MB
+
+@dataclass(frozen=True)
+class ResumableUploadStatus:
+    """Status of a resumable upload.
+
+    Attributes:
+        upload_url (str):
+            The session URL for the resumable upload.
+        total_bytes (Optional[int]):
+            The total number of bytes to be uploaded, if known.
+        bytes_uploaded (int):
+            The number of bytes successfully uploaded so far.
+        finished (bool):
+            Whether the upload has completed.
+    """
+    upload_url: str
+    total_bytes: Optional[int]
+    bytes_uploaded: int
+    finished: bool
+
+class ResumableUpload:
+    """Manages a resumable upload session.
+
+    This class handles the initiation, chunk transmission, and recovery
+    of a resumable upload according to the Google Resumable Upload protocol.
+    """
+
+    def __init__(
+        self,
+        upload_url: str,
+        stream: BinaryIO,
+        size: Optional[int] = None,
+        content_type: Optional[str] = None,
+        chunk_size: Optional[int] = None,
+        deadline: Optional[datetime.datetime] = None,
+        headers: Optional[Sequence[Tuple[str, Union[str, bytes]]]] = None,
+        on_progress: Optional[Callable[[ResumableUploadStatus], None]] = None,
+    ):
+        """Initializes the ResumableUpload object.
+
+        Args:
+            upload_url (str):
+                The initial URL to start the resumable upload.
+            stream (BinaryIO):
+                A stream of bytes to be uploaded.
+            size (Optional[int]):
+                The total number of bytes to be uploaded. If not provided,
+                the upload continues until the stream is exhausted.
+            content_type (Optional[str]):
+                The MIME type of the content being uploaded.
+            chunk_size (Optional[int]):
+                The size of each chunk to be uploaded. Defaults to 10MB.
+            deadline (Optional[datetime.datetime]):
+                The deadline for the entire upload process.
+            headers (Optional[Sequence[Tuple[str, Union[str, bytes]]]]):
+                Extra headers to be sent with the initiation and chunk requests.
+            on_progress (Optional[Callable[[ResumableUploadStatus], None]]):
+                A callback function called after each successful chunk upload.
+        """
+        self.initial_url = upload_url
+        self.stream = stream
+        self.size = size
+        self.content_type = content_type
+        self.chunk_size = chunk_size or _DEFAULT_CHUNK_SIZE
+        self.deadline = deadline
+        self.extra_headers = dict(headers or [])
+        self.on_progress = on_progress
+
+        self.session_url = None
+        self.bytes_uploaded = 0
+        self.finished = False
+        self.chunk_granularity = None
+
+    def _check_deadline(self) -> Optional[float]:
+        if self.deadline:
+            now = datetime.datetime.now(datetime.timezone.utc)
+            timeout = (self.deadline - now).total_seconds()
+            if timeout <= 0:
+                raise Exception(f"Upload deadline {self.deadline} (as calculated from the timeout argument) was exceeded")
+            return timeout
+        return None
+
+    def _get_retry_predicate(self):
+        def should_retry(exc):
+            if isinstance(exc, requests.exceptions.RequestException):
+                if isinstance(exc, (requests.exceptions.ConnectionError, requests.exceptions.Timeout)):
+                    return True
+                if exc.response is not None:
+                    status_code = exc.response.status_code
+                    return status_code in (408, 429, 500, 502, 503, 504)
+            return False
+        return should_retry
+
+    def _log_request(self, method: str, url: str, headers: Dict[str, str], data: Any = None):
+        if not _LOGGER.isEnabledFor(logging.DEBUG):
+            return
+        
+        display_data = data
+        if isinstance(data, bytes) and len(data) > 64:
+            display_data = f"{data[:64]!r}... ({len(data)} bytes)"
+        
+        _LOGGER.debug("HTTP Request: %s %s\nHeaders: %s\nBody: %s", method, url, headers, display_data)
+
+    def _log_response(self, response: requests.Response):
+        if not _LOGGER.isEnabledFor(logging.DEBUG):
+            return
+        
+        _LOGGER.debug("HTTP Response: %s %s\nHeaders: %s\nBody: %s", 
+                     response.status_code, response.reason, response.headers, response.text)
+
+    def _prepare_initiate_request(self, body: str) -> Tuple[str, str, str, Dict[str, str]]:
+        headers = {
+            "X-Goog-Upload-Protocol": "resumable",
+            "X-Goog-Upload-Command": "start",
+        }
+        
+        # Prefix logical headers
+        if self.content_type:
+            headers["X-Goog-Upload-Header-Content-Type"] = self.content_type
+        if self.size is not None:
+            headers["X-Goog-Upload-Header-Content-Length"] = str(self.size)
+            
+        # Add extra headers, prefixing if necessary
+        for k, v in self.extra_headers.items():
+            if k.lower() in ("content-length", "content-type", "content-encoding", "transfer-encoding"):
+                headers[f"X-Goog-Upload-Header-{k}"] = str(v)
+            else:
+                headers[k] = str(v)
+        
+        return "POST", self.initial_url, body, headers
+
+    def _process_initiate_response(self, response: requests.Response):
+        raise_formatted_for_status(response)
+        
+        self.session_url = response.headers.get("X-Goog-Upload-URL")
+        if not self.session_url:
+            raise ValueError("Server did not return X-Goog-Upload-URL")
+            
+        granularity = response.headers.get("X-Goog-Upload-Chunk-Granularity")
+        if granularity:
+            self.chunk_granularity = int(granularity)
+            _LOGGER.debug("Server requested chunk granularity: %d", self.chunk_granularity)
+            
+        if self.on_progress:
+            self.on_progress(ResumableUploadStatus(
+                upload_url=self.session_url,
+                total_bytes=self.size,
+                bytes_uploaded=0,
+                finished=False
+            ))
+
+    def initiate(
+        self,
+        transport: requests.Session,
+        request_body: str = "",
+        request_retry: Optional[google.api_core.retry.Retry] = None,
+    ):
+        """Initiates the resumable upload session.
+
+        This method sends the initial request to the server to start a new
+        resumable upload session and retrieves the session URL.
+
+        Args:
+            transport (requests.Session):
+                The authorized session to use for the initiation request.
+            request_body (str):
+                The JSON-encoded request body for the initiation request.
+            request_retry (Optional[google.api_core.retry.Retry]):
+                Designation of what errors, if any, should be retried.
+        """
+        _LOGGER.info("Initiating resumable upload to %s", self.initial_url)
+        method, url, body, headers = self._prepare_initiate_request(request_body)
+
+        def do_initiate():
+            timeout = self._check_deadline()
+            self._log_request(method, url, headers, body)
+            response = transport.request(method, url, data=body, headers=headers, timeout=timeout)
+            self._log_response(response)
+            raise_formatted_for_status(response)
+            return response
+
+        if request_retry:
+            response = request_retry(do_initiate)()
+        else:
+            response = do_initiate()
+
+        self._process_initiate_response(response)
+
+    def _prepare_chunk_request(self) -> Tuple[str, str, bytes, Dict[str, str], int]:
+        # Adjust chunk size based on granularity if needed
+        actual_chunk_size = self.chunk_size
+        if self.chunk_granularity:
+            if actual_chunk_size % self.chunk_granularity != 0:
+                actual_chunk_size = ((actual_chunk_size // self.chunk_granularity) + 1) * self.chunk_granularity
+                _LOGGER.debug("Adjusted chunk size to %d based on granularity %d", actual_chunk_size, self.chunk_granularity)
+
+        data = self.stream.read(actual_chunk_size)
+        data_len = len(data)
+        is_last_chunk = data_len < actual_chunk_size or (self.size is not None and self.bytes_uploaded + data_len >= self.size)
+        
+        command = "upload"
+        if is_last_chunk:
+            command = "upload, finalize"
+            
+        headers = {
+            "X-Goog-Upload-Command": command,
+            "X-Goog-Upload-Offset": str(self.bytes_uploaded),
+        }
+        
+        return "POST", self.session_url, data, headers, data_len
+
+    def _process_chunk_response(self, response: requests.Response, chunk_len: int):
+        raise_formatted_for_status(response)
+        
+        status = response.headers.get("X-Goog-Upload-Status")
+        if status == "active":
+            self.bytes_uploaded += chunk_len
+        elif status == "final":
+            self.finished = True
+            self.bytes_uploaded += chunk_len
+
+    def transmit_next_chunk(self, transport: requests.Session) -> requests.Response:
+        """Uploads the next chunk of data from the stream.
+
+        This method reads a chunk from the stream, prepares the upload request,
+        transmits it to the server, and processes the response.
+
+        Args:
+            transport (requests.Session):
+                The authorized session to use for the upload.
+
+        Returns:
+            requests.Response:
+                The response from the server for this chunk upload.
+        """
+        self._check_deadline()
+        method, url, data, headers, chunk_len = self._prepare_chunk_request()
+
+        retry = google.api_core.retry.Retry(
+            predicate=self._get_retry_predicate(),
+            deadline=self._check_deadline()
+        )
+
+        def do_upload():
+            _LOGGER.info("Uploading chunk at offset %s, size %d, command %s", headers["X-Goog-Upload-Offset"], chunk_len, headers["X-Goog-Upload-Command"])
+            timeout = self._check_deadline()
+            self._log_request(method, url, headers, data)
+            response = transport.request(method, url, data=data, headers=headers, timeout=timeout)
+            self._log_response(response)
+            raise_formatted_for_status(response)
+            return response
+
+        try:
+            response = retry(do_upload)()
+            self._process_chunk_response(response, chunk_len)
+        except Exception as e:
+            _LOGGER.error("Error during chunk upload: %s", e)
+            self._recover(transport, retry)
+            if isinstance(e, requests.exceptions.HTTPError) and e.response is not None:
+                return e.response
+            raise
+
+        if self.on_progress:
+            self.on_progress(ResumableUploadStatus(
+                upload_url=self.session_url,
+                total_bytes=self.size,
+                bytes_uploaded=self.bytes_uploaded,
+                finished=self.finished
+            ))
+            
+        return response
+
+    def _prepare_recovery_request(self) -> Tuple[str, str, Dict[str, str]]:
+        headers = {"X-Goog-Upload-Command": "query"}
+        return "POST", self.session_url, headers
+
+    def _process_recovery_response(self, response: requests.Response):
+        raise_formatted_for_status(response)
+        status = response.headers.get("X-Goog-Upload-Status")
+        
+        if status == "active":
+            received = int(response.headers.get("X-Goog-Upload-Size-Received", 0))
+            _LOGGER.info("Server reported %d bytes received. Seeking stream.", received)
+            self.bytes_uploaded = received
+            self.stream.seek(received)
+        elif status == "final":
+            _LOGGER.info("Upload already finalized according to server.")
+            self.finished = True
+        elif status == "cancelled":
+            raise RuntimeError("Upload was cancelled by server")
+
+    def _recover(self, transport: requests.Session, retry: google.api_core.retry.Retry):
+        _LOGGER.info("Attempting recovery via query command")
+        method, url, headers = self._prepare_recovery_request()
+        
+        def do_query():
+            timeout = self._check_deadline()
+            self._log_request(method, url, headers)
+            response = transport.request(method, url, headers=headers, timeout=timeout)
+            self._log_response(response)
+            raise_formatted_for_status(response)
+            return response
+            
+        response = retry(do_query)()
+        self._process_recovery_response(response)
+
+def make_resumable_upload(
+    transport: requests.Session,
+    request_body: str,
+    stream: BinaryIO,
+    upload_url: str,
+    size: Optional[int] = None,
+    content_type: Optional[str] = None,
+    chunk_size: Optional[int] = None,
+    request_retry: Optional[google.api_core.retry.Retry] = None,
+    deadline: Optional[datetime.datetime] = None,
+    headers: Optional[Sequence[Tuple[str, Union[str, bytes]]]] = None,
+    on_progress: Optional[Callable[[ResumableUploadStatus], None]] = None,
+) -> requests.Response:
+    """Makes a resumable upload.
+
+    Args:
+        transport (requests.Session):
+            The authorized session to use for the upload.
+        request_body (str):
+            The JSON-encoded request body to send during initiation.
+        stream (BinaryIO):
+            A stream of bytes to be uploaded.
+        upload_url (str):
+            The initial URL to start the resumable upload.
+        size (int):
+            The number of bytes to be uploaded. If not provided,
+            the upload will continue until the stream is exhausted.
+        content_type (str):
+            The MIME type of the content being uploaded.
+        chunk_size (int):
+            The size of each chunk to be uploaded.
+        request_retry (google.api_core.retry.Retry):
+            Designation of what errors, if any, should be retried during initiation.
+        deadline (datetime.datetime):
+            The deadline for the entire upload process.
+        headers (Sequence[Tuple[str, Union[str, bytes]]]):
+            Key/value pairs which should be sent along with the request as metadata.
+        on_progress (Callable[[ResumableUploadStatus], None]):
+            A callback function that will be called after each chunk is uploaded.
+
+    Returns:
+        requests.Response:
+            The final response from the server after the upload is complete.
+    """
+    upload = ResumableUpload(
+        upload_url,
+        stream=stream,
+        size=size,
+        content_type=content_type,
+        chunk_size=chunk_size,
+        deadline=deadline,
+        headers=headers,
+        on_progress=on_progress,
+    )
+    upload.initiate(transport=transport, request_body=request_body, request_retry=request_retry)
+
+    final_response = None
+    while not upload.finished:
+        final_response = upload.transmit_next_chunk(transport=transport)
+    return final_response
+{% endblock %}
+{% endif %}

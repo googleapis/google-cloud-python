@@ -1,0 +1,111 @@
+{% if service.has_resumable_upload %}
+{% extends "_base.py.j2" %}
+
+{% block content %}
+
+import grpc
+import requests
+from typing import Any, Optional, Tuple
+from google.api_core import exceptions as core_exceptions
+
+{% set package_path = api.naming.module_namespace|join('.') + "." + api.naming.versioned_module_name %}
+from google.ads.googleads.errors import GoogleAdsException
+from {{ package_path }}.errors.types.errors import GoogleAdsError, GoogleAdsFailure, ErrorCode
+
+class ResumableUploadErrorAdapter(grpc.RpcError, grpc.Call):
+    """
+    A concrete implementation of gRPC abstract classes.
+    Wraps a requests.Response to mimic a gRPC call for GoogleAdsException.
+    """
+    def __init__(self, response: requests.Response, mapped_grpc_code: grpc.StatusCode):
+        self._response = response
+        self._mapped_code = mapped_grpc_code
+
+    # --- grpc.Call & grpc.RpcContext Required Methods ---
+    def code(self) -> grpc.StatusCode:
+        return self._mapped_code
+
+    def details(self) -> str:
+        # RUP specifies error details are in the response body
+        return self._response.text
+
+    def initial_metadata(self) -> Any:
+        return None
+
+    def trailing_metadata(self) -> Any:
+        # HTTP headers serve as trailing metadata in RUP
+        return tuple(self._response.headers.items())
+
+    def is_active(self) -> bool:
+        return False
+
+    def time_remaining(self) -> Optional[float]:
+        return None
+
+    def cancel(self) -> None:
+        pass
+
+    def add_callback(self, callback: Any) -> None:
+        pass
+
+def raise_formatted_ads_exception(response: requests.Response):
+    """Converts a RUP HTTP response into a rich GoogleAdsException.
+
+    Args:
+        response (requests.Response):
+            The HTTP response containing error details.
+
+    Raises:
+        GoogleAdsException:
+            A rich exception containing the mapped gRPC status, failure details,
+            and request ID.
+    """
+    # 1. Map HTTP status (e.g., 400) to gRPC status (e.g., INVALID_ARGUMENT)
+    core_error = core_exceptions.from_http_response(response)
+    grpc_code = core_error.grpc_status_code or grpc.StatusCode.INTERNAL
+
+    # 2. Build the ErrorCode using the specific oneof member 'request_error'
+    # Setting this automatically sets the 'error_code' oneof group.
+    # We use '1' (UNSPECIFIED/UNKNOWN) for the enum value within RequestError.
+    e_code = ErrorCode(request_error=1)
+
+    # 3. Build the GoogleAdsError
+    # Message is populated from the RUP response text
+    g_error = GoogleAdsError(
+        message=core_error.message,
+        error_code=e_code
+    )
+
+    # 4. Build the GoogleAdsFailure container
+    # request_id comes from X-Goog-Upload-Status per protocol
+    request_id = response.headers.get("X-Goog-Upload-Status", "unknown")
+    failure = GoogleAdsFailure(
+        errors=[g_error],
+        request_id=request_id
+    )
+
+    # 5. Instantiate the adapter and raise the final exception
+    adapter = ResumableUploadErrorAdapter(response, grpc_code)
+    
+    raise GoogleAdsException(
+        error=adapter,
+        call=adapter,
+        failure=failure,
+        request_id=request_id
+    )
+
+def raise_formatted_for_status(response: requests.Response):
+    """Replacement for response.raise_for_status() that raises GoogleAdsException.
+
+    Args:
+        response (requests.Response):
+            The HTTP response to check for errors.
+
+    Raises:
+        GoogleAdsException:
+            If the response status code indicates an error.
+    """
+    if not response.ok:
+        raise_formatted_ads_exception(response)
+{% endblock %}
+{% endif %}
