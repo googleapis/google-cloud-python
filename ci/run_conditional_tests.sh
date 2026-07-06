@@ -92,7 +92,7 @@ fi
 
 RETVAL=0
 
-for subdir in ${subdirs[@]}; do
+for subdir in "${subdirs[@]}"; do
     if [ ! -d "${subdir}" ]; then
         echo "Error: Directory '${subdir}' does not exist." >&2
         exit 1
