@@ -30,49 +30,48 @@ PACKAGE_WEIGHTS = {
     "google-cloud-retail": 5,
 }
 
-def get_weighted_package_list():
-    """Audits the packages directory and expands the list based on weights."""
+def get_batches():
+    """Distributes packages into batches using a greedy load-balancing algorithm."""
     raw_paths = sorted(glob.glob("packages/*"))
     package_paths = [p for p in raw_paths if os.path.isdir(p)]
     
-    weighted_list = []
+    packages_with_weights = []
+    total_weight = 0
     for path in package_paths:
         pkg_name = os.path.basename(path)
         weight = PACKAGE_WEIGHTS.get(pkg_name, 1)
+        packages_with_weights.append((path, weight))
+        total_weight += weight
         
-        for _ in range(weight):
-            weighted_list.append(path)
-            
-    return weighted_list
+    num_batches = math.ceil(total_weight / BATCH_SIZE)
+    if num_batches == 0:
+        num_batches = 1
+        
+    # Sort packages by weight descending (Longest Processing Time first)
+    packages_with_weights.sort(key=lambda x: x[1], reverse=True)
+    
+    batches = [[] for _ in range(num_batches)]
+    batch_weights = [0] * num_batches
+    
+    for path, weight in packages_with_weights:
+        # Greedily assign the package to the currently least-loaded batch
+        min_idx = batch_weights.index(min(batch_weights))
+        batches[min_idx].append(path)
+        batch_weights[min_idx] += weight
+        
+    return batches
 
 def get_batch_indices():
     """Returns a JSON string of the array of batch indices for GitHub Actions matrix."""
-    weighted_list = get_weighted_package_list()
-    total_units = len(weighted_list)
-    num_batches = math.ceil(total_units / BATCH_SIZE)
-
-    if num_batches == 0:
-        num_batches = 1
-
-    return json.dumps(list(range(num_batches)))
+    batches = get_batches()
+    return json.dumps(list(range(len(batches))))
 
 def get_batch_slice(batch_index):
     """Returns a space-separated string of unique package paths for a specific batch index."""
-    weighted_list = get_weighted_package_list()
-    total_units = len(weighted_list)
-    start_idx = batch_index * BATCH_SIZE
-    
-    if start_idx >= total_units:
+    batches = get_batches()
+    if batch_index < 0 or batch_index >= len(batches):
         return ""
-        
-    slice_window = weighted_list[start_idx : start_idx + BATCH_SIZE]
-    
-    unique_packages = []
-    for pkg in slice_window:
-        if pkg not in unique_packages:
-            unique_packages.append(pkg)
-            
-    return " ".join(unique_packages)
+    return " ".join(batches[batch_index])
 
 if __name__ == "__main__":
     if len(sys.argv) > 1 and sys.argv[1] == "--count":
