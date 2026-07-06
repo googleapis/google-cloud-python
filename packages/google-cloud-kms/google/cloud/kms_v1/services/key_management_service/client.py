@@ -145,7 +145,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
         Returns:
             Optional[str]: converted mTLS api endpoint.
         """
-        return gapic_v1.client_helpers.get_default_mtls_endpoint(api_endpoint)
+        return gapic_v1.client_helpers._get_default_mtls_endpoint(api_endpoint)
 
     # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
     DEFAULT_ENDPOINT = "cloudkms.googleapis.com"
@@ -169,7 +169,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
             ValueError: (If using a version of google-auth without should_use_client_cert and
             GOOGLE_API_USE_CLIENT_CERTIFICATE is set to an unexpected value.)
         """
-        return gapic_v1.client_helpers.use_client_cert_effective()
+        return gapic_v1.client_helpers._use_client_cert_effective()
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -566,7 +566,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
         Returns:
             str: The API endpoint to be used by the client.
         """
-        return gapic_v1.client_helpers.get_api_endpoint(
+        return gapic_v1.client_helpers._get_api_endpoint(
             api_override,
             client_cert_source,
             universe_domain,

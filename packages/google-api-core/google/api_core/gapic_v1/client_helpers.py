@@ -28,7 +28,7 @@ _MTLS_ENDPOINT_RE = re.compile(
 )
 
 
-def get_default_mtls_endpoint(api_endpoint: Optional[str]) -> Optional[str]:
+def _get_default_mtls_endpoint(api_endpoint: Optional[str]) -> Optional[str]:
     """Converts api endpoint to mTLS endpoint.
 
     Convert "*.sandbox.googleapis.com" and "*.googleapis.com" to
@@ -58,7 +58,7 @@ def get_default_mtls_endpoint(api_endpoint: Optional[str]) -> Optional[str]:
     return api_endpoint.replace(".googleapis.com", ".mtls.googleapis.com")
 
 
-def use_client_cert_effective() -> bool:
+def _use_client_cert_effective() -> bool:
     """Returns whether client certificate should be used for mTLS if the
     google-auth version supports should_use_client_cert automatic mTLS enablement.
 
@@ -86,7 +86,7 @@ def use_client_cert_effective() -> bool:
         return use_client_cert_str == "true"
 
 
-def get_api_endpoint(
+def _get_api_endpoint(
     api_override: Optional[str],
     client_cert_source: Optional[Any],
     universe_domain: str,
