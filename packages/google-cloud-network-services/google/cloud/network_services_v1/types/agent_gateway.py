@@ -85,7 +85,7 @@ class AgentGateway(proto.Message):
             MCP servers and tools governed by the Agent Gateway. Note:
             Currently limited to project-scoped registries Must be of
             format
-            \`//agentregistry.googleapis.com/projects/{project}/locations/{location}/
+            ``//agentregistry.googleapis.com/projects/{project}/locations/{location}/``
         network_config (google.cloud.network_services_v1.types.AgentGateway.NetworkConfig):
             Optional. Network configuration for the
             AgentGateway.

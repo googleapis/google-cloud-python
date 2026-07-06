@@ -468,7 +468,12 @@ def is_clusterable(type_: ExpressionType) -> bool:
 
 def is_bool_coercable(type_: ExpressionType) -> bool:
     # TODO: Implement more bool coercions
-    return (type_ is None) or is_numeric(type_) or is_string_like(type_)
+    return (
+        (type_ is None)
+        or is_numeric(type_)
+        or is_string_like(type_)
+        or is_array_like(type_)
+    )
 
 
 BIGFRAMES_STRING_TO_BIGFRAMES: Dict[DtypeString, Dtype] = {

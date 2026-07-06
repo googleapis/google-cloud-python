@@ -39,9 +39,12 @@ except ImportError:  # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 
 import google.auth
+import google.protobuf.any_pb2 as any_pb2  # type: ignore
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
+import google.type.date_pb2 as date_pb2  # type: ignore
 from google.api_core import (
     client_options,
     gapic_v1,
@@ -65,7 +68,10 @@ from google.cloud.discoveryengine_v1beta.services.session_service import (
 )
 from google.cloud.discoveryengine_v1beta.types import (
     answer,
+    assist_answer,
     conversational_search_service,
+    grounded_generation_service,
+    safety,
     session,
 )
 from google.cloud.discoveryengine_v1beta.types import session as gcd_session
@@ -1322,7 +1328,12 @@ def test_session_service_client_create_channel_credentials_file(
             credentials=file_creds,
             credentials_file=None,
             quota_project_id=None,
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/discoveryengine.assist.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.serving.readwrite",
+            ),
             scopes=None,
             default_host="discoveryengine.googleapis.com",
             ssl_credentials=None,
@@ -1358,7 +1369,9 @@ def test_create_session(request_type, transport: str = "grpc"):
             display_name="display_name_value",
             state=gcd_session.Session.State.IN_PROGRESS,
             user_pseudo_id="user_pseudo_id_value",
+            labels=["labels_value"],
             is_pinned=True,
+            pending_async_assist_operation_id="pending_async_assist_operation_id_value",
         )
         response = client.create_session(request)
 
@@ -1374,7 +1387,12 @@ def test_create_session(request_type, transport: str = "grpc"):
     assert response.display_name == "display_name_value"
     assert response.state == gcd_session.Session.State.IN_PROGRESS
     assert response.user_pseudo_id == "user_pseudo_id_value"
+    assert response.labels == ["labels_value"]
     assert response.is_pinned is True
+    assert (
+        response.pending_async_assist_operation_id
+        == "pending_async_assist_operation_id_value"
+    )
 
 
 def test_create_session_non_empty_request_with_auto_populated_field():
@@ -1390,6 +1408,7 @@ def test_create_session_non_empty_request_with_auto_populated_field():
     # if they meet the requirements of AIP 4235.
     request = conversational_search_service.CreateSessionRequest(
         parent="parent_value",
+        session_id="session_id_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1402,6 +1421,7 @@ def test_create_session_non_empty_request_with_auto_populated_field():
         _, args, _ = call.mock_calls[0]
         request_msg = conversational_search_service.CreateSessionRequest(
             parent="parent_value",
+            session_id="session_id_value",
         )
         assert args[0] == request_msg
 
@@ -1510,7 +1530,9 @@ async def test_create_session_async(request_type, transport: str = "grpc_asyncio
                 display_name="display_name_value",
                 state=gcd_session.Session.State.IN_PROGRESS,
                 user_pseudo_id="user_pseudo_id_value",
+                labels=["labels_value"],
                 is_pinned=True,
+                pending_async_assist_operation_id="pending_async_assist_operation_id_value",
             )
         )
         response = await client.create_session(request)
@@ -1527,7 +1549,12 @@ async def test_create_session_async(request_type, transport: str = "grpc_asyncio
     assert response.display_name == "display_name_value"
     assert response.state == gcd_session.Session.State.IN_PROGRESS
     assert response.user_pseudo_id == "user_pseudo_id_value"
+    assert response.labels == ["labels_value"]
     assert response.is_pinned is True
+    assert (
+        response.pending_async_assist_operation_id
+        == "pending_async_assist_operation_id_value"
+    )
 
 
 def test_create_session_field_headers():
@@ -2016,7 +2043,9 @@ def test_update_session(request_type, transport: str = "grpc"):
             display_name="display_name_value",
             state=gcd_session.Session.State.IN_PROGRESS,
             user_pseudo_id="user_pseudo_id_value",
+            labels=["labels_value"],
             is_pinned=True,
+            pending_async_assist_operation_id="pending_async_assist_operation_id_value",
         )
         response = client.update_session(request)
 
@@ -2032,7 +2061,12 @@ def test_update_session(request_type, transport: str = "grpc"):
     assert response.display_name == "display_name_value"
     assert response.state == gcd_session.Session.State.IN_PROGRESS
     assert response.user_pseudo_id == "user_pseudo_id_value"
+    assert response.labels == ["labels_value"]
     assert response.is_pinned is True
+    assert (
+        response.pending_async_assist_operation_id
+        == "pending_async_assist_operation_id_value"
+    )
 
 
 def test_update_session_non_empty_request_with_auto_populated_field():
@@ -2164,7 +2198,9 @@ async def test_update_session_async(request_type, transport: str = "grpc_asyncio
                 display_name="display_name_value",
                 state=gcd_session.Session.State.IN_PROGRESS,
                 user_pseudo_id="user_pseudo_id_value",
+                labels=["labels_value"],
                 is_pinned=True,
+                pending_async_assist_operation_id="pending_async_assist_operation_id_value",
             )
         )
         response = await client.update_session(request)
@@ -2181,7 +2217,12 @@ async def test_update_session_async(request_type, transport: str = "grpc_asyncio
     assert response.display_name == "display_name_value"
     assert response.state == gcd_session.Session.State.IN_PROGRESS
     assert response.user_pseudo_id == "user_pseudo_id_value"
+    assert response.labels == ["labels_value"]
     assert response.is_pinned is True
+    assert (
+        response.pending_async_assist_operation_id
+        == "pending_async_assist_operation_id_value"
+    )
 
 
 def test_update_session_field_headers():
@@ -2358,7 +2399,9 @@ def test_get_session(request_type, transport: str = "grpc"):
             display_name="display_name_value",
             state=session.Session.State.IN_PROGRESS,
             user_pseudo_id="user_pseudo_id_value",
+            labels=["labels_value"],
             is_pinned=True,
+            pending_async_assist_operation_id="pending_async_assist_operation_id_value",
         )
         response = client.get_session(request)
 
@@ -2374,7 +2417,12 @@ def test_get_session(request_type, transport: str = "grpc"):
     assert response.display_name == "display_name_value"
     assert response.state == session.Session.State.IN_PROGRESS
     assert response.user_pseudo_id == "user_pseudo_id_value"
+    assert response.labels == ["labels_value"]
     assert response.is_pinned is True
+    assert (
+        response.pending_async_assist_operation_id
+        == "pending_async_assist_operation_id_value"
+    )
 
 
 def test_get_session_non_empty_request_with_auto_populated_field():
@@ -2510,7 +2558,9 @@ async def test_get_session_async(request_type, transport: str = "grpc_asyncio"):
                 display_name="display_name_value",
                 state=session.Session.State.IN_PROGRESS,
                 user_pseudo_id="user_pseudo_id_value",
+                labels=["labels_value"],
                 is_pinned=True,
+                pending_async_assist_operation_id="pending_async_assist_operation_id_value",
             )
         )
         response = await client.get_session(request)
@@ -2527,7 +2577,12 @@ async def test_get_session_async(request_type, transport: str = "grpc_asyncio"):
     assert response.display_name == "display_name_value"
     assert response.state == session.Session.State.IN_PROGRESS
     assert response.user_pseudo_id == "user_pseudo_id_value"
+    assert response.labels == ["labels_value"]
     assert response.is_pinned is True
+    assert (
+        response.pending_async_assist_operation_id
+        == "pending_async_assist_operation_id_value"
+    )
 
 
 def test_get_session_field_headers():
@@ -3252,6 +3307,8 @@ def test_create_session_rest_required_fields(
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
     ).create_session._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("session_id",))
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -3308,7 +3365,7 @@ def test_create_session_rest_unset_required_fields():
 
     unset_fields = transport.create_session._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(())
+        set(("sessionId",))
         & set(
             (
                 "parent",
@@ -4426,7 +4483,9 @@ async def test_create_session_empty_call_grpc_asyncio():
                 display_name="display_name_value",
                 state=gcd_session.Session.State.IN_PROGRESS,
                 user_pseudo_id="user_pseudo_id_value",
+                labels=["labels_value"],
                 is_pinned=True,
+                pending_async_assist_operation_id="pending_async_assist_operation_id_value",
             )
         )
         await client.create_session(request=None)
@@ -4478,7 +4537,9 @@ async def test_update_session_empty_call_grpc_asyncio():
                 display_name="display_name_value",
                 state=gcd_session.Session.State.IN_PROGRESS,
                 user_pseudo_id="user_pseudo_id_value",
+                labels=["labels_value"],
                 is_pinned=True,
+                pending_async_assist_operation_id="pending_async_assist_operation_id_value",
             )
         )
         await client.update_session(request=None)
@@ -4508,7 +4569,9 @@ async def test_get_session_empty_call_grpc_asyncio():
                 display_name="display_name_value",
                 state=session.Session.State.IN_PROGRESS,
                 user_pseudo_id="user_pseudo_id_value",
+                labels=["labels_value"],
                 is_pinned=True,
+                pending_async_assist_operation_id="pending_async_assist_operation_id_value",
             )
         )
         await client.get_session(request=None)
@@ -4606,11 +4669,21 @@ def test_create_session_rest_call_success(request_type):
                     "name": "name_value",
                     "state": 1,
                     "answer_text": "answer_text_value",
+                    "grounding_score": 0.1608,
                     "citations": [
                         {
                             "start_index": 1189,
                             "end_index": 942,
                             "sources": [{"reference_id": "reference_id_value"}],
+                        }
+                    ],
+                    "grounding_supports": [
+                        {
+                            "start_index": 1189,
+                            "end_index": 942,
+                            "grounding_score": 0.1608,
+                            "grounding_check_required": True,
+                            "sources": {},
                         }
                     ],
                     "references": [
@@ -4624,6 +4697,7 @@ def test_create_session_rest_call_success(request_type):
                                         "content": "content_value",
                                         "page_identifier": "page_identifier_value",
                                         "relevance_score": 0.1584,
+                                        "blob_attachment_indexes": [2423, 2424],
                                     }
                                 ],
                                 "struct_data": {"fields": {}},
@@ -4639,11 +4713,23 @@ def test_create_session_rest_call_success(request_type):
                                     "page_identifier": "page_identifier_value",
                                     "struct_data": {},
                                 },
+                                "blob_attachment_indexes": [2423, 2424],
                             },
                             "structured_document_info": {
                                 "document": "document_value",
                                 "struct_data": {},
+                                "title": "title_value",
+                                "uri": "uri_value",
                             },
+                        }
+                    ],
+                    "blob_attachments": [
+                        {
+                            "data": {
+                                "mime_type": "mime_type_value",
+                                "data": b"data_blob",
+                            },
+                            "attribution_type": 1,
                         }
                     ],
                     "related_questions": [
@@ -4691,13 +4777,130 @@ def test_create_session_rest_call_success(request_type):
                     "answer_skipped_reasons": [1],
                     "create_time": {"seconds": 751, "nanos": 543},
                     "complete_time": {},
+                    "safety_ratings": [
+                        {
+                            "category": 1,
+                            "probability": 1,
+                            "probability_score": 0.182,
+                            "severity": 1,
+                            "severity_score": 0.1526,
+                            "blocked": True,
+                        }
+                    ],
+                },
+                "detailed_assist_answer": {
+                    "name": "name_value",
+                    "state": 1,
+                    "replies": [
+                        {
+                            "grounded_content": {
+                                "text_grounding_metadata": {
+                                    "segments": [
+                                        {
+                                            "start_index": 1189,
+                                            "end_index": 942,
+                                            "reference_indices": [1774, 1775],
+                                            "grounding_score": 0.1608,
+                                            "text": "text_value",
+                                        }
+                                    ],
+                                    "visual_segments": [
+                                        {
+                                            "reference_indices": [1774, 1775],
+                                            "content_id": "content_id_value",
+                                        }
+                                    ],
+                                    "references": [
+                                        {
+                                            "content": "content_value",
+                                            "code_snippet": "code_snippet_value",
+                                            "document_metadata": {
+                                                "language": 1,
+                                                "document": "document_value",
+                                                "uri": "uri_value",
+                                                "title": "title_value",
+                                                "page_identifier": "page_identifier_value",
+                                                "domain": "domain_value",
+                                                "mime_type": "mime_type_value",
+                                            },
+                                        }
+                                    ],
+                                },
+                                "content": {
+                                    "text": "text_value",
+                                    "inline_data": {
+                                        "mime_type": "mime_type_value",
+                                        "data": b"data_blob",
+                                    },
+                                    "file": {
+                                        "mime_type": "mime_type_value",
+                                        "file_id": "file_id_value",
+                                    },
+                                    "executable_code": {"code": "code_value"},
+                                    "code_execution_result": {
+                                        "outcome": 1,
+                                        "output": "output_value",
+                                    },
+                                    "role": "role_value",
+                                    "thought": True,
+                                },
+                                "citation_metadata": {
+                                    "citations": [
+                                        {
+                                            "start_index": 1189,
+                                            "end_index": 942,
+                                            "uri": "uri_value",
+                                            "title": "title_value",
+                                            "license_": "license__value",
+                                            "publication_date": {
+                                                "year": 433,
+                                                "month": 550,
+                                                "day": 318,
+                                            },
+                                        }
+                                    ]
+                                },
+                            },
+                            "create_time": {},
+                        }
+                    ],
+                    "assist_skipped_reasons": [1],
+                    "customer_policy_enforcement_result": {
+                        "verdict": 1,
+                        "policy_results": [
+                            {
+                                "banned_phrase_enforcement_result": {
+                                    "banned_phrases": [
+                                        "banned_phrases_value1",
+                                        "banned_phrases_value2",
+                                    ]
+                                },
+                                "model_armor_enforcement_result": {
+                                    "model_armor_violation": "model_armor_violation_value",
+                                    "error": {
+                                        "code": 411,
+                                        "message": "message_value",
+                                        "details": [
+                                            {
+                                                "type_url": "type.googleapis.com/google.protobuf.Duration",
+                                                "value": b"\x08\x0c\x10\xdb\x07",
+                                            }
+                                        ],
+                                    },
+                                },
+                            }
+                        ],
+                    },
                 },
                 "query_config": {},
+                "live": True,
             }
         ],
+        "labels": ["labels_value1", "labels_value2"],
         "start_time": {},
         "end_time": {},
         "is_pinned": True,
+        "pending_async_assist_operation_id": "pending_async_assist_operation_id_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -4778,7 +4981,9 @@ def test_create_session_rest_call_success(request_type):
             display_name="display_name_value",
             state=gcd_session.Session.State.IN_PROGRESS,
             user_pseudo_id="user_pseudo_id_value",
+            labels=["labels_value"],
             is_pinned=True,
+            pending_async_assist_operation_id="pending_async_assist_operation_id_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -4799,7 +5004,12 @@ def test_create_session_rest_call_success(request_type):
     assert response.display_name == "display_name_value"
     assert response.state == gcd_session.Session.State.IN_PROGRESS
     assert response.user_pseudo_id == "user_pseudo_id_value"
+    assert response.labels == ["labels_value"]
     assert response.is_pinned is True
+    assert (
+        response.pending_async_assist_operation_id
+        == "pending_async_assist_operation_id_value"
+    )
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -5042,11 +5252,21 @@ def test_update_session_rest_call_success(request_type):
                     "name": "name_value",
                     "state": 1,
                     "answer_text": "answer_text_value",
+                    "grounding_score": 0.1608,
                     "citations": [
                         {
                             "start_index": 1189,
                             "end_index": 942,
                             "sources": [{"reference_id": "reference_id_value"}],
+                        }
+                    ],
+                    "grounding_supports": [
+                        {
+                            "start_index": 1189,
+                            "end_index": 942,
+                            "grounding_score": 0.1608,
+                            "grounding_check_required": True,
+                            "sources": {},
                         }
                     ],
                     "references": [
@@ -5060,6 +5280,7 @@ def test_update_session_rest_call_success(request_type):
                                         "content": "content_value",
                                         "page_identifier": "page_identifier_value",
                                         "relevance_score": 0.1584,
+                                        "blob_attachment_indexes": [2423, 2424],
                                     }
                                 ],
                                 "struct_data": {"fields": {}},
@@ -5075,11 +5296,23 @@ def test_update_session_rest_call_success(request_type):
                                     "page_identifier": "page_identifier_value",
                                     "struct_data": {},
                                 },
+                                "blob_attachment_indexes": [2423, 2424],
                             },
                             "structured_document_info": {
                                 "document": "document_value",
                                 "struct_data": {},
+                                "title": "title_value",
+                                "uri": "uri_value",
                             },
+                        }
+                    ],
+                    "blob_attachments": [
+                        {
+                            "data": {
+                                "mime_type": "mime_type_value",
+                                "data": b"data_blob",
+                            },
+                            "attribution_type": 1,
                         }
                     ],
                     "related_questions": [
@@ -5127,13 +5360,130 @@ def test_update_session_rest_call_success(request_type):
                     "answer_skipped_reasons": [1],
                     "create_time": {"seconds": 751, "nanos": 543},
                     "complete_time": {},
+                    "safety_ratings": [
+                        {
+                            "category": 1,
+                            "probability": 1,
+                            "probability_score": 0.182,
+                            "severity": 1,
+                            "severity_score": 0.1526,
+                            "blocked": True,
+                        }
+                    ],
+                },
+                "detailed_assist_answer": {
+                    "name": "name_value",
+                    "state": 1,
+                    "replies": [
+                        {
+                            "grounded_content": {
+                                "text_grounding_metadata": {
+                                    "segments": [
+                                        {
+                                            "start_index": 1189,
+                                            "end_index": 942,
+                                            "reference_indices": [1774, 1775],
+                                            "grounding_score": 0.1608,
+                                            "text": "text_value",
+                                        }
+                                    ],
+                                    "visual_segments": [
+                                        {
+                                            "reference_indices": [1774, 1775],
+                                            "content_id": "content_id_value",
+                                        }
+                                    ],
+                                    "references": [
+                                        {
+                                            "content": "content_value",
+                                            "code_snippet": "code_snippet_value",
+                                            "document_metadata": {
+                                                "language": 1,
+                                                "document": "document_value",
+                                                "uri": "uri_value",
+                                                "title": "title_value",
+                                                "page_identifier": "page_identifier_value",
+                                                "domain": "domain_value",
+                                                "mime_type": "mime_type_value",
+                                            },
+                                        }
+                                    ],
+                                },
+                                "content": {
+                                    "text": "text_value",
+                                    "inline_data": {
+                                        "mime_type": "mime_type_value",
+                                        "data": b"data_blob",
+                                    },
+                                    "file": {
+                                        "mime_type": "mime_type_value",
+                                        "file_id": "file_id_value",
+                                    },
+                                    "executable_code": {"code": "code_value"},
+                                    "code_execution_result": {
+                                        "outcome": 1,
+                                        "output": "output_value",
+                                    },
+                                    "role": "role_value",
+                                    "thought": True,
+                                },
+                                "citation_metadata": {
+                                    "citations": [
+                                        {
+                                            "start_index": 1189,
+                                            "end_index": 942,
+                                            "uri": "uri_value",
+                                            "title": "title_value",
+                                            "license_": "license__value",
+                                            "publication_date": {
+                                                "year": 433,
+                                                "month": 550,
+                                                "day": 318,
+                                            },
+                                        }
+                                    ]
+                                },
+                            },
+                            "create_time": {},
+                        }
+                    ],
+                    "assist_skipped_reasons": [1],
+                    "customer_policy_enforcement_result": {
+                        "verdict": 1,
+                        "policy_results": [
+                            {
+                                "banned_phrase_enforcement_result": {
+                                    "banned_phrases": [
+                                        "banned_phrases_value1",
+                                        "banned_phrases_value2",
+                                    ]
+                                },
+                                "model_armor_enforcement_result": {
+                                    "model_armor_violation": "model_armor_violation_value",
+                                    "error": {
+                                        "code": 411,
+                                        "message": "message_value",
+                                        "details": [
+                                            {
+                                                "type_url": "type.googleapis.com/google.protobuf.Duration",
+                                                "value": b"\x08\x0c\x10\xdb\x07",
+                                            }
+                                        ],
+                                    },
+                                },
+                            }
+                        ],
+                    },
                 },
                 "query_config": {},
+                "live": True,
             }
         ],
+        "labels": ["labels_value1", "labels_value2"],
         "start_time": {},
         "end_time": {},
         "is_pinned": True,
+        "pending_async_assist_operation_id": "pending_async_assist_operation_id_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -5214,7 +5564,9 @@ def test_update_session_rest_call_success(request_type):
             display_name="display_name_value",
             state=gcd_session.Session.State.IN_PROGRESS,
             user_pseudo_id="user_pseudo_id_value",
+            labels=["labels_value"],
             is_pinned=True,
+            pending_async_assist_operation_id="pending_async_assist_operation_id_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -5235,7 +5587,12 @@ def test_update_session_rest_call_success(request_type):
     assert response.display_name == "display_name_value"
     assert response.state == gcd_session.Session.State.IN_PROGRESS
     assert response.user_pseudo_id == "user_pseudo_id_value"
+    assert response.labels == ["labels_value"]
     assert response.is_pinned is True
+    assert (
+        response.pending_async_assist_operation_id
+        == "pending_async_assist_operation_id_value"
+    )
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -5357,7 +5714,9 @@ def test_get_session_rest_call_success(request_type):
             display_name="display_name_value",
             state=session.Session.State.IN_PROGRESS,
             user_pseudo_id="user_pseudo_id_value",
+            labels=["labels_value"],
             is_pinned=True,
+            pending_async_assist_operation_id="pending_async_assist_operation_id_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -5378,7 +5737,12 @@ def test_get_session_rest_call_success(request_type):
     assert response.display_name == "display_name_value"
     assert response.state == session.Session.State.IN_PROGRESS
     assert response.user_pseudo_id == "user_pseudo_id_value"
+    assert response.labels == ["labels_value"]
     assert response.is_pinned is True
+    assert (
+        response.pending_async_assist_operation_id
+        == "pending_async_assist_operation_id_value"
+    )
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -5965,7 +6329,12 @@ def test_session_service_base_transport_with_credentials_file():
         load_creds.assert_called_once_with(
             "credentials.json",
             scopes=None,
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/discoveryengine.assist.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.serving.readwrite",
+            ),
             quota_project_id="octopus",
         )
 
@@ -5991,7 +6360,12 @@ def test_session_service_auth_adc():
         SessionServiceClient()
         adc.assert_called_once_with(
             scopes=None,
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/discoveryengine.assist.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.serving.readwrite",
+            ),
             quota_project_id=None,
         )
 
@@ -6011,7 +6385,12 @@ def test_session_service_transport_auth_adc(transport_class):
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
         adc.assert_called_once_with(
             scopes=["1", "2"],
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/discoveryengine.assist.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.serving.readwrite",
+            ),
             quota_project_id="octopus",
         )
 
@@ -6064,7 +6443,12 @@ def test_session_service_transport_create_channel(transport_class, grpc_helpers)
             credentials=creds,
             credentials_file=None,
             quota_project_id="octopus",
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/discoveryengine.assist.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.serving.readwrite",
+            ),
             scopes=["1", "2"],
             default_host="discoveryengine.googleapis.com",
             ssl_credentials=None,
@@ -6369,6 +6753,43 @@ def test_parse_answer_path():
 
     # Check that the path construction is reversible.
     actual = SessionServiceClient.parse_answer_path(path)
+    assert expected == actual
+
+
+def test_assist_answer_path():
+    project = "scallop"
+    location = "abalone"
+    collection = "squid"
+    engine = "clam"
+    session = "whelk"
+    assist_answer = "octopus"
+    expected = "projects/{project}/locations/{location}/collections/{collection}/engines/{engine}/sessions/{session}/assistAnswers/{assist_answer}".format(
+        project=project,
+        location=location,
+        collection=collection,
+        engine=engine,
+        session=session,
+        assist_answer=assist_answer,
+    )
+    actual = SessionServiceClient.assist_answer_path(
+        project, location, collection, engine, session, assist_answer
+    )
+    assert expected == actual
+
+
+def test_parse_assist_answer_path():
+    expected = {
+        "project": "oyster",
+        "location": "nudibranch",
+        "collection": "cuttlefish",
+        "engine": "mussel",
+        "session": "winkle",
+        "assist_answer": "nautilus",
+    }
+    path = SessionServiceClient.assist_answer_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = SessionServiceClient.parse_assist_answer_path(path)
     assert expected == actual
 
 

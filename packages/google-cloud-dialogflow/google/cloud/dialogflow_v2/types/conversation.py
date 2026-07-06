@@ -1700,12 +1700,18 @@ class SearchKnowledgeAnswer(proto.Message):
                 The answer is from generative model.
             INTENT (3):
                 The answer is from intent matching.
+            PLAYBOOK (4):
+                The answer is from Playbook.
+            EVENT (5):
+                The answer is from event.
         """
 
         ANSWER_TYPE_UNSPECIFIED = 0
         FAQ = 1
         GENERATIVE = 2
         INTENT = 3
+        PLAYBOOK = 4
+        EVENT = 5
 
     class AnswerSource(proto.Message):
         r"""The sources of the answers.

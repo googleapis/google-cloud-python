@@ -57,6 +57,10 @@ from .services.reference_list_service import (
     ReferenceListServiceAsyncClient,
     ReferenceListServiceClient,
 )
+from .services.rule_execution_error_service import (
+    RuleExecutionErrorServiceAsyncClient,
+    RuleExecutionErrorServiceClient,
+)
 from .services.rule_service import RuleServiceAsyncClient, RuleServiceClient
 from .types.big_query_export import (
     BigQueryExport,
@@ -211,11 +215,14 @@ from .types.reference_list import (
     ListReferenceListsResponse,
     ReferenceList,
     ReferenceListEntry,
+    ReferenceListError,
     ReferenceListScope,
     ReferenceListSyntaxType,
     ReferenceListView,
     ScopeInfo,
     UpdateReferenceListRequest,
+    VerifyReferenceListRequest,
+    VerifyReferenceListResponse,
 )
 from .types.rule import (
     CompilationDiagnostic,
@@ -245,6 +252,13 @@ from .types.rule import (
     Severity,
     UpdateRuleDeploymentRequest,
     UpdateRuleRequest,
+    VerifyRuleTextRequest,
+    VerifyRuleTextResponse,
+)
+from .types.rule_execution_error import (
+    ListRuleExecutionErrorsRequest,
+    ListRuleExecutionErrorsResponse,
+    RuleExecutionError,
 )
 
 if hasattr(api_core, "check_python_version") and hasattr(
@@ -272,7 +286,7 @@ else:  # pragma: NO COVER
 
         def parse_version_to_tuple(version_string: str):
             """Safely converts a semantic version string to a comparable tuple of integers.
-            Example: "4.25.8" -> (4, 25, 8)
+            Example: "6.33.5" -> (6, 33, 5)
             Ignores non-numeric parts and handles common version formats.
             Args:
                 version_string: Version string in the format "x.y.z" or "x.y.z<suffix>"
@@ -301,9 +315,9 @@ else:  # pragma: NO COVER
                 return (None, "--")
 
         _dependency_package = "google.protobuf"
-        _next_supported_version = "4.25.8"
-        _next_supported_version_tuple = (4, 25, 8)
-        _recommendation = " (we recommend 6.x)"
+        _next_supported_version = "6.33.5"
+        _next_supported_version_tuple = (6, 33, 5)
+        _recommendation = " (we recommend 7.x)"
         (_version_used, _version_used_string) = _get_version(_dependency_package)
         if _version_used and _version_used < _next_supported_version_tuple:
             warnings.warn(
@@ -341,6 +355,7 @@ __all__ = (
     "InstanceServiceAsyncClient",
     "NativeDashboardServiceAsyncClient",
     "ReferenceListServiceAsyncClient",
+    "RuleExecutionErrorServiceAsyncClient",
     "RuleServiceAsyncClient",
     "AddChartRequest",
     "AddChartResponse",
@@ -467,6 +482,8 @@ __all__ = (
     "ListRetrohuntsResponse",
     "ListRuleDeploymentsRequest",
     "ListRuleDeploymentsResponse",
+    "ListRuleExecutionErrorsRequest",
+    "ListRuleExecutionErrorsResponse",
     "ListRuleRevisionsRequest",
     "ListRuleRevisionsResponse",
     "ListRulesRequest",
@@ -487,6 +504,7 @@ __all__ = (
     "QueryRuntimeError",
     "ReferenceList",
     "ReferenceListEntry",
+    "ReferenceListError",
     "ReferenceListScope",
     "ReferenceListServiceClient",
     "ReferenceListSyntaxType",
@@ -497,6 +515,8 @@ __all__ = (
     "RetrohuntMetadata",
     "Rule",
     "RuleDeployment",
+    "RuleExecutionError",
+    "RuleExecutionErrorServiceClient",
     "RuleServiceClient",
     "RuleType",
     "RuleView",
@@ -519,6 +539,10 @@ __all__ = (
     "UpdateRuleDeploymentRequest",
     "UpdateRuleRequest",
     "UpdateWatchlistRequest",
+    "VerifyReferenceListRequest",
+    "VerifyReferenceListResponse",
+    "VerifyRuleTextRequest",
+    "VerifyRuleTextResponse",
     "VisualMapType",
     "Watchlist",
     "WatchlistUserPreferences",

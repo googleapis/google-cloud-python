@@ -59,6 +59,8 @@ def sample_match():
         (PermissionError(), False, False, False, "Warning: Permission denied reading test_desc", None),  # Optional PermissionError
         (IOError("disk full"), True, False, True, "Error reading test_desc", None),  # Required IOError
         (IOError("disk full"), False, False, False, "Warning: Error reading test_desc", None),  # Optional IOError
+        (ValueError("invalid bytes"), True, False, True, "Error reading test_desc", None),  # Required ValueError
+        (ValueError("invalid bytes"), False, False, False, "Warning: Error reading test_desc", None),  # Optional ValueError
     ]
 )
 def test_safe_read_file_scenarios(
@@ -145,6 +147,56 @@ def test_scan_file_ignores_pragma(tmp_path):
     
     results = scan_file(str(test_file), rules)
     assert len(results) == 0
+
+
+def test_scan_file_ignores_targeted_pragma(tmp_path):
+    test_file = tmp_path / "test.py"
+    test_file.write_text("python_requires = '>=3.7'  # version-scanner: ignore-rule=python_requires_check:3.7\n")
+    
+    rules = [
+        {
+            "name": "python_requires_check", 
+            "pattern": re.compile(r"python_requires\s*=\s*['\"]>=3\.7['\"]"),
+            "version": "3.7"
+        }
+    ]
+    
+    results = scan_file(str(test_file), rules)
+    assert len(results) == 0
+
+
+def test_scan_file_handles_non_string_rule_name_and_version(tmp_path):
+    test_file = tmp_path / "test.py"
+    test_file.write_text("python_requires = '>=3.7'  # version-scanner: ignore-rule=123:3.7\n")
+    
+    rules = [
+        {
+            "name": 123,  # Integer rule name
+            "pattern": re.compile(r"python_requires\s*=\s*['\"]>=3\.7['\"]"),
+            "version": 3.7 # Float version
+        }
+    ]
+    
+    # This should not raise TypeError
+    results = scan_file(str(test_file), rules)
+    assert len(results) == 0
+
+
+
+def test_scan_file_does_not_ignore_mismatched_targeted_pragma(tmp_path):
+    test_file = tmp_path / "test.py"
+    test_file.write_text("python_requires = '>=3.7'  # version-scanner: ignore-rule=python_requires_check:3.8\n")
+    
+    rules = [
+        {
+            "name": "python_requires_check", 
+            "pattern": re.compile(r"python_requires\s*=\s*['\"]>=3\.7['\"]"),
+            "version": "3.7"
+        }
+    ]
+    
+    results = scan_file(str(test_file), rules)
+    assert len(results) == 1
 
 def test_scan_file_ignores_next_line(tmp_path):
     test_file = tmp_path / "test.py"
@@ -364,6 +416,50 @@ def test_scan_repository_ignores_version_scanner(tmp_path):
     assert len(results) == 0
 
 
+def test_scan_repository_wildcard_ignores(tmp_path):
+    # Create files
+    (tmp_path / "test.jpg").write_text("dummy version 3.7\n")
+    (tmp_path / "test.py").write_text("python_requires = '>=3.7'\n")
+    
+    rules = [
+        {"name": "python_requires_check", "pattern": "python_requires\\s*=\\s*['\"]>=3\\.7['\"]"},
+        {"name": "explicit_version_string", "pattern": "3\\.7"}
+    ]
+    
+    from version_scanner import scan_repository
+    # Without ignore
+    results = scan_repository(str(tmp_path), rules)
+    assert len(results) >= 2
+    
+    # With wildcard ignore for *.jpg
+    results_ignored = scan_repository(str(tmp_path), rules, ignore_dirs=["*.jpg"])
+    # test.jpg should be ignored completely
+    for match in results_ignored:
+        assert not match["file_path"].endswith("test.jpg")
+
+
+DEFAULT_IGNORE_PATTERNS = [".git", "*.jpg", "packages/pkg_a/.nox", "*.egg-info"]
+
+@pytest.mark.parametrize(
+    "rel_path, name, ignore_patterns, expected",
+    [
+        pytest.param(".git", ".git", DEFAULT_IGNORE_PATTERNS, True, id="exact_match"),
+        pytest.param(".GIT", ".GIT", DEFAULT_IGNORE_PATTERNS, True, id="case_insensitive_match"),
+        pytest.param("some/path/image.jpg", "image.jpg", DEFAULT_IGNORE_PATTERNS, True, id="wildcard_subpath_match"),
+        pytest.param("image.JPG", "image.JPG", DEFAULT_IGNORE_PATTERNS, True, id="wildcard_case_insensitive_match"),
+        pytest.param("packages/pkg_a/.nox", ".nox", DEFAULT_IGNORE_PATTERNS, True, id="subpath_exact_match"),
+        pytest.param("google_cloud_pubsub.egg-info", "google_cloud_pubsub.egg-info", DEFAULT_IGNORE_PATTERNS, True, id="wildcard_directory_match"),
+        pytest.param("setup.py", "setup.py", DEFAULT_IGNORE_PATTERNS, False, id="no_match"),
+        pytest.param("packages", "packages", ["/packages"], True, id="anchored_root_match"),
+        pytest.param("some/other/packages", "packages", ["/packages"], False, id="anchored_root_nested_no_match"),
+    ]
+)
+def test__should_ignore(rel_path, name, ignore_patterns, expected):
+    from version_scanner import _should_ignore, _preprocess_ignore_patterns
+    preprocessed = _preprocess_ignore_patterns(ignore_patterns)
+    assert _should_ignore(rel_path, name, preprocessed) is expected
+
+
 def test_load_ignore_file(tmp_path):
     from version_scanner import load_ignore_file
     
@@ -454,7 +550,7 @@ def test_upload_to_drive(mock_auth, mock_build):
 
 def test_regex_examples_from_config():
     """Test that examples in config match at least one rule in the group."""
-    config_path = "regex_config.yaml"
+    config_path = "regex_pattern_config.yaml"
     
     try:
         with open(config_path, 'r') as f:
@@ -505,7 +601,7 @@ def test_regex_examples_from_config():
 
 def test_regex_negative_cases():
     """Verify regex patterns prevent false positives (lookaheads, patch bounds) and support whitespace."""
-    config_path = "regex_config.yaml"
+    config_path = "regex_pattern_config.yaml"
     with open(config_path, 'r') as f:
         config = yaml.safe_load(f)
         
@@ -646,7 +742,7 @@ def test_scan_file_truncation_bug(tmp_path):
     from version_scanner import ConfigManager, scan_file
     
     # Init config for 3.1
-    config_manager = ConfigManager("regex_config.yaml", "python", "3.1")
+    config_manager = ConfigManager("regex_pattern_config.yaml", "python", "3.1")
     rules = config_manager.load_config()
     import re
     compiled_rules = [{"name": r["name"], "pattern": re.compile(r["pattern"], re.IGNORECASE)} for r in rules]
@@ -782,16 +878,16 @@ def test_format_for_console(sample_match):
     assert "python_requires = " not in log_str  # Slim format doesn't print context line
 
 
-def test_parse_targets_file(tmp_path):
-    from version_scanner import parse_targets_file
-    yaml_file = tmp_path / "targets.yaml"
+def test_parse_matrix_file(tmp_path):
+    from version_scanner import parse_matrix_file
+    yaml_file = tmp_path / "matrix.yaml"
     yaml_file.write_text("""
 python:
   - "3.7"
   - "3.8"
 protobuf: "4.25.8"
 """)
-    targets = parse_targets_file(str(yaml_file))
+    targets = parse_matrix_file(str(yaml_file))
     assert targets == [("python", "3.7"), ("python", "3.8"), ("protobuf", "4.25.8")]
 
 @pytest.mark.parametrize(
@@ -801,20 +897,22 @@ protobuf: "4.25.8"
         ("invalid: {", True),           # Invalid YAML
         ("- not_a_mapping", True),      # Invalid structure (list instead of map)
         ("python:\n  - null", True),    # Invalid version type (null/None value)
+        ("python:\n  - 3.10", True),    # Invalid version type (float instead of string in list)
+        ("python: 3.10", True),         # Invalid version type (float instead of string)
     ]
 )
-def test_parse_targets_file_failures(tmp_path, file_content, file_exists):
-    from version_scanner import parse_targets_file
+def test_parse_matrix_file_failures(tmp_path, file_content, file_exists):
+    from version_scanner import parse_matrix_file
     
     if file_exists:
-        yaml_file = tmp_path / "targets_failures.yaml"
+        yaml_file = tmp_path / "matrix_failures.yaml"
         yaml_file.write_text(file_content)
         path = str(yaml_file)
     else:
         path = "nonexistent_file.yaml"
         
     with pytest.raises(SystemExit) as excinfo:
-        parse_targets_file(path)
+        parse_matrix_file(path)
     assert excinfo.value.code == 1
 
 def test_scan_repository_multi_targets(tmp_path):
@@ -828,7 +926,7 @@ def test_scan_repository_multi_targets(tmp_path):
     file2.write_text("protobuf==4.25.8\n")
     
     # Let's mock a config file with rules for both python and protobuf
-    config_file = tmp_path / "regex_config.yaml"
+    config_file = tmp_path / "regex_pattern_config.yaml"
     config_file.write_text("""
 rules:
   - name: python_requires_check
@@ -867,4 +965,27 @@ rules:
     assert len(protobuf_match) == 1
     assert protobuf_match[0]["version"] == "4.25.8"
     assert protobuf_match[0]["rule_name"] == "protobuf_check"
+
+
+@pytest.mark.parametrize(
+    "args, expected_error_msg",
+    [
+        # Mixing -m/--matrix-file with -d or -v
+        (['version_scanner.py', '-m', 'matrix.yaml', '-d', 'python'], "Cannot specify -d/--dependency or -v/--version when using -m/--matrix-file"),
+        (['version_scanner.py', '-m', 'matrix.yaml', '-v', '3.7'], "Cannot specify -d/--dependency or -v/--version when using -m/--matrix-file"),
+        (['version_scanner.py', '-m', 'matrix.yaml', '-d', 'python', '-v', '3.7'], "Cannot specify -d/--dependency or -v/--version when using -m/--matrix-file"),
+        # Missing either -d or -v when not using -m
+        (['version_scanner.py', '-d', 'python'], "Must specify both -d/--dependency and -v/--version when not using -m/--matrix-file"),
+        (['version_scanner.py', '-v', '3.7'], "Must specify both -d/--dependency and -v/--version when not using -m/--matrix-file"),
+        (['version_scanner.py'], "Must specify both -d/--dependency and -v/--version when not using -m/--matrix-file"),
+    ]
+)
+def test_main_cli_validation(capsys, args, expected_error_msg):
+    from version_scanner import main
+    with mock.patch('sys.argv', args):
+        with pytest.raises(SystemExit) as excinfo:
+            main()
+        assert excinfo.value.code == 2
+        captured = capsys.readouterr()
+        assert expected_error_msg in captured.err
 

@@ -4692,7 +4692,14 @@ def test_create_generator_rest_call_success(request_type):
         "ces_tool_specs": [
             {"ces_tool": "ces_tool_value", "confirmation_requirement": 1}
         ],
-        "ces_app_specs": [{"ces_app": "ces_app_value", "confirmation_requirement": 1}],
+        "ces_app_specs": [
+            {
+                "ces_app": "ces_app_value",
+                "confirmation_requirement": 1,
+                "proactive_enabled": True,
+                "reactive_enabled": True,
+            }
+        ],
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -5414,7 +5421,14 @@ def test_update_generator_rest_call_success(request_type):
         "ces_tool_specs": [
             {"ces_tool": "ces_tool_value", "confirmation_requirement": 1}
         ],
-        "ces_app_specs": [{"ces_app": "ces_app_value", "confirmation_requirement": 1}],
+        "ces_app_specs": [
+            {
+                "ces_app": "ces_app_value",
+                "confirmation_requirement": 1,
+                "proactive_enabled": True,
+                "reactive_enabled": True,
+            }
+        ],
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency

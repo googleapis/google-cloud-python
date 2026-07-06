@@ -60,8 +60,15 @@ run_package_test() {
 
       PROJECT_ID=$(cat "${KOKORO_GFILE_DIR}/google-auth-project-id.json")
       GOOGLE_APPLICATION_CREDENTIALS="${KOKORO_GFILE_DIR}/google-auth-service-account.json"
-      NOX_FILE="system_tests/noxfile.py"
-      NOX_SESSION=""
+      # Note: system.sh is also reused for monorepo-wide continuous unit test jobs
+      # like `core_deps_from_source` and `prerelease_deps`. For google-auth, we only
+      # want to override NOX_FILE to system_tests/noxfile.py when running actual system tests.
+      if [[ -z "${NOX_SESSION}" || "${NOX_SESSION}" == "system-"* ]]; then
+        NOX_FILE="system_tests/noxfile.py"
+        NOX_SESSION=""
+      else
+        NOX_FILE="noxfile.py"
+      fi
       ;;
     *)
       PROJECT_ID=$(cat "${KOKORO_GFILE_DIR}/project-id.json")

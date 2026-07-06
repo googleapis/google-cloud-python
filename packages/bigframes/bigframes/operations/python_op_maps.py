@@ -22,6 +22,7 @@ from bigframes.operations import (
     array_ops,
     bool_ops,
     comparison_ops,
+    generic_ops,
     numeric_ops,
     string_ops,
 )
@@ -47,6 +48,8 @@ PYTHON_TO_BIGFRAMES = {
     operator.and_: bool_ops.and_op,
     operator.or_: bool_ops.or_op,
     operator.xor: bool_ops.xor_op,
+    operator.invert: generic_ops.invert_op,
+    operator.not_: generic_ops.invert_op,
     ## math
     math.log: numeric_ops.ln_op,
     math.log10: numeric_ops.log10_op,

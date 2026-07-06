@@ -621,45 +621,45 @@ replacements:
       packages/google-cloud-firestore/noxfile.py
     ]
     before: |
-      # Run py.test against the system tests\.
-      if system_test_exists:
-          session\.run\(
-              "py.test",
-              "--quiet",
-              f"--junitxml=system_\{session\.python\}_sponge_log\.xml",
-              system_test_path,
-              \*session\.posargs,
-          \)
-      if system_test_folder_exists:
-          session\.run\(
-              "py.test",
-              "--quiet",
-              f"--junitxml=system_\{session\.python\}_sponge_log\.xml",
-              system_test_folder_path,
-              \*session\.posargs,
-          \)
+      # Run py.test against the system tests.
+      \    if system_test_exists:
+      \        session.run\(
+      \            "py.test",
+      \            "--quiet",
+      \            f"--junitxml=system_\{session.python\}_sponge_log.xml",
+      \            system_test_path,
+      \            \*session.posargs,
+      \        \)
+      \    if system_test_folder_exists:
+      \        session.run\(
+      \            "py.test",
+      \            "--quiet",
+      \            f"--junitxml=system_\{session.python\}_sponge_log.xml",
+      \            system_test_folder_path,
+      \            \*session.posargs,
+      \        \)
     after: |
       # Run py.test against the system tests.
-      if system_test_exists:
-          session.run(
-              "py.test",
-              "-n",
-              "10",
-              "--quiet",
-              f"--junitxml=system_{session.python}_sponge_log.xml",
-              system_test_path,
-              *session.posargs,
-          )
-      if system_test_folder_exists:
-          session.run(
-              "py.test",
-              "-n",
-              "10",
-              "--quiet",
-              f"--junitxml=system_{session.python}_sponge_log.xml",
-              system_test_folder_path,
-              *session.posargs,
-          )
+          if system_test_exists:
+              session.run(
+                  "py.test",
+                  "-n",
+                  "10",
+                  "--quiet",
+                  f"--junitxml=system_{session.python}_sponge_log.xml",
+                  system_test_path,
+                  *session.posargs,
+              )
+          if system_test_folder_exists:
+              session.run(
+                  "py.test",
+                  "-n",
+                  "10",
+                  "--quiet",
+                  f"--junitxml=system_{session.python}_sponge_log.xml",
+                  system_test_folder_path,
+                  *session.posargs,
+              )
     count: 1
   - paths: [
       "packages/google-cloud-firestore/docs/conf.py",

@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-network-security/#history
 
+## [0.13.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-security-v0.13.1...google-cloud-network-security-v0.13.2) (2026-06-25)
+
+
+### Features
+
+* update googleapis and regenerate ([#17554](https://github.com/googleapis/google-cloud-python/issues/17554)) ([03d0574](https://github.com/googleapis/google-cloud-python/commit/03d0574da8485e918f16e90666928f5c7b7f1c92))
+
+## [0.13.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-security-v0.13.0...google-cloud-network-security-v0.13.1) (2026-06-22)
+
+
+### Features
+
+* regenerate google-cloud-[k-n] packages ([#17074](https://github.com/googleapis/google-cloud-python/issues/17074)) ([ec54f78](https://github.com/googleapis/google-cloud-python/commit/ec54f78e37bb3b48e0794d544784b99fa13d6f85))
+
 ## [0.13.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-security-v0.12.0...google-cloud-network-security-v0.13.0) (2026-04-02)
 
 

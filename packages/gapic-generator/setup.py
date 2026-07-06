@@ -22,13 +22,13 @@ import setuptools
 name = "gapic-generator"
 description = "Google API Client Generator for Python"
 url = "https://github.com/googleapis/google-cloud-python/tree/main/packages/gapic-generator"
-version = "1.35.0"
+version = "1.36.0"
 release_status = "Development Status :: 5 - Production/Stable"
 dependencies = [
     # Ensure that the lower bounds of these dependencies match what we have in the
     # templated setup.py.j2: https://github.com/googleapis/gapic-generator-python/blob/main/gapic/templates/setup.py.j2
     "click >= 6.7",
-    "google-api-core[grpc] >= 2.24.2, < 3.0.0",
+    "google-api-core[grpc] >= 2.25.0, < 3.0.0",
     "googleapis-common-protos >= 1.55.0, < 2.0.0",
     "grpcio >= 1.24.3, < 2.0.0",
     # 2.11.0 is required which adds the `default` argument to `jinja-filters.map()`

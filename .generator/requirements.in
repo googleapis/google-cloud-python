@@ -1,6 +1,0 @@
-click
-gapic-generator==1.30.13 # https://github.com/googleapis/gapic-generator-python/releases/tag/v1.30.13
-nox
-starlark-pyo3>=2025.1
-build
-ruff==0.14.14

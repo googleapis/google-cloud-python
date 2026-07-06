@@ -449,6 +449,12 @@ class DeleteCollectionRequest(proto.Message):
             The request ID must be a valid UUID with the
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
+        force (bool):
+            Optional. If set to true, any Indexes and
+            DataObjects from this Collection will also be
+            deleted. (Otherwise, the request will only work
+            if the Collection has no Indexes and
+            DataObjects.)
     """
 
     name: str = proto.Field(
@@ -458,6 +464,10 @@ class DeleteCollectionRequest(proto.Message):
     request_id: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    force: bool = proto.Field(
+        proto.BOOL,
+        number=3,
     )
 
 
@@ -1002,6 +1012,16 @@ class ExportDataObjectsRequest(proto.Message):
             Required. The resource name of the Collection from which we
             want to export Data Objects. Format:
             ``projects/{project}/locations/{location}/collections/{collection}``.
+        field_filter (google.cloud.vectorsearch_v1beta.types.ExportDataObjectsRequest.FieldFilter):
+            Optional. Restricts which top-level Data Object fields
+            appear in each exported JSONL record. If unset, every field
+            is exported (the existing behavior). The primary use case is
+            excluding the per-object ``etag`` so that the exported
+            records can be imported into a Collection in a different
+            region without optimistic-concurrency conflicts.
+
+            Allowed field names are ``id``, ``data``, ``vectors``,
+            ``etag``.
     """
 
     class GcsExportDestination(proto.Message):
@@ -1045,6 +1065,60 @@ class ExportDataObjectsRequest(proto.Message):
             enum="ExportDataObjectsRequest.GcsExportDestination.Format",
         )
 
+    class FieldFilter(proto.Message):
+        r"""Selects which top-level Data Object fields are emitted at
+        export time.
+
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            included_fields (google.cloud.vectorsearch_v1beta.types.ExportDataObjectsRequest.FieldFilter.FieldList):
+                Optional. Only these top-level fields will
+                appear in each exported record.
+
+                This field is a member of `oneof`_ ``selector``.
+            excluded_fields (google.cloud.vectorsearch_v1beta.types.ExportDataObjectsRequest.FieldFilter.FieldList):
+                Optional. Every top-level field except these
+                will appear in each exported record.
+
+                This field is a member of `oneof`_ ``selector``.
+        """
+
+        class FieldList(proto.Message):
+            r"""Wrapper for a repeated string. Wrapping in a message lets the
+            surrounding ``oneof`` distinguish "field set to an empty list"
+            (which is rejected as INVALID_ARGUMENT) from "field not set".
+
+            Attributes:
+                fields (MutableSequence[str]):
+                    Required. The list of top-level Data Object JSON field
+                    names. Allowed values are ``id``, ``data``, ``vectors``,
+                    ``etag``.
+            """
+
+            fields: MutableSequence[str] = proto.RepeatedField(
+                proto.STRING,
+                number=1,
+            )
+
+        included_fields: "ExportDataObjectsRequest.FieldFilter.FieldList" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            oneof="selector",
+            message="ExportDataObjectsRequest.FieldFilter.FieldList",
+        )
+        excluded_fields: "ExportDataObjectsRequest.FieldFilter.FieldList" = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            oneof="selector",
+            message="ExportDataObjectsRequest.FieldFilter.FieldList",
+        )
+
     gcs_destination: GcsExportDestination = proto.Field(
         proto.MESSAGE,
         number=2,
@@ -1054,6 +1128,11 @@ class ExportDataObjectsRequest(proto.Message):
     name: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    field_filter: FieldFilter = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=FieldFilter,
     )
 
 
