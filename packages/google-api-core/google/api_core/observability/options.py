@@ -1,3 +1,19 @@
+# -*- coding: utf-8 -*-
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
 """Observability environment variable and client options resolution helpers."""
 
 import os
@@ -6,6 +22,11 @@ from typing import Any, Dict, Optional, Union
 # Allowed truthy and falsy patterns for environment variables
 _TRUTHY_VALUES = ("y", "yes", "t", "true", "on", "1")
 _FALSY_VALUES = ("n", "no", "f", "false", "off", "0")
+
+# Test-only overrides for environment variables.
+# This is intended ONLY for unit/integration testing to prevent mutating
+# os.environ.
+_TEST_ENV_OVERRIDES: Dict[str, bool] = {}
 
 
 def _strtobool(val: str) -> Optional[bool]:
@@ -18,9 +39,6 @@ def _strtobool(val: str) -> Optional[bool]:
     if clean_val in _FALSY_VALUES:
         return False
     raise ValueError(f"Invalid truth value: {val!r}")
-
-
-_TEST_ENV_OVERRIDES: Dict[str, bool] = {}
 
 
 def set_test_env_override(name: str, value: Optional[bool]) -> None:
@@ -55,7 +73,7 @@ def _get_env_bool(name: str) -> Optional[bool]:
 
 
 def _get_env_bool_with_dev_fallback(name: str) -> Optional[bool]:
-    """Retrieve the boolean value of an environment variable, checking dev/exp fallbacks first."""
+    """Retrieve the boolean value of an environment variable, checking experimental fallbacks first."""
     if name.startswith("GOOGLE_CLOUD_"):
         exp_name = name.replace("GOOGLE_CLOUD_", "GOOGLE_CLOUD_EXPERIMENTAL_", 1)
         val = _get_env_bool(exp_name)
@@ -74,12 +92,12 @@ def is_signal_enabled(
     Resolves settings in the following order of precedence:
     1. Programmatic overrides in client_options (checks tracer_provider)
     2. Language-wide Environment Variable: GOOGLE_CLOUD_PYTHON_TRACING_ENABLED
-       (natively checks for an EXPERIMENTAL prefix variant first)
+       (natively checks for a variant with an "EXPERIMENTAL" token first)
     3. Default fallback
 
     Args:
         signal_type: The signal type: must be 'tracing'.
-        client_options: A dictionary or object representing client configuration.
+        client_options: A dictionary or object containing client configuration.
         default: Fallback boolean if no options or env variables match.
 
     Returns:
@@ -87,7 +105,7 @@ def is_signal_enabled(
     """
     if signal_type != "tracing":
         raise ValueError(
-            f"Invalid signal_type: {signal_type!r}. Only 'tracing' is supported."
+            f"Invalid signal_type: {signal_type!r}. Only 'tracing' is supported at this time."
         )
 
     # 1. Resolve Programmatic Options First
