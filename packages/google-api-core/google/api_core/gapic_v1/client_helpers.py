@@ -23,6 +23,11 @@ from typing import Any, Optional
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 
+_MTLS_ENDPOINT_RE = re.compile(
+    r"(?P<name>[^.]+)(?P<mtls>\.mtls)?(?P<sandbox>\.sandbox)?(?P<googledomain>\.googleapis\.com)?"
+)
+
+
 
 
 def get_default_mtls_endpoint(api_endpoint: Optional[str]) -> Optional[str]:
@@ -38,11 +43,7 @@ def get_default_mtls_endpoint(api_endpoint: Optional[str]) -> Optional[str]:
     if not api_endpoint:
         return api_endpoint
 
-    mtls_endpoint_re = re.compile(
-        r"(?P<name>[^.]+)(?P<mtls>\.mtls)?(?P<sandbox>\.sandbox)?(?P<googledomain>\.googleapis\.com)?"
-    )
-
-    m = mtls_endpoint_re.match(api_endpoint)
+    m = _MTLS_ENDPOINT_RE.match(api_endpoint)
     if m is None:
         # Could not parse api_endpoint; return as-is.
         return api_endpoint
@@ -89,18 +90,18 @@ def use_client_cert_effective() -> bool:
 
 def get_api_endpoint(
     api_override: Optional[str],
-    client_cert_source: Optional[bytes],
+    client_cert_source: Optional[Any],
     universe_domain: str,
     use_mtls_endpoint: str,
     default_universe: str,
     default_mtls_endpoint: Optional[str],
     default_endpoint_template: str,
-) -> str:
+) -> Optional[str]:
     """Return the API endpoint used by the client.
 
     Args:
         api_override (Optional[str]): The API endpoint override.
-        client_cert_source (Optional[bytes]): The client certificate source.
+        client_cert_source (Optional[Any]): The client certificate source.
         universe_domain (str): The universe domain.
         use_mtls_endpoint (str): How to use the mTLS endpoint.
         default_universe (str): The default universe.
@@ -108,7 +109,7 @@ def get_api_endpoint(
         default_endpoint_template (str): The default endpoint template.
 
     Returns:
-        str: The API endpoint to be used by the client.
+        Optional[str]: The API endpoint to be used by the client.
     """
     if api_override is not None:
         api_endpoint = api_override
