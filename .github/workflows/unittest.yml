@@ -176,34 +176,59 @@ jobs:
             modified_packages=$(git diff --name-only HEAD~1 -- packages | cut -d/ -f1,2 | sort -u)
           fi
 
+          mkdir -p /tmp/coverage-logs
+          MAX_JOBS=8
+
+          for pkg in ${modified_packages}; do
+            if [ -d "${pkg}" ]; then
+              # Limit the number of concurrent background jobs
+              while [ $(jobs -r | wc -l) -ge ${MAX_JOBS} ]; do
+                sleep 0.1
+              done
+
+              (
+                pkg_log="/tmp/coverage-logs/${pkg//\//_}.log"
+                pkg_status="/tmp/coverage-logs/${pkg//\//_}.status"
+
+                set +e
+                if [ -f "${pkg}/.coveragerc" ]; then
+                  echo "Using package-specific configuration: ${pkg}/.coveragerc" > "${pkg_log}"
+                  if grep -q "fail_under" "${pkg}/.coveragerc"; then
+                    coverage report --rcfile="${pkg}/.coveragerc" --include="${pkg}/**" >> "${pkg_log}" 2>&1
+                  else
+                    echo "No fail_under specified in ${pkg}/.coveragerc, enforcing default" >> "${pkg_log}"
+                    coverage report --rcfile="${pkg}/.coveragerc" --include="${pkg}/**" --fail-under="${DEFAULT_FAIL_UNDER}" >> "${pkg_log}" 2>&1
+                  fi
+                else
+                  echo "No .coveragerc found for ${pkg}, enforcing default" > "${pkg_log}"
+                  coverage report --include="${pkg}/**" --fail-under="${DEFAULT_FAIL_UNDER}" >> "${pkg_log}" 2>&1
+                fi
+                echo $? > "${pkg_status}"
+                set -e
+              ) &
+            fi
+          done
+
+          # Wait for all background checks to finish
+          wait
+
           failed_packages=()
           passed_packages=()
 
           for pkg in ${modified_packages}; do
             if [ -d "${pkg}" ]; then
+              pkg_log="/tmp/coverage-logs/${pkg//\//_}.log"
+              pkg_status="/tmp/coverage-logs/${pkg//\//_}.status"
+
               echo "============================================================"
               echo "Evaluating coverage for package: ${pkg}"
               echo "============================================================"
-
-              set +e
-              if [ -f "${pkg}/.coveragerc" ]; then
-                echo "Using package-specific configuration: ${pkg}/.coveragerc"
-                # If fail_under is specified in the package-specific .coveragerc, coverage report
-                # will automatically enforce it. Otherwise, we enforce the default.
-                if grep -q "fail_under" "${pkg}/.coveragerc"; then
-                  coverage report --rcfile="${pkg}/.coveragerc" --include="${pkg}/**"
-                else
-                  echo "No fail_under specified in ${pkg}/.coveragerc, enforcing default"
-                  coverage report --rcfile="${pkg}/.coveragerc" --include="${pkg}/**" --fail-under="${DEFAULT_FAIL_UNDER}"
-                fi
-              else
-                echo "No .coveragerc found for ${pkg}, enforcing default"
-                coverage report --include="${pkg}/**" --fail-under="${DEFAULT_FAIL_UNDER}"
+              if [ -f "${pkg_log}" ]; then
+                cat "${pkg_log}"
               fi
-              status=$?
-              set -e
 
-              if [ ${status} -ne 0 ]; then
+              status=$(cat "${pkg_status}")
+              if [ "${status}" -ne 0 ]; then
                 failed_packages+=("${pkg}")
               else
                 passed_packages+=("${pkg}")
