@@ -24,7 +24,6 @@ ISOLATED_PACKAGES = {
     "google-cloud-compute-v1beta",
     "google-cloud-dialogflow",
     "google-cloud-dialogflow-cx",
-    "google-cloud-retail",
 }
 
 
@@ -114,8 +113,9 @@ def group_packages(packages):
         # Ensure at least 1 shard if we have packages
         num_shards = max(1, num_shards)
         
-        # 3. Top out at 16 shards
-        num_shards = min(16, num_shards)
+        # 3. Top out at the remaining budget (total 16 shards minus isolated shards)
+        max_normal_shards = max(1, 16 - len(isolated_to_test))
+        num_shards = min(max_normal_shards, num_shards)
         
         # Distribute packages between them as evenly as possible
         shard_size = math.ceil(num_packages / num_shards)
@@ -126,7 +126,7 @@ def group_packages(packages):
             if start >= num_packages:
                 break
             shard_packages = normal_to_test[start:end]
-            name = f"Shard {index}"
+            name = f"Shard {i + 1}"
             num_in_shard = len(shard_packages)
             if len(shard_packages) == 1:
                 desc = shard_packages[0].strip('/').split('/')[-1]
