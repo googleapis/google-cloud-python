@@ -149,3 +149,112 @@ def test__get_api_endpoint_mtls_universe_mismatch():
             default_mtls_endpoint="foo.mtls.googleapis.com",
             default_endpoint_template="foo.{UNIVERSE_DOMAIN}",
         )
+
+
+@mock.patch(
+    "google.api_core.gapic_v1.client_helpers._use_client_cert_effective"
+)
+@mock.patch.dict(os.environ, clear=True)
+def test__read_environment_variables(mock_effective):
+    mock_effective.return_value = True
+    os.environ["GOOGLE_API_USE_MTLS_ENDPOINT"] = "always"
+    os.environ["GOOGLE_CLOUD_UNIVERSE_DOMAIN"] = "custom.com"
+
+    cert, mtls, domain = client_helpers._read_environment_variables()
+    assert cert is True
+    assert mtls == "always"
+    assert domain == "custom.com"
+
+
+@mock.patch.dict(os.environ, clear=True)
+def test__read_environment_variables_invalid_mtls():
+    os.environ["GOOGLE_API_USE_MTLS_ENDPOINT"] = "invalid"
+    with pytest.raises(
+        MutualTLSChannelError, match="must be `never`, `auto` or `always`"
+    ):
+        client_helpers._read_environment_variables()
+
+
+@mock.patch("google.auth.transport.mtls.has_default_client_cert_source")
+@mock.patch("google.auth.transport.mtls.default_client_cert_source")
+def test__get_client_cert_source(mock_default, mock_has_default):
+    mock_default.return_value = b"default_cert"
+    mock_has_default.return_value = True
+
+    # When use_cert_flag is False, return None
+    assert client_helpers._get_client_cert_source(b"provided", False) is None
+
+    # When provided_cert_source is given, return provided
+    assert (
+        client_helpers._get_client_cert_source(b"provided", True)
+        == b"provided"
+    )
+
+    # When no provided cert but default is available
+    assert (
+        client_helpers._get_client_cert_source(None, True) == b"default_cert"
+    )
+
+
+def test__get_universe_domain():
+    # client_universe_domain takes precedence
+    assert (
+        client_helpers._get_universe_domain(
+            "client.com", "env.com", "default.com"
+        )
+        == "client.com"
+    )
+
+    # env takes precedence over default
+    assert (
+        client_helpers._get_universe_domain(None, "env.com", "default.com")
+        == "env.com"
+    )
+
+    # fallback to default
+    assert (
+        client_helpers._get_universe_domain(None, None, "default.com")
+        == "default.com"
+    )
+
+
+def test__get_universe_domain_empty():
+    with pytest.raises(ValueError, match="cannot be an empty string"):
+        client_helpers._get_universe_domain("", None, "default.com")
+
+
+def test__setup_request_id():
+    import uuid
+
+    # test dict request
+    req = {}
+    client_helpers._setup_request_id(req, "request_id", True)
+    assert "request_id" in req
+    uuid_str = req["request_id"]
+    uuid.UUID(uuid_str)  # verify it is a valid UUID
+
+    # test dict request when already set
+    req = {"request_id": "existing"}
+    client_helpers._setup_request_id(req, "request_id", True)
+    assert req["request_id"] == "existing"
+
+    class DummyRequest:
+        def __init__(self):
+            self.request_id = ""
+
+        def HasField(self, field_name):
+            if not hasattr(self, field_name):
+                raise ValueError()
+            return bool(getattr(self, field_name))
+
+    # test object request proto3 optional true
+    req_obj = DummyRequest()
+    client_helpers._setup_request_id(req_obj, "request_id", True)
+    assert req_obj.request_id != ""
+    uuid.UUID(req_obj.request_id)
+
+    # test object request proto3 optional false
+    req_obj2 = DummyRequest()
+    client_helpers._setup_request_id(req_obj2, "request_id", False)
+    assert req_obj2.request_id != ""
+    uuid.UUID(req_obj2.request_id)

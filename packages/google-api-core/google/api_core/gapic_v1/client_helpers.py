@@ -18,13 +18,15 @@
 
 import os
 import re
-from typing import Any, Optional
+import uuid
+from typing import Any, Optional, Tuple
 
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 
 _MTLS_ENDPOINT_RE = re.compile(
-    r"(?P<name>[^.]+)(?P<mtls>\.mtls)?(?P<sandbox>\.sandbox)?(?P<googledomain>\.googleapis\.com)?"
+    r"(?P<name>[^.]+)(?P<mtls>\.mtls)?(?P<sandbox>\.sandbox)?"
+    r"(?P<googledomain>\.googleapis\.com)?"
 )
 
 
@@ -60,17 +62,20 @@ def _get_default_mtls_endpoint(api_endpoint: Optional[str]) -> Optional[str]:
 
 def _use_client_cert_effective() -> bool:
     """Returns whether client certificate should be used for mTLS if the
-    google-auth version supports should_use_client_cert automatic mTLS enablement.
+    google-auth version supports should_use_client_cert automatic mTLS
+    enablement.
 
     Alternatively, read from the GOOGLE_API_USE_CLIENT_CERTIFICATE env var.
 
     Returns:
         bool: whether client certificate should be used for mTLS
     Raises:
-        ValueError: (If using a version of google-auth without should_use_client_cert and
-        GOOGLE_API_USE_CLIENT_CERTIFICATE is set to an unexpected value.)
+        ValueError: (If using a version of google-auth without
+        should_use_client_cert and GOOGLE_API_USE_CLIENT_CERTIFICATE is
+        set to an unexpected value.)
     """
-    # check if google-auth version supports should_use_client_cert for automatic mTLS enablement
+    # check if google-auth version supports should_use_client_cert for
+    # automatic mTLS enablement
     if hasattr(mtls, "should_use_client_cert"):  # pragma: NO COVER
         return mtls.should_use_client_cert()
     else:  # pragma: NO COVER
@@ -80,8 +85,8 @@ def _use_client_cert_effective() -> bool:
         ).lower()
         if use_client_cert_str not in ("true", "false"):
             raise ValueError(
-                "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be"
-                " either `true` or `false`"
+                "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` "
+                "must be either `true` or `false`"
             )
         return use_client_cert_str == "true"
 
@@ -116,8 +121,127 @@ def _get_api_endpoint(
     ):
         if universe_domain != default_universe:
             raise MutualTLSChannelError(
-                f"mTLS is not supported in any universe other than {default_universe}."
+                f"mTLS is not supported in any universe other than "
+                f"{default_universe}."
             )
         return default_mtls_endpoint
     else:
-        return default_endpoint_template.format(UNIVERSE_DOMAIN=universe_domain)
+        return default_endpoint_template.format(
+            UNIVERSE_DOMAIN=universe_domain
+        )
+
+
+def _read_environment_variables() -> Tuple[bool, str, Optional[str]]:
+    """Returns the environment variables used by the client.
+
+    Returns:
+        Tuple[bool, str, Optional[str]]: returns the
+        GOOGLE_API_USE_CLIENT_CERTIFICATE, GOOGLE_API_USE_MTLS_ENDPOINT,
+        and GOOGLE_CLOUD_UNIVERSE_DOMAIN environment variables.
+
+    Raises:
+        ValueError: If GOOGLE_API_USE_CLIENT_CERTIFICATE is not
+            any of ["true", "false"].
+        google.auth.exceptions.MutualTLSChannelError: If
+            GOOGLE_API_USE_MTLS_ENDPOINT is not any of
+            ["auto", "never", "always"].
+    """
+    use_client_cert = _use_client_cert_effective()
+    use_mtls_endpoint = os.getenv(
+        "GOOGLE_API_USE_MTLS_ENDPOINT", "auto"
+    ).lower()
+    universe_domain_env = os.getenv("GOOGLE_CLOUD_UNIVERSE_DOMAIN")
+    if use_mtls_endpoint not in ("auto", "never", "always"):
+        raise MutualTLSChannelError(
+            "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` "
+            "must be `never`, `auto` or `always`"
+        )
+    return use_client_cert, use_mtls_endpoint, universe_domain_env
+
+
+def _get_client_cert_source(
+    provided_cert_source: Optional[Any], use_cert_flag: bool
+) -> Optional[Any]:
+    """Return the client cert source to be used by the client.
+
+    Args:
+        provided_cert_source (bytes): The client certificate source provided.
+        use_cert_flag (bool): A flag indicating whether to use the
+            client certificate.
+
+    Returns:
+        bytes or None: The client cert source to be used by the client.
+    """
+    client_cert_source = None
+    if use_cert_flag:
+        if provided_cert_source:
+            client_cert_source = provided_cert_source
+        elif (
+            hasattr(mtls, "has_default_client_cert_source")
+            and mtls.has_default_client_cert_source()
+        ):
+            client_cert_source = mtls.default_client_cert_source()
+    return client_cert_source
+
+
+def _get_universe_domain(
+    client_universe_domain: Optional[str],
+    universe_domain_env: Optional[str],
+    default_universe: str,
+) -> str:
+    """Return the universe domain used by the client.
+
+    Args:
+        client_universe_domain (Optional[str]): The universe domain
+            configured via the client options.
+        universe_domain_env (Optional[str]): The universe domain
+            configured via the "GOOGLE_CLOUD_UNIVERSE_DOMAIN" env var.
+        default_universe (str): The default universe domain.
+
+    Returns:
+        str: The universe domain to be used by the client.
+
+    Raises:
+        ValueError: If the universe domain is an empty string.
+    """
+    universe_domain = default_universe
+    if client_universe_domain is not None:
+        universe_domain = client_universe_domain
+    elif universe_domain_env is not None:
+        universe_domain = universe_domain_env
+    if len(universe_domain.strip()) == 0:
+        raise ValueError("Universe Domain cannot be an empty string.")
+    return universe_domain
+
+
+def _setup_request_id(
+    request: Any, field_name: str, is_proto3_optional: bool
+) -> None:
+    """Populate a UUID4 field in the request if it is not already set.
+
+    Args:
+        request (Union[google.protobuf.message.Message, dict]): The
+            request object.
+        field_name (str): The name of the field to populate.
+        is_proto3_optional (bool): Whether the field is proto3 optional.
+    """
+    if isinstance(request, dict):
+        if is_proto3_optional:
+            if field_name not in request:
+                request[field_name] = str(uuid.uuid4())
+        elif not request.get(field_name):
+            request[field_name] = str(uuid.uuid4())
+        return
+
+    if is_proto3_optional:
+        try:
+            # Pure protobuf messages
+            if not request.HasField(field_name):
+                setattr(request, field_name, str(uuid.uuid4()))
+        except (AttributeError, ValueError):
+            # Proto-plus messages or other objects
+            if field_name not in request:
+                setattr(request, field_name, str(uuid.uuid4()))
+    else:
+        if not getattr(request, field_name):
+            setattr(request, field_name, str(uuid.uuid4()))
