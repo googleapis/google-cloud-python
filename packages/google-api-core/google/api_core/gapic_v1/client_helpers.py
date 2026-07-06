@@ -126,9 +126,7 @@ def _get_api_endpoint(
             )
         return default_mtls_endpoint
     else:
-        return default_endpoint_template.format(
-            UNIVERSE_DOMAIN=universe_domain
-        )
+        return default_endpoint_template.format(UNIVERSE_DOMAIN=universe_domain)
 
 
 def _read_environment_variables() -> Tuple[bool, str, Optional[str]]:
@@ -147,9 +145,7 @@ def _read_environment_variables() -> Tuple[bool, str, Optional[str]]:
             ["auto", "never", "always"].
     """
     use_client_cert = _use_client_cert_effective()
-    use_mtls_endpoint = os.getenv(
-        "GOOGLE_API_USE_MTLS_ENDPOINT", "auto"
-    ).lower()
+    use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto").lower()
     universe_domain_env = os.getenv("GOOGLE_CLOUD_UNIVERSE_DOMAIN")
     if use_mtls_endpoint not in ("auto", "never", "always"):
         raise MutualTLSChannelError(
@@ -214,9 +210,7 @@ def _get_universe_domain(
     return universe_domain
 
 
-def _setup_request_id(
-    request: Any, field_name: str, is_proto3_optional: bool
-) -> None:
+def _setup_request_id(request: Any, field_name: str, is_proto3_optional: bool) -> None:
     """Populate a UUID4 field in the request if it is not already set.
 
     Args:

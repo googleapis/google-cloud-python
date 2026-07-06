@@ -151,9 +151,7 @@ def test__get_api_endpoint_mtls_universe_mismatch():
         )
 
 
-@mock.patch(
-    "google.api_core.gapic_v1.client_helpers._use_client_cert_effective"
-)
+@mock.patch("google.api_core.gapic_v1.client_helpers._use_client_cert_effective")
 @mock.patch.dict(os.environ, clear=True)
 def test__read_environment_variables(mock_effective):
     mock_effective.return_value = True
@@ -175,12 +173,8 @@ def test__read_environment_variables_invalid_mtls():
         client_helpers._read_environment_variables()
 
 
-@mock.patch(
-    "google.auth.transport.mtls.has_default_client_cert_source", create=True
-)
-@mock.patch(
-    "google.auth.transport.mtls.default_client_cert_source", create=True
-)
+@mock.patch("google.auth.transport.mtls.has_default_client_cert_source", create=True)
+@mock.patch("google.auth.transport.mtls.default_client_cert_source", create=True)
 def test__get_client_cert_source(mock_default, mock_has_default):
     mock_default.return_value = b"default_cert"
     mock_has_default.return_value = True
@@ -189,36 +183,27 @@ def test__get_client_cert_source(mock_default, mock_has_default):
     assert client_helpers._get_client_cert_source(b"provided", False) is None
 
     # When provided_cert_source is given, return provided
-    assert (
-        client_helpers._get_client_cert_source(b"provided", True)
-        == b"provided"
-    )
+    assert client_helpers._get_client_cert_source(b"provided", True) == b"provided"
 
     # When no provided cert but default is available
-    assert (
-        client_helpers._get_client_cert_source(None, True) == b"default_cert"
-    )
+    assert client_helpers._get_client_cert_source(None, True) == b"default_cert"
 
 
 def test__get_universe_domain():
     # client_universe_domain takes precedence
     assert (
-        client_helpers._get_universe_domain(
-            "client.com", "env.com", "default.com"
-        )
+        client_helpers._get_universe_domain("client.com", "env.com", "default.com")
         == "client.com"
     )
 
     # env takes precedence over default
     assert (
-        client_helpers._get_universe_domain(None, "env.com", "default.com")
-        == "env.com"
+        client_helpers._get_universe_domain(None, "env.com", "default.com") == "env.com"
     )
 
     # fallback to default
     assert (
-        client_helpers._get_universe_domain(None, None, "default.com")
-        == "default.com"
+        client_helpers._get_universe_domain(None, None, "default.com") == "default.com"
     )
 
 
