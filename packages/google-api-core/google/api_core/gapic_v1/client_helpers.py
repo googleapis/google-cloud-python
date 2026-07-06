@@ -121,4 +121,3 @@ def get_api_endpoint(
         return default_mtls_endpoint
     else:
         return default_endpoint_template.format(UNIVERSE_DOMAIN=universe_domain)
-
