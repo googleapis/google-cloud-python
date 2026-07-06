@@ -175,8 +175,12 @@ def test__read_environment_variables_invalid_mtls():
         client_helpers._read_environment_variables()
 
 
-@mock.patch("google.auth.transport.mtls.has_default_client_cert_source")
-@mock.patch("google.auth.transport.mtls.default_client_cert_source")
+@mock.patch(
+    "google.auth.transport.mtls.has_default_client_cert_source", create=True
+)
+@mock.patch(
+    "google.auth.transport.mtls.default_client_cert_source", create=True
+)
 def test__get_client_cert_source(mock_default, mock_has_default):
     mock_default.return_value = b"default_cert"
     mock_has_default.return_value = True
