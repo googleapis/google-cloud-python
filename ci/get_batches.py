@@ -20,45 +20,46 @@ import sys
 
 BATCH_SIZE = 10
 
-# Large SDKs take significantly longer to run tests. Assigning higher weights 
-# ensures these packages occupy more runner slots and load-balance effectively.
-PACKAGE_WEIGHTS = {
-    "google-cloud-compute": 5,
-    "google-cloud-compute-v1beta": 5,
-    "google-cloud-dialogflow": 5,
-    "google-cloud-dialogflow-cx": 5,
-    "google-cloud-retail": 5,
-}
+# Packages that take significantly longer to run tests.
+# These will always be assigned to their own dedicated runner.
+ISOLATED_PACKAGES = [
+    "google-cloud-compute",
+    "google-cloud-compute-v1beta",
+    "google-cloud-dialogflow",
+    "google-cloud-dialogflow-cx",
+    "google-cloud-retail",
+]
 
 def get_batches():
-    """Distributes packages into batches using a greedy load-balancing algorithm."""
+    """Splits packages into dedicated isolated batches and evenly chunked standard batches."""
     raw_paths = sorted(glob.glob("packages/*"))
     package_paths = [p for p in raw_paths if os.path.isdir(p)]
     
-    packages_with_weights = []
-    total_weight = 0
+    batches = []
+    standard_packages = []
+    
     for path in package_paths:
         pkg_name = os.path.basename(path)
-        weight = PACKAGE_WEIGHTS.get(pkg_name, 1)
-        packages_with_weights.append((path, weight))
-        total_weight += weight
         
-    num_batches = math.ceil(total_weight / BATCH_SIZE)
-    if num_batches == 0:
-        num_batches = 1
-        
-    # Sort packages by weight descending (Longest Processing Time first)
-    packages_with_weights.sort(key=lambda x: x[1], reverse=True)
+        if pkg_name in ISOLATED_PACKAGES:
+            # Put heavy packages into their own standalone batches immediately
+            batches.append([path])
+        else:
+            standard_packages.append(path)
+            
+    # Chunk the remaining standard packages by BATCH_SIZE
+    num_standard_packages = len(standard_packages)
+    num_standard_batches = math.ceil(num_standard_packages / BATCH_SIZE)
     
-    batches = [[] for _ in range(num_batches)]
-    batch_weights = [0] * num_batches
-    
-    for path, weight in packages_with_weights:
-        # Greedily assign the package to the currently least-loaded batch
-        min_idx = batch_weights.index(min(batch_weights))
-        batches[min_idx].append(path)
-        batch_weights[min_idx] += weight
+    if num_standard_batches == 0 and not batches:
+        num_standard_batches = 1
         
+    for i in range(num_standard_batches):
+        start_idx = i * BATCH_SIZE
+        chunk = standard_packages[start_idx : start_idx + BATCH_SIZE]
+        if chunk:
+            batches.append(chunk)
+            
     return batches
 
 def get_batch_indices():
