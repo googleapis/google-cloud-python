@@ -171,9 +171,6 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
         """
         return gapic_v1.client_helpers.use_client_cert_effective()
 
-
-
-
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
@@ -578,9 +575,6 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
             KeyManagementServiceClient.DEFAULT_MTLS_ENDPOINT,
             KeyManagementServiceClient._DEFAULT_ENDPOINT_TEMPLATE,
         )
-
-
-
 
     @staticmethod
     def _get_universe_domain(

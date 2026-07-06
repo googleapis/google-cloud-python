@@ -110,7 +110,7 @@ def get_api_endpoint(
         Optional[str]: The API endpoint to be used by the client.
     """
     if api_override is not None:
-        api_endpoint = api_override
+        return api_override
     elif use_mtls_endpoint == "always" or (
         use_mtls_endpoint == "auto" and client_cert_source
     ):
@@ -118,7 +118,7 @@ def get_api_endpoint(
             raise MutualTLSChannelError(
                 f"mTLS is not supported in any universe other than {default_universe}."
             )
-        api_endpoint = default_mtls_endpoint
+        return default_mtls_endpoint
     else:
-        api_endpoint = default_endpoint_template.format(UNIVERSE_DOMAIN=universe_domain)
-    return api_endpoint
+        return default_endpoint_template.format(UNIVERSE_DOMAIN=universe_domain)
+
