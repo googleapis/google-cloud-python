@@ -1141,6 +1141,13 @@ class SessionServiceClient(metaclass=SessionServiceClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.bidi_run_session]
 
+        header_params = {}
+
+        if header_params:
+            metadata = tuple(metadata) + (
+                gapic_v1.routing_header.to_grpc_metadata(header_params),
+            )
+
         # Validate the universe domain.
         self._validate_universe_domain()
 

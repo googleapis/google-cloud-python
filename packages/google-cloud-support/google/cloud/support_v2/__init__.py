@@ -29,6 +29,10 @@ from .services.case_attachment_service import (
 )
 from .services.case_service import CaseServiceAsyncClient, CaseServiceClient
 from .services.comment_service import CommentServiceAsyncClient, CommentServiceClient
+from .services.support_event_subscription_service import (
+    SupportEventSubscriptionServiceAsyncClient,
+    SupportEventSubscriptionServiceClient,
+)
 from .types.actor import Actor
 from .types.attachment import Attachment
 from .types.attachment_service import (
@@ -58,6 +62,16 @@ from .types.comment_service import (
     ListCommentsResponse,
 )
 from .types.escalation import Escalation
+from .types.support_event_subscription import SupportEventSubscription
+from .types.support_event_subscription_service import (
+    CreateSupportEventSubscriptionRequest,
+    DeleteSupportEventSubscriptionRequest,
+    GetSupportEventSubscriptionRequest,
+    ListSupportEventSubscriptionsRequest,
+    ListSupportEventSubscriptionsResponse,
+    UndeleteSupportEventSubscriptionRequest,
+    UpdateSupportEventSubscriptionRequest,
+)
 
 if hasattr(api_core, "check_python_version") and hasattr(
     api_core, "check_dependency_versions"
@@ -146,6 +160,7 @@ __all__ = (
     "CaseAttachmentServiceAsyncClient",
     "CaseServiceAsyncClient",
     "CommentServiceAsyncClient",
+    "SupportEventSubscriptionServiceAsyncClient",
     "Actor",
     "Attachment",
     "Case",
@@ -157,20 +172,29 @@ __all__ = (
     "CommentServiceClient",
     "CreateCaseRequest",
     "CreateCommentRequest",
+    "CreateSupportEventSubscriptionRequest",
+    "DeleteSupportEventSubscriptionRequest",
     "EscalateCaseRequest",
     "Escalation",
     "GetAttachmentRequest",
     "GetCaseRequest",
     "GetCommentRequest",
+    "GetSupportEventSubscriptionRequest",
     "ListAttachmentsRequest",
     "ListAttachmentsResponse",
     "ListCasesRequest",
     "ListCasesResponse",
     "ListCommentsRequest",
     "ListCommentsResponse",
+    "ListSupportEventSubscriptionsRequest",
+    "ListSupportEventSubscriptionsResponse",
     "SearchCaseClassificationsRequest",
     "SearchCaseClassificationsResponse",
     "SearchCasesRequest",
     "SearchCasesResponse",
+    "SupportEventSubscription",
+    "SupportEventSubscriptionServiceClient",
+    "UndeleteSupportEventSubscriptionRequest",
     "UpdateCaseRequest",
+    "UpdateSupportEventSubscriptionRequest",
 )
