@@ -22,6 +22,7 @@ import sys
 # Default weight for any package not listed is 1.
 PACKAGE_WEIGHTS = {
     "bigframes": 6,
+    "google-ai-generativelanguage": 4
     "google-auth": 5,
     "google-cloud-compute": 12,
     "google-cloud-compute-v1beta": 12,
@@ -29,6 +30,8 @@ PACKAGE_WEIGHTS = {
     "google-cloud-dialogflow-cx": 6,
     "google-cloud-discoveryengine": 8,
     "google-cloud-retail": 5,
+    "google-shopping-merchant-accounts": 4,
+
 }
 
 
