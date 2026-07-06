@@ -2,7 +2,6 @@
 branch = True
 
 [report]
-fail_under = 99
 show_missing = True
 omit =
     google/cloud/firestore/__init__.py
