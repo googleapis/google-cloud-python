@@ -92,7 +92,7 @@ def group_packages(packages):
         pkg_name = pkg.strip('/').split('/')[-1]
         clean_name = pkg_name.replace("google-cloud-", "")
         shards.append({
-            "name": clean_name,
+            "name": f"Shard {index}: {clean_name}",
             "index": index,
             "description": pkg_name,
             "packages": pkg,
@@ -126,7 +126,7 @@ def group_packages(packages):
             if start >= num_packages:
                 break
             shard_packages = normal_to_test[start:end]
-            name = f"Shard {i + 1}"
+            name = f"Shard {index}"
             num_in_shard = len(shard_packages)
             if len(shard_packages) == 1:
                 desc = shard_packages[0].strip('/').split('/')[-1]
