@@ -503,3 +503,46 @@ class TestAsyncAppendableObjectWriter:
         for coro in methods:
             with pytest.raises(ValueError, match="Stream is not open"):
                 await coro
+
+    @pytest.mark.asyncio
+    async def test_append_persists_metadata_on_resumption(self, mock_appendable_writer):
+        # Arrange
+        mock_client = mock_appendable_writer["mock_client"]
+        mock_stream = mock_appendable_writer["mock_stream"]
+
+        test_metadata = [("custom-key", "custom-value")]
+        writer = self._make_one(mock_client)
+
+        # Act - Open with metadata
+        await writer.open(metadata=test_metadata)
+
+        # Assert first open used metadata
+        mock_stream.open.assert_called_once_with(metadata=test_metadata)
+        assert writer.metadata == test_metadata
+
+        # Setup resumption trigger
+        retryable_exc = exceptions.ServiceUnavailable("Retry me")
+        mock_stream.send.side_effect = retryable_exc
+
+        # Reset mock_stream.open call count to verify it is called again
+        mock_stream.open.reset_mock()
+
+        # Setup a fast retry policy to fail quickly in test
+        from google.api_core.retry_async import AsyncRetry
+        fast_retry = AsyncRetry(
+            predicate=lambda e: True,
+            initial=0.01,
+            maximum=0.01,
+            multiplier=1.0,
+            deadline=0.1
+        )
+
+        # Act - append (should trigger retry and use stored metadata)
+        from google.api_core.exceptions import RetryError
+        try:
+            await writer.append(b"data", retry_policy=fast_retry)
+        except RetryError:
+            pass
+
+        # Assert second open (during retry) used the same test_metadata
+        mock_stream.open.assert_called_with(metadata=test_metadata)

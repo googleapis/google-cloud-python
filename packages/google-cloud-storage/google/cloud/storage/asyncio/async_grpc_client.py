@@ -154,6 +154,9 @@ class AsyncGrpcClient:
         if_generation_not_match=None,
         if_metageneration_match=None,
         if_metageneration_not_match=None,
+        metadata=(),
+        timeout=None,
+        retry=None,
         **kwargs,
     ):
         """Deletes an object and its metadata.
@@ -195,7 +198,12 @@ class AsyncGrpcClient:
             if_metageneration_not_match=if_metageneration_not_match,
             **kwargs,
         )
-        await self._grpc_client.delete_object(request=request)
+        await self._grpc_client.delete_object(
+            request=request,
+            metadata=metadata,
+            timeout=timeout,
+            retry=retry,
+        )
 
     async def get_object(
         self,
@@ -207,6 +215,9 @@ class AsyncGrpcClient:
         if_metageneration_match=None,
         if_metageneration_not_match=None,
         soft_deleted=None,
+        metadata=(),
+        timeout=None,
+        retry=None,
         **kwargs,
     ):
         """Retrieves an object's metadata.
@@ -258,4 +269,9 @@ class AsyncGrpcClient:
         )
 
         # Calls the underlying GAPIC StorageAsyncClient.get_object method
-        return await self._grpc_client.get_object(request=request)
+        return await self._grpc_client.get_object(
+            request=request,
+            metadata=metadata,
+            timeout=timeout,
+            retry=retry,
+        )

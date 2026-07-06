@@ -707,3 +707,95 @@ class TestAsyncMultiRangeDownloader:
             await mrd.download_ranges([(0, 0, BytesIO())])
 
         mrd.close.assert_called_once()
+
+    @mock.patch(
+        "google.cloud.storage.asyncio.async_multi_range_downloader.generate_random_56_bit_integer"
+    )
+    @mock.patch(
+        "google.cloud.storage.asyncio.async_multi_range_downloader._AsyncReadObjectStream"
+    )
+    @pytest.mark.asyncio
+    async def test_download_ranges_persists_metadata_on_resumption(
+        self, mock_cls_async_read_object_stream, mock_random_int
+    ):
+        # Arrange
+        mock_client = mock.MagicMock()
+        mock_client.grpc_client = mock.AsyncMock()
+
+        mock_stream_1 = mock.MagicMock()
+        mock_stream_1.open = AsyncMock()
+        mock_stream_1.generation_number = _TEST_GENERATION_NUMBER
+        mock_stream_1.persisted_size = _TEST_OBJECT_SIZE
+        mock_stream_1.read_handle = _TEST_READ_HANDLE
+        mock_stream_1.is_stream_open = True
+
+        mock_stream_2 = mock.MagicMock()
+        mock_stream_2.open = AsyncMock()
+        mock_stream_2.generation_number = _TEST_GENERATION_NUMBER
+        mock_stream_2.persisted_size = _TEST_OBJECT_SIZE
+        mock_stream_2.read_handle = _TEST_READ_HANDLE
+        mock_stream_2.is_stream_open = True
+
+        mock_cls_async_read_object_stream.side_effect = [mock_stream_1, mock_stream_2]
+
+        test_metadata = [("custom-key", "custom-value")]
+
+        # Act - Create MRD with metadata
+        mrd = await AsyncMultiRangeDownloader.create_mrd(
+            mock_client, _TEST_BUCKET_NAME, _TEST_OBJECT_NAME,
+            metadata=test_metadata
+        )
+
+        # Assert first open used metadata
+        mock_stream_1.open.assert_called_once_with(metadata=test_metadata)
+        assert mrd.metadata == test_metadata
+
+        # Setup resumption trigger
+        from google.api_core import exceptions as core_exceptions
+        retryable_exc = core_exceptions.ServiceUnavailable("Retry me")
+
+        # Mock multiplexer to trigger retry
+        mrd._multiplexer = mock.MagicMock()
+        mrd._multiplexer.stream_generation = 1
+
+        # Configure reopen_stream to execute the factory
+        async def fake_reopen_stream(broken_gen, stream_factory):
+            await stream_factory()
+        mrd._multiplexer.reopen_stream = AsyncMock(side_effect=fake_reopen_stream)
+
+        mrd._multiplexer.send = AsyncMock(side_effect=retryable_exc)
+
+        # We need mock_multiplexer.register to return a queue
+        mock_queue = mock.AsyncMock()
+        mrd._multiplexer.register.return_value = mock_queue
+
+        # We need mock_queue.get to return a StreamError to propagate exception to retry manager
+        from google.cloud.storage.asyncio._stream_multiplexer import _StreamError
+        mock_queue.get.return_value = _StreamError(retryable_exc, generation=1)
+
+        mock_random_int.return_value = 123
+
+        # Setup a fast retry policy to fail quickly in test
+        from google.api_core.retry_async import AsyncRetry
+        fast_retry = AsyncRetry(
+            predicate=lambda e: True,
+            initial=0.01,
+            maximum=0.01,
+            multiplier=1.0,
+            deadline=0.1
+        )
+
+        # Act - download ranges (should trigger retry and use stored metadata)
+        buffer = BytesIO()
+        from google.api_core.exceptions import RetryError
+        try:
+            await mrd.download_ranges([(0, 10, buffer)], retry_policy=fast_retry)
+        except RetryError:
+            pass
+
+        # Assert that reopen_stream was called.
+        mrd._multiplexer.reopen_stream.assert_called()
+
+        # Verify mock_stream_2 was opened with test_metadata
+        # (It should have been opened during the retry attempts)
+        mock_stream_2.open.assert_called_with(metadata=test_metadata)
