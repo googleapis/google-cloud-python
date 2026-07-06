@@ -529,16 +529,18 @@ class TestAsyncAppendableObjectWriter:
 
         # Setup a fast retry policy to fail quickly in test
         from google.api_core.retry_async import AsyncRetry
+
         fast_retry = AsyncRetry(
             predicate=lambda e: True,
             initial=0.01,
             maximum=0.01,
             multiplier=1.0,
-            deadline=0.1
+            deadline=0.1,
         )
 
         # Act - append (should trigger retry and use stored metadata)
         from google.api_core.exceptions import RetryError
+
         try:
             await writer.append(b"data", retry_policy=fast_retry)
         except RetryError:

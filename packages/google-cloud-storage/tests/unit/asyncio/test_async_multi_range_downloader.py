@@ -742,8 +742,7 @@ class TestAsyncMultiRangeDownloader:
 
         # Act - Create MRD with metadata
         mrd = await AsyncMultiRangeDownloader.create_mrd(
-            mock_client, _TEST_BUCKET_NAME, _TEST_OBJECT_NAME,
-            metadata=test_metadata
+            mock_client, _TEST_BUCKET_NAME, _TEST_OBJECT_NAME, metadata=test_metadata
         )
 
         # Assert first open used metadata
@@ -752,6 +751,7 @@ class TestAsyncMultiRangeDownloader:
 
         # Setup resumption trigger
         from google.api_core import exceptions as core_exceptions
+
         retryable_exc = core_exceptions.ServiceUnavailable("Retry me")
 
         # Mock multiplexer to trigger retry
@@ -761,6 +761,7 @@ class TestAsyncMultiRangeDownloader:
         # Configure reopen_stream to execute the factory
         async def fake_reopen_stream(broken_gen, stream_factory):
             await stream_factory()
+
         mrd._multiplexer.reopen_stream = AsyncMock(side_effect=fake_reopen_stream)
 
         mrd._multiplexer.send = AsyncMock(side_effect=retryable_exc)
@@ -771,23 +772,26 @@ class TestAsyncMultiRangeDownloader:
 
         # We need mock_queue.get to return a StreamError to propagate exception to retry manager
         from google.cloud.storage.asyncio._stream_multiplexer import _StreamError
+
         mock_queue.get.return_value = _StreamError(retryable_exc, generation=1)
 
         mock_random_int.return_value = 123
 
         # Setup a fast retry policy to fail quickly in test
         from google.api_core.retry_async import AsyncRetry
+
         fast_retry = AsyncRetry(
             predicate=lambda e: True,
             initial=0.01,
             maximum=0.01,
             multiplier=1.0,
-            deadline=0.1
+            deadline=0.1,
         )
 
         # Act - download ranges (should trigger retry and use stored metadata)
         buffer = BytesIO()
         from google.api_core.exceptions import RetryError
+
         try:
             await mrd.download_ranges([(0, 10, buffer)], retry_policy=fast_retry)
         except RetryError:
