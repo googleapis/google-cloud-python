@@ -1,3 +1,17 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 import os
 import subprocess
 import json
@@ -61,8 +75,8 @@ def group_packages(packages):
     # Ensure at least 1 shard if we have packages
     num_shards = max(1, num_shards)
 
-    # 3. Top out at 10 shards
-    num_shards = min(10, num_shards)
+    # 3. Top out at 16 shards
+    num_shards = min(16, num_shards)
 
     # Distribute packages between them as evenly as possible
     shard_size = math.ceil(num_packages / num_shards)
