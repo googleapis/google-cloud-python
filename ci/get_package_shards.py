@@ -18,6 +18,16 @@ import json
 import math
 import sys
 
+# Define set of long-running unit tests to run in isolated shard
+ISOLATED_PACKAGES = {
+    "google-cloud-compute",
+    "google-cloud-compute-v1beta",
+    "google-cloud-dialogflow",
+    "google-cloud-dialogflow-cx",
+    "google-cloud-retail",
+}
+
+
 def get_packages():
     subdirs = ['packages']
     packages = []
@@ -60,50 +70,83 @@ def get_packages_to_test():
 
     return to_test
 
+
 def group_packages(packages):
     if not packages:
         return []
 
-    num_packages = len(packages)
+    isolated_to_test = []
+    normal_to_test = []
 
-    # 1. Only shard if > 10 packages are being touched
-    # 2. Only add a new shard if any shard would have > 10 packages.
-    # To guarantee that no shard contains more than 10 packages (when distributed evenly),
-    # we need S >= N / 10, which means S = ceil(N / 10).
-    num_shards = math.ceil(num_packages / 10)
-
-    # Ensure at least 1 shard if we have packages
-    num_shards = max(1, num_shards)
-
-    # 3. Top out at 16 shards
-    num_shards = min(16, num_shards)
-
-    # Distribute packages between them as evenly as possible
-    shard_size = math.ceil(num_packages / num_shards)
+    for pkg in packages:
+        pkg_name = pkg.strip('/').split('/')[-1]
+        if pkg_name in ISOLATED_PACKAGES:
+            isolated_to_test.append(pkg)
+        else:
+            normal_to_test.append(pkg)
 
     shards = []
-    for i in range(num_shards):
-        start = i * shard_size
-        end = min((i + 1) * shard_size, num_packages)
-        if start >= num_packages:
-            break
-        shard_packages = packages[start:end]
-        index = i + 1
-        name = f"Shard {index}"
-        num_in_shard = len(shard_packages)
-        # Calculate a descriptive range for step visibility
-        if len(shard_packages) == 1:
-            desc = shard_packages[0].strip('/').split('/')[-1]
-        else:
-            desc = f"{shard_packages[0].strip('/').split('/')[-1]}...{shard_packages[-1].strip('/').split('/')[-1]} ({num_in_shard} packages)"
+    index = 1
 
+    # Add isolated packages to their own shards
+    for pkg in isolated_to_test:
+        pkg_name = pkg.strip('/').split('/')[-1]
+        clean_name = pkg_name.replace("google-cloud-", "")
         shards.append({
-            "name": name,
+            "name": clean_name,
             "index": index,
-            "description": desc,
-            "packages": " ".join(shard_packages),
-            "is_sharded": num_shards > 1
+            "description": pkg_name,
+            "packages": pkg,
+            "is_sharded": True
         })
+        index += 1
+
+    # Group the remaining packages
+    if normal_to_test:
+        num_packages = len(normal_to_test)
+        
+        # 1. Only shard if > 10 packages are being touched
+        # 2. Only add a new shard if any shard would have > 10 packages.
+        # To guarantee that no shard contains more than 10 packages (when distributed evenly),
+        # we need S >= N / 10, which means S = ceil(N / 10).
+        num_shards = math.ceil(num_packages / 10)
+        
+        # Ensure at least 1 shard if we have packages
+        num_shards = max(1, num_shards)
+        
+        # 3. Top out at 16 shards
+        num_shards = min(16, num_shards)
+        
+        # Distribute packages between them as evenly as possible
+        shard_size = math.ceil(num_packages / num_shards)
+
+        for i in range(num_shards):
+            start = i * shard_size
+            end = min((i + 1) * shard_size, num_packages)
+            if start >= num_packages:
+                break
+            shard_packages = normal_to_test[start:end]
+            name = f"Shard {index}"
+            num_in_shard = len(shard_packages)
+            if len(shard_packages) == 1:
+                desc = shard_packages[0].strip('/').split('/')[-1]
+            else:
+                desc = f"{shard_packages[0].strip('/').split('/')[-1]}...{shard_packages[-1].strip('/').split('/')[-1]} ({num_in_shard} packages)"
+
+            shards.append({
+                "name": name,
+                "index": index,
+                "description": desc,
+                "packages": " ".join(shard_packages),
+                "is_sharded": True
+            })
+            index += 1
+
+    # Set is_sharded dynamically based on the total number of shards
+    total_shards = len(shards)
+    for shard in shards:
+        shard["is_sharded"] = total_shards > 1
+
     return shards
 
 if __name__ == "__main__":
