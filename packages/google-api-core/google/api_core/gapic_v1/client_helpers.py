@@ -18,7 +18,7 @@
 
 import os
 import re
-from typing import Optional
+from typing import Any, Optional
 
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
