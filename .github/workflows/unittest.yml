@@ -17,11 +17,20 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
+      is_full_run: ${{ steps.check-label.outputs.is_full_run }}
     steps:
     - name: Checkout
       uses: actions/checkout@v4
       with:
         fetch-depth: 0
+    - name: Check for unit_test:all_packages label
+      id: check-label
+      run: |
+        if [[ "${{ contains(github.event.pull_request.labels.*.name, 'unit_test:all_packages') }}" == "true" ]]; then
+          echo "is_full_run=true" >> $GITHUB_OUTPUT
+        else
+          echo "is_full_run=false" >> $GITHUB_OUTPUT
+        fi
     - name: Setup Python
       uses: actions/setup-python@v5
       with:
@@ -31,6 +40,7 @@ jobs:
       env:
         BUILD_TYPE: presubmit
         TARGET_BRANCH: ${{ github.base_ref || github.event.merge_group.base_ref }}
+        TEST_ALL_PACKAGES: ${{ steps.check-label.outputs.is_full_run }}
       run: |
         if [ -n "$TARGET_BRANCH" ]; then
           git fetch origin "$TARGET_BRANCH" --deepen=200 || true
@@ -102,6 +112,7 @@ jobs:
     runs-on: ubuntu-latest
     needs:
         - unit
+        - initialize
     steps:
     - name: Checkout
       uses: actions/checkout@v4
@@ -116,10 +127,16 @@ jobs:
         python-version: "3.10"
     - name: Set number of files changes in packages directory
       id: packages
+      env:
+        TEST_ALL_PACKAGES: ${{ needs.initialize.outputs.is_full_run }}
       run: |
-        git diff HEAD~1 -- packages > /dev/null
-        num_files_changed=$(git diff HEAD~1 -- packages | wc -l | tr -d ' ')
-        echo "num_files_changed=${num_files_changed}" >> "$GITHUB_OUTPUT"
+        if [[ "${TEST_ALL_PACKAGES}" == "true" ]]; then
+          echo "num_files_changed=1" >> "$GITHUB_OUTPUT"
+        else
+          git diff HEAD~1 -- packages > /dev/null
+          num_files_changed=$(git diff HEAD~1 -- packages | wc -l | tr -d ' ')
+          echo "num_files_changed=${num_files_changed}" >> "$GITHUB_OUTPUT"
+        fi
     - name: Install coverage
       if: ${{ steps.packages.outputs.num_files_changed > 0 }}
       run: |
@@ -136,6 +153,7 @@ jobs:
         # TODO: default to 100% coverage after next gapic-generator release
         # https://github.com/googleapis/google-cloud-python/issues/17459
         DEFAULT_FAIL_UNDER: 99
+        TEST_ALL_PACKAGES: ${{ needs.initialize.outputs.is_full_run }}
       run: |
         if [ -d .coverage-results ]; then
           # Unzip any zipped coverage results
@@ -152,7 +170,11 @@ jobs:
           fi
 
           # Find all modified packages
-          modified_packages=$(git diff --name-only HEAD~1 -- packages | cut -d/ -f1,2 | sort -u)
+          if [[ "${TEST_ALL_PACKAGES}" == "true" ]]; then
+            modified_packages=$(ls -d packages/*/ | cut -d/ -f1,2 | sort -u)
+          else
+            modified_packages=$(git diff --name-only HEAD~1 -- packages | cut -d/ -f1,2 | sort -u)
+          fi
 
           failed_packages=()
           passed_packages=()

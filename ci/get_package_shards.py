@@ -18,8 +18,12 @@ def get_packages():
 def get_packages_to_test():
     build_type = os.environ.get('BUILD_TYPE', 'presubmit')
     target_branch = os.environ.get('TARGET_BRANCH', 'main')
+    test_all_packages = os.environ.get('TEST_ALL_PACKAGES', 'false').lower() == 'true'
 
     all_packages = get_packages()
+
+    if test_all_packages:
+        return all_packages
 
     if build_type == 'presubmit':
         git_diff_arg = f"origin/{target_branch}..."
