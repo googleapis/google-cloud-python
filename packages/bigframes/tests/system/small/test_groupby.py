@@ -986,9 +986,7 @@ def test_series_groupby_last(
     bigframes.testing.utils.assert_series_equal(pd_result, bf_result)
 
 
-def test_series_groupby_agg_transpile_system(
-    scalars_df_index, scalars_pandas_df_index
-):
+def test_series_groupby_agg_transpile_system(scalars_df_index, scalars_pandas_df_index):
     def custom_agg(s):
         return s.sum() - s.mean()
 
@@ -1074,4 +1072,3 @@ def test_dataframe_groupby_transform_transpile_system(
     )
 
     bigframes.testing.utils.assert_frame_equal(pd_result, bf_result, check_dtype=False)
-

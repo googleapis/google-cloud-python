@@ -42,6 +42,8 @@ def getitem_op_impl(
             raise NotImplementedError(
                 "Referencing a struct field by number not implemented in polars compiler."
             )
+    elif input_type is not None and dtypes.is_string_like(input_type):
+        return input.str.slice(op.key, 1)
     else:
         return input.list.get(op.key)
 

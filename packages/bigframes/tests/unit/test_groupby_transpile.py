@@ -21,6 +21,9 @@ from pandas.testing import assert_frame_equal, assert_series_equal
 import bigframes
 import bigframes.pandas as bpd
 
+pytest.importorskip("polars")
+pytest.importorskip("pandas", minversion="2.0.0")
+
 CURRENT_DIR = Path(__file__).parent
 DATA_DIR = CURRENT_DIR.parent / "data"
 

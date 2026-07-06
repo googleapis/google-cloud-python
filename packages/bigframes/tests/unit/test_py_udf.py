@@ -518,6 +518,18 @@ def test_series_map_with_struct_and_array_subscript(session):
     pd_array_res: pd.Series = pd_array_series.map(get_array_val)
     assert_series_equal(bf_array_res, pd_array_res, check_dtype=False)
 
+    # String setup
+    pd_string_series = pd.Series(["hello", "world"])
+    bf_string_series = bpd.Series(pd_string_series, session=session)
+
+    # String subscripting in UDF
+    def get_string_val(x):
+        return x[1]
+
+    bf_string_res = bf_string_series.map(get_string_val).to_pandas()
+    pd_string_res = pd_string_series.map(get_string_val)
+    assert_series_equal(bf_string_res, pd_string_res, check_dtype=False)
+
 
 def test_dataframe_apply_axis_1_with_dynamic_subscript_raises(
     scalars_df_index,

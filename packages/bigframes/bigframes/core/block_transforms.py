@@ -89,6 +89,7 @@ def compile_udf(
 
 def is_transpiler_eligible(func: typing.Any) -> bool:
     """Return True if func is eligible for Python transpilation."""
+    import bigframes.functions
     from bigframes._config import options
 
     return (
