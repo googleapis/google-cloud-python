@@ -32,20 +32,23 @@ def clean_overrides():
 @pytest.mark.parametrize(
     "value,expected",
     [
+        # Truthy values
         ("y", True),
         ("yes", True),
         ("t", True),
         ("true", True),
         ("on", True),
         ("1", True),
+        ("  True  ", True),
+        # Falsy values
         ("n", False),
         ("no", False),
         ("f", False),
         ("false", False),
         ("off", False),
         ("0", False),
-        ("  True  ", True),
         (" FALSE ", False),
+        # Empty string
         ("", None),
     ],
 )
@@ -132,11 +135,12 @@ def test_get_env_bool_with_dev_fallback_other_prefix(monkeypatch):
             False,
             True,
         ),
-        # Programmatic boolean flags are NOT supported (should default/fallback)
+        # Programmatic boolean flags are NOT supported in client_options 
+        # (should default/fallback to False)
         (
             "tracing",
             {"GOOGLE_CLOUD_PYTHON_TRACING_ENABLED": False},
-            {"enable_traces": True},
+            {"enable_metrics": True},
             False,
             False,
         ),
@@ -164,4 +168,4 @@ def test_is_signal_enabled(
 
 def test_is_signal_enabled_invalid_signal():
     with pytest.raises(ValueError, match="Only 'tracing' is supported"):
-        options.is_signal_enabled("traces")
+        options.is_signal_enabled("metrics")
