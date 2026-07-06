@@ -28,8 +28,6 @@ _MTLS_ENDPOINT_RE = re.compile(
 )
 
 
-
-
 def get_default_mtls_endpoint(api_endpoint: Optional[str]) -> Optional[str]:
     """Converts api endpoint to mTLS endpoint.
 
@@ -122,8 +120,5 @@ def get_api_endpoint(
             )
         api_endpoint = default_mtls_endpoint
     else:
-        api_endpoint = default_endpoint_template.format(
-            UNIVERSE_DOMAIN=universe_domain
-        )
+        api_endpoint = default_endpoint_template.format(UNIVERSE_DOMAIN=universe_domain)
     return api_endpoint
-
