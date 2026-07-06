@@ -15,7 +15,7 @@ permissions:
 # Configurable global environment variables for batching
 env:
   TEST_ALL_PACKAGES: "true" # Set to "false" to only run tests for packages with a git diff
-  ALL_PYTHON: '["3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]'
+  ALL_PYTHON: "['3.9', '3.10', '3.11', '3.12', '3.13', '3.14']"
 
 jobs:
   # Dynamic package discovery job to calculate required matrix size automatically
