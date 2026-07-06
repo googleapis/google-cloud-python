@@ -714,8 +714,8 @@ def test_method_stream_stream():
 def test_method_is_resumable_upload():
     # Correct positive
     method = make_method(
-        name="ExportAssets",
-        package="google.cloud.asset.v1",
+        name="CreateYouTubeVideoUpload",
+        package="google.ads.googleads.v25",
     )
     # override parent
     method = dataclasses.replace(
@@ -724,7 +724,7 @@ def test_method_is_resumable_upload():
             method.meta,
             address=dataclasses.replace(
                 method.meta.address,
-                parent=("AssetService",),
+                parent=("YouTubeVideoUploadService",),
             )
         )
     )
@@ -732,8 +732,8 @@ def test_method_is_resumable_upload():
 
     # Normal method
     method = make_method(
-        name="GetAsset",
-        package="google.cloud.asset.v1",
+        name="DeleteYouTubeVideoUpload",
+        package="google.ads.googleads.v25",
     )
     method = dataclasses.replace(
         method,
@@ -741,7 +741,7 @@ def test_method_is_resumable_upload():
             method.meta,
             address=dataclasses.replace(
                 method.meta.address,
-                parent=("AssetService",),
+                parent=("YouTubeVideoUploadService",),
             )
         )
     )
@@ -749,7 +749,7 @@ def test_method_is_resumable_upload():
 
     # Method with same name but different package
     method = make_method(
-        name="ExportAssets",
+        name="CreateYouTubeVideoUpload",
         package="foo.bar.v1",
     )
     method = dataclasses.replace(
@@ -758,7 +758,7 @@ def test_method_is_resumable_upload():
             method.meta,
             address=dataclasses.replace(
                 method.meta.address,
-                parent=("AssetService",),
+                parent=("YouTubeVideoUploadService",),
             )
         )
     )
@@ -768,8 +768,8 @@ def test_method_is_resumable_upload():
 def test_method_is_resumable_upload_exclusive():
     # Resumable + LRO
     method = make_method(
-        name="ExportAssets",
-        package="google.cloud.asset.v1",
+        name="CreateYouTubeVideoUpload",
+        package="google.ads.googleads.v25",
     )
     method = dataclasses.replace(
         method,
@@ -777,7 +777,7 @@ def test_method_is_resumable_upload_exclusive():
             method.meta,
             address=dataclasses.replace(
                 method.meta.address,
-                parent=("AssetService",),
+                parent=("YouTubeVideoUploadService",),
             ),
         ),
         lro=wrappers.OperationInfo(
@@ -789,8 +789,8 @@ def test_method_is_resumable_upload_exclusive():
 
     # Resumable + Client Streaming
     method = make_method(
-        name="ExportAssets",
-        package="google.cloud.asset.v1",
+        name="CreateYouTubeVideoUpload",
+        package="google.ads.googleads.v25",
         client_streaming=True,
     )
     method = dataclasses.replace(
@@ -799,7 +799,7 @@ def test_method_is_resumable_upload_exclusive():
             method.meta,
             address=dataclasses.replace(
                 method.meta.address,
-                parent=("AssetService",),
+                parent=("YouTubeVideoUploadService",),
             ),
         ),
     )
@@ -809,22 +809,22 @@ def test_method_is_resumable_upload_exclusive():
     # Resumable + Pagination
     paged = make_field(name="foos", message=make_message("Foo"), repeated=True)
     input_msg = make_message(
-        name="ExportAssetsRequest",
+        name="CreateYouTubeVideoUploadRequest",
         fields=(
             make_field(name="page_size", type=5),
             make_field(name="page_token", type=9),
         ),
     )
     output_msg = make_message(
-        name="ExportAssetsResponse",
+        name="CreateYouTubeVideoUploadResponse",
         fields=(
             paged,
             make_field(name="next_page_token", type=9),
         ),
     )
     method = make_method(
-        name="ExportAssets",
-        package="google.cloud.asset.v1",
+        name="CreateYouTubeVideoUpload",
+        package="google.ads.googleads.v25",
         input_message=input_msg,
         output_message=output_msg,
     )
@@ -834,7 +834,7 @@ def test_method_is_resumable_upload_exclusive():
             method.meta,
             address=dataclasses.replace(
                 method.meta.address,
-                parent=("AssetService",),
+                parent=("YouTubeVideoUploadService",),
             ),
         ),
     )
