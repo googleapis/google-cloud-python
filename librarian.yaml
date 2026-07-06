@@ -16,8 +16,8 @@ version: v0.22.0
 repo: googleapis/google-cloud-python
 sources:
   googleapis:
-    commit: e57bae6efbd075a925978a79bb9b997beb4ecc19
-    sha256: 762523e55a4cd9f57c7e5a952dd76ca6041c0e1dd405c14b1d6cfb165e4730b1
+    commit: 73a8001701e1d3a668dbfb72e9ab66c97d107ff6
+    sha256: 16b606051acfea9e3d2871a844e1106459294c540c5089fdcf7d306092e27813
 default:
   output: packages
   tag_format: '{name}-v{version}'
@@ -718,6 +718,7 @@ libraries:
     apis:
       - path: google/cloud/ces/v1
       - path: google/cloud/ces/v1beta
+    skip_generate: true
     python:
       default_version: v1
   - name: google-cloud-channel

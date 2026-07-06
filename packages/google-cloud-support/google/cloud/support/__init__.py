@@ -32,6 +32,12 @@ from google.cloud.support_v2.services.comment_service.async_client import (
     CommentServiceAsyncClient,
 )
 from google.cloud.support_v2.services.comment_service.client import CommentServiceClient
+from google.cloud.support_v2.services.support_event_subscription_service.async_client import (
+    SupportEventSubscriptionServiceAsyncClient,
+)
+from google.cloud.support_v2.services.support_event_subscription_service.client import (
+    SupportEventSubscriptionServiceClient,
+)
 from google.cloud.support_v2.types.actor import Actor
 from google.cloud.support_v2.types.attachment import Attachment
 from google.cloud.support_v2.types.attachment_service import (
@@ -61,6 +67,18 @@ from google.cloud.support_v2.types.comment_service import (
     ListCommentsResponse,
 )
 from google.cloud.support_v2.types.escalation import Escalation
+from google.cloud.support_v2.types.support_event_subscription import (
+    SupportEventSubscription,
+)
+from google.cloud.support_v2.types.support_event_subscription_service import (
+    CreateSupportEventSubscriptionRequest,
+    DeleteSupportEventSubscriptionRequest,
+    GetSupportEventSubscriptionRequest,
+    ListSupportEventSubscriptionsRequest,
+    ListSupportEventSubscriptionsResponse,
+    UndeleteSupportEventSubscriptionRequest,
+    UpdateSupportEventSubscriptionRequest,
+)
 
 __all__ = (
     "CaseAttachmentServiceClient",
@@ -69,6 +87,8 @@ __all__ = (
     "CaseServiceAsyncClient",
     "CommentServiceClient",
     "CommentServiceAsyncClient",
+    "SupportEventSubscriptionServiceClient",
+    "SupportEventSubscriptionServiceAsyncClient",
     "Actor",
     "Attachment",
     "GetAttachmentRequest",
@@ -93,4 +113,12 @@ __all__ = (
     "ListCommentsRequest",
     "ListCommentsResponse",
     "Escalation",
+    "SupportEventSubscription",
+    "CreateSupportEventSubscriptionRequest",
+    "DeleteSupportEventSubscriptionRequest",
+    "GetSupportEventSubscriptionRequest",
+    "ListSupportEventSubscriptionsRequest",
+    "ListSupportEventSubscriptionsResponse",
+    "UndeleteSupportEventSubscriptionRequest",
+    "UpdateSupportEventSubscriptionRequest",
 )
