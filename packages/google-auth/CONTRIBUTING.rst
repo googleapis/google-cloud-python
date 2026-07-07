@@ -8,7 +8,7 @@ Please refer to the centralized `Contributing Guide`_ at the repository root for
 
 .. _Contributing Guide: https://github.com/googleapis/google-cloud-python/blob/main/CONTRIBUTING.rst
 
-Package-specific test sessions, dependencies, and supported Python versions are defined in this directory's ``noxfile.py``.
+Package-specific test sessions are defined in this directory's ``noxfile.py``. Dependencies and supported Python versions are defined in ``setup.py`` or ``pyproject.toml``.
 
 *********************
 Running system tests

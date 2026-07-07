@@ -20,7 +20,7 @@ In order to add a feature:
 - The feature must be documented in both the API and narrative documentation.
 
 - The feature must work fully on all supported Python versions across macOS, Linux, and Windows.
-  *(See the package's ``noxfile.py`` or ``setup.py`` for the definitive list of supported Python versions).*
+  *(See the package's ``setup.py`` or ``pyproject.toml`` for the definitive list of supported Python versions).*
 
 - The feature must not add unnecessary dependencies (where "unnecessary" is subjective, but new dependencies should be discussed).
 
