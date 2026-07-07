@@ -22,6 +22,7 @@ import typing
 from typing import Any, DefaultDict, Dict, Mapping, Optional, Tuple
 from hashlib import sha256
 from collections import OrderedDict, defaultdict
+from gapic.codegen.engine import PurePythonEngine
 from gapic.samplegen_utils.utils import (
     coerce_response_name,
     is_valid_sample_cfg,
@@ -402,12 +403,16 @@ class Generator:
         )
 
         # Render the file contents.
+        rendered = PurePythonEngine.render(
+            template_name, {"api": api_schema, "opts": opts, **context}
+        )
+        if rendered is None:
+            rendered = self._env.get_template(template_name).render(
+                api=api_schema, opts=opts, **context
+            )
+
         cgr_file = CodeGeneratorResponse.File(
-            content=formatter.fix_whitespace(
-                self._env.get_template(template_name).render(
-                    api=api_schema, opts=opts, **context
-                ),
-            ),
+            content=formatter.fix_whitespace(rendered),
             name=fn,
         )
 
