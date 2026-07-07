@@ -161,7 +161,7 @@ jobs:
       run: |
         if [ -d .coverage-results ]; then
           # Unzip any zipped coverage results
-          find .coverage-results -type f -name '*.zip' -exec unzip -o {} \;
+          find .coverage-results -type f -name '*.zip' -print0 | xargs -0 -P $(nproc) -I {} unzip -q -o {} -d .coverage-results/
 
           # Find all modified packages
           if [[ "${TEST_ALL_PACKAGES}" == "true" ]]; then
@@ -171,7 +171,7 @@ jobs:
           fi
 
           mkdir -p /tmp/coverage-logs
-          MAX_JOBS=$(nproc 2>/dev/null || echo 2)
+          MAX_JOBS=4
 
           for pkg in ${modified_packages}; do
             if [ -d "${pkg}" ]; then
