@@ -233,7 +233,6 @@ class AsyncMultiRangeDownloader:
         self._open_retries: int = 0
         self.is_finalized: bool = False
         self.full_obj_server_crc32c: Optional[int] = None
-        self.metadata: Optional[List[Tuple[str, str]]] = None
 
     async def __aenter__(self):
         """Opens the underlying bidi-gRPC connection to read from the object."""
@@ -263,8 +262,6 @@ class AsyncMultiRangeDownloader:
         if self._is_stream_open:
             raise ValueError("Underlying bidi-gRPC stream is already open")
 
-        self.metadata = metadata
-
         if retry_policy is None:
 
             def on_error_wrapper(exc):
@@ -293,7 +290,7 @@ class AsyncMultiRangeDownloader:
             )
 
         async def _do_open():
-            current_metadata = list(self.metadata) if self.metadata else []
+            current_metadata = list(metadata) if metadata else []
 
             # Cleanup stream from previous failed attempt, if any.
             if self.read_obj_str:
@@ -415,11 +412,6 @@ class AsyncMultiRangeDownloader:
         :raises DataCorruption: if a checksum mismatch is detected while reading data.
 
         """
-
-        if metadata is not None:
-            self.metadata = metadata
-        else:
-            metadata = self.metadata
 
         if len(read_ranges) > 1000:
             raise ValueError(

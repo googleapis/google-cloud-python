@@ -399,3 +399,35 @@ class TestAsyncGrpcClient:
         assert call_kwargs["metadata"] == metadata
         assert call_kwargs["timeout"] == timeout
         assert call_kwargs["retry"] == retry
+
+    @pytest.mark.asyncio
+    @pytest.mark.parametrize(
+        "invalid_metadata, expected_exc",
+        [
+            ("not-a-sequence", TypeError),
+            ([("key_only",)], ValueError),
+            ([("too", "many", "items")], ValueError),
+            ([(123, "val")], TypeError),
+            ([("key", 456)], TypeError),
+        ],
+    )
+    async def test_delete_object_invalid_metadata(self, invalid_metadata, expected_exc):
+        client = async_grpc_client.AsyncGrpcClient(credentials=_make_credentials())
+        with pytest.raises(expected_exc):
+            await client.delete_object("bucket", "object", metadata=invalid_metadata)
+
+    @pytest.mark.asyncio
+    @pytest.mark.parametrize(
+        "invalid_metadata, expected_exc",
+        [
+            ("not-a-sequence", TypeError),
+            ([("key_only",)], ValueError),
+            ([("too", "many", "items")], ValueError),
+            ([(123, "val")], TypeError),
+            ([("key", 456)], TypeError),
+        ],
+    )
+    async def test_get_object_invalid_metadata(self, invalid_metadata, expected_exc):
+        client = async_grpc_client.AsyncGrpcClient(credentials=_make_credentials())
+        with pytest.raises(expected_exc):
+            await client.get_object("bucket", "object", metadata=invalid_metadata)

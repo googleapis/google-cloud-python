@@ -213,7 +213,6 @@ class AsyncAppendableObjectWriter:
         self.object_resource: Optional[_storage_v2.Object] = None
         self._flush_count = 0
         self.blob: Optional[Blob] = None
-        self.metadata: Optional[List[Tuple[str, str]]] = None
 
     @classmethod
     def from_blob(
@@ -313,8 +312,6 @@ class AsyncAppendableObjectWriter:
         if self._is_stream_open:
             raise ValueError("Underlying bidi-gRPC stream is already open")
 
-        self.metadata = metadata
-
         if retry_policy is None:
             retry_policy = AsyncRetry(
                 predicate=_is_write_retryable, on_error=self._on_open_error
@@ -337,7 +334,7 @@ class AsyncAppendableObjectWriter:
             )
 
         async def _do_open():
-            current_metadata = list(self.metadata) if self.metadata else []
+            current_metadata = list(metadata) if metadata else []
 
             # Cleanup stream from previous failed attempt, if any.
             if self.write_obj_stream:
@@ -411,11 +408,6 @@ class AsyncAppendableObjectWriter:
 
         :raises ValueError: If the stream is not open.
         """
-        if metadata is not None:
-            self.metadata = metadata
-        else:
-            metadata = self.metadata
-
         if not self._is_stream_open:
             raise ValueError("Stream is not open. Call open() before append().")
         if not data:
