@@ -81,7 +81,6 @@ MYPY_CONFIG_FILE = next(
 )
 
 
-
 nox.options.sessions = [
     "unit-3.10",
     "unit-3.11",
@@ -782,7 +781,6 @@ def mypy(session):
         f"--config-file={MYPY_CONFIG_FILE}",
         "-p",
         "google",
-
         # "--check-untyped-defs",
         *session.posargs,
     )
