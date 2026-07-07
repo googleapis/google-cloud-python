@@ -186,18 +186,12 @@ jobs:
                 set +e
                 
                 # Find coverage databases belonging specifically to this package across all Python versions
-                pkg_files=$(find .coverage-results/ -type f -name ".coverage.*.${pkg_name_clean}" -o -name ".coverage.*.${pkg_name_clean}.*")
-                
-                if [ -n "${pkg_files}" ]; then
-                  # Create a dedicated temp directory for combining this package's coverage databases
-                  temp_combine_dir="/tmp/combine-${pkg_name_clean}"
-                  mkdir -p "${temp_combine_dir}"
-                  cp ${pkg_files} "${temp_combine_dir}/"
-                  
+                pkg_files=(.coverage-results/.coverage.*.${pkg_name_clean})
+                if [ -e "${pkg_files[0]}" ]; then
                   pushd "${pkg}" > /dev/null
                   
-                  # Combine only this package's databases into a local .coverage database inside the package directory
-                  COVERAGE_FILE="${PWD}/.coverage" coverage combine "${temp_combine_dir}"/.coverage.* >> "${pkg_log}" 2>&1
+                  # Combine only this package's databases directly from the results directory using relative pathing
+                  COVERAGE_FILE="${PWD}/.coverage" coverage combine ../../.coverage-results/.coverage.*.${pkg_name_clean} >> "${pkg_log}" 2>&1
                   
                   # Generate the coverage report using the package-specific local database
                   if [ -f ".coveragerc" ]; then
