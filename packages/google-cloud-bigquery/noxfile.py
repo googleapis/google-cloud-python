@@ -53,7 +53,6 @@ MYPY_CONFIG_FILE = next(
 )
 
 
-
 SYSTEM_TEST_PYTHON_VERSIONS = UNIT_TEST_PYTHON_VERSIONS
 
 
@@ -234,8 +233,6 @@ def mypy(session):
             "google",
             "--show-traceback",
         )
-
-
 
 
 @nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
