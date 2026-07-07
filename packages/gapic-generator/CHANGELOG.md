@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/gapic-generator/#history
 
+## [1.37.0](https://github.com/googleapis/google-cloud-python/compare/gapic-generator-v1.36.0...gapic-generator-v1.37.0) (2026-07-07)
+
+
+### Features
+
+* implement native PEP 0810 lazy loading ([#17591](https://github.com/googleapis/google-cloud-python/issues/17591)) ([8a1270c](https://github.com/googleapis/google-cloud-python/commit/8a1270cc29e5d8afd4edb59395ebbdac31792ebd))
+
+
+### Bug Fixes
+
+* **deps:** bump google-api-core to 2.25.0 ([#17599](https://github.com/googleapis/google-cloud-python/issues/17599)) ([8b359e2](https://github.com/googleapis/google-cloud-python/commit/8b359e24279bc9c444114a1476c715647b960c4f))
+* **tests:** add --cov-append to gapic-generator and proto-plus to preserve monorepo coverage ([#17603](https://github.com/googleapis/google-cloud-python/issues/17603)) ([2ddcf4d](https://github.com/googleapis/google-cloud-python/commit/2ddcf4dfc711771b284797569f7f8a2de902ade8))
+
 ## [1.36.0](https://github.com/googleapis/google-cloud-python/compare/gapic-generator-v1.35.0...gapic-generator-v1.36.0) (2026-06-25)
 
 

@@ -7239,6 +7239,7 @@ def test_create_template_rest_call_success(request_type):
             "log_sanitize_operations": True,
             "enforcement_type": 1,
             "multi_language_detection": {"enable_multi_language_detection": True},
+            "modalities": [1],
         },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
@@ -7470,6 +7471,7 @@ def test_update_template_rest_call_success(request_type):
             "log_sanitize_operations": True,
             "enforcement_type": 1,
             "multi_language_detection": {"enable_multi_language_detection": True},
+            "modalities": [1],
         },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.

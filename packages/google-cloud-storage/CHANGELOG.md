@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## [3.12.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storage-v3.12.0...google-cloud-storage-v3.12.1) (2026-07-07)
+
+
+### Bug Fixes
+
+* **storage:** log occasional (1 in 5 million) additional bytes received from GCS in read path ([#17423](https://github.com/googleapis/google-cloud-python/issues/17423)) ([335c12f](https://github.com/googleapis/google-cloud-python/commit/335c12ff4cc5e4911a005a790d14ab1e1e346197))
+
 ## [3.12.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storage-v3.11.0...google-cloud-storage-v3.12.0) (2026-06-11)
 
 

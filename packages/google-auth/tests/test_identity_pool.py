@@ -20,7 +20,8 @@ import os
 from unittest import mock
 import urllib
 
-from OpenSSL import crypto
+from cryptography import x509
+from cryptography.hazmat.primitives import serialization
 import pytest  # type: ignore
 
 from google.auth import _helpers, external_account
@@ -69,17 +70,15 @@ with open(SUBJECT_TOKEN_JSON_FILE) as fh:
     JSON_FILE_SUBJECT_TOKEN = JSON_FILE_CONTENT.get(SUBJECT_TOKEN_FIELD_NAME)
 
 with open(CERT_FILE, "rb") as f:
+    cert = x509.load_pem_x509_certificate(f.read())
     CERT_FILE_CONTENT = base64.b64encode(
-        crypto.dump_certificate(
-            crypto.FILETYPE_ASN1, crypto.load_certificate(crypto.FILETYPE_PEM, f.read())
-        )
+        cert.public_bytes(serialization.Encoding.DER)
     ).decode("utf-8")
 
 with open(OTHER_CERT_FILE, "rb") as f:
+    cert = x509.load_pem_x509_certificate(f.read())
     OTHER_CERT_FILE_CONTENT = base64.b64encode(
-        crypto.dump_certificate(
-            crypto.FILETYPE_ASN1, crypto.load_certificate(crypto.FILETYPE_PEM, f.read())
-        )
+        cert.public_bytes(serialization.Encoding.DER)
     ).decode("utf-8")
 
 TOKEN_URL = "https://sts.googleapis.com/v1/token"

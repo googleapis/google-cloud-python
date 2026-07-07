@@ -189,18 +189,18 @@ class ToolCallResult(proto.Message):
             Optional. The name of the tool's action
             associated with this call.
         error (google.cloud.dialogflow_v2beta1.types.ToolCallResult.Error):
-            The tool call's error.
+            Optional. The tool call's error.
 
             This field is a member of `oneof`_ ``result``.
         raw_content (bytes):
-            Only populated if the response content is not
-            utf-8 encoded. (by definition byte fields are
-            base64 encoded).
+            Optional. Only populated if the response
+            content is not utf-8 encoded. (by definition
+            byte fields are base64 encoded).
 
             This field is a member of `oneof`_ ``result``.
         content (str):
-            Only populated if the response content is
-            utf-8 encoded.
+            Optional. Only populated if the response
+            content is utf-8 encoded.
 
             This field is a member of `oneof`_ ``result``.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
