@@ -1,0 +1,4 @@
+# Lower-bound constraints for Python 3.14 core dependencies.
+# Used during CI unit tests to verify minimum supported package versions.
+pyasn1-modules==0.2.1
+cryptography==41.0.5
