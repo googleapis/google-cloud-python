@@ -108,7 +108,7 @@ jobs:
       run: |
         ci/run_conditional_tests.sh
     - name: Upload coverage results
-      if: ${{ steps.packages.outputs.num_files_changed > 0 && contains(fromJson(needs.initialize.outputs.coverage_versions), matrix.python) }}
+      if: ${{ contains(fromJson(needs.initialize.outputs.coverage_versions), matrix.python) }}
       uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
       with:
         name: coverage-artifact-${{ matrix.python }}-${{ matrix.package_shard.index }}
