@@ -27,7 +27,7 @@ DEPENDENCIES = (
     *cryptography_base_require,
 )
 
-requests_extra_require = ["requests >= 2.20.0, < 3.0.0"]
+requests_extra_require = ["requests >= 2.30.0, < 3.0.0"]
 
 aiohttp_extra_require = ["aiohttp >= 3.8.0, < 4.0.0", *requests_extra_require]
 
@@ -37,8 +37,10 @@ reauth_extra_require = ["pyu2f>=0.1.5"]
 
 enterprise_cert_extra_require = cryptography_base_require
 
-# TODO(https://github.com/googleapis/google-auth-library-python/issues/1739): Add bounds for urllib3 and packaging dependencies.
-urllib3_extra_require = ["urllib3", "packaging"]
+urllib3_extra_require = [
+    "urllib3 >= 1.26.15, < 3.0.0",
+    "packaging >= 20.0",
+]
 
 rsa_extra_require = ["rsa>=3.1.4,<5"]
 
