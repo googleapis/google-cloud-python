@@ -150,6 +150,7 @@ jobs:
       uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5
       with:
         path: .coverage-results/
+        merge-multiple: true
     - name: Report coverage results
       if: ${{ steps.packages.outputs.num_files_changed > 0 }}
       env:
@@ -190,32 +191,40 @@ jobs:
                 pkg_files=(.coverage-results/.coverage.*.${pkg_name_clean})
 
                 if [ -f "${pkg}/.coveragerc" ] && grep -Eq "fail_under\s*=\s*0" "${pkg}/.coveragerc"; then
-                  echo "Package has fail_under = 0, passing instantly" > "${pkg_log}"
+                  echo "Package has fail_under = 0, passing instantly with 100% success (even without coverage files)" > "${pkg_log}"
                   echo 0 > "${pkg_status}"
-                elif [ -e "${pkg_files[0]}" ]; then
-                  pushd "${pkg}" > /dev/null
-
-                  # Combine only this package's databases directly from the results directory using relative pathing
-                  COVERAGE_FILE="${PWD}/.coverage" coverage combine ../../.coverage-results/.coverage.*.${pkg_name_clean} >> "${pkg_log}" 2>&1
-
-                  # Generate the coverage report using the package-specific local database
-                  if [ -f ".coveragerc" ]; then
-                    echo "Using package-specific configuration: ${pkg}/.coveragerc" > "${pkg_log}"
-                    if grep -q "fail_under" ".coveragerc"; then
-                      COVERAGE_FILE="${PWD}/.coverage" coverage report --rcfile=".coveragerc" --include="$PWD/**" >> "${pkg_log}" 2>&1
-                    else
-                      echo "No fail_under specified in ${pkg}/.coveragerc, enforcing default" >> "${pkg_log}"
-                      COVERAGE_FILE="${PWD}/.coverage" coverage report --rcfile=".coveragerc" --include="$PWD/**" --fail-under="${DEFAULT_FAIL_UNDER}" >> "${pkg_log}" 2>&1
-                    fi
-                  else
-                    echo "No .coveragerc found for ${pkg}, enforcing default" > "${pkg_log}"
-                    COVERAGE_FILE="${PWD}/.coverage" coverage report --include="$PWD/**" --fail-under="${DEFAULT_FAIL_UNDER}" >> "${pkg_log}" 2>&1
-                  fi
-                  echo $? > "${pkg_status}"
-                  popd > /dev/null
                 else
-                  echo "Warning: No coverage results found for ${pkg}" > "${pkg_log}"
-                  echo 1 > "${pkg_status}"
+                  # Use standard, O(1) in-memory absolute-path bash glob array check (handles both flat and nested folders!)
+                  RESULTS_DIR="${GITHUB_WORKSPACE:-$PWD}/.coverage-results"
+                  shopt -s nullglob
+                  pkg_files=("${RESULTS_DIR}/.coverage."*"."*"${pkg_name_clean}" "${RESULTS_DIR}"/*/".coverage."*"."*"${pkg_name_clean}")
+                  shopt -u nullglob
+
+                  if [ ${#pkg_files[@]} -gt 0 ]; then
+                    pushd "${pkg}" > /dev/null
+
+                    # Combine only this package's databases directly using absolute paths
+                    COVERAGE_FILE="${PWD}/.coverage" coverage combine "${pkg_files[@]}" >> "${pkg_log}" 2>&1
+
+                    # Generate the coverage report using the package-specific local database
+                    if [ -f ".coveragerc" ]; then
+                      echo "Using package-specific configuration: ${pkg}/.coveragerc" > "${pkg_log}"
+                      if grep -q "fail_under" ".coveragerc"; then
+                        COVERAGE_FILE="${PWD}/.coverage" coverage report --rcfile=".coveragerc" --include="$PWD/**" >> "${pkg_log}" 2>&1
+                      else
+                        echo "No fail_under specified in ${pkg}/.coveragerc, enforcing default" >> "${pkg_log}"
+                        COVERAGE_FILE="${PWD}/.coverage" coverage report --rcfile=".coveragerc" --include="$PWD/**" --fail-under="${DEFAULT_FAIL_UNDER}" >> "${pkg_log}" 2>&1
+                      fi
+                    else
+                      echo "No .coveragerc found for ${pkg}, enforcing default" > "${pkg_log}"
+                      COVERAGE_FILE="${PWD}/.coverage" coverage report --include="$PWD/**" --fail-under="${DEFAULT_FAIL_UNDER}" >> "${pkg_log}" 2>&1
+                    fi
+                    echo $? > "${pkg_status}"
+                    popd > /dev/null
+                  else
+                    echo "Warning: No coverage results found for ${pkg}" > "${pkg_log}"
+                    echo 1 > "${pkg_status}"
+                  fi
                 fi
                 set -e
               ) &
