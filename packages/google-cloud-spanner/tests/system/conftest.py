@@ -219,9 +219,7 @@ def shared_instance(
 
     _helpers.cleanup_stale_databases(instance)
 
-
     yield instance
-
 
     if _helpers.CREATE_INSTANCE:
         _helpers.retry_429_503(instance.delete)()

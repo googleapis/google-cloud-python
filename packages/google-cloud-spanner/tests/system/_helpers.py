@@ -183,7 +183,6 @@ def cleanup_stale_databases(instance, cutoff_seconds=600):
                     pass
 
 
-
 def unique_id(prefix, separator="-"):
     # Database name size: Spanner database names are limited to 30 characters.
     # See: https://docs.cloud.google.com/spanner/docs/reference/rpc/google.spanner.admin.database.v1#createdatabaserequest
