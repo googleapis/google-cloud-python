@@ -218,37 +218,26 @@ jobs:
                   if [ ${#pkg_files[@]} -gt 0 ]; then
                     pushd "${pkg}" > /dev/null
 
-                    # Fast-path: try the latest Python version first
-                    latest_pkg_file=$(printf "%s\n" "${pkg_files[@]}" | sort -V | tail -n 1)
-                    echo "Attempting fast-path coverage check with: ${latest_pkg_file}" >> "${pkg_log}"
+                    # Use /dev/shm for the combined coverage file to reduce disk I/O
+                    pkg_coverage_db="/dev/shm/.coverage.${pkg_name_clean}"
 
-                    REPORT_FLAGS="--include=$PWD/**"
+                    # Combine only this package's databases directly using absolute paths
+                    COVERAGE_FILE="${pkg_coverage_db}" coverage combine "${pkg_files[@]}" >> "${pkg_log}" 2>&1
+
+                    # Generate the coverage report using the package-specific local database
                     if [ -f ".coveragerc" ]; then
-                      REPORT_FLAGS="${REPORT_FLAGS} --rcfile=.coveragerc"
-                      if ! grep -q "fail_under" ".coveragerc"; then
-                        REPORT_FLAGS="${REPORT_FLAGS} --fail-under=${DEFAULT_FAIL_UNDER}"
+                      echo "Using package-specific configuration: ${pkg}/.coveragerc" > "${pkg_log}"
+                      if grep -q "fail_under" ".coveragerc"; then
+                        COVERAGE_FILE="${pkg_coverage_db}" coverage report --rcfile=".coveragerc" --include="$PWD/**" >> "${pkg_log}" 2>&1
+                      else
+                        echo "No fail_under specified in ${pkg}/.coveragerc, enforcing default" >> "${pkg_log}"
+                        COVERAGE_FILE="${pkg_coverage_db}" coverage report --rcfile=".coveragerc" --include="$PWD/**" --fail-under="${DEFAULT_FAIL_UNDER}" >> "${pkg_log}" 2>&1
                       fi
                     else
-                      REPORT_FLAGS="${REPORT_FLAGS} --fail-under=${DEFAULT_FAIL_UNDER}"
+                      echo "No .coveragerc found for ${pkg}, enforcing default" > "${pkg_log}"
+                      COVERAGE_FILE="${pkg_coverage_db}" coverage report --include="$PWD/**" --fail-under="${DEFAULT_FAIL_UNDER}" >> "${pkg_log}" 2>&1
                     fi
-
-                    COVERAGE_FILE="${latest_pkg_file}" coverage report ${REPORT_FLAGS} >> "${pkg_log}" 2>&1
-
-                    if [ $? -eq 0 ]; then
-                      echo "Fast-path coverage check passed for ${pkg}" >> "${pkg_log}"
-                      echo 0 > "${pkg_status}"
-                    else
-                      echo "Fast-path insufficient. Combining all available coverage results..." >> "${pkg_log}"
-                      # Use /dev/shm for the combined coverage file to reduce disk I/O
-                      pkg_coverage_db="/dev/shm/.coverage.${pkg_name_clean}"
-
-                      # Combine only this package's databases directly using absolute paths
-                      COVERAGE_FILE="${pkg_coverage_db}" coverage combine "${pkg_files[@]}" >> "${pkg_log}" 2>&1
-
-                      # Generate the coverage report using the package-specific local database
-                      COVERAGE_FILE="${pkg_coverage_db}" coverage report ${REPORT_FLAGS} >> "${pkg_log}" 2>&1
-                      echo $? > "${pkg_status}"
-                    fi
+                    echo $? > "${pkg_status}"
                     popd > /dev/null
                   else
                     echo "Warning: No coverage results found for ${pkg}" > "${pkg_log}"
