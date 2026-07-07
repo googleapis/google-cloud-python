@@ -7,7 +7,7 @@
 import logging as std_logging
 from collections import OrderedDict
 import re
-from typing import Dict, Callable, Mapping, MutableMapping, MutableSequence, Optional, {% if service.any_server_streaming %}AsyncIterable, Awaitable, {% endif %}{% if service.any_client_streaming %}AsyncIterator, {% endif %}Sequence, Tuple, Type, Union
+from typing import Dict, Callable, Mapping, MutableMapping, MutableSequence, Optional, {% if service.any_server_streaming %}AsyncIterable, Awaitable, {% endif %}{% if service.any_client_streaming %}AsyncIterator, {% endif %}{% if service.has_resumable_upload %}BinaryIO, {% endif %}Sequence, Tuple, Type, Union
 {% if api.all_method_settings.values()|map(attribute="auto_populated_fields", default=[])|select|list %}
 import uuid
 {% endif %}
@@ -190,6 +190,12 @@ class {{ service.async_client_name }}:
 
     def __init__(self, *,
             credentials: Optional[ga_credentials.Credentials] = None,
+            {% if service.has_resumable_upload %}
+            developer_token: Optional[str] = None,
+            login_customer_id: Optional[str] = None,
+            linked_customer_id: Optional[str] = None,
+            use_cloud_org_for_api_access: bool = False,
+            {% endif %}
             transport: Optional[Union[str, {{ service.name }}Transport, Callable[..., {{ service.name }}Transport]]] = "grpc_asyncio",
             client_options: Optional[ClientOptions] = None,
             client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
@@ -202,6 +208,21 @@ class {{ service.async_client_name }}:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
+            {% if service.has_resumable_upload %}
+            {% set resumable_methods = service.methods.values() | selectattr("is_resumable_upload") | map(attribute="name") | map("snake_case") | list %}
+            developer_token (Optional[str]): The developer token to use for the
+                resumable upload transport. This will be used by the resumable upload methods
+                ({{ resumable_methods | join(", ") }}) ONLY!
+            login_customer_id (Optional[str]): The login customer ID to use for
+                the resumable upload transport. This will be used by the resumable upload methods
+                ({{ resumable_methods | join(", ") }}) ONLY!
+            linked_customer_id (Optional[str]): The linked customer ID to use for
+                the resumable upload transport. This will be used by the resumable upload methods
+                ({{ resumable_methods | join(", ") }}) ONLY!
+            use_cloud_org_for_api_access (bool): Whether to use the cloud org for
+                API access for the resumable upload transport. This will be used by the resumable upload methods
+                ({{ resumable_methods | join(", ") }}) ONLY!
+            {% endif %}
             transport (Optional[Union[str,{{ service.name }}Transport,Callable[..., {{ service.name }}Transport]]]):
                 The transport to use, or a Callable that constructs and returns a new transport to use.
                 If a Callable is given, it will be called with the same set of initialization
@@ -252,6 +273,12 @@ class {{ service.async_client_name }}:
         {# NOTE(lidiz) Not using kwargs since we want the docstring and types. #}
         self._client = {{ service.client_name }}(
             credentials=credentials,
+            {% if service.has_resumable_upload %}
+            developer_token=developer_token,
+            login_customer_id=login_customer_id,
+            linked_customer_id=linked_customer_id,
+            use_cloud_org_for_api_access=use_cloud_org_for_api_access,
+            {% endif %}
             transport=transport,
             client_options=client_options,
             client_info=client_info,
@@ -282,6 +309,9 @@ class {{ service.async_client_name }}:
             {% for field in method.flattened_fields.values() %}
             {{ field.name }}: Optional[{{ field.ident }}] = None,
             {% endfor %}
+            {% if method.is_resumable_upload %}
+            stream: BinaryIO,
+            {% endif %}
             {% else %}
             requests: Optional[AsyncIterator[{{ method.input.ident }}]] = None,
             *,
@@ -316,6 +346,10 @@ class {{ service.async_client_name }}:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             {% endfor %}
+            {% if method.is_resumable_upload %}
+            stream (BinaryIO):
+                The stream to upload.
+            {% endif %}
             {% else %}
             requests (AsyncIterator[`{{ method.input.ident.sphinx }}`]):
                 The request object AsyncIterator.{{ " " }}
@@ -336,6 +370,11 @@ class {{ service.async_client_name }}:
                 {{ method.client_output_async.meta.doc|rst(width=72, indent=16, source_format='rst') }}
         {% endif %}
         """
+        {% if method.is_resumable_upload %}
+        raise NotImplementedError(
+            "Resumable upload is not yet supported in the async client."
+        )
+        {% else %}
         {% if method.is_deprecated %}
         warnings.warn("{{ service.async_client_name }}.{{ method.name|snake_case }} is deprecated",
             DeprecationWarning)
@@ -438,6 +477,7 @@ class {{ service.async_client_name }}:
 
         # Done; return the response.
         return response
+        {% endif %}
         {% endif %}
         {{ "\n" }}
     {% endfor %}
