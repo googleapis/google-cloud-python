@@ -92,11 +92,11 @@ def group_packages(packages):
         package_weights.append((pkg, weight))
         total_weight += weight
 
-    # Dynamically determine target weight to balance across max 16 shards.
+    # Dynamically determine target weight to balance across max shards.
     # 1. Base shard count has a target weight capacity of 10 per shard.
-    # 2. To avoid exceeding 16 shards, we scale the target weight dynamically
+    # 2. To avoid exceeding max shards, we scale the target weight dynamically
     #    based on the total workload.
-    max_shards = 16
+    max_shards = int(os.environ.get("MAX_SHARDS", 16))
     target_weight = max(10, math.ceil(total_weight / max_shards))
 
     shards_list = []

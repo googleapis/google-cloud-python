@@ -12,6 +12,9 @@ name: unittest
 permissions:
   contents: read
 
+env:
+  MAX_SHARDS: 20
+
 jobs:
   initialize:
     runs-on: ubuntu-latest
@@ -41,6 +44,7 @@ jobs:
         BUILD_TYPE: presubmit
         TARGET_BRANCH: ${{ github.base_ref || github.event.merge_group.base_ref }}
         TEST_ALL_PACKAGES: ${{ steps.check-label.outputs.is_full_run }}
+        MAX_SHARDS: ${{ env.MAX_SHARDS }}
       run: |
         if [ -n "$TARGET_BRANCH" ]; then
           git fetch origin "$TARGET_BRANCH" --deepen=200 || true
