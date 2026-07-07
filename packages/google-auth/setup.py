@@ -37,6 +37,7 @@ reauth_extra_require = ["pyu2f>=0.1.5"]
 
 enterprise_cert_extra_require = cryptography_base_require
 
+# TODO(https://github.com/googleapis/google-auth-library-python/issues/1739): Add bounds for urllib3 and packaging dependencies.
 urllib3_extra_require = ["urllib3", "packaging"]
 
 rsa_extra_require = ["rsa>=3.1.4,<5"]
