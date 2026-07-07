@@ -56,18 +56,23 @@ grpc_extra_require = [
 
 # Unit test requirements.
 testing_extra_require = [
+    # gRPC extra
     *grpc_extra_require,
+    # PyJWT extra
+    *pyjwt_extra_require,
+    # Reauth extra
+    *reauth_extra_require,
+    # urllib3 extra
+    *urllib3_extra_require,
+    # aiohttp extra
+    *aiohttp_extra_require,
+    # Test runners & mocks
     "flask",
     "freezegun",
-    *pyjwt_extra_require,
     "pytest",
     "pytest-cov",
     "pytest-localserver",
-    *reauth_extra_require,
     "responses",
-    *urllib3_extra_require,
-    # Async Dependencies
-    *aiohttp_extra_require,
     "aioresponses",
     "pytest-asyncio",
 ]

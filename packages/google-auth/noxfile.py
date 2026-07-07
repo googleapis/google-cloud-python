@@ -159,27 +159,37 @@ def mypy(session):
 
 
 @nox.session(python=ALL_PYTHON)
-@nox.parametrize(["install_deprecated_extras"], (True, False))
-def unit(session, install_deprecated_extras):
+@nox.parametrize(["install_extras"], (True, False))
+def unit(session, install_extras):
     # Install all test dependencies, then install this package in-place.
 
     min_py, max_py = UNIT_TEST_PYTHON_VERSIONS[0], UNIT_TEST_PYTHON_VERSIONS[-1]
-    if not install_deprecated_extras and session.python not in (min_py, max_py):
+    if not install_extras and session.python not in (min_py, max_py):
         # only run double tests on first and last supported versions
         session.skip(
             f"Extended tests only run on boundary Python versions ({min_py}, {max_py}) to reduce CI load."
         )
 
-    constraints_path = str(
+    core_constraints = (
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
     )
-    extras_str = "testing"
-    if install_deprecated_extras:
-        # rsa and oauth2client were both archived and support dropped,
-        # but we still  test old code paths
+    extras_constraints = (
+        CURRENT_DIRECTORY / "testing" / f"constraints-extras-{session.python}.txt"
+    )
+
+    install_args = ["-e"]
+    if install_extras:
         session.install("oauth2client")
-        extras_str += ",rsa"
-    session.install("-e", f".[{extras_str}]", "-c", constraints_path)
+        install_args.append(".[testing,enterprise_cert,rsa]")
+    else:
+        install_args.append(".[testing]")
+
+    if core_constraints.exists():
+        install_args.extend(["-c", str(core_constraints)])
+    if install_extras and extras_constraints.exists():
+        install_args.extend(["-c", str(extras_constraints)])
+
+    session.install(*install_args)
     session.run(
         "pytest",
         f"--junitxml=unit_{session.python}_sponge_log.xml",

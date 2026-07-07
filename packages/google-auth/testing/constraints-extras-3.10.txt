@@ -1,0 +1,10 @@
+# Lower-bound constraints for Python 3.10 optional extras & test dependencies.
+aiohttp==3.8.0
+requests==2.30.0
+pyjwt==2.0
+grpcio==1.59.0
+urllib3==1.26.15
+packaging==20.0
+pyu2f==0.1.5
+rsa==4.0.0
+oauth2client==4.1.3
