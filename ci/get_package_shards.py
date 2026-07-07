@@ -12,6 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+"""Script to group changed packages into balanced shards for CI testing.
+
+This script identifies which packages have changed compared to a target branch
+(or since the last commit) and groups them into a fixed number of shards.
+It uses package weights (configured via environment variables) to balance the
+execution time across shards while maintaining alphabetical order and
+contiguous grouping.
+"""
+
 import os
 import subprocess
 import json
@@ -19,6 +28,17 @@ import math
 import sys
 
 def get_package_weights():
+    """Parses package weights from the PACKAGE_WEIGHTS environment variable.
+    Package weights represent the relative size of the test, where the weight
+    approximately represents the minutes the test takes to run. This is used
+    for distributing work properly across shards.
+
+    The environment variable is expected to be a multiline string where each line
+    is in the format 'package_name: weight'. Lines starting with '#' are ignored.
+
+    Returns:
+        dict: A mapping of package names to their integer weights.
+    """
     weights = {}
     env_weights = os.environ.get("PACKAGE_WEIGHTS", "")
     for line in env_weights.splitlines():
@@ -35,6 +55,11 @@ def get_package_weights():
 
 
 def get_packages():
+    """Lists all package directories in the repository.
+
+    Returns:
+        list: A sorted list of relative paths to all directories under 'packages/'.
+    """
     subdirs = ['packages']
     packages = []
     for subdir in subdirs:
@@ -47,6 +72,15 @@ def get_packages():
 
 
 def get_packages_to_test():
+    """Determines the list of packages that need to be tested.
+
+    This is based on git diffs against the target branch (presubmit) or the
+    previous commit (continuous). If TEST_ALL_PACKAGES is set to true,
+    all packages are returned.
+
+    Returns:
+        list: A list of package directory paths to be included in the test matrix.
+    """
     build_type = os.environ.get('BUILD_TYPE', 'presubmit')
     target_branch = os.environ.get('TARGET_BRANCH', 'main')
     test_all_packages = os.environ.get('TEST_ALL_PACKAGES', 'false').lower() == 'true'
@@ -79,6 +113,19 @@ def get_packages_to_test():
 
 
 def group_packages(packages):
+    """Groups the provided packages into balanced shards.
+
+    The grouping respects the MAX_SHARDS limit. It uses a target weight per shard
+    to distribute the workload. If the contiguous packing exceeds the shard limit,
+    all remaining packages are added to the final shard.
+
+    Args:
+        packages (list): The list of package directory paths to group.
+
+    Returns:
+        list: A list of dictionaries, each representing a shard with its name,
+              index, description, and the space-separated list of packages.
+    """
     if not packages:
         return []
 
@@ -121,7 +168,7 @@ def group_packages(packages):
         index = i + 1
         name = f"Shard {index}"
         num_in_shard = len(shard_packages)
-        
+
         # Calculate contiguous range description
         if len(shard_packages) == 1:
             desc = shard_packages[0].strip('/').split('/')[-1]
