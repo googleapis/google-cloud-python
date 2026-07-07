@@ -37,15 +37,15 @@ reauth_extra_require = ["pyu2f>=0.1.5"]
 
 enterprise_cert_extra_require = cryptography_base_require
 
-# TODO(https://github.com/googleapis/google-auth-library-python/issues/1739): Add bounds for urllib3 and packaging dependencies.
 urllib3_extra_require = ["urllib3", "packaging"]
 
 rsa_extra_require = ["rsa>=3.1.4,<5"]
 
+grpc_extra_require = ["grpcio"]
+
 # Unit test requirements.
 testing_extra_require = [
-    # TODO(https://github.com/googleapis/google-auth-library-python/issues/1735): Remove `grpcio` from testing requirements once an extra is added for `grpcio` dependency.
-    "grpcio",
+    *grpc_extra_require,
     "flask",
     "freezegun",
     *pyjwt_extra_require,
@@ -77,8 +77,7 @@ extras = {
     "testing": testing_extra_require,
     "urllib3": urllib3_extra_require,
     "rsa": rsa_extra_require,
-    # TODO(https://github.com/googleapis/google-auth-library-python/issues/1735): Add an extra for `grpcio` dependency.
-    # TODO(https://github.com/googleapis/google-auth-library-python/issues/1736): Add an extra for `oauth2client` dependency.
+    "grpc": grpc_extra_require,
 }
 
 with io.open("README.rst", "r") as fh:
