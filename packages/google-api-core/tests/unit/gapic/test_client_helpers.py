@@ -49,7 +49,7 @@ def test_get_default_mtls_endpoint():
     assert client_helpers.get_default_mtls_endpoint(None) is None
 
 
-@mock.patch("google.auth.transport.mtls.should_use_client_cert", autospec=True)
+@mock.patch("google.auth.transport.mtls.should_use_client_cert", create=True)
 def test_use_client_cert_effective_with_google_auth(mock_method):
     # Test when google-auth supports the method
     mock_method.return_value = True
