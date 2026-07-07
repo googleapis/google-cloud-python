@@ -128,7 +128,7 @@ def get_api_endpoint(
     else:
         return default_endpoint_template.format(
             UNIVERSE_DOMAIN=universe_domain
-        )
+        )  # noqa: E501
 
 
 def read_environment_variables() -> Tuple[bool, str, Optional[str]]:
@@ -149,7 +149,7 @@ def read_environment_variables() -> Tuple[bool, str, Optional[str]]:
     use_client_cert = use_client_cert_effective()
     use_mtls_endpoint = os.getenv(
         "GOOGLE_API_USE_MTLS_ENDPOINT", "auto"
-    ).lower()
+    ).lower()  # noqa: E501
     universe_domain_env = os.getenv("GOOGLE_CLOUD_UNIVERSE_DOMAIN")
     if use_mtls_endpoint not in ("auto", "never", "always"):
         raise MutualTLSChannelError(
@@ -216,7 +216,7 @@ def get_universe_domain(
 
 def setup_request_id(
     request: Any, field_name: str, is_proto3_optional: bool
-) -> None:
+) -> None:  # noqa: E501
     """Populate a UUID4 field in the request if it is not already set.
 
     Args:
@@ -245,3 +245,13 @@ def setup_request_id(
     else:
         if not getattr(request, field_name):
             setattr(request, field_name, str(uuid.uuid4()))
+
+
+# Backward compatibility aliases for private methods
+# Previously, gapic-generator-python generated clients used these methods
+_use_client_cert_effective = use_client_cert_effective
+_get_default_mtls_endpoint = get_default_mtls_endpoint
+_read_environment_variables = read_environment_variables
+_get_client_cert_source = get_client_cert_source
+_get_universe_domain = get_universe_domain
+_setup_request_id = setup_request_id

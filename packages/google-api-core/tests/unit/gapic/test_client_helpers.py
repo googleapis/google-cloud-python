@@ -153,7 +153,7 @@ def test_get_api_endpoint_mtls_universe_mismatch():
 
 @mock.patch(
     "google.api_core.gapic_v1.client_helpers.use_client_cert_effective"
-)
+)  # noqa: E501
 @mock.patch.dict(os.environ, clear=True)
 def test_read_environment_variables(mock_effective):
     mock_effective.return_value = True
@@ -177,10 +177,10 @@ def test_read_environment_variables_invalid_mtls():
 
 @mock.patch(
     "google.auth.transport.mtls.has_default_client_cert_source", create=True
-)
+)  # noqa: E501
 @mock.patch(
     "google.auth.transport.mtls.default_client_cert_source", create=True
-)
+)  # noqa: E501
 def test_get_client_cert_source(mock_default, mock_has_default):
     mock_default.return_value = b"default_cert"
     mock_has_default.return_value = True
@@ -190,9 +190,8 @@ def test_get_client_cert_source(mock_default, mock_has_default):
 
     # When provided_cert_source is given, return provided
     assert (
-        client_helpers.get_client_cert_source(b"provided", True)
-        == b"provided"
-    )
+        client_helpers.get_client_cert_source(b"provided", True) == b"provided"
+    )  # noqa: E501
 
     # When no provided cert but default is available
     assert client_helpers.get_client_cert_source(None, True) == b"default_cert"
@@ -203,20 +202,20 @@ def test_get_universe_domain():
     assert (
         client_helpers.get_universe_domain(
             "client.com", "env.com", "default.com"
-        )
+        )  # noqa: E501
         == "client.com"
     )
 
     # env takes precedence over default
     assert (
         client_helpers.get_universe_domain(None, "env.com", "default.com")
-        == "env.com"
+        == "env.com"  # noqa: E501
     )
 
     # fallback to default
     assert (
         client_helpers.get_universe_domain(None, None, "default.com")
-        == "default.com"
+        == "default.com"  # noqa: E501
     )
 
 
