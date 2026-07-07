@@ -22,9 +22,9 @@ from aioresponses.core import RequestMatch  # type: ignore
 class _CompatClientResponse(aiohttp.ClientResponse):
     """ClientResponse subclass for aioresponses compatibility across all aiohttp versions."""
 
-    def __init__(self, *args, writer=None, stream_writer=None, **kwargs):
-        kwargs.pop("writer", None)
-        kwargs.pop("stream_writer", None)
+    def __init__(self, *args, **kwargs):
+        writer = kwargs.pop("writer", None)
+        stream_writer = kwargs.pop("stream_writer", None)
         writer_obj = stream_writer or writer or Mock()
         sig = inspect.signature(super().__init__)
         if "stream_writer" in sig.parameters:
