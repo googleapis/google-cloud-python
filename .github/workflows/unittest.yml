@@ -12,15 +12,28 @@ name: unittest
 permissions:
   contents: read
 
-env:
-  MAX_SHARDS: 20
-
 jobs:
   initialize:
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
       is_full_run: ${{ steps.check-label.outputs.is_full_run }}
+    env:
+      MAX_SHARDS: 20
+      # Define weights for long-running unit tests to balance shard execution time
+      # Each weight is roughly 1 minute of expected execution time
+      # Default for unset packages is 1
+      PACKAGE_WEIGHTS: |
+        bigframes: 6
+        google-ai-generativelanguage: 4
+        google-auth: 5
+        google-cloud-compute: 12
+        google-cloud-compute-v1beta: 12
+        google-cloud-dialogflow: 6
+        google-cloud-dialogflow-cx: 6
+        google-cloud-discoveryengine: 8
+        google-cloud-retail: 5
+        google-shopping-merchant-accounts: 4
     steps:
     - name: Checkout
       uses: actions/checkout@v4
@@ -45,6 +58,7 @@ jobs:
         TARGET_BRANCH: ${{ github.base_ref || github.event.merge_group.base_ref }}
         TEST_ALL_PACKAGES: ${{ steps.check-label.outputs.is_full_run }}
         MAX_SHARDS: ${{ env.MAX_SHARDS }}
+        PACKAGE_WEIGHTS: ${{ env.PACKAGE_WEIGHTS }}
       run: |
         if [ -n "$TARGET_BRANCH" ]; then
           git fetch origin "$TARGET_BRANCH" --deepen=200 || true

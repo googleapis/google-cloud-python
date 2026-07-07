@@ -18,21 +18,20 @@ import json
 import math
 import sys
 
-# Define weights for long-running packages to balance shard execution time.
-# Default weight for any package not listed is 1.
-PACKAGE_WEIGHTS = {
-    "bigframes": 6,
-    "google-ai-generativelanguage": 4,
-    "google-auth": 5,
-    "google-cloud-compute": 12,
-    "google-cloud-compute-v1beta": 12,
-    "google-cloud-dialogflow": 6,
-    "google-cloud-dialogflow-cx": 6,
-    "google-cloud-discoveryengine": 8,
-    "google-cloud-retail": 5,
-    "google-shopping-merchant-accounts": 4,
-
-}
+def get_package_weights():
+    weights = {}
+    env_weights = os.environ.get("PACKAGE_WEIGHTS", "")
+    for line in env_weights.splitlines():
+        line = line.strip()
+        if not line or line.startswith("#"):
+            continue
+        if ":" in line:
+            try:
+                pkg, weight = line.split(":", 1)
+                weights[pkg.strip()] = int(weight.strip())
+            except ValueError:
+                continue
+    return weights
 
 
 def get_packages():
@@ -84,11 +83,12 @@ def group_packages(packages):
         return []
 
     # Map packages to their weights
+    package_weights_map = get_package_weights()
     package_weights = []
     total_weight = 0
     for pkg in packages:
         pkg_name = pkg.strip('/').split('/')[-1]
-        weight = PACKAGE_WEIGHTS.get(pkg_name, 1)
+        weight = package_weights_map.get(pkg_name, 1)
         package_weights.append((pkg, weight))
         total_weight += weight
 
