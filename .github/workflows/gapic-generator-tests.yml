@@ -46,7 +46,7 @@ jobs:
       all_python: ${{ env.ALL_PYTHON }}
       latest_stable_python: ${{ env.LATEST_STABLE_PYTHON }}
       prerelease_python: ${{ env.PRERELEASE_PYTHON }}
-      trimmed_python: $${{ env.TRIMMED_PYTHON }}
+      trimmed_python: ${{ env.TRIMMED_PYTHON }}
     steps:
       - run: echo "Initializing config for gapic-generator"
 
