@@ -112,6 +112,12 @@ git diff --quiet ${GIT_DIFF_ARG} ci
 changed=$?
 set -e
 
+# Now we have a fixed list, but we can change it to autodetect if
+# necessary.
+
+subdirs=(
+    packages
+)
 
 for subdir in ${subdirs[@]}; do
     for d in `ls -d ${subdir}/*/`; do
