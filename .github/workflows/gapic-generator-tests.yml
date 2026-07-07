@@ -201,7 +201,7 @@ jobs:
     container: gcr.io/gapic-images/googleapis
     steps:
       - uses: actions/checkout@v6
-      
+
       - name: Cache Bazel files
         id: cache-bazel
         uses: actions/cache@v5
@@ -226,25 +226,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check all jobs for failure
+        env:
+          NEEDS_JSON: ${{ toJson(needs) }}
         run: |
-          echo "check_changes result: ${{ needs.check_changes.result }}"
-          echo "python_config result: ${{ needs.python_config.result }}"
-          echo "showcase-unit result: ${{ needs.showcase-unit.result }}"
-          echo "showcase-mypy result: ${{ needs.showcase-mypy.result }}"
-          echo "goldens result: ${{ needs.goldens.result }}"
-          echo "goldens-prerelease result: ${{ needs.goldens-prerelease.result }}"
-          echo "fragment-snippet result: ${{ needs.fragment-snippet.result }}"
-          echo "integration result: ${{ needs.integration.result }}"
+          # 1. Print a human-readable list of each dependency job and its final status.
+          echo "Job Results:"
+          echo "$NEEDS_JSON" | jq -r 'to_entries[] | "  - \(.key): \(.value.result)"'
 
-          # Fail if any of the dependencies failed or were cancelled
-          if [ "${{ needs.check_changes.result }}" = "failure" ] || [ "${{ needs.check_changes.result }}" = "cancelled" ] || \
-             [ "${{ needs.python_config.result }}" = "failure" ] || [ "${{ needs.python_config.result }}" = "cancelled" ] || \
-             [ "${{ needs.showcase-unit.result }}" = "failure" ] || [ "${{ needs.showcase-unit.result }}" = "cancelled" ] || \
-             [ "${{ needs.showcase-mypy.result }}" = "failure" ] || [ "${{ needs.showcase-mypy.result }}" = "cancelled" ] || \
-             [ "${{ needs.goldens.result }}" = "failure" ] || [ "${{ needs.goldens.result }}" = "cancelled" ] || \
-             [ "${{ needs.goldens-prerelease.result }}" = "failure" ] || [ "${{ needs.goldens-prerelease.result }}" = "cancelled" ] || \
-             [ "${{ needs.fragment-snippet.result }}" = "failure" ] || [ "${{ needs.fragment-snippet.result }}" = "cancelled" ] || \
-             [ "${{ needs.integration.result }}" = "failure" ] || [ "${{ needs.integration.result }}" = "cancelled" ]; then
+          # 2. Evaluate if any job actually failed or was cancelled.
+          if echo "$NEEDS_JSON" | jq -e 'to_entries[].value | select(.result == "failure" or .result == "cancelled")' >/dev/null; then
             echo "Error: One or more required jobs failed or were cancelled."
             exit 1
           fi
