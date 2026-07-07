@@ -30,7 +30,7 @@ _MTLS_ENDPOINT_RE = re.compile(
 )
 
 
-def _get_default_mtls_endpoint(api_endpoint: Optional[str]) -> Optional[str]:
+def get_default_mtls_endpoint(api_endpoint: Optional[str]) -> Optional[str]:
     """Converts api endpoint to mTLS endpoint.
 
     Convert "*.sandbox.googleapis.com" and "*.googleapis.com" to
@@ -60,7 +60,7 @@ def _get_default_mtls_endpoint(api_endpoint: Optional[str]) -> Optional[str]:
     return api_endpoint.replace(".googleapis.com", ".mtls.googleapis.com")
 
 
-def _use_client_cert_effective() -> bool:
+def use_client_cert_effective() -> bool:
     """Returns whether client certificate should be used for mTLS if the
     google-auth version supports should_use_client_cert automatic mTLS
     enablement.
@@ -91,7 +91,7 @@ def _use_client_cert_effective() -> bool:
         return use_client_cert_str == "true"
 
 
-def _get_api_endpoint(
+def get_api_endpoint(
     api_override: Optional[str],
     client_cert_source: Optional[Any],
     universe_domain: str,
@@ -126,10 +126,12 @@ def _get_api_endpoint(
             )
         return default_mtls_endpoint
     else:
-        return default_endpoint_template.format(UNIVERSE_DOMAIN=universe_domain)
+        return default_endpoint_template.format(
+            UNIVERSE_DOMAIN=universe_domain
+        )
 
 
-def _read_environment_variables() -> Tuple[bool, str, Optional[str]]:
+def read_environment_variables() -> Tuple[bool, str, Optional[str]]:
     """Returns the environment variables used by the client.
 
     Returns:
@@ -144,8 +146,10 @@ def _read_environment_variables() -> Tuple[bool, str, Optional[str]]:
             GOOGLE_API_USE_MTLS_ENDPOINT is not any of
             ["auto", "never", "always"].
     """
-    use_client_cert = _use_client_cert_effective()
-    use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto").lower()
+    use_client_cert = use_client_cert_effective()
+    use_mtls_endpoint = os.getenv(
+        "GOOGLE_API_USE_MTLS_ENDPOINT", "auto"
+    ).lower()
     universe_domain_env = os.getenv("GOOGLE_CLOUD_UNIVERSE_DOMAIN")
     if use_mtls_endpoint not in ("auto", "never", "always"):
         raise MutualTLSChannelError(
@@ -155,7 +159,7 @@ def _read_environment_variables() -> Tuple[bool, str, Optional[str]]:
     return use_client_cert, use_mtls_endpoint, universe_domain_env
 
 
-def _get_client_cert_source(
+def get_client_cert_source(
     provided_cert_source: Optional[Any], use_cert_flag: bool
 ) -> Optional[Any]:
     """Return the client cert source to be used by the client.
@@ -180,7 +184,7 @@ def _get_client_cert_source(
     return client_cert_source
 
 
-def _get_universe_domain(
+def get_universe_domain(
     client_universe_domain: Optional[str],
     universe_domain_env: Optional[str],
     default_universe: str,
@@ -210,7 +214,9 @@ def _get_universe_domain(
     return universe_domain
 
 
-def _setup_request_id(request: Any, field_name: str, is_proto3_optional: bool) -> None:
+def setup_request_id(
+    request: Any, field_name: str, is_proto3_optional: bool
+) -> None:
     """Populate a UUID4 field in the request if it is not already set.
 
     Args:
