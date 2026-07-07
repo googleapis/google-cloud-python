@@ -10,12 +10,5 @@ Please refer to the centralized `Contributing Guide`_ at the repository root for
 
 Package-specific test sessions, dependencies, and supported Python versions are defined in this directory's ``noxfile.py``.
 
-**************************
-Updating Conformance Tests
-**************************
-
-The firestore client libraries use a shared set of conformance tests, the source of which can be found at https://github.com/googleapis/conformance-tests.
-
-To update the copy of these conformance tests used by this repository, run the provided Makefile:
-
-   $ make -f Makefile_v1
+.. note::
+   This is the forked version of the original repository, which is found on https://github.com/docascode/sphinx-docfx-yaml. Unless the issue applies only to this repository, please also file an issue and/or contribute to the original repository as well.
