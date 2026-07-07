@@ -187,7 +187,11 @@ jobs:
 
                 # Find coverage databases belonging specifically to this package across all Python versions
                 pkg_files=(.coverage-results/.coverage.*.${pkg_name_clean})
-                if [ -e "${pkg_files[0]}" ]; then
+
+                if [ -f "${pkg}/.coveragerc" ] && grep -Eq "fail_under\s*=\s*0" "${pkg}/.coveragerc"; then
+                  echo "Package has fail_under = 0, passing instantly" > "${pkg_log}"
+                  echo 0 > "${pkg_status}"
+                elif [ -e "${pkg_files[0]}" ]; then
                   pushd "${pkg}" > /dev/null
 
                   # Combine only this package's databases directly from the results directory using relative pathing
