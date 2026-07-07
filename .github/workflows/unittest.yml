@@ -43,7 +43,7 @@ jobs:
     - name: Set Coverage versions
       id: set-versions
       run: |
-        echo 'coverage_versions=["3.9", "3.14"]' >> $GITHUB_OUTPUT
+        echo 'coverage_versions=["3.10", "3.14"]' >> $GITHUB_OUTPUT
     - name: Check for unit_test:all_packages label
       id: check-label
       run: |
