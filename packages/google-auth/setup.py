@@ -41,7 +41,10 @@ urllib3_extra_require = ["urllib3", "packaging"]
 
 rsa_extra_require = ["rsa>=3.1.4,<5"]
 
-grpc_extra_require = ["grpcio"]
+grpc_extra_require = [
+    "grpcio >= 1.59.0, < 2.0.0; python_version < '3.14'",
+    "grpcio >= 1.75.1, < 2.0.0; python_version >= '3.14'",
+]
 
 # Unit test requirements.
 testing_extra_require = [
