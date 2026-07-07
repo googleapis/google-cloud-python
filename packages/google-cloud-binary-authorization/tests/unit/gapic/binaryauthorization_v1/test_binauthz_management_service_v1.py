@@ -51,6 +51,11 @@ from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    options_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.oauth2 import service_account
 
 from google.cloud.binaryauthorization_v1.services.binauthz_management_service_v1 import (
@@ -1451,6 +1456,7 @@ def test_get_policy(request_type, transport: str = "grpc"):
             name="name_value",
             description="description_value",
             global_policy_evaluation_mode=resources.Policy.GlobalPolicyEvaluationMode.ENABLE,
+            etag="etag_value",
         )
         response = client.get_policy(request)
 
@@ -1468,6 +1474,7 @@ def test_get_policy(request_type, transport: str = "grpc"):
         response.global_policy_evaluation_mode
         == resources.Policy.GlobalPolicyEvaluationMode.ENABLE
     )
+    assert response.etag == "etag_value"
 
 
 def test_get_policy_non_empty_request_with_auto_populated_field():
@@ -1600,6 +1607,7 @@ async def test_get_policy_async(request_type, transport: str = "grpc_asyncio"):
                 name="name_value",
                 description="description_value",
                 global_policy_evaluation_mode=resources.Policy.GlobalPolicyEvaluationMode.ENABLE,
+                etag="etag_value",
             )
         )
         response = await client.get_policy(request)
@@ -1618,6 +1626,7 @@ async def test_get_policy_async(request_type, transport: str = "grpc_asyncio"):
         response.global_policy_evaluation_mode
         == resources.Policy.GlobalPolicyEvaluationMode.ENABLE
     )
+    assert response.etag == "etag_value"
 
 
 def test_get_policy_field_headers():
@@ -1783,6 +1792,7 @@ def test_update_policy(request_type, transport: str = "grpc"):
             name="name_value",
             description="description_value",
             global_policy_evaluation_mode=resources.Policy.GlobalPolicyEvaluationMode.ENABLE,
+            etag="etag_value",
         )
         response = client.update_policy(request)
 
@@ -1800,6 +1810,7 @@ def test_update_policy(request_type, transport: str = "grpc"):
         response.global_policy_evaluation_mode
         == resources.Policy.GlobalPolicyEvaluationMode.ENABLE
     )
+    assert response.etag == "etag_value"
 
 
 def test_update_policy_non_empty_request_with_auto_populated_field():
@@ -1930,6 +1941,7 @@ async def test_update_policy_async(request_type, transport: str = "grpc_asyncio"
                 name="name_value",
                 description="description_value",
                 global_policy_evaluation_mode=resources.Policy.GlobalPolicyEvaluationMode.ENABLE,
+                etag="etag_value",
             )
         )
         response = await client.update_policy(request)
@@ -1948,6 +1960,7 @@ async def test_update_policy_async(request_type, transport: str = "grpc_asyncio"
         response.global_policy_evaluation_mode
         == resources.Policy.GlobalPolicyEvaluationMode.ENABLE
     )
+    assert response.etag == "etag_value"
 
 
 def test_update_policy_field_headers():
@@ -2112,6 +2125,7 @@ def test_create_attestor(request_type, transport: str = "grpc"):
         call.return_value = resources.Attestor(
             name="name_value",
             description="description_value",
+            etag="etag_value",
         )
         response = client.create_attestor(request)
 
@@ -2125,6 +2139,7 @@ def test_create_attestor(request_type, transport: str = "grpc"):
     assert isinstance(response, resources.Attestor)
     assert response.name == "name_value"
     assert response.description == "description_value"
+    assert response.etag == "etag_value"
 
 
 def test_create_attestor_non_empty_request_with_auto_populated_field():
@@ -2260,6 +2275,7 @@ async def test_create_attestor_async(request_type, transport: str = "grpc_asynci
             resources.Attestor(
                 name="name_value",
                 description="description_value",
+                etag="etag_value",
             )
         )
         response = await client.create_attestor(request)
@@ -2274,6 +2290,7 @@ async def test_create_attestor_async(request_type, transport: str = "grpc_asynci
     assert isinstance(response, resources.Attestor)
     assert response.name == "name_value"
     assert response.description == "description_value"
+    assert response.etag == "etag_value"
 
 
 def test_create_attestor_field_headers():
@@ -2458,6 +2475,7 @@ def test_get_attestor(request_type, transport: str = "grpc"):
         call.return_value = resources.Attestor(
             name="name_value",
             description="description_value",
+            etag="etag_value",
         )
         response = client.get_attestor(request)
 
@@ -2471,6 +2489,7 @@ def test_get_attestor(request_type, transport: str = "grpc"):
     assert isinstance(response, resources.Attestor)
     assert response.name == "name_value"
     assert response.description == "description_value"
+    assert response.etag == "etag_value"
 
 
 def test_get_attestor_non_empty_request_with_auto_populated_field():
@@ -2604,6 +2623,7 @@ async def test_get_attestor_async(request_type, transport: str = "grpc_asyncio")
             resources.Attestor(
                 name="name_value",
                 description="description_value",
+                etag="etag_value",
             )
         )
         response = await client.get_attestor(request)
@@ -2618,6 +2638,7 @@ async def test_get_attestor_async(request_type, transport: str = "grpc_asyncio")
     assert isinstance(response, resources.Attestor)
     assert response.name == "name_value"
     assert response.description == "description_value"
+    assert response.etag == "etag_value"
 
 
 def test_get_attestor_field_headers():
@@ -2782,6 +2803,7 @@ def test_update_attestor(request_type, transport: str = "grpc"):
         call.return_value = resources.Attestor(
             name="name_value",
             description="description_value",
+            etag="etag_value",
         )
         response = client.update_attestor(request)
 
@@ -2795,6 +2817,7 @@ def test_update_attestor(request_type, transport: str = "grpc"):
     assert isinstance(response, resources.Attestor)
     assert response.name == "name_value"
     assert response.description == "description_value"
+    assert response.etag == "etag_value"
 
 
 def test_update_attestor_non_empty_request_with_auto_populated_field():
@@ -2924,6 +2947,7 @@ async def test_update_attestor_async(request_type, transport: str = "grpc_asynci
             resources.Attestor(
                 name="name_value",
                 description="description_value",
+                etag="etag_value",
             )
         )
         response = await client.update_attestor(request)
@@ -2938,6 +2962,7 @@ async def test_update_attestor_async(request_type, transport: str = "grpc_asynci
     assert isinstance(response, resources.Attestor)
     assert response.name == "name_value"
     assert response.description == "description_value"
+    assert response.etag == "etag_value"
 
 
 def test_update_attestor_field_headers():
@@ -5501,6 +5526,7 @@ async def test_get_policy_empty_call_grpc_asyncio():
                 name="name_value",
                 description="description_value",
                 global_policy_evaluation_mode=resources.Policy.GlobalPolicyEvaluationMode.ENABLE,
+                etag="etag_value",
             )
         )
         await client.get_policy(request=None)
@@ -5529,6 +5555,7 @@ async def test_update_policy_empty_call_grpc_asyncio():
                 name="name_value",
                 description="description_value",
                 global_policy_evaluation_mode=resources.Policy.GlobalPolicyEvaluationMode.ENABLE,
+                etag="etag_value",
             )
         )
         await client.update_policy(request=None)
@@ -5556,6 +5583,7 @@ async def test_create_attestor_empty_call_grpc_asyncio():
             resources.Attestor(
                 name="name_value",
                 description="description_value",
+                etag="etag_value",
             )
         )
         await client.create_attestor(request=None)
@@ -5583,6 +5611,7 @@ async def test_get_attestor_empty_call_grpc_asyncio():
             resources.Attestor(
                 name="name_value",
                 description="description_value",
+                etag="etag_value",
             )
         )
         await client.get_attestor(request=None)
@@ -5610,6 +5639,7 @@ async def test_update_attestor_empty_call_grpc_asyncio():
             resources.Attestor(
                 name="name_value",
                 description="description_value",
+                etag="etag_value",
             )
         )
         await client.update_attestor(request=None)
@@ -5723,6 +5753,7 @@ def test_get_policy_rest_call_success(request_type):
             name="name_value",
             description="description_value",
             global_policy_evaluation_mode=resources.Policy.GlobalPolicyEvaluationMode.ENABLE,
+            etag="etag_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -5745,6 +5776,7 @@ def test_get_policy_rest_call_success(request_type):
         response.global_policy_evaluation_mode
         == resources.Policy.GlobalPolicyEvaluationMode.ENABLE
     )
+    assert response.etag == "etag_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -5866,6 +5898,7 @@ def test_update_policy_rest_call_success(request_type):
             "enforcement_mode": 1,
         },
         "update_time": {"seconds": 751, "nanos": 543},
+        "etag": "etag_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -5943,6 +5976,7 @@ def test_update_policy_rest_call_success(request_type):
             name="name_value",
             description="description_value",
             global_policy_evaluation_mode=resources.Policy.GlobalPolicyEvaluationMode.ENABLE,
+            etag="etag_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -5965,6 +5999,7 @@ def test_update_policy_rest_call_success(request_type):
         response.global_policy_evaluation_mode
         == resources.Policy.GlobalPolicyEvaluationMode.ENABLE
     )
+    assert response.etag == "etag_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -6081,12 +6116,14 @@ def test_create_attestor_rest_call_success(request_type):
                     "pkix_public_key": {
                         "public_key_pem": "public_key_pem_value",
                         "signature_algorithm": 1,
+                        "key_id": "key_id_value",
                     },
                 }
             ],
             "delegation_service_account_email": "delegation_service_account_email_value",
         },
         "update_time": {"seconds": 751, "nanos": 543},
+        "etag": "etag_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -6163,6 +6200,7 @@ def test_create_attestor_rest_call_success(request_type):
         return_value = resources.Attestor(
             name="name_value",
             description="description_value",
+            etag="etag_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -6181,6 +6219,7 @@ def test_create_attestor_rest_call_success(request_type):
     assert isinstance(response, resources.Attestor)
     assert response.name == "name_value"
     assert response.description == "description_value"
+    assert response.etag == "etag_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -6293,6 +6332,7 @@ def test_get_attestor_rest_call_success(request_type):
         return_value = resources.Attestor(
             name="name_value",
             description="description_value",
+            etag="etag_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -6311,6 +6351,7 @@ def test_get_attestor_rest_call_success(request_type):
     assert isinstance(response, resources.Attestor)
     assert response.name == "name_value"
     assert response.description == "description_value"
+    assert response.etag == "etag_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -6427,12 +6468,14 @@ def test_update_attestor_rest_call_success(request_type):
                     "pkix_public_key": {
                         "public_key_pem": "public_key_pem_value",
                         "signature_algorithm": 1,
+                        "key_id": "key_id_value",
                     },
                 }
             ],
             "delegation_service_account_email": "delegation_service_account_email_value",
         },
         "update_time": {"seconds": 751, "nanos": 543},
+        "etag": "etag_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -6509,6 +6552,7 @@ def test_update_attestor_rest_call_success(request_type):
         return_value = resources.Attestor(
             name="name_value",
             description="description_value",
+            etag="etag_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -6527,6 +6571,7 @@ def test_update_attestor_rest_call_success(request_type):
     assert isinstance(response, resources.Attestor)
     assert response.name == "name_value"
     assert response.description == "description_value"
+    assert response.etag == "etag_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -6828,6 +6873,189 @@ def test_delete_attestor_rest_interceptors(null_interceptor):
         pre.assert_called_once()
 
 
+def test_get_iam_policy_rest_bad_request(
+    request_type=iam_policy_pb2.GetIamPolicyRequest,
+):
+    client = BinauthzManagementServiceV1Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict({"resource": "projects/sample1/policy"}, request)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.get_iam_policy(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.GetIamPolicyRequest,
+        dict,
+    ],
+)
+def test_get_iam_policy_rest(request_type):
+    client = BinauthzManagementServiceV1Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"resource": "projects/sample1/policy"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = policy_pb2.Policy()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        response = client.get_iam_policy(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, policy_pb2.Policy)
+
+
+def test_set_iam_policy_rest_bad_request(
+    request_type=iam_policy_pb2.SetIamPolicyRequest,
+):
+    client = BinauthzManagementServiceV1Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict({"resource": "projects/sample1/policy"}, request)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.set_iam_policy(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.SetIamPolicyRequest,
+        dict,
+    ],
+)
+def test_set_iam_policy_rest(request_type):
+    client = BinauthzManagementServiceV1Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"resource": "projects/sample1/policy"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = policy_pb2.Policy()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        response = client.set_iam_policy(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, policy_pb2.Policy)
+
+
+def test_test_iam_permissions_rest_bad_request(
+    request_type=iam_policy_pb2.TestIamPermissionsRequest,
+):
+    client = BinauthzManagementServiceV1Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict({"resource": "projects/sample1/policy"}, request)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.test_iam_permissions(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.TestIamPermissionsRequest,
+        dict,
+    ],
+)
+def test_test_iam_permissions_rest(request_type):
+    client = BinauthzManagementServiceV1Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"resource": "projects/sample1/policy"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = iam_policy_pb2.TestIamPermissionsResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        response = client.test_iam_permissions(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, iam_policy_pb2.TestIamPermissionsResponse)
+
+
 def test_initialize_client_w_rest():
     client = BinauthzManagementServiceV1Client(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
@@ -7008,6 +7236,9 @@ def test_binauthz_management_service_v1_base_transport():
         "update_attestor",
         "list_attestors",
         "delete_attestor",
+        "set_iam_policy",
+        "get_iam_policy",
+        "test_iam_permissions",
     )
     for method in methods:
         with pytest.raises(NotImplementedError):
@@ -7605,6 +7836,625 @@ def test_client_with_default_client_info():
             client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
+
+
+def test_set_iam_policy(transport: str = "grpc"):
+    client = BinauthzManagementServiceV1Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = iam_policy_pb2.SetIamPolicyRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = policy_pb2.Policy(
+            version=774,
+            etag=b"etag_blob",
+        )
+        response = client.set_iam_policy(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, policy_pb2.Policy)
+
+    assert response.version == 774
+
+    assert response.etag == b"etag_blob"
+
+
+@pytest.mark.asyncio
+async def test_set_iam_policy_async(transport: str = "grpc_asyncio"):
+    client = BinauthzManagementServiceV1AsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = iam_policy_pb2.SetIamPolicyRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            policy_pb2.Policy(
+                version=774,
+                etag=b"etag_blob",
+            )
+        )
+        response = await client.set_iam_policy(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, policy_pb2.Policy)
+
+    assert response.version == 774
+
+    assert response.etag == b"etag_blob"
+
+
+def test_set_iam_policy_field_headers():
+    client = BinauthzManagementServiceV1Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = iam_policy_pb2.SetIamPolicyRequest()
+    request.resource = "resource/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
+        call.return_value = policy_pb2.Policy()
+
+        client.set_iam_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "resource=resource/value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_set_iam_policy_field_headers_async():
+    client = BinauthzManagementServiceV1AsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = iam_policy_pb2.SetIamPolicyRequest()
+    request.resource = "resource/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(policy_pb2.Policy())
+
+        await client.set_iam_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "resource=resource/value",
+    ) in kw["metadata"]
+
+
+def test_set_iam_policy_from_dict():
+    client = BinauthzManagementServiceV1Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = policy_pb2.Policy()
+
+        response = client.set_iam_policy(
+            request={
+                "resource": "resource_value",
+                "policy": policy_pb2.Policy(version=774),
+            }
+        )
+        call.assert_called()
+
+
+@pytest.mark.asyncio
+async def test_set_iam_policy_from_dict_async():
+    client = BinauthzManagementServiceV1AsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(policy_pb2.Policy())
+
+        response = await client.set_iam_policy(
+            request={
+                "resource": "resource_value",
+                "policy": policy_pb2.Policy(version=774),
+            }
+        )
+        call.assert_called()
+
+
+def test_set_iam_policy_flattened():
+    client = BinauthzManagementServiceV1Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = policy_pb2.Policy()
+
+        client.set_iam_policy()
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == iam_policy_pb2.SetIamPolicyRequest()
+
+
+@pytest.mark.asyncio
+async def test_set_iam_policy_flattened_async():
+    client = BinauthzManagementServiceV1AsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(policy_pb2.Policy())
+
+        await client.set_iam_policy()
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == iam_policy_pb2.SetIamPolicyRequest()
+
+
+def test_get_iam_policy(transport: str = "grpc"):
+    client = BinauthzManagementServiceV1Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = iam_policy_pb2.GetIamPolicyRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = policy_pb2.Policy(
+            version=774,
+            etag=b"etag_blob",
+        )
+
+        response = client.get_iam_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, policy_pb2.Policy)
+
+    assert response.version == 774
+
+    assert response.etag == b"etag_blob"
+
+
+@pytest.mark.asyncio
+async def test_get_iam_policy_async(transport: str = "grpc_asyncio"):
+    client = BinauthzManagementServiceV1AsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = iam_policy_pb2.GetIamPolicyRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            policy_pb2.Policy(
+                version=774,
+                etag=b"etag_blob",
+            )
+        )
+
+        response = await client.get_iam_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, policy_pb2.Policy)
+
+    assert response.version == 774
+
+    assert response.etag == b"etag_blob"
+
+
+def test_get_iam_policy_field_headers():
+    client = BinauthzManagementServiceV1Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = iam_policy_pb2.GetIamPolicyRequest()
+    request.resource = "resource/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
+        call.return_value = policy_pb2.Policy()
+
+        client.get_iam_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "resource=resource/value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_iam_policy_field_headers_async():
+    client = BinauthzManagementServiceV1AsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = iam_policy_pb2.GetIamPolicyRequest()
+    request.resource = "resource/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(policy_pb2.Policy())
+
+        await client.get_iam_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "resource=resource/value",
+    ) in kw["metadata"]
+
+
+def test_get_iam_policy_from_dict():
+    client = BinauthzManagementServiceV1Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = policy_pb2.Policy()
+
+        response = client.get_iam_policy(
+            request={
+                "resource": "resource_value",
+                "options": options_pb2.GetPolicyOptions(requested_policy_version=2598),
+            }
+        )
+        call.assert_called()
+
+
+@pytest.mark.asyncio
+async def test_get_iam_policy_from_dict_async():
+    client = BinauthzManagementServiceV1AsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(policy_pb2.Policy())
+
+        response = await client.get_iam_policy(
+            request={
+                "resource": "resource_value",
+                "options": options_pb2.GetPolicyOptions(requested_policy_version=2598),
+            }
+        )
+        call.assert_called()
+
+
+def test_get_iam_policy_flattened():
+    client = BinauthzManagementServiceV1Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = policy_pb2.Policy()
+
+        client.get_iam_policy()
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == iam_policy_pb2.GetIamPolicyRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_iam_policy_flattened_async():
+    client = BinauthzManagementServiceV1AsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(policy_pb2.Policy())
+
+        await client.get_iam_policy()
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == iam_policy_pb2.GetIamPolicyRequest()
+
+
+def test_test_iam_permissions(transport: str = "grpc"):
+    client = BinauthzManagementServiceV1Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = iam_policy_pb2.TestIamPermissionsRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.test_iam_permissions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = iam_policy_pb2.TestIamPermissionsResponse(
+            permissions=["permissions_value"],
+        )
+
+        response = client.test_iam_permissions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, iam_policy_pb2.TestIamPermissionsResponse)
+
+    assert response.permissions == ["permissions_value"]
+
+
+@pytest.mark.asyncio
+async def test_test_iam_permissions_async(transport: str = "grpc_asyncio"):
+    client = BinauthzManagementServiceV1AsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = iam_policy_pb2.TestIamPermissionsRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.test_iam_permissions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            iam_policy_pb2.TestIamPermissionsResponse(
+                permissions=["permissions_value"],
+            )
+        )
+
+        response = await client.test_iam_permissions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, iam_policy_pb2.TestIamPermissionsResponse)
+
+    assert response.permissions == ["permissions_value"]
+
+
+def test_test_iam_permissions_field_headers():
+    client = BinauthzManagementServiceV1Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = iam_policy_pb2.TestIamPermissionsRequest()
+    request.resource = "resource/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.test_iam_permissions), "__call__"
+    ) as call:
+        call.return_value = iam_policy_pb2.TestIamPermissionsResponse()
+
+        client.test_iam_permissions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "resource=resource/value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_test_iam_permissions_field_headers_async():
+    client = BinauthzManagementServiceV1AsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = iam_policy_pb2.TestIamPermissionsRequest()
+    request.resource = "resource/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.test_iam_permissions), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            iam_policy_pb2.TestIamPermissionsResponse()
+        )
+
+        await client.test_iam_permissions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "resource=resource/value",
+    ) in kw["metadata"]
+
+
+def test_test_iam_permissions_from_dict():
+    client = BinauthzManagementServiceV1Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.test_iam_permissions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = iam_policy_pb2.TestIamPermissionsResponse()
+
+        response = client.test_iam_permissions(
+            request={
+                "resource": "resource_value",
+                "permissions": ["permissions_value"],
+            }
+        )
+        call.assert_called()
+
+
+@pytest.mark.asyncio
+async def test_test_iam_permissions_from_dict_async():
+    client = BinauthzManagementServiceV1AsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.test_iam_permissions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            iam_policy_pb2.TestIamPermissionsResponse()
+        )
+
+        response = await client.test_iam_permissions(
+            request={
+                "resource": "resource_value",
+                "permissions": ["permissions_value"],
+            }
+        )
+        call.assert_called()
+
+
+def test_test_iam_permissions_flattened():
+    client = BinauthzManagementServiceV1Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.test_iam_permissions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = iam_policy_pb2.TestIamPermissionsResponse()
+
+        client.test_iam_permissions()
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == iam_policy_pb2.TestIamPermissionsRequest()
+
+
+@pytest.mark.asyncio
+async def test_test_iam_permissions_flattened_async():
+    client = BinauthzManagementServiceV1AsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.test_iam_permissions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            iam_policy_pb2.TestIamPermissionsResponse()
+        )
+
+        await client.test_iam_permissions()
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == iam_policy_pb2.TestIamPermissionsRequest()
 
 
 def test_transport_close_grpc():
