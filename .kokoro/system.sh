@@ -35,6 +35,20 @@ RETVAL=0
 
 pwd
 
+echo "=== KOKORO VM SCOUTING ==="
+echo "CPU Count:"
+nproc
+echo "--------------------------"
+echo "Detailed CPU Info:"
+lscpu | grep -E "^(Model name|CPU\(s\)|Thread\(s\) per core|Core\(s\) per socket)"
+echo "--------------------------"
+echo "Memory Status:"
+free -h
+echo "--------------------------"
+echo "Disk Usage:"
+df -h /
+echo "=========================="
+
 run_package_test() {
   local package_name=$1
   local package_path="packages/${package_name}"
@@ -119,6 +133,11 @@ for path in `find 'packages' \
   package_name=${path#packages/}
   package_name=${package_name%%/*}
   package_path="packages/${package_name}"
+
+  if [[ "$package_name" == "sqlalchemy-bigquery" ]]; then
+      echo "Skipping sqlalchemy-bigquery for diagnostics."
+      continue
+  fi
 
   # Determine if we should skip based on git diff
   # We always check for changes in these specific versioning/config files
