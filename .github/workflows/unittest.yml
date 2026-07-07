@@ -11,7 +11,6 @@ name: unittest
 
 permissions:
   contents: read
-
 jobs:
   initialize:
     runs-on: ubuntu-latest
@@ -74,7 +73,7 @@ jobs:
     - name: Install nox
       run: |
         python -m pip install --upgrade setuptools pip wheel
-        python -m pip install nox
+        python -m pip install nox coverage
     - name: Run unit tests for ${{ matrix.package_shard.description }}
       env:
         BUILD_TYPE: presubmit
@@ -84,12 +83,27 @@ jobs:
         PACKAGE_LIST: ${{ matrix.package_shard.packages }}
       run: |
         ci/run_conditional_tests.sh
+    # Combine all of this shard's per-package coverage databases
+    - name: Combine coverage data for this shard
+      run: |
+        shopt -s nullglob
+        coverage_files=(.coverage.${{ matrix.python }}.*)
+        shopt -u nullglob
+        if [ ${#coverage_files[@]} -gt 0 ]; then
+          mkdir -p .coverage-combined
+          COVERAGE_FILE=".coverage-combined/.coverage.${{ matrix.python }}.shard${{ matrix.package_shard.index }}" \
+            python -m coverage combine --keep "${coverage_files[@]}"
+          echo "Combined ${#coverage_files[@]} coverage databases for this shard."
+        else
+          echo "No coverage data files produced by this shard."
+        fi
     - name: Upload coverage results
       uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
       with:
         name: coverage-artifact-${{ matrix.python }}-${{ matrix.package_shard.index }}
-        path: .coverage.${{ matrix.python }}.*
+        path: .coverage-combined/.coverage.${{ matrix.python }}.shard${{ matrix.package_shard.index }}
         include-hidden-files: true
+        if-no-files-found: ignore
 
   all-tests:
     needs: [initialize, unit]
@@ -128,6 +142,7 @@ jobs:
       uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
       with:
         python-version: "3.10"
+        cache: 'pip'
     - name: Set number of files changes in packages directory
       id: packages
       env:
@@ -143,7 +158,6 @@ jobs:
     - name: Install coverage
       if: ${{ steps.packages.outputs.num_files_changed > 0 }}
       run: |
-        python -m pip install --upgrade setuptools pip wheel
         python -m pip install coverage
     - name: Download coverage results
       if: ${{ steps.packages.outputs.num_files_changed > 0 }}
@@ -159,124 +173,108 @@ jobs:
         DEFAULT_FAIL_UNDER: 99
         TEST_ALL_PACKAGES: ${{ needs.initialize.outputs.is_full_run }}
       run: |
-        if [ -d .coverage-results ]; then
-          # Unzip any zipped coverage results
-          find .coverage-results -type f -name '*.zip' -print0 | xargs -0 -P $(nproc) -I {} unzip -q -o {} -d .coverage-results/
+        if [ ! -d .coverage-results ]; then
+          echo "Error: No coverage results were downloaded from the unit test jobs."
+          echo "This usually means the unit tests did not run or failed to upload their coverage files."
+          exit 1
+        fi
 
-          # Find all modified packages
-          if [[ "${TEST_ALL_PACKAGES}" == "true" ]]; then
-            modified_packages=$(ls -d packages/*/ | cut -d/ -f1,2 | sort -u)
-          else
-            modified_packages=$(git diff --name-only HEAD~1 -- packages | cut -d/ -f1,2 | sort -u)
-          fi
+        # Merge per-shard coverage databases
+        shopt -s nullglob
+        shard_files=(.coverage-results/.coverage.*)
+        shopt -u nullglob
+        if [ ${#shard_files[@]} -eq 0 ]; then
+          echo "Error: No coverage databases found in the downloaded artifacts."
+          exit 1
+        fi
+        export COVERAGE_FILE="${GITHUB_WORKSPACE}/.coverage-global"
+        coverage combine "${shard_files[@]}"
+        echo "Combined ${#shard_files[@]} shard-level coverage databases."
 
-          mkdir -p /tmp/coverage-logs
-          MAX_JOBS=4
-
-          for pkg in ${modified_packages}; do
-            if [ -d "${pkg}" ]; then
-              # Limit the number of concurrent background jobs
-              while [ $(jobs -r | wc -l) -ge ${MAX_JOBS} ]; do
-                sleep 0.1
-              done
-
-              (
-                pkg_name_clean=$(echo "${pkg}" | sed 's|/$||' | sed 's|/|_|g')
-                pkg_log="/tmp/coverage-logs/${pkg_name_clean}.log"
-                pkg_status="/tmp/coverage-logs/${pkg_name_clean}.status"
-
-                set +e
-
-                # Find coverage databases belonging specifically to this package across all Python versions
-                pkg_files=(.coverage-results/.coverage.*.${pkg_name_clean})
-
-                if [ -f "${pkg}/.coveragerc" ] && grep -Eq "fail_under\s*=\s*0" "${pkg}/.coveragerc"; then
-                  echo "Package has fail_under = 0, passing instantly with 100% success (even without coverage files)" > "${pkg_log}"
-                  echo 0 > "${pkg_status}"
-                else
-                  # Use standard, O(1) in-memory absolute-path bash glob array check (handles both flat and nested folders!)
-                  RESULTS_DIR="${GITHUB_WORKSPACE:-$PWD}/.coverage-results"
-                  shopt -s nullglob
-                  pkg_files=("${RESULTS_DIR}/.coverage."*"."*"${pkg_name_clean}" "${RESULTS_DIR}"/*/".coverage."*"."*"${pkg_name_clean}")
-                  shopt -u nullglob
-
-                  if [ ${#pkg_files[@]} -gt 0 ]; then
-                    pushd "${pkg}" > /dev/null
-
-                    # Combine only this package's databases directly using absolute paths
-                    COVERAGE_FILE="${PWD}/.coverage" coverage combine "${pkg_files[@]}" >> "${pkg_log}" 2>&1
-
-                    # Generate the coverage report using the package-specific local database
-                    if [ -f ".coveragerc" ]; then
-                      echo "Using package-specific configuration: ${pkg}/.coveragerc" > "${pkg_log}"
-                      if grep -q "fail_under" ".coveragerc"; then
-                        COVERAGE_FILE="${PWD}/.coverage" coverage report --rcfile=".coveragerc" --include="$PWD/**" >> "${pkg_log}" 2>&1
-                      else
-                        echo "No fail_under specified in ${pkg}/.coveragerc, enforcing default" >> "${pkg_log}"
-                        COVERAGE_FILE="${PWD}/.coverage" coverage report --rcfile=".coveragerc" --include="$PWD/**" --fail-under="${DEFAULT_FAIL_UNDER}" >> "${pkg_log}" 2>&1
-                      fi
-                    else
-                      echo "No .coveragerc found for ${pkg}, enforcing default" > "${pkg_log}"
-                      COVERAGE_FILE="${PWD}/.coverage" coverage report --include="$PWD/**" --fail-under="${DEFAULT_FAIL_UNDER}" >> "${pkg_log}" 2>&1
-                    fi
-                    echo $? > "${pkg_status}"
-                    popd > /dev/null
-                  else
-                    echo "Warning: No coverage results found for ${pkg}" > "${pkg_log}"
-                    echo 1 > "${pkg_status}"
-                  fi
-                fi
-                set -e
-              ) &
-            fi
-          done
-
-          # Wait for all background checks to finish
-          wait
-
-          failed_packages=()
-          passed_packages=()
-
-          for pkg in ${modified_packages}; do
-            if [ -d "${pkg}" ]; then
+        # Find all modified packages
+        if [[ "${TEST_ALL_PACKAGES}" == "true" ]]; then
+          modified_packages=$(ls -d packages/*/ | cut -d/ -f1,2 | sort -u)
+        else
+          modified_packages=$(git diff --name-only HEAD~1 -- packages | cut -d/ -f1,2 | sort -u)
+        fi
+        mkdir -p /tmp/coverage-logs
+        MAX_JOBS=$(nproc)
+        for pkg in ${modified_packages}; do
+          if [ -d "${pkg}" ]; then
+            # Limit the number of concurrent background jobs
+            while [ $(jobs -r | wc -l) -ge ${MAX_JOBS} ]; do
+              sleep 0.1
+            done
+            (
               pkg_name_clean=$(echo "${pkg}" | sed 's|/$||' | sed 's|/|_|g')
               pkg_log="/tmp/coverage-logs/${pkg_name_clean}.log"
               pkg_status="/tmp/coverage-logs/${pkg_name_clean}.status"
-
-              echo "============================================================"
-              echo "Evaluating coverage for package: ${pkg}"
-              echo "============================================================"
-              if [ -f "${pkg_log}" ]; then
-                cat "${pkg_log}"
-              fi
-
-              status=$(cat "${pkg_status}")
-              if [ "${status}" -ne 0 ]; then
-                failed_packages+=("${pkg}")
+              set +e
+              if [ -f "${pkg}/.coveragerc" ] && grep -Eq "fail_under\s*=\s*0" "${pkg}/.coveragerc"; then
+                echo "Package has fail_under = 0, passing instantly with 100% success (even without coverage files)" > "${pkg_log}"
+                echo 0 > "${pkg_status}"
               else
-                passed_packages+=("${pkg}")
+                pushd "${pkg}" > /dev/null
+                # Report against the single global database, restricted to
+                # this package's files. If the global database contains no
+                # data for this package, `coverage report` exits non-zero
+                # ("No data to report."), which correctly fails the package.
+                if [ -f ".coveragerc" ]; then
+                  echo "Using package-specific configuration: ${pkg}/.coveragerc" > "${pkg_log}"
+                  if grep -q "fail_under" ".coveragerc"; then
+                    coverage report --rcfile=".coveragerc" --include="$PWD/**" >> "${pkg_log}" 2>&1
+                  else
+                    echo "No fail_under specified in ${pkg}/.coveragerc, enforcing default" >> "${pkg_log}"
+                    coverage report --rcfile=".coveragerc" --include="$PWD/**" --fail-under="${DEFAULT_FAIL_UNDER}" >> "${pkg_log}" 2>&1
+                  fi
+                else
+                  echo "No .coveragerc found for ${pkg}, enforcing default" > "${pkg_log}"
+                  coverage report --include="$PWD/**" --fail-under="${DEFAULT_FAIL_UNDER}" >> "${pkg_log}" 2>&1
+                fi
+                echo $? > "${pkg_status}"
+                popd > /dev/null
               fi
-            fi
-          done
+              set -e
+            ) &
+          fi
+        done
 
-          echo "============================================================"
-          echo "Coverage Evaluation Summary"
-          echo "============================================================"
-          if [ ${#passed_packages[@]} -gt 0 ]; then
-            echo "Passed packages:"
-            for pkg in "${passed_packages[@]}"; do
-              echo "  - ${pkg}"
-            done
+        # Wait for all background checks to finish
+        wait
+        failed_packages=()
+        passed_packages=()
+        for pkg in ${modified_packages}; do
+          if [ -d "${pkg}" ]; then
+            pkg_name_clean=$(echo "${pkg}" | sed 's|/$||' | sed 's|/|_|g')
+            pkg_log="/tmp/coverage-logs/${pkg_name_clean}.log"
+            pkg_status="/tmp/coverage-logs/${pkg_name_clean}.status"
+            echo "============================================================"
+            echo "Evaluating coverage for package: ${pkg}"
+            echo "============================================================"
+            if [ -f "${pkg_log}" ]; then
+              cat "${pkg_log}"
+            fi
+            status=$(cat "${pkg_status}")
+            if [ "${status}" -ne 0 ]; then
+              failed_packages+=("${pkg}")
+            else
+              passed_packages+=("${pkg}")
+            fi
           fi
-          if [ ${#failed_packages[@]} -gt 0 ]; then
-            echo "Failed packages:"
-            for pkg in "${failed_packages[@]}"; do
-              echo "  - ${pkg}"
-            done
-            exit 1
-          fi
-        else
-          echo "Error: No coverage results were downloaded from the unit test jobs."
-          echo "This usually means the unit tests did not run or failed to upload their coverage files."
+        done
+        echo "============================================================"
+        echo "Coverage Evaluation Summary"
+        echo "============================================================"
+        if [ ${#passed_packages[@]} -gt 0 ]; then
+          echo "Passed packages:"
+          for pkg in "${passed_packages[@]}"; do
+            echo "  - ${pkg}"
+          done
+        fi
+        if [ ${#failed_packages[@]} -gt 0 ]; then
+          echo "Failed packages:"
+          for pkg in "${failed_packages[@]}"; do
+            echo "  - ${pkg}"
+          done
           exit 1
         fi
