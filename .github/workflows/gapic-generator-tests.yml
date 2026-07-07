@@ -35,7 +35,6 @@ jobs:
           filters: |
             generator:
               - 'packages/gapic-generator/**'
-              - '.github/workflows/gapic-generator-tests.yml'
 
   # Preserve the workaround for env variables in matrix
   python_config:
