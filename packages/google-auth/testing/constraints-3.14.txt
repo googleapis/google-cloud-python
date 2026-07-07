@@ -7,4 +7,3 @@
 # Then this file should have foo==1.14.0
 pyasn1-modules==0.2.1
 cryptography==41.0.5
-aiohttp==3.9.0
