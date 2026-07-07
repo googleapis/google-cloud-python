@@ -138,14 +138,11 @@ echo "============================================================"
 echo "Coverage Evaluation Summary"
 echo "============================================================"
 if [ ${#passed_packages[@]} -gt 0 ]; then
-    echo "Passed packages:"
-    for pkg in "${passed_packages[@]}"; do
-        echo "  - ${pkg}"
-    done
+    echo "✅ Passed: ${#passed_packages[@]} packages"
 fi
 
 if [ ${#failed_packages[@]} -gt 0 ]; then
-    echo "Failed packages:"
+    echo "❌ Failed: ${#failed_packages[@]} packages"
     for pkg in "${failed_packages[@]}"; do
         echo "  - ${pkg}"
     done
