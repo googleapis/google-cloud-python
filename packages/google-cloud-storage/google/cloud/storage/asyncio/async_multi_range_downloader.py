@@ -416,7 +416,9 @@ class AsyncMultiRangeDownloader:
 
         """
 
-        if metadata is None:
+        if metadata is not None:
+            self.metadata = metadata
+        else:
             metadata = self.metadata
 
         if len(read_ranges) > 1000:

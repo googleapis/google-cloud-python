@@ -411,7 +411,9 @@ class AsyncAppendableObjectWriter:
 
         :raises ValueError: If the stream is not open.
         """
-        if metadata is None:
+        if metadata is not None:
+            self.metadata = metadata
+        else:
             metadata = self.metadata
 
         if not self._is_stream_open:

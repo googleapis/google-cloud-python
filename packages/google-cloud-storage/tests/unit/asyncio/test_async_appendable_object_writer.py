@@ -548,3 +548,45 @@ class TestAsyncAppendableObjectWriter:
 
         # Assert second open (during retry) used the same test_metadata
         mock_stream.open.assert_called_with(metadata=test_metadata)
+
+    @pytest.mark.asyncio
+    async def test_append_updates_and_persists_metadata_on_resumption(
+        self, mock_appendable_writer
+    ):
+        # Arrange
+        mock_client = mock_appendable_writer["mock_client"]
+        mock_stream = mock_appendable_writer["mock_stream"]
+
+        initial_metadata = [("initial-key", "initial-value")]
+        updated_metadata = [("updated-key", "updated-value")]
+        writer = self._make_one(mock_client)
+
+        # Act - Open with initial metadata
+        await writer.open(metadata=initial_metadata)
+        assert writer.metadata == initial_metadata
+
+        # Setup resumption trigger when append is called
+        retryable_exc = exceptions.ServiceUnavailable("Retry me")
+        mock_stream.send.side_effect = retryable_exc
+        mock_stream.open.reset_mock()
+
+        from google.api_core.retry_async import AsyncRetry
+        fast_retry = AsyncRetry(
+            predicate=lambda e: True,
+            initial=0.01,
+            maximum=0.01,
+            multiplier=1.0,
+            deadline=0.1,
+        )
+
+        from google.api_core.exceptions import RetryError
+        try:
+            await writer.append(
+                b"data", retry_policy=fast_retry, metadata=updated_metadata
+            )
+        except RetryError:
+            pass
+
+        # Assert writer.metadata was updated and used during stream reopening
+        assert writer.metadata == updated_metadata
+        mock_stream.open.assert_called_with(metadata=updated_metadata)
