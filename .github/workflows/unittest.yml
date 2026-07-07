@@ -149,7 +149,7 @@ jobs:
       if: ${{ steps.packages.outputs.num_files_changed > 0 }}
       uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5
       with:
-        path: .coverage-results/
+        path: /dev/shm/.coverage-results/
         merge-multiple: true
     - name: Report coverage results
       if: ${{ steps.packages.outputs.num_files_changed > 0 }}
@@ -159,9 +159,10 @@ jobs:
         DEFAULT_FAIL_UNDER: 99
         TEST_ALL_PACKAGES: ${{ needs.initialize.outputs.is_full_run }}
       run: |
-        if [ -d .coverage-results ]; then
+        RESULTS_DIR="/dev/shm/.coverage-results"
+        if [ -d "$RESULTS_DIR" ]; then
           # Unzip any zipped coverage results
-          find .coverage-results -type f -name '*.zip' -print0 | xargs -0 -P $(nproc) -I {} unzip -q -o {} -d .coverage-results/
+          find "$RESULTS_DIR" -type f -name '*.zip' -print0 | xargs -0 -P $(nproc) -I {} unzip -q -o {} -d "$RESULTS_DIR"
 
           # Find all modified packages
           if [[ "${TEST_ALL_PACKAGES}" == "true" ]]; then
@@ -170,7 +171,7 @@ jobs:
             modified_packages=$(git diff --name-only HEAD~1 -- packages | cut -d/ -f1,2 | sort -u)
           fi
 
-          mkdir -p /tmp/coverage-logs
+          mkdir -p /dev/shm/coverage-logs
           MAX_JOBS=4
 
           for pkg in ${modified_packages}; do
@@ -182,42 +183,41 @@ jobs:
 
               (
                 pkg_name_clean=$(echo "${pkg}" | sed 's|/$||' | sed 's|/|_|g')
-                pkg_log="/tmp/coverage-logs/${pkg_name_clean}.log"
-                pkg_status="/tmp/coverage-logs/${pkg_name_clean}.status"
+                pkg_log="/dev/shm/coverage-logs/${pkg_name_clean}.log"
+                pkg_status="/dev/shm/coverage-logs/${pkg_name_clean}.status"
 
                 set +e
 
                 # Find coverage databases belonging specifically to this package across all Python versions
-                pkg_files=(.coverage-results/.coverage.*.${pkg_name_clean})
+                shopt -s nullglob
+                pkg_files=("${RESULTS_DIR}/.coverage."*"."*"${pkg_name_clean}" "${RESULTS_DIR}"/*/".coverage."*"."*"${pkg_name_clean}")
+                shopt -u nullglob
 
                 if [ -f "${pkg}/.coveragerc" ] && grep -Eq "fail_under\s*=\s*0" "${pkg}/.coveragerc"; then
                   echo "Package has fail_under = 0, passing instantly with 100% success (even without coverage files)" > "${pkg_log}"
                   echo 0 > "${pkg_status}"
                 else
-                  # Use standard, O(1) in-memory absolute-path bash glob array check (handles both flat and nested folders!)
-                  RESULTS_DIR="${GITHUB_WORKSPACE:-$PWD}/.coverage-results"
-                  shopt -s nullglob
-                  pkg_files=("${RESULTS_DIR}/.coverage."*"."*"${pkg_name_clean}" "${RESULTS_DIR}"/*/".coverage."*"."*"${pkg_name_clean}")
-                  shopt -u nullglob
-
                   if [ ${#pkg_files[@]} -gt 0 ]; then
                     pushd "${pkg}" > /dev/null
 
+                    # Use /dev/shm for the combined coverage file to reduce disk I/O
+                    pkg_coverage_db="/dev/shm/.coverage.${pkg_name_clean}"
+
                     # Combine only this package's databases directly using absolute paths
-                    COVERAGE_FILE="${PWD}/.coverage" coverage combine "${pkg_files[@]}" >> "${pkg_log}" 2>&1
+                    COVERAGE_FILE="${pkg_coverage_db}" coverage combine "${pkg_files[@]}" >> "${pkg_log}" 2>&1
 
                     # Generate the coverage report using the package-specific local database
                     if [ -f ".coveragerc" ]; then
                       echo "Using package-specific configuration: ${pkg}/.coveragerc" > "${pkg_log}"
                       if grep -q "fail_under" ".coveragerc"; then
-                        COVERAGE_FILE="${PWD}/.coverage" coverage report --rcfile=".coveragerc" --include="$PWD/**" >> "${pkg_log}" 2>&1
+                        COVERAGE_FILE="${pkg_coverage_db}" coverage report --rcfile=".coveragerc" --include="$PWD/**" >> "${pkg_log}" 2>&1
                       else
                         echo "No fail_under specified in ${pkg}/.coveragerc, enforcing default" >> "${pkg_log}"
-                        COVERAGE_FILE="${PWD}/.coverage" coverage report --rcfile=".coveragerc" --include="$PWD/**" --fail-under="${DEFAULT_FAIL_UNDER}" >> "${pkg_log}" 2>&1
+                        COVERAGE_FILE="${pkg_coverage_db}" coverage report --rcfile=".coveragerc" --include="$PWD/**" --fail-under="${DEFAULT_FAIL_UNDER}" >> "${pkg_log}" 2>&1
                       fi
                     else
                       echo "No .coveragerc found for ${pkg}, enforcing default" > "${pkg_log}"
-                      COVERAGE_FILE="${PWD}/.coverage" coverage report --include="$PWD/**" --fail-under="${DEFAULT_FAIL_UNDER}" >> "${pkg_log}" 2>&1
+                      COVERAGE_FILE="${pkg_coverage_db}" coverage report --include="$PWD/**" --fail-under="${DEFAULT_FAIL_UNDER}" >> "${pkg_log}" 2>&1
                     fi
                     echo $? > "${pkg_status}"
                     popd > /dev/null
@@ -240,8 +240,8 @@ jobs:
           for pkg in ${modified_packages}; do
             if [ -d "${pkg}" ]; then
               pkg_name_clean=$(echo "${pkg}" | sed 's|/$||' | sed 's|/|_|g')
-              pkg_log="/tmp/coverage-logs/${pkg_name_clean}.log"
-              pkg_status="/tmp/coverage-logs/${pkg_name_clean}.status"
+              pkg_log="/dev/shm/coverage-logs/${pkg_name_clean}.log"
+              pkg_status="/dev/shm/coverage-logs/${pkg_name_clean}.status"
 
               echo "============================================================"
               echo "Evaluating coverage for package: ${pkg}"
