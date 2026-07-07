@@ -119,16 +119,6 @@ SYSTEM_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {
 }
 
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
-# Path to the centralized mypy configuration file at the repository root.
-# Search upwards to support running nox from both monorepo packages and integration test goldens.
-MYPY_CONFIG_FILE = next(
-    (
-        str(p / "mypy.ini")
-        for p in CURRENT_DIRECTORY.parents
-        if (p / "mypy.ini").exists()
-    ),
-    str(CURRENT_DIRECTORY.parent.parent / "mypy.ini"),
-)
 
 
 def _calculate_duration(func):
