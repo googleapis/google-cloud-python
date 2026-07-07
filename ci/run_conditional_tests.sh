@@ -47,28 +47,38 @@ git config --global url."${PROJECT_ROOT}".insteadOf "https://github.com/googleap
 # A script file for running the test in a sub project.
 test_script="${PROJECT_ROOT}/ci/run_single_test.sh"
 
+# Global exit code tracker
+RETVAL=0
+
+# Shared test execution logic
+run_test_in_dir() {
+    local d=$1
+    echo "running test in ${d}"
+    pushd ${d} > /dev/null
+    
+    # Temporarily allow failure.
+    set +e
+    
+    # Ensure unique coverage file per package to avoid DataError
+    # when combining statement and branch coverage.
+    # Strip trailing slash from directory name for the filename.
+    local pkg_name_clean=$(echo ${d} | sed 's|/$||' | sed 's|/|_|g')
+    export COVERAGE_FILE="${PROJECT_ROOT}/.coverage.${PY_VERSION}.${pkg_name_clean}"
+    
+    ${test_script}
+    local ret=$?
+    set -e
+    
+    if [ ${ret} -ne 0 ]; then
+        RETVAL=${ret}
+    fi
+    popd > /dev/null
+}
+
 if [ -n "${PACKAGE_LIST}" ]; then
     echo "Using provided PACKAGE_LIST"
-    to_test=(${PACKAGE_LIST})
-    RETVAL=0
-    for d in ${to_test[@]}; do
-        echo "running test in ${d}"
-        pushd ${d}
-        set +e
-        
-        # Ensure unique coverage file per package to avoid DataError
-        # when combining statement and branch coverage.
-        # Strip trailing slash from directory name for the filename.
-        pkg_name_clean=$(echo ${d} | sed 's|/$||' | sed 's|/|_|g')
-        export COVERAGE_FILE="${PROJECT_ROOT}/.coverage.${PY_VERSION}.${pkg_name_clean}"
-        
-        ${test_script}
-        ret=$?
-        set -e
-        if [ ${ret} -ne 0 ]; then
-            RETVAL=${ret}
-        fi
-        popd
+    for d in ${PACKAGE_LIST}; do
+        run_test_in_dir "${d}"
     done
     exit ${RETVAL}
 fi
@@ -102,8 +112,6 @@ TOTAL_SHARDS="${TOTAL_SHARDS:-1}"
 SHARD_INDEX="${SHARD_INDEX:-1}"
 count=0
 
-RETVAL=0
-
 for subdir in ${subdirs[@]}; do
     # Sort the directories to ensure consistent sharding across jobs
     for d in `ls -d ${subdir}/*/ | sort`; do
@@ -132,24 +140,7 @@ for subdir in ${subdirs[@]}; do
             should_test=true
         fi
         if [ "${should_test}" = true ]; then
-            echo "running test in ${d}"
-            pushd ${d}
-            # Temporarily allow failure.
-            set +e
-            
-            # Ensure unique coverage file per package to avoid DataError
-            # when combining statement and branch coverage.
-            # Strip trailing slash from directory name for the filename.
-            pkg_name_clean=$(echo ${d} | sed 's|/$||' | sed 's|/|_|g')
-            export COVERAGE_FILE="${PROJECT_ROOT}/.coverage.${PY_VERSION}.${pkg_name_clean}"
-            
-            ${test_script}
-            ret=$?
-            set -e
-            if [ ${ret} -ne 0 ]; then
-                RETVAL=${ret}
-            fi
-            popd
+            run_test_in_dir "${d}"
         fi
     done
 done
