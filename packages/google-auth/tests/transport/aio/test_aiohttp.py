@@ -234,7 +234,10 @@ class TestRequest:
         assert cloned_connector._limit == 42
         assert cloned_connector._limit_per_host == 12
         assert cloned_connector._force_close is True
-        assert cloned_connector._local_addr == ("127.0.0.2", 0)
+        cloned_local_addr = getattr(cloned_connector, "_local_addr", None)
+        if cloned_local_addr is None and hasattr(cloned_connector, "_local_addr_infos"):
+            cloned_local_addr = cloned_connector._local_addr_infos[0][4]
+        assert cloned_local_addr == ("127.0.0.2", 0)
 
         # Verify session-level configuration
         assert cloned._session._trust_env is True
