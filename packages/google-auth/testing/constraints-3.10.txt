@@ -14,3 +14,4 @@ pyjwt==2.0
 grpcio==1.59.0
 urllib3==1.26.15
 packaging==20.0
+rsa==4.0.0
