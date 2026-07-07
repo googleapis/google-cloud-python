@@ -162,11 +162,11 @@ def cleanup_old_instances(spanner_client):
 def cleanup_stale_databases(instance, cutoff_seconds=600):
     """Delete stale databases in the given instance older than cutoff_seconds."""
     cutoff_ms = (int(time.time()) - cutoff_seconds) * 1000
-    
+
     for database_pb in instance.list_databases():
         if database_pb.create_time is not None:
             create_time_ms = datetime_helpers.to_milliseconds(database_pb.create_time)
-            
+
             if create_time_ms < cutoff_ms:
                 db = instance.database(database_pb.name.split("/")[-1])
                 try:
