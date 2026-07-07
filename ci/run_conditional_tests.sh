@@ -55,20 +55,20 @@ run_test_in_dir() {
     local d=$1
     echo "running test in ${d}"
     pushd ${d} > /dev/null
-    
+
     # Temporarily allow failure.
     set +e
-    
+
     # Ensure unique coverage file per package to avoid DataError
     # when combining statement and branch coverage.
     # Strip trailing slash from directory name for the filename.
     local pkg_name_clean=$(echo ${d} | sed 's|/$||' | sed 's|/|_|g')
     export COVERAGE_FILE="${PROJECT_ROOT}/.coverage.${PY_VERSION}.${pkg_name_clean}"
-    
+
     ${test_script}
     local ret=$?
     set -e
-    
+
     if [ ${ret} -ne 0 ]; then
         RETVAL=${ret}
     fi
@@ -104,24 +104,17 @@ else
     GIT_DIFF_ARG=""
 fi
 
-# Sharding logic (fallback for manual runs)
-subdirs=(
-    packages
-)
-TOTAL_SHARDS="${TOTAL_SHARDS:-1}"
-SHARD_INDEX="${SHARD_INDEX:-1}"
-count=0
+# Fallback for when no package list is provided
+# Detect changes in test scripts
+
+set +e
+git diff --quiet ${GIT_DIFF_ARG} ci
+changed=$?
+set -e
+
 
 for subdir in ${subdirs[@]}; do
-    # Sort the directories to ensure consistent sharding across jobs
-    for d in `ls -d ${subdir}/*/ | sort`; do
-        # Sharding logic: only process directories that belong to this shard
-        if (( count % TOTAL_SHARDS != SHARD_INDEX - 1 )); then
-            ((++count))
-            continue
-        fi
-        ((++count))
-
+    for d in `ls -d ${subdir}/*/`; do
         should_test=false
         if [ -n "${GIT_DIFF_ARG}" ]; then
             echo "checking changes with 'git diff --quiet ${GIT_DIFF_ARG} ${d}'"
