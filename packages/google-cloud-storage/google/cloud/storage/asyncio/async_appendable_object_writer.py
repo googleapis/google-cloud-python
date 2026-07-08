@@ -386,6 +386,7 @@ class AsyncAppendableObjectWriter:
         data: bytes,
         retry_policy: Optional[AsyncRetry] = None,
         metadata: Optional[List[Tuple[str, str]]] = None,
+        enable_checksum: bool = True,
     ) -> None:
         """Appends data to the Appendable object with automatic retries.
 
@@ -405,6 +406,9 @@ class AsyncAppendableObjectWriter:
 
         :type metadata: List[Tuple[str, str]]
         :param metadata: (Optional) The metadata to be sent with the request.
+
+        :type enable_checksum: bool
+        :param enable_checksum: (Optional) If True, calculates and checks checksums for each chunk. Defaults to True.
 
         :raises ValueError: If the stream is not open.
         """
@@ -487,7 +491,12 @@ class AsyncAppendableObjectWriter:
             return generator()
 
         # State initialization
-        write_state = _WriteState(_MAX_CHUNK_SIZE_BYTES, buffer, self.flush_interval)
+        write_state = _WriteState(
+            _MAX_CHUNK_SIZE_BYTES,
+            buffer,
+            self.flush_interval,
+            enable_checksum=enable_checksum,
+        )
         write_state.write_handle = self.write_handle
         write_state.persisted_size = self.persisted_size
         # offset is set during `open()` call.

@@ -299,6 +299,29 @@ class TestAsyncAppendableObjectWriter:
         assert writer.offset == data_len
         assert writer.bytes_appended_since_last_flush == data_len
 
+    @pytest.mark.asyncio
+    async def test_append_with_checksum_disabled(self, mock_appendable_writer):
+        """Verify append propagates enable_checksum=False to the _WriteState."""
+        writer = self._make_one(mock_appendable_writer["mock_client"])
+        writer._is_stream_open = True
+        writer.persisted_size = 0
+        writer.write_obj_stream = mock_appendable_writer["mock_stream"]
+        writer.write_obj_stream.send = AsyncMock()
+
+        with mock.patch(
+            "google.cloud.storage.asyncio.async_appendable_object_writer._BidiStreamRetryManager"
+        ) as MockManager:
+            mock_execute = AsyncMock()
+            MockManager.return_value.execute = mock_execute
+
+            await writer.append(DATA_LESS_THAN_FLUSH_INTERVAL, enable_checksum=False)
+
+            # Check that execute was called with a state dictionary containing write_state having enable_checksum=False
+            mock_execute.assert_called_once()
+            state_arg = mock_execute.call_args[0][0]
+            assert "write_state" in state_arg
+            assert state_arg["write_state"].enable_checksum is False
+
     @pytest.mark.parametrize(
         "data_len",
         [
