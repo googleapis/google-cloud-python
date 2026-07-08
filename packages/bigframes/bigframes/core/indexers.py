@@ -318,16 +318,14 @@ class ILocDataFrameIndexer:
             if col_offset < 0 or col_offset >= n_cols:
                 raise IndexError("single positional indexer is out-of-bounds")
 
-            col_label = self._dataframe.columns[col_offset]
-            df = self._dataframe._assign_multi_items([col_label], value)
+            df = self._dataframe._assign_multi_items_by_offsets([col_offset], value)
             self._dataframe._set_block(df._get_block())
 
         elif isinstance(col_indexer, slice):
             col_offsets = list(range(*col_indexer.indices(n_cols)))
-            col_labels = [self._dataframe.columns[idx] for idx in col_offsets]
-            if not col_labels:
+            if not col_offsets:
                 return
-            df = self._dataframe._assign_multi_items(col_labels, value)
+            df = self._dataframe._assign_multi_items_by_offsets(col_offsets, value)
             self._dataframe._set_block(df._get_block())
 
         elif pd.api.types.is_list_like(col_indexer):
@@ -354,10 +352,9 @@ class ILocDataFrameIndexer:
                         raise IndexError("positional indexer is out-of-bounds")
                     col_offsets.append(idx)
 
-            col_labels = [self._dataframe.columns[idx] for idx in col_offsets]
-            if not col_labels:
+            if not col_offsets:
                 return
-            df = self._dataframe._assign_multi_items(col_labels, value)
+            df = self._dataframe._assign_multi_items_by_offsets(col_offsets, value)
             self._dataframe._set_block(df._get_block())
         else:
             raise TypeError(

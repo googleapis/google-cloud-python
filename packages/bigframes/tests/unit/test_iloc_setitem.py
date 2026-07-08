@@ -120,7 +120,9 @@ def test_iloc_getitem_column_single_integer(sample_df):
 
 
 @pytest.fixture
-def unordered_sample_df(sample_df: bpd.DataFrame) -> Generator[bpd.DataFrame, None, None]:
+def unordered_sample_df(
+    sample_df: bpd.DataFrame,
+) -> Generator[bpd.DataFrame, None, None]:
     session = sample_df._session
     original_strictly_ordered = session._strictly_ordered
     original_allow_ambiguity = session._allow_ambiguity
@@ -211,3 +213,42 @@ def test_iloc_setitem_column_errors(sample_df, key, expected_error):
 
     with pytest.raises(expected_error):
         bf_df.iloc[key] = 99
+
+
+@pytest.fixture
+def duplicate_columns_df() -> bpd.DataFrame:
+    pd_df = pd.DataFrame(
+        [[1, 2, 3], [4, 5, 6], [7, 8, 9]],
+        columns=["A", "B", "A"],
+    )
+    return bpd.read_pandas(pd_df)
+
+
+def test_iloc_setitem_duplicate_columns_single_integer(duplicate_columns_df):
+    bf_df = duplicate_columns_df.copy()
+    pd_df = duplicate_columns_df.to_pandas()
+
+    bf_df.iloc[:, 2] = 99
+    pd_df.iloc[:, 2] = 99
+
+    assert_frame_equal(bf_df.to_pandas(), pd_df)
+
+
+def test_iloc_setitem_duplicate_columns_list_integer(duplicate_columns_df):
+    bf_df = duplicate_columns_df.copy()
+    pd_df = duplicate_columns_df.to_pandas()
+
+    bf_df.iloc[:, [0, 2]] = [99, 88]
+    pd_df.iloc[:, [0, 2]] = [99, 88]
+
+    assert_frame_equal(bf_df.to_pandas(), pd_df)
+
+
+def test_iloc_setitem_duplicate_columns_slice(duplicate_columns_df):
+    bf_df = duplicate_columns_df.copy()
+    pd_df = duplicate_columns_df.to_pandas()
+
+    bf_df.iloc[:, 1:3] = 99
+    pd_df.iloc[:, 1:3] = 99
+
+    assert_frame_equal(bf_df.to_pandas(), pd_df)
