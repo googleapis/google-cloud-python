@@ -68,7 +68,7 @@ def unit(session):
         line_coverage,
         os.path.join("tests", "unit"),
         os.path.join("tests_async", "unit"),
-        *session.posargs
+        *session.posargs,
     )
 
 
@@ -105,6 +105,7 @@ def docs(session):
         os.path.join("docs", ""),
         os.path.join("docs", "_build", "html", ""),
     )
+
 
 @nox.session(python="3.10")
 def docfx(session):
@@ -319,7 +320,9 @@ def prerelease_deps(session):
     # version, the first version we test with in the unit tests sessions has a
     # constraints file containing all dependencies and extras.
     with open(
-        CURRENT_DIRECTORY / "testing" / f"constraints-{UNIT_TEST_PYTHON_VERSIONS[0]}.txt",
+        CURRENT_DIRECTORY
+        / "testing"
+        / f"constraints-{UNIT_TEST_PYTHON_VERSIONS[0]}.txt",
         encoding="utf-8",
     ) as constraints_file:
         constraints_text = constraints_file.read()
@@ -400,7 +403,9 @@ def core_deps_from_source(session):
     # version, the first version we test with in the unit tests sessions has a
     # constraints file containing all dependencies and extras.
     with open(
-        CURRENT_DIRECTORY / "testing" / f"constraints-{UNIT_TEST_PYTHON_VERSIONS[0]}.txt",
+        CURRENT_DIRECTORY
+        / "testing"
+        / f"constraints-{UNIT_TEST_PYTHON_VERSIONS[0]}.txt",
         encoding="utf-8",
     ) as constraints_file:
         constraints_text = constraints_file.read()
@@ -431,7 +436,9 @@ def core_deps_from_source(session):
     dep_paths = [str(deps_dir / dep) for dep in core_dependencies_from_source]
 
     session.install(*dep_paths, "--no-deps", "--ignore-installed")
-    print(f"Installed {', '.join(core_dependencies_from_source)} locally from {deps_dir}")
+    print(
+        f"Installed {', '.join(core_dependencies_from_source)} locally from {deps_dir}"
+    )
 
     other_deps = [
         "cryptography",
@@ -453,20 +460,28 @@ def core_deps_from_source(session):
 @nox.session(python="3.15")
 def import_profile(session):
     """Ensure import times remain below defined thresholds."""
-    profiler_script = CURRENT_DIRECTORY.parent.parent / "scripts" / "import_profiler" / "profiler.py"
+    profiler_script = (
+        CURRENT_DIRECTORY.parent.parent / "scripts" / "import_profiler" / "profiler.py"
+    )
     if not profiler_script.exists():
         session.skip("The import profiler script was not found.")
 
     session.install(".")
-    session.run("python", str(profiler_script), "--module", "google", "--iterations", "10")
+    session.run(
+        "python", str(profiler_script), "--module", "google", "--iterations", "10"
+    )
 
 
 @nox.session(python="3.15")
 def import_profile(session):
     """Ensure import times remain below defined thresholds."""
-    profiler_script = CURRENT_DIRECTORY.parent.parent / "scripts" / "import_profiler" / "profiler.py"
+    profiler_script = (
+        CURRENT_DIRECTORY.parent.parent / "scripts" / "import_profiler" / "profiler.py"
+    )
     if not profiler_script.exists():
         session.skip("The import profiler script was not found.")
 
     session.install(".")
-    session.run("python", str(profiler_script), "--module", "google", "--iterations", "10")
+    session.run(
+        "python", str(profiler_script), "--module", "google", "--iterations", "10"
+    )

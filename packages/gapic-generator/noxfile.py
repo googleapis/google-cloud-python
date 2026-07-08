@@ -726,7 +726,7 @@ def lint(session):
     """
 
     # TODO(https://github.com/googleapis/google-cloud-python/issues/16186):
-    # SKIP: This session was not enforced in the standalone (split) repo 
+    # SKIP: This session was not enforced in the standalone (split) repo
     # and is disabled here to ensure a "move-only" migration.
     session.skip(
         "Linting was not enforced in the split repo. "
@@ -756,9 +756,11 @@ def lint(session):
 @nox.session(python=NEWEST_PYTHON)
 def lint_setup_py(session):
     # TODO(https://github.com/googleapis/google-cloud-python/issues/16186):
-    # SKIP: This session was not enforced in the standalone (split) repo 
+    # SKIP: This session was not enforced in the standalone (split) repo
     # and is disabled here to ensure a "move-only" migration.
-    session.skip("Skipping now to avoid changing code during migration. See Issue #16186")
+    session.skip(
+        "Skipping now to avoid changing code during migration. See Issue #16186"
+    )
 
 
 @nox.session(python="3.10")
@@ -833,9 +835,11 @@ def prerelease_deps(session, protobuf_implementation):
     """
     Run all tests with pre-release versions of dependencies installed.
     """
-    # TODO(https://github.com/googleapis/google-cloud-python/issues/16184): 
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/16184):
     # Implement pre-release dependency logic to test against upcoming runtime changes.
-    session.skip("prerelease_deps session is not yet implemented for gapic-generator-python.")
+    session.skip(
+        "prerelease_deps session is not yet implemented for gapic-generator-python."
+    )
 
 
 @nox.session(python=NEWEST_PYTHON)
@@ -845,27 +849,38 @@ def prerelease_deps(session, protobuf_implementation):
 )
 def core_deps_from_source(session, protobuf_implementation):
     """Run all tests with core dependencies installed from source."""
-    # TODO(https://github.com/googleapis/google-cloud-python/issues/16185): 
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/16185):
     # Implement logic to install core packages directly from the mono-repo directories.
-    session.skip("core_deps_from_source session is not yet implemented for gapic-generator-python.")
-
-@nox.session(python="3.15")
-def import_profile(session):
-    """Ensure import times remain below defined thresholds."""
-    profiler_script = CURRENT_DIRECTORY.parent.parent / "scripts" / "import_profiler" / "profiler.py"
-    if not profiler_script.exists():
-        session.skip("The import profiler script was not found.")
-
-    session.install(".")
-    session.run("python", str(profiler_script), "--module", "google", "--iterations", "10")
+    session.skip(
+        "core_deps_from_source session is not yet implemented for gapic-generator-python."
+    )
 
 
 @nox.session(python="3.15")
 def import_profile(session):
     """Ensure import times remain below defined thresholds."""
-    profiler_script = CURRENT_DIRECTORY.parent.parent / "scripts" / "import_profiler" / "profiler.py"
+    profiler_script = (
+        CURRENT_DIRECTORY.parent.parent / "scripts" / "import_profiler" / "profiler.py"
+    )
     if not profiler_script.exists():
         session.skip("The import profiler script was not found.")
 
     session.install(".")
-    session.run("python", str(profiler_script), "--module", "google", "--iterations", "10")
+    session.run(
+        "python", str(profiler_script), "--module", "google", "--iterations", "10"
+    )
+
+
+@nox.session(python="3.15")
+def import_profile(session):
+    """Ensure import times remain below defined thresholds."""
+    profiler_script = (
+        CURRENT_DIRECTORY.parent.parent / "scripts" / "import_profiler" / "profiler.py"
+    )
+    if not profiler_script.exists():
+        session.skip("The import profiler script was not found.")
+
+    session.install(".")
+    session.run(
+        "python", str(profiler_script), "--module", "google", "--iterations", "10"
+    )

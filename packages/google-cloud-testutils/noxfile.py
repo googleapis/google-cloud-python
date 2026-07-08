@@ -80,8 +80,10 @@ def format(session):
 
     # 2. Run Ruff to fix imports
     session.run(
-        "ruff", "check",
-        "--select", "I",
+        "ruff",
+        "check",
+        "--select",
+        "I",
         "--fix",
         f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
         "--line-length=88",
@@ -90,7 +92,8 @@ def format(session):
 
     # 3. Run Ruff to format code
     session.run(
-        "ruff", "format",
+        "ruff",
+        "format",
         f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
         "--line-length=88",
         *BLACK_PATHS,
@@ -328,13 +331,11 @@ def prerelease_deps(session):
     )
 
 
-
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def core_deps_from_source(session):
     """Run all tests with core dependencies installed from source
     rather than pulling the dependencies from PyPI.
     """
-
 
     # Install all dependencies
     constraints_path = str(
@@ -388,20 +389,38 @@ def core_deps_from_source(session):
 @nox.session(python="3.15")
 def import_profile(session):
     """Ensure import times remain below defined thresholds."""
-    profiler_script = CURRENT_DIRECTORY.parent.parent / "scripts" / "import_profiler" / "profiler.py"
+    profiler_script = (
+        CURRENT_DIRECTORY.parent.parent / "scripts" / "import_profiler" / "profiler.py"
+    )
     if not profiler_script.exists():
         session.skip("The import profiler script was not found.")
 
     session.install(".")
-    session.run("python", str(profiler_script), "--module", "unknown_module", "--iterations", "10")
+    session.run(
+        "python",
+        str(profiler_script),
+        "--module",
+        "unknown_module",
+        "--iterations",
+        "10",
+    )
 
 
 @nox.session(python="3.15")
 def import_profile(session):
     """Ensure import times remain below defined thresholds."""
-    profiler_script = CURRENT_DIRECTORY.parent.parent / "scripts" / "import_profiler" / "profiler.py"
+    profiler_script = (
+        CURRENT_DIRECTORY.parent.parent / "scripts" / "import_profiler" / "profiler.py"
+    )
     if not profiler_script.exists():
         session.skip("The import profiler script was not found.")
 
     session.install(".")
-    session.run("python", str(profiler_script), "--module", "unknown_module", "--iterations", "10")
+    session.run(
+        "python",
+        str(profiler_script),
+        "--module",
+        "unknown_module",
+        "--iterations",
+        "10",
+    )
