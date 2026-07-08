@@ -297,9 +297,6 @@ class SeriesGroupBy(vendored_pandas_groupby.SeriesGroupBy):
 
     aggregate = agg
 
-    def apply(self, func, *args, **kwargs):
-        raise NotImplementedError("SeriesGroupBy.apply is not implemented.")
-
     def transform(self, func, *args, **kwargs) -> series.Series:
         import bigframes.core.block_transforms as block_transforms
 

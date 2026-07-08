@@ -104,7 +104,3 @@ SERIES_METHOD_TO_OP = {
     "notnull": generic_ops.notnull_op,
     "notna": generic_ops.notnull_op,
 }
-
-
-def series_method_to_op(method_name: str) -> Optional[bigframes.operations.RowOp]:
-    return SERIES_METHOD_TO_OP.get(method_name)

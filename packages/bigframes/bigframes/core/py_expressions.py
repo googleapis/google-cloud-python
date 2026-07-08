@@ -573,7 +573,7 @@ def resolve_call(
                 pass
 
             # Support common scalar method calls on Series/expressions
-            if (method_op := python_op_maps.series_method_to_op(attr)) is not None:
+            if (method_op := python_op_maps.SERIES_METHOD_TO_OP.get(attr)) is not None:
                 if isinstance(method_op, ScalarOp):
                     return OpExpression(method_op, (callable.input,))
 

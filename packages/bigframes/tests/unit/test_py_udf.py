@@ -18,6 +18,7 @@ from typing import Generator
 import numpy as np
 import pandas as pd
 import pandas.testing
+import pyarrow as pa
 import pytest
 
 import bigframes
@@ -483,9 +484,7 @@ def test_dataframe_apply_axis_1_with_invalid_subscript_raises(
         scalars_df_index[columns].apply(foo_invalid_label, axis=1)
 
 
-def test_series_map_with_struct_and_array_subscript(session):
-    import pyarrow as pa
-
+def test_series_map_with_struct_subscript(session):
     # Struct setup
     struct_pa_type = pa.struct([("str_field", pa.string()), ("int_field", pa.int64())])
     pd_struct_series = pd.Series(
@@ -493,14 +492,6 @@ def test_series_map_with_struct_and_array_subscript(session):
         dtype=pd.ArrowDtype(struct_pa_type),
     )
     bf_struct_series = bpd.Series(pd_struct_series, session=session)
-
-    # Array setup
-    array_pa_type = pa.list_(pa.int64())
-    pd_array_series = pd.Series(
-        pa.array([[10, 20]], array_pa_type),
-        dtype=pd.ArrowDtype(array_pa_type),
-    )
-    bf_array_series = bpd.Series(pd_array_series, session=session)
 
     # Struct subscripting in UDF
     def get_struct_val(x):
@@ -510,6 +501,16 @@ def test_series_map_with_struct_and_array_subscript(session):
     pd_struct_res: pd.Series = pd_struct_series.map(get_struct_val)
     assert_series_equal(bf_struct_res, pd_struct_res, check_dtype=False)
 
+
+def test_series_map_with_array_subscript(session):
+    # Array setup
+    array_pa_type = pa.list_(pa.int64())
+    pd_array_series = pd.Series(
+        pa.array([[10, 20]], array_pa_type),
+        dtype=pd.ArrowDtype(array_pa_type),
+    )
+    bf_array_series = bpd.Series(pd_array_series, session=session)
+
     # Array subscripting in UDF
     def get_array_val(x):
         return x[1]
@@ -518,6 +519,8 @@ def test_series_map_with_struct_and_array_subscript(session):
     pd_array_res: pd.Series = pd_array_series.map(get_array_val)
     assert_series_equal(bf_array_res, pd_array_res, check_dtype=False)
 
+
+def test_series_map_with_string_subscript(session):
     # String setup
     pd_string_series = pd.Series(["hello", "world"])
     bf_string_series = bpd.Series(pd_string_series, session=session)

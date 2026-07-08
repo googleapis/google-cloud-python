@@ -580,9 +580,6 @@ class DataFrameGroupBy:
         else:
             return self._agg_named(**kwargs)
 
-    def apply(self, func, *args, **kwargs):
-        raise NotImplementedError("DataFrameGroupBy.apply is not implemented.")
-
     def transform(self, func, *args, **kwargs) -> df.DataFrame:
         import bigframes.core.block_transforms as block_transforms
 
