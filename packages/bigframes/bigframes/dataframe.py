@@ -2255,7 +2255,7 @@ class DataFrame:
                 label: ex.deref(id) for id, label in self._block.col_id_to_label.items()
             }
             resolved_expr = value._value.bind_variables(label_to_col_ref)
-            block, (new_col_id,) = self._block.project_expr(resolved_expr)
+            block, new_col_id = self._block.project_expr(resolved_expr)
             target_col_id = self._block.value_columns[offset]
             block = block.copy_values(new_col_id, target_col_id).drop_columns(
                 [new_col_id]
@@ -2281,7 +2281,7 @@ class DataFrame:
 
     def _assign_multi_items_helper(
         self,
-        k: Sequence[Any],
+        k: Sequence[Any] | pandas.Index,
         v: SingleItemValue | MultiItemValue,
         assign_single_fn: Callable[[DataFrame, Any, Any], DataFrame],
     ) -> DataFrame:
