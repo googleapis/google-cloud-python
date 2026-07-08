@@ -5307,6 +5307,8 @@ def test_create_hive_table(request_type, transport: str = "grpc"):
         call.return_value = hive_metastore.HiveTable(
             name="name_value",
             description="description_value",
+            view_original_text="view_original_text_value",
+            view_expanded_text="view_expanded_text_value",
             table_type="table_type_value",
         )
         response = client.create_hive_table(request)
@@ -5321,6 +5323,8 @@ def test_create_hive_table(request_type, transport: str = "grpc"):
     assert isinstance(response, hive_metastore.HiveTable)
     assert response.name == "name_value"
     assert response.description == "description_value"
+    assert response.view_original_text == "view_original_text_value"
+    assert response.view_expanded_text == "view_expanded_text_value"
     assert response.table_type == "table_type_value"
 
 
@@ -5463,6 +5467,8 @@ async def test_create_hive_table_async(request_type, transport: str = "grpc_asyn
             hive_metastore.HiveTable(
                 name="name_value",
                 description="description_value",
+                view_original_text="view_original_text_value",
+                view_expanded_text="view_expanded_text_value",
                 table_type="table_type_value",
             )
         )
@@ -5478,6 +5484,8 @@ async def test_create_hive_table_async(request_type, transport: str = "grpc_asyn
     assert isinstance(response, hive_metastore.HiveTable)
     assert response.name == "name_value"
     assert response.description == "description_value"
+    assert response.view_original_text == "view_original_text_value"
+    assert response.view_expanded_text == "view_expanded_text_value"
     assert response.table_type == "table_type_value"
 
 
@@ -5675,6 +5683,8 @@ def test_get_hive_table(request_type, transport: str = "grpc"):
         call.return_value = hive_metastore.HiveTable(
             name="name_value",
             description="description_value",
+            view_original_text="view_original_text_value",
+            view_expanded_text="view_expanded_text_value",
             table_type="table_type_value",
         )
         response = client.get_hive_table(request)
@@ -5689,6 +5699,8 @@ def test_get_hive_table(request_type, transport: str = "grpc"):
     assert isinstance(response, hive_metastore.HiveTable)
     assert response.name == "name_value"
     assert response.description == "description_value"
+    assert response.view_original_text == "view_original_text_value"
+    assert response.view_expanded_text == "view_expanded_text_value"
     assert response.table_type == "table_type_value"
 
 
@@ -5823,6 +5835,8 @@ async def test_get_hive_table_async(request_type, transport: str = "grpc_asyncio
             hive_metastore.HiveTable(
                 name="name_value",
                 description="description_value",
+                view_original_text="view_original_text_value",
+                view_expanded_text="view_expanded_text_value",
                 table_type="table_type_value",
             )
         )
@@ -5838,6 +5852,8 @@ async def test_get_hive_table_async(request_type, transport: str = "grpc_asyncio
     assert isinstance(response, hive_metastore.HiveTable)
     assert response.name == "name_value"
     assert response.description == "description_value"
+    assert response.view_original_text == "view_original_text_value"
+    assert response.view_expanded_text == "view_expanded_text_value"
     assert response.table_type == "table_type_value"
 
 
@@ -6527,6 +6543,8 @@ def test_update_hive_table(request_type, transport: str = "grpc"):
         call.return_value = hive_metastore.HiveTable(
             name="name_value",
             description="description_value",
+            view_original_text="view_original_text_value",
+            view_expanded_text="view_expanded_text_value",
             table_type="table_type_value",
         )
         response = client.update_hive_table(request)
@@ -6541,6 +6559,8 @@ def test_update_hive_table(request_type, transport: str = "grpc"):
     assert isinstance(response, hive_metastore.HiveTable)
     assert response.name == "name_value"
     assert response.description == "description_value"
+    assert response.view_original_text == "view_original_text_value"
+    assert response.view_expanded_text == "view_expanded_text_value"
     assert response.table_type == "table_type_value"
 
 
@@ -6677,6 +6697,8 @@ async def test_update_hive_table_async(request_type, transport: str = "grpc_asyn
             hive_metastore.HiveTable(
                 name="name_value",
                 description="description_value",
+                view_original_text="view_original_text_value",
+                view_expanded_text="view_expanded_text_value",
                 table_type="table_type_value",
             )
         )
@@ -6692,6 +6714,8 @@ async def test_update_hive_table_async(request_type, transport: str = "grpc_asyn
     assert isinstance(response, hive_metastore.HiveTable)
     assert response.name == "name_value"
     assert response.description == "description_value"
+    assert response.view_original_text == "view_original_text_value"
+    assert response.view_expanded_text == "view_expanded_text_value"
     assert response.table_type == "table_type_value"
 
 
@@ -13169,6 +13193,8 @@ async def test_create_hive_table_empty_call_grpc_asyncio():
             hive_metastore.HiveTable(
                 name="name_value",
                 description="description_value",
+                view_original_text="view_original_text_value",
+                view_expanded_text="view_expanded_text_value",
                 table_type="table_type_value",
             )
         )
@@ -13197,6 +13223,8 @@ async def test_get_hive_table_empty_call_grpc_asyncio():
             hive_metastore.HiveTable(
                 name="name_value",
                 description="description_value",
+                view_original_text="view_original_text_value",
+                view_expanded_text="view_expanded_text_value",
                 table_type="table_type_value",
             )
         )
@@ -13253,6 +13281,8 @@ async def test_update_hive_table_empty_call_grpc_asyncio():
             hive_metastore.HiveTable(
                 name="name_value",
                 description="description_value",
+                view_original_text="view_original_text_value",
+                view_expanded_text="view_expanded_text_value",
                 table_type="table_type_value",
             )
         )
@@ -13442,6 +13472,8 @@ def test_create_hive_catalog_rest_call_success(request_type):
         "description": "description_value",
         "location_uri": "location_uri_value",
         "replicas": [{"region": "region_value", "state": 1}],
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -13923,6 +13955,8 @@ def test_update_hive_catalog_rest_call_success(request_type):
         "description": "description_value",
         "location_uri": "location_uri_value",
         "replicas": [{"region": "region_value", "state": 1}],
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -14241,6 +14275,8 @@ def test_create_hive_database_rest_call_success(request_type):
         "description": "description_value",
         "location_uri": "location_uri_value",
         "parameters": {},
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -14728,6 +14764,8 @@ def test_update_hive_database_rest_call_success(request_type):
         "description": "description_value",
         "location_uri": "location_uri_value",
         "parameters": {},
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -15089,7 +15127,10 @@ def test_create_hive_table_rest_call_success(request_type):
         "create_time": {"seconds": 751, "nanos": 543},
         "partition_keys": {},
         "parameters": {},
+        "view_original_text": "view_original_text_value",
+        "view_expanded_text": "view_expanded_text_value",
         "table_type": "table_type_value",
+        "update_time": {},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -15166,6 +15207,8 @@ def test_create_hive_table_rest_call_success(request_type):
         return_value = hive_metastore.HiveTable(
             name="name_value",
             description="description_value",
+            view_original_text="view_original_text_value",
+            view_expanded_text="view_expanded_text_value",
             table_type="table_type_value",
         )
 
@@ -15185,6 +15228,8 @@ def test_create_hive_table_rest_call_success(request_type):
     assert isinstance(response, hive_metastore.HiveTable)
     assert response.name == "name_value"
     assert response.description == "description_value"
+    assert response.view_original_text == "view_original_text_value"
+    assert response.view_expanded_text == "view_expanded_text_value"
     assert response.table_type == "table_type_value"
 
 
@@ -15305,6 +15350,8 @@ def test_get_hive_table_rest_call_success(request_type):
         return_value = hive_metastore.HiveTable(
             name="name_value",
             description="description_value",
+            view_original_text="view_original_text_value",
+            view_expanded_text="view_expanded_text_value",
             table_type="table_type_value",
         )
 
@@ -15324,6 +15371,8 @@ def test_get_hive_table_rest_call_success(request_type):
     assert isinstance(response, hive_metastore.HiveTable)
     assert response.name == "name_value"
     assert response.description == "description_value"
+    assert response.view_original_text == "view_original_text_value"
+    assert response.view_expanded_text == "view_expanded_text_value"
     assert response.table_type == "table_type_value"
 
 
@@ -15622,7 +15671,10 @@ def test_update_hive_table_rest_call_success(request_type):
         "create_time": {"seconds": 751, "nanos": 543},
         "partition_keys": {},
         "parameters": {},
+        "view_original_text": "view_original_text_value",
+        "view_expanded_text": "view_expanded_text_value",
         "table_type": "table_type_value",
+        "update_time": {},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -15699,6 +15751,8 @@ def test_update_hive_table_rest_call_success(request_type):
         return_value = hive_metastore.HiveTable(
             name="name_value",
             description="description_value",
+            view_original_text="view_original_text_value",
+            view_expanded_text="view_expanded_text_value",
             table_type="table_type_value",
         )
 
@@ -15718,6 +15772,8 @@ def test_update_hive_table_rest_call_success(request_type):
     assert isinstance(response, hive_metastore.HiveTable)
     assert response.name == "name_value"
     assert response.description == "description_value"
+    assert response.view_original_text == "view_original_text_value"
+    assert response.view_expanded_text == "view_expanded_text_value"
     assert response.table_type == "table_type_value"
 
 

@@ -76,6 +76,7 @@ from .types.batches import (
 )
 from .types.clusters import (
     AcceleratorConfig,
+    AttachedDiskConfig,
     AutoscalingConfig,
     AuxiliaryNodeGroup,
     AuxiliaryServicesConfig,
@@ -316,6 +317,7 @@ __all__ = (
     "SessionTemplateControllerAsyncClient",
     "WorkflowTemplateServiceAsyncClient",
     "AcceleratorConfig",
+    "AttachedDiskConfig",
     "AuthenticationConfig",
     "AutoscalingConfig",
     "AutoscalingPolicy",
