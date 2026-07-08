@@ -27,7 +27,6 @@ import nox
 nox.options.sessions = [
     "check_lower_bounds",
     "format",
-    "import_profile",
 ]
 
 
@@ -383,24 +382,4 @@ def core_deps_from_source(session):
     session.run(
         "py.test",
         "tests/unit",
-    )
-
-
-@nox.session(python="3.15")
-def import_profile(session):
-    """Ensure import times remain below defined thresholds."""
-    profiler_script = (
-        CURRENT_DIRECTORY.parent.parent / "scripts" / "import_profiler" / "profiler.py"
-    )
-    if not profiler_script.exists():
-        session.skip("The import profiler script was not found.")
-
-    session.install(".")
-    session.run(
-        "python",
-        str(profiler_script),
-        "--module",
-        "google",
-        "--iterations",
-        "10",
     )

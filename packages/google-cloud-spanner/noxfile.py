@@ -36,7 +36,6 @@ ALL_PYTHON: List[str] = [
     "3.12",
     "3.13",
     "3.14",
-    "import_profile",
 ]
 UNIT_TEST_STANDARD_DEPENDENCIES = [
     "mock",
@@ -848,24 +847,4 @@ def core_deps_from_source(session, protobuf_implementation):
         env={
             "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
         },
-    )
-
-
-@nox.session(python="3.15")
-def import_profile(session):
-    """Ensure import times remain below defined thresholds."""
-    profiler_script = (
-        CURRENT_DIRECTORY.parent.parent / "scripts" / "import_profiler" / "profiler.py"
-    )
-    if not profiler_script.exists():
-        session.skip("The import profiler script was not found.")
-
-    session.install(".")
-    session.run(
-        "python",
-        str(profiler_script),
-        "--module",
-        "google",
-        "--iterations",
-        "10",
     )

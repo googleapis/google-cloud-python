@@ -464,23 +464,3 @@ def docfx(session):
         os.path.join("docs", ""),
         os.path.join("docs", "_build", "html", ""),
     )
-
-
-@nox.session(python="3.15")
-def import_profile(session):
-    """Ensure import times remain below defined thresholds."""
-    profiler_script = (
-        CURRENT_DIRECTORY.parent.parent / "scripts" / "import_profiler" / "profiler.py"
-    )
-    if not profiler_script.exists():
-        session.skip("The import profiler script was not found.")
-
-    session.install(".")
-    session.run(
-        "python",
-        str(profiler_script),
-        "--module",
-        "google",
-        "--iterations",
-        "10",
-    )

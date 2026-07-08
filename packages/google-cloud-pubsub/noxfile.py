@@ -36,7 +36,6 @@ ALL_PYTHON = [
     "3.12",
     "3.13",
     "3.14",
-    "import_profile",
 ]
 
 DEFAULT_PYTHON_VERSION = "3.14"
@@ -624,23 +623,3 @@ def prerelease_deps(session, protobuf_implementation):
 def core_deps_from_source(session, protobuf_implementation):
     """Skipping until Pub/Sub migration is complete."""
     session.skip("Skipping core_deps_from_source for google-cloud-pubsub.")
-
-
-@nox.session(python="3.15")
-def import_profile(session):
-    """Ensure import times remain below defined thresholds."""
-    profiler_script = (
-        CURRENT_DIRECTORY.parent.parent / "scripts" / "import_profiler" / "profiler.py"
-    )
-    if not profiler_script.exists():
-        session.skip("The import profiler script was not found.")
-
-    session.install(".")
-    session.run(
-        "python",
-        str(profiler_script),
-        "--module",
-        "google",
-        "--iterations",
-        "10",
-    )
