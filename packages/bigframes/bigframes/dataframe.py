@@ -858,7 +858,6 @@ class DataFrame:
             if bigframes.dtypes.contains_db_dtypes_json_dtype(df[col].dtype)
         ]
         if json_col_indexes:
-            df._block.apply_analytic
             df.iloc[:, json_col_indexes] = cast(
                 DataFrame,
                 df.iloc[:, json_col_indexes].apply(bbq.to_json_string),  # type: ignore
