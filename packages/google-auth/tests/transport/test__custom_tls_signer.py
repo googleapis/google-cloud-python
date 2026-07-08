@@ -146,9 +146,7 @@ def test_get_sign_callback_oversized_signature():
     mock_sig_array = ctypes.cast(returned_sig_array, ctypes.POINTER(ctypes.c_ubyte))
     returned_sign_len = ctypes.c_ulong()
 
-    assert not sign_callback(
-        mock_sig_array, ctypes.byref(returned_sign_len), None, 0
-    )
+    assert not sign_callback(mock_sig_array, ctypes.byref(returned_sign_len), None, 0)
 
 
 def test_get_sign_callback_failed_to_sign():
