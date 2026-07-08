@@ -30,7 +30,11 @@ DEPENDENCIES = (
 
 requests_extra_require = ["requests >= 2.30.0, < 3.0.0"]
 
-aiohttp_extra_require = ["aiohttp >= 3.8.0, < 4.0.0", *requests_extra_require]
+aiohttp_extra_require = [
+    "aiohttp >= 3.8.0, < 4.0.0; python_version < '3.14'",
+    "aiohttp >= 3.9.0, < 4.0.0; python_version >= '3.14'",
+    *requests_extra_require,
+]
 
 pyjwt_extra_require = ["pyjwt>=2.0"]
 

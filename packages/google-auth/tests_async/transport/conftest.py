@@ -12,35 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import inspect
-from unittest.mock import Mock
+from tests.transport.aioresponses_compat import patch_aioresponses
 
-import aiohttp
-from aioresponses.core import RequestMatch  # type: ignore
-
-
-class _CompatClientResponse(aiohttp.ClientResponse):
-    """ClientResponse subclass for aioresponses compatibility across all aiohttp versions."""
-
-    def __init__(self, *args, **kwargs):
-        writer = kwargs.pop("writer", None)
-        stream_writer = kwargs.pop("stream_writer", None)
-        writer_obj = stream_writer or writer or Mock()
-        sig = inspect.signature(super().__init__)
-        if "stream_writer" in sig.parameters:
-            kwargs["stream_writer"] = writer_obj
-        if "writer" in sig.parameters:
-            kwargs["writer"] = writer_obj
-        super().__init__(*args, **kwargs)
-
-
-_orig_request_match_init = RequestMatch.__init__
-
-
-def _request_match_init(self, *args, **kwargs):
-    if kwargs.get("response_class") is None:
-        kwargs["response_class"] = _CompatClientResponse
-    _orig_request_match_init(self, *args, **kwargs)
-
-
-RequestMatch.__init__ = _request_match_init
+patch_aioresponses()
