@@ -647,7 +647,11 @@ class AsyncAppendableObjectWriter:
             finalize_req.object_checksums = _storage_v2.ObjectChecksums(
                 crc32c=full_object_checksum
             )
-        # No checksum validation will be performed if full_object_checksum is None.
+        else:
+            logger.warning(
+                "finalize was called without providing full_object_checksum. "
+                "No checksum validation will be performed on the finalized object."
+            )
 
         await self.write_obj_stream.send(finalize_req)
         response = await self.write_obj_stream.recv()
