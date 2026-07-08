@@ -552,3 +552,32 @@ class TestAsyncAppendableObjectWriter:
             match="full_object_checksum can only be provided when finalize_on_close is True",
         ):
             await writer.close(finalize_on_close=False, full_object_checksum=checksum)
+
+    @pytest.mark.asyncio
+    async def test_finalize_invalid_checksum_type(self, mock_appendable_writer):
+        writer = self._make_one(mock_appendable_writer["mock_client"])
+        writer._is_stream_open = True
+        writer.write_obj_stream = mock_appendable_writer["mock_stream"]
+
+        with pytest.raises(TypeError, match="full_object_checksum must be an integer"):
+            await writer.finalize(full_object_checksum="not-an-int")
+
+    @pytest.mark.asyncio
+    async def test_finalize_invalid_checksum_range(self, mock_appendable_writer):
+        writer = self._make_one(mock_appendable_writer["mock_client"])
+        writer._is_stream_open = True
+        writer.write_obj_stream = mock_appendable_writer["mock_stream"]
+
+        # negative
+        with pytest.raises(
+            ValueError, match="full_object_checksum must be a 32-bit unsigned integer"
+        ):
+            await writer.finalize(full_object_checksum=-1)
+
+        # overflow
+        with pytest.raises(
+            ValueError, match="full_object_checksum must be a 32-bit unsigned integer"
+        ):
+            await writer.finalize(full_object_checksum=0x100000000)
+
+
