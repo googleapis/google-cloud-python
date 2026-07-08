@@ -275,6 +275,28 @@ class TestSecureAuthorizedChannel(object):
             ssl_credentials, metadata_call_credentials.return_value
         )
 
+    def test_secure_authorized_channel_pqc_max_metadata_size(
+        self,
+        secure_channel,
+        ssl_channel_credentials,
+        metadata_call_credentials,
+        composite_channel_credentials,
+        get_client_ssl_credentials,
+    ):
+        credentials = mock.Mock()
+        request = mock.Mock()
+        target = "example.com:80"
+        ssl_credentials = mock.Mock()
+
+        # Call without explicit options; should automatically add grpc.max_metadata_size=32768
+        google.auth.transport.grpc.secure_authorized_channel(
+            credentials, request, target, ssl_credentials=ssl_credentials
+        )
+
+        _, kwargs = secure_channel.call_args
+        assert "options" in kwargs
+        assert ("grpc.max_metadata_size", 32768) in kwargs["options"]
+
     def test_secure_authorized_channel_mutual_exclusive(
         self,
         secure_channel,

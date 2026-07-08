@@ -274,6 +274,25 @@ def secure_authorized_channel(
         ssl_credentials, google_auth_credentials
     )
 
+    # Set default max_metadata_size to 32768 (32 KB) to prevent gRPC C-core metadata
+    # limit rejections (default 8 KB) when Post-Quantum Cryptography (PQC) bearer tokens
+    # (ML-DSA-65 is 4.5 KB) or large trace headers are used.
+    options = kwargs.pop("options", None)
+    if options is None:
+        kwargs["options"] = [("grpc.max_metadata_size", 32768)]
+    elif isinstance(options, (list, tuple)):
+        opts = list(options)
+        if not any(
+            isinstance(opt, (list, tuple))
+            and len(opt) >= 2
+            and opt[0] == "grpc.max_metadata_size"
+            for opt in opts
+        ):
+            opts.append(("grpc.max_metadata_size", 32768))
+        kwargs["options"] = opts
+    else:
+        kwargs["options"] = options
+
     return grpc.secure_channel(target, composite_credentials, **kwargs)
 
 
