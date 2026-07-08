@@ -69,6 +69,7 @@ nox.options.sessions = [
     "mypy",
     # cover must be last to avoid error `No data to report`
     "docs",
+    "import_profile",
 ]
 
 
@@ -314,3 +315,11 @@ def core_deps_from_source(session):
     rather than pulling the dependencies from PyPI.
     """
     session.skip("Skipping: Not applicable for google-auth.")
+
+
+@nox.session(python="3.15")
+def import_profile(session):
+    """Ensure import times remain below defined thresholds."""
+    session.install(".")
+    profiler_script = os.path.join(CURRENT_DIRECTORY.parent.parent, "scripts", "import_profiler", "profiler.py")
+    session.run("python", profiler_script, "--module", "google", "--iterations", "10")

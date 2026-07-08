@@ -848,3 +848,18 @@ def core_deps_from_source(session, protobuf_implementation):
     # TODO(https://github.com/googleapis/google-cloud-python/issues/16185): 
     # Implement logic to install core packages directly from the mono-repo directories.
     session.skip("core_deps_from_source session is not yet implemented for gapic-generator-python.")
+
+@nox.session(python="3.15")
+def import_profile(session):
+    """Ensure import times remain below defined thresholds."""
+    session.install(".")
+    profiler_script = os.path.join(CURRENT_DIRECTORY.parent.parent, "scripts", "import_profiler", "profiler.py")
+    session.run("python", profiler_script, "--module", "google", "--iterations", "10")
+
+
+@nox.session(python="3.15")
+def import_profile(session):
+    """Ensure import times remain below defined thresholds."""
+    session.install(".")
+    profiler_script = os.path.join(CURRENT_DIRECTORY.parent.parent, "scripts", "import_profiler", "profiler.py")
+    session.run("python", profiler_script, "--module", "google", "--iterations", "10")

@@ -99,6 +99,7 @@ nox.options.sessions = [
     "lint_setup_py",
     "blacken",
     "docs",
+    "import_profile",
 ]
 
 # Error if a python version is missing
@@ -678,3 +679,11 @@ def core_deps_from_source(session, protobuf_implementation):
             "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
         },
     )
+
+
+@nox.session(python="3.15")
+def import_profile(session):
+    """Ensure import times remain below defined thresholds."""
+    session.install(".")
+    profiler_script = os.path.join(CURRENT_DIRECTORY.parent.parent, "scripts", "import_profiler", "profiler.py")
+    session.run("python", profiler_script, "--module", "google", "--iterations", "10")

@@ -173,3 +173,19 @@ def docfx(session):
         "DocFX build postponed during migration. "
         "Requires resolution of Sphinx 1.5.5 / Jinja2 compatibility."
     )
+
+
+@nox.session(python="3.15")
+def import_profile(session):
+    """Ensure import times remain below defined thresholds."""
+    session.install(".")
+    profiler_script = os.path.join(CURRENT_DIRECTORY.parent.parent, "scripts", "import_profiler", "profiler.py")
+    session.run("python", profiler_script, "--module", "unknown_module", "--iterations", "10")
+
+
+@nox.session(python="3.15")
+def import_profile(session):
+    """Ensure import times remain below defined thresholds."""
+    session.install(".")
+    profiler_script = os.path.join(CURRENT_DIRECTORY.parent.parent, "scripts", "import_profiler", "profiler.py")
+    session.run("python", profiler_script, "--module", "unknown_module", "--iterations", "10")
