@@ -530,7 +530,7 @@ def test_series_map_with_string_subscript(session):
         return x[1]
 
     bf_string_res = bf_string_series.map(get_string_val).to_pandas()
-    pd_string_res = pd_string_series.map(get_string_val)
+    pd_string_res = pd_string_series.map(get_string_val)  # type: ignore
     assert_series_equal(bf_string_res, pd_string_res, check_dtype=False)
 
 
