@@ -925,3 +925,12 @@ class TestChannelStub(object):
     def test_close(self):
         channel = grpc_helpers.ChannelStub()
         assert channel.close() is None
+
+
+@mock.patch("google.auth.default", return_value=(mock.sentinel.credentials, None))
+@mock.patch("grpc.secure_channel")
+def test_create_channel_max_metadata_size(grpc_secure_channel, auth_default):
+    options = [("grpc.max_send_message_length", -1)]
+    grpc_helpers.create_channel("example.com:443", options=options)
+    _, kwargs = grpc_secure_channel.call_args
+    assert ("grpc.max_metadata_size", 32768) in kwargs["options"]

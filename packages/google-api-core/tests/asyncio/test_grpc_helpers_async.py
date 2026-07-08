@@ -730,6 +730,15 @@ def test_create_channel(grpc_secure_channel):
     credentials.with_scopes.assert_called_once_with(scopes, default_scopes=None)
 
 
+@mock.patch("google.auth.default", return_value=(mock.sentinel.credentials, None))
+@mock.patch("grpc.aio.secure_channel")
+def test_create_channel_max_metadata_size(grpc_secure_channel, auth_default):
+    options = [("grpc.max_send_message_length", -1)]
+    grpc_helpers_async.create_channel("example.com:443", options=options)
+    _, kwargs = grpc_secure_channel.call_args
+    assert ("grpc.max_metadata_size", 32768) in kwargs["options"]
+
+
 @pytest.mark.asyncio
 async def test_fake_stream_unary_call():
     fake_call = grpc_helpers_async.FakeStreamUnaryCall()

@@ -375,6 +375,17 @@ def create_channel(
     if attempt_direct_path:
         target = _modify_target_for_direct_path(target)
 
+    if "options" in kwargs and isinstance(kwargs["options"], (list, tuple)):
+        opts = list(kwargs["options"])
+        if not any(
+            isinstance(opt, (list, tuple))
+            and len(opt) >= 2
+            and opt[0] == "grpc.max_metadata_size"
+            for opt in opts
+        ):
+            opts.append(("grpc.max_metadata_size", 32768))
+        kwargs["options"] = opts
+
     return grpc.secure_channel(
         target, composite_credentials, compression=compression, **kwargs
     )
