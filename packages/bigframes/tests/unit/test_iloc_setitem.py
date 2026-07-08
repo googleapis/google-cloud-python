@@ -47,7 +47,7 @@ def sample_df() -> bpd.DataFrame:
     return bpd.read_pandas(pd_df)
 
 
-def test_iloc_setitem_single_integer(sample_df):
+def test_iloc_setitem_column_single_integer(sample_df):
     bf_df = sample_df.copy()
     pd_df = sample_df.to_pandas()
 
@@ -57,7 +57,7 @@ def test_iloc_setitem_single_integer(sample_df):
     assert_frame_equal(bf_df.to_pandas(), pd_df)
 
 
-def test_iloc_setitem_single_integer_negative(sample_df):
+def test_iloc_setitem_column_single_integer_negative(sample_df):
     bf_df = sample_df.copy()
     pd_df = sample_df.to_pandas()
 
@@ -67,7 +67,7 @@ def test_iloc_setitem_single_integer_negative(sample_df):
     assert_frame_equal(bf_df.to_pandas(), pd_df)
 
 
-def test_iloc_setitem_list_integer(sample_df):
+def test_iloc_setitem_columns_list_integer(sample_df):
     bf_df = sample_df.copy()
     pd_df = sample_df.to_pandas()
 
@@ -77,7 +77,7 @@ def test_iloc_setitem_list_integer(sample_df):
     assert_frame_equal(bf_df.to_pandas(), pd_df)
 
 
-def test_iloc_setitem_slice(sample_df):
+def test_iloc_setitem_columns_slice(sample_df):
     bf_df = sample_df.copy()
     pd_df = sample_df.to_pandas()
 
@@ -87,7 +87,7 @@ def test_iloc_setitem_slice(sample_df):
     assert_frame_equal(bf_df.to_pandas(), pd_df)
 
 
-def test_iloc_setitem_boolean_mask(sample_df):
+def test_iloc_setitem_columns_boolean_mask(sample_df):
     bf_df = sample_df.copy()
     pd_df = sample_df.to_pandas()
 
@@ -98,7 +98,7 @@ def test_iloc_setitem_boolean_mask(sample_df):
     assert_frame_equal(bf_df.to_pandas(), pd_df)
 
 
-def test_iloc_setitem_dataframe(sample_df):
+def test_iloc_setitem_columns_dataframe(sample_df):
     bf_df = sample_df.copy()
     pd_df = sample_df.to_pandas()
 
@@ -109,7 +109,7 @@ def test_iloc_setitem_dataframe(sample_df):
     assert_frame_equal(bf_df.to_pandas(), pd_df)
 
 
-def test_iloc_getitem_single_integer(sample_df):
+def test_iloc_getitem_column_single_integer(sample_df):
     bf_df = sample_df
     pd_df = sample_df.to_pandas()
 
@@ -119,7 +119,8 @@ def test_iloc_getitem_single_integer(sample_df):
     assert_series_equal(bf_result, pd_result)
 
 
-def test_iloc_getitem_unordered(sample_df):
+@pytest.fixture
+def unordered_sample_df(sample_df: bpd.DataFrame) -> Generator[bpd.DataFrame, None, None]:
     session = sample_df._session
     original_strictly_ordered = session._strictly_ordered
     original_allow_ambiguity = session._allow_ambiguity
@@ -144,69 +145,69 @@ def test_iloc_getitem_unordered(sample_df):
         ):
             mock_ambiguous.return_value = True
             mock_explicit.return_value = False
-
-            # 1. Column indexing only - should NOT raise
-            try:
-                sample_df.iloc[:, 1]
-            except bigframes.exceptions.OrderRequiredError:
-                pytest.fail("iloc[:, col] raised OrderRequiredError unexpectedly!")
-
-            # 1b. Column indexing with slice(0, None) (NOT exactly `:` but fine) - should NOT raise
-            try:
-                sample_df.iloc[slice(0, None), 1]
-            except bigframes.exceptions.OrderRequiredError:
-                pytest.fail("iloc[0:, col] raised OrderRequiredError unexpectedly!")
-
-            # 1c. Column indexing with slice(None, None, 1) (NOT exactly `:` but fine) - should NOT raise
-            try:
-                sample_df.iloc[slice(None, None, 1), 1]
-            except bigframes.exceptions.OrderRequiredError:
-                pytest.fail("iloc[::1, col] raised OrderRequiredError unexpectedly!")
-
-            # 1d. Column indexing with slice(1, None) (row subset) - should RAISE
-            with pytest.raises(bigframes.exceptions.OrderRequiredError):
-                sample_df.iloc[slice(1, None), 1]
-
-            # 1e. Column indexing with slice(None, 2) (row subset) - should RAISE
-            with pytest.raises(bigframes.exceptions.OrderRequiredError):
-                sample_df.iloc[slice(None, 2), 1]
-
-            # 2. Column setitem only - should NOT raise
-            try:
-                bf_df = sample_df.copy()
-                bf_df.iloc[:, 1] = 99
-            except bigframes.exceptions.OrderRequiredError:
-                pytest.fail(
-                    "iloc[:, col] = val raised OrderRequiredError unexpectedly!"
-                )
-
-            # 3. Row indexing - should RAISE
-            with pytest.raises(bigframes.exceptions.OrderRequiredError):
-                sample_df.iloc[1, :]
-
-            # 4. Single indexer (row indexing) - should RAISE
-            with pytest.raises(bigframes.exceptions.OrderRequiredError):
-                sample_df.iloc[1]
-
+            yield sample_df
     finally:
         session._strictly_ordered = original_strictly_ordered
         session._allow_ambiguity = original_allow_ambiguity
 
 
-def test_iloc_setitem_errors(sample_df):
+@pytest.mark.parametrize(
+    ["key", "value", "expected_error"],
+    [
+        pytest.param((slice(None), 1), None, None, id="col_index"),
+        pytest.param((slice(0, None), 1), None, None, id="col_index_slice_0_none"),
+        pytest.param(
+            (slice(None, None, 1), 1), None, None, id="col_index_slice_none_none_1"
+        ),
+        pytest.param(
+            (slice(1, None), 1),
+            None,
+            bigframes.exceptions.OrderRequiredError,
+            id="col_index_slice_1_none",
+        ),
+        pytest.param(
+            (slice(None, 2), 1),
+            None,
+            bigframes.exceptions.OrderRequiredError,
+            id="col_index_slice_none_2",
+        ),
+        pytest.param((slice(None), 1), 99, None, id="col_setitem"),
+        pytest.param(
+            (1, slice(None)),
+            None,
+            bigframes.exceptions.OrderRequiredError,
+            id="row_index_slice",
+        ),
+        pytest.param(
+            1,
+            None,
+            bigframes.exceptions.OrderRequiredError,
+            id="single_row_index",
+        ),
+    ],
+)
+def test_iloc_getitem_unordered(unordered_sample_df, key, value, expected_error):
+    if value is not None:
+        bf_df = unordered_sample_df.copy()
+        bf_df.iloc[key] = value
+    elif expected_error is not None:
+        with pytest.raises(expected_error):
+            unordered_sample_df.iloc[key]
+    else:
+        unordered_sample_df.iloc[key]
+
+
+@pytest.mark.parametrize(
+    ["key", "expected_error"],
+    [
+        pytest.param((slice(None), 3), IndexError, id="out_of_bounds_positive"),
+        pytest.param((slice(None), -4), IndexError, id="out_of_bounds_negative"),
+        pytest.param((0, 1), NotImplementedError, id="invalid_row_indexer"),
+        pytest.param((slice(None), "B"), TypeError, id="invalid_col_indexer_type"),
+    ],
+)
+def test_iloc_setitem_column_errors(sample_df, key, expected_error):
     bf_df = sample_df.copy()
 
-    # Out of bounds
-    with pytest.raises(IndexError):
-        bf_df.iloc[:, 3] = 99
-
-    with pytest.raises(IndexError):
-        bf_df.iloc[:, -4] = 99
-
-    # Invalid key type (not slice(None) for rows)
-    with pytest.raises(NotImplementedError):
-        bf_df.iloc[0, 1] = 99
-
-    # Invalid col indexer type
-    with pytest.raises(TypeError):
-        bf_df.iloc[:, "B"] = 99
+    with pytest.raises(expected_error):
+        bf_df.iloc[key] = 99
