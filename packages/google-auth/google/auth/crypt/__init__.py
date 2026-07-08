@@ -40,12 +40,14 @@ version is at least 1.4.0.
 from google.auth.crypt import base
 from google.auth.crypt import es
 from google.auth.crypt import es256
+from google.auth.crypt import pqc
 from google.auth.crypt import rsa
 
 EsSigner = es.EsSigner
 EsVerifier = es.EsVerifier
 ES256Signer = es256.ES256Signer
 ES256Verifier = es256.ES256Verifier
+PqcSigner = pqc.PqcSigner
 
 
 # Aliases to maintain the v1.0.0 interface, as the crypt module was split
@@ -54,6 +56,36 @@ Signer = base.Signer
 Verifier = base.Verifier
 RSASigner = rsa.RSASigner
 RSAVerifier = rsa.RSAVerifier
+
+
+def from_service_account_info(info):
+    """Create a Signer instance from a service account info dictionary.
+
+    Automatically detects whether the private key is RSA, ECDSA, or PQC (ML-DSA)
+    and returns the appropriate Signer instance.
+
+    Args:
+        info (Mapping[str, str]): Service account info dictionary.
+
+    Returns:
+        google.auth.crypt.Signer: The constructed signer.
+    """
+    private_key = info.get("private_key")
+    key_id = info.get("private_key_id")
+    if not private_key:
+        raise ValueError("The private_key field is missing from service account info.")
+
+    try:
+        return RSASigner.from_service_account_info(info)
+    except (ValueError, TypeError):
+        pass
+
+    try:
+        return EsSigner.from_string(private_key, key_id=key_id)
+    except (ValueError, TypeError):
+        pass
+
+    return PqcSigner.from_string(private_key, key_id=key_id)
 
 
 def verify_signature(message, signature, certs, verifier_cls=rsa.RSAVerifier):
@@ -89,8 +121,10 @@ __all__ = [
     "EsVerifier",
     "ES256Signer",
     "ES256Verifier",
+    "PqcSigner",
     "RSASigner",
     "RSAVerifier",
     "Signer",
     "Verifier",
+    "from_service_account_info",
 ]
