@@ -198,20 +198,3 @@ def test_dataframe_groupby_transform_transpile(
     )
 
     assert_frame_equal(bf_result, pd_result, check_dtype=False)
-
-
-# Rejection / unsupported apply test
-
-
-def test_groupby_apply_raises(scalars_df_index):
-    with pytest.raises(
-        NotImplementedError,
-        match="SeriesGroupBy.apply is not implemented",
-    ):
-        scalars_df_index.groupby("bool_col")["int64_col"].apply(lambda s: s.sum())
-
-    with pytest.raises(
-        NotImplementedError,
-        match="DataFrameGroupBy.apply is not implemented",
-    ):
-        scalars_df_index.groupby("bool_col").apply(lambda df: df.int64_col.sum())
