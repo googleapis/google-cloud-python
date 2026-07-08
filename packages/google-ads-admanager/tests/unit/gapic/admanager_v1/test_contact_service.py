@@ -1591,6 +1591,9 @@ def test_list_contacts_rest_pager(transport: str = "rest"):
 
         pager = client.list_contacts(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, contact_messages.Contact) for i in results)

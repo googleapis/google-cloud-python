@@ -1564,6 +1564,9 @@ def test_list_labels_rest_pager(transport: str = "rest"):
 
         pager = client.list_labels(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, label_messages.Label) for i in results)
