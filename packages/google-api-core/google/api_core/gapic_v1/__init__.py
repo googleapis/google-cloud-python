@@ -13,12 +13,12 @@
 # limitations under the License.
 
 __lazy_modules__ = {
-    f"{__name__}.client_info",
-    f"{__name__}.config",
-    f"{__name__}.config_async",
-    f"{__name__}.method",
-    f"{__name__}.method_async",
-    f"{__name__}.routing_header",
+    "google.api_core.gapic_v1.client_info",
+    "google.api_core.gapic_v1.config",
+    "google.api_core.gapic_v1.config_async",
+    "google.api_core.gapic_v1.method",
+    "google.api_core.gapic_v1.method_async",
+    "google.api_core.gapic_v1.routing_header",
 }
 
 from google.api_core.gapic_v1 import client_info
