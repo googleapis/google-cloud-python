@@ -198,7 +198,7 @@ def test_load_client_cert_into_context_success(mock_secure_paths):
     assert result is None
     mock_secure_paths.assert_called_once_with(b"cert", b"key", passphrase=b"passphrase")
     mock_ctx.load_cert_chain.assert_called_once_with(
-        certfile="cert_path", keyfile="key_path", password="passphrase"
+        certfile="cert_path", keyfile="key_path", password=b"passphrase"
     )
 
 
@@ -303,7 +303,7 @@ def test_load_default_client_cert_success(
 
     assert mtls.load_default_client_cert(mock_ctx) is True
     mock_ctx.load_cert_chain.assert_called_once_with(
-        certfile="cert_path", keyfile="key_path", password="passphrase"
+        certfile="cert_path", keyfile="key_path", password=b"passphrase"
     )
 
 
@@ -420,15 +420,23 @@ def test_should_use_mtls_endpoint(
     assert result == expected
 
 
+@pytest.mark.parametrize(
+    "invalid_value",
+    [
+        "invalid_value",
+        "   ",
+        "\t",
+    ],
+)
 @mock.patch("google.auth.transport.mtls.getenv", autospec=True)
-def test_should_use_mtls_endpoint_invalid_value(mock_getenv):
+def test_should_use_mtls_endpoint_invalid_value(mock_getenv, invalid_value):
     mock_getenv.side_effect = lambda var, default=None: (
-        "invalid_value" if var == "GOOGLE_API_USE_MTLS_ENDPOINT" else default
+        invalid_value if var == "GOOGLE_API_USE_MTLS_ENDPOINT" else default
     )
     with pytest.raises(exceptions.MutualTLSChannelError) as exc_info:
         mtls.should_use_mtls_endpoint(True)
     assert "Unsupported GOOGLE_API_USE_MTLS_ENDPOINT value" in str(exc_info.value)
-    assert "'invalid_value'" in str(exc_info.value)
+    assert f"'{invalid_value.strip().lower()}'" in str(exc_info.value)
 
 
 @mock.patch("google.auth.transport.mtls.should_use_client_cert", autospec=True)

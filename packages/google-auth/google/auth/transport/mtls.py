@@ -14,6 +14,7 @@
 
 """Utilites for mutual TLS."""
 
+import enum
 import logging
 from os import getenv
 import ssl
@@ -25,6 +26,12 @@ from google.auth.transport import _mtls_helper
 
 
 _LOGGER = logging.getLogger(__name__)
+
+
+class UseMtlsEndpointMode(enum.Enum):
+    ALWAYS = "always"
+    NEVER = "never"
+    AUTO = "auto"
 
 
 def has_default_client_cert_source(include_context_aware=True):
@@ -181,17 +188,12 @@ def _load_client_cert_into_context(
             key_path,
             passphrase_val,
         ):
-            password_val = (
-                passphrase_val.decode("utf-8")
-                if isinstance(passphrase_val, bytes)
-                else passphrase_val
-            )
             if cert_path is None or key_path is None:
                 raise exceptions.MutualTLSChannelError(
                     "Failed to generate temporary file paths for the client certificate and key."
                 )
             ctx.load_cert_chain(
-                certfile=cert_path, keyfile=key_path, password=password_val
+                certfile=cert_path, keyfile=key_path, password=passphrase_val
             )
     except (
         ssl.SSLError,
@@ -240,10 +242,11 @@ def load_default_client_cert(ctx: ssl.SSLContext) -> bool:
     ) as caught_exc:
         new_exc = exceptions.MutualTLSChannelError(caught_exc)
         raise new_exc from caught_exc
-    if not has_cert:
-        return False
-    _load_client_cert_into_context(ctx, cert_bytes, key_bytes, passphrase)
-    return True
+    else:
+        if not has_cert:
+            return False
+        _load_client_cert_into_context(ctx, cert_bytes, key_bytes, passphrase)
+        return True
 
 
 def get_default_ssl_context() -> Optional[ssl.SSLContext]:
@@ -285,16 +288,19 @@ def should_use_mtls_endpoint(
     if client_cert_available is None:
         client_cert_available = should_use_client_cert()
 
-    use_mtls_endpoint = getenv(environment_vars.GOOGLE_API_USE_MTLS_ENDPOINT, "auto")
+    use_mtls_endpoint = getenv(environment_vars.GOOGLE_API_USE_MTLS_ENDPOINT)
     use_mtls_endpoint = (use_mtls_endpoint or "auto").strip().lower()
-    if use_mtls_endpoint == "always":
-        return True
-    if use_mtls_endpoint == "never":
-        return False
-    if use_mtls_endpoint == "auto":
-        return client_cert_available
+    try:
+        mode = UseMtlsEndpointMode(use_mtls_endpoint)
+    except ValueError:
+        raise exceptions.MutualTLSChannelError(
+            f"Unsupported {environment_vars.GOOGLE_API_USE_MTLS_ENDPOINT} value "
+            f"'{use_mtls_endpoint}'. Accepted values: never, auto, always."
+        )
 
-    raise exceptions.MutualTLSChannelError(
-        f"Unsupported {environment_vars.GOOGLE_API_USE_MTLS_ENDPOINT} value "
-        f"'{use_mtls_endpoint}'. Accepted values: never, auto, always."
-    )
+    if mode == UseMtlsEndpointMode.ALWAYS:
+        return True
+    if mode == UseMtlsEndpointMode.NEVER:
+        return False
+    if mode == UseMtlsEndpointMode.AUTO:
+        return client_cert_available
