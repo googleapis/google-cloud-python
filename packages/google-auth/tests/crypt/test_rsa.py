@@ -120,6 +120,7 @@ class TestRSASigner:
         assert isinstance(signer._impl, _cryptography_rsa.RSASigner)
         assert signer._impl._key == cryptography_private_key
         assert signer._impl.key_id == "123"
+        assert signer.algorithm == "RS256"
 
     @pytest.mark.skipif(not rsa_lib, reason="rsa library not installed")
     def test_init_with_rsa_key(self, rsa_private_key):

@@ -96,7 +96,7 @@ def encode(signer, payload, header=None, key_id=None):
     header.update({"typ": "JWT"})
 
     if "alg" not in header:
-        if es is not None and isinstance(signer, es.EsSigner):
+        if getattr(signer, "algorithm", None):
             header.update({"alg": signer.algorithm})
         else:
             header.update({"alg": "RS256"})
