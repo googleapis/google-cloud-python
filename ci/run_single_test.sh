@@ -105,6 +105,29 @@ case ${TEST_TYPE} in
             ;;
         esac
         ;;
+    import_profile)
+        python -m pip install .
+        PKG_NAME=$(python setup.py --name)
+        MODULE=$(python -c "
+import sys, importlib.util
+pkg = '${PKG_NAME}'
+candidates = [
+    pkg.replace('-', '.'),
+    '.'.join(pkg.split('-')[:-1]) + '_' + pkg.split('-')[-1] if '-' in pkg else pkg,
+    pkg.replace('-', '_')
+]
+for mod in candidates:
+    try:
+        if importlib.util.find_spec(mod):
+            print(mod)
+            sys.exit(0)
+    except Exception:
+        pass
+print(candidates[0])
+")
+        python ${PROJECT_ROOT}/scripts/import_profiler/profiler.py --module "${MODULE}" --iterations 10
+        retval=$?
+        ;;
     *)
         nox -s ${TEST_TYPE}
         retval=$?
