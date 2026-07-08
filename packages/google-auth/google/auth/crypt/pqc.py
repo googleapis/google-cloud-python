@@ -14,15 +14,19 @@
 
 """PQC (ML-DSA) verifier and signer that use the ``cryptography`` library."""
 
-from typing import Any, Dict, Optional, Union
+from typing import Any, Optional, Union
 
 from cryptography.hazmat import backends
-from cryptography.hazmat.primitives import serialization
+
+try:
+    from cryptography.hazmat.primitives import serialization
+except ImportError:  # pragma: NO COVER
+    pass
 
 try:
     from cryptography.hazmat.primitives.asymmetric import mldsa
 except ImportError:  # pragma: NO COVER
-    mldsa = None
+    mldsa = None  # type: ignore
 
 from google.auth import _helpers
 from google.auth.crypt import base
@@ -61,12 +65,12 @@ class PqcSigner(base.Signer, base.FromServiceAccountMixin):
         return self._key_id
 
     @_helpers.copy_docstring(base.Signer)
-    def sign(self, message: bytes) -> bytes:
+    def sign(self, message: Union[str, bytes]) -> bytes:
         message = _helpers.to_bytes(message)
         return self._key.sign(message)
 
     @classmethod
-    def from_string(
+    def from_string(  # type: ignore[override]
         cls, key: Union[bytes, str], key_id: Optional[str] = None
     ) -> "PqcSigner":
         """Construct a PqcSigner from a private key in PEM format.

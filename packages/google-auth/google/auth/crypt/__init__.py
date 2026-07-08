@@ -37,6 +37,8 @@ Note that these two classes are only available if your `cryptography` dependency
 version is at least 1.4.0.
 """
 
+from typing import Mapping
+
 from google.auth.crypt import base
 from google.auth.crypt import es
 from google.auth.crypt import es256
@@ -58,7 +60,7 @@ RSASigner = rsa.RSASigner
 RSAVerifier = rsa.RSAVerifier
 
 
-def from_service_account_info(info):
+def from_service_account_info(info: Mapping[str, str]) -> base.Signer:
     """Create a Signer instance from a service account info dictionary.
 
     Automatically detects whether the private key is RSA, ECDSA, or PQC (ML-DSA)
