@@ -156,9 +156,10 @@ def get_sign_callback(signer_lib, config_file_path):
         digest = _compute_sha256_digest(tbs, tbs_len)
         digestArray = ctypes.c_char * len(digest)
 
-        # reserve 2000 bytes for the signature, shoud be more then enough.
-        # RSA signature is 256 bytes, EC signature is 70~72.
-        sig_holder_len = 2000
+        # Reserve 16384 bytes for the signature to accommodate Post-Quantum Cryptography (PQC)
+        # signatures. RSA signature is 256 bytes, EC signature is ~72 bytes, ML-DSA-65 is 3309 bytes,
+        # ML-DSA-87 is 4627 bytes, and SLH-DSA is up to 7856 bytes.
+        sig_holder_len = 16384
         sig_holder = ctypes.create_string_buffer(sig_holder_len)
 
         signature_len = signer_lib.SignForPython(
