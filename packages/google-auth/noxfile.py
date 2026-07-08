@@ -177,19 +177,19 @@ def unit(session, install_extras):
         CURRENT_DIRECTORY / "testing" / f"constraints-extras-{session.python}.txt"
     )
 
+    install_args = []
     if install_extras:
         # rsa and oauth2client were both archived and support dropped,
         # but we still  test old code paths
         session.install("oauth2client")
-        extra_str = ".[testing,enterprise_cert,rsa]"
+        install_args.extend(["-e", ".[testing,enterprise_cert,rsa]"])
+        if extras_constraints_path.exists():
+            install_args.extend(["-c", str(extras_constraints_path)])
     else:
-        extra_str = ".[testing]"
+        install_args.extend(["-e", ".[testing]"])
 
-    install_args = ["-e", extra_str]
     if constraints_path.exists():
         install_args.extend(["-c", str(constraints_path)])
-    if install_extras and extras_constraints_path.exists():
-        install_args.extend(["-c", str(extras_constraints_path)])
 
     session.install(*install_args)
     session.run(
