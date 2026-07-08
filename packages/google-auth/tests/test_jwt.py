@@ -142,6 +142,21 @@ def token_factory(signer, es256_signer, es384_signer):
     return factory
 
 
+def test_encode_mock_signer_algorithm():
+    # Verify that passing a mock object as signer (where getattr(signer, "algorithm", None)
+    # returns another mock object) correctly falls back to "RS256" without raising JSON errors.
+    mock_signer = mock.MagicMock()
+    mock_signer.sign.return_value = b"mock_sig"
+
+    token = jwt.encode(mock_signer, {"sub": "user@example.com"})
+    header_b64 = token.split(b".")[0]
+    header = json.loads(
+        _helpers._unpadded_urlsafe_b64decode(header_b64).decode("utf-8")
+    )
+
+    assert header["alg"] == "RS256"
+
+
 def test_decode_valid(token_factory):
     payload = jwt.decode(token_factory(), certs=PUBLIC_CERT_BYTES)
     assert payload["aud"] == "audience@example.com"
