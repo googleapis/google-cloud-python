@@ -12,8 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import base64
 import datetime
+import decimal
 import hashlib
+import json
 import logging
 import math
 import pathlib
@@ -22,8 +25,10 @@ import traceback
 import typing
 from typing import Dict, Generator, Optional
 
+import db_dtypes  # type: ignore[import-untyped]
 import fsspec  # type: ignore[import-untyped]
 import gcsfs  # type: ignore[import-untyped]
+import geopandas as gpd  # type: ignore[import-untyped]
 import google.api_core.exceptions
 import google.cloud.bigquery as bigquery
 import google.cloud.bigquery_connection_v1 as bigquery_connection_v1
@@ -501,13 +506,6 @@ def nested_structs_pandas_df(nested_structs_pandas_type: pd.ArrowDtype) -> pd.Da
 
     Manually parses using json.loads to preserve data types.
     """
-    import base64
-    import decimal
-    import json
-
-    import db_dtypes  # type: ignore[import-untyped]
-    import geopandas as gpd  # type: ignore[import-untyped]
-
     with open(DATA_DIR / "nested_structs.jsonl") as f:
         raw_rows = [json.loads(line) for line in f]
 

@@ -12,9 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import datetime
+import json
 import pathlib
 import typing
 
+import numpy as np
 import pandas as pd
 import pyarrow as pa
 import pytest
@@ -178,9 +181,6 @@ def nested_structs_types_df(compiler_session_w_nested_structs_types) -> bpd.Data
 def nested_structs_pandas_df() -> pd.DataFrame:
     """Returns a pandas DataFrame containing STRUCT types and using the `id`
     column as the index."""
-    import json
-
-    import numpy as np
 
     df = pd.read_json(
         DATA_DIR / "nested_structs.jsonl",
@@ -208,8 +208,6 @@ def nested_structs_pandas_df() -> pd.DataFrame:
     df["json_col"] = df["json_col"].apply(to_json_str).astype(dtypes.JSON_DTYPE)
 
     # timestamp_col
-    import datetime
-
     def parse_timestamp(val):
         if pd.isna(val):
             return None
