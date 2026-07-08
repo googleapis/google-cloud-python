@@ -195,9 +195,9 @@ class TestAsyncAppendableObjectWriter:
         writer._is_stream_open = True
         writer.write_obj_stream = mock_appendable_writer["mock_stream"]
 
-        mock_appendable_writer["mock_stream"].recv.return_value = (
-            storage_type.BidiWriteObjectResponse(persisted_size=100)
-        )
+        mock_appendable_writer[
+            "mock_stream"
+        ].recv.return_value = storage_type.BidiWriteObjectResponse(persisted_size=100)
 
         size = await writer.state_lookup()
 
@@ -408,9 +408,9 @@ class TestAsyncAppendableObjectWriter:
         writer.write_obj_stream = mock_appendable_writer["mock_stream"]
         writer.bytes_appended_since_last_flush = 100
 
-        mock_appendable_writer["mock_stream"].recv.return_value = (
-            storage_type.BidiWriteObjectResponse(persisted_size=200)
-        )
+        mock_appendable_writer[
+            "mock_stream"
+        ].recv.return_value = storage_type.BidiWriteObjectResponse(persisted_size=200)
 
         await writer.flush()
 
@@ -451,9 +451,9 @@ class TestAsyncAppendableObjectWriter:
         writer.write_obj_stream = mock_appendable_writer["mock_stream"]
 
         resource = storage_type.Object(size=999)
-        mock_appendable_writer["mock_stream"].recv.return_value = (
-            storage_type.BidiWriteObjectResponse(resource=resource)
-        )
+        mock_appendable_writer[
+            "mock_stream"
+        ].recv.return_value = storage_type.BidiWriteObjectResponse(resource=resource)
 
         res = await writer.finalize()
 
@@ -514,9 +514,9 @@ class TestAsyncAppendableObjectWriter:
         writer.write_obj_stream = mock_appendable_writer["mock_stream"]
 
         resource = storage_type.Object(size=999)
-        mock_appendable_writer["mock_stream"].recv.return_value = (
-            storage_type.BidiWriteObjectResponse(resource=resource)
-        )
+        mock_appendable_writer[
+            "mock_stream"
+        ].recv.return_value = storage_type.BidiWriteObjectResponse(resource=resource)
 
         checksum = 12345678
         res = await writer.finalize(full_object_checksum=checksum)
