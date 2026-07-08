@@ -839,11 +839,13 @@ class TestBigtableDataClientAsync:
             assert len(client._instance_owners[instance_1_key]) == 0
             assert len(client._instance_owners[instance_2_key]) == 0
 
-    @pytest.mark.parametrize("method", ["get_table", "get_authorized_view"])
+    @pytest.mark.parametrize(
+        "method", ["get_table", "get_authorized_view", "get_materialized_view"]
+    )
     @CrossSync.pytest
     async def test_get_api_surface(self, method):
         """
-        test client.get_table and client.get_authorized_view
+        test client.get_table, client.get_authorized_view, and client.get_materialized_view
         """
         from google.cloud.bigtable.data._helpers import _WarmedInstanceKey
 
@@ -871,14 +873,28 @@ class TestBigtableDataClientAsync:
                 surface.authorized_view_name
                 == f"projects/{client.project}/instances/{expected_instance_id}/tables/{expected_table_id}/authorizedViews/view_id"
             )
+        elif method == "get_materialized_view":
+            surface = client.get_materialized_view(
+                expected_instance_id,
+                "view_id",
+                expected_app_profile_id,
+            )
+            assert isinstance(
+                surface, CrossSync.TestMaterializedView._get_target_class()
+            )
+            assert (
+                surface.materialized_view_name
+                == f"projects/{client.project}/instances/{expected_instance_id}/materializedViews/view_id"
+            )
         else:
             raise TypeError(f"unexpected method: {method}")
         await CrossSync.yield_to_event_loop()
-        assert surface.table_id == expected_table_id
-        assert (
-            surface.table_name
-            == f"projects/{client.project}/instances/{expected_instance_id}/tables/{expected_table_id}"
-        )
+        if method != "get_materialized_view":
+            assert surface.table_id == expected_table_id
+            assert (
+                surface.table_name
+                == f"projects/{client.project}/instances/{expected_instance_id}/tables/{expected_table_id}"
+            )
         assert surface.instance_id == expected_instance_id
         assert (
             surface.instance_name
@@ -891,16 +907,21 @@ class TestBigtableDataClientAsync:
         assert client._instance_owners[instance_key] == {id(surface)}
         await client.close()
 
-    @pytest.mark.parametrize("method", ["get_table", "get_authorized_view"])
+    @pytest.mark.parametrize(
+        "method", ["get_table", "get_authorized_view", "get_materialized_view"]
+    )
     @CrossSync.pytest
     async def test_api_surface_arg_passthrough(self, method):
         """
-        All arguments passed in get_table and get_authorized_view should be sent to constructor
+        All arguments passed in get_table, get_authorized_view, and get_materialized_view
+        should be sent to constructor
         """
         if method == "get_table":
             surface_type = CrossSync.TestTable._get_target_class()
         elif method == "get_authorized_view":
             surface_type = CrossSync.TestAuthorizedView._get_target_class()
+        elif method == "get_materialized_view":
+            surface_type = CrossSync.TestMaterializedView._get_target_class()
         else:
             raise TypeError(f"unexpected method: {method}")
 
@@ -929,11 +950,13 @@ class TestBigtableDataClientAsync:
                     **expected_kwargs,
                 )
 
-    @pytest.mark.parametrize("method", ["get_table", "get_authorized_view"])
+    @pytest.mark.parametrize(
+        "method", ["get_table", "get_authorized_view", "get_materialized_view"]
+    )
     @CrossSync.pytest
     async def test_api_surface_context_manager(self, method):
         """
-        get_table and get_authorized_view should work as context managers
+        get_table, get_authorized_view, and get_materialized_view should work as context managers
         """
         from functools import partial
 
@@ -948,6 +971,8 @@ class TestBigtableDataClientAsync:
             surface_type = CrossSync.TestTable._get_target_class()
         elif method == "get_authorized_view":
             surface_type = CrossSync.TestAuthorizedView._get_target_class()
+        elif method == "get_materialized_view":
+            surface_type = CrossSync.TestMaterializedView._get_target_class()
         else:
             raise TypeError(f"unexpected method: {method}")
 
@@ -968,16 +993,24 @@ class TestBigtableDataClientAsync:
                         "view_id",
                         expected_app_profile_id,
                     )
+                elif method == "get_materialized_view":
+                    fn = partial(
+                        client.get_materialized_view,
+                        expected_instance_id,
+                        "view_id",
+                        expected_app_profile_id,
+                    )
                 else:
                     raise TypeError(f"unexpected method: {method}")
                 async with fn() as table:
                     await CrossSync.yield_to_event_loop()
                     assert isinstance(table, surface_type)
-                    assert table.table_id == expected_table_id
-                    assert (
-                        table.table_name
-                        == f"projects/{expected_project_id}/instances/{expected_instance_id}/tables/{expected_table_id}"
-                    )
+                    if method != "get_materialized_view":
+                        assert table.table_id == expected_table_id
+                        assert (
+                            table.table_name
+                            == f"projects/{expected_project_id}/instances/{expected_instance_id}/tables/{expected_table_id}"
+                        )
                     assert table.instance_id == expected_instance_id
                     assert (
                         table.instance_name
@@ -1621,6 +1654,197 @@ class TestAuthorizedViewsAsync(CrossSync.TestTable):
         assert view._register_instance_future.done()
         assert not view._register_instance_future.cancelled()
         assert view._register_instance_future.exception() is None
+        await client.close()
+
+
+@CrossSync.convert_class(
+    "TestMaterializedView", add_mapping_for_name="TestMaterializedView"
+)
+class TestMaterializedViewsAsync(CrossSync.TestTable):
+    """
+    Inherit tests from TestTableAsync, with some modifications
+    """
+
+    @staticmethod
+    @CrossSync.convert
+    def _get_target_class():
+        return CrossSync.MaterializedView
+
+    def _make_one(
+        self,
+        client,
+        instance_id="instance",
+        view_id="view",
+        app_profile_id=None,
+        **kwargs,
+    ):
+        return self._get_target_class()(
+            client, instance_id, view_id, app_profile_id, **kwargs
+        )
+
+    @CrossSync.pytest
+    async def test_ctor(self):
+        from google.cloud.bigtable.data._helpers import _WarmedInstanceKey
+        from google.cloud.bigtable.data._metrics import (
+            BigtableClientSideMetricsController,
+        )
+
+        expected_instance_id = "instance-id"
+        expected_view_id = "view_id"
+        expected_app_profile_id = "app-profile-id"
+        expected_operation_timeout = 123
+        expected_attempt_timeout = 12
+        expected_read_rows_operation_timeout = 1.5
+        expected_read_rows_attempt_timeout = 0.5
+        expected_mutate_rows_operation_timeout = 2.5
+        expected_mutate_rows_attempt_timeout = 0.75
+        client = self._make_client()
+        assert not client._active_instances
+
+        view = self._get_target_class()(
+            client,
+            expected_instance_id,
+            expected_view_id,
+            expected_app_profile_id,
+            default_operation_timeout=expected_operation_timeout,
+            default_attempt_timeout=expected_attempt_timeout,
+            default_read_rows_operation_timeout=expected_read_rows_operation_timeout,
+            default_read_rows_attempt_timeout=expected_read_rows_attempt_timeout,
+            default_mutate_rows_operation_timeout=expected_mutate_rows_operation_timeout,
+            default_mutate_rows_attempt_timeout=expected_mutate_rows_attempt_timeout,
+        )
+        await CrossSync.yield_to_event_loop()
+        assert view.instance_id == expected_instance_id
+        assert (
+            view.instance_name
+            == f"projects/{client.project}/instances/{expected_instance_id}"
+        )
+        assert view.materialized_view_id == expected_view_id
+        assert (
+            view.materialized_view_name
+            == f"projects/{client.project}/instances/{expected_instance_id}/materializedViews/{expected_view_id}"
+        )
+        assert view.app_profile_id == expected_app_profile_id
+        assert view.client is client
+        instance_key = _WarmedInstanceKey(view.instance_name, view.app_profile_id)
+        assert instance_key in client._active_instances
+        assert client._instance_owners[instance_key] == {id(view)}
+        assert isinstance(view._metrics, BigtableClientSideMetricsController)
+        assert view.default_operation_timeout == expected_operation_timeout
+        assert view.default_attempt_timeout == expected_attempt_timeout
+        assert (
+            view.default_read_rows_operation_timeout
+            == expected_read_rows_operation_timeout
+        )
+        assert (
+            view.default_read_rows_attempt_timeout == expected_read_rows_attempt_timeout
+        )
+        assert (
+            view.default_mutate_rows_operation_timeout
+            == expected_mutate_rows_operation_timeout
+        )
+        assert (
+            view.default_mutate_rows_attempt_timeout
+            == expected_mutate_rows_attempt_timeout
+        )
+        # ensure task reaches completion
+        await view._register_instance_future
+        assert view._register_instance_future.done()
+        assert not view._register_instance_future.cancelled()
+        assert view._register_instance_future.exception() is None
+        await client.close()
+
+    @pytest.mark.parametrize(
+        "fn_name,fn_args,gapic_fn",
+        [
+            ("read_rows_stream", (ReadRowsQuery(),), "read_rows"),
+            ("read_rows", (ReadRowsQuery(),), "read_rows"),
+            ("read_row", (b"row_key",), "read_rows"),
+            ("read_rows_sharded", ([ReadRowsQuery()],), "read_rows"),
+            ("row_exists", (b"row_key",), "read_rows"),
+            ("sample_row_keys", (), "sample_row_keys"),
+        ],
+    )
+    @pytest.mark.parametrize("include_app_profile", [True, False])
+    @CrossSync.pytest
+    @CrossSync.convert
+    async def test_call_metadata(self, include_app_profile, fn_name, fn_args, gapic_fn):
+        """
+        Materialized views only support read operations, and route requests
+        using the instance name rather than a table name
+        """
+        profile = "profile" if include_app_profile else None
+        client = self._make_client()
+        # create mock for rpc stub
+        transport_mock = mock.MagicMock()
+        rpc_mock = CrossSync.Mock()
+        transport_mock._wrapped_methods.__getitem__.return_value = rpc_mock
+        gapic_client = client._gapic_client
+        if CrossSync.is_async:
+            # inner BigtableClient is held as ._client for BigtableAsyncClient
+            gapic_client = gapic_client._client
+        gapic_client._transport = transport_mock
+        gapic_client._is_universe_domain_valid = True
+        view = self._make_one(client, app_profile_id=profile)
+        try:
+            test_fn = view.__getattribute__(fn_name)
+            maybe_stream = await test_fn(*fn_args)
+            [i async for i in maybe_stream]
+        except Exception:
+            # we expect an exception from attempting to call the mock
+            pass
+        assert rpc_mock.call_count == 1
+        kwargs = rpc_mock.call_args_list[0][1]
+        metadata = kwargs["metadata"]
+        # expect single metadata entry
+        assert len(metadata) == 1
+        # expect x-goog-request-params tag
+        assert metadata[0][0] == "x-goog-request-params"
+        routing_str = metadata[0][1]
+        # exact match, to catch routing accidentally sending the full view path
+        assert f"name={view.instance_name}" in routing_str.split("&")
+        if include_app_profile:
+            assert "app_profile_id=profile" in routing_str
+        else:
+            # empty app_profile_id should send empty string
+            assert "app_profile_id=" in routing_str
+
+    @pytest.mark.parametrize(
+        "fn_name,fn_args",
+        [
+            ("mutate_row", (b"row_key", [mutations.DeleteAllFromRow()])),
+            (
+                "bulk_mutate_rows",
+                ([mutations.RowMutationEntry(b"key", [mutations.DeleteAllFromRow()])],),
+            ),
+            ("check_and_mutate_row", (b"row_key", None)),
+            ("read_modify_write_row", (b"row_key", IncrementRule("f", "q"))),
+        ],
+    )
+    @CrossSync.pytest
+    async def test_mutation_methods_unsupported(self, fn_name, fn_args):
+        """
+        Mutation methods should raise NotImplementedError instead of building
+        a request the service can't route
+        """
+        client = self._make_client()
+        view = self._make_one(client)
+        with pytest.raises(NotImplementedError) as e:
+            await view.__getattribute__(fn_name)(*fn_args)
+        assert "not supported for materialized views" in str(e.value)
+        await client.close()
+
+    @CrossSync.pytest
+    async def test_mutations_batcher_unsupported(self):
+        """
+        mutations_batcher should raise NotImplementedError immediately, rather
+        than deferring the failure to a background flush
+        """
+        client = self._make_client()
+        view = self._make_one(client)
+        with pytest.raises(NotImplementedError) as e:
+            view.mutations_batcher()
+        assert "not supported for materialized views" in str(e.value)
         await client.close()
 
 

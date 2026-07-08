@@ -19,6 +19,7 @@ from google.cloud.bigtable.data._async._read_rows import _ReadRowsOperationAsync
 from google.cloud.bigtable.data._async.client import (
     AuthorizedViewAsync,
     BigtableDataClientAsync,
+    MaterializedViewAsync,
     TableAsync,
 )
 from google.cloud.bigtable.data._async.mutations_batcher import MutationsBatcherAsync
@@ -33,6 +34,7 @@ from google.cloud.bigtable.data._sync_autogen._read_rows import _ReadRowsOperati
 from google.cloud.bigtable.data._sync_autogen.client import (
     AuthorizedView,
     BigtableDataClient,
+    MaterializedView,
     Table,
 )
 from google.cloud.bigtable.data._sync_autogen.mutations_batcher import MutationsBatcher
@@ -80,10 +82,12 @@ __all__ = (
     "BigtableDataClientAsync",
     "TableAsync",
     "AuthorizedViewAsync",
+    "MaterializedViewAsync",
     "MutationsBatcherAsync",
     "BigtableDataClient",
     "Table",
     "AuthorizedView",
+    "MaterializedView",
     "MutationsBatcher",
     "RowKeySamples",
     "ReadRowsQuery",
