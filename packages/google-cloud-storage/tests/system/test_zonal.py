@@ -10,6 +10,7 @@ from io import BytesIO
 # python additional imports
 import google_crc32c
 import pytest
+from google.api_core import exceptions
 from google.api_core.exceptions import FailedPrecondition, NotFound, OutOfRange
 
 # current library imports
@@ -1096,7 +1097,7 @@ def test_finalize_with_incorrect_checksum_fails(
         await writer.append(object_data)
 
         # Finalization should fail with an exception due to mismatch
-        with pytest.raises(Exception) as excinfo:
+        with pytest.raises(exceptions.InvalidArgument) as excinfo:
             await writer.finalize(full_object_checksum=incorrect_checksum)
 
         # Assert that the error relates to checksum verification/mismatch
