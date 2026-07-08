@@ -111,26 +111,44 @@ def test_get_sign_callback():
 
 
 def test_get_sign_callback_pqc_signature_size():
-    # ML-DSA-65 (FIPS 204) signature is 3,309 bytes; ML-DSA-87 is 4,627 bytes.
-    mock_sig_len = 3309
+    # ML-DSA-65 is 3,309 B; SLH-DSA-128f is 17,088 B; SLH-DSA-256f is 49,856 B.
+    for mock_sig_len in (3309, 17088, 49856):
+        mock_signer_lib = mock.MagicMock()
+        mock_signer_lib.SignForPython.return_value = mock_sig_len
+
+        sign_callback = _custom_tls_signer.get_sign_callback(
+            mock_signer_lib, FAKE_ENTERPRISE_CERT_FILE_PATH
+        )
+
+        to_be_signed = ctypes.POINTER(ctypes.c_ubyte)()
+        to_be_signed_len = 32
+        returned_sig_array = (ctypes.c_ubyte * mock_sig_len)()
+        mock_sig_array = ctypes.cast(returned_sig_array, ctypes.POINTER(ctypes.c_ubyte))
+        returned_sign_len = ctypes.c_ulong()
+        mock_sig_len_array = ctypes.byref(returned_sign_len)
+
+        assert sign_callback(
+            mock_sig_array, mock_sig_len_array, to_be_signed, to_be_signed_len
+        )
+        assert returned_sign_len.value == mock_sig_len
+
+
+def test_get_sign_callback_oversized_signature():
+    # Verify that signature lengths exceeding 65536 bytes fail gracefully (return 0).
     mock_signer_lib = mock.MagicMock()
-    mock_signer_lib.SignForPython.return_value = mock_sig_len
+    mock_signer_lib.SignForPython.return_value = 70000
 
     sign_callback = _custom_tls_signer.get_sign_callback(
         mock_signer_lib, FAKE_ENTERPRISE_CERT_FILE_PATH
     )
 
-    to_be_signed = ctypes.POINTER(ctypes.c_ubyte)()
-    to_be_signed_len = 32
-    returned_sig_array = (ctypes.c_ubyte * 4627)()
+    returned_sig_array = (ctypes.c_ubyte * 100)()
     mock_sig_array = ctypes.cast(returned_sig_array, ctypes.POINTER(ctypes.c_ubyte))
     returned_sign_len = ctypes.c_ulong()
-    mock_sig_len_array = ctypes.byref(returned_sign_len)
 
-    assert sign_callback(
-        mock_sig_array, mock_sig_len_array, to_be_signed, to_be_signed_len
+    assert not sign_callback(
+        mock_sig_array, ctypes.byref(returned_sign_len), None, 0
     )
-    assert returned_sign_len.value == mock_sig_len
 
 
 def test_get_sign_callback_failed_to_sign():
