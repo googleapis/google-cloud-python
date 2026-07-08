@@ -133,3 +133,7 @@ GOOGLE_API_PREVENT_AGENT_TOKEN_SHARING_FOR_GCP_SERVICES = (
     "GOOGLE_API_PREVENT_AGENT_TOKEN_SHARING_FOR_GCP_SERVICES"
 )
 """Environment variable to prevent agent token sharing for GCP services."""
+
+GOOGLE_CLOUD_DISABLE_PQC = "GOOGLE_CLOUD_DISABLE_PQC"
+"""Environment variable to disable Post-Quantum Cryptography (PQC) key exchange negotiation in TLS."""
+

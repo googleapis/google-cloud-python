@@ -87,3 +87,39 @@ class PqcSigner(base.Signer, base.FromServiceAccountMixin):
             key_bytes, password=None, backend=_BACKEND
         )
         return cls(private_key, key_id=key_id)
+
+
+def is_pqc_disabled() -> bool:
+    """Checks whether Post-Quantum Cryptography (PQC) TLS key exchange is disabled via environment variable.
+
+    Returns:
+        bool: True if GOOGLE_CLOUD_DISABLE_PQC is set to '1', 'true', or 'yes'.
+    """
+    import os
+    from google.auth import environment_vars
+
+    val = os.environ.get(environment_vars.GOOGLE_CLOUD_DISABLE_PQC, "").lower()
+    return val in ("1", "true", "yes")
+
+
+def configure_ssl_context_pqc(ssl_context: Any) -> Any:
+    """Configures an ssl.SSLContext object based on PQC environment settings.
+
+    If PQC is disabled via GOOGLE_CLOUD_DISABLE_PQC, this function restricts the
+    ECDH / key-exchange curves to classical algorithms (e.g. prime256v1:secp384r1),
+    disabling hybrid PQC key-exchange (X25519MLKEM768).
+
+    Args:
+        ssl_context: An ssl.SSLContext instance.
+
+    Returns:
+        The configured ssl.SSLContext instance.
+    """
+    if is_pqc_disabled():
+        if hasattr(ssl_context, "set_ecdh_curve"):
+            try:
+                ssl_context.set_ecdh_curve("prime256v1:secp384r1")
+            except Exception:  # pragma: NO COVER
+                pass
+    return ssl_context
+
