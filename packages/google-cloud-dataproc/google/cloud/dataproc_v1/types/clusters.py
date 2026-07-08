@@ -46,6 +46,7 @@ __protobuf__ = proto.module(
         "InstanceFlexibilityPolicy",
         "AcceleratorConfig",
         "DiskConfig",
+        "AttachedDiskConfig",
         "AuxiliaryNodeGroup",
         "NodeGroup",
         "NodeInitializationAction",
@@ -1305,6 +1306,14 @@ class InstanceFlexibilityPolicy(proto.Message):
                 to next rank based on availability. Machine
                 types and instance selections with the same
                 priority have the same preference.
+            disk_config (google.cloud.dataproc_v1.types.DiskConfig):
+                Optional. Disk configuration to apply to the
+                instances in this instance selection. If
+                specified on any entry in instanceSelectionList,
+                then it must be specified on every entry in
+                instanceSelectionList and the
+                instanceGroupConfig must not specify any
+                diskConfig.
         """
 
         machine_types: MutableSequence[str] = proto.RepeatedField(
@@ -1314,6 +1323,11 @@ class InstanceFlexibilityPolicy(proto.Message):
         rank: int = proto.Field(
             proto.INT32,
             number=2,
+        )
+        disk_config: "DiskConfig" = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            message="DiskConfig",
         )
 
     class InstanceSelectionResult(proto.Message):
@@ -1403,19 +1417,19 @@ class AcceleratorConfig(proto.Message):
 
 
 class DiskConfig(proto.Message):
-    r"""Specifies the config of disk options for a group of VM
-    instances.
+    r"""Specifies the config of boot disk and attached disk options
+    for a group of VM instances.
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         boot_disk_type (str):
-            Optional. Type of the boot disk (default is "pd-standard").
-            Valid values: "pd-balanced" (Persistent Disk Balanced Solid
-            State Drive), "pd-ssd" (Persistent Disk Solid State Drive),
-            or "pd-standard" (Persistent Disk Hard Disk Drive). See
-            `Disk
+            Optional. Type of the boot disk (default is
+            ``pd-standard``). Valid values: ``pd-balanced`` (Persistent
+            Disk Balanced Solid State Drive), ``pd-ssd`` (Persistent
+            Disk Solid State Drive), or ``pd-standard`` (Persistent Disk
+            Hard Disk Drive). See `Disk
             types <https://cloud.google.com/compute/docs/disks#disk-types>`__.
         boot_disk_size_gb (int):
             Optional. Size in GB of the boot disk
@@ -1432,25 +1446,31 @@ class DiskConfig(proto.Message):
             Note: Local SSD options may vary by machine type and number
             of vCPUs selected.
         local_ssd_interface (str):
-            Optional. Interface type of local SSDs (default is "scsi").
-            Valid values: "scsi" (Small Computer System Interface),
-            "nvme" (Non-Volatile Memory Express). See `local SSD
+            Optional. Interface type of local SSDs (default is
+            ``scsi``). Valid values: ``scsi`` (Small Computer System
+            Interface), ``nvme`` (Non-Volatile Memory Express). See
+            `local SSD
             performance <https://cloud.google.com/compute/docs/disks/local-ssd#performance>`__.
         boot_disk_provisioned_iops (int):
             Optional. Indicates how many IOPS to provision for the disk.
             This sets the number of I/O operations per second that the
-            disk can handle. Note: This field is only supported if
-            boot_disk_type is hyperdisk-balanced.
+            disk can handle. **This field is supported only if
+            [boot_disk_type][google.cloud.dataproc.v1.DiskConfig.boot_disk_type]
+            is ``hyperdisk-balanced``.**
 
             This field is a member of `oneof`_ ``_boot_disk_provisioned_iops``.
         boot_disk_provisioned_throughput (int):
             Optional. Indicates how much throughput to provision for the
             disk. This sets the number of throughput mb per second that
             the disk can handle. Values must be greater than or equal to
-            1. Note: This field is only supported if boot_disk_type is
-            hyperdisk-balanced.
+            1. **This field is supported only if
+            [boot_disk_type][google.cloud.dataproc.v1.DiskConfig.boot_disk_type]
+            is ``hyperdisk-balanced``.**
 
             This field is a member of `oneof`_ ``_boot_disk_provisioned_throughput``.
+        attached_disk_configs (MutableSequence[google.cloud.dataproc_v1.types.AttachedDiskConfig]):
+            Optional. A list of attached disk configs for
+            a group of VM instances.
     """
 
     boot_disk_type: str = proto.Field(
@@ -1477,6 +1497,84 @@ class DiskConfig(proto.Message):
     boot_disk_provisioned_throughput: int = proto.Field(
         proto.INT64,
         number=6,
+        optional=True,
+    )
+    attached_disk_configs: MutableSequence["AttachedDiskConfig"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=7,
+        message="AttachedDiskConfig",
+    )
+
+
+class AttachedDiskConfig(proto.Message):
+    r"""Specifies the config of attached disk options for single VM
+    instance.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        disk_type (google.cloud.dataproc_v1.types.AttachedDiskConfig.DiskType):
+            Optional. Disk type.
+        disk_size_gb (int):
+            Optional. Disk size in GB.
+        provisioned_iops (int):
+            Optional. Indicates how many IOPS to
+            provision for the attached disk. This sets the
+            number of I/O operations per second that the
+            disk can handle. See
+            https://cloud.google.com/compute/docs/disks/hyperdisks#hyperdisk-features
+
+            This field is a member of `oneof`_ ``_provisioned_iops``.
+        provisioned_throughput (int):
+            Optional. Indicates how much throughput to
+            provision for the attached disk. This sets the
+            number of throughput mb per second that the disk
+            can handle. See
+            https://cloud.google.com/compute/docs/disks/hyperdisks#hyperdisk-features
+
+            This field is a member of `oneof`_ ``_provisioned_throughput``.
+    """
+
+    class DiskType(proto.Enum):
+        r"""
+
+        Values:
+            DISK_TYPE_UNSPECIFIED (0):
+                Required unspecified disk type.
+            HYPERDISK_BALANCED (1):
+                Hyperdisk Balanced disk type.
+            HYPERDISK_EXTREME (2):
+                Hyperdisk Extreme disk type.
+            HYPERDISK_ML (3):
+                Hyperdisk ML disk type.
+            HYPERDISK_THROUGHPUT (4):
+                Hyperdisk Throughput disk type.
+        """
+
+        DISK_TYPE_UNSPECIFIED = 0
+        HYPERDISK_BALANCED = 1
+        HYPERDISK_EXTREME = 2
+        HYPERDISK_ML = 3
+        HYPERDISK_THROUGHPUT = 4
+
+    disk_type: DiskType = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=DiskType,
+    )
+    disk_size_gb: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    provisioned_iops: int = proto.Field(
+        proto.INT64,
+        number=3,
+        optional=True,
+    )
+    provisioned_throughput: int = proto.Field(
+        proto.INT64,
+        number=4,
         optional=True,
     )
 

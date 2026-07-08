@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## [3.42.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-v3.42.1...google-cloud-bigquery-v3.42.2) (2026-07-07)
+
+
+### Bug Fixes
+
+* **bigquery:** avoid SSLError retry loop ([#17489](https://github.com/googleapis/google-cloud-python/issues/17489)) ([8248d8e](https://github.com/googleapis/google-cloud-python/commit/8248d8e2f891e68d875d417fe64d7d9de4703b62))
+* include amended user agent in read client ([#17592](https://github.com/googleapis/google-cloud-python/issues/17592)) ([c43caee](https://github.com/googleapis/google-cloud-python/commit/c43caeee34e7c0878766d2806f69016c319697e2))
+
 ## [3.42.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-v3.42.0...google-cloud-bigquery-v3.42.1) (2026-06-22)
 
 

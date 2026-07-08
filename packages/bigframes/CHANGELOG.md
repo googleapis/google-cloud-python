@@ -4,6 +4,23 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
+## [2.45.0](https://github.com/googleapis/google-cloud-python/compare/bigframes-v2.44.0...bigframes-v2.45.0) (2026-07-08)
+
+
+### Features
+
+* **bigframes:** add ai.classify, ai.score, ai.if_ to the df bq accessor ([#17569](https://github.com/googleapis/google-cloud-python/issues/17569)) ([4f94be8](https://github.com/googleapis/google-cloud-python/commit/4f94be8f01971380f0fb5b433ab33d7b4cb7176d))
+* **bigframes:** Enable local udf execution ([#17588](https://github.com/googleapis/google-cloud-python/issues/17588)) ([b8ed34c](https://github.com/googleapis/google-cloud-python/commit/b8ed34cc05101c58ef285822d86298cd0f56613c))
+* **bigframes:** UDF transpiler handles some control flow ([#17558](https://github.com/googleapis/google-cloud-python/issues/17558)) ([a8cbde3](https://github.com/googleapis/google-cloud-python/commit/a8cbde39199f838a43ebc8b938ad722595655abd))
+* support gemini-3.x models ([#17615](https://github.com/googleapis/google-cloud-python/issues/17615)) ([5d0efa3](https://github.com/googleapis/google-cloud-python/commit/5d0efa3cb86568a33a5b3097f30733d39fcbef66))
+
+
+### Bug Fixes
+
+* bump gdal from 3.13.0 to 3.13.1 in /packages/bigframes ([#17609](https://github.com/googleapis/google-cloud-python/issues/17609)) ([0f4bfed](https://github.com/googleapis/google-cloud-python/commit/0f4bfed4685a362f6487cd4cb02ead3c0dde85c9))
+* bump gradio from 5.39.0 to 6.15.0 in /packages/bigframes ([#17619](https://github.com/googleapis/google-cloud-python/issues/17619)) ([bddda6a](https://github.com/googleapis/google-cloud-python/commit/bddda6a11a9c9bcce2d9e8b665b63d47f49f894f))
+* bump transformers from 4.54.1 to 5.3.0 in /packages/bigframes ([#17610](https://github.com/googleapis/google-cloud-python/issues/17610)) ([10eca3f](https://github.com/googleapis/google-cloud-python/commit/10eca3f4b6578c9451b06cdb2889561563fa8d0d))
+
 ## [2.44.0](https://github.com/googleapis/google-cloud-python/compare/bigframes-v2.43.0...bigframes-v2.44.0) (2026-06-25)
 
 
