@@ -195,9 +195,9 @@ class TestAsyncAppendableObjectWriter:
         writer._is_stream_open = True
         writer.write_obj_stream = mock_appendable_writer["mock_stream"]
 
-        mock_appendable_writer[
-            "mock_stream"
-        ].recv.return_value = storage_type.BidiWriteObjectResponse(persisted_size=100)
+        mock_appendable_writer["mock_stream"].recv.return_value = (
+            storage_type.BidiWriteObjectResponse(persisted_size=100)
+        )
 
         size = await writer.state_lookup()
 
@@ -408,9 +408,9 @@ class TestAsyncAppendableObjectWriter:
         writer.write_obj_stream = mock_appendable_writer["mock_stream"]
         writer.bytes_appended_since_last_flush = 100
 
-        mock_appendable_writer[
-            "mock_stream"
-        ].recv.return_value = storage_type.BidiWriteObjectResponse(persisted_size=200)
+        mock_appendable_writer["mock_stream"].recv.return_value = (
+            storage_type.BidiWriteObjectResponse(persisted_size=200)
+        )
 
         await writer.flush()
 
@@ -451,16 +451,19 @@ class TestAsyncAppendableObjectWriter:
         writer.write_obj_stream = mock_appendable_writer["mock_stream"]
 
         resource = storage_type.Object(size=999)
-        mock_appendable_writer[
-            "mock_stream"
-        ].recv.return_value = storage_type.BidiWriteObjectResponse(resource=resource)
+        mock_appendable_writer["mock_stream"].recv.return_value = (
+            storage_type.BidiWriteObjectResponse(resource=resource)
+        )
 
         res = await writer.finalize()
 
         assert res == resource
         assert writer.persisted_size == 999
         mock_appendable_writer["mock_stream"].send.assert_awaited_with(
-            storage_type.BidiWriteObjectRequest(finish_write=True)
+            storage_type.BidiWriteObjectRequest(
+                finish_write=True,
+                object_checksums=storage_type.ObjectChecksums(crc32c=None),
+            )
         )
         mock_appendable_writer["mock_stream"].close.assert_awaited()
         assert not writer._is_stream_open
@@ -503,3 +506,52 @@ class TestAsyncAppendableObjectWriter:
         for coro in methods:
             with pytest.raises(ValueError, match="Stream is not open"):
                 await coro
+
+    @pytest.mark.asyncio
+    async def test_finalize_with_checksum(self, mock_appendable_writer):
+        writer = self._make_one(mock_appendable_writer["mock_client"])
+        writer._is_stream_open = True
+        writer.write_obj_stream = mock_appendable_writer["mock_stream"]
+
+        resource = storage_type.Object(size=999)
+        mock_appendable_writer["mock_stream"].recv.return_value = (
+            storage_type.BidiWriteObjectResponse(resource=resource)
+        )
+
+        checksum = 12345678
+        res = await writer.finalize(full_object_checksum=checksum)
+
+        assert res == resource
+        assert writer.persisted_size == 999
+        mock_appendable_writer["mock_stream"].send.assert_awaited_with(
+            storage_type.BidiWriteObjectRequest(
+                finish_write=True,
+                object_checksums=storage_type.ObjectChecksums(crc32c=checksum),
+            )
+        )
+        mock_appendable_writer["mock_stream"].close.assert_awaited()
+        assert not writer._is_stream_open
+
+    @pytest.mark.asyncio
+    async def test_close_with_checksum_and_finalize(self, mock_appendable_writer):
+        writer = self._make_one(mock_appendable_writer["mock_client"])
+        writer._is_stream_open = True
+        writer.finalize = AsyncMock()
+
+        checksum = 12345678
+        await writer.close(finalize_on_close=True, full_object_checksum=checksum)
+        writer.finalize.assert_awaited_once_with(full_object_checksum=checksum)
+
+    @pytest.mark.asyncio
+    async def test_close_with_checksum_without_finalize_raises(
+        self, mock_appendable_writer
+    ):
+        writer = self._make_one(mock_appendable_writer["mock_client"])
+        writer._is_stream_open = True
+
+        checksum = 12345678
+        with pytest.raises(
+            ValueError,
+            match="full_object_checksum can only be provided when finalize_on_close is True",
+        ):
+            await writer.close(finalize_on_close=False, full_object_checksum=checksum)
