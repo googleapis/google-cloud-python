@@ -1,0 +1,38 @@
+name: import-profiler
+
+on:
+  pull_request:
+    branches:
+      - main
+      - preview
+  # Trigger workflow on GitHub merge queue events
+  merge_group:
+    types: [checks_requested]
+
+permissions:
+  contents: read
+
+jobs:
+  import-profile:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v6
+      with:
+        fetch-depth: 2
+    - name: Setup Python
+      uses: actions/setup-python@v6
+      with:
+        python-version: "3.15"
+    - name: Install nox
+      run: |
+        python -m pip install --upgrade setuptools pip wheel
+        python -m pip install nox
+    - name: Run import profiler
+      env:
+        BUILD_TYPE: presubmit
+        TARGET_BRANCH: ${{ github.base_ref || github.event.merge_group.base_ref }}
+        TEST_TYPE: import_profile
+        PY_VERSION: "3.15"
+      run: |
+        ci/run_conditional_tests.sh
