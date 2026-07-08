@@ -349,6 +349,7 @@ libraries:
       default_version: v1
   - name: google-cloud-apigee-registry
     version: 0.10.0
+    skip_generate: true
   - name: google-cloud-apihub
     version: 0.7.0
     apis:
