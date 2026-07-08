@@ -319,7 +319,7 @@ class ILocDataFrameIndexer:
                 raise IndexError("single positional indexer is out-of-bounds")
 
             col_label = self._dataframe.columns[col_offset]
-            df = self._dataframe.assign(**{col_label: value})
+            df = self._dataframe._assign_multi_items([col_label], value)
             self._dataframe._set_block(df._get_block())
 
         elif isinstance(col_indexer, slice):
