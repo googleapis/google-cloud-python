@@ -1477,8 +1477,9 @@ class TestMaterializedView(CrossSync._Sync_Impl.TestTable):
         view = self._make_one(client, app_profile_id=profile)
         try:
             test_fn = view.__getattribute__(fn_name)
-            maybe_stream = test_fn(*fn_args)
-            [i for i in maybe_stream]
+            result = test_fn(*fn_args)
+            if fn_name == "read_rows_stream":
+                [i for i in result]
         except Exception:
             pass
         assert rpc_mock.call_count == 1

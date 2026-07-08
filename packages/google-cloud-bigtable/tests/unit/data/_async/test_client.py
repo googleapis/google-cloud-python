@@ -1788,8 +1788,12 @@ class TestMaterializedViewsAsync(CrossSync.TestTable):
         view = self._make_one(client, app_profile_id=profile)
         try:
             test_fn = view.__getattribute__(fn_name)
-            maybe_stream = await test_fn(*fn_args)
-            [i async for i in maybe_stream]
+            result = await test_fn(*fn_args)
+            if fn_name == "read_rows_stream":
+                # only streams are async-iterable; the other methods return
+                # concrete values, and iterating them would raise a TypeError
+                # that the except block below hides
+                [i async for i in result]
         except Exception:
             # we expect an exception from attempting to call the mock
             pass
