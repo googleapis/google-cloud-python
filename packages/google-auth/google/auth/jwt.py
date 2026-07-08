@@ -91,13 +91,16 @@ def encode(signer, payload, header=None, key_id=None):
         header = {}
 
     if key_id is None:
-        key_id = signer.key_id
+        key_id = getattr(signer, "key_id", None)
+        if not isinstance(key_id, str):
+            key_id = None
 
     header.update({"typ": "JWT"})
 
     if "alg" not in header:
-        if es is not None and isinstance(signer, es.EsSigner):
-            header.update({"alg": signer.algorithm})
+        alg = getattr(signer, "algorithm", None)
+        if isinstance(alg, str):
+            header.update({"alg": alg})
         else:
             header.update({"alg": "RS256"})
 

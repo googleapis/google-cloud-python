@@ -103,6 +103,11 @@ class RSASigner(base.Signer, base.FromServiceAccountMixin):
             raise ValueError(f"unrecognized private key type: {type(private_key)}")
         self._impl = impl_lib.RSASigner(private_key, key_id=key_id)
 
+    @property
+    def algorithm(self):
+        """Name of the algorithm used to sign messages."""
+        return self._impl.algorithm
+
     @property  # type: ignore
     @_helpers.copy_docstring(base.Signer)
     def key_id(self):

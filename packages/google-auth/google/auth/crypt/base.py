@@ -52,6 +52,11 @@ class Signer(metaclass=abc.ABCMeta):
         """Optional[str]: The key ID used to identify this private key."""
         raise NotImplementedError("Key id must be implemented")
 
+    @property
+    def algorithm(self):
+        """Optional[str]: Name of the algorithm used by this signer (e.g. 'RS256', 'ES256', 'ML-DSA-65')."""
+        return None
+
     @abc.abstractmethod
     def sign(self, message):
         """Signs a message.

@@ -151,6 +151,11 @@ class RSASigner(base.Signer, base.FromServiceAccountMixin):
         self._key = private_key
         self._key_id = key_id
 
+    @property
+    def algorithm(self):
+        """Name of the algorithm used to sign messages."""
+        return "RS256"
+
     @property  # type: ignore
     @_helpers.copy_docstring(base.Signer)
     def key_id(self):
