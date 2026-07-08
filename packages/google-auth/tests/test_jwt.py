@@ -150,9 +150,7 @@ def test_encode_mock_signer_algorithm():
 
     token = jwt.encode(mock_signer, {"sub": "user@example.com"})
     header_b64 = token.split(b".")[0]
-    header = json.loads(
-        _helpers._unpadded_urlsafe_b64decode(header_b64).decode("utf-8")
-    )
+    header = json.loads(_helpers.padded_urlsafe_b64decode(header_b64).decode("utf-8"))
 
     assert header["alg"] == "RS256"
 
