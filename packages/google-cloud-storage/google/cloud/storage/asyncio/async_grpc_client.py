@@ -208,7 +208,7 @@ class AsyncGrpcClient:
             (Optional) The amount of time, in seconds, to wait for the request to
             complete.
 
-        :type retry: :class:`~google.api_core.retry_async.AsyncRetry` or :class:`~google.api_core.retry.Retry` or None
+        :type retry: :class:`~google.api_core.retry_async.AsyncRetry` or None
         :param retry: (Optional) Designation of what errors, if any, should be retried.
         """
         _validate_metadata(metadata)
@@ -285,7 +285,7 @@ class AsyncGrpcClient:
             (Optional) The amount of time, in seconds, to wait for the request to
             complete.
 
-        :type retry: :class:`~google.api_core.retry_async.AsyncRetry` or :class:`~google.api_core.retry.Retry` or None
+        :type retry: :class:`~google.api_core.retry_async.AsyncRetry` or None
         :param retry: (Optional) Designation of what errors, if any, should be retried.
 
         :rtype: :class:`google.cloud._storage_v2.types.Object`
