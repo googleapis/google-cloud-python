@@ -641,20 +641,19 @@ class AsyncAppendableObjectWriter:
         if not self._is_stream_open:
             raise ValueError("Stream is not open. Call open() before finalize().")
 
-        if full_object_checksum is None:
+        finalize_req = _storage_v2.BidiWriteObjectRequest(finish_write=True)
+
+        if full_object_checksum is not None:
+            finalize_req.object_checksums = _storage_v2.ObjectChecksums(
+                crc32c=full_object_checksum
+            )
+        else:
             logger.warning(
                 "finalize was called without providing full_object_checksum. "
                 "No checksum validation will be performed on the finalized object."
             )
 
-        await self.write_obj_stream.send(
-            _storage_v2.BidiWriteObjectRequest(
-                finish_write=True,
-                object_checksums=_storage_v2.ObjectChecksums(
-                    crc32c=full_object_checksum
-                ),
-            )
-        )
+        await self.write_obj_stream.send(finalize_req)
         response = await self.write_obj_stream.recv()
         self.object_resource = response.resource
         self.persisted_size = self.object_resource.size

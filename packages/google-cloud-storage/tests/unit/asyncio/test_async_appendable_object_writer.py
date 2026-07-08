@@ -460,10 +460,7 @@ class TestAsyncAppendableObjectWriter:
         assert res == resource
         assert writer.persisted_size == 999
         mock_appendable_writer["mock_stream"].send.assert_awaited_with(
-            storage_type.BidiWriteObjectRequest(
-                finish_write=True,
-                object_checksums=storage_type.ObjectChecksums(crc32c=None),
-            )
+            storage_type.BidiWriteObjectRequest(finish_write=True)
         )
         mock_appendable_writer["mock_stream"].close.assert_awaited()
         assert not writer._is_stream_open
