@@ -580,4 +580,22 @@ class TestAsyncAppendableObjectWriter:
         ):
             await writer.finalize(full_object_checksum=0x100000000)
 
+    @pytest.mark.asyncio
+    async def test_finalize_mismatch_closes_stream(self, mock_appendable_writer):
+        writer = self._make_one(mock_appendable_writer["mock_client"])
+        writer._is_stream_open = True
+        writer.write_obj_stream = mock_appendable_writer["mock_stream"]
 
+        # Mock recv to raise an exception (like server rejecting checksum mismatch)
+        from google.api_core.exceptions import InvalidArgument
+
+        mock_appendable_writer["mock_stream"].recv.side_effect = InvalidArgument(
+            "checksum mismatch"
+        )
+
+        with pytest.raises(InvalidArgument):
+            await writer.finalize(full_object_checksum=12345)
+
+        # Assert stream was closed and local state reset despite exception
+        mock_appendable_writer["mock_stream"].close.assert_awaited()
+        assert not writer._is_stream_open

@@ -662,14 +662,15 @@ class AsyncAppendableObjectWriter:
             )
 
         await self.write_obj_stream.send(finalize_req)
-        response = await self.write_obj_stream.recv()
-        self.object_resource = response.resource
-        self.persisted_size = self.object_resource.size
-        await self.write_obj_stream.close()
-
-        self._is_stream_open = False
-        self.offset = None
-        return self.object_resource
+        try:
+            response = await self.write_obj_stream.recv()
+            self.object_resource = response.resource
+            self.persisted_size = self.object_resource.size
+            return self.object_resource
+        finally:
+            await self.write_obj_stream.close()
+            self._is_stream_open = False
+            self.offset = None
 
     @property
     def is_stream_open(self) -> bool:
