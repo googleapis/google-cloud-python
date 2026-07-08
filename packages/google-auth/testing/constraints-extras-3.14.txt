@@ -5,12 +5,12 @@
 #
 # e.g., if setup.py has "foo >= 1.14.0, < 2.0.0dev",
 # Then this file should have foo==1.14.0
-aiohttp==3.9.0
-requests==2.30.0
-pyjwt==2.0
-grpcio==1.75.1
-urllib3==1.26.15
-packaging==20.0
-pyu2f==0.1.5
-rsa==4.0.0
-oauth2client==4.1.3
+aiohttp==3.9.0 # aiohttp extra
+requests==2.30.0 # requests extra
+pyjwt==2.0 # pyjwt extra
+grpcio==1.75.1 # grpc extra
+urllib3==1.26.15 # urllib3 extra
+packaging==20.0 # urllib3 extra
+pyu2f==0.1.5 # reauth extra
+rsa==4.0.0 # rsa extra
+oauth2client==4.1.3 # deprecated test dependency
