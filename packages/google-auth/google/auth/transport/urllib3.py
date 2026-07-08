@@ -174,22 +174,30 @@ def _make_mutual_tls_http(cert, key):
         urllib3.PoolManager: Mutual TLS HTTP connection.
 
     Raises:
-        ImportError: If certifi or pyOpenSSL is not installed.
-        OpenSSL.crypto.Error: If the cert or key is invalid.
+        google.auth.exceptions.MutualTLSChannelError: If the cert or key is invalid.
     """
     import certifi
-    from OpenSSL import crypto
-    import urllib3.contrib.pyopenssl  # type: ignore
+    import ssl
 
-    urllib3.contrib.pyopenssl.inject_into_urllib3()
     ctx = urllib3.util.ssl_.create_urllib3_context()
     ctx.load_verify_locations(cafile=certifi.where())
 
-    pkey = crypto.load_privatekey(crypto.FILETYPE_PEM, key)
-    x509 = crypto.load_certificate(crypto.FILETYPE_PEM, cert)
-
-    ctx._ctx.use_certificate(x509)
-    ctx._ctx.use_privatekey(pkey)
+    try:
+        with _mtls_helper.secure_cert_key_paths(cert, key) as (
+            cert_path,
+            key_path,
+            passphrase,
+        ):
+            password = passphrase
+            ctx.load_cert_chain(
+                certfile=cert_path,
+                keyfile=key_path,
+                password=password,
+            )
+    except (ssl.SSLError, OSError, IOError, ValueError, RuntimeError, TypeError) as exc:
+        raise exceptions.MutualTLSChannelError(
+            "Failed to configure client certificate and key for mTLS."
+        ) from exc
 
     http = urllib3.PoolManager(ssl_context=ctx)
     return http
@@ -313,13 +321,12 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
 
     def configure_mtls_channel(self, client_cert_callback=None):
         """Configures mutual TLS channel using the given client_cert_callback or
-        application default SSL credentials. The behavior is controlled by
-        `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable.
-        (1) If the environment variable value is `true`, the function returns True
-        if the channel is mutual TLS and False otherwise. The `http` provided
-        in the constructor will be overwritten.
-        (2) If the environment variable is not set or `false`, the function does
-        nothing and it always return False.
+        application default SSL credentials.
+
+        The channel is configured if GOOGLE_API_USE_CLIENT_CERTIFICATE is "true",
+        or if it is unset and workload certificates are detected in the environment.
+        If client_cert_callback is None, default SSL credentials (workload or SecureConnect)
+        are loaded.
 
         Args:
             client_cert_callback (Optional[Callable[[], (bytes, bytes)]]):
@@ -333,19 +340,12 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
 
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If mutual TLS channel
-                creation failed for any reason.
+                creation failed for any reason. The existing channel state (the
+                HTTP client) remains unmodified if this error is raised.
         """
         use_client_cert = transport._mtls_helper.check_use_client_cert()
         if not use_client_cert:
-            self._is_mtls = False
             return False
-        else:
-            self._is_mtls = True
-        try:
-            import OpenSSL
-        except ImportError as caught_exc:
-            new_exc = exceptions.MutualTLSChannelError(caught_exc)
-            raise new_exc from caught_exc
 
         try:
             found_cert_key, cert, key = transport._mtls_helper.get_client_cert_and_key(
@@ -353,17 +353,28 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
             )
 
             if found_cert_key:
-                self.http = _make_mutual_tls_http(cert, key)
-                self._cached_cert = cert
+                new_http = _make_mutual_tls_http(cert, key)
+                new_is_mtls = True
             else:
-                self.http = _make_default_http()
+                new_http = _make_default_http()
+                new_is_mtls = False
         except (
             exceptions.ClientCertError,
             ImportError,
-            OpenSSL.crypto.Error,
+            OSError,
+            ValueError,
         ) as caught_exc:
             new_exc = exceptions.MutualTLSChannelError(caught_exc)
             raise new_exc from caught_exc
+
+        self.http = new_http
+        self._is_mtls = new_is_mtls
+        self._request.http = new_http
+        if new_is_mtls:
+            self._cached_cert = cert
+        else:
+            if hasattr(self, "_cached_cert"):
+                del self._cached_cert
 
         if self._has_user_provided_http:
             self._has_user_provided_http = False

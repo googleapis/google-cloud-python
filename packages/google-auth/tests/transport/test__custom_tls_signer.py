@@ -14,6 +14,8 @@
 import base64
 import ctypes
 import os
+import ssl
+import sys
 from unittest import mock
 
 import pytest  # type: ignore
@@ -22,12 +24,6 @@ from requests.packages.urllib3.util.ssl_ import create_urllib3_context  # type: 
 from google.auth import exceptions
 from google.auth.transport import _custom_tls_signer
 
-urllib3_pyopenssl = pytest.importorskip(
-    "urllib3.contrib.pyopenssl",
-    reason="urllib3.contrib.pyopenssl not available in this environment",
-)
-
-urllib3_pyopenssl.inject_into_urllib3()
 
 FAKE_ENTERPRISE_CERT_FILE_PATH = "/path/to/enterprise/cert/file"
 ENTERPRISE_CERT_FILE = os.path.join(
@@ -219,7 +215,7 @@ def test_custom_tls_signer_provider():
             ENTERPRISE_CERT_FILE_PROVIDER
         )
         signer_object.load_libraries()
-        signer_object.attach_to_ssl_context(mock.MagicMock())
+        signer_object.attach_to_ssl_context(ssl.SSLContext())
 
     assert signer_object.should_use_provider()
     assert signer_object._enterprise_cert_file_path == ENTERPRISE_CERT_FILE_PROVIDER
@@ -242,7 +238,7 @@ def test_custom_tls_signer_failed_to_attach():
         signer_object._sign_callback = mock.MagicMock()
         signer_object._cert = b"mock cert"
         signer_object._offload_lib.ConfigureSslContext.return_value = False
-        signer_object.attach_to_ssl_context(mock.MagicMock())
+        signer_object.attach_to_ssl_context(ssl.SSLContext())
     assert excinfo.match("failed to configure ECP Offload SSL context")
 
 
@@ -253,7 +249,7 @@ def test_custom_tls_signer_failed_to_attach_provider():
         )
         signer_object._provider_lib = mock.MagicMock()
         signer_object._provider_lib.ECP_attach_to_ctx.return_value = False
-        signer_object.attach_to_ssl_context(mock.MagicMock())
+        signer_object.attach_to_ssl_context(ssl.SSLContext())
     assert excinfo.match("failed to configure ECP Provider SSL context")
 
 
@@ -262,5 +258,111 @@ def test_custom_tls_signer_failed_to_attach_no_libs():
         signer_object = _custom_tls_signer.CustomTlsSigner(ENTERPRISE_CERT_FILE)
         signer_object._offload_lib = None
         signer_object._signer_lib = None
-        signer_object.attach_to_ssl_context(mock.MagicMock())
+        signer_object.attach_to_ssl_context(ssl.SSLContext())
     assert excinfo.match("Invalid ECP configuration.")
+
+
+def test_cast_ssl_ctx_to_void_p_stdlib_success():
+    context = ssl.SSLContext()
+    fake_impl = mock.Mock()
+    fake_impl.name = "cpython"
+    with mock.patch("sys.implementation", fake_impl):
+        with mock.patch("sysconfig.get_config_var", return_value=0):
+            if hasattr(sys, "getobjects"):
+                orig_getobjects = getattr(sys, "getobjects")
+                delattr(sys, "getobjects")
+                try:
+                    res = _custom_tls_signer._cast_ssl_ctx_to_void_p_stdlib(context)
+                    assert isinstance(res, ctypes.c_void_p)
+                finally:
+                    setattr(sys, "getobjects", orig_getobjects)
+            else:
+                res = _custom_tls_signer._cast_ssl_ctx_to_void_p_stdlib(context)
+                assert isinstance(res, ctypes.c_void_p)
+
+
+def test_cast_ssl_ctx_to_void_p_stdlib_unsupported_runtime_pypy():
+    context = ssl.SSLContext()
+    fake_impl = mock.Mock()
+    fake_impl.name = "pypy"
+
+    with mock.patch("sys.implementation", fake_impl):
+        with pytest.raises(
+            exceptions.MutualTLSChannelError,
+            match="Custom TLS signing is only supported",
+        ):
+            _custom_tls_signer._cast_ssl_ctx_to_void_p_stdlib(context)
+
+
+def test_cast_ssl_ctx_to_void_p_stdlib_unsupported_runtime_trace_refs():
+    context = ssl.SSLContext()
+    fake_impl = mock.Mock()
+    fake_impl.name = "cpython"
+
+    with mock.patch("sys.implementation", fake_impl), mock.patch(
+        "sys.getobjects", create=True
+    ):
+        with pytest.raises(
+            exceptions.MutualTLSChannelError,
+            match="Custom TLS signing is only supported",
+        ):
+            _custom_tls_signer._cast_ssl_ctx_to_void_p_stdlib(context)
+
+
+def test_cast_ssl_ctx_to_void_p_stdlib_type_error():
+    with pytest.raises(
+        TypeError, match="context must be an instance of ssl.SSLContext"
+    ):
+        _custom_tls_signer._cast_ssl_ctx_to_void_p_stdlib("not an SSLContext")
+
+
+def test_cast_ssl_ctx_to_void_p_stdlib_unsupported_runtime_debug_flag():
+    context = ssl.SSLContext()
+    fake_impl = mock.Mock()
+    fake_impl.name = "cpython"
+    with mock.patch("sys.implementation", fake_impl), mock.patch(
+        "sysconfig.get_config_var", return_value=1
+    ):
+        with pytest.raises(
+            exceptions.MutualTLSChannelError,
+            match="Custom TLS signing is only supported",
+        ):
+            _custom_tls_signer._cast_ssl_ctx_to_void_p_stdlib(context)
+
+
+def test_cast_ssl_ctx_to_void_p_stdlib_unsupported_runtime_free_threaded():
+    context = ssl.SSLContext()
+
+    def mock_get_config_var(var):
+        if var == "Py_GIL_DISABLED":
+            return 1
+        return None
+
+    fake_impl = mock.Mock()
+    fake_impl.name = "cpython"
+    with mock.patch("sys.implementation", fake_impl), mock.patch(
+        "sysconfig.get_config_var", side_effect=mock_get_config_var
+    ):
+        with pytest.raises(
+            exceptions.MutualTLSChannelError,
+            match="Custom TLS signing is only supported",
+        ):
+            _custom_tls_signer._cast_ssl_ctx_to_void_p_stdlib(context)
+
+
+def test_cast_ssl_ctx_to_void_p_stdlib_dynamic_offset():
+    context = ssl.SSLContext()
+    with mock.patch("sys.getsizeof", return_value=40) as mock_sizeof:
+        with mock.patch("ctypes.c_void_p.from_address") as mock_from_address:
+            _custom_tls_signer._cast_ssl_ctx_to_void_p_stdlib(context)
+            mock_sizeof.assert_called_once()
+            expected_address = id(context) + 40
+            mock_from_address.assert_called_once_with(expected_address)
+
+
+def test_cast_ssl_ctx_to_void_p_stdlib_mock_error():
+    context = mock.MagicMock(spec=ssl.SSLContext)
+    with pytest.raises(
+        TypeError, match="context must be an instance of ssl.SSLContext, not a mock"
+    ):
+        _custom_tls_signer._cast_ssl_ctx_to_void_p_stdlib(context)

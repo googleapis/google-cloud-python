@@ -20,6 +20,7 @@ import logging
 
 from google.auth import exceptions
 from google.auth.transport import _mtls_helper
+from google.auth.transport import mtls
 from google.oauth2 import service_account
 
 try:
@@ -279,14 +280,19 @@ def secure_authorized_channel(
 class SslCredentials:
     """Class for application default SSL credentials.
 
-    The behavior is controlled by `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment
-    variable whose default value is `false`. Client certificate will not be used
-    unless the environment variable is explicitly set to `true`. See
-    https://google.aip.dev/auth/4114
+    Mutual TLS (mTLS) is enabled if either:
 
-    If the environment variable is `true`, then for devices with endpoint verification
-    support, a device certificate will be automatically loaded and mutual TLS will
-    be established.
+    1. The `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is explicitly
+       set to `"true"`.
+    2. The `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is unset or empty,
+       but a valid workload certificate configuration is found (e.g., via the
+       `GOOGLE_API_CERTIFICATE_CONFIG` environment variable or the default gcloud config path).
+
+    See https://google.aip.dev/auth/4114 for client certificate discovery details.
+
+    If client certificate usage is enabled, then for devices with endpoint
+    verification support, a device certificate will be automatically loaded and
+    mutual TLS will be established.
     See https://cloud.google.com/endpoint-verification/docs/overview.
     """
 
@@ -295,11 +301,7 @@ class SslCredentials:
         if not use_client_cert:
             self._is_mtls = False
         else:
-            # Load client SSL credentials.
-            metadata_path = _mtls_helper._check_config_path(
-                _mtls_helper.CONTEXT_AWARE_METADATA_PATH
-            )
-            self._is_mtls = metadata_path is not None
+            self._is_mtls = mtls.has_default_client_cert_source()
 
     @property
     def ssl_credentials(self):
@@ -319,11 +321,15 @@ class SslCredentials:
         """
         if self._is_mtls:
             try:
-                _, cert, key, _ = _mtls_helper.get_client_ssl_credentials()
-                self._ssl_credentials = grpc.ssl_channel_credentials(
-                    certificate_chain=cert, private_key=key
-                )
-            except exceptions.ClientCertError as caught_exc:
+                has_cert, cert, key, _ = _mtls_helper.get_client_ssl_credentials()
+                if has_cert:
+                    self._ssl_credentials = grpc.ssl_channel_credentials(
+                        certificate_chain=cert, private_key=key
+                    )
+                else:
+                    self._ssl_credentials = grpc.ssl_channel_credentials()
+                    self._is_mtls = False
+            except (exceptions.ClientCertError, OSError) as caught_exc:
                 new_exc = exceptions.MutualTLSChannelError(caught_exc)
                 raise new_exc from caught_exc
         else:

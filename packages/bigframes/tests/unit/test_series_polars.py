@@ -4561,6 +4561,20 @@ def test_map_series_input_duplicates_error(scalars_dfs):
         scalars_df.int64_too.map(bf_map_series, verify_integrity=True)
 
 
+def test_series_map_with_udf(session):
+    series = bpd.Series([1, 2, None, 4], dtype="Int64")
+
+    @session.udf(input_types=[int], output_type=int)
+    def foo(x):
+        if x is None:
+            return -1
+        return x * 2
+
+    bf_result = series.map(foo).to_pandas()
+    pd_result = pd.Series([2, 4, -1, 8])
+    assert_series_equal(bf_result, pd_result, check_dtype=False)
+
+
 @pytest.mark.skip(
     reason="NotImplementedError: Polars compiler hasn't implemented hash()"
 )

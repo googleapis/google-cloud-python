@@ -20,6 +20,7 @@ Scans a repository for references to specific dependency versions.
 import argparse
 import csv
 import datetime
+import fnmatch
 import os
 import re
 import sys
@@ -213,11 +214,16 @@ def scan_file(file_path: str, compiled_rules: List[Dict[str, re.Pattern]]) -> Li
                 if "version-scanner: ignore-next-line" in line:
                     skip_next = True
                     continue
-                if "version-scanner: ignore" in line:
+                if "version-scanner: ignore" in line and "version-scanner: ignore-rule" not in line and "version-scanner: ignore-next-line" not in line:
                     continue
                 for rule in compiled_rules:
                     match = rule["pattern"].search(line)
                     if match:
+                        version = rule.get("version")
+                        if version:
+                            pragma_pattern = rf"version-scanner\s*:\s*ignore-rule\s*=\s*{re.escape(str(rule['name']))}\s*:\s*{re.escape(str(version))}"
+                            if re.search(pragma_pattern, line, re.IGNORECASE):
+                                continue
                         results.append({
                             "rule_name": rule["name"],
                             "line_number": line_num,
@@ -498,6 +504,63 @@ def read_package_file(file_path: str) -> List[str]:
     return packages
 
 
+def _preprocess_ignore_patterns(ignore_patterns: List[str]) -> List[Tuple[str, str]]:
+    """Preprocesses ignore patterns into a classified list for faster matching.
+
+    Args:
+        ignore_patterns: A list of raw ignore patterns from .scannerignore.
+
+    Returns:
+        A list of tuples (type, pattern) where type is 'anchored', 'subpath', or 'filename'.
+    """
+    if not ignore_patterns:
+        return []
+    
+    preprocessed = []
+    for pattern in ignore_patterns:
+        pattern_lower = pattern.lower()
+        if '/' in pattern:
+            if pattern_lower.startswith('/'):
+                preprocessed.append(('anchored', pattern_lower[1:]))
+            else:
+                preprocessed.append(('subpath', pattern_lower))
+        else:
+            preprocessed.append(('filename', pattern_lower))
+    return preprocessed
+
+
+def _should_ignore(rel_path: str, name: str, preprocessed_patterns: List[Tuple[str, str]]) -> bool:
+    """Check if a file or directory matches any of the ignore patterns.
+    
+    Directories and files can be ignored by providing an ignore pattern in the 
+    .scannerignore file.
+
+    Args:
+        rel_path: The relative path of the file or directory from the scan root.
+        name: The name of the file or directory (basename).
+        preprocessed_patterns: A list of preprocessed ignore patterns.
+        
+    Returns:
+        True if the file or directory should be ignored, False otherwise.
+    """
+    if not preprocessed_patterns:
+        return False
+    name_lower = name.lower()
+    rel_path_norm = rel_path.replace(os.sep, '/').lower()
+    
+    for p_type, p_val in preprocessed_patterns:
+        if p_type == 'anchored':
+            if fnmatch.fnmatchcase(rel_path_norm, p_val):
+                return True
+        elif p_type == 'subpath':
+            if fnmatch.fnmatchcase(rel_path_norm, p_val) or fnmatch.fnmatchcase(rel_path_norm, f"*/{p_val}"):
+                return True
+        elif p_type == 'filename':
+            if fnmatch.fnmatchcase(name_lower, p_val):
+                return True
+    return False
+
+
 def scan_repository(
     root_path: str,
     rules: List[Dict[str, Any]],
@@ -528,7 +591,6 @@ def scan_repository(
     Returns:
         A list of dictionaries detailing each match.
     """
-    ignore_lower = {i.lower() for i in ignore_dirs} if ignore_dirs else set()
     results = []
     
     filename_targets = []
@@ -552,18 +614,31 @@ def scan_repository(
             print(f"Error compiling regex for rule {rule['name']}: {e}", file=sys.stderr)
             continue
             
+    # Preprocess ignore patterns once
+    preprocessed_ignores = _preprocess_ignore_patterns(ignore_dirs)
+
     print(f"\nScanning repository: {root_path}")
     if target_packages:
         print(f"Filtering for packages: {target_packages}")
         
     for root, dirs, files in os.walk(root_path):
+        rel_root = os.path.relpath(root, root_path)
+        
+        # Helper to construct relative path for ignore matching
+        def get_rel_path(name):
+            return name if rel_root == "." else os.path.join(rel_root, name)
+            
         # Prune ignore directories (case-insensitive)
-        dirs[:] = [d for d in dirs if d.lower() not in ignore_lower]
+        dirs[:] = [
+            d for d in dirs 
+            if not _should_ignore(get_rel_path(d), d, preprocessed_ignores)
+        ]
         
         # Filter ignore files (case-insensitive)
-        files = [f for f in files if f.lower() not in ignore_lower]
-        
-        rel_root = os.path.relpath(root, root_path)
+        files = [
+            f for f in files 
+            if not _should_ignore(get_rel_path(f), f, preprocessed_ignores)
+        ]
         
         # Layout-agnostic generic subdirectory filtering
         if target_packages:
@@ -661,7 +736,7 @@ def parse_matrix_file(file_path: str) -> List[Tuple[str, str]]:
 
 def main():
     script_dir = os.path.dirname(os.path.abspath(__file__))
-    default_config = os.path.join(script_dir, "regex_config.yaml")
+    default_config = os.path.join(script_dir, "regex_pattern_config.yaml")
     
     parser = argparse.ArgumentParser(
         description="Scan repository for references to specific dependency versions."
@@ -705,7 +780,7 @@ def main():
     parser.add_argument(
         "--config",
         default=default_config,
-        help="Path to the regex configuration file (defaults to scripts/version_scanner/regex_config.yaml)"
+        help="Path to the regex configuration file (defaults to scripts/version_scanner/regex_pattern_config.yaml)"
     )
     
     parser.add_argument(

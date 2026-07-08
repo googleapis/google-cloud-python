@@ -21,14 +21,15 @@ jobs:
         python: ['3.9', '3.10', "3.11", "3.12", "3.13", "3.14"]
     steps:
     - name: Checkout
-      uses: actions/checkout@v6
+      uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
       # Use a fetch-depth of 2 to avoid error `fatal: origin/main...HEAD: no merge base`
       # See https://github.com/googleapis/google-cloud-python/issues/12013
       # and https://github.com/actions/checkout#checkout-head.
       with:
         fetch-depth: 2
+        persist-credentials: false
     - name: Setup Python
-      uses: actions/setup-python@v6
+      uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
       with:
         python-version: ${{ matrix.python }}
     - name: Install nox
@@ -45,7 +46,7 @@ jobs:
       run: |
         ci/run_conditional_tests.sh
     - name: Upload coverage results
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
       with:
         name: coverage-artifact-${{ matrix.python }}
         path: .coverage-${{ matrix.python }}
@@ -57,14 +58,15 @@ jobs:
         - unit
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
       # Use a fetch-depth of 2 to avoid error `fatal: origin/main...HEAD: no merge base`
       # See https://github.com/googleapis/google-cloud-python/issues/12013
       # and https://github.com/actions/checkout#checkout-head.
       with:
         fetch-depth: 2
+        persist-credentials: false
     - name: Setup Python
-      uses: actions/setup-python@v5
+      uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
       with:
         python-version: "3.10"
     - name: Set number of files changes in packages directory
@@ -80,7 +82,7 @@ jobs:
         python -m pip install coverage
     - name: Download coverage results
       if: ${{ steps.packages.outputs.num_files_changed > 0 }}
-      uses: actions/download-artifact@v5
+      uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5
       with:
         path: .coverage-results/
     - name: Report coverage results
@@ -117,21 +119,23 @@ jobs:
               echo "============================================================"
 
               set +e
-              if [ -f "${pkg}/.coveragerc" ]; then
+              pushd "${pkg}" > /dev/null
+              if [ -f ".coveragerc" ]; then
                 echo "Using package-specific configuration: ${pkg}/.coveragerc"
                 # If fail_under is specified in the package-specific .coveragerc, coverage report
                 # will automatically enforce it. Otherwise, we enforce the default.
-                if grep -q "fail_under" "${pkg}/.coveragerc"; then
-                  coverage report --rcfile="${pkg}/.coveragerc" --include="${pkg}/**"
+                if grep -q "fail_under" ".coveragerc"; then
+                  COVERAGE_FILE=../../.coverage coverage report --include="$PWD/**"
                 else
                   echo "No fail_under specified in ${pkg}/.coveragerc, enforcing default"
-                  coverage report --rcfile="${pkg}/.coveragerc" --include="${pkg}/**" --fail-under="${DEFAULT_FAIL_UNDER}"
+                  COVERAGE_FILE=../../.coverage coverage report --include="$PWD/**" --fail-under="${DEFAULT_FAIL_UNDER}"
                 fi
               else
                 echo "No .coveragerc found for ${pkg}, enforcing default"
-                coverage report --include="${pkg}/**" --fail-under="${DEFAULT_FAIL_UNDER}"
+                COVERAGE_FILE=../../.coverage coverage report --include="$PWD/**" --fail-under="${DEFAULT_FAIL_UNDER}"
               fi
               status=$?
+              popd > /dev/null
               set -e
 
               if [ ${status} -ne 0 ]; then
