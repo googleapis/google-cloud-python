@@ -659,5 +659,10 @@ def import_profile(session):
 
     session.install(".")
     session.run(
-        "python", str(profiler_script), "--module", "google", "--iterations", "10"
+        "python",
+        str(profiler_script),
+        "--module",
+        "google",
+        "--iterations",
+        "10",
     )

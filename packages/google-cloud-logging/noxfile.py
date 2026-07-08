@@ -653,7 +653,7 @@ def import_profile(session):
         "python",
         str(profiler_script),
         "--module",
-        "unknown_module",
+        "google",
         "--iterations",
         "10",
     )

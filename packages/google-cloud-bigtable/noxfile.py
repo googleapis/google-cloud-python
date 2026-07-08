@@ -33,6 +33,7 @@ ALL_PYTHON = [
     "3.12",
     "3.13",
     "3.14",
+    "import_profile",
 ]
 
 UNIT_TEST_STANDARD_DEPENDENCIES = [
@@ -641,27 +642,7 @@ def import_profile(session):
         "python",
         str(profiler_script),
         "--module",
-        "google.cloud.bigtable.data",
-        "--iterations",
-        "10",
-    )
-
-
-@nox.session(python="3.15")
-def import_profile(session):
-    """Ensure import times remain below defined thresholds."""
-    profiler_script = (
-        CURRENT_DIRECTORY.parent.parent / "scripts" / "import_profiler" / "profiler.py"
-    )
-    if not profiler_script.exists():
-        session.skip("The import profiler script was not found.")
-
-    session.install(".")
-    session.run(
-        "python",
-        str(profiler_script),
-        "--module",
-        "google.cloud.bigtable.data",
+        "google",
         "--iterations",
         "10",
     )

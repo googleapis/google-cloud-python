@@ -656,11 +656,21 @@ def import_profile(session):
     session.install(".")
     {% if api.naming.module_namespace %}
     session.run(
-        "python", str(profiler_script), "--module", "{{ api.naming.module_namespace[0] }}", "--iterations", "10"
+        "python",
+        str(profiler_script),
+        "--module",
+        "{{ api.naming.module_namespace[0] }}",
+        "--iterations",
+        "10",
     )
     {% else %}
     session.run(
-        "python", str(profiler_script), "--module", "{{ api.naming.versioned_module_name }}", "--iterations", "10"
+        "python",
+        str(profiler_script),
+        "--module",
+        "{{ api.naming.versioned_module_name }}",
+        "--iterations",
+        "10",
     )
     {% endif %}
 {% endblock %}

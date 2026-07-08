@@ -48,11 +48,7 @@ CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 # Path to the centralized mypy configuration file at the repository root.
 # Search upwards to support running nox from both monorepo packages and integration test goldens.
 MYPY_CONFIG_FILE = next(
-    (
-        str(p / "mypy.ini")
-        for p in CURRENT_DIRECTORY.parents
-        if (p / "mypy.ini").exists()
-    ),
+    (str(p / "mypy.ini") for p in CURRENT_DIRECTORY.parents if (p / "mypy.ini").exists()),
     str(CURRENT_DIRECTORY.parent.parent / "mypy.ini"),
 )
 
@@ -168,8 +164,7 @@ def lint(session):
 
     # 2. Check formatting
     session.run(
-        "ruff",
-        "format",
+        "ruff", "format",
         "--check",
         f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
         "--line-length=88",
@@ -182,15 +177,12 @@ def lint(session):
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def blacken(session):
     """(Deprecated) Legacy session. Please use 'nox -s format'."""
-    session.log(
-        "WARNING: The 'blacken' session is deprecated and will be removed in a future release. Please use 'nox -s format' in the future."
-    )
+    session.log("WARNING: The 'blacken' session is deprecated and will be removed in a future release. Please use 'nox -s format' in the future.")
 
     # Just run the ruff formatter (keeping legacy behavior of only formatting, not sorting imports)
     session.install(RUFF_VERSION)
     session.run(
-        "ruff",
-        "format",
+        "ruff", "format",
         f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
         "--line-length=88",
         *LINT_PATHS,
@@ -209,10 +201,8 @@ def format(session):
     # check --select I: Enables strict import sorting
     # --fix: Applies the changes automatically
     session.run(
-        "ruff",
-        "check",
-        "--select",
-        "I",
+        "ruff", "check",
+        "--select", "I",
         "--fix",
         f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
         "--line-length=88",  # Standard Black line length
@@ -221,8 +211,7 @@ def format(session):
 
     # 3. Run Ruff to format code
     session.run(
-        "ruff",
-        "format",
+        "ruff", "format",
         f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
         "--line-length=88",  # Standard Black line length
         *LINT_PATHS,
@@ -407,10 +396,8 @@ def docs(session):
         "sphinx-build",
         "-T",  # show full traceback on exception
         "-N",  # no colors
-        "-b",
-        "html",  # builder
-        "-d",
-        os.path.join("docs", "_build", "doctrees", ""),  # cache directory
+        "-b",  "html",  # builder
+        "-d",  os.path.join("docs", "_build", "doctrees", ""),  # cache directory
         # paths to build:
         os.path.join("docs", ""),
         os.path.join("docs", "_build", "html", ""),
@@ -524,7 +511,8 @@ def prerelease_deps(session, protobuf_implementation):
     # Extract the base package name, safely ignoring version bounds and spaces
     # (e.g., "grpcio>=1.75.1" becomes "grpcio")
     parsed_deps = {
-        dep: re.match(r"^([a-zA-Z0-9_-]+)", dep).group(1) for dep in prerel_deps
+        dep: re.match(r"^([a-zA-Z0-9_-]+)", dep).group(1)
+        for dep in prerel_deps
     }
 
     # Dynamically sort local packages vs PyPI dependencies
@@ -637,9 +625,7 @@ def core_deps_from_source(session, protobuf_implementation):
     dep_paths = [str(deps_dir / dep) for dep in core_dependencies_from_source]
 
     session.install(*dep_paths, "--no-deps", "--ignore-installed")
-    print(
-        f"Installed {', '.join(core_dependencies_from_source)} locally from {deps_dir}"
-    )
+    print(f"Installed {', '.join(core_dependencies_from_source)} locally from {deps_dir}")
 
     session.run(
         "py.test",
@@ -661,5 +647,10 @@ def import_profile(session):
 
     session.install(".")
     session.run(
-        "python", str(profiler_script), "--module", "google", "--iterations", "10"
+        "python",
+        str(profiler_script),
+        "--module",
+        "google",
+        "--iterations",
+        "10",
     )
