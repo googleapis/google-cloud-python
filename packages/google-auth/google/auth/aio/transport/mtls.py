@@ -55,11 +55,7 @@ def make_client_cert_ssl_context(
         ):
             context = ssl.create_default_context(ssl.Purpose.SERVER_AUTH)
             if cert_path:
-                password = (
-                    passphrase_val.decode("utf-8")
-                    if isinstance(passphrase_val, bytes)
-                    else passphrase_val
-                )
+                password = passphrase_val
                 context.load_cert_chain(
                     certfile=cert_path,
                     keyfile=key_path,
