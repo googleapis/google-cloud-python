@@ -5496,6 +5496,7 @@ def test_get_import_job(request_type, transport: str = "grpc"):
             import_method=resources.ImportJob.ImportMethod.RSA_OAEP_3072_SHA1_AES_256,
             protection_level=resources.ProtectionLevel.SOFTWARE,
             state=resources.ImportJob.ImportJobState.PENDING_GENERATION,
+            public_key_format=resources.PublicKey.PublicKeyFormat.PEM,
             crypto_key_backend="crypto_key_backend_value",
         )
         response = client.get_import_job(request)
@@ -5515,6 +5516,7 @@ def test_get_import_job(request_type, transport: str = "grpc"):
     )
     assert response.protection_level == resources.ProtectionLevel.SOFTWARE
     assert response.state == resources.ImportJob.ImportJobState.PENDING_GENERATION
+    assert response.public_key_format == resources.PublicKey.PublicKeyFormat.PEM
     assert response.crypto_key_backend == "crypto_key_backend_value"
 
 
@@ -5651,6 +5653,7 @@ async def test_get_import_job_async(request_type, transport: str = "grpc_asyncio
                 import_method=resources.ImportJob.ImportMethod.RSA_OAEP_3072_SHA1_AES_256,
                 protection_level=resources.ProtectionLevel.SOFTWARE,
                 state=resources.ImportJob.ImportJobState.PENDING_GENERATION,
+                public_key_format=resources.PublicKey.PublicKeyFormat.PEM,
                 crypto_key_backend="crypto_key_backend_value",
             )
         )
@@ -5671,6 +5674,7 @@ async def test_get_import_job_async(request_type, transport: str = "grpc_asyncio
     )
     assert response.protection_level == resources.ProtectionLevel.SOFTWARE
     assert response.state == resources.ImportJob.ImportJobState.PENDING_GENERATION
+    assert response.public_key_format == resources.PublicKey.PublicKeyFormat.PEM
     assert response.crypto_key_backend == "crypto_key_backend_value"
 
 
@@ -8315,6 +8319,7 @@ def test_create_import_job(request_type, transport: str = "grpc"):
             import_method=resources.ImportJob.ImportMethod.RSA_OAEP_3072_SHA1_AES_256,
             protection_level=resources.ProtectionLevel.SOFTWARE,
             state=resources.ImportJob.ImportJobState.PENDING_GENERATION,
+            public_key_format=resources.PublicKey.PublicKeyFormat.PEM,
             crypto_key_backend="crypto_key_backend_value",
         )
         response = client.create_import_job(request)
@@ -8334,6 +8339,7 @@ def test_create_import_job(request_type, transport: str = "grpc"):
     )
     assert response.protection_level == resources.ProtectionLevel.SOFTWARE
     assert response.state == resources.ImportJob.ImportJobState.PENDING_GENERATION
+    assert response.public_key_format == resources.PublicKey.PublicKeyFormat.PEM
     assert response.crypto_key_backend == "crypto_key_backend_value"
 
 
@@ -8478,6 +8484,7 @@ async def test_create_import_job_async(request_type, transport: str = "grpc_asyn
                 import_method=resources.ImportJob.ImportMethod.RSA_OAEP_3072_SHA1_AES_256,
                 protection_level=resources.ProtectionLevel.SOFTWARE,
                 state=resources.ImportJob.ImportJobState.PENDING_GENERATION,
+                public_key_format=resources.PublicKey.PublicKeyFormat.PEM,
                 crypto_key_backend="crypto_key_backend_value",
             )
         )
@@ -8498,6 +8505,7 @@ async def test_create_import_job_async(request_type, transport: str = "grpc_asyn
     )
     assert response.protection_level == resources.ProtectionLevel.SOFTWARE
     assert response.state == resources.ImportJob.ImportJobState.PENDING_GENERATION
+    assert response.public_key_format == resources.PublicKey.PublicKeyFormat.PEM
     assert response.crypto_key_backend == "crypto_key_backend_value"
 
 
@@ -15929,6 +15937,8 @@ def test_get_import_job_rest_required_fields(request_type=service.GetImportJobRe
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
     ).get_import_job._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("public_key_format",))
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -15983,7 +15993,7 @@ def test_get_import_job_rest_unset_required_fields():
     )
 
     unset_fields = transport.get_import_job._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
+    assert set(unset_fields) == (set(("publicKeyFormat",)) & set(("name",)))
 
 
 def test_get_import_job_rest_flattened():
@@ -21285,6 +21295,7 @@ async def test_get_import_job_empty_call_grpc_asyncio():
                 import_method=resources.ImportJob.ImportMethod.RSA_OAEP_3072_SHA1_AES_256,
                 protection_level=resources.ProtectionLevel.SOFTWARE,
                 state=resources.ImportJob.ImportJobState.PENDING_GENERATION,
+                public_key_format=resources.PublicKey.PublicKeyFormat.PEM,
                 crypto_key_backend="crypto_key_backend_value",
             )
         )
@@ -21528,6 +21539,7 @@ async def test_create_import_job_empty_call_grpc_asyncio():
                 import_method=resources.ImportJob.ImportMethod.RSA_OAEP_3072_SHA1_AES_256,
                 protection_level=resources.ProtectionLevel.SOFTWARE,
                 state=resources.ImportJob.ImportJobState.PENDING_GENERATION,
+                public_key_format=resources.PublicKey.PublicKeyFormat.PEM,
                 crypto_key_backend="crypto_key_backend_value",
             )
         )
@@ -23311,6 +23323,7 @@ def test_get_import_job_rest_call_success(request_type):
             import_method=resources.ImportJob.ImportMethod.RSA_OAEP_3072_SHA1_AES_256,
             protection_level=resources.ProtectionLevel.SOFTWARE,
             state=resources.ImportJob.ImportJobState.PENDING_GENERATION,
+            public_key_format=resources.PublicKey.PublicKeyFormat.PEM,
             crypto_key_backend="crypto_key_backend_value",
         )
 
@@ -23335,6 +23348,7 @@ def test_get_import_job_rest_call_success(request_type):
     )
     assert response.protection_level == resources.ProtectionLevel.SOFTWARE
     assert response.state == resources.ImportJob.ImportJobState.PENDING_GENERATION
+    assert response.public_key_format == resources.PublicKey.PublicKeyFormat.PEM
     assert response.crypto_key_backend == "crypto_key_backend_value"
 
 
@@ -24723,7 +24737,8 @@ def test_create_import_job_rest_call_success(request_type):
         "expire_time": {},
         "expire_event_time": {},
         "state": 1,
-        "public_key": {"pem": "pem_value"},
+        "public_key": {"pem": "pem_value", "data": b"data_blob"},
+        "public_key_format": 1,
         "attestation": {
             "format": 3,
             "content": b"content_blob",
@@ -24818,6 +24833,7 @@ def test_create_import_job_rest_call_success(request_type):
             import_method=resources.ImportJob.ImportMethod.RSA_OAEP_3072_SHA1_AES_256,
             protection_level=resources.ProtectionLevel.SOFTWARE,
             state=resources.ImportJob.ImportJobState.PENDING_GENERATION,
+            public_key_format=resources.PublicKey.PublicKeyFormat.PEM,
             crypto_key_backend="crypto_key_backend_value",
         )
 
@@ -24842,6 +24858,7 @@ def test_create_import_job_rest_call_success(request_type):
     )
     assert response.protection_level == resources.ProtectionLevel.SOFTWARE
     assert response.state == resources.ImportJob.ImportJobState.PENDING_GENERATION
+    assert response.public_key_format == resources.PublicKey.PublicKeyFormat.PEM
     assert response.crypto_key_backend == "crypto_key_backend_value"
 
 

@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-biglake-hive/#history
 
+## [0.3.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-biglake-hive-v0.3.0...google-cloud-biglake-hive-v0.3.1) (2026-07-07)
+
+
+### Features
+
+* update googleapis and regenerate ([#17635](https://github.com/googleapis/google-cloud-python/issues/17635)) ([9638879](https://github.com/googleapis/google-cloud-python/commit/96388796440b226440f885c04ce565782b1d9190))
+
 ## [0.3.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-biglake-hive-v0.2.0...google-cloud-biglake-hive-v0.3.0) (2026-06-02)
 
 

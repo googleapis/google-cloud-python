@@ -27,24 +27,6 @@ KEY_DATA = b"client-key"
 
 class TestMTLS:
     @pytest.mark.asyncio
-    async def test__create_temp_file(self):
-        """Tests that _create_temp_file creates a file with correct content and deletes it."""
-        content = b"test cert data"
-
-        # Test file creation and content
-        with mtls._create_temp_file(content) as file_path:
-            assert os.path.exists(file_path)
-            # Verify file is not readable by others (mkstemp default)
-            if os.name == "posix":
-                assert (os.stat(file_path).st_mode & 0o777) == 0o600
-
-            with open(file_path, "rb") as f:
-                assert f.read() == content
-
-        # Test file deletion after context exit
-        assert not os.path.exists(file_path)
-
-    @pytest.mark.asyncio
     async def test_make_client_cert_ssl_context_success(self):
         """Tests successful creation of an SSLContext with client certificates."""
         cert_bytes = b"cert_data"
@@ -68,10 +50,30 @@ class TestMTLS:
             kwargs = mock_context.load_cert_chain.call_args.kwargs
             assert "certfile" in kwargs
             assert "keyfile" in kwargs
-            assert kwargs["password"] == passphrase
+            assert kwargs["password"] == passphrase.decode("utf-8")
 
             assert not os.path.exists(kwargs["certfile"])
             assert not os.path.exists(kwargs["keyfile"])
+
+    @pytest.mark.asyncio
+    async def test_make_client_cert_ssl_context_success_no_passphrase(self):
+        """Tests successful creation of an SSLContext with no passphrase."""
+        cert_bytes = b"cert_data"
+        key_bytes = b"key_data"
+
+        mock_context = mock.Mock(spec=ssl.SSLContext)
+
+        with mock.patch(
+            "ssl.create_default_context", return_value=mock_context
+        ) as mock_create:
+            context = mtls.make_client_cert_ssl_context(
+                cert_bytes, key_bytes, passphrase=None
+            )
+
+            assert context == mock_context
+            mock_create.assert_called_once_with(ssl.Purpose.SERVER_AUTH)
+            kwargs = mock_context.load_cert_chain.call_args.kwargs
+            assert kwargs["password"] is None
 
     @pytest.mark.asyncio
     async def test_make_client_cert_ssl_context_error(self):
@@ -200,3 +202,18 @@ class TestMTLS:
 
         with pytest.raises(exceptions.ClientCertError, match="Failed to read metadata"):
             await mtls.get_client_ssl_credentials()
+
+    @pytest.mark.asyncio
+    @mock.patch("google.auth.aio.transport.mtls.secure_cert_key_paths")
+    async def test_make_client_cert_ssl_context_setup_error(self, mock_secure_paths):
+        """Verifies that TransportError is raised when temp file creation fails."""
+        cert_bytes = b"cert_data"
+        key_bytes = b"key_data"
+
+        mock_secure_paths.side_effect = OSError("Temp file error")
+
+        with pytest.raises(exceptions.TransportError) as exc_info:
+            mtls.make_client_cert_ssl_context(cert_bytes, key_bytes)
+
+        assert "Failed to load client certificate" in str(exc_info.value)
+        assert isinstance(exc_info.value.__cause__, OSError)

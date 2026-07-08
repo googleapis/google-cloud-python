@@ -59,8 +59,8 @@ class SecurityProfileGroup(proto.Message):
             ensure the client has an up-to-date value before
             proceeding.
         data_path_id (int):
-            Output only. Identifier used by the
-            data-path. Unique within {container, location}.
+            Output only. Identifier used by the data-path. Unique within
+            ``{container, location}``.
         labels (MutableMapping[str, str]):
             Optional. Labels as key value pairs.
         threat_prevention_profile (str):

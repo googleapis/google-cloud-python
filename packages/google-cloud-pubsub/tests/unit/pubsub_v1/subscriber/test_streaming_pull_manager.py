@@ -16,7 +16,6 @@ import datetime
 import logging
 import math
 import queue
-import sys
 import threading
 import time
 import types as stdlib_types
@@ -629,10 +628,6 @@ def test__maybe_release_messages_negative_on_hold_bytes_warning(
     assert manager._on_hold_bytes == 0  # should be auto-corrected
 
 
-@pytest.mark.skipif(
-    sys.version_info < (3, 8),
-    reason="Open Telemetry not supported below Python version 3.8",
-)
 @pytest.mark.parametrize(
     "receipt_modack",
     [
@@ -2823,10 +2818,6 @@ def test_process_requests_mixed_success_and_failure_modacks():
     assert future3.result() == subscriber_exceptions.AcknowledgeStatus.SUCCESS
 
 
-@pytest.mark.skipif(
-    sys.version_info < (3, 8),
-    reason="Open Telemetry not supported below Python version 3.8",
-)
 def test_opentelemetry__on_response_subscribe_span_create(span_exporter):
     manager, _, _, leaser, _, _ = make_running_manager(
         enable_open_telemetry=True,

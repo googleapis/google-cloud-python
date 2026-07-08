@@ -29,14 +29,20 @@ import subprocess
 import jinja2
 import yaml
 
+SCRIPTS_DIRECTORY = pathlib.Path(__file__).parent.absolute()
+PACKAGE_ROOT = SCRIPTS_DIRECTORY.parent
+CODE_ROOT = PACKAGE_ROOT / "bigframes"
+SCRIPT_PATH_RELATIVE = pathlib.Path(__file__).relative_to(PACKAGE_ROOT)
+
 # Directory containing the YAML files
-DATA_DIR = pathlib.Path("scripts/data/sql-functions")
+DATA_DIR = SCRIPTS_DIRECTORY / "data" / "sql-functions"
 # Directory where the generated Python files will be placed
-OUTPUT_DIR = pathlib.Path("bigframes/operations/googlesql")
+OUTPUT_DIR = CODE_ROOT / "operations" / "googlesql"
 # Directory where the generated test files will be placed
-TEST_OUTPUT_DIR = pathlib.Path("tests/unit/bigquery/generated")
+TEST_OUTPUT_DIR = PACKAGE_ROOT / "tests" / "unit" / "bigquery" / "generated"
 # Directory containing the Jinja2 templates
-TEMPLATE_DIR = pathlib.Path("scripts/templates")
+TEMPLATE_DIR = SCRIPTS_DIRECTORY / "templates"
+
 
 RUFF_COMMON_ARGS = [
     "--target-version=py310",
@@ -46,7 +52,7 @@ RUFF_CHECK_ARGS = [
     "ruff",
     "check",
     "--select",
-    "I",
+    "I,F",
     "--fix",
 ] + RUFF_COMMON_ARGS
 RUFF_FORMAT_ARGS = [
@@ -71,6 +77,7 @@ DTYPE_MAP = {
     "datetime": "dtypes.DATETIME_DTYPE",
     "timestamp": "dtypes.TIMESTAMP_DTYPE",
     "decimal<38,9>": "dtypes.NUMERIC_DTYPE",
+    "decimal<76,38>": "dtypes.BIGNUMERIC_DTYPE",
 }
 
 PY_TYPE_MAP = {
@@ -90,6 +97,8 @@ PY_TYPE_MAP = {
     "timestamp": "datetime.datetime",
     "struct": "dict",
     "decimal<38,9>": "decimal.Decimal",
+    "decimal<76,38>": "decimal.Decimal",
+    "interval_day": "datetime.timedelta",
 }
 
 YAML_TYPE_TO_COL = {
@@ -107,6 +116,78 @@ YAML_TYPE_TO_COL = {
     "datetime": "datetime_col",
     "timestamp": "timestamp_col",
     "decimal<38,9>": "numeric_col",
+    "decimal<76,38>": "bignumeric_col",
+}
+
+_PYTHON_BUILTINS = {
+    "abs",
+    "all",
+    "any",
+    "ascii",
+    "bin",
+    "bool",
+    "breakpoint",
+    "bytearray",
+    "bytes",
+    "callable",
+    "chr",
+    "classmethod",
+    "compile",
+    "complex",
+    "delattr",
+    "dict",
+    "dir",
+    "divmod",
+    "enumerate",
+    "eval",
+    "exec",
+    "filter",
+    "float",
+    "format",
+    "frozenset",
+    "getattr",
+    "globals",
+    "hasattr",
+    "hash",
+    "help",
+    "hex",
+    "id",
+    "input",
+    "int",
+    "isinstance",
+    "issubclass",
+    "iter",
+    "len",
+    "list",
+    "locals",
+    "map",
+    "max",
+    "memoryview",
+    "min",
+    "next",
+    "object",
+    "oct",
+    "open",
+    "ord",
+    "pow",
+    "print",
+    "property",
+    "range",
+    "repr",
+    "reversed",
+    "round",
+    "set",
+    "setattr",
+    "slice",
+    "sorted",
+    "staticmethod",
+    "str",
+    "sum",
+    "super",
+    "tuple",
+    "type",
+    "vars",
+    "zip",
 }
 
 
@@ -131,15 +212,23 @@ def load_templates():
         "test_operation": env.get_template("test_operation.py.j2"),
         "license": env.get_template("license.py.j2"),
         "signature_def": env.get_template("signature_def.py.j2"),
+        "core_series_accessor": env.get_template("core_series_accessor.py.j2"),
+        "bigframes_series_accessor": env.get_template(
+            "bigframes_series_accessor.py.j2"
+        ),
+        "pandas_series_accessor": env.get_template("pandas_series_accessor.py.j2"),
     }
 
 
 def _collect_args(impls):
     args_by_name = {}
     arg_order = []
+    arg_appearances = {}
     for impl in impls:
+        seen_in_impl = set()
         for arg in impl["args"]:
             name = arg["name"]
+            seen_in_impl.add(name)
             if name not in args_by_name:
                 args_by_name[name] = {
                     "types": set(),
@@ -147,7 +236,23 @@ def _collect_args(impls):
                     "keyword_only": arg["keyword_only"],
                 }
                 arg_order.append(name)
+            else:
+                # If it was marked optional or keyword_only in any previous impl, keep it.
+                # Or if this impl marks it as optional/keyword_only, update it.
+                if arg["optional"]:
+                    args_by_name[name]["optional"] = True
+                if arg["keyword_only"]:
+                    args_by_name[name]["keyword_only"] = True
             args_by_name[name]["types"].add(arg["value"])
+        for name in seen_in_impl:
+            arg_appearances[name] = arg_appearances.get(name, 0) + 1
+
+    # If an argument is not in all impls, it must be optional overall
+    num_impls = len(impls)
+    for name, count in arg_appearances.items():
+        if count < num_impls:
+            args_by_name[name]["optional"] = True
+
     return args_by_name, arg_order
 
 
@@ -212,6 +317,15 @@ def _validate_types(impls):
 
 
 def _generate_signature_def(python_name, impls, sql_name, template):
+    for impl in impls:
+        uses_any1 = False
+        if "any1" in str(impl["return"]):
+            uses_any1 = True
+        for arg in impl["args"]:
+            if "any1" in str(arg["value"]):
+                uses_any1 = True
+        impl["uses_any1"] = uses_any1
+
     return_types = {impl["return"] for impl in impls}
 
     # Optimization: if all impls return the same concrete type,
@@ -291,7 +405,11 @@ def parse_scalar_functions(data, module_name, signature_def_template, is_global=
         if not is_global and python_name.startswith(module_name + "_"):
             python_name = python_name[len(module_name) + 1 :]
 
-        internal_op_name = f"_{python_name.upper()}_OP"
+        op_base_name = python_name
+        if python_name in _PYTHON_BUILTINS:
+            python_name = python_name + "_"
+
+        internal_op_name = f"_{op_base_name.upper()}_OP"
 
         # Aggregate args across impls
         args_by_name, arg_order = _collect_args(func_data["impls"])
@@ -304,7 +422,7 @@ def parse_scalar_functions(data, module_name, signature_def_template, is_global=
 
         # Determine return dtype
         sig_name, sig_def = _generate_signature_def(
-            python_name,
+            op_base_name,
             func_data["impls"],
             sql_name,
             signature_def_template,
@@ -326,6 +444,9 @@ def parse_scalar_functions(data, module_name, signature_def_template, is_global=
         # Test args
         test_args = _get_test_args(args_by_name, arg_order)
 
+        # Read series_accessor_arg
+        series_accessor_arg = func_data.get("series_accessor_arg")
+
         functions_list.append(
             {
                 "name": python_name,
@@ -333,6 +454,7 @@ def parse_scalar_functions(data, module_name, signature_def_template, is_global=
                 "description": func_data["description"],
                 "args": func_args,
                 "test_args": test_args,
+                "series_accessor_arg": series_accessor_arg,
             }
         )
 
@@ -386,6 +508,12 @@ def process_yaml_file(yaml_file, templates):
     output_file = OUTPUT_DIR.joinpath(module_path).with_suffix(".py")
 
     is_global = "global_namespace" in module_path.parts
+    namespace = get_namespace(yaml_file)
+
+    if not data or not isinstance(data, dict) or "scalar_functions" not in data:
+        # If the file is empty or has no functions, just create the namespace.
+        return [{"namespace": namespace}]
+
     ops_list, functions_list = parse_scalar_functions(
         data,
         module_name,
@@ -396,9 +524,10 @@ def process_yaml_file(yaml_file, templates):
     # Render and write
     output_file.parent.mkdir(parents=True, exist_ok=True)
     ensure_init_py(output_file.parent, OUTPUT_DIR.parent, templates["license"])
+    yaml_file_relative = yaml_file.relative_to(PACKAGE_ROOT)
     content = templates["operation"].render(
-        yaml_path=str(yaml_file),
-        script_path="scripts/generate_bigframes_bigquery.py",
+        yaml_path=yaml_file_relative,
+        script_path=SCRIPT_PATH_RELATIVE,
         ops=ops_list,
         functions=functions_list,
     )
@@ -419,8 +548,8 @@ def process_yaml_file(yaml_file, templates):
         test_output_file.parent, TEST_OUTPUT_DIR.parent, templates["license"]
     )
     test_content = templates["test_operation"].render(
-        yaml_path=str(yaml_file),
-        script_path="scripts/generate_bigframes_bigquery.py",
+        yaml_path=yaml_file_relative,
+        script_path=SCRIPT_PATH_RELATIVE,
         import_path=import_path,
         short_name=module_path.name,
         is_global=is_global,
@@ -432,12 +561,150 @@ def process_yaml_file(yaml_file, templates):
     run_ruff(test_output_file)
     print(f"  Generated {test_output_file}")
 
+    # Collect functions for Series accessor
+    accessor_functions = []
+    for func in functions_list:
+        if func.get("series_accessor_arg"):
+            import_module = (
+                f"bigframes.operations.googlesql.{'.'.join(module_path.parts)}"
+            )
+            accessor_functions.append(
+                {
+                    "name": func["name"],
+                    "import_module": import_module,
+                    "namespace": namespace,
+                    "description": func["description"],
+                    "args": func["args"],
+                    "series_accessor_arg": func["series_accessor_arg"],
+                }
+            )
+
+    return accessor_functions
+
+
+def get_namespace(yaml_file: pathlib.Path) -> tuple[str, ...] | None:
+    rel_path = yaml_file.relative_to(DATA_DIR)
+    parts = rel_path.with_suffix("").parts
+    if "global_namespace" in parts:
+        return None
+    return parts
+
+
+def get_class_name(ns_tuple: tuple[str, ...], prefix: str = "") -> str:
+    if not ns_tuple:
+        return f"{prefix}BigQuerySeriesAccessor"
+    camel_parts = [part.capitalize() for part in ns_tuple]
+    return f"{prefix}{''.join(camel_parts)}SeriesAccessor"
+
+
+def generate_series_accessors(functions: list[dict], templates: dict):
+    print("Generating Series accessors...")
+    # Find all active namespaces
+    active_namespaces = set()
+    for func in functions:
+        ns = func["namespace"] or ()
+        for i in range(len(ns) + 1):
+            active_namespaces.add(ns[:i])
+
+    # Sort namespaces by depth so parents come first
+    sorted_namespaces = sorted(list(active_namespaces), key=len)
+
+    # Build namespace definitions
+    ns_defs = []
+    ns_by_tuple = {}
+    for ns in sorted_namespaces:
+        class_name = get_class_name(ns)
+        bf_class_name = get_class_name(ns, prefix="Bigframes")
+        pd_class_name = get_class_name(ns, prefix="Pandas")
+
+        ns_def = {
+            "ns_tuple": ns,
+            "class_name": class_name,
+            "bigframes_class_name": bf_class_name,
+            "pandas_class_name": pd_class_name,
+            "is_root": len(ns) == 0,
+            "description": (
+                f"Series accessor for BigQuery {'.'.join(ns)} functions."
+                if ns
+                else "Series accessor for BigQuery functions."
+            ),
+            "children": [],
+            "functions": [],
+        }
+        ns_defs.append(ns_def)
+        ns_by_tuple[ns] = ns_def
+
+    # Populate functions
+    for func in functions:
+        if "name" in func:
+            ns = func["namespace"] or ()
+            ns_by_tuple[ns]["functions"].append(func)
+
+    # Populate children properties
+    for ns in sorted_namespaces:
+        if len(ns) > 0:
+            parent_ns = ns[:-1]
+            parent_def = ns_by_tuple[parent_ns]
+            child_def = ns_by_tuple[ns]
+            parent_def["children"].append(
+                {
+                    "prop_name": ns[-1],
+                    "class_name": child_def["class_name"],
+                    "bigframes_class_name": child_def["bigframes_class_name"],
+                    "pandas_class_name": child_def["pandas_class_name"],
+                }
+            )
+
+    # Render and write core
+    core_output_file = CODE_ROOT / "extensions" / "core" / "series_accessor.py"
+    core_output_file.parent.mkdir(parents=True, exist_ok=True)
+    ensure_init_py(core_output_file.parent, CODE_ROOT, templates["license"])
+    core_content = templates["core_series_accessor"].render(
+        script_path=SCRIPT_PATH_RELATIVE,
+        namespaces=ns_defs,
+    )
+    with open(core_output_file, "w") as f:
+        f.write(core_content)
+    run_ruff(core_output_file)
+    print(f"  Generated {core_output_file}")
+
+    # Render and write bigframes
+    bf_output_file = CODE_ROOT / "extensions" / "bigframes" / "series_accessor.py"
+    bf_output_file.parent.mkdir(parents=True, exist_ok=True)
+    ensure_init_py(bf_output_file.parent, CODE_ROOT, templates["license"])
+    bf_content = templates["bigframes_series_accessor"].render(
+        script_path=SCRIPT_PATH_RELATIVE,
+        namespaces=ns_defs,
+    )
+    with open(bf_output_file, "w") as f:
+        f.write(bf_content)
+    run_ruff(bf_output_file)
+    print(f"  Generated {bf_output_file}")
+
+    # Render and write pandas
+    pd_output_file = CODE_ROOT / "extensions" / "pandas" / "series_accessor.py"
+    pd_output_file.parent.mkdir(parents=True, exist_ok=True)
+    ensure_init_py(pd_output_file.parent, CODE_ROOT, templates["license"])
+    pd_content = templates["pandas_series_accessor"].render(
+        script_path=SCRIPT_PATH_RELATIVE,
+        namespaces=ns_defs,
+    )
+    with open(pd_output_file, "w") as f:
+        f.write(pd_content)
+    run_ruff(pd_output_file)
+    print(f"  Generated {pd_output_file}")
+
 
 def main():
     templates = load_templates()
 
+    all_accessor_functions = []
     for yaml_file in sorted(DATA_DIR.glob("**/*.yaml")):
-        process_yaml_file(yaml_file, templates)
+        accessor_funcs = process_yaml_file(yaml_file, templates)
+        all_accessor_functions.extend(accessor_funcs)
+
+    if all_accessor_functions:
+        generate_series_accessors(all_accessor_functions, templates)
 
 
 if __name__ == "__main__":

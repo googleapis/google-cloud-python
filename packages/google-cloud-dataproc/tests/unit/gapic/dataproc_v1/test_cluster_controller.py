@@ -6394,7 +6394,11 @@ def test_create_cluster_rest_call_success(request_type):
                     "enable_vtpm": True,
                     "enable_integrity_monitoring": True,
                 },
-                "confidential_instance_config": {"enable_confidential_compute": True},
+                "confidential_instance_config": {
+                    "enable_confidential_compute": True,
+                    "confidential_instance_type": 1,
+                },
+                "resource_manager_tags": {},
             },
             "master_config": {
                 "num_instances": 1399,
@@ -6416,6 +6420,14 @@ def test_create_cluster_rest_call_success(request_type):
                     "local_ssd_interface": "local_ssd_interface_value",
                     "boot_disk_provisioned_iops": 2793,
                     "boot_disk_provisioned_throughput": 3464,
+                    "attached_disk_configs": [
+                        {
+                            "disk_type": 1,
+                            "disk_size_gb": 1261,
+                            "provisioned_iops": 1740,
+                            "provisioned_throughput": 2411,
+                        }
+                    ],
                 },
                 "is_preemptible": True,
                 "preemptibility": 1,
@@ -6444,6 +6456,7 @@ def test_create_cluster_rest_call_success(request_type):
                                 "machine_types_value2",
                             ],
                             "rank": 428,
+                            "disk_config": {},
                         }
                     ],
                     "instance_selection_results": [
@@ -6814,7 +6827,11 @@ def test_update_cluster_rest_call_success(request_type):
                     "enable_vtpm": True,
                     "enable_integrity_monitoring": True,
                 },
-                "confidential_instance_config": {"enable_confidential_compute": True},
+                "confidential_instance_config": {
+                    "enable_confidential_compute": True,
+                    "confidential_instance_type": 1,
+                },
+                "resource_manager_tags": {},
             },
             "master_config": {
                 "num_instances": 1399,
@@ -6836,6 +6853,14 @@ def test_update_cluster_rest_call_success(request_type):
                     "local_ssd_interface": "local_ssd_interface_value",
                     "boot_disk_provisioned_iops": 2793,
                     "boot_disk_provisioned_throughput": 3464,
+                    "attached_disk_configs": [
+                        {
+                            "disk_type": 1,
+                            "disk_size_gb": 1261,
+                            "provisioned_iops": 1740,
+                            "provisioned_throughput": 2411,
+                        }
+                    ],
                 },
                 "is_preemptible": True,
                 "preemptibility": 1,
@@ -6864,6 +6889,7 @@ def test_update_cluster_rest_call_success(request_type):
                                 "machine_types_value2",
                             ],
                             "rank": 428,
+                            "disk_config": {},
                         }
                     ],
                     "instance_selection_results": [

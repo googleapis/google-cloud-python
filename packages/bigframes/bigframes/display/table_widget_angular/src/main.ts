@@ -14,23 +14,29 @@
  * limitations under the License.
  */
 
-import { bootstrapApplication } from '@angular/platform-browser';
+import { createApplication } from '@angular/platform-browser';
 import { App } from './app/app';
-import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
+import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZonelessChangeDetection } from '@angular/core';
 
 function render({ model, el }: { model: any, el: HTMLElement }) {
   // Create a container for the Angular app
-  const appRoot = document.createElement('app-root');
+  const appRoot = document.createElement('div');
+  appRoot.setAttribute('app-root', '');
   el.appendChild(appRoot);
 
   const appConfig: ApplicationConfig = {
     providers: [
       provideBrowserGlobalErrorListeners(),
+      provideZonelessChangeDetection(),
       { provide: 'ANYWIDGET_MODEL', useValue: model }
     ]
   };
 
-  bootstrapApplication(App, appConfig)
+  createApplication(appConfig)
+    .then((appRef) => {
+      appRef.bootstrap(App, appRoot);
+      appRoot.removeAttribute('app-root');
+    })
     .catch((err) => console.error(err));
 }
 

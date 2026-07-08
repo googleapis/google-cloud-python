@@ -41,7 +41,7 @@ from typing import (
 
 import bigframes_vendored.constants as constants
 import bigframes_vendored.pandas.core.series as vendored_pandas_series
-import google.cloud.bigquery as bigquery
+import google.cloud.bigquery.job
 import numpy
 import pandas
 import pyarrow as pa
@@ -80,6 +80,7 @@ from bigframes.core.logging import log_adapter
 from bigframes.core.window import rolling
 
 if typing.TYPE_CHECKING:
+    import bigframes.extensions.bigframes.series_accessor as series_bigquery_accessor
     import bigframes.geopandas.geoseries
     import bigframes.operations.datetimes as datetimes
     import bigframes.operations.strings as strings
@@ -118,7 +119,7 @@ class Series:
         *,
         session: Optional[bigframes.session.Session] = None,
     ):
-        self._query_job: Optional[bigquery.QueryJob] = None
+        self._query_job: Optional[google.cloud.bigquery.job.QueryJob] = None
         import bigframes.pandas
 
         # Ignore object dtype if provided, as it provides no additional
@@ -300,7 +301,26 @@ class Series:
         return self.index
 
     @property
-    def query_job(self) -> Optional[bigquery.QueryJob]:
+    def bigquery(
+        self,
+    ) -> series_bigquery_accessor.BigframesBigQuerySeriesAccessor:
+        """
+        Accessor for BigQuery functionality.
+
+        Returns:
+            bigframes.extensions.core.series_accessor.BigQuerySeriesAccessor:
+                Accessor that exposes BigQuery functionality on a Series,
+                with method names closer to SQL.
+        """
+        # Import the accessor here to avoid circular imports.
+        import bigframes.extensions.bigframes.series_accessor
+
+        return bigframes.extensions.bigframes.series_accessor.BigframesBigQuerySeriesAccessor(
+            self
+        )
+
+    @property
+    def query_job(self) -> Optional[google.cloud.bigquery.job.QueryJob]:
         """BigQuery job metadata for the most recent query.
 
         Returns:
@@ -354,7 +374,9 @@ class Series:
     def transpose(self) -> Series:
         return self
 
-    def _set_internal_query_job(self, query_job: Optional[bigquery.QueryJob]):
+    def _set_internal_query_job(
+        self, query_job: Optional[google.cloud.bigquery.job.QueryJob]
+    ):
         self._query_job = query_job
 
     def __len__(self):
@@ -572,8 +594,8 @@ class Series:
                 block = block.assign_label(self._value_column, name)
             return bigframes.dataframe.DataFrame(block)
 
-    def _get_display_df(self) -> bigframes.dataframe.DataFrame:
-        return self.to_frame()._get_display_df()
+    def _prepare_display_df(self) -> bigframes.dataframe.DataFrame:
+        return self.to_frame()._prepare_display_df()
 
     def _repr_mimebundle_(self, include=None, exclude=None):
         """
@@ -623,9 +645,17 @@ class Series:
         if errors not in ["raise", "null"]:
             raise ValueError("Argument 'errors' must be one of 'raise' or 'null'")
         dtype = bigframes.dtypes.bigframes_type(dtype)
-        return self._apply_unary_op(
-            bigframes.operations.AsTypeOp(to_type=dtype, safe=(errors == "null"))
-        )
+        safe = errors == "null"
+        if dtype == bigframes.dtypes.JSON_DTYPE:
+            return self._apply_unary_op(bigframes.operations.ToJSON(safe=safe))
+        elif self.dtype == bigframes.dtypes.JSON_DTYPE:
+            return self._apply_unary_op(
+                bigframes.operations.JSONDecode(to_type=dtype, safe=safe)
+            )
+        else:
+            return self._apply_unary_op(
+                bigframes.operations.AsTypeOp(to_type=dtype, safe=safe)
+            )
 
     def to_pandas(
         self,
@@ -816,7 +846,7 @@ class Series:
         )
         return map(lambda df: cast(pandas.Series, df.squeeze(1)), batches)
 
-    def _compute_dry_run(self) -> bigquery.QueryJob:
+    def _compute_dry_run(self) -> google.cloud.bigquery.job.QueryJob:
         _, query_job = self._block._compute_dry_run((self._value_column,))
         return query_job
 
@@ -2042,25 +2072,48 @@ class Series:
                 " are supported."
             )
 
-        if isinstance(func, bigframes.functions.Udf):
-            # We are working with bigquery function at this point
-            result_series = self._apply_nary_op(ops.func_to_op(func), args)
-            # TODO(jialuo): Investigate why `_apply_nary_op` drops the series
-            # `name`. Manually reassigning it here as a temporary fix.
-            result_series.name = self.name
-
-            return result_series
-
+        # Highest priority: try to map directly to an operator, for eg numpy
+        # ufuncs, or simple arithmetic/logic operators.
         bf_op = python_ops.python_callable_to_op(func)
         if bf_op and isinstance(bf_op, ops.UnaryOp):
             return self._apply_unary_op(bf_op)
 
-        # It is neither a remote function nor a managed function.
-        # Then it must be a vectorized function that applies to the Series
-        # as a whole.
         if by_row:
+            from bigframes._config import options
+
+            enable_transpile = options.experiments.enable_python_transpiler
+            return self._apply_by_row(
+                func, args=args, transpile_enabled=enable_transpile
+            )
+        try:
+            return func(self)  # type: ignore
+        except Exception as ex:
+            # This could happen if any of the operators in func is not
+            # supported on a Series. Let's guide the customer to use a
+            # bigquery function instead
+            if hasattr(ex, "message"):
+                ex.message += f"\n{_bigquery_function_recommendation_message}"
+            raise
+
+    def _apply_by_row(
+        self,
+        func: typing.Callable,
+        args: typing.Tuple = (),
+        transpile_enabled: bool = False,
+    ) -> Series:
+        """
+        Apply callable or deployed udf row-wise on the series.
+        """
+        if not callable(func):
             raise ValueError(
-                "You have passed a function as-is. If your intention is to "
+                "Expected a callable function. If you meant to use a BigQuery function, please wrap it with bigframes.pandas.udf(...)"
+            )
+        try:
+            expr = ops.func_to_expr(func)
+        # We get this message even if transpiler could have in theory translated it.
+        except Exception:
+            raise ValueError(
+                "You have passed a functi1on as-is. If your intention is to "
                 "apply this function in a vectorized way (i.e. to the "
                 "entire Series as a whole, and you are sure that it "
                 "performs only the operations that are implemented for a "
@@ -2074,15 +2127,12 @@ class Series:
                 "or `bigframes.pandas.remote_function` before passing."
             )
 
-        try:
-            return func(self)  # type: ignore
-        except Exception as ex:
-            # This could happen if any of the operators in func is not
-            # supported on a Series. Let's guide the customer to use a
-            # bigquery function instead
-            if hasattr(ex, "message"):
-                ex.message += f"\n{_bigquery_function_recommendation_message}"
-            raise
+        result_series = self._apply_callable_expr(expr, args)
+        # TODO(jialuo): Investigate why `_apply_nary_op` drops the series
+        # `name`. Manually reassigning it here as a temporary fix.
+        result_series.name = self.name
+
+        return result_series
 
     def combine(
         self,
@@ -2096,8 +2146,12 @@ class Series:
                 " are supported."
             )
 
-        if isinstance(func, bigframes.functions.Udf):
-            result_series = self._apply_nary_op(ops.func_to_op(func), (other,))
+        from bigframes._config import options
+
+        if isinstance(func, bigframes.functions.Udf) or (
+            options.experiments.enable_python_transpiler and callable(func)
+        ):
+            result_series = self._apply_callable_expr(ops.func_to_expr(func), (other,))
             if hasattr(other, "name") and other.name != self._name:  # type: ignore
                 result_series.name = None
             else:
@@ -2257,11 +2311,14 @@ class Series:
         return self.where(~cond, other)
 
     def to_frame(self, name: blocks.Label = None) -> bigframes.dataframe.DataFrame:
-        provided_name = name if name else self.name
+        provided_name = name if name is not None else self.name
         # To be consistent with Pandas, it assigns 0 as the column name if missing. 0 is the first element of RangeIndex.
-        block = self._block.with_column_labels(
-            [provided_name] if provided_name else [0]
-        )
+        column_names: List[blocks.Label]
+        if provided_name is None or pandas.isna([cast(Any, provided_name)])[0]:
+            column_names = [0]
+        else:
+            column_names = [provided_name]
+        block = self._block.with_column_labels(column_names)
         return bigframes.dataframe.DataFrame(block)
 
     def to_csv(
@@ -2464,7 +2521,10 @@ class Series:
             map_df = map_df.set_index("keys")
         elif callable(arg):
             # This is for remote function and managed funtion.
-            return self.apply(arg)
+            from bigframes._config import options
+
+            enable_transpile = options.experiments.enable_python_transpiler
+            return self._apply_by_row(arg, transpile_enabled=enable_transpile)
         else:
             # Mirroring pandas, call the uncallable object
             arg()  # throws TypeError: object is not callable
@@ -2699,6 +2759,19 @@ class Series:
             others, ignore_self=ignore_self, cast_scalars=False
         )
         block, result_id = block.project_expr(op.as_expr(*values))
+        return Series(block.select_column(result_id).with_column_labels([None]))
+
+    def _apply_callable_expr(
+        self,
+        callable_expr: bigframes.operations.to_op.CallableExpression,
+        others: Sequence[typing.Union[Series, scalars.Scalar]],
+        ignore_self=False,
+    ):
+        """Applies a CallableExpression to the series and others."""
+        values, block = self._align_n(
+            others, ignore_self=ignore_self, cast_scalars=False
+        )
+        block, result_id = block.project_expr(callable_expr.apply(*values))
         return Series(block.select_column(result_id).with_column_labels([None]))
 
     def _apply_binary_aggregation(

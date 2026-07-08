@@ -39,8 +39,11 @@ except ImportError:  # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 
 import google.auth
+import google.protobuf.any_pb2 as any_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
 from google.api_core import (
     client_options,
     gapic_v1,
@@ -1416,9 +1419,11 @@ def test_get_iceberg_catalog(request_type, transport: str = "grpc"):
             name="name_value",
             credential_mode=iceberg_rest_catalog.IcebergCatalog.CredentialMode.CREDENTIAL_MODE_END_USER,
             biglake_service_account="biglake_service_account_value",
+            biglake_service_account_unique_id="biglake_service_account_unique_id_value",
             catalog_type=iceberg_rest_catalog.IcebergCatalog.CatalogType.CATALOG_TYPE_GCS_BUCKET,
             default_location="default_location_value",
-            catalog_regions=["catalog_regions_value"],
+            storage_regions=["storage_regions_value"],
+            description="description_value",
         )
         response = client.get_iceberg_catalog(request)
 
@@ -1437,11 +1442,16 @@ def test_get_iceberg_catalog(request_type, transport: str = "grpc"):
     )
     assert response.biglake_service_account == "biglake_service_account_value"
     assert (
+        response.biglake_service_account_unique_id
+        == "biglake_service_account_unique_id_value"
+    )
+    assert (
         response.catalog_type
         == iceberg_rest_catalog.IcebergCatalog.CatalogType.CATALOG_TYPE_GCS_BUCKET
     )
     assert response.default_location == "default_location_value"
-    assert response.catalog_regions == ["catalog_regions_value"]
+    assert response.storage_regions == ["storage_regions_value"]
+    assert response.description == "description_value"
 
 
 def test_get_iceberg_catalog_non_empty_request_with_auto_populated_field():
@@ -1584,9 +1594,11 @@ async def test_get_iceberg_catalog_async(request_type, transport: str = "grpc_as
                 name="name_value",
                 credential_mode=iceberg_rest_catalog.IcebergCatalog.CredentialMode.CREDENTIAL_MODE_END_USER,
                 biglake_service_account="biglake_service_account_value",
+                biglake_service_account_unique_id="biglake_service_account_unique_id_value",
                 catalog_type=iceberg_rest_catalog.IcebergCatalog.CatalogType.CATALOG_TYPE_GCS_BUCKET,
                 default_location="default_location_value",
-                catalog_regions=["catalog_regions_value"],
+                storage_regions=["storage_regions_value"],
+                description="description_value",
             )
         )
         response = await client.get_iceberg_catalog(request)
@@ -1606,11 +1618,16 @@ async def test_get_iceberg_catalog_async(request_type, transport: str = "grpc_as
     )
     assert response.biglake_service_account == "biglake_service_account_value"
     assert (
+        response.biglake_service_account_unique_id
+        == "biglake_service_account_unique_id_value"
+    )
+    assert (
         response.catalog_type
         == iceberg_rest_catalog.IcebergCatalog.CatalogType.CATALOG_TYPE_GCS_BUCKET
     )
     assert response.default_location == "default_location_value"
-    assert response.catalog_regions == ["catalog_regions_value"]
+    assert response.storage_regions == ["storage_regions_value"]
+    assert response.description == "description_value"
 
 
 def test_get_iceberg_catalog_field_headers():
@@ -2341,9 +2358,11 @@ def test_update_iceberg_catalog(request_type, transport: str = "grpc"):
             name="name_value",
             credential_mode=iceberg_rest_catalog.IcebergCatalog.CredentialMode.CREDENTIAL_MODE_END_USER,
             biglake_service_account="biglake_service_account_value",
+            biglake_service_account_unique_id="biglake_service_account_unique_id_value",
             catalog_type=iceberg_rest_catalog.IcebergCatalog.CatalogType.CATALOG_TYPE_GCS_BUCKET,
             default_location="default_location_value",
-            catalog_regions=["catalog_regions_value"],
+            storage_regions=["storage_regions_value"],
+            description="description_value",
         )
         response = client.update_iceberg_catalog(request)
 
@@ -2362,11 +2381,16 @@ def test_update_iceberg_catalog(request_type, transport: str = "grpc"):
     )
     assert response.biglake_service_account == "biglake_service_account_value"
     assert (
+        response.biglake_service_account_unique_id
+        == "biglake_service_account_unique_id_value"
+    )
+    assert (
         response.catalog_type
         == iceberg_rest_catalog.IcebergCatalog.CatalogType.CATALOG_TYPE_GCS_BUCKET
     )
     assert response.default_location == "default_location_value"
-    assert response.catalog_regions == ["catalog_regions_value"]
+    assert response.storage_regions == ["storage_regions_value"]
+    assert response.description == "description_value"
 
 
 def test_update_iceberg_catalog_non_empty_request_with_auto_populated_field():
@@ -2508,9 +2532,11 @@ async def test_update_iceberg_catalog_async(
                 name="name_value",
                 credential_mode=iceberg_rest_catalog.IcebergCatalog.CredentialMode.CREDENTIAL_MODE_END_USER,
                 biglake_service_account="biglake_service_account_value",
+                biglake_service_account_unique_id="biglake_service_account_unique_id_value",
                 catalog_type=iceberg_rest_catalog.IcebergCatalog.CatalogType.CATALOG_TYPE_GCS_BUCKET,
                 default_location="default_location_value",
-                catalog_regions=["catalog_regions_value"],
+                storage_regions=["storage_regions_value"],
+                description="description_value",
             )
         )
         response = await client.update_iceberg_catalog(request)
@@ -2530,11 +2556,16 @@ async def test_update_iceberg_catalog_async(
     )
     assert response.biglake_service_account == "biglake_service_account_value"
     assert (
+        response.biglake_service_account_unique_id
+        == "biglake_service_account_unique_id_value"
+    )
+    assert (
         response.catalog_type
         == iceberg_rest_catalog.IcebergCatalog.CatalogType.CATALOG_TYPE_GCS_BUCKET
     )
     assert response.default_location == "default_location_value"
-    assert response.catalog_regions == ["catalog_regions_value"]
+    assert response.storage_regions == ["storage_regions_value"]
+    assert response.description == "description_value"
 
 
 def test_update_iceberg_catalog_field_headers():
@@ -2724,9 +2755,11 @@ def test_create_iceberg_catalog(request_type, transport: str = "grpc"):
             name="name_value",
             credential_mode=iceberg_rest_catalog.IcebergCatalog.CredentialMode.CREDENTIAL_MODE_END_USER,
             biglake_service_account="biglake_service_account_value",
+            biglake_service_account_unique_id="biglake_service_account_unique_id_value",
             catalog_type=iceberg_rest_catalog.IcebergCatalog.CatalogType.CATALOG_TYPE_GCS_BUCKET,
             default_location="default_location_value",
-            catalog_regions=["catalog_regions_value"],
+            storage_regions=["storage_regions_value"],
+            description="description_value",
         )
         response = client.create_iceberg_catalog(request)
 
@@ -2745,11 +2778,16 @@ def test_create_iceberg_catalog(request_type, transport: str = "grpc"):
     )
     assert response.biglake_service_account == "biglake_service_account_value"
     assert (
+        response.biglake_service_account_unique_id
+        == "biglake_service_account_unique_id_value"
+    )
+    assert (
         response.catalog_type
         == iceberg_rest_catalog.IcebergCatalog.CatalogType.CATALOG_TYPE_GCS_BUCKET
     )
     assert response.default_location == "default_location_value"
-    assert response.catalog_regions == ["catalog_regions_value"]
+    assert response.storage_regions == ["storage_regions_value"]
+    assert response.description == "description_value"
 
 
 def test_create_iceberg_catalog_non_empty_request_with_auto_populated_field():
@@ -2766,6 +2804,7 @@ def test_create_iceberg_catalog_non_empty_request_with_auto_populated_field():
     request = iceberg_rest_catalog.CreateIcebergCatalogRequest(
         parent="parent_value",
         iceberg_catalog_id="iceberg_catalog_id_value",
+        primary_location="primary_location_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2781,6 +2820,7 @@ def test_create_iceberg_catalog_non_empty_request_with_auto_populated_field():
         request_msg = iceberg_rest_catalog.CreateIcebergCatalogRequest(
             parent="parent_value",
             iceberg_catalog_id="iceberg_catalog_id_value",
+            primary_location="primary_location_value",
         )
         assert args[0] == request_msg
 
@@ -2897,9 +2937,11 @@ async def test_create_iceberg_catalog_async(
                 name="name_value",
                 credential_mode=iceberg_rest_catalog.IcebergCatalog.CredentialMode.CREDENTIAL_MODE_END_USER,
                 biglake_service_account="biglake_service_account_value",
+                biglake_service_account_unique_id="biglake_service_account_unique_id_value",
                 catalog_type=iceberg_rest_catalog.IcebergCatalog.CatalogType.CATALOG_TYPE_GCS_BUCKET,
                 default_location="default_location_value",
-                catalog_regions=["catalog_regions_value"],
+                storage_regions=["storage_regions_value"],
+                description="description_value",
             )
         )
         response = await client.create_iceberg_catalog(request)
@@ -2919,11 +2961,16 @@ async def test_create_iceberg_catalog_async(
     )
     assert response.biglake_service_account == "biglake_service_account_value"
     assert (
+        response.biglake_service_account_unique_id
+        == "biglake_service_account_unique_id_value"
+    )
+    assert (
         response.catalog_type
         == iceberg_rest_catalog.IcebergCatalog.CatalogType.CATALOG_TYPE_GCS_BUCKET
     )
     assert response.default_location == "default_location_value"
-    assert response.catalog_regions == ["catalog_regions_value"]
+    assert response.storage_regions == ["storage_regions_value"]
+    assert response.description == "description_value"
 
 
 def test_create_iceberg_catalog_field_headers():
@@ -3008,6 +3055,7 @@ def test_create_iceberg_catalog_flattened():
             parent="parent_value",
             iceberg_catalog=iceberg_rest_catalog.IcebergCatalog(name="name_value"),
             iceberg_catalog_id="iceberg_catalog_id_value",
+            primary_location="primary_location_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -3022,6 +3070,9 @@ def test_create_iceberg_catalog_flattened():
         assert arg == mock_val
         arg = args[0].iceberg_catalog_id
         mock_val = "iceberg_catalog_id_value"
+        assert arg == mock_val
+        arg = args[0].primary_location
+        mock_val = "primary_location_value"
         assert arg == mock_val
 
 
@@ -3038,6 +3089,7 @@ def test_create_iceberg_catalog_flattened_error():
             parent="parent_value",
             iceberg_catalog=iceberg_rest_catalog.IcebergCatalog(name="name_value"),
             iceberg_catalog_id="iceberg_catalog_id_value",
+            primary_location="primary_location_value",
         )
 
 
@@ -3063,6 +3115,7 @@ async def test_create_iceberg_catalog_flattened_async():
             parent="parent_value",
             iceberg_catalog=iceberg_rest_catalog.IcebergCatalog(name="name_value"),
             iceberg_catalog_id="iceberg_catalog_id_value",
+            primary_location="primary_location_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -3077,6 +3130,9 @@ async def test_create_iceberg_catalog_flattened_async():
         assert arg == mock_val
         arg = args[0].iceberg_catalog_id
         mock_val = "iceberg_catalog_id_value"
+        assert arg == mock_val
+        arg = args[0].primary_location
+        mock_val = "primary_location_value"
         assert arg == mock_val
 
 
@@ -3094,6 +3150,7 @@ async def test_create_iceberg_catalog_flattened_error_async():
             parent="parent_value",
             iceberg_catalog=iceberg_rest_catalog.IcebergCatalog(name="name_value"),
             iceberg_catalog_id="iceberg_catalog_id_value",
+            primary_location="primary_location_value",
         )
 
 
@@ -4155,7 +4212,12 @@ def test_create_iceberg_catalog_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials()
     ).create_iceberg_catalog._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("iceberg_catalog_id",))
+    assert not set(unset_fields) - set(
+        (
+            "iceberg_catalog_id",
+            "primary_location",
+        )
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -4220,7 +4282,12 @@ def test_create_iceberg_catalog_rest_unset_required_fields():
 
     unset_fields = transport.create_iceberg_catalog._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("icebergCatalogId",))
+        set(
+            (
+                "icebergCatalogId",
+                "primaryLocation",
+            )
+        )
         & set(
             (
                 "parent",
@@ -4250,6 +4317,7 @@ def test_create_iceberg_catalog_rest_flattened():
             parent="parent_value",
             iceberg_catalog=iceberg_rest_catalog.IcebergCatalog(name="name_value"),
             iceberg_catalog_id="iceberg_catalog_id_value",
+            primary_location="primary_location_value",
         )
         mock_args.update(sample_request)
 
@@ -4290,6 +4358,7 @@ def test_create_iceberg_catalog_rest_flattened_error(transport: str = "rest"):
             parent="parent_value",
             iceberg_catalog=iceberg_rest_catalog.IcebergCatalog(name="name_value"),
             iceberg_catalog_id="iceberg_catalog_id_value",
+            primary_location="primary_location_value",
         )
 
 
@@ -4744,9 +4813,11 @@ async def test_get_iceberg_catalog_empty_call_grpc_asyncio():
                 name="name_value",
                 credential_mode=iceberg_rest_catalog.IcebergCatalog.CredentialMode.CREDENTIAL_MODE_END_USER,
                 biglake_service_account="biglake_service_account_value",
+                biglake_service_account_unique_id="biglake_service_account_unique_id_value",
                 catalog_type=iceberg_rest_catalog.IcebergCatalog.CatalogType.CATALOG_TYPE_GCS_BUCKET,
                 default_location="default_location_value",
-                catalog_regions=["catalog_regions_value"],
+                storage_regions=["storage_regions_value"],
+                description="description_value",
             )
         )
         await client.get_iceberg_catalog(request=None)
@@ -4806,9 +4877,11 @@ async def test_update_iceberg_catalog_empty_call_grpc_asyncio():
                 name="name_value",
                 credential_mode=iceberg_rest_catalog.IcebergCatalog.CredentialMode.CREDENTIAL_MODE_END_USER,
                 biglake_service_account="biglake_service_account_value",
+                biglake_service_account_unique_id="biglake_service_account_unique_id_value",
                 catalog_type=iceberg_rest_catalog.IcebergCatalog.CatalogType.CATALOG_TYPE_GCS_BUCKET,
                 default_location="default_location_value",
-                catalog_regions=["catalog_regions_value"],
+                storage_regions=["storage_regions_value"],
+                description="description_value",
             )
         )
         await client.update_iceberg_catalog(request=None)
@@ -4839,9 +4912,11 @@ async def test_create_iceberg_catalog_empty_call_grpc_asyncio():
                 name="name_value",
                 credential_mode=iceberg_rest_catalog.IcebergCatalog.CredentialMode.CREDENTIAL_MODE_END_USER,
                 biglake_service_account="biglake_service_account_value",
+                biglake_service_account_unique_id="biglake_service_account_unique_id_value",
                 catalog_type=iceberg_rest_catalog.IcebergCatalog.CatalogType.CATALOG_TYPE_GCS_BUCKET,
                 default_location="default_location_value",
-                catalog_regions=["catalog_regions_value"],
+                storage_regions=["storage_regions_value"],
+                description="description_value",
             )
         )
         await client.create_iceberg_catalog(request=None)
@@ -4935,9 +5010,11 @@ def test_get_iceberg_catalog_rest_call_success(request_type):
             name="name_value",
             credential_mode=iceberg_rest_catalog.IcebergCatalog.CredentialMode.CREDENTIAL_MODE_END_USER,
             biglake_service_account="biglake_service_account_value",
+            biglake_service_account_unique_id="biglake_service_account_unique_id_value",
             catalog_type=iceberg_rest_catalog.IcebergCatalog.CatalogType.CATALOG_TYPE_GCS_BUCKET,
             default_location="default_location_value",
-            catalog_regions=["catalog_regions_value"],
+            storage_regions=["storage_regions_value"],
+            description="description_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -4961,11 +5038,16 @@ def test_get_iceberg_catalog_rest_call_success(request_type):
     )
     assert response.biglake_service_account == "biglake_service_account_value"
     assert (
+        response.biglake_service_account_unique_id
+        == "biglake_service_account_unique_id_value"
+    )
+    assert (
         response.catalog_type
         == iceberg_rest_catalog.IcebergCatalog.CatalogType.CATALOG_TYPE_GCS_BUCKET
     )
     assert response.default_location == "default_location_value"
-    assert response.catalog_regions == ["catalog_regions_value"]
+    assert response.storage_regions == ["storage_regions_value"]
+    assert response.description == "description_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -5221,11 +5303,59 @@ def test_update_iceberg_catalog_rest_call_success(request_type):
         "name": "projects/sample1/catalogs/sample2",
         "credential_mode": 1,
         "biglake_service_account": "biglake_service_account_value",
+        "biglake_service_account_unique_id": "biglake_service_account_unique_id_value",
         "catalog_type": 1,
         "default_location": "default_location_value",
-        "catalog_regions": ["catalog_regions_value1", "catalog_regions_value2"],
+        "storage_regions": ["storage_regions_value1", "storage_regions_value2"],
         "create_time": {"seconds": 751, "nanos": 543},
         "update_time": {},
+        "replicas": [{"region": "region_value", "state": 1}],
+        "description": "description_value",
+        "restricted_locations_config": {
+            "restricted_locations": [
+                "restricted_locations_value1",
+                "restricted_locations_value2",
+            ]
+        },
+        "federated_catalog_options": {
+            "unity_catalog_info": {
+                "instance_name": "instance_name_value",
+                "catalog_name": "catalog_name_value",
+                "service_principal_application_id": "service_principal_application_id_value",
+            },
+            "glue_catalog_info": {
+                "warehouse": "warehouse_value",
+                "aws_region": "aws_region_value",
+                "aws_role_arn": "aws_role_arn_value",
+            },
+            "secret_name": "secret_name_value",
+            "service_directory_name": "service_directory_name_value",
+            "refresh_options": {
+                "refresh_schedule": {
+                    "refresh_interval": {"seconds": 751, "nanos": 543}
+                },
+                "refresh_scope": {
+                    "namespace_filters": [
+                        "namespace_filters_value1",
+                        "namespace_filters_value2",
+                    ]
+                },
+            },
+            "refresh_status": {
+                "start_time": {},
+                "end_time": {},
+                "status": {
+                    "code": 411,
+                    "message": "message_value",
+                    "details": [
+                        {
+                            "type_url": "type.googleapis.com/google.protobuf.Duration",
+                            "value": b"\x08\x0c\x10\xdb\x07",
+                        }
+                    ],
+                },
+            },
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -5305,9 +5435,11 @@ def test_update_iceberg_catalog_rest_call_success(request_type):
             name="name_value",
             credential_mode=iceberg_rest_catalog.IcebergCatalog.CredentialMode.CREDENTIAL_MODE_END_USER,
             biglake_service_account="biglake_service_account_value",
+            biglake_service_account_unique_id="biglake_service_account_unique_id_value",
             catalog_type=iceberg_rest_catalog.IcebergCatalog.CatalogType.CATALOG_TYPE_GCS_BUCKET,
             default_location="default_location_value",
-            catalog_regions=["catalog_regions_value"],
+            storage_regions=["storage_regions_value"],
+            description="description_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -5331,11 +5463,16 @@ def test_update_iceberg_catalog_rest_call_success(request_type):
     )
     assert response.biglake_service_account == "biglake_service_account_value"
     assert (
+        response.biglake_service_account_unique_id
+        == "biglake_service_account_unique_id_value"
+    )
+    assert (
         response.catalog_type
         == iceberg_rest_catalog.IcebergCatalog.CatalogType.CATALOG_TYPE_GCS_BUCKET
     )
     assert response.default_location == "default_location_value"
-    assert response.catalog_regions == ["catalog_regions_value"]
+    assert response.storage_regions == ["storage_regions_value"]
+    assert response.description == "description_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -5454,11 +5591,59 @@ def test_create_iceberg_catalog_rest_call_success(request_type):
         "name": "name_value",
         "credential_mode": 1,
         "biglake_service_account": "biglake_service_account_value",
+        "biglake_service_account_unique_id": "biglake_service_account_unique_id_value",
         "catalog_type": 1,
         "default_location": "default_location_value",
-        "catalog_regions": ["catalog_regions_value1", "catalog_regions_value2"],
+        "storage_regions": ["storage_regions_value1", "storage_regions_value2"],
         "create_time": {"seconds": 751, "nanos": 543},
         "update_time": {},
+        "replicas": [{"region": "region_value", "state": 1}],
+        "description": "description_value",
+        "restricted_locations_config": {
+            "restricted_locations": [
+                "restricted_locations_value1",
+                "restricted_locations_value2",
+            ]
+        },
+        "federated_catalog_options": {
+            "unity_catalog_info": {
+                "instance_name": "instance_name_value",
+                "catalog_name": "catalog_name_value",
+                "service_principal_application_id": "service_principal_application_id_value",
+            },
+            "glue_catalog_info": {
+                "warehouse": "warehouse_value",
+                "aws_region": "aws_region_value",
+                "aws_role_arn": "aws_role_arn_value",
+            },
+            "secret_name": "secret_name_value",
+            "service_directory_name": "service_directory_name_value",
+            "refresh_options": {
+                "refresh_schedule": {
+                    "refresh_interval": {"seconds": 751, "nanos": 543}
+                },
+                "refresh_scope": {
+                    "namespace_filters": [
+                        "namespace_filters_value1",
+                        "namespace_filters_value2",
+                    ]
+                },
+            },
+            "refresh_status": {
+                "start_time": {},
+                "end_time": {},
+                "status": {
+                    "code": 411,
+                    "message": "message_value",
+                    "details": [
+                        {
+                            "type_url": "type.googleapis.com/google.protobuf.Duration",
+                            "value": b"\x08\x0c\x10\xdb\x07",
+                        }
+                    ],
+                },
+            },
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -5538,9 +5723,11 @@ def test_create_iceberg_catalog_rest_call_success(request_type):
             name="name_value",
             credential_mode=iceberg_rest_catalog.IcebergCatalog.CredentialMode.CREDENTIAL_MODE_END_USER,
             biglake_service_account="biglake_service_account_value",
+            biglake_service_account_unique_id="biglake_service_account_unique_id_value",
             catalog_type=iceberg_rest_catalog.IcebergCatalog.CatalogType.CATALOG_TYPE_GCS_BUCKET,
             default_location="default_location_value",
-            catalog_regions=["catalog_regions_value"],
+            storage_regions=["storage_regions_value"],
+            description="description_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -5564,11 +5751,16 @@ def test_create_iceberg_catalog_rest_call_success(request_type):
     )
     assert response.biglake_service_account == "biglake_service_account_value"
     assert (
+        response.biglake_service_account_unique_id
+        == "biglake_service_account_unique_id_value"
+    )
+    assert (
         response.catalog_type
         == iceberg_rest_catalog.IcebergCatalog.CatalogType.CATALOG_TYPE_GCS_BUCKET
     )
     assert response.default_location == "default_location_value"
-    assert response.catalog_regions == ["catalog_regions_value"]
+    assert response.storage_regions == ["storage_regions_value"]
+    assert response.description == "description_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -6375,6 +6567,60 @@ def test_parse_catalog_path():
 
     # Check that the path construction is reversible.
     actual = IcebergCatalogServiceClient.parse_catalog_path(path)
+    assert expected == actual
+
+
+def test_secret_path():
+    project = "oyster"
+    secret = "nudibranch"
+    expected = "projects/{project}/secrets/{secret}".format(
+        project=project,
+        secret=secret,
+    )
+    actual = IcebergCatalogServiceClient.secret_path(project, secret)
+    assert expected == actual
+
+
+def test_parse_secret_path():
+    expected = {
+        "project": "cuttlefish",
+        "secret": "mussel",
+    }
+    path = IcebergCatalogServiceClient.secret_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = IcebergCatalogServiceClient.parse_secret_path(path)
+    assert expected == actual
+
+
+def test_service_path():
+    project = "winkle"
+    location = "nautilus"
+    namespace = "scallop"
+    service = "abalone"
+    expected = "projects/{project}/locations/{location}/namespaces/{namespace}/services/{service}".format(
+        project=project,
+        location=location,
+        namespace=namespace,
+        service=service,
+    )
+    actual = IcebergCatalogServiceClient.service_path(
+        project, location, namespace, service
+    )
+    assert expected == actual
+
+
+def test_parse_service_path():
+    expected = {
+        "project": "squid",
+        "location": "clam",
+        "namespace": "whelk",
+        "service": "octopus",
+    }
+    path = IcebergCatalogServiceClient.service_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = IcebergCatalogServiceClient.parse_service_path(path)
     assert expected == actual
 
 

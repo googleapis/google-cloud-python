@@ -104,6 +104,10 @@ class DataformAsyncClient:
     )
     folder_path = staticmethod(DataformClient.folder_path)
     parse_folder_path = staticmethod(DataformClient.parse_folder_path)
+    git_repository_link_path = staticmethod(DataformClient.git_repository_link_path)
+    parse_git_repository_link_path = staticmethod(
+        DataformClient.parse_git_repository_link_path
+    )
     notebook_runtime_template_path = staticmethod(
         DataformClient.notebook_runtime_template_path
     )
@@ -996,8 +1000,9 @@ class DataformAsyncClient:
             request (Optional[Union[google.cloud.dataform_v1.types.QueryTeamFolderContentsRequest, dict]]):
                 The request object. ``QueryTeamFolderContents`` request message.
             team_folder (:class:`str`):
-                Required. Name of the team_folder whose contents to
-                list. Format: ``projects/*/locations/*/teamFolders/*``.
+                Required. Resource name of the TeamFolder to list
+                contents for. Format:
+                ``projects/*/locations/*/teamFolders/*``.
 
                 This corresponds to the ``team_folder`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1832,8 +1837,8 @@ class DataformAsyncClient:
             request (Optional[Union[google.cloud.dataform_v1.types.QueryFolderContentsRequest, dict]]):
                 The request object. ``QueryFolderContents`` request message.
             folder (:class:`str`):
-                Required. Name of the folder whose contents to list.
-                Format: projects/*/locations/*/folders/\*
+                Required. Resource name of the Folder to list contents
+                for. Format: projects/*/locations/*/folders/\*
 
                 This corresponds to the ``folder`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1959,8 +1964,8 @@ class DataformAsyncClient:
             request (Optional[Union[google.cloud.dataform_v1.types.QueryUserRootContentsRequest, dict]]):
                 The request object. ``QueryUserRootContents`` request message.
             location (:class:`str`):
-                Required. Location of the user root folder whose
-                contents to list. Format: projects/*/locations/*
+                Required. Location of the user root folder to list
+                contents for. Format: projects/*/locations/*
 
                 This corresponds to the ``location`` field
                 on the ``request`` instance; if ``request`` is provided, this

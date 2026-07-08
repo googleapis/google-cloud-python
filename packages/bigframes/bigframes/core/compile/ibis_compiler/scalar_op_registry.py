@@ -884,6 +884,25 @@ def numeric_to_datetime(
     )
 
 
+@scalar_op_compiler.register_unary_op(ops.coerce_to_bool_op)
+def coerce_to_bool_op_impl(x: ibis_types.Value):
+    x_type = x.type()
+    if x_type.is_boolean():
+        res = x
+    elif x_type.is_numeric():
+        res = x != 0  # type: ignore
+    elif x_type.is_string():
+        res = x.length() > 0  # type: ignore
+    elif x_type.is_binary():
+        res = x.length() > 0  # type: ignore
+    elif isinstance(x_type, ibis_dtypes.Array):
+        res = x.length() > 0  # type: ignore
+    else:
+        res = x.notnull()
+
+    return res.fill_null(False)  # type: ignore
+
+
 @scalar_op_compiler.register_unary_op(ops.AsTypeOp, pass_op=True)
 def astype_op_impl(x: ibis_types.Value, op: ops.AsTypeOp):
     to_type = bigframes.core.compile.ibis_types.bigframes_dtype_to_ibis_dtype(
@@ -921,35 +940,6 @@ def astype_op_impl(x: ibis_types.Value, op: ops.AsTypeOp):
             return x_converted
         elif to_type == ibis_dtypes.time:
             return x_converted.time()
-
-    if to_type == ibis_dtypes.json:
-        if x.type() == ibis_dtypes.string:
-            return parse_json_in_safe(x) if op.safe else parse_json(x)
-        if x.type() == ibis_dtypes.bool:
-            x_bool = typing.cast(
-                ibis_types.StringValue,
-                bigframes.core.compile.ibis_types.cast_ibis_value(
-                    x, ibis_dtypes.string, safe=op.safe
-                ),
-            ).lower()
-            return parse_json_in_safe(x_bool) if op.safe else parse_json(x_bool)
-        if x.type() in (ibis_dtypes.int64, ibis_dtypes.float64):
-            x_str = bigframes.core.compile.ibis_types.cast_ibis_value(
-                x, ibis_dtypes.string, safe=op.safe
-            )
-            return parse_json_in_safe(x_str) if op.safe else parse_json(x_str)
-
-    if x.type() == ibis_dtypes.json:
-        if to_type == ibis_dtypes.int64:
-            return cast_json_to_int64_in_safe(x) if op.safe else cast_json_to_int64(x)
-        if to_type == ibis_dtypes.float64:
-            return (
-                cast_json_to_float64_in_safe(x) if op.safe else cast_json_to_float64(x)
-            )
-        if to_type == ibis_dtypes.bool:
-            return cast_json_to_bool_in_safe(x) if op.safe else cast_json_to_bool(x)
-        if to_type == ibis_dtypes.string:
-            return cast_json_to_string_in_safe(x) if op.safe else cast_json_to_string(x)
 
     # TODO: either inline this function, or push rest of this op into the function
     return bigframes.core.compile.ibis_types.cast_ibis_value(x, to_type, safe=op.safe)
@@ -1193,9 +1183,27 @@ def parse_json_op_impl(x: ibis_types.Value, op: ops.ParseJSON):
     return parse_json(json_str=x)
 
 
-@scalar_op_compiler.register_unary_op(ops.ToJSON)
-def to_json_op_impl(json_obj: ibis_types.Value):
-    return to_json(json_obj=json_obj)
+@scalar_op_compiler.register_unary_op(ops.ToJSON, pass_op=True)
+def to_json_op_impl(x: ibis_types.Value, op: ops.ToJSON):
+    if x.type() == ibis_dtypes.string:
+        return parse_json_in_safe(x) if op.safe else parse_json(x)
+    return x.isnull().ifelse(ibis.null().cast(ibis_dtypes.json), to_json(x))
+
+
+@scalar_op_compiler.register_unary_op(ops.JSONDecode, pass_op=True)
+def json_decode_op_impl(x: ibis_types.Value, op: ops.JSONDecode):
+    to_type = bigframes.core.compile.ibis_types.bigframes_dtype_to_ibis_dtype(
+        op.to_type
+    )
+    if to_type == ibis_dtypes.int64:
+        return cast_json_to_int64_in_safe(x) if op.safe else cast_json_to_int64(x)
+    if to_type == ibis_dtypes.float64:
+        return cast_json_to_float64_in_safe(x) if op.safe else cast_json_to_float64(x)
+    if to_type == ibis_dtypes.bool:
+        return cast_json_to_bool_in_safe(x) if op.safe else cast_json_to_bool(x)
+    if to_type == ibis_dtypes.string:
+        return cast_json_to_string_in_safe(x) if op.safe else cast_json_to_string(x)
+    raise TypeError(f"Cannot cast from JSON to type {to_type}")
 
 
 @scalar_op_compiler.register_unary_op(ops.ToJSONString)

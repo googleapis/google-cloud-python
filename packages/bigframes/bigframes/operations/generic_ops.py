@@ -45,6 +45,21 @@ NotNullOp = base_ops.create_unary_op(
 )
 notnull_op = NotNullOp()
 
+
+# Semantics match Python's truth value testing (truthy and falsey objects).
+# See https://docs.python.org/3/library/stdtypes.html#truth-value-testing
+CoerceToBoolOp = base_ops.create_unary_op(
+    name="coerce_to_bool",
+    type_signature=op_typing.FixedOutputType(
+        dtypes.is_bool_coercable, dtypes.BOOL_DTYPE, description="coercable to bool"
+    ),
+)
+CoerceToBoolOp.__doc__ = (
+    "Coerce a value to a boolean, matching Python's truth value testing semantics "
+    "(truthy/falsey). See https://docs.python.org/3/library/stdtypes.html#truth-value-testing"
+)
+coerce_to_bool_op = CoerceToBoolOp()
+
 HashOp = base_ops.create_unary_op(
     name="hash",
     type_signature=op_typing.FixedOutputType(
@@ -93,10 +108,6 @@ _VALID_CASTS = set(
             dtypes.STRING_DTYPE,
             dtypes.INT_DTYPE,
         ),
-        (
-            dtypes.JSON_DTYPE,
-            dtypes.INT_DTYPE,
-        ),
         # Float casts
         (
             dtypes.BOOL_DTYPE,
@@ -118,10 +129,6 @@ _VALID_CASTS = set(
             dtypes.STRING_DTYPE,
             dtypes.FLOAT_DTYPE,
         ),
-        (
-            dtypes.JSON_DTYPE,
-            dtypes.FLOAT_DTYPE,
-        ),
         # Bool casts
         (
             dtypes.INT_DTYPE,
@@ -129,10 +136,6 @@ _VALID_CASTS = set(
         ),
         (
             dtypes.FLOAT_DTYPE,
-            dtypes.BOOL_DTYPE,
-        ),
-        (
-            dtypes.JSON_DTYPE,
             dtypes.BOOL_DTYPE,
         ),
         # String casts
@@ -166,10 +169,6 @@ _VALID_CASTS = set(
         ),
         (
             dtypes.DATE_DTYPE,
-            dtypes.STRING_DTYPE,
-        ),
-        (
-            dtypes.JSON_DTYPE,
             dtypes.STRING_DTYPE,
         ),
         # bytes casts
@@ -275,23 +274,6 @@ _VALID_CASTS = set(
         (
             dtypes.INT_DTYPE,
             dtypes.TIMEDELTA_DTYPE,
-        ),
-        # json casts
-        (
-            dtypes.BOOL_DTYPE,
-            dtypes.JSON_DTYPE,
-        ),
-        (
-            dtypes.FLOAT_DTYPE,
-            dtypes.JSON_DTYPE,
-        ),
-        (
-            dtypes.STRING_DTYPE,
-            dtypes.JSON_DTYPE,
-        ),
-        (
-            dtypes.INT_DTYPE,
-            dtypes.JSON_DTYPE,
         ),
     )
 )

@@ -346,6 +346,40 @@ class TestSystemAsync(SystemTestRunner):
         assert results[-1][0] == b""
         assert isinstance(results[-1][1], int)
 
+    @pytest.mark.skipif(
+        bool(os.environ.get(BIGTABLE_EMULATOR)), reason="emulator doesn't use splits"
+    )
+    @pytest.mark.usefixtures("client")
+    @pytest.mark.usefixtures("target")
+    @CrossSync.Retry(
+        predicate=retry.if_exception_type(ClientError), initial=1, maximum=5
+    )
+    @CrossSync.pytest
+    async def test_sample_row_keys_w_row_range(
+        self, client, target, column_split_config
+    ):
+        """
+        Sample keys with row range should return samples within the range,
+        with the last key matching the end of the range.
+        """
+        if len(column_split_config) < 4:
+            pytest.skip("Not enough splits in column_split_config for this test")
+
+        from google.cloud.bigtable.data import RowRange
+
+        start_key = column_split_config[1]
+        end_key = column_split_config[3]
+        row_range = RowRange(start_key=start_key, end_key=end_key)
+
+        results = await target.sample_row_keys(row_range=row_range)
+        assert len(results) == 2
+
+        assert results[0][0] == column_split_config[2]
+        assert results[1][0] == column_split_config[3]
+
+        for _, offset in results:
+            assert isinstance(offset, int)
+
     @pytest.mark.usefixtures("client")
     @pytest.mark.usefixtures("target")
     @CrossSync.pytest
@@ -1114,6 +1148,41 @@ class TestSystemAsync(SystemTestRunner):
         row_list = await target.read_rows(query)
         assert len(row_list) == bool(expect_match), (
             f"row {type(cell_value)}({cell_value}) not found with {type(filter_input)}({filter_input}) filter"
+        )
+
+    @pytest.mark.usefixtures("target")
+    @CrossSync.Retry(
+        predicate=retry.if_exception_type(ClientError), initial=1, maximum=5
+    )
+    @pytest.mark.parametrize(
+        "cell_value,mask,expect_match",
+        [
+            (b"\x01\x02\x03", b"\x01\x02\x03", True),
+            (b"\x01\x02\x03", b"\x01\x00\x00", True),
+            (b"\x00\x02\x03", b"\x01\x00\x00", False),
+        ],
+    )
+    @pytest.mark.skipif(
+        bool(os.environ.get(BIGTABLE_EMULATOR)),
+        reason="value_bitmask_filter not supported by emulator",
+    )
+    @CrossSync.pytest
+    async def test_value_bitmask_filter(
+        self, target, temp_rows, cell_value, mask, expect_match
+    ):
+        """
+        ValueBitmaskFilter matches cells where (value & mask) == mask.
+        Make sure inputs are properly interpreted by the server.
+        """
+        from google.cloud.bigtable.data import ReadRowsQuery
+        from google.cloud.bigtable.data.row_filters import ValueBitmaskFilter
+
+        f = ValueBitmaskFilter(mask)
+        await temp_rows.add_row(b"row_key_1", value=cell_value)
+        query = ReadRowsQuery(row_keys=[b"row_key_1"], row_filter=f)
+        row_list = await target.read_rows(query)
+        assert len(row_list) == bool(expect_match), (
+            f"row {cell_value!r} not matched as {expect_match} with {mask!r} bitmask filter"
         )
 
     @pytest.mark.skipif(

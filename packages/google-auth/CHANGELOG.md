@@ -4,6 +4,49 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.55.2](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.55.1...google-auth-v2.55.2) (2026-07-07)
+
+
+### Bug Fixes
+
+* **auth:** Agentic Identites mTLS gaps fix _is_mtls and SslCredentials. ([#17387](https://github.com/googleapis/google-cloud-python/issues/17387)) ([7bfa41a](https://github.com/googleapis/google-cloud-python/commit/7bfa41a6746c43125f3534104aaaa7e8b18758ec))
+* **auth:** align mTLS discovery and enforce fail-fast transport configuration. ([#17470](https://github.com/googleapis/google-cloud-python/issues/17470)) ([f492d3d](https://github.com/googleapis/google-cloud-python/commit/f492d3d5e5a4b693caf7c9a8fbfdfc073a1bcda8))
+* **auth:** handle PermissionError on workload certificates to avoid startup hang and crash ([#17568](https://github.com/googleapis/google-cloud-python/issues/17568)) ([f538ad8](https://github.com/googleapis/google-cloud-python/commit/f538ad830631fa0a855c68b7cfb05788b31f03e3))
+
+## [2.55.1](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.55.0...google-auth-v2.55.1) (2026-06-25)
+
+
+### Bug Fixes
+
+* **auth:** lower regional access boundary logs from warning to debug. ([#17571](https://github.com/googleapis/google-cloud-python/issues/17571)) ([1ef4183](https://github.com/googleapis/google-cloud-python/commit/1ef418362c1a69e6bbe6f78741b53dc1f3e7b301)), closes [#17515](https://github.com/googleapis/google-cloud-python/issues/17515)
+
+## [2.55.0](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.54.0...google-auth-v2.55.0) (2026-06-15)
+
+
+### Features
+
+* make RAB feature production ready (#17390) ([af193931e4e38c4b59751edb8e915ae3388b8524](https://github.com/googleapis/google-cloud-python/commit/af193931e4e38c4b59751edb8e915ae3388b8524))
+
+
+### Bug Fixes
+
+* run async background boundary refresh on detached session (#17441) ([56cbea8509c66889485b43f2d98d60210eae81bc](https://github.com/googleapis/google-cloud-python/commit/56cbea8509c66889485b43f2d98d60210eae81bc))
+
+## [2.54.0](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.53.0...google-auth-v2.54.0) (2026-06-11)
+
+
+### Features
+
+* implement regional access boundary support for standalone JWT and async service accounts (#17025) ([35af6168c19dd6f114dd67a8bfdcd0ff8fe3bdf9](https://github.com/googleapis/google-cloud-python/commit/35af6168c19dd6f114dd67a8bfdcd0ff8fe3bdf9))
+
+
+### Bug Fixes
+
+* configure mTLS for impersonated credentials (#17404) ([57269d567227655e16a2c518e29129c31ebe65be](https://github.com/googleapis/google-cloud-python/commit/57269d567227655e16a2c518e29129c31ebe65be))
+* fail-fast on missing ECP config file to avoid 30s hang (#17377) ([e0961270013ceea2c191ec2c6d445c5c5f928ddf](https://github.com/googleapis/google-cloud-python/commit/e0961270013ceea2c191ec2c6d445c5c5f928ddf))
+* update incorrect urls in setup.py to point at monorepo vs splitrepo (#17237) ([eaed04baf3cd356c3811c66e64c277c8841c7563](https://github.com/googleapis/google-cloud-python/commit/eaed04baf3cd356c3811c66e64c277c8841c7563))
+* Rename the 'seed' argument for setting an initial regional access boundary for clarity (#17186) ([e5c8cf92f4e78fe05c8d899e00fb36f29f31d7c4](https://github.com/googleapis/google-cloud-python/commit/e5c8cf92f4e78fe05c8d899e00fb36f29f31d7c4))
+
 ## [2.53.0](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.52.0...google-auth-v2.53.0) (2026-05-15)
 
 

@@ -2,6 +2,8 @@
 
 This project is the Angular-based interactive Table Widget frontend for BigQuery DataFrames (``bigframes``). It is integrated into the Python backend using ``anywidget``.
 
+This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.9.
+
 ## Getting Started
 
 Ensure you have [Node.js](https://nodejs.org/) installed.
@@ -19,9 +21,14 @@ Ensure you have [Node.js](https://nodejs.org/) installed.
 
 ## Development & Code Scaffolding
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli). To generate a new component, directive, or service:
+To generate a new component, directive, or service:
 ```bash
 ng generate component component-name
+```
+
+For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+```bash
+ng generate --help
 ```
 
 ## Running Tests

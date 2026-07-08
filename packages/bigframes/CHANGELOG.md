@@ -4,6 +4,68 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
+## [2.44.0](https://github.com/googleapis/google-cloud-python/compare/bigframes-v2.43.0...bigframes-v2.44.0) (2026-06-25)
+
+
+### Features
+
+* add date functions to `bigframes.bigquery` module ([#17514](https://github.com/googleapis/google-cloud-python/issues/17514)) ([e5d2e35](https://github.com/googleapis/google-cloud-python/commit/e5d2e35db94373ca395976fd755c2bc7e0a060bd))
+* **bigframes:** add AI TVFs to the pandas bq accessor ([#17402](https://github.com/googleapis/google-cloud-python/issues/17402)) ([ee74e31](https://github.com/googleapis/google-cloud-python/commit/ee74e3140a2e11936c36714a27393c3072bed6c7))
+* Experimental transpilation of unannotated python callables ([#17419](https://github.com/googleapis/google-cloud-python/issues/17419)) ([ea9aad9](https://github.com/googleapis/google-cloud-python/commit/ea9aad9a43c306ab109054183b257e6c41a1b2e6))
+* support gemini-3.x models in loader and update default model to gemini-3.5-flash ([#17557](https://github.com/googleapis/google-cloud-python/issues/17557)) ([3619b29](https://github.com/googleapis/google-cloud-python/commit/3619b29e10ae04623d101808cb98be5edbb483b4))
+* support interactive execution of deferred DataFrames in TableWidget ([#17486](https://github.com/googleapis/google-cloud-python/issues/17486)) ([421eebd](https://github.com/googleapis/google-cloud-python/commit/421eebdb31d526a6d5ba27c433cf2803d7619be3))
+
+
+### Bug Fixes
+
+* avoid invalid CAST(NULL AS NULL) in SQLGlot compiler ([#17487](https://github.com/googleapis/google-cloud-python/issues/17487)) ([3b79caa](https://github.com/googleapis/google-cloud-python/commit/3b79caa8f40f61ccd7c655542e9f242f34e068e2))
+* **bigframes:** world-readable temp zip in create_cloud_function ([#17522](https://github.com/googleapis/google-cloud-python/issues/17522)) ([e726878](https://github.com/googleapis/google-cloud-python/commit/e7268785c6736c10c1337160b4d8606975062637))
+* bump @angular/common, @angular/forms, @angular/platform-browser and @angular/router in /packages/bigframes/bigframes/display/table_widget_angular ([#17525](https://github.com/googleapis/google-cloud-python/issues/17525)) ([2f893b1](https://github.com/googleapis/google-cloud-python/commit/2f893b1b53e7394655fd204d1f8a138212ad8227))
+* bump langsmith from 0.8.0 to 0.8.18 in /packages/bigframes ([#17518](https://github.com/googleapis/google-cloud-python/issues/17518)) ([f23063f](https://github.com/googleapis/google-cloud-python/commit/f23063f9182cdec868c16afb80304892850fbe88))
+* bump msgpack from 1.1.1 to 1.2.1 in /packages/bigframes ([#17520](https://github.com/googleapis/google-cloud-python/issues/17520)) ([36b5b7e](https://github.com/googleapis/google-cloud-python/commit/36b5b7ebb01030a2d0f10d49fe4827ddc79dde9a))
+* bump undici and @angular/build in /packages/bigframes/bigframes/display/table_widget_angular ([#17519](https://github.com/googleapis/google-cloud-python/issues/17519)) ([6fc45e3](https://github.com/googleapis/google-cloud-python/commit/6fc45e3790c5a248dcec4b74799834c7b9219ef0))
+* handle empty endpoints during cloud function reuse ([#17501](https://github.com/googleapis/google-cloud-python/issues/17501)) ([4f5593a](https://github.com/googleapis/google-cloud-python/commit/4f5593a520b5afdeb02cc28f19a9596dbc35a90f))
+
+
+### Documentation
+
+* ensure that PlotAccessor is included in the API reference ([#17513](https://github.com/googleapis/google-cloud-python/issues/17513)) ([6febabf](https://github.com/googleapis/google-cloud-python/commit/6febabf795106a0c336dc905fc23da88d8cc94a0))
+
+## [2.43.0](https://github.com/googleapis/google-cloud-python/compare/bigframes-v2.42.0...bigframes-v2.43.0) (2026-06-12)
+
+
+### Documentation
+
+* add a notebook explaining bqsql magics cell chaining (#17216) ([1a0de4a7701b7fdf4c2593b1960f1194ebc49793](https://github.com/googleapis/google-cloud-python/commit/1a0de4a7701b7fdf4c2593b1960f1194ebc49793))
+
+
+### Features
+
+* add `bigframes.bigquery.bit_count` and conversion scalar function (#17433) ([7f29823fadb3cff42dbe666f8c7aa33bab3c7021](https://github.com/googleapis/google-cloud-python/commit/7f29823fadb3cff42dbe666f8c7aa33bab3c7021))
+
+
+### Bug Fixes
+
+* preserve aliases on cast columns and fix star selection in sqlglot (#17394) (#17455) ([145034a345eb3e14ea3f23dfcafa3d2409a09067](https://github.com/googleapis/google-cloud-python/commit/145034a345eb3e14ea3f23dfcafa3d2409a09067))
+* bump pyarrow from 15.0.2 to 23.0.1 in /packages/bigframes (#17386) ([f59c2b2aa61316cf04b650933036ef50f6a1f08c](https://github.com/googleapis/google-cloud-python/commit/f59c2b2aa61316cf04b650933036ef50f6a1f08c))
+* improve error message when unescaped `{` are found in SQL cells (#17346) ([3a90cc8e867c8a2d2f8060858fde9eda94f80a54](https://github.com/googleapis/google-cloud-python/commit/3a90cc8e867c8a2d2f8060858fde9eda94f80a54))
+
+## [2.42.0](https://github.com/googleapis/google-cloud-python/compare/bigframes-v2.41.0...bigframes-v2.42.0) (2026-06-08)
+
+
+### Features
+
+* create `Series.bigquery.function_name` accessors for array and AEAD functions (#17279) ([d01a4ba30040cfcb6498d0e9ef3ed3a54d56239d](https://github.com/googleapis/google-cloud-python/commit/d01a4ba30040cfcb6498d0e9ef3ed3a54d56239d))
+* support automatic per-cell execution history filtering and isolated callbacks (#17144) ([7d440111d836b94f0ce22f6b08c7ce0e7bf4a38a](https://github.com/googleapis/google-cloud-python/commit/7d440111d836b94f0ce22f6b08c7ce0e7bf4a38a))
+* Add ai_generate functions to the dataframe bq accessor (#17302) ([6b62cb6fb3de94326b8944ae08a400c12529cad2](https://github.com/googleapis/google-cloud-python/commit/6b62cb6fb3de94326b8944ae08a400c12529cad2))
+
+
+### Bug Fixes
+
+* nameless column to_frame bug for pandas 3.0 (#17371) ([b23bfa4ceb819bca8201a7fe8b64a9bed56733f0](https://github.com/googleapis/google-cloud-python/commit/b23bfa4ceb819bca8201a7fe8b64a9bed56733f0))
+* include pyopenssl as a dependency (#17362) ([1f6205ee5a370249ece2c2cc7131a47830ef00ea](https://github.com/googleapis/google-cloud-python/commit/1f6205ee5a370249ece2c2cc7131a47830ef00ea))
+* Fix IsInOp literal bug with sqlglot (#17356) ([a3d93afe74dd2b5ec8a2ae92f91c95962764debe](https://github.com/googleapis/google-cloud-python/commit/a3d93afe74dd2b5ec8a2ae92f91c95962764debe))
+
 ## [2.41.0](https://github.com/googleapis/google-cloud-python/compare/bigframes-v2.40.0...bigframes-v2.41.0) (2026-05-28)
 
 

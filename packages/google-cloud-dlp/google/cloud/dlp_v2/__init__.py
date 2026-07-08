@@ -39,6 +39,8 @@ from .types.dlp import (
     AnalyzeDataSourceRiskDetails,
     AwsAccount,
     AwsAccountRegex,
+    BatchContentItem,
+    BatchContentLocation,
     BigQueryDiscoveryTarget,
     BigQueryRegex,
     BigQueryRegexes,
@@ -284,6 +286,7 @@ from .types.dlp import (
     StoredInfoTypeState,
     StoredInfoTypeStats,
     StoredInfoTypeVersion,
+    StringValueBatch,
     Table,
     TableDataProfile,
     TableLocation,
@@ -375,7 +378,7 @@ else:  # pragma: NO COVER
 
         def parse_version_to_tuple(version_string: str):
             """Safely converts a semantic version string to a comparable tuple of integers.
-            Example: "4.25.8" -> (4, 25, 8)
+            Example: "6.33.5" -> (6, 33, 5)
             Ignores non-numeric parts and handles common version formats.
             Args:
                 version_string: Version string in the format "x.y.z" or "x.y.z<suffix>"
@@ -404,9 +407,9 @@ else:  # pragma: NO COVER
                 return (None, "--")
 
         _dependency_package = "google.protobuf"
-        _next_supported_version = "4.25.8"
-        _next_supported_version_tuple = (4, 25, 8)
-        _recommendation = " (we recommend 6.x)"
+        _next_supported_version = "6.33.5"
+        _next_supported_version_tuple = (6, 33, 5)
+        _recommendation = " (we recommend 7.x)"
         (_version_used, _version_used_string) = _get_version(_dependency_package)
         if _version_used and _version_used < _next_supported_version_tuple:
             warnings.warn(
@@ -449,6 +452,8 @@ __all__ = (
     "AnalyzeDataSourceRiskDetails",
     "AwsAccount",
     "AwsAccountRegex",
+    "BatchContentItem",
+    "BatchContentLocation",
     "BigQueryDiscoveryTarget",
     "BigQueryField",
     "BigQueryKey",
@@ -719,6 +724,7 @@ __all__ = (
     "StoredInfoTypeStats",
     "StoredInfoTypeVersion",
     "StoredType",
+    "StringValueBatch",
     "Table",
     "TableDataProfile",
     "TableLocation",

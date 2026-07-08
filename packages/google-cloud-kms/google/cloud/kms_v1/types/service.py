@@ -644,11 +644,28 @@ class GetImportJobRequest(proto.Message):
         name (str):
             Required. The [name][google.cloud.kms.v1.ImportJob.name] of
             the [ImportJob][google.cloud.kms.v1.ImportJob] to get.
+        public_key_format (google.cloud.kms_v1.types.PublicKey.PublicKeyFormat):
+            Optional. Specifies the [WrappingPublicKey][] format. If not
+            specified:
+
+            - For RSA-based import methods, the wrapping key will be
+              returned in PEM format
+            - For pure ML-KEM-based import methods, the wrapping key
+              will be returned in the raw bytes format specified in
+              FIPS-203
+            - For X-Wing-based import methods, the wrapping key will be
+              returned in the raw bytes format specified in
+              https://datatracker.ietf.org/doc/draft-connolly-cfrg-xwing-kem.
     """
 
     name: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    public_key_format: resources.PublicKey.PublicKeyFormat = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=resources.PublicKey.PublicKeyFormat,
     )
 
 

@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-network-services/#history
 
+## [0.10.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-services-v0.10.0...google-cloud-network-services-v0.10.1) (2026-06-25)
+
+
+### Features
+
+* update googleapis and regenerate ([#17554](https://github.com/googleapis/google-cloud-python/issues/17554)) ([03d0574](https://github.com/googleapis/google-cloud-python/commit/03d0574da8485e918f16e90666928f5c7b7f1c92))
+
+## [0.10.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-services-v0.9.0...google-cloud-network-services-v0.10.0) (2026-06-11)
+
+
+### Features
+
+* update API sources and regenerate (#17431) ([2e75c78cdd09d4472ed412a2e925196effaea9fd](https://github.com/googleapis/google-cloud-python/commit/2e75c78cdd09d4472ed412a2e925196effaea9fd))
+
 ## [0.9.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-services-v0.8.0...google-cloud-network-services-v0.9.0) (2026-03-26)
 
 

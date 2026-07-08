@@ -133,7 +133,9 @@ class ErrorReason(proto.Enum):
             authorization.
         NO_IDENTIFIERS_PROVIDED (39):
             Events data contains no user identifiers or
-            ad identifiers.
+            ad identifiers. For Floodlight Event ingestion
+            this error indicates requests contains no ad
+            identifiers.
         INVALID_PROPERTY_TYPE (40):
             The property type is not supported.
         INVALID_STREAM_TYPE (41):

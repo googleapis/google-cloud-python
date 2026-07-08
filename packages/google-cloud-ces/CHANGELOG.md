@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-ces/#history
 
+## [0.7.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-ces-v0.7.0...google-cloud-ces-v0.7.1) (2026-06-25)
+
+
+### Features
+
+* update googleapis and regenerate ([#17554](https://github.com/googleapis/google-cloud-python/issues/17554)) ([03d0574](https://github.com/googleapis/google-cloud-python/commit/03d0574da8485e918f16e90666928f5c7b7f1c92))
+
+## [0.7.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-ces-v0.6.0...google-cloud-ces-v0.7.0) (2026-06-11)
+
+
+### Features
+
+* update API sources and regenerate (#17413) ([59fe7cf83c123102baf5439af4acd6218d7ce01b](https://github.com/googleapis/google-cloud-python/commit/59fe7cf83c123102baf5439af4acd6218d7ce01b))
+
 ## [0.6.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-ces-v0.5.0...google-cloud-ces-v0.6.0) (2026-06-02)
 
 

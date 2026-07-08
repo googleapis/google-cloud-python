@@ -25,6 +25,15 @@ from importlib import metadata
 
 from .services.dep_service import DepServiceAsyncClient, DepServiceClient
 from .services.network_services import NetworkServicesAsyncClient, NetworkServicesClient
+from .types.agent_gateway import (
+    AgentGateway,
+    CreateAgentGatewayRequest,
+    DeleteAgentGatewayRequest,
+    GetAgentGatewayRequest,
+    ListAgentGatewaysRequest,
+    ListAgentGatewaysResponse,
+    UpdateAgentGatewayRequest,
+)
 from .types.common import (
     EndpointMatcher,
     EnvoyHeaders,
@@ -33,6 +42,7 @@ from .types.common import (
 )
 from .types.dep import (
     AuthzExtension,
+    BodySendMode,
     CreateAuthzExtensionRequest,
     CreateLbEdgeExtensionRequest,
     CreateLbRouteExtensionRequest,
@@ -198,7 +208,7 @@ else:  # pragma: NO COVER
 
         def parse_version_to_tuple(version_string: str):
             """Safely converts a semantic version string to a comparable tuple of integers.
-            Example: "4.25.8" -> (4, 25, 8)
+            Example: "6.33.5" -> (6, 33, 5)
             Ignores non-numeric parts and handles common version formats.
             Args:
                 version_string: Version string in the format "x.y.z" or "x.y.z<suffix>"
@@ -227,9 +237,9 @@ else:  # pragma: NO COVER
                 return (None, "--")
 
         _dependency_package = "google.protobuf"
-        _next_supported_version = "4.25.8"
-        _next_supported_version_tuple = (4, 25, 8)
-        _recommendation = " (we recommend 6.x)"
+        _next_supported_version = "6.33.5"
+        _next_supported_version_tuple = (6, 33, 5)
+        _recommendation = " (we recommend 7.x)"
         (_version_used, _version_used_string) = _get_version(_dependency_package)
         if _version_used and _version_used < _next_supported_version_tuple:
             warnings.warn(
@@ -259,7 +269,10 @@ else:  # pragma: NO COVER
 __all__ = (
     "DepServiceAsyncClient",
     "NetworkServicesAsyncClient",
+    "AgentGateway",
     "AuthzExtension",
+    "BodySendMode",
+    "CreateAgentGatewayRequest",
     "CreateAuthzExtensionRequest",
     "CreateEndpointPolicyRequest",
     "CreateGatewayRequest",
@@ -275,6 +288,7 @@ __all__ = (
     "CreateTlsRouteRequest",
     "CreateWasmPluginRequest",
     "CreateWasmPluginVersionRequest",
+    "DeleteAgentGatewayRequest",
     "DeleteAuthzExtensionRequest",
     "DeleteEndpointPolicyRequest",
     "DeleteGatewayRequest",
@@ -298,6 +312,7 @@ __all__ = (
     "ExtensionChain",
     "Gateway",
     "GatewayRouteView",
+    "GetAgentGatewayRequest",
     "GetAuthzExtensionRequest",
     "GetEndpointPolicyRequest",
     "GetGatewayRequest",
@@ -320,6 +335,8 @@ __all__ = (
     "LbEdgeExtension",
     "LbRouteExtension",
     "LbTrafficExtension",
+    "ListAgentGatewaysRequest",
+    "ListAgentGatewaysResponse",
     "ListAuthzExtensionsRequest",
     "ListAuthzExtensionsResponse",
     "ListEndpointPoliciesRequest",
@@ -364,6 +381,7 @@ __all__ = (
     "TcpRoute",
     "TlsRoute",
     "TrafficPortSelector",
+    "UpdateAgentGatewayRequest",
     "UpdateAuthzExtensionRequest",
     "UpdateEndpointPolicyRequest",
     "UpdateGatewayRequest",

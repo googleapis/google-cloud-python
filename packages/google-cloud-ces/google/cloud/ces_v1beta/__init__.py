@@ -32,6 +32,7 @@ from .services.session_service import SessionServiceAsyncClient, SessionServiceC
 from .services.tool_service import ToolServiceAsyncClient, ToolServiceClient
 from .services.widget_service import WidgetServiceAsyncClient, WidgetServiceClient
 from .types.agent import Agent
+from .types.agent_card import AgentCard, AgentInterface, AgentSkill, RemoteAgentTool
 from .types.agent_service import (
     BatchDeleteConversationsRequest,
     BatchDeleteConversationsResponse,
@@ -129,6 +130,7 @@ from .types.app import (
     RedactionConfig,
     SynthesizeSpeechConfig,
     TimeZoneSettings,
+    VpcScSettings,
 )
 from .types.app_version import AppSnapshot, AppVersion
 from .types.auth import (
@@ -158,7 +160,7 @@ from .types.connector_toolset import ConnectorToolset
 from .types.conversation import Conversation
 from .types.data_store import DataStore
 from .types.data_store_tool import DataStoreTool
-from .types.deployment import Deployment
+from .types.deployment import Deployment, ExperimentConfig
 from .types.evaluation import (
     AggregatedMetrics,
     Evaluation,
@@ -174,6 +176,7 @@ from .types.evaluation import (
     RunEvaluationRequest,
     ScheduledEvaluationRun,
 )
+from .types.evaluation_metrics_config import EvaluationMetricsConfig
 from .types.evaluation_service import (
     CreateEvaluationDatasetRequest,
     CreateEvaluationExpectationRequest,
@@ -186,7 +189,11 @@ from .types.evaluation_service import (
     DeleteEvaluationRunOperationMetadata,
     DeleteEvaluationRunRequest,
     DeleteScheduledEvaluationRunRequest,
+    ExportEvaluationResultsOperationMetadata,
+    ExportEvaluationResultsRequest,
     ExportEvaluationResultsResponse,
+    ExportEvaluationRunsOperationMetadata,
+    ExportEvaluationRunsRequest,
     ExportEvaluationRunsResponse,
     ExportEvaluationsRequest,
     ExportEvaluationsResponse,
@@ -216,6 +223,9 @@ from .types.evaluation_service import (
     ListScheduledEvaluationRunsResponse,
     RunEvaluationOperationMetadata,
     RunEvaluationResponse,
+    RunEvaluationResultMetricsOperationMetadata,
+    RunEvaluationResultMetricsRequest,
+    RunEvaluationResultMetricsResponse,
     TestPersonaVoiceRequest,
     TestPersonaVoiceResponse,
     UpdateEvaluationDatasetRequest,
@@ -242,7 +252,7 @@ from .types.golden_run import GoldenRunMethod
 from .types.google_search_tool import GoogleSearchTool
 from .types.guardrail import Guardrail
 from .types.mcp_tool import McpTool
-from .types.mcp_toolset import McpToolset
+from .types.mcp_toolset import McpToolDefinition, McpToolOverride, McpToolset
 from .types.mocks import MockedToolCall
 from .types.omnichannel import Omnichannel, OmnichannelIntegrationConfig
 from .types.omnichannel_service import OmnichannelOperationMetadata
@@ -313,7 +323,7 @@ else:  # pragma: NO COVER
 
         def parse_version_to_tuple(version_string: str):
             """Safely converts a semantic version string to a comparable tuple of integers.
-            Example: "4.25.8" -> (4, 25, 8)
+            Example: "6.33.5" -> (6, 33, 5)
             Ignores non-numeric parts and handles common version formats.
             Args:
                 version_string: Version string in the format "x.y.z" or "x.y.z<suffix>"
@@ -342,9 +352,9 @@ else:  # pragma: NO COVER
                 return (None, "--")
 
         _dependency_package = "google.protobuf"
-        _next_supported_version = "4.25.8"
-        _next_supported_version_tuple = (4, 25, 8)
-        _recommendation = " (we recommend 6.x)"
+        _next_supported_version = "6.33.5"
+        _next_supported_version_tuple = (6, 33, 5)
+        _recommendation = " (we recommend 7.x)"
         (_version_used, _version_used_string) = _get_version(_dependency_package)
         if _version_used and _version_used < _next_supported_version_tuple:
             warnings.warn(
@@ -379,7 +389,10 @@ __all__ = (
     "WidgetServiceAsyncClient",
     "Action",
     "Agent",
+    "AgentCard",
+    "AgentInterface",
     "AgentServiceClient",
+    "AgentSkill",
     "AgentTool",
     "AgentTransfer",
     "AggregatedMetrics",
@@ -454,6 +467,7 @@ __all__ = (
     "EvaluationDataset",
     "EvaluationErrorInfo",
     "EvaluationExpectation",
+    "EvaluationMetricsConfig",
     "EvaluationMetricsThresholds",
     "EvaluationPersona",
     "EvaluationResult",
@@ -466,9 +480,14 @@ __all__ = (
     "ExecuteToolRequest",
     "ExecuteToolResponse",
     "ExecutionType",
+    "ExperimentConfig",
     "ExportAppRequest",
     "ExportAppResponse",
+    "ExportEvaluationResultsOperationMetadata",
+    "ExportEvaluationResultsRequest",
     "ExportEvaluationResultsResponse",
+    "ExportEvaluationRunsOperationMetadata",
+    "ExportEvaluationRunsRequest",
     "ExportEvaluationRunsResponse",
     "ExportEvaluationsRequest",
     "ExportEvaluationsResponse",
@@ -549,6 +568,8 @@ __all__ = (
     "ListToolsetsResponse",
     "LoggingSettings",
     "McpTool",
+    "McpToolDefinition",
+    "McpToolOverride",
     "McpToolset",
     "Message",
     "MetricAnalysisSettings",
@@ -570,6 +591,7 @@ __all__ = (
     "QualityReport",
     "RecognitionResult",
     "RedactionConfig",
+    "RemoteAgentTool",
     "RestoreAppVersionRequest",
     "RestoreAppVersionResponse",
     "RetrieveToolSchemaRequest",
@@ -579,6 +601,9 @@ __all__ = (
     "RunEvaluationOperationMetadata",
     "RunEvaluationRequest",
     "RunEvaluationResponse",
+    "RunEvaluationResultMetricsOperationMetadata",
+    "RunEvaluationResultMetricsRequest",
+    "RunEvaluationResultMetricsResponse",
     "RunSessionRequest",
     "RunSessionResponse",
     "ScheduledEvaluationRun",
@@ -623,6 +648,7 @@ __all__ = (
     "UpdateToolsetRequest",
     "UploadEvaluationAudioRequest",
     "UploadEvaluationAudioResponse",
+    "VpcScSettings",
     "WebSearchQuery",
     "WidgetServiceClient",
     "WidgetTool",

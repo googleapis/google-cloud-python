@@ -14,11 +14,16 @@
 
 """Helper functions for getting mTLS cert and key."""
 
+import contextlib
 import json
 import logging
+import os
 from os import environ, getenv, path
 import re
 import subprocess
+import sys
+import tempfile
+from typing import cast, Generator, List, Optional, Tuple, Union
 
 from google.auth import _agent_identity_utils
 from google.auth import environment_vars
@@ -46,6 +51,12 @@ _KEY_REGEX = re.compile(
 _LOGGER = logging.getLogger(__name__)
 
 
+# A flag to track if we have already logged a warning about mTLS auto-enablement failures.
+# This prevents log spam when client libraries create transports or session instances
+# frequently within a single process.
+_has_logged_mtls_warning = False
+
+
 _PASSPHRASE_REGEX = re.compile(
     b"-----BEGIN PASSPHRASE-----(.+)-----END PASSPHRASE-----", re.DOTALL
 )
@@ -63,6 +74,275 @@ _INCORRECT_CLOUD_RUN_CERT_PATH = (
 _INCORRECT_CLOUD_RUN_KEY_PATH = (
     "/var/lib/volumes/certificate/workload-certificates/private_key.pem"
 )
+
+
+class _MemfdCreationError(OSError):
+    """Raised when Linux in-memory virtual file creation (memfd) fails."""
+
+    pass
+
+
+def _can_read(path: Optional[str]) -> bool:
+    if path is None:
+        return True
+    try:
+        with open(path, "rb"):
+            pass
+        return True
+    except OSError:
+        return False
+
+
+@contextlib.contextmanager
+def secure_cert_key_paths(
+    cert: Union[bytes, str, None],
+    key: Union[bytes, str, None],
+    passphrase: Optional[bytes] = None,
+) -> Generator[Tuple[Optional[str], Optional[str], Optional[bytes]], None, None]:
+    """Provides secure file paths for certificate and key.
+
+    This function is implemented as a context manager generator to ensure that
+    any temporary resources (such as in-memory virtual files or encrypted physical
+    temp files) are automatically cleaned up and securely wiped when the context exits.
+
+    It supports mixed inputs (e.g. passing one as a string path and the other as bytes).
+    If a parameter is already a string path or None, it is passed through as-is, and
+    only raw bytes are written to temporary storage.
+
+    Args:
+        cert (Union[str, bytes, None]): Certificate path, raw PEM content bytes, or None.
+        key (Union[str, bytes, None]): Private key path, raw PEM content bytes, or None.
+        passphrase (Optional[bytes]): Optional passphrase for the private key.
+
+    Yields:
+        Tuple[str, str, Optional[bytes]]: The certificate path, key path, and
+            the passphrase needed to load the key (either the user's original,
+            or the newly generated one if Tier 3 had to encrypt the key).
+
+    Raises:
+        OSError: If temporary file creation or writing fails during the Tier 3 fallback.
+    """
+    # Normalize PEM strings to bytes so they are written to temporary storage.
+    # We check for "-----BEGIN " to distinguish between file paths and PEM payloads.
+    if isinstance(cert, str) and "-----BEGIN " in cert:
+        cert = cert.encode("utf-8")
+    if isinstance(key, str) and "-----BEGIN " in key:
+        key = key.encode("utf-8")
+
+    # Tier 1: Pass-through (No-op). If the caller already provided file paths,
+    # we yield them directly to avoid any unnecessary file creation.
+    if isinstance(cert, str) and isinstance(key, str):
+        yield cert, key, passphrase
+        return
+
+    # If a value is a string path, it is passed through. If bytes, we will write
+    # it to temporary storage. None values are also passed through as-is.
+    cert_bytes = cert if isinstance(cert, bytes) else None
+    key_bytes = key if isinstance(key, bytes) else None
+
+    # Tier 2: Linux RAM-backed virtual files. If supported by the OS, we write
+    # the bytes to anonymous in-memory files using memfd_create. This yields
+    # /proc/self/fd/... paths, keeping the private key entirely in memory.
+    if sys.platform == "linux" and hasattr(os, "memfd_create"):
+        try:
+            with _memfd_cert_key_paths(cert_bytes, key_bytes) as (cert_path, key_path):
+                # Handle cases where path exists but might be restricted.
+                if (cert_path is None or os.path.exists(cert_path)) and (
+                    key_path is None or os.path.exists(key_path)
+                ):
+                    if _can_read(cert_path) and _can_read(key_path):
+                        yield cast(str, cert_path or cert), cast(
+                            str, key_path or key
+                        ), passphrase
+                        return
+        except _MemfdCreationError:
+            pass  # Fallback to Tier 3 on failure.
+
+    # Tier 3: Fallback Encrypted Temp Files. If in-memory files are not supported
+    # (macOS/Windows), we write to disk. To protect the key, we encrypt plaintext
+    # keys on-the-fly and securely wipe the files with null bytes during cleanup.
+    with _tempfile_cert_key_paths(cert_bytes, key_bytes, passphrase) as (
+        cert_path,
+        key_path,
+        new_passphrase,
+    ):
+        yield cast(str, cert_path or cert), cast(str, key_path or key), new_passphrase
+
+
+def _encrypt_key_if_plaintext(
+    key_bytes: bytes, passphrase: Optional[bytes]
+) -> Tuple[bytes, Optional[bytes]]:
+    """Encrypts a plaintext PEM key if necessary, returning the bytes and passphrase.
+
+    If the key is already encrypted, or if parsing/encryption fails, the key is
+    returned as-is (plaintext) as a fallback. This allows the caller (underlying SSL
+    context) to attempt loading the key directly and handle any failures.
+    """
+    import cryptography
+    from cryptography.hazmat.primitives import serialization
+    import secrets
+
+    try:
+        pkey = serialization.load_pem_private_key(key_bytes, password=None)
+        # It's plaintext, encrypt it.
+        target_passphrase = passphrase
+        if target_passphrase is None:
+            target_passphrase = secrets.token_hex(32).encode("utf-8")
+        elif isinstance(target_passphrase, str):
+            target_passphrase = target_passphrase.encode("utf-8")
+
+        encrypted_content = pkey.private_bytes(
+            encoding=serialization.Encoding.PEM,
+            format=serialization.PrivateFormat.PKCS8,
+            encryption_algorithm=serialization.BestAvailableEncryption(
+                target_passphrase
+            ),
+        )
+        return encrypted_content, target_passphrase
+    except (ValueError, TypeError, cryptography.exceptions.UnsupportedAlgorithm):
+        # Likely already encrypted, invalid, or unsupported algorithm, return as-is.
+        return key_bytes, passphrase
+
+
+def _secure_wipe_and_remove(file_path: str):
+    """Overwrites a file with null bytes before deleting it.
+
+    This is an extra security measure to make file recovery harder. However, on modern
+    solid-state drives (SSDs), the hardware optimizes where data is written, meaning
+    the original private key bytes might still physically remain on the storage chips
+    until the drive cleans them up.
+    """
+    if not os.path.exists(file_path):
+        return
+    try:
+        size = os.path.getsize(file_path)
+        with open(file_path, "r+b") as f:
+            f.write(b"\0" * size)
+            f.flush()
+            os.fsync(f.fileno())
+    except OSError:
+        pass  # Ignore permission/lock errors during cleanup.
+    finally:
+        try:
+            os.remove(file_path)
+        except OSError:
+            pass
+
+
+@contextlib.contextmanager
+def _memfd_cert_key_paths(
+    cert_bytes: Optional[bytes], key_bytes: Optional[bytes]
+) -> Generator[Tuple[Optional[str], Optional[str]], None, None]:
+    """Creates secure, in-memory virtual files on Linux using memfd_create.
+
+    Yields:
+        Tuple[Optional[str], Optional[str]]: In-memory file paths pointing to
+            the active descriptors (e.g., '/proc/self/fd/3').
+    """
+    cleanup_fds = []
+    paths: List[Optional[str]] = []
+
+    try:
+        try:
+            for data, name in [(cert_bytes, "mtls_cert"), (key_bytes, "mtls_key")]:
+                if data is not None:
+                    # MFD_CLOEXEC prevents FD leaks to spawned subprocesses.
+                    fd = os.memfd_create(name, os.MFD_CLOEXEC)  # type: ignore[attr-defined]
+                    cleanup_fds.append(fd)
+                    with os.fdopen(fd, "wb", closefd=False) as f:
+                        f.write(data)
+                    paths.append(f"/proc/self/fd/{fd}")
+                else:
+                    paths.append(None)
+        except (OSError, AttributeError) as exc:
+            raise _MemfdCreationError(
+                "Failed to create in-memory virtual files"
+            ) from exc
+
+        cert_path, key_path = paths
+        yield cert_path, key_path
+    finally:
+        # Closing the descriptors automatically frees the RAM allocation.
+        for fd in cleanup_fds:
+            try:
+                os.close(fd)
+            except OSError:
+                pass
+
+
+def _write_secure_tempfile(fd: int, data: bytes) -> None:
+    """Writes data to a file descriptor, securely flushes to disk, and closes it."""
+    try:
+        f = os.fdopen(fd, "wb")
+    except BaseException:
+        try:
+            os.close(fd)
+        except OSError:
+            pass
+        raise
+
+    with f:
+        f.write(data)
+        f.flush()
+        try:
+            os.fsync(f.fileno())
+        except OSError:
+            pass
+
+
+@contextlib.contextmanager
+def _tempfile_cert_key_paths(
+    cert_bytes: Optional[bytes],
+    key_bytes: Optional[bytes],
+    passphrase: Optional[bytes],
+) -> Generator[Tuple[Optional[str], Optional[str], Optional[bytes]], None, None]:
+    """Creates secure temporary file paths on disk, encrypting private keys.
+
+    Yields:
+        Tuple[Optional[str], Optional[str], Optional[bytes]]: The temporary file
+            paths and the passphrase needed to load the key.
+    """
+    # Prioritize RAM-backed /dev/shm to avoid writing secrets to physical storage.
+    tmp_dir = (
+        "/dev/shm"
+        if os.path.isdir("/dev/shm") and os.access("/dev/shm", os.W_OK)
+        else None
+    )
+    cleanup_files: List[Optional[str]] = [None, None]
+    new_passphrase = passphrase
+    cert_data = cert_bytes
+    key_data = None
+    if key_bytes is not None:
+        key_data, new_passphrase = _encrypt_key_if_plaintext(key_bytes, passphrase)
+
+    try:
+        for i, data in enumerate([cert_data, key_data]):
+            if data is not None:
+                try:
+                    fd, path = tempfile.mkstemp(dir=tmp_dir)
+                except OSError:
+                    fd, path = tempfile.mkstemp(dir=None)
+
+                cleanup_files[i] = path
+                _write_secure_tempfile(fd, data)
+
+        yield cleanup_files[0], cleanup_files[1], new_passphrase
+    finally:
+        cert_cleanup_path = cleanup_files[0]
+        key_cleanup_path = cleanup_files[1]
+
+        try:
+            if key_cleanup_path:
+                _secure_wipe_and_remove(key_cleanup_path)
+        except Exception:
+            pass
+        finally:
+            if cert_cleanup_path:
+                try:
+                    if os.path.exists(cert_cleanup_path):
+                        os.remove(cert_cleanup_path)
+                except OSError:
+                    pass
 
 
 def _check_config_path(config_path):
@@ -200,12 +480,13 @@ def _get_workload_cert_and_key_paths(config_path, include_context_aware=True):
         return None, None
     workload = cert_configs["workload"]
 
-    if "cert_path" not in workload:
-        return None, None
+    if "cert_path" not in workload or "key_path" not in workload:
+        raise exceptions.ClientCertError(
+            'Workload certificate configuration is missing "cert_path" or "key_path" in {}'.format(
+                absolute_path
+            )
+        )
     cert_path = workload["cert_path"]
-
-    if "key_path" not in workload:
-        return None, None
     key_path = workload["key_path"]
 
     # == BEGIN Temporary Cloud Run PATCH ==
@@ -436,16 +717,34 @@ def decrypt_private_key(key, passphrase):
         bytes: The decrypted private key in PEM format.
 
     Raises:
-        ImportError: If pyOpenSSL is not installed.
-        OpenSSL.crypto.Error: If there is any problem decrypting the private key.
+        ValueError: If there is any problem decrypting the private key.
     """
-    from OpenSSL import crypto
+    if isinstance(key, str):
+        key = key.encode("utf-8")
+    if isinstance(passphrase, str):
+        passphrase = passphrase.encode("utf-8")
+
+    from cryptography.hazmat.primitives import serialization
 
     # First convert encrypted_key_bytes to PKey object
-    pkey = crypto.load_privatekey(crypto.FILETYPE_PEM, key, passphrase=passphrase)
+    pkey = serialization.load_pem_private_key(key, password=passphrase)
 
     # Then dump the decrypted key bytes
-    return crypto.dump_privatekey(crypto.FILETYPE_PEM, pkey)
+    return pkey.private_bytes(
+        encoding=serialization.Encoding.PEM,
+        format=serialization.PrivateFormat.PKCS8,
+        encryption_algorithm=serialization.NoEncryption(),
+    )
+
+
+def _check_use_client_cert_env():
+    use_client_cert = getenv(
+        environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE
+    ) or getenv(environment_vars.CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE)
+
+    if use_client_cert:
+        return use_client_cert.lower() == "true"
+    return None
 
 
 def check_use_client_cert():
@@ -455,46 +754,53 @@ def check_use_client_cert():
     bool value will be returned. If the value is set to an unexpected string, it
     will default to False.
     If GOOGLE_API_USE_CLIENT_CERTIFICATE is unset, the value will be inferred
-    by reading a file pointed at by GOOGLE_API_CERTIFICATE_CONFIG, and verifying
-    it contains a "workload" section. If so, the function will return True,
-    otherwise False.
+    as True (auto-enabled) if a workload config file exists (pointed at by
+    GOOGLE_API_CERTIFICATE_CONFIG) containing a "workload" section.
+    Otherwise, it returns False.
 
     Returns:
         bool: Whether the client certificate should be used for mTLS connection.
     """
-    use_client_cert = getenv(environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE)
-    if use_client_cert is None or use_client_cert == "":
-        use_client_cert = getenv(
-            environment_vars.CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE
-        )
+    global _has_logged_mtls_warning
+    env_override = _check_use_client_cert_env()
+    if env_override is not None:
+        return env_override
 
-    # Check if the value of GOOGLE_API_USE_CLIENT_CERTIFICATE is set.
-    if use_client_cert:
-        return use_client_cert.lower() == "true"
-    else:
-        # Check if the value of GOOGLE_API_CERTIFICATE_CONFIG is set.
-        cert_path = getenv(environment_vars.GOOGLE_API_CERTIFICATE_CONFIG)
-        if cert_path is None:
-            cert_path = getenv(
-                environment_vars.CLOUDSDK_CONTEXT_AWARE_CERTIFICATE_CONFIG_FILE_PATH
+    # Auto-enablement checks (when GOOGLE_API_USE_CLIENT_CERTIFICATE is not set)
+
+    # Check if the value of GOOGLE_API_CERTIFICATE_CONFIG is set.
+    cert_path = getenv(environment_vars.GOOGLE_API_CERTIFICATE_CONFIG) or getenv(
+        environment_vars.CLOUDSDK_CONTEXT_AWARE_CERTIFICATE_CONFIG_FILE_PATH
+    )
+
+    if cert_path:
+        try:
+            with open(cert_path, "r") as f:
+                content = json.load(f)
+        except (FileNotFoundError, OSError, json.JSONDecodeError) as e:
+            if not _has_logged_mtls_warning:
+                _LOGGER.warning(
+                    "mTLS auto-enablement failed: Could not read/parse certificate file at %s. Error: %s",
+                    cert_path,
+                    e,
+                )
+                _has_logged_mtls_warning = True
+            return False
+
+        # Structural validation
+        if isinstance(content, dict):
+            cert_configs = content.get("cert_configs")
+            if isinstance(cert_configs, dict) and "workload" in cert_configs:
+                return True
+
+        # If we got here, the file exists but the expected structure is missing
+        if not _has_logged_mtls_warning:
+            _LOGGER.warning(
+                "mTLS auto-enablement failed: Certificate configuration file at %s is missing the required ['cert_configs']['workload'] section.",
+                cert_path,
             )
-
-        if cert_path:
-            try:
-                with open(cert_path, "r") as f:
-                    content = json.load(f)
-                    # verify json has workload key
-                    content["cert_configs"]["workload"]
-                    return True
-            except (
-                FileNotFoundError,
-                OSError,
-                KeyError,
-                TypeError,
-                json.JSONDecodeError,
-            ) as e:
-                _LOGGER.debug("error decoding certificate: %s", e)
-        return False
+            _has_logged_mtls_warning = True
+    return False
 
 
 def check_parameters_for_unauthorized_response(cached_cert):

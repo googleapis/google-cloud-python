@@ -1,4 +1,5 @@
 import datetime
+import threading
 from datetime import timezone
 
 import google.api_core.gapic_v1.method
@@ -1800,11 +1801,16 @@ class TestSession(OpenTelemetryBase):
             called_with.append((txn, args, kw))
             txn.insert(TABLE_NAME, COLUMNS, VALUES)
 
+        main_thread = threading.current_thread()
+        _results = [1, 1.5]
+
         # retry once w/ timeout_secs=1
-        def _time(_results=[1, 1.5]):
-            if len(_results) > 1:
-                return _results.pop(0)
-            return _results[0]
+        def _time():
+            if threading.current_thread() is main_thread:
+                if len(_results) > 1:
+                    return _results.pop(0)
+                return _results[0]
+            return 1.0
 
         with mock.patch("time.time", _time):
             with mock.patch(
@@ -1877,9 +1883,14 @@ class TestSession(OpenTelemetryBase):
             called_with.append((txn, args, kw))
             txn.insert(TABLE_NAME, COLUMNS, VALUES)
 
+        main_thread = threading.current_thread()
+        _results = [1] * 100
+
         # retry several times to check backoff
-        def _time(_results=[1] * 100):
-            return _results.pop(0)
+        def _time():
+            if threading.current_thread() is main_thread:
+                return _results.pop(0)
+            return 1.0
 
         with (
             mock.patch("time.time", _time),

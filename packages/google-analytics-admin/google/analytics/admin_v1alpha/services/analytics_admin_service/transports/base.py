@@ -934,6 +934,11 @@ class AnalyticsAdminServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.update_reporting_identity_settings: gapic_v1.method.wrap_method(
+                self.update_reporting_identity_settings,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_user_provided_data_settings: gapic_v1.method.wrap_method(
                 self.get_user_provided_data_settings,
                 default_timeout=None,
@@ -2566,6 +2571,18 @@ class AnalyticsAdminServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [analytics_admin.GetReportingIdentitySettingsRequest],
+        Union[
+            resources.ReportingIdentitySettings,
+            Awaitable[resources.ReportingIdentitySettings],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_reporting_identity_settings(
+        self,
+    ) -> Callable[
+        [analytics_admin.UpdateReportingIdentitySettingsRequest],
         Union[
             resources.ReportingIdentitySettings,
             Awaitable[resources.ReportingIdentitySettings],
