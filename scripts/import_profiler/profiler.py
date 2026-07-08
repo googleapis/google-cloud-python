@@ -154,7 +154,7 @@ Code Volume (Deterministic):
 {_format_stats("Physical RSS RAM (MB)", rss_memories, p50_rss, p90_rss, p99_rss, ".4f")}"""
     print(final_output.strip())
 
-def run_master(iterations, target_module, cpu=0, csv_path=None, clear_cache=True):
+def run_master(iterations, target_module, cpu=0, csv_path=None, clear_cache=True, fail_threshold=None):
     """Orchestrates the benchmark."""
     if iterations < 1:
         raise ValueError("Number of iterations must be at least 1.")
@@ -228,6 +228,14 @@ def run_master(iterations, target_module, cpu=0, csv_path=None, clear_cache=True
         memories, p50_mem, p90_mem, p99_mem,
         rss_memories, p50_rss, p90_rss, p99_rss
     )
+
+    if fail_threshold is not None:
+        if p99_time > fail_threshold:
+            print(f"\nFAILURE: P99 import time ({p99_time:.2f} ms) exceeds the failure threshold ({fail_threshold} ms).", file=sys.stderr)
+            sys.exit(1)
+        else:
+            print(f"\nSUCCESS: P99 import time ({p99_time:.2f} ms) is within the failure threshold ({fail_threshold} ms).")
+
 
 def run_trace(target_module):
     """Generates importtime trace log and writes it to a file."""
@@ -307,8 +315,24 @@ if __name__ == "__main__":
             raise argparse.ArgumentTypeError(f"'{module_name}' is not a valid Python module identifier.")
         return module_name
 
+    def find_module_from_package(pkg):
+        candidates = [
+            pkg.replace('-', '.'),
+            '.'.join(pkg.split('-')[:-1]) + '_' + pkg.split('-')[-1] if '-' in pkg else pkg,
+            pkg.replace('-', '_')
+        ]
+        for mod in candidates:
+            try:
+                if importlib.util.find_spec(mod):
+                    return mod
+            except Exception:
+                pass
+        return candidates[0]
+
     parser = argparse.ArgumentParser(description="Python SDK Import Profiler")
-    parser.add_argument("--module", type=validate_module_name, default="google.cloud.compute_v1", help="Target module to profile")
+    group = parser.add_mutually_exclusive_group(required=True)
+    group.add_argument("--module", type=validate_module_name, help="Target module to profile")
+    group.add_argument("--package", help="Target package name to profile (auto-detects module)")
     parser.add_argument("--iterations", type=int, default=50, help="Number of iterations")
     default_cpu = 0 if sys.platform.startswith("linux") else NO_CPU_PINNING
     parser.add_argument("--cpu", type=int, default=default_cpu, help="CPU core to pin to (or -1 for no pinning)")
@@ -317,20 +341,25 @@ if __name__ == "__main__":
     parser.add_argument("--cprofile", action="store_true", help="Run cProfile")
     parser.add_argument("--mprofile", action="store_true", help="Run tracemalloc memory snapshot")
     parser.add_argument("--keep-pycache", action="store_true", help="Preserve __pycache__ and allow bytecode execution (Default: False, script automatically sweeps __pycache__ for true cold-starts)")
+    parser.add_argument("--fail-threshold", type=float, help="Fail the profiling if the P99 time exceeds this threshold (in ms).")
     parser.add_argument("--worker", action="store_true", help=argparse.SUPPRESS)
     
     args = parser.parse_args()
     
+    target_module = args.module
+    if args.package:
+        target_module = find_module_from_package(args.package)
+    
     if args.worker:
-        run_worker(args.module)
+        run_worker(target_module)
     elif args.trace:
         if not args.keep_pycache: clean_bytecode()
-        run_trace(args.module)
+        run_trace(target_module)
     elif args.cprofile:
         if not args.keep_pycache: clean_bytecode()
-        run_cprofile(args.module)
+        run_cprofile(target_module)
     elif args.mprofile:
         if not args.keep_pycache: clean_bytecode()
-        run_mprofile(args.module)
+        run_mprofile(target_module)
     else:
-        run_master(args.iterations, args.module, args.cpu, args.csv, not args.keep_pycache)
+        run_master(args.iterations, target_module, args.cpu, args.csv, not args.keep_pycache, args.fail_threshold)
