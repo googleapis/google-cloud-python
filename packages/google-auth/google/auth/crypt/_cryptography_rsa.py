@@ -24,6 +24,7 @@ from cryptography.hazmat import backends
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import padding
+from cryptography.hazmat.primitives.asymmetric import rsa
 import cryptography.x509
 
 from google.auth import _helpers
@@ -133,6 +134,8 @@ class RSASigner(base.Signer, base.FromServiceAccountMixin):
         private_key = serialization.load_pem_private_key(
             key, password=None, backend=_BACKEND
         )
+        if not isinstance(private_key, rsa.RSAPrivateKey):
+            raise TypeError("Expected RSAPrivateKey, got {}".format(type(private_key)))
         return cls(private_key, key_id=key_id)
 
     def __getstate__(self):

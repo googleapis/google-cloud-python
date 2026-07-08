@@ -52,19 +52,14 @@ def from_dict(data, require=None, use_rsa_signer=True):
             "fields {}.".format(", ".join(missing))
         )
 
-    # Create a signer with auto-detection for non-RSA keys.
-    private_key = data.get("private_key", "")
-    if (
-        use_rsa_signer
-        and isinstance(private_key, str)
-        and ("EC PRIVATE KEY" in private_key or "EC PARAMETERS" in private_key)
-    ):
-        use_rsa_signer = False
-
+    # Create a signer with automatic fallback to EC and PQC (ML-DSA) signers.
     if use_rsa_signer:
-        signer = crypt.RSASigner.from_service_account_info(data)
+        try:
+            signer = crypt.RSASigner.from_service_account_info(data)
+        except (ValueError, TypeError):
+            signer = crypt.from_service_account_info(data)
     else:
-        signer = crypt.EsSigner.from_service_account_info(data)
+        signer = crypt.from_service_account_info(data)
 
     return signer
 
