@@ -17,7 +17,7 @@ from __future__ import annotations
 import numbers
 import typing
 import warnings
-from typing import Any, Sequence, Tuple, Union
+from typing import Any, Sequence, Tuple, Union, cast
 
 import bigframes_vendored.constants as constants
 import bigframes_vendored.ibis.common.exceptions as ibis_exceptions
@@ -279,7 +279,7 @@ class ILocDataFrameIndexer:
         if not _is_noop_slice(row_indexer):
             raise NotImplementedError(_DATAFRAME_ILOC_ERROR)
 
-        col_offsets = _iloc_col_indexer_to_offsets(self._dataframe, col_indexer)
+        col_offsets, _ = _iloc_col_indexer_to_offsets(self._dataframe, col_indexer)
         df = self._dataframe._assign_multi_items_by_offsets(col_offsets, value)
         self._dataframe._set_block(df._get_block())
 
@@ -501,7 +501,7 @@ def _iloc_clip_to_offset(index: int, length: int, name: str) -> int:
 
 def _iloc_col_indexer_to_offsets(
     df: bigframes.dataframe.DataFrame, col_indexer: Any
-) -> Sequence[int]:
+) -> Tuple[Sequence[int], str]:
     """Convert col_indexer from one of the many pandas-compatible formats to a list of offsets."""
     n_cols = len(df.columns)
 
@@ -522,10 +522,10 @@ def _iloc_col_indexer_to_offsets(
             _iloc_clip_to_offset(
                 col_offset, n_cols, "single positional iloc column indexer"
             )
-        ]
+        ], "Series"
 
     elif isinstance(col_indexer, slice):
-        return list(range(*col_indexer.indices(n_cols)))
+        return list(range(*col_indexer.indices(n_cols))), "DataFrame"
 
     elif pd.api.types.is_list_like(col_indexer):
         col_indexer_list = list(col_indexer)
@@ -537,12 +537,12 @@ def _iloc_col_indexer_to_offsets(
                 raise ValueError(
                     f"Boolean iloc column indexer has wrong length: {len(col_indexer_list)} instead of {n_cols}"
                 )
-            return [i for i, val in enumerate(col_indexer_list) if val]
+            return [i for i, val in enumerate(col_indexer_list) if val], "DataFrame"
         else:
             return [
                 _iloc_clip_to_offset(idx, n_cols, "iloc column indexer")
                 for idx in col_indexer_list
-            ]
+            ], "DataFrame"
 
     raise TypeError(f"got unexpected {type(col_indexer)} for iloc column indexer")
 
@@ -591,9 +591,17 @@ def _iloc_getitem_series_or_dataframe(
             return df.iat[key]
 
         row_indexer, column_indexer = key
-        column_offsets = _iloc_col_indexer_to_offsets(df, column_indexer)
+        column_offsets, output_type = _iloc_col_indexer_to_offsets(df, column_indexer)
         df_subset = _iloc_df_from_column_offsets(df, column_offsets)
-        return _iloc_getitem_series_or_dataframe(df_subset, row_indexer)
+        if output_type == "Series":
+            selected_columns = cast(
+                Union[bigframes.dataframe.DataFrame, bigframes.series.Series],
+                df_subset[df_subset.columns[0]],
+            )
+        else:
+            selected_columns = df_subset
+
+        return _iloc_getitem_series_or_dataframe(selected_columns, row_indexer)
     elif pd.api.types.is_list_like(key):
         if len(key) == 0:
             return typing.cast(

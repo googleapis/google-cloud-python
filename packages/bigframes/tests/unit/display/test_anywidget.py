@@ -27,7 +27,6 @@ pytest.importorskip("traitlets")
 import bigframes.dataframe
 import bigframes.operations
 import bigframes.series
-from bigframes.core.blocks import Block
 from bigframes.display.anywidget import TableWidget
 from bigframes.dtypes import JSON_DTYPE, STRING_DTYPE, struct_type
 
@@ -194,70 +193,33 @@ def test_cell_execution_count_propagation(mock_df):
     )
 
 
-def test_json_column_converted_to_string_for_display():
-    mock_block = mock.Mock(spec=Block)
-    mock_block.column_labels = pd.Index(["col_json"])
-    mock_block.value_columns = ["col_json"]
-
-    df = bigframes.dataframe.DataFrame(mock_block)
-    df._block = mock_block
-
-    mock_series = mock.create_autospec(bigframes.series.Series, instance=True)
-    mock_series.dtype = JSON_DTYPE
-    mock_series._slice.return_value.apply.side_effect = (
-        lambda func, *args, **kwargs: func(mock_series)
+def test_json_column_converted_to_string_for_display(polars_session):
+    series = bigframes.series.Series(
+        ['{"a": 1}', '{"b": 2}'], dtype=JSON_DTYPE, session=polars_session
     )
+    df = series.to_frame("col_json")
 
-    with mock.patch.object(
-        bigframes.dataframe.DataFrame, "__getitem__", return_value=mock_series
-    ):
-        with mock.patch.object(
-            bigframes.dataframe.DataFrame, "_assign_multi_items_by_offsets"
-        ) as mock_assign:
-            df._prepare_display_df()
+    result = df._prepare_display_df()
 
-            mock_assign.assert_called_once()
-            args, _ = mock_assign.call_args
-            assert 0 in args[0]
-
-            mock_series._apply_unary_op.assert_called_once()
-            call_arg = mock_series._apply_unary_op.call_args[0][0]
-            assert isinstance(call_arg, bigframes.operations.ToJSONString)
+    assert result["col_json"].dtype == STRING_DTYPE
 
 
-def test_struct_column_with_nested_json_converted_to_string_for_display():
+def test_struct_column_with_nested_json_converted_to_string_for_display(
+    polars_session,
+):
     nested_struct_dtype = struct_type(
         [("field1", STRING_DTYPE), ("field2", JSON_DTYPE)]
     )
-
-    mock_block = mock.Mock(spec=Block)
-    mock_block.column_labels = pd.Index(["col_struct"])
-    mock_block.value_columns = ["col_struct"]
-
-    df = bigframes.dataframe.DataFrame(mock_block)
-    df._block = mock_block
-
-    mock_series = mock.create_autospec(bigframes.series.Series, instance=True)
-    mock_series.dtype = nested_struct_dtype
-    mock_series._slice.return_value.apply.side_effect = (
-        lambda func, *args, **kwargs: func(mock_series)
+    series = bigframes.series.Series(
+        [{"field1": "hello", "field2": '{"a": 1}'}],
+        dtype=nested_struct_dtype,
+        session=polars_session,
     )
+    df = series.to_frame("col_struct")
 
-    with mock.patch.object(
-        bigframes.dataframe.DataFrame, "__getitem__", return_value=mock_series
-    ):
-        with mock.patch.object(
-            bigframes.dataframe.DataFrame, "_assign_multi_items_by_offsets"
-        ) as mock_assign:
-            df._prepare_display_df()
+    result = df._prepare_display_df()
 
-            mock_assign.assert_called_once()
-            args, _ = mock_assign.call_args
-            assert 0 in args[0]
-
-            mock_series._apply_unary_op.assert_called_once()
-            call_arg = mock_series._apply_unary_op.call_args[0][0]
-            assert isinstance(call_arg, bigframes.operations.ToJSONString)
+    assert result["col_struct"].dtype == STRING_DTYPE
 
 
 @pytest.fixture
