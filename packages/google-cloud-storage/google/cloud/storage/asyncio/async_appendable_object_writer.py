@@ -652,7 +652,9 @@ class AsyncAppendableObjectWriter:
 
         if full_object_checksum is None:
             finalize_req = _storage_v2.BidiWriteObjectRequest(finish_write=True)
-        elif not isinstance(full_object_checksum, int):
+        elif isinstance(full_object_checksum, bool) or not isinstance(
+            full_object_checksum, int
+        ):
             raise TypeError("full_object_checksum must be an integer.")
         elif not (0 <= full_object_checksum <= 0xFFFFFFFF):
             raise ValueError("full_object_checksum must be a 32-bit unsigned integer.")

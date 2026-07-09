@@ -585,6 +585,9 @@ class TestAsyncAppendableObjectWriter:
         with pytest.raises(TypeError, match="full_object_checksum must be an integer"):
             await writer.finalize(full_object_checksum="not-an-int")
 
+        with pytest.raises(TypeError, match="full_object_checksum must be an integer"):
+            await writer.finalize(full_object_checksum=True)
+
     @pytest.mark.asyncio
     async def test_finalize_invalid_checksum_range(self, mock_appendable_writer):
         writer = self._make_one(mock_appendable_writer["mock_client"])
