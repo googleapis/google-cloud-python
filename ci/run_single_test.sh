@@ -113,7 +113,9 @@ case ${TEST_TYPE} in
             pip install -e .
             
             PACKAGE_NAME=$(basename $(pwd))
-            PROFILER_SCRIPT="../../scripts/import_profiler/profiler.py"
+            # Save the new profiler script to /tmp so we don't lose it during HEAD^1 checkout
+            cp ../../scripts/import_profiler/profiler.py /tmp/profiler.py
+            PROFILER_SCRIPT="/tmp/profiler.py"
             
             rm -f /tmp/baseline.csv
             if [ -n "${TARGET_BRANCH}" ]; then
