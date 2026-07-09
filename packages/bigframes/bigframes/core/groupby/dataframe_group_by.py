@@ -609,7 +609,6 @@ class DataFrameGroupBy:
         )
 
     def _agg_func(self, func) -> df.DataFrame:
-
         ids, labels = self._aggregated_columns()
         aggregations = []
         for col_id in ids:
