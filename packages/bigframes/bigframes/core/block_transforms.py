@@ -29,8 +29,10 @@ import bigframes.core.expression as ex
 import bigframes.core.ordering as ordering
 import bigframes.core.window_spec as window_specs
 import bigframes.dtypes as dtypes
+import bigframes.functions
 import bigframes.operations as ops
 import bigframes.operations.aggregations as agg_ops
+from bigframes._config import options
 from bigframes.core import agg_expressions, py_expressions
 
 
@@ -87,9 +89,6 @@ def compile_udf(
 
 def is_transpiler_eligible(func: typing.Any) -> bool:
     """Return True if func is eligible for Python transpilation."""
-    import bigframes.functions
-    from bigframes._config import options
-
     return (
         options.experiments.enable_python_transpiler
         and callable(func)

@@ -24,6 +24,7 @@ import numpy
 import pandas as pd
 
 import bigframes.core.block_transforms as block_ops
+import bigframes.core.block_transforms as block_transforms
 import bigframes.core.blocks as blocks
 import bigframes.core.ordering as order
 import bigframes.core.utils as utils
@@ -581,8 +582,6 @@ class DataFrameGroupBy:
             return self._agg_named(**kwargs)
 
     def transform(self, func, *args, **kwargs) -> df.DataFrame:
-        import bigframes.core.block_transforms as block_transforms
-
         if block_transforms.is_transpiler_eligible(func):
             window_spec = window_specs.unbound(grouping_keys=tuple(self._by_col_ids))
             target_cols, labels = self._aggregated_columns()
@@ -610,7 +609,6 @@ class DataFrameGroupBy:
         )
 
     def _agg_func(self, func) -> df.DataFrame:
-        import bigframes.core.block_transforms as block_transforms
 
         ids, labels = self._aggregated_columns()
         aggregations = []
@@ -631,8 +629,6 @@ class DataFrameGroupBy:
         return dataframe if self._as_index else self._convert_index(dataframe)
 
     def _agg_dict(self, func: typing.Mapping) -> df.DataFrame:
-        import bigframes.core.block_transforms as block_transforms
-
         aggregations: typing.List[ex.Expression] = []
         column_labels = []
         function_labels = []
@@ -675,8 +671,6 @@ class DataFrameGroupBy:
         return dataframe if self._as_index else self._convert_index(dataframe)
 
     def _agg_list(self, func: typing.Sequence) -> df.DataFrame:
-        import bigframes.core.block_transforms as block_transforms
-
         ids, labels = self._aggregated_columns()
         aggregations = []
         fn_labels = []

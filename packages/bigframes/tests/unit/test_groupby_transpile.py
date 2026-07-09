@@ -19,7 +19,9 @@ import pytest
 from pandas.testing import assert_frame_equal, assert_series_equal
 
 import bigframes
+import bigframes.core.global_session
 import bigframes.pandas as bpd
+from bigframes.testing.utils import convert_pandas_dtypes
 
 pytest.importorskip("polars")
 pytest.importorskip("pandas", minversion="2.0.0")
@@ -34,8 +36,6 @@ def scalars_pandas_df_index():
         DATA_DIR / "scalars.jsonl",
         lines=True,
     )
-    from bigframes.testing.utils import convert_pandas_dtypes
-
     convert_pandas_dtypes(df, bytes_col=True)
 
     df = df.set_index("rowindex", drop=False)
@@ -45,7 +45,7 @@ def scalars_pandas_df_index():
 
 @pytest.fixture(scope="module", autouse=True)
 def session():
-    import bigframes.core.global_session
+    # import inline to allow polars importorskip to happen first
     from bigframes.testing import polars_session
 
     with bpd.option_context("experiments.enable_python_transpiler", True):

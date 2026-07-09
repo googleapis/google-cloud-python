@@ -20,6 +20,8 @@ import operator
 from types import ModuleType
 from typing import Callable, Hashable, Mapping, Optional, Tuple
 
+import bigframes.core.agg_expressions as agg_exprs
+import bigframes.operations.aggregations as agg_ops
 import bigframes.operations.python_op_maps as python_op_maps
 from bigframes import dtypes
 from bigframes.core import identifiers
@@ -27,6 +29,7 @@ from bigframes.core import window_spec as window_specs
 from bigframes.core.expression import (
     Expression,
     OpExpression,
+    ScalarConstantExpression,
     UnboundVariableExpression,
     const,
     deref,
@@ -486,8 +489,6 @@ def _resolve_getitem(
     col_series_args: Mapping[str, str] | None,
 ) -> Expression:
     # Resolve subscript/item access on the series/row argument
-    from bigframes.core.expression import ScalarConstantExpression
-
     key_val = None
     if isinstance(expression.key, PyObject):
         key_val = expression.key.value
@@ -519,9 +520,6 @@ def _resolve_getitem(
             "Subscripting a Series/column is not supported in this UDF context."
         )
 
-    # Scalar context (struct/array getitem ops)
-    import bigframes.operations.generic_ops as generic_ops
-
     if key_val is not None:
         if isinstance(key_val, (str, int)):
             return OpExpression(generic_ops.GetItemOp(key_val), (expression.input,))
@@ -552,10 +550,7 @@ def resolve_call(
         else:
             # Method call on an expression (e.g. df.col.sum() or s.mean())
             try:
-                import bigframes.operations.aggregations as agg_ops
-
                 agg_op, _ = agg_ops.lookup_agg_func(attr)
-                import bigframes.core.agg_expressions as agg_exprs
 
                 if isinstance(agg_op, agg_ops.UnaryAggregateOp):
                     agg_expr: agg_exprs.Aggregation = agg_exprs.UnaryAggregation(

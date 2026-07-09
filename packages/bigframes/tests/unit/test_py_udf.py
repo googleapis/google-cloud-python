@@ -22,6 +22,7 @@ import pyarrow as pa
 import pytest
 
 import bigframes
+import bigframes.core.global_session
 import bigframes.pandas as bpd
 from bigframes.testing.utils import (
     assert_frame_equal,
@@ -38,7 +39,7 @@ DATA_DIR = CURRENT_DIR.parent / "data"
 
 @pytest.fixture(scope="module", autouse=True)
 def session() -> Generator[bigframes.Session, None, None]:
-    import bigframes.core.global_session
+    # import inline to allow polars importorskip to happen first
     from bigframes.testing import polars_session
 
     with bpd.option_context("experiments.enable_python_transpiler", True):
@@ -549,8 +550,6 @@ def test_dataframe_apply_axis_1_with_dynamic_subscript_raises(
 
 
 def test_dataframe_apply_axis_1_with_dynamic_array_subscript(session):
-    import pyarrow as pa
-
     array_pa_type = pa.list_(pa.int64())
     pd_df = pd.DataFrame(
         {

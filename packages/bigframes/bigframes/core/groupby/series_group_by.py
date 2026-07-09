@@ -24,6 +24,7 @@ import numpy
 import pandas
 
 import bigframes.core.block_transforms as block_ops
+import bigframes.core.block_transforms as block_transforms
 import bigframes.core.blocks as blocks
 import bigframes.core.ordering as order
 import bigframes.core.utils as utils
@@ -266,8 +267,6 @@ class SeriesGroupBy(vendored_pandas_groupby.SeriesGroupBy):
         if is_single_func:
             func = [func]
 
-        import bigframes.core.block_transforms as block_transforms
-
         aggregations = []
         column_labels = []
         for f in func:
@@ -298,8 +297,6 @@ class SeriesGroupBy(vendored_pandas_groupby.SeriesGroupBy):
     aggregate = agg
 
     def transform(self, func, *args, **kwargs) -> series.Series:
-        import bigframes.core.block_transforms as block_transforms
-
         if block_transforms.is_transpiler_eligible(func):
             window_spec = window_specs.unbound(grouping_keys=tuple(self._by_col_ids))
             expr, _ = block_transforms.compile_column_udf(
