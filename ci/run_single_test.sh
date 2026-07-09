@@ -106,31 +106,44 @@ case ${TEST_TYPE} in
         esac
         ;;
     import_profile)
-        if nox --list-sessions | grep -q "import_profile"; then
+        if [ -f setup.py ]; then
+            echo "Creating temporary virtualenv for import profile..."
+            python3 -m venv .venv-profiler
+            source .venv-profiler/bin/activate
+            pip install -e .
+            
+            PACKAGE_NAME=$(basename $(pwd))
+            PROFILER_SCRIPT="../../scripts/import_profiler/profiler.py"
+            
             rm -f /tmp/baseline.csv
             if [ -n "${TARGET_BRANCH}" ]; then
                 if git rev-parse HEAD^1 >/dev/null 2>&1; then
                     echo "Checking out HEAD^1 for baseline..."
                     git checkout HEAD^1
-                    if nox --list-sessions | grep -q "import_profile"; then
-                        nox -s import_profile -- --csv /tmp/baseline.csv
+                    if [ -f setup.py ]; then
+                        pip install -e .
+                        python ${PROFILER_SCRIPT} --package ${PACKAGE_NAME} --iterations 10 --csv /tmp/baseline.csv
                     else
-                        echo "No import_profile session on baseline."
+                        echo "setup.py not found on baseline. Skipping baseline generation."
                     fi
                     git checkout -
+                    # Re-install the current branch to ensure we profile the latest code
+                    pip install -e .
                 else
                     echo "Could not find HEAD^1. Skipping baseline generation."
                 fi
             fi
             
             if [ -f /tmp/baseline.csv ]; then
-                nox -s import_profile -- --diff-baseline /tmp/baseline.csv --diff-threshold 100
+                python ${PROFILER_SCRIPT} --package ${PACKAGE_NAME} --iterations 10 --fail-threshold 5000 --diff-baseline /tmp/baseline.csv --diff-threshold 100
             else
-                nox -s import_profile
+                python ${PROFILER_SCRIPT} --package ${PACKAGE_NAME} --iterations 10 --fail-threshold 5000
             fi
             retval=$?
+            deactivate
+            rm -rf .venv-profiler
         else
-            echo "Skipping import_profile as it is not supported by this package yet."
+            echo "Skipping import_profile as this does not appear to be a Python package (no setup.py)."
             retval=0
         fi
         ;;

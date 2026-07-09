@@ -229,39 +229,35 @@ def run_master(iterations, target_module, cpu=0, csv_path=None, clear_cache=True
         rss_memories, p50_rss, p90_rss, p99_rss
     )
 
-if fail_threshold is not None:
-            if p99_time > fail_threshold:
-                print(f"
-FAILURE: P99 import time ({p99_time:.2f} ms) exceeds the failure threshold ({fail_threshold} ms).", file=sys.stderr)
+    if fail_threshold is not None:
+        if p99_time > fail_threshold:
+            print(f"\nFAILURE: P99 import time ({p99_time:.2f} ms) exceeds the failure threshold ({fail_threshold} ms).", file=sys.stderr)
+            sys.exit(1)
+        else:
+            print(f"\nSUCCESS: P99 import time ({p99_time:.2f} ms) is within the failure threshold ({fail_threshold} ms).")
+    
+    if diff_baseline:
+        if os.path.exists(diff_baseline):
+            baseline_times = []
+            with open(diff_baseline, "r", encoding="utf-8") as f:
+                reader = csv.reader(f)
+                next(reader) # skip header
+                for row in reader:
+                    baseline_times.append(float(row[1]))
+            _, _, baseline_p99 = _calculate_percentiles(baseline_times)
+            diff = p99_time - baseline_p99
+            print("\n--- Diff vs Baseline ---")
+            print(f"Baseline P99: {baseline_p99:.2f} ms")
+            print(f"Current P99:  {p99_time:.2f} ms")
+            print(f"Difference:   {diff:+.2f} ms")
+            
+            if diff > diff_threshold:
+                print(f"FAILURE: Import time regression of {diff:.2f} ms exceeds the allowed threshold of {diff_threshold} ms.", file=sys.stderr)
                 sys.exit(1)
             else:
-                print(f"
-SUCCESS: P99 import time ({p99_time:.2f} ms) is within the failure threshold ({fail_threshold} ms).")
-    
-        if diff_baseline:
-            if os.path.exists(diff_baseline):
-                baseline_times = []
-                with open(diff_baseline, "r", encoding="utf-8") as f:
-                    reader = csv.reader(f)
-                    next(reader) # skip header
-                    for row in reader:
-                        baseline_times.append(float(row[1]))
-                _, _, baseline_p99 = _calculate_percentiles(baseline_times)
-                diff = p99_time - baseline_p99
-                
-                print(f"
---- Diff vs Baseline ---")
-                print(f"Baseline P99: {baseline_p99:.2f} ms")
-                print(f"Current P99:  {p99_time:.2f} ms")
-                print(f"Difference:   {diff:+.2f} ms")
-                
-                if diff > diff_threshold:
-                    print(f"FAILURE: Import time regression of {diff:.2f} ms exceeds the allowed threshold of {diff_threshold} ms.", file=sys.stderr)
-                    sys.exit(1)
-                else:
-                    print("SUCCESS: Import time diff is within acceptable thresholds.")
-            else:
-                print(f"WARNING: Baseline CSV {diff_baseline} not found. Skipping diff check.")
+                print("SUCCESS: Import time diff is within acceptable thresholds.")
+        else:
+            print(f"WARNING: Baseline CSV {diff_baseline} not found. Skipping diff check.")
 
 
 def run_trace(target_module):
