@@ -667,5 +667,6 @@ def import_profile(session):
         "10",
         "--fail-threshold",
         "5000",
+        *session.posargs,
     )
 {% endblock %}

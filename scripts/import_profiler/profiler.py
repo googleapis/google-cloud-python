@@ -154,7 +154,7 @@ Code Volume (Deterministic):
 {_format_stats("Physical RSS RAM (MB)", rss_memories, p50_rss, p90_rss, p99_rss, ".4f")}"""
     print(final_output.strip())
 
-def run_master(iterations, target_module, cpu=0, csv_path=None, clear_cache=True, fail_threshold=None):
+def run_master(iterations, target_module, cpu=0, csv_path=None, clear_cache=True, fail_threshold=None, diff_baseline=None, diff_threshold=None):
     """Orchestrates the benchmark."""
     if iterations < 1:
         raise ValueError("Number of iterations must be at least 1.")
@@ -229,12 +229,39 @@ def run_master(iterations, target_module, cpu=0, csv_path=None, clear_cache=True
         rss_memories, p50_rss, p90_rss, p99_rss
     )
 
-    if fail_threshold is not None:
-        if p99_time > fail_threshold:
-            print(f"\nFAILURE: P99 import time ({p99_time:.2f} ms) exceeds the failure threshold ({fail_threshold} ms).", file=sys.stderr)
-            sys.exit(1)
-        else:
-            print(f"\nSUCCESS: P99 import time ({p99_time:.2f} ms) is within the failure threshold ({fail_threshold} ms).")
+if fail_threshold is not None:
+            if p99_time > fail_threshold:
+                print(f"
+FAILURE: P99 import time ({p99_time:.2f} ms) exceeds the failure threshold ({fail_threshold} ms).", file=sys.stderr)
+                sys.exit(1)
+            else:
+                print(f"
+SUCCESS: P99 import time ({p99_time:.2f} ms) is within the failure threshold ({fail_threshold} ms).")
+    
+        if diff_baseline:
+            if os.path.exists(diff_baseline):
+                baseline_times = []
+                with open(diff_baseline, "r", encoding="utf-8") as f:
+                    reader = csv.reader(f)
+                    next(reader) # skip header
+                    for row in reader:
+                        baseline_times.append(float(row[1]))
+                _, _, baseline_p99 = _calculate_percentiles(baseline_times)
+                diff = p99_time - baseline_p99
+                
+                print(f"
+--- Diff vs Baseline ---")
+                print(f"Baseline P99: {baseline_p99:.2f} ms")
+                print(f"Current P99:  {p99_time:.2f} ms")
+                print(f"Difference:   {diff:+.2f} ms")
+                
+                if diff > diff_threshold:
+                    print(f"FAILURE: Import time regression of {diff:.2f} ms exceeds the allowed threshold of {diff_threshold} ms.", file=sys.stderr)
+                    sys.exit(1)
+                else:
+                    print("SUCCESS: Import time diff is within acceptable thresholds.")
+            else:
+                print(f"WARNING: Baseline CSV {diff_baseline} not found. Skipping diff check.")
 
 
 def run_trace(target_module):
@@ -342,6 +369,8 @@ if __name__ == "__main__":
     parser.add_argument("--mprofile", action="store_true", help="Run tracemalloc memory snapshot")
     parser.add_argument("--keep-pycache", action="store_true", help="Preserve __pycache__ and allow bytecode execution (Default: False, script automatically sweeps __pycache__ for true cold-starts)")
     parser.add_argument("--fail-threshold", type=float, help="Fail the profiling if the P99 time exceeds this threshold (in ms).")
+    parser.add_argument("--diff-baseline", help="Path to a baseline CSV file to compare against.")
+    parser.add_argument("--diff-threshold", type=float, default=100.0, help="Fail if P99 time exceeds baseline P99 by this many ms.")
     parser.add_argument("--worker", action="store_true", help=argparse.SUPPRESS)
     
     args = parser.parse_args()
@@ -362,4 +391,4 @@ if __name__ == "__main__":
         if not args.keep_pycache: clean_bytecode()
         run_mprofile(target_module)
     else:
-        run_master(args.iterations, target_module, args.cpu, args.csv, not args.keep_pycache, args.fail_threshold)
+        run_master(args.iterations, target_module, args.cpu, args.csv, not args.keep_pycache, args.fail_threshold, args.diff_baseline, args.diff_threshold)

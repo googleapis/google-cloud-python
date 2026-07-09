@@ -107,7 +107,27 @@ case ${TEST_TYPE} in
         ;;
     import_profile)
         if nox --list-sessions | grep -q "import_profile"; then
-            nox -s import_profile
+            rm -f /tmp/baseline.csv
+            if [ -n "${TARGET_BRANCH}" ]; then
+                if git rev-parse HEAD^1 >/dev/null 2>&1; then
+                    echo "Checking out HEAD^1 for baseline..."
+                    git checkout HEAD^1
+                    if nox --list-sessions | grep -q "import_profile"; then
+                        nox -s import_profile -- --csv /tmp/baseline.csv
+                    else
+                        echo "No import_profile session on baseline."
+                    fi
+                    git checkout -
+                else
+                    echo "Could not find HEAD^1. Skipping baseline generation."
+                fi
+            fi
+            
+            if [ -f /tmp/baseline.csv ]; then
+                nox -s import_profile -- --diff-baseline /tmp/baseline.csv --diff-threshold 100
+            else
+                nox -s import_profile
+            fi
             retval=$?
         else
             echo "Skipping import_profile as it is not supported by this package yet."
