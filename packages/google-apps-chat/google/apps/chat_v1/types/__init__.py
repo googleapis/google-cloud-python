@@ -36,6 +36,16 @@ from .attachment import (
     UploadAttachmentRequest,
     UploadAttachmentResponse,
 )
+from .availability import (
+    Availability,
+    CustomStatus,
+    DoNotDisturbMetadata,
+    GetAvailabilityRequest,
+    MarkAsActiveRequest,
+    MarkAsAwayRequest,
+    MarkAsDoNotDisturbRequest,
+    UpdateAvailabilityRequest,
+)
 from .contextual_addon import (
     ContextualAddOnMarkup,
 )
@@ -198,6 +208,14 @@ __all__ = (
     "GetAttachmentRequest",
     "UploadAttachmentRequest",
     "UploadAttachmentResponse",
+    "Availability",
+    "CustomStatus",
+    "DoNotDisturbMetadata",
+    "GetAvailabilityRequest",
+    "MarkAsActiveRequest",
+    "MarkAsAwayRequest",
+    "MarkAsDoNotDisturbRequest",
+    "UpdateAvailabilityRequest",
     "ContextualAddOnMarkup",
     "DeletionMetadata",
     "MembershipBatchCreatedEventData",

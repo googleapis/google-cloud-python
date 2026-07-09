@@ -16,8 +16,8 @@ version: v0.22.0
 repo: googleapis/google-cloud-python
 sources:
   googleapis:
-    commit: 73a8001701e1d3a668dbfb72e9ab66c97d107ff6
-    sha256: 16b606051acfea9e3d2871a844e1106459294c540c5089fdcf7d306092e27813
+    commit: 99f54e6513f09d8df1707a6c553b0a3c6ef9b5fb
+    sha256: 7cee15fe1ae76a16aaf70425c4380a3a0fcbfeb4ea8e30c934c43f5cd54b9657
 default:
   output: packages
   tag_format: '{name}-v{version}'
@@ -349,6 +349,7 @@ libraries:
       default_version: v1
   - name: google-cloud-apigee-registry
     version: 0.10.0
+    skip_generate: true
   - name: google-cloud-apihub
     version: 0.7.0
     apis:
