@@ -14,13 +14,17 @@
 
 from __future__ import annotations
 
+import numbers
 import typing
 import warnings
-from typing import Any, Tuple, Union
+from typing import Any, Sequence, Tuple, Union
 
 import bigframes_vendored.constants as constants
 import bigframes_vendored.ibis.common.exceptions as ibis_exceptions
+import numpy as np
 import pandas as pd
+import pyarrow as pa
+import pyarrow.types
 
 import bigframes.core.blocks
 import bigframes.core.col
@@ -44,6 +48,9 @@ if typing.TYPE_CHECKING:
         bigframes.core.scalar.Scalar,
         bigframes.core.col.Expression,
     ]
+
+
+_DATAFRAME_ILOC_ERROR = "Only DataFrame.iloc[:, col_indexer] = value is supported."
 
 
 class LocSeriesIndexer:
@@ -190,11 +197,7 @@ class LocDataFrameIndexer:
         key: Tuple[slice, str],
         value: bigframes.dataframe.SingleItemValue,
     ):
-        if (
-            isinstance(key, tuple)
-            and len(key) == 2
-            and _is_noop_slice(key[0])
-        ):
+        if isinstance(key, tuple) and len(key) == 2 and _is_noop_slice(key[0]):
             # TODO(swast): Support setting multiple columns with key[1] as a list
             # of labels and value as a DataFrame.
             df = self._dataframe.assign(**{key[1]: value})
@@ -268,72 +271,17 @@ class ILocDataFrameIndexer:
             bigframes.dataframe.SingleItemValue, bigframes.dataframe.DataFrame
         ],
     ):
-        if not (
-            isinstance(key, tuple)
-            and len(key) == 2
-            and _is_noop_slice(key[0])
-        ):
-            raise NotImplementedError(
-                "Only DataFrame.iloc[:, col_indexer] = value is supported."
-            )
+        if not (isinstance(key, tuple) and len(key) == 2):
+            raise NotImplementedError(_DATAFRAME_ILOC_ERROR)
 
-        col_indexer = key[1]
-        n_cols = len(self._dataframe.columns)
+        row_indexer, col_indexer = key
 
-        if isinstance(col_indexer, bool):
-            raise TypeError(
-                "pos must be integer or slice or list-like of integers/booleans"
-            )
+        if not _is_noop_slice(row_indexer):
+            raise NotImplementedError(_DATAFRAME_ILOC_ERROR)
 
-        if isinstance(col_indexer, int):
-            col_offset = col_indexer
-            if col_offset < 0:
-                col_offset += n_cols
-            if col_offset < 0 or col_offset >= n_cols:
-                raise IndexError("single positional indexer is out-of-bounds")
-
-            df = self._dataframe._assign_multi_items_by_offsets([col_offset], value)
-            self._dataframe._set_block(df._get_block())
-
-        elif isinstance(col_indexer, slice):
-            col_offsets = list(range(*col_indexer.indices(n_cols)))
-            if not col_offsets:
-                return
-            df = self._dataframe._assign_multi_items_by_offsets(col_offsets, value)
-            self._dataframe._set_block(df._get_block())
-
-        elif pd.api.types.is_list_like(col_indexer):
-            col_indexer_list = list(col_indexer)
-
-            if len(col_indexer_list) > 0 and all(
-                isinstance(x, bool) for x in col_indexer_list
-            ):
-                if len(col_indexer_list) != n_cols:
-                    raise ValueError(
-                        f"Boolean index has wrong length: {len(col_indexer_list)} instead of {n_cols}"
-                    )
-                col_offsets = [i for i, val in enumerate(col_indexer_list) if val]
-            else:
-                col_offsets = []
-                for idx in col_indexer_list:
-                    if isinstance(idx, bool):
-                        raise TypeError("pos list must contain only integers")
-                    if not isinstance(idx, int):
-                        raise TypeError("pos list must contain only integers")
-                    if idx < 0:
-                        idx += n_cols
-                    if idx < 0 or idx >= n_cols:
-                        raise IndexError("positional indexer is out-of-bounds")
-                    col_offsets.append(idx)
-
-            if not col_offsets:
-                return
-            df = self._dataframe._assign_multi_items_by_offsets(col_offsets, value)
-            self._dataframe._set_block(df._get_block())
-        else:
-            raise TypeError(
-                "pos must be integer or slice or list-like of integers/booleans"
-            )
+        col_offsets = _iloc_col_indexer_to_offsets(self._dataframe, col_indexer)
+        df = self._dataframe._assign_multi_items_by_offsets(col_offsets, value)
+        self._dataframe._set_block(df._get_block())
 
 
 class IatDataFrameIndexer:
@@ -539,6 +487,74 @@ def _iloc_getitem_series_or_dataframe(
 ) -> Union[bigframes.dataframe.DataFrame, pd.Series, bigframes.core.scalar.Scalar]: ...
 
 
+def _iloc_clip_to_offset(index: int, length: int, name: str) -> int:
+    """Support negative values for offsets."""
+    offset = index
+    if offset < 0:
+        offset += length
+
+    if offset < 0 or offset >= length:
+        raise IndexError(f"{name} {index} is out-of-bounds")
+
+    return index
+
+
+def _iloc_col_indexer_to_offsets(
+    df: bigframes.dataframe.DataFrame, col_indexer: Any
+) -> Sequence[int]:
+    """Convert col_indexer from one of the many pandas-compatible formats to a list of offsets."""
+    n_cols = len(df.columns)
+
+    if (
+        isinstance(col_indexer, bool)
+        or isinstance(col_indexer, np.bool_)
+        or (
+            isinstance(col_indexer, pa.Scalar) and pyarrow.types.is_boolean(col_indexer)
+        )
+    ):
+        raise TypeError("scalar boolean is not supported as an iloc column indexer")
+
+    if isinstance(col_indexer, numbers.Integral) or (
+        isinstance(col_indexer, pa.Scalar) and pyarrow.types.is_integer(col_indexer)
+    ):
+        col_offset = int(col_indexer)
+        return [
+            _iloc_clip_to_offset(
+                col_offset, n_cols, "single positional iloc column indexer"
+            )
+        ]
+
+    elif isinstance(col_indexer, slice):
+        return list(range(*col_indexer.indices(n_cols)))
+
+    elif pd.api.types.is_list_like(col_indexer):
+        col_indexer_list = list(col_indexer)
+
+        if len(col_indexer_list) > 0 and all(
+            isinstance(x, bool) for x in col_indexer_list
+        ):
+            if len(col_indexer_list) != n_cols:
+                raise ValueError(
+                    f"Boolean iloc column indexer has wrong length: {len(col_indexer_list)} instead of {n_cols}"
+                )
+            return [i for i, val in enumerate(col_indexer_list) if val]
+        else:
+            return [
+                _iloc_clip_to_offset(idx, n_cols, "iloc column indexer")
+                for idx in col_indexer_list
+            ]
+
+    raise TypeError(f"got unexpected {type(col_indexer)} for iloc column indexer")
+
+
+def _iloc_df_from_column_offsets(
+    df: bigframes.dataframe.DataFrame, key: Sequence[int]
+) -> bigframes.dataframe.DataFrame:
+    block = df._block
+    selected_ids = tuple(block.value_columns[offset] for offset in key)
+    return bigframes.dataframe.DataFrame(block.select_columns(selected_ids))
+
+
 def _iloc_getitem_series_or_dataframe(
     series_or_dataframe: Union[bigframes.dataframe.DataFrame, bigframes.series.Series],
     key,
@@ -573,15 +589,11 @@ def _iloc_getitem_series_or_dataframe(
         df = typing.cast(bigframes.dataframe.DataFrame, series_or_dataframe)
         if isinstance(key[0], int) and isinstance(key[1], int):
             return df.iat[key]
-        elif isinstance(key[1], int):
-            col_label = df.columns[key[1]]
-            return df[col_label].iloc[key[0]]
-        elif isinstance(key[1], list):
-            columns = df.columns[key[1]]
-            return _iloc_getitem_series_or_dataframe(df[columns], key[0])
-        raise NotImplementedError(
-            f"iloc does not yet support indexing with {key}. {constants.FEEDBACK_LINK}"
-        )
+
+        row_indexer, column_indexer = key
+        column_offsets = _iloc_col_indexer_to_offsets(df, column_indexer)
+        df_subset = _iloc_df_from_column_offsets(df, column_offsets)
+        return _iloc_getitem_series_or_dataframe(df_subset, row_indexer)
     elif pd.api.types.is_list_like(key):
         if len(key) == 0:
             return typing.cast(
