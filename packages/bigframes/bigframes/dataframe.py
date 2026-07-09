@@ -221,14 +221,40 @@ class DataFrame:
             if isinstance(dtype, str) and dtype.lower() == "json":
                 dtype = bigframes.dtypes.JSON_DTYPE
 
+            import bigframes.core.local_data
             import bigframes.pandas
 
-            pd_dataframe = pandas.DataFrame(
-                data=data,
-                index=index,  # type:ignore
-                columns=columns,  # type:ignore
-                dtype=dtype,  # type:ignore
-            )
+            if (
+                hasattr(pandas.arrays, "ArrowExtensionArray")
+                and isinstance(dtype, pandas.ArrowDtype)
+                and not isinstance(
+                    data,
+                    (
+                        pandas.DataFrame,
+                        pandas.Series,
+                        pandas.Index,
+                        pyarrow.Array,
+                        pyarrow.ChunkedArray,
+                        pyarrow.Table,
+                        pandas.arrays.ArrowExtensionArray,
+                    ),
+                )
+            ):
+                pa_array = bigframes.core.local_data.pyarrow_array_from_sequence(
+                    data, dtype.pyarrow_dtype
+                )
+                pd_dataframe = pandas.DataFrame(
+                    data=pandas.arrays.ArrowExtensionArray(pa_array),
+                    index=index,  # type:ignore
+                    columns=columns,  # type:ignore
+                )
+            else:
+                pd_dataframe = pandas.DataFrame(
+                    data=data,
+                    index=index,  # type:ignore
+                    columns=columns,  # type:ignore
+                    dtype=dtype,  # type:ignore
+                )
             if session:
                 block = session.read_pandas(pd_dataframe)._get_block()
             else:

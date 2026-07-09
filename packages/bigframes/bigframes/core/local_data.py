@@ -521,3 +521,71 @@ def _schema_durations_to_ints(schema: pa.Schema) -> pa.Schema:
     return pa.schema(
         pa.field(field.name, _durations_to_ints(field.type)) for field in schema
     )
+
+
+def _has_extension_type(pa_type: pa.DataType) -> bool:
+    """Check if the given pyarrow DataType contains an ExtensionType at any nesting level."""
+    if isinstance(pa_type, pa.ExtensionType):
+        return True
+    if pa.types.is_struct(pa_type):
+        struct_type = cast(pa.StructType, pa_type)
+        return any(
+            _has_extension_type(struct_type.field(i).type)
+            for i in range(struct_type.num_fields)
+        )
+    if pa.types.is_list(pa_type) or pa.types.is_large_list(pa_type):
+        list_type = cast(pa.ListType, pa_type)
+        return _has_extension_type(list_type.value_type)
+    return False
+
+
+def pyarrow_array_from_sequence(data: Any, pa_type: pa.DataType) -> pa.Array:
+    """Construct a pyarrow Array from a Sequence, DataFrame, or Series,
+    recursively handling ExtensionTypes inside structs and lists.
+
+    This is a workaround for issue b/456774399 where ArrowNotImplementedError is
+    thrown when constructing arrays of structs containing extension dtypes like
+    JSON.
+    """
+    if isinstance(data, (pa.Array, pa.ChunkedArray)):
+        return data.cast(pa_type) if data.type != pa_type else data
+    if isinstance(pa_type, pa.ExtensionType):
+        storage_arr = pyarrow_array_from_sequence(data, pa_type.storage_type)
+        return pa.ExtensionArray.from_storage(pa_type, storage_arr)
+    if pa.types.is_struct(pa_type):
+        struct_type = cast(pa.StructType, pa_type)
+        if isinstance(data, (pd.Series, pd.Index)):
+            df = pd.DataFrame(data.tolist())
+        elif isinstance(data, pd.DataFrame):
+            df = data
+        else:
+            df = pd.DataFrame(
+                list(data)
+                if not isinstance(data, (list, tuple, np.ndarray, pd.Series, pd.Index))
+                else data
+            )
+        arrays = []
+        fields = []
+        for i in range(struct_type.num_fields):
+            field = struct_type.field(i)
+            col_data = df[field.name] if field.name in df.columns else [None] * len(df)
+            arrays.append(pyarrow_array_from_sequence(col_data, field.type))
+            fields.append(field)
+        return pa.StructArray.from_arrays(arrays, fields=fields)
+    if pa.types.is_list(pa_type) or pa.types.is_large_list(pa_type):
+        list_type = cast(pa.ListType, pa_type)
+        if _has_extension_type(list_type.value_type):
+            flat_values = []
+            offsets = [0]
+            iterable = (
+                data.tolist() if isinstance(data, (pd.Series, pd.Index)) else data
+            )
+            for item in iterable:
+                if item is None or pd.isna(item):
+                    offsets.append(offsets[-1])
+                else:
+                    flat_values.extend(item)
+                    offsets.append(offsets[-1] + len(item))
+            values_arr = pyarrow_array_from_sequence(flat_values, list_type.value_type)
+            return pa.ListArray.from_arrays(pa.array(offsets), values_arr)
+    return pa.array(data, type=pa_type)

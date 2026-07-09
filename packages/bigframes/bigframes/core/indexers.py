@@ -320,6 +320,16 @@ class AtDataFrameIndexer:
         return self._dataframe.loc[key]
 
 
+def _is_noop_slice(key: Any) -> bool:
+    """Return True if key is a slice selecting all elements in the original order."""
+    return (
+        isinstance(key, slice)
+        and (key.start is None or key.start == 0)
+        and (key.step is None or key.step == 1)
+        and key.stop is None
+    )
+
+
 @typing.overload
 def _loc_getitem_series_or_dataframe(
     series_or_dataframe: bigframes.series.Series, key
@@ -330,16 +340,6 @@ def _loc_getitem_series_or_dataframe(
 def _loc_getitem_series_or_dataframe(
     series_or_dataframe: bigframes.dataframe.DataFrame, key
 ) -> Union[bigframes.dataframe.DataFrame, pd.Series]: ...
-
-
-def _is_noop_slice(key: Any) -> bool:
-    """Return True if key is a slice selecting all elements in the original order."""
-    return (
-        isinstance(key, slice)
-        and (key.start is None or key.start == 0)
-        and (key.step is None or key.step == 1)
-        and key.stop is None
-    )
 
 
 def _loc_getitem_series_or_dataframe(
@@ -475,18 +475,6 @@ def _struct_accessor_check_and_warn(
         warnings.warn(msg, stacklevel=7, category=bfe.BadIndexerKeyWarning)
 
 
-@typing.overload
-def _iloc_getitem_series_or_dataframe(
-    series_or_dataframe: bigframes.series.Series, key
-) -> Union[bigframes.series.Series, bigframes.core.scalar.Scalar]: ...
-
-
-@typing.overload
-def _iloc_getitem_series_or_dataframe(
-    series_or_dataframe: bigframes.dataframe.DataFrame, key
-) -> Union[bigframes.dataframe.DataFrame, pd.Series, bigframes.core.scalar.Scalar]: ...
-
-
 def _iloc_clip_to_offset(index: int, length: int, name: str) -> int:
     """Support negative values for offsets."""
     offset = index
@@ -553,6 +541,18 @@ def _iloc_df_from_column_offsets(
     block = df._block
     selected_ids = tuple(block.value_columns[offset] for offset in key)
     return bigframes.dataframe.DataFrame(block.select_columns(selected_ids))
+
+
+@typing.overload
+def _iloc_getitem_series_or_dataframe(
+    series_or_dataframe: bigframes.series.Series, key
+) -> Union[bigframes.series.Series, bigframes.core.scalar.Scalar]: ...
+
+
+@typing.overload
+def _iloc_getitem_series_or_dataframe(
+    series_or_dataframe: bigframes.dataframe.DataFrame, key
+) -> Union[bigframes.dataframe.DataFrame, pd.Series, bigframes.core.scalar.Scalar]: ...
 
 
 def _iloc_getitem_series_or_dataframe(
