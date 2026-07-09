@@ -19,7 +19,8 @@ from setuptools import find_namespace_packages
 from setuptools import setup
 
 cryptography_base_require = [
-    "cryptography >= 38.0.3",
+    "cryptography >= 38.0.3; python_version < '3.14'",
+    "cryptography >= 41.0.5; python_version >= '3.14'",
 ]
 
 DEPENDENCIES = (
@@ -29,7 +30,11 @@ DEPENDENCIES = (
 
 requests_extra_require = ["requests >= 2.30.0, < 3.0.0"]
 
-aiohttp_extra_require = ["aiohttp >= 3.8.0, < 4.0.0", *requests_extra_require]
+aiohttp_extra_require = [
+    "aiohttp >= 3.8.0, < 4.0.0; python_version < '3.14'",
+    "aiohttp >= 3.9.0, < 4.0.0; python_version >= '3.14'",
+    *requests_extra_require,
+]
 
 pyjwt_extra_require = ["pyjwt>=2.0"]
 
@@ -42,7 +47,7 @@ urllib3_extra_require = [
     "packaging >= 20.0",
 ]
 
-rsa_extra_require = ["rsa>=3.1.4,<5"]
+rsa_extra_require = ["rsa>=4.0.0,<5"]
 
 grpc_extra_require = [
     "grpcio >= 1.59.0, < 2.0.0; python_version < '3.14'",
