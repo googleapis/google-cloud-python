@@ -664,8 +664,8 @@ class AsyncAppendableObjectWriter:
                 ),
             )
 
-        await self.write_obj_stream.send(finalize_req)
         try:
+            await self.write_obj_stream.send(finalize_req)
             response = await self.write_obj_stream.recv()
             self.object_resource = response.resource
             self.persisted_size = self.object_resource.size
