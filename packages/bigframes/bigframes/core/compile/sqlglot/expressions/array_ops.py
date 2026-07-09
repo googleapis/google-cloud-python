@@ -105,7 +105,7 @@ def _(expr: TypedExpr, op: ops.ArraySliceOp) -> sge.Expression:
 
 @register_unary_op(ops.ArrayToStringOp, pass_op=True)
 def _(expr: TypedExpr, op: ops.ArrayToStringOp) -> sge.Expression:
-    return sge.ArrayToString(this=expr.expr, expression=f"'{op.delimiter}'")
+    return sge.ArrayToString(this=expr.expr, expression=sge.convert(op.delimiter))
 
 
 @register_nary_op(ops.ToArrayOp)
