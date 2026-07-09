@@ -680,7 +680,13 @@ class Message(metaclass=MessageMeta):
                 params[key] = pb_value
 
         # Create the internal protocol buffer.
-        super().__setattr__("_pb", self._meta.pb(**params))
+        try:
+            super().__setattr__("_pb", self._meta.pb(**params))
+        except TypeError as ex:
+            raise TypeError(
+                f"Failed to initialize {self.__class__.__name__} due to invalid type "
+                f"or structure in parameters. Underlying error: {ex}"
+            ) from ex
 
     def _get_pb_type_from_key(self, key):
         """Given a key, return the corresponding pb_type.
@@ -861,7 +867,14 @@ class Message(metaclass=MessageMeta):
 
         # Merge in the value being set.
         if pb_value is not None:
-            self._pb.MergeFrom(self._meta.pb(**{key: pb_value}))
+            try:
+                self._pb.MergeFrom(self._meta.pb(**{key: pb_value}))
+            except TypeError as ex:
+                raise TypeError(
+                    f"Failed to set field '{key}' on {self.__class__.__name__} with value {value!r}. "
+                    f"Underlying error: {ex}"
+                ) from ex
+
 
     def __getstate__(self):
         """Serialize for pickling."""
