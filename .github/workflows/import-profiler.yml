@@ -25,10 +25,9 @@ jobs:
       with:
         python-version: "3.15"
         allow-prereleases: true
-    - name: Install nox
+    - name: Upgrade pip, setuptools, and wheel
       run: |
         python -m pip install --upgrade setuptools pip wheel
-        python -m pip install nox
     - name: Run import profiler
       env:
         BUILD_TYPE: ${{ contains(github.event.pull_request.labels.*.name, 'import_profile:all_packages') && 'all' || 'presubmit' }}
