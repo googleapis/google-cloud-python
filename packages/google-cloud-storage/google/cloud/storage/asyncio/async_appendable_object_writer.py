@@ -650,17 +650,18 @@ class AsyncAppendableObjectWriter:
         if not self._is_stream_open:
             raise ValueError("Stream is not open. Call open() before finalize().")
 
-        finalize_req = _storage_v2.BidiWriteObjectRequest(finish_write=True)
-
-        if full_object_checksum is not None:
-            if not isinstance(full_object_checksum, int):
-                raise TypeError("full_object_checksum must be an integer.")
-            if not (0 <= full_object_checksum <= 0xFFFFFFFF):
-                raise ValueError(
-                    "full_object_checksum must be a 32-bit unsigned integer."
-                )
-            finalize_req.object_checksums = _storage_v2.ObjectChecksums(
-                crc32c=full_object_checksum
+        if full_object_checksum is None:
+            finalize_req = _storage_v2.BidiWriteObjectRequest(finish_write=True)
+        elif not isinstance(full_object_checksum, int):
+            raise TypeError("full_object_checksum must be an integer.")
+        elif not (0 <= full_object_checksum <= 0xFFFFFFFF):
+            raise ValueError("full_object_checksum must be a 32-bit unsigned integer.")
+        else:
+            finalize_req = _storage_v2.BidiWriteObjectRequest(
+                finish_write=True,
+                object_checksums=_storage_v2.ObjectChecksums(
+                    crc32c=full_object_checksum
+                ),
             )
 
         await self.write_obj_stream.send(finalize_req)
