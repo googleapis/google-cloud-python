@@ -22,7 +22,17 @@ import io
 import itertools
 import json
 import uuid
-from typing import Any, Callable, Generator, Iterable, Literal, Optional, Union, cast
+from typing import (
+    Any,
+    Callable,
+    Generator,
+    Iterable,
+    Literal,
+    Optional,
+    Sequence,
+    Union,
+    cast,
+)
 
 import geopandas  # type: ignore
 import numpy
@@ -575,17 +585,23 @@ def pyarrow_array_from_sequence(data: Any, pa_type: pa.DataType) -> pa.Array:
     if pa.types.is_list(pa_type) or pa.types.is_large_list(pa_type):
         list_type = cast(pa.ListType, pa_type)
         if _has_extension_type(list_type.value_type):
-            flat_values = []
+            flat_values: list[Any] = []
             offsets = [0]
             iterable = (
                 data.tolist() if isinstance(data, (pd.Series, pd.Index)) else data
             )
             for item in iterable:
-                if item is None or pd.isna(item):
+                if item is None or (
+                    not isinstance(
+                        item, (list, tuple, np.ndarray, pd.Series, pd.Index, pa.Array)
+                    )
+                    and pd.isna(item)
+                ):
                     offsets.append(offsets[-1])
                 else:
-                    flat_values.extend(item)
-                    offsets.append(offsets[-1] + len(item))
+                    item_seq = cast(Sequence[Any], item)
+                    flat_values.extend(item_seq)
+                    offsets.append(offsets[-1] + len(item_seq))
             values_arr = pyarrow_array_from_sequence(flat_values, list_type.value_type)
             return pa.ListArray.from_arrays(pa.array(offsets), values_arr)
     return pa.array(data, type=pa_type)
