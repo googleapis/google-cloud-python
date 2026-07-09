@@ -16,7 +16,7 @@ from __future__ import annotations
 
 import typing
 import warnings
-from typing import Tuple, Union
+from typing import Any, Tuple, Union
 
 import bigframes_vendored.constants as constants
 import bigframes_vendored.ibis.common.exceptions as ibis_exceptions
@@ -103,16 +103,7 @@ class IlocSeriesIndexer:
 
         Other key types are not yet supported.
         """
-        requires_ordering = True
-        if (
-            isinstance(key, slice)
-            and (key.start is None or key.start == 0)
-            and (key.step is None or key.step == 1)
-            and key.stop is None
-        ):
-            requires_ordering = False
-
-        if requires_ordering:
+        if not _is_noop_slice(key):
             validations.enforce_ordered(self._series, "iloc")
 
         return _iloc_getitem_series_or_dataframe(self._series, key)
@@ -202,10 +193,7 @@ class LocDataFrameIndexer:
         if (
             isinstance(key, tuple)
             and len(key) == 2
-            and isinstance(key[0], slice)
-            and (key[0].start is None or key[0].start == 0)
-            and (key[0].step is None or key[0].step == 1)
-            and key[0].stop is None
+            and _is_noop_slice(key[0])
         ):
             # TODO(swast): Support setting multiple columns with key[1] as a list
             # of labels and value as a DataFrame.
@@ -261,21 +249,10 @@ class ILocDataFrameIndexer:
         if isinstance(key, tuple):
             if len(key) > 0:
                 row_indexer = key[0]
-                if (
-                    isinstance(row_indexer, slice)
-                    and (row_indexer.start is None or row_indexer.start == 0)
-                    and (row_indexer.step is None or row_indexer.step == 1)
-                    and row_indexer.stop is None
-                ):
+                if _is_noop_slice(row_indexer):
                     requires_ordering = False
-        else:
-            if (
-                isinstance(key, slice)
-                and (key.start is None or key.start == 0)
-                and (key.step is None or key.step == 1)
-                and key.stop is None
-            ):
-                requires_ordering = False
+        elif _is_noop_slice(key):
+            requires_ordering = False
 
         if requires_ordering:
             validations.enforce_ordered(self._dataframe, "iloc")
@@ -294,10 +271,7 @@ class ILocDataFrameIndexer:
         if not (
             isinstance(key, tuple)
             and len(key) == 2
-            and isinstance(key[0], slice)
-            and (key[0].start is None or key[0].start == 0)
-            and (key[0].step is None or key[0].step == 1)
-            and key[0].stop is None
+            and _is_noop_slice(key[0])
         ):
             raise NotImplementedError(
                 "Only DataFrame.iloc[:, col_indexer] = value is supported."
@@ -410,6 +384,16 @@ def _loc_getitem_series_or_dataframe(
 ) -> Union[bigframes.dataframe.DataFrame, pd.Series]: ...
 
 
+def _is_noop_slice(key: Any) -> bool:
+    """Return True if key is a slice selecting all elements in the original order."""
+    return (
+        isinstance(key, slice)
+        and (key.start is None or key.start == 0)
+        and (key.step is None or key.step == 1)
+        and key.stop is None
+    )
+
+
 def _loc_getitem_series_or_dataframe(
     series_or_dataframe: Union[bigframes.dataframe.DataFrame, bigframes.series.Series],
     key: LocSingleKey,
@@ -419,12 +403,14 @@ def _loc_getitem_series_or_dataframe(
     pd.Series,
     bigframes.core.scalar.Scalar,
 ]:
+    if _is_noop_slice(key):
+        return series_or_dataframe.copy()
+
     if isinstance(key, slice):
-        if (key.start is None) and (key.stop is None) and (key.step is None):
-            return series_or_dataframe.copy()
         raise NotImplementedError(
             f"loc does not yet support indexing with a slice. {constants.FEEDBACK_LINK}"
         )
+
     if isinstance(key, bigframes.core.col.Expression):
         label_to_col_ref = {
             label: ex.deref(id)
