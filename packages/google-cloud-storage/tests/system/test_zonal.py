@@ -1055,7 +1055,7 @@ def test_finalize_with_correct_checksum(
     event_loop,
     grpc_client_direct,
 ):
-    object_name = f"appendabl_cksum_success_{uuid.uuid4()}"
+    object_name = f"appendable_checksum_success_{uuid.uuid4()}"
     object_data = b"Hello, appendable object with correct checksum!"
     object_checksum = google_crc32c.value(object_data)
 
@@ -1084,7 +1084,7 @@ def test_finalize_with_incorrect_checksum_fails(
     event_loop,
     grpc_client_direct,
 ):
-    object_name = f"appendabl_cksum_fail_{uuid.uuid4()}"
+    object_name = f"appendable_checksum_fail_{uuid.uuid4()}"
     object_data = b"Hello, appendable object with incorrect checksum!"
     object_checksum = google_crc32c.value(object_data)
     incorrect_checksum = object_checksum + 1
