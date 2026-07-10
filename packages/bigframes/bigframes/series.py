@@ -196,37 +196,12 @@ class Series:
             if isinstance(dtype, str) and dtype.lower() == "json":
                 dtype = bigframes.dtypes.JSON_DTYPE
 
-            import bigframes.core.local_data
-
-            if (
-                hasattr(pandas.arrays, "ArrowExtensionArray")
-                and isinstance(dtype, pandas.ArrowDtype)
-                and not isinstance(
-                    data,
-                    (
-                        pandas.Series,
-                        pandas.Index,
-                        pa.Array,
-                        pa.ChunkedArray,
-                        pandas.arrays.ArrowExtensionArray,
-                    ),
-                )
-            ):
-                pa_array = bigframes.core.local_data.pyarrow_array_from_sequence(
-                    data, dtype.pyarrow_dtype
-                )
-                pd_series = pandas.Series(
-                    data=pandas.arrays.ArrowExtensionArray(pa_array),
-                    index=index,  # type:ignore
-                    name=name,
-                )
-            else:
-                pd_series = pandas.Series(
-                    data=data,
-                    index=index,  # type:ignore
-                    dtype=dtype,  # type:ignore
-                    name=name,
-                )
+            pd_series = pandas.Series(
+                data=data,
+                index=index,  # type:ignore
+                dtype=dtype,  # type:ignore
+                name=name,
+            )
             block = read_pandas_func(pd_series)._get_block()  # type:ignore
 
         assert block is not None

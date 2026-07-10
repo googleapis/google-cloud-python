@@ -16,6 +16,8 @@ import signal
 import unittest.mock as mock
 
 import pandas as pd
+import pyarrow as pa
+import pyarrow.compute
 import pytest
 
 import bigframes
@@ -25,10 +27,9 @@ pytest.importorskip("anywidget")
 pytest.importorskip("traitlets")
 
 import bigframes.dataframe
-import bigframes.operations
+import bigframes.dtypes
 import bigframes.series
 from bigframes.display.anywidget import TableWidget
-from bigframes.dtypes import JSON_DTYPE, STRING_DTYPE, struct_type
 
 
 def test_navigation_to_invalid_page_resets_to_valid_page_without_deadlock():
@@ -195,31 +196,39 @@ def test_cell_execution_count_propagation(mock_df):
 
 def test_json_column_converted_to_string_for_display(polars_session):
     series = bigframes.series.Series(
-        ['{"a": 1}', '{"b": 2}'], dtype=JSON_DTYPE, session=polars_session
+        ['{"a": 1}', '{"b": 2}'], dtype=bigframes.dtypes.JSON_DTYPE, session=polars_session
     )
     df = series.to_frame("col_json")
 
     result = df._prepare_display_df()
 
-    assert result["col_json"].dtype == STRING_DTYPE
+    assert result["col_json"].dtype == bigframes.dtypes.STRING_DTYPE
 
 
 def test_struct_column_with_nested_json_converted_to_string_for_display(
     polars_session,
 ):
-    nested_struct_dtype = struct_type(
-        [("field1", STRING_DTYPE), ("field2", JSON_DTYPE)]
-    )
-    series = bigframes.series.Series(
-        [{"field1": "hello", "field2": '{"a": 1}'}],
-        dtype=nested_struct_dtype,
-        session=polars_session,
-    )
-    df = series.to_frame("col_struct")
+    if not hasattr(pa, "json_"):
+        pytest.skip(reason=f"pyarrow=={pa.__version__} does not support json_")
 
+    # Arrange
+    json_type = pa.json_(storage_type=pa.utf8())
+    json_data = pa.array(['{"a": 1}'], type=json_type)
+    string_data = pa.array(["hello"], type=pa.string())
+    struct_data = pa.StructArray.from_arrays(
+        [string_data, json_data], names=["field1", "field2"]
+    )
+    nested_data = pa.table([struct_data], names=["nested"])
+    df = polars_session.read_arrow(nested_data)
+    exploded = df["nested"].struct.explode()
+    # Ensure that we are actually using the JSON dtype in this test.
+    assert exploded["field2"].dtype == bigframes.dtypes.JSON_DTYPE
+
+    # Act
     result = df._prepare_display_df()
 
-    assert result["col_struct"].dtype == STRING_DTYPE
+    # Assert
+    assert result["nested"].dtype == bigframes.dtypes.STRING_DTYPE
 
 
 @pytest.fixture
