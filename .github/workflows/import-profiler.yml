@@ -30,7 +30,7 @@ jobs:
         python -m pip install --upgrade setuptools pip wheel
     - name: Run import profiler
       env:
-        BUILD_TYPE: 'all'
+        BUILD_TYPE: ${{ contains(github.event.pull_request.labels.*.name, 'import_profile:all_packages') && 'all' || 'presubmit' }}
         TARGET_BRANCH: ${{ github.base_ref || github.event.merge_group.base_ref }}
         TEST_TYPE: import_profile
         PY_VERSION: "3.15"
