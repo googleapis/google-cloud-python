@@ -106,43 +106,48 @@ case ${TEST_TYPE} in
         esac
         ;;
     import_profile)
-        if [ -f setup.py ]; then
+        if [ -f setup.py ] || [ -f pyproject.toml ]; then
             echo "Creating temporary virtualenv for import profile..."
             python3 -m venv .venv-profiler
             source .venv-profiler/bin/activate
-            pip install -e .
             
             PACKAGE_NAME=$(basename $(pwd))
-            # Save the new profiler script to /tmp so we don't lose it during HEAD^1 checkout
-            cp ../../scripts/import_profiler/profiler.py /tmp/profiler.py
-            PROFILER_SCRIPT="/tmp/profiler.py"
+            PROFILER_TEMP_DIR=$(mktemp -d)
+            cp ../../scripts/import_profiler/profiler.py "${PROFILER_TEMP_DIR}/profiler.py"
+            PROFILER_SCRIPT="${PROFILER_TEMP_DIR}/profiler.py"
+            BASELINE_CSV="${PROFILER_TEMP_DIR}/baseline_${PACKAGE_NAME}.csv"
             
-            rm -f /tmp/baseline.csv
             if [ -n "${TARGET_BRANCH}" ]; then
-                if git rev-parse HEAD^1 >/dev/null 2>&1; then
-                    echo "Checking out HEAD^1 for baseline..."
-                    git checkout HEAD^1
-                    if [ -f setup.py ]; then
-                        python ${PROFILER_SCRIPT} --package ${PACKAGE_NAME} --iterations 11 --csv /tmp/baseline.csv
+                # Suppress errors if branch isn't found
+                BASELINE_COMMIT=$(git merge-base HEAD "origin/${TARGET_BRANCH:-main}" 2>/dev/null || true)
+                if [ -n "${BASELINE_COMMIT}" ]; then
+                    echo "Checking out baseline commit ${BASELINE_COMMIT}..."
+                    git checkout ${BASELINE_COMMIT}
+                    if [ -f setup.py ] || [ -f pyproject.toml ]; then
+                        pip install -e .
+                        python ${PROFILER_SCRIPT} --package ${PACKAGE_NAME} --iterations 11 --csv "${BASELINE_CSV}"
                     else
-                        echo "setup.py not found on baseline. Skipping baseline generation."
+                        echo "setup.py/pyproject.toml not found on baseline. Skipping baseline generation."
                     fi
                     git checkout -
                 else
-                    echo "Could not find HEAD^1. Skipping baseline generation."
+                    echo "Could not find baseline commit for origin/${TARGET_BRANCH:-main}. Skipping baseline generation."
                 fi
             fi
             
-            if [ -f /tmp/baseline.csv ]; then
-                python ${PROFILER_SCRIPT} --package ${PACKAGE_NAME} --iterations 11 --fail-threshold 5000 --diff-baseline /tmp/baseline.csv --diff-threshold 100
+            pip install -e .
+            
+            if [ -f "${BASELINE_CSV}" ]; then
+                python ${PROFILER_SCRIPT} --package ${PACKAGE_NAME} --iterations 11 --fail-threshold 5000 --diff-baseline "${BASELINE_CSV}" --diff-threshold 100
             else
                 python ${PROFILER_SCRIPT} --package ${PACKAGE_NAME} --iterations 11 --fail-threshold 5000
             fi
             retval=$?
             deactivate
             rm -rf .venv-profiler
+            rm -rf "${PROFILER_TEMP_DIR}"
         else
-            echo "Skipping import_profile as this does not appear to be a Python package (no setup.py)."
+            echo "Skipping import_profile as this does not appear to be a Python package (no setup.py or pyproject.toml)."
             retval=0
         fi
         ;;

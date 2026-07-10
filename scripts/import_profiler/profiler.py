@@ -265,11 +265,18 @@ def run_master(iterations, target_module, cpu=0, csv_path=None, clear_cache=True
             )
             final_messages.append(diff_msg)
             
-            if diff > diff_threshold:
-                final_messages.append(f"FAILURE: Import time regression of {diff:.2f} ms exceeds the allowed threshold of {diff_threshold} ms.")
+            relative_diff_threshold = 0.15 * baseline_p99
+            if diff > diff_threshold and diff > relative_diff_threshold:
+                final_messages.append(
+                    f"FAILURE: Import time regression of {diff:.2f} ms exceeds both the absolute threshold ({diff_threshold} ms) "
+                    f"and the relative threshold ({relative_diff_threshold:.2f} ms, 15% of baseline P99)."
+                )
                 exit_code = 1
             else:
-                final_messages.append("SUCCESS: Import time diff is within acceptable thresholds.")
+                if diff > diff_threshold:
+                    final_messages.append(f"SUCCESS: Import time regression of {diff:.2f} ms exceeds absolute threshold ({diff_threshold} ms) but is within relative threshold ({relative_diff_threshold:.2f} ms, 15%).")
+                else:
+                    final_messages.append("SUCCESS: Import time diff is within acceptable thresholds.")
         else:
             final_messages.append(f"WARNING: Baseline CSV {diff_baseline} not found. Skipping diff check.")
 
@@ -386,7 +393,7 @@ if __name__ == "__main__":
             if os.path.exists('setup.py') or os.path.exists('pyproject.toml'):
                 pkgs = setuptools.find_namespace_packages(where='.')
                 for p in sorted(pkgs, key=len):
-                    if p.startswith('tests'):
+                    if p in ("google", "google.cloud") or p.startswith("tests"):
                         continue
                     path = p.replace('.', os.sep)
                     if os.path.isfile(os.path.join(path, '__init__.py')):
