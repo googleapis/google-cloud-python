@@ -13,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import os
 from unittest import mock
 
 import pytest
@@ -25,12 +24,6 @@ except ImportError:
 
 from google.auth.exceptions import MutualTLSChannelError
 
-from google.api_core.gapic_v1._client_cert import (
-    get_client_cert_source,
-    use_client_cert_effective,
-)
-from google.api_core.gapic_v1._config_helpers import read_environment_variables
-from google.api_core.gapic_v1._method_helpers import setup_request_id
 from google.api_core.gapic_v1._routing import (
     get_api_endpoint,
     get_default_mtls_endpoint,
@@ -56,42 +49,6 @@ def test_get_default_mtls_endpoint():
     # Test empty/None endpoints
     assert get_default_mtls_endpoint("") == ""
     assert get_default_mtls_endpoint(None) is None
-
-
-@mock.patch("google.auth.transport.mtls.should_use_client_cert", create=True)
-def test_use_client_cert_effective_with_google_auth(mock_method):
-    # Test when google-auth supports the method
-    mock_method.return_value = True
-    assert use_client_cert_effective() is True
-
-    mock_method.return_value = False
-    assert use_client_cert_effective() is False
-
-
-@mock.patch.dict(os.environ, {}, clear=True)
-def test_use_client_cert_effective_fallback():
-    # We must patch hasattr to simulate google-auth lacking the method
-    with mock.patch(
-        "google.api_core.gapic_v1._client_cert.hasattr", return_value=False
-    ):
-        # Default is false
-        assert use_client_cert_effective() is False
-
-        env_true = {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}
-        with mock.patch.dict(os.environ, env_true):
-            assert use_client_cert_effective() is True
-
-        with mock.patch.dict(
-            os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}
-        ):
-            assert use_client_cert_effective() is False
-
-        with mock.patch.dict(
-            os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "invalid"}
-        ):
-            match_str = "must be either `true` or `false`"
-            with pytest.raises(ValueError, match=match_str):
-                use_client_cert_effective()
 
 
 def test_get_api_endpoint_override():
@@ -165,50 +122,6 @@ def test_get_api_endpoint_mtls_universe_mismatch():
         )
 
 
-@mock.patch(
-    "google.api_core.gapic_v1._config_helpers.use_client_cert_effective"
-)  # noqa: E501
-@mock.patch.dict(os.environ, clear=True)
-def test_read_environment_variables(mock_effective):
-    mock_effective.return_value = True
-    os.environ["GOOGLE_API_USE_MTLS_ENDPOINT"] = "always"
-    os.environ["GOOGLE_CLOUD_UNIVERSE_DOMAIN"] = "custom.com"
-
-    cert, mtls, domain = read_environment_variables()
-    assert cert is True
-    assert mtls == "always"
-    assert domain == "custom.com"
-
-
-@mock.patch.dict(os.environ, clear=True)
-def test_read_environment_variables_invalid_mtls():
-    os.environ["GOOGLE_API_USE_MTLS_ENDPOINT"] = "invalid"
-    with pytest.raises(
-        MutualTLSChannelError, match="must be `never`, `auto` or `always`"
-    ):
-        read_environment_variables()
-
-
-@mock.patch(
-    "google.auth.transport.mtls.has_default_client_cert_source", create=True
-)  # noqa: E501
-@mock.patch(
-    "google.auth.transport.mtls.default_client_cert_source", create=True
-)  # noqa: E501
-def test_get_client_cert_source(mock_default, mock_has_default):
-    mock_default.return_value = b"default_cert"
-    mock_has_default.return_value = True
-
-    # When use_cert_flag is False, return None
-    assert get_client_cert_source(b"provided", False) is None
-
-    # When provided_cert_source is given, return provided
-    assert get_client_cert_source(b"provided", True) == b"provided"  # noqa: E501
-
-    # When no provided cert but default is available
-    assert get_client_cert_source(None, True) == b"default_cert"
-
-
 def test_get_universe_domain():
     # client_universe_domain takes precedence
     assert (
@@ -228,40 +141,3 @@ def test_get_universe_domain():
 def test_get_universe_domain_empty():
     with pytest.raises(ValueError, match="cannot be an empty string"):
         get_universe_domain("", None, "default.com")
-
-
-def test_setup_request_id():
-    import uuid
-
-    # test dict request
-    req = {}
-    setup_request_id(req, "request_id", True)
-    assert "request_id" in req
-    uuid_str = req["request_id"]
-    uuid.UUID(uuid_str)  # verify it is a valid UUID
-
-    # test dict request when already set
-    req = {"request_id": "existing"}
-    setup_request_id(req, "request_id", True)
-    assert req["request_id"] == "existing"
-
-    class DummyRequest:
-        def __init__(self):
-            self.request_id = ""
-
-        def HasField(self, field_name):
-            if not hasattr(self, field_name):
-                raise ValueError()
-            return bool(getattr(self, field_name))
-
-    # test object request proto3 optional true
-    req_obj = DummyRequest()
-    setup_request_id(req_obj, "request_id", True)
-    assert req_obj.request_id != ""
-    uuid.UUID(req_obj.request_id)
-
-    # test object request proto3 optional false
-    req_obj2 = DummyRequest()
-    setup_request_id(req_obj2, "request_id", False)
-    assert req_obj2.request_id != ""
-    uuid.UUID(req_obj2.request_id)
