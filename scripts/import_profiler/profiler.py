@@ -191,6 +191,7 @@ def run_master(iterations, target_module, cpu=0, csv_path=None, clear_cache=True
             times.append(data["time_ms"])
             memories.append(data["peak_ram_mb"])
             rss_memories.append(data["rss_ram_mb"])
+            print(f"Iteration {i+1}/{iterations} completed in {data['time_ms']:.2f} ms")
             if i > 0 and loaded_modules_val != data["loaded_modules"]:
                 print(f"WARNING: Non-deterministic import behavior! Iteration {i+1} loaded {data['loaded_modules']} modules (expected {loaded_modules_val}).", file=sys.stderr)
             if i > 0 and loaded_lines_val != data["loaded_lines"]:
