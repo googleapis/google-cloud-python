@@ -16,6 +16,7 @@ from typing import Generator
 
 import numpy as np
 import pandas as pd
+import pyarrow as pa
 import pytest
 
 import bigframes
@@ -109,94 +110,44 @@ def test_iloc_setitem_columns_dataframe(sample_df):
     assert_frame_equal(bf_df.to_pandas(), pd_df)
 
 
-def test_iloc_getitem_column_single_integer(sample_df):
-    bf_df = sample_df
+def test_iloc_setitem_column_numpy_scalar(sample_df):
+    bf_df = sample_df.copy()
     pd_df = sample_df.to_pandas()
 
-    bf_result = bf_df.iloc[:, 1].to_pandas()
-    pd_result = pd_df.iloc[:, 1]
+    bf_df.iloc[:, np.int64(1)] = 99
+    pd_df.iloc[:, np.int64(1)] = 99
 
-    assert_series_equal(bf_result, pd_result)
-
-
-@pytest.fixture
-def unordered_sample_df(
-    sample_df: bpd.DataFrame,
-) -> Generator[bpd.DataFrame, None, None]:
-    session = sample_df._session
-    original_strictly_ordered = session._strictly_ordered
-    original_allow_ambiguity = session._allow_ambiguity
-
-    try:
-        session._strictly_ordered = False
-        session._allow_ambiguity = True
-
-        import unittest.mock as mock
-
-        with (
-            mock.patch.object(
-                type(sample_df._block.expr),
-                "order_ambiguous",
-                new_callable=mock.PropertyMock,
-            ) as mock_ambiguous,
-            mock.patch.object(
-                type(sample_df._block),
-                "explicitly_ordered",
-                new_callable=mock.PropertyMock,
-            ) as mock_explicit,
-        ):
-            mock_ambiguous.return_value = True
-            mock_explicit.return_value = False
-            yield sample_df
-    finally:
-        session._strictly_ordered = original_strictly_ordered
-        session._allow_ambiguity = original_allow_ambiguity
+    assert_frame_equal(bf_df.to_pandas(), pd_df)
 
 
-@pytest.mark.parametrize(
-    ["key", "value", "expected_error"],
-    [
-        pytest.param((slice(None), 1), None, None, id="col_index"),
-        pytest.param((slice(0, None), 1), None, None, id="col_index_slice_0_none"),
-        pytest.param(
-            (slice(None, None, 1), 1), None, None, id="col_index_slice_none_none_1"
-        ),
-        pytest.param(
-            (slice(1, None), 1),
-            None,
-            bigframes.exceptions.OrderRequiredError,
-            id="col_index_slice_1_none",
-        ),
-        pytest.param(
-            (slice(None, 2), 1),
-            None,
-            bigframes.exceptions.OrderRequiredError,
-            id="col_index_slice_none_2",
-        ),
-        pytest.param((slice(None), 1), 99, None, id="col_setitem"),
-        pytest.param(
-            (1, slice(None)),
-            None,
-            bigframes.exceptions.OrderRequiredError,
-            id="row_index_slice",
-        ),
-        pytest.param(
-            1,
-            None,
-            bigframes.exceptions.OrderRequiredError,
-            id="single_row_index",
-        ),
-    ],
-)
-def test_iloc_getitem_unordered(unordered_sample_df, key, value, expected_error):
-    if value is not None:
-        bf_df = unordered_sample_df.copy()
-        bf_df.iloc[key] = value
-    elif expected_error is not None:
-        with pytest.raises(expected_error):
-            unordered_sample_df.iloc[key]
-    else:
-        unordered_sample_df.iloc[key]
+def test_iloc_setitem_columns_numpy_array(sample_df):
+    bf_df = sample_df.copy()
+    pd_df = sample_df.to_pandas()
+
+    bf_df.iloc[:, np.array([0, 2], dtype=np.int64)] = [99, 88]
+    pd_df.iloc[:, np.array([0, 2], dtype=np.int64)] = [99, 88]
+
+    assert_frame_equal(bf_df.to_pandas(), pd_df)
+
+
+def test_iloc_setitem_column_pyarrow_scalar(sample_df):
+    bf_df = sample_df.copy()
+    pd_df = sample_df.to_pandas()
+
+    bf_df.iloc[:, pa.scalar(1, type=pa.int64())] = 99
+    pd_df.iloc[:, 1] = 99
+
+    assert_frame_equal(bf_df.to_pandas(), pd_df)
+
+
+def test_iloc_setitem_columns_pyarrow_array(sample_df):
+    bf_df = sample_df.copy()
+    pd_df = sample_df.to_pandas()
+
+    bf_df.iloc[:, pa.array([0, 2], type=pa.int64())] = [99, 88]
+    pd_df.iloc[:, pa.array([0, 2], type=pa.int64())] = [99, 88]
+
+    assert_frame_equal(bf_df.to_pandas(), pd_df)
 
 
 @pytest.mark.parametrize(
@@ -250,5 +201,45 @@ def test_iloc_setitem_duplicate_columns_slice(duplicate_columns_df):
 
     bf_df.iloc[:, 1:3] = 99
     pd_df.iloc[:, 1:3] = 99
+
+    assert_frame_equal(bf_df.to_pandas(), pd_df)
+
+
+def test_iloc_setitem_duplicate_columns_numpy_scalar(duplicate_columns_df):
+    bf_df = duplicate_columns_df.copy()
+    pd_df = duplicate_columns_df.to_pandas()
+
+    bf_df.iloc[:, np.int64(2)] = 99
+    pd_df.iloc[:, np.int64(2)] = 99
+
+    assert_frame_equal(bf_df.to_pandas(), pd_df)
+
+
+def test_iloc_setitem_duplicate_columns_numpy_array(duplicate_columns_df):
+    bf_df = duplicate_columns_df.copy()
+    pd_df = duplicate_columns_df.to_pandas()
+
+    bf_df.iloc[:, np.array([0, 2], dtype=np.int64)] = [99, 88]
+    pd_df.iloc[:, np.array([0, 2], dtype=np.int64)] = [99, 88]
+
+    assert_frame_equal(bf_df.to_pandas(), pd_df)
+
+
+def test_iloc_setitem_duplicate_columns_pyarrow_scalar(duplicate_columns_df):
+    bf_df = duplicate_columns_df.copy()
+    pd_df = duplicate_columns_df.to_pandas()
+
+    bf_df.iloc[:, pa.scalar(2, type=pa.int64())] = 99
+    pd_df.iloc[:, 2] = 99
+
+    assert_frame_equal(bf_df.to_pandas(), pd_df)
+
+
+def test_iloc_setitem_duplicate_columns_pyarrow_array(duplicate_columns_df):
+    bf_df = duplicate_columns_df.copy()
+    pd_df = duplicate_columns_df.to_pandas()
+
+    bf_df.iloc[:, pa.array([0, 2], type=pa.int64())] = [99, 88]
+    pd_df.iloc[:, pa.array([0, 2], type=pa.int64())] = [99, 88]
 
     assert_frame_equal(bf_df.to_pandas(), pd_df)

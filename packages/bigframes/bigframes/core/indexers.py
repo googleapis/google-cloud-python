@@ -121,9 +121,9 @@ class IatSeriesIndexer:
         self._series = series
 
     def __getitem__(self, key: int) -> bigframes.core.scalar.Scalar:
-        if not isinstance(key, int):
+        if not _is_integer_scalar(key):
             raise ValueError("Series iAt based indexing can only have integer indexers")
-        return self._series.iloc[key]
+        return self._series.iloc[_to_python_int(key)]
 
 
 class AtSeriesIndexer:
@@ -291,19 +291,21 @@ class IatDataFrameIndexer:
     def __getitem__(self, key: tuple) -> bigframes.core.scalar.Scalar:
         error_message = "DataFrame.iat should be indexed by a tuple of exactly 2 ints"
         # we raise TypeError or ValueError under the same conditions that pandas does
-        if isinstance(key, int):
+        if _is_integer_scalar(key):
             raise TypeError(error_message)
         if not isinstance(key, tuple):
             raise ValueError(error_message)
-        key_values_are_ints = [isinstance(key_value, int) for key_value in key]
+        key_values_are_ints = [_is_integer_scalar(key_value) for key_value in key]
         if not all(key_values_are_ints):
             raise ValueError(error_message)
         if len(key) != 2:
             raise TypeError(error_message)
+        row_idx = _to_python_int(key[0])
+        col_idx = _to_python_int(key[1])
         block: bigframes.core.blocks.Block = self._dataframe._block
-        column_block = block.select_columns([block.value_columns[key[1]]])
+        column_block = block.select_columns([block.value_columns[col_idx]])
         column = bigframes.series.Series(column_block)
-        return column.iloc[key[0]]
+        return column.iloc[row_idx]
 
 
 class AtDataFrameIndexer:
@@ -475,27 +477,70 @@ def _struct_accessor_check_and_warn(
         warnings.warn(msg, stacklevel=7, category=bfe.BadIndexerKeyWarning)
 
 
-def _iloc_clip_to_offset(index: int, length: int, name: str) -> int:
+def _to_python_int(value: Any) -> int:
+    if isinstance(value, pa.Scalar):
+        return int(value.as_py())
+    return int(value)
+
+
+def _iloc_clip_to_offset(index: Any, length: int, name: str) -> int:
     """Support negative values for offsets."""
-    offset = index
+    if not _is_integer_scalar(index):
+        raise TypeError(f"got unexpected {type(index)} for {name}")
+    offset = _to_python_int(index)
     if offset < 0:
         offset += length
 
     if offset < 0 or offset >= length:
         raise IndexError(f"{name} {index} is out-of-bounds")
 
-    return index
+    return offset
 
 
 def _is_integer_scalar(value: Any) -> bool:
     return not (
         isinstance(value, bool)
         or isinstance(value, np.bool_)
-        or (isinstance(value, pa.Scalar) and pyarrow.types.is_boolean(value))
+        or (isinstance(value, pa.Scalar) and pyarrow.types.is_boolean(value.type))
     ) and (
         isinstance(value, numbers.Integral)
-        or (isinstance(value, pa.Scalar) and pyarrow.types.is_integer(value))
+        or (isinstance(value, pa.Scalar) and pyarrow.types.is_integer(value.type))
     )
+
+
+def _is_boolean_scalar(value: Any) -> bool:
+    return (
+        isinstance(value, bool)
+        or isinstance(value, np.bool_)
+        or (isinstance(value, pa.Scalar) and pyarrow.types.is_boolean(value.type))
+    )
+
+
+def _truth_val(value: Any) -> bool:
+    if value is None or value is pd.NA or pd.isna(value):
+        return False
+    if isinstance(value, pa.Scalar):
+        return bool(value.as_py()) if value.is_valid else False
+    return bool(value)
+
+
+def _is_boolean_indexer(indexer: Any) -> bool:
+    if hasattr(indexer, "dtype") and pd.api.types.is_bool_dtype(indexer.dtype):
+        return True
+    if hasattr(indexer, "type") and isinstance(indexer.type, pa.DataType) and pyarrow.types.is_boolean(indexer.type):
+        return True
+    if pd.api.types.is_list_like(indexer):
+        lst = (
+            list(indexer)
+            if not isinstance(indexer, (bigframes.series.Series, indexes.Index))
+            else list(indexer.to_pandas())
+        )
+        if len(lst) > 0 and all(
+            _is_boolean_scalar(x) or (x is None) or (x is pd.NA) or pd.isna(x)
+            for x in lst
+        ):
+            return any(_is_boolean_scalar(x) for x in lst)
+    return False
 
 
 def _iloc_col_indexer_to_offsets(
@@ -505,7 +550,7 @@ def _iloc_col_indexer_to_offsets(
     n_cols = len(df.columns)
 
     if _is_integer_scalar(col_indexer):
-        col_offset = int(col_indexer)
+        col_offset = _to_python_int(col_indexer)
         return [
             _iloc_clip_to_offset(
                 col_offset, n_cols, "single positional iloc column indexer"
@@ -515,22 +560,20 @@ def _iloc_col_indexer_to_offsets(
     elif isinstance(col_indexer, slice):
         return list(range(*col_indexer.indices(n_cols)))
 
+    elif _is_boolean_indexer(col_indexer):
+        col_indexer_list = list(col_indexer)
+        if len(col_indexer_list) != n_cols:
+            raise ValueError(
+                f"Boolean iloc column indexer has wrong length: {len(col_indexer_list)} instead of {n_cols}"
+            )
+        return [i for i, val in enumerate(col_indexer_list) if _truth_val(val)]
+
     elif pd.api.types.is_list_like(col_indexer):
         col_indexer_list = list(col_indexer)
-
-        if len(col_indexer_list) > 0 and all(
-            isinstance(x, bool) for x in col_indexer_list
-        ):
-            if len(col_indexer_list) != n_cols:
-                raise ValueError(
-                    f"Boolean iloc column indexer has wrong length: {len(col_indexer_list)} instead of {n_cols}"
-                )
-            return [i for i, val in enumerate(col_indexer_list) if val]
-        else:
-            return [
-                _iloc_clip_to_offset(idx, n_cols, "iloc column indexer")
-                for idx in col_indexer_list
-            ]
+        return [
+            _iloc_clip_to_offset(idx, n_cols, "iloc column indexer")
+            for idx in col_indexer_list
+        ]
 
     raise TypeError(f"got unexpected {type(col_indexer)} for iloc column indexer")
 
@@ -564,9 +607,10 @@ def _iloc_getitem_series_or_dataframe(
     bigframes.core.scalar.Scalar,
     pd.Series,
 ]:
-    if isinstance(key, int):
-        stop_key = key + 1 if key != -1 else None
-        internal_slice_result = series_or_dataframe._slice(key, stop_key, 1)
+    if _is_integer_scalar(key):
+        key_int = _to_python_int(key)
+        stop_key = key_int + 1 if key_int != -1 else None
+        internal_slice_result = series_or_dataframe._slice(key_int, stop_key, 1)
         result_pd_df = internal_slice_result.to_pandas()
         if result_pd_df.empty:
             raise IndexError("single positional indexer is out-of-bounds")
@@ -587,7 +631,7 @@ def _iloc_getitem_series_or_dataframe(
 
         # len(key) == 2
         df = typing.cast(bigframes.dataframe.DataFrame, series_or_dataframe)
-        if isinstance(key[0], int) and isinstance(key[1], int):
+        if _is_integer_scalar(key[0]) and _is_integer_scalar(key[1]):
             return df.iat[key]
 
         row_indexer, column_indexer = key
@@ -609,6 +653,26 @@ def _iloc_getitem_series_or_dataframe(
                 Union[bigframes.dataframe.DataFrame, bigframes.series.Series],
                 series_or_dataframe.iloc[0:0],
             )
+
+        if _is_boolean_indexer(key):
+            key_list = (
+                list(key)
+                if not isinstance(key, (bigframes.series.Series, indexes.Index))
+                else list(key.to_pandas())
+            )
+            n_rows = len(series_or_dataframe)
+            if len(key_list) != n_rows:
+                raise IndexError(
+                    f"Boolean index has wrong length: {len(key_list)} instead of {n_rows}"
+                )
+            key = [i for i, val in enumerate(key_list) if _truth_val(val)]
+            if len(key) == 0:
+                return typing.cast(
+                    Union[bigframes.dataframe.DataFrame, bigframes.series.Series],
+                    series_or_dataframe.iloc[0:0],
+                )
+        else:
+            key = [_to_python_int(k) for k in list(key)]
 
         # Check if both positive index and negative index are necessary
         if isinstance(key, (bigframes.series.Series, indexes.Index)):
