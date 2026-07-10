@@ -527,7 +527,11 @@ def _truth_val(value: Any) -> bool:
 def _is_boolean_indexer(indexer: Any) -> bool:
     if hasattr(indexer, "dtype") and pd.api.types.is_bool_dtype(indexer.dtype):
         return True
-    if hasattr(indexer, "type") and isinstance(indexer.type, pa.DataType) and pyarrow.types.is_boolean(indexer.type):
+    if (
+        hasattr(indexer, "type")
+        and isinstance(indexer.type, pa.DataType)
+        and pyarrow.types.is_boolean(indexer.type)
+    ):
         return True
     if pd.api.types.is_list_like(indexer):
         lst = (

@@ -21,7 +21,7 @@ import pytest
 
 import bigframes
 import bigframes.pandas as bpd
-from bigframes.testing.utils import assert_frame_equal, assert_series_equal
+from bigframes.testing.utils import assert_frame_equal
 
 pytest.importorskip("polars")
 
