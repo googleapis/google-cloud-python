@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - preview
+      - test-lazy-modules-base
   # Trigger workflow on GitHub merge queue events
   merge_group:
     types: [checks_requested]
