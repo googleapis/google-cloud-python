@@ -457,6 +457,11 @@ class AuthorizedSession(requests.Session):
                 If the callback is None, application default SSL credentials
                 will be used.
 
+        .. warning::
+            Calling this method mutates the underlying `requests.Session` adapter
+            dictionary. It is not thread-safe to call this explicitly while other
+            threads are making requests.
+
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If mutual TLS channel
                 creation failed for any reason. The existing session state (such
@@ -488,7 +493,27 @@ class AuthorizedSession(requests.Session):
             new_exc = exceptions.MutualTLSChannelError(caught_exc)
             raise new_exc from caught_exc
 
+        try:
+            old_adapter = self.get_adapter("https://")
+        except requests.exceptions.InvalidSchema:
+            old_adapter = None
+
+        if old_adapter is not None and old_adapter is not new_adapter:
+            old_adapter.close()
+
         self.mount("https://", new_adapter)
+
+        if self._auth_request_session is not None:
+            try:
+                old_auth_adapter = self._auth_request_session.get_adapter("https://")
+            except requests.exceptions.InvalidSchema:
+                old_auth_adapter = None
+
+            if old_auth_adapter is not None and old_auth_adapter is not new_adapter:
+                old_auth_adapter.close()
+
+            self._auth_request_session.mount("https://", new_adapter)
+
         self._is_mtls = is_mtls
         if is_mtls:
             self._cached_cert = cert
