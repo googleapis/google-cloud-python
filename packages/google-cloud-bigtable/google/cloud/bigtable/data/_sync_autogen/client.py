@@ -44,6 +44,13 @@ from google.protobuf.internal.enum_type_wrapper import EnumTypeWrapper
 from google.protobuf.message import Message
 from grpc import Channel, insecure_channel, intercept_channel
 
+from google.cloud.bigtable.data._accelerator._daemon import AcceleratorDaemon
+from google.cloud.bigtable.data._accelerator._fallback import (
+    AcceleratorBreaker,
+    _AcceleratorFallback,
+    handle_accelerator_error,
+)
+from google.cloud.bigtable.data._accelerator._routing import is_supported
 from google.cloud.bigtable.data._cross_sync import CrossSync
 from google.cloud.bigtable.data._helpers import (
     _CONCURRENCY_LIMIT,
@@ -69,6 +76,9 @@ from google.cloud.bigtable.data._metrics.handlers.gcp_exporter import (
     GoogleCloudMetricsHandler,
 )
 from google.cloud.bigtable.data._metrics.tracked_retry import tracked_retry
+from google.cloud.bigtable.data._sync_autogen._accelerator_client import (
+    _AcceleratorClient as AcceleratorClientType,
+)
 from google.cloud.bigtable.data._sync_autogen._swappable_channel import (
     SwappableChannel as SwappableChannelType,
 )
@@ -136,6 +146,7 @@ class BigtableDataClient(ClientWithProject):
         client_options: dict[str, Any]
         | "google.api_core.client_options.ClientOptions"
         | None = None,
+        use_accelerator: bool | None = None,
         **kwargs,
     ):
         """Create a client instance for the Bigtable Data API
@@ -154,10 +165,19 @@ class BigtableDataClient(ClientWithProject):
             client_options:
                 Client options used to set user options
                 on the client. API Endpoint should be set through client_options.
+            use_accelerator:
+                Whether to route supported RPCs through the in-process
+                accelerator daemon. Enabled by default. When the accelerator
+                cannot run — the emulator is set, or the daemon is unavailable
+                for this platform — it is automatically disabled (with a
+                warning) and the native client is used. Pass ``False`` to
+                disable it explicitly, or ``True`` to require it (which raises
+                if the emulator is set).
         Raises:
         """
         if "pool_size" in kwargs:
             warnings.warn("pool_size no longer supported")
+        self._use_accelerator = use_accelerator
         if kwargs.get("_client_info"):
             self.client_info = kwargs["_client_info"]
         else:
@@ -919,6 +939,69 @@ class _DataApiTarget(abc.ABC):
             raise RuntimeError(
                 f"{self.__class__.__name__} must be created within an async event loop context."
             ) from e
+        self._accelerator_daemon: AcceleratorDaemon | None = None
+        self._accelerator_client: AcceleratorClientType | None = None
+        self._accelerator_breaker = AcceleratorBreaker()
+        if self.client._use_accelerator is not False:
+            self._maybe_start_accelerator(explicit=self.client._use_accelerator is True)
+
+    def _maybe_start_accelerator(self, *, explicit: bool) -> None:
+        """Start the accelerator daemon unless the environment prevents it.
+
+        The accelerator is on by default, so it must never break callers when
+        it can't run. When the emulator is set, or the daemon fails to start
+        (e.g. the binary isn't bundled for this platform), fall back to the
+        native client and warn. The one hard error is an explicit
+        ``use_accelerator=True`` combined with the emulator, which is a genuine
+        misconfiguration."""
+        if self.client._emulator_host is not None:
+            if explicit:
+                raise RuntimeError(
+                    "use_accelerator=True is not supported when BIGTABLE_EMULATOR_HOST is set; unset the emulator, or pass use_accelerator=False to use the emulator."
+                )
+            warnings.warn(
+                "Accelerator disabled because BIGTABLE_EMULATOR_HOST is set; using the native client.",
+                RuntimeWarning,
+                stacklevel=2,
+            )
+            return
+        try:
+            self._start_accelerator()
+        except Exception as exc:
+            warnings.warn(
+                f"Failed to start the Bigtable accelerator daemon; falling back to the native client: {exc}",
+                RuntimeWarning,
+                stacklevel=2,
+            )
+            self._accelerator_daemon = None
+            self._accelerator_client = None
+
+    def _start_accelerator(self) -> None:
+        """Spawn the daemon for this Table and connect to its UDS.
+
+        On any failure the daemon is torn down before the error propagates."""
+        flags = ["--project", self.client.project, "--instance", self.instance_id]
+        if self.app_profile_id:
+            flags.extend(["--app-profile", self.app_profile_id])
+        server = AcceleratorDaemon(cli_flags=flags)
+        try:
+            server.start()
+            self._accelerator_client = AcceleratorClientType(server.uds_path)
+        except BaseException:
+            server.close()
+            raise
+        self._accelerator_daemon = server
+
+    def _use_accelerator(self, method_name: str) -> bool:
+        """Whether this call should be routed through the accelerator daemon.
+
+        False once the fallback breaker has tripped, so a daemon that has proven
+        unable to serve routed RPCs is skipped without another round trip."""
+        return (
+            self._accelerator_client is not None
+            and is_supported(method_name)
+            and (not self._accelerator_breaker.bypass())
+        )
 
     def _create_operation(
         self, op_type: OperationType, **kwargs
@@ -1044,6 +1127,42 @@ class _DataApiTarget(abc.ABC):
         )
         return [row for row in row_generator]
 
+    def _read_row_via_accelerator(self, query, operation_timeout, attempt_timeout):
+        """Drive a single ReadRows attempt through the accelerator daemon.
+
+        The daemon owns retry, so we run one attempt through the existing merger
+        machinery and skip start_operation/tracked_retry. The daemon also owns
+        metrics for accelerated RPCs, so the merger gets a handler-less metric:
+        it satisfies the merger's state machine but never exports anything here.
+
+        Raises ``_AcceleratorFallback`` if the caller should retry on the native
+        client; other gRPC errors are translated to ``google.api_core``
+        exceptions and raised."""
+        row_merger = CrossSync._Sync_Impl._ReadRowsOperation(
+            query,
+            self,
+            operation_timeout=operation_timeout,
+            attempt_timeout=attempt_timeout,
+            metric=ActiveOperationMetric(OperationType.READ_ROWS, is_streaming=False),
+            retryable_exceptions=(),
+        )
+        row_merger._operation_metric.start_attempt()
+        try:
+            stream = self._accelerator_client.read_rows(
+                row_merger.request, timeout=operation_timeout
+            )
+            chunked_stream = row_merger.chunk_stream(stream)
+            results = [a for a in row_merger.merge_rows(chunked_stream)]
+        except Exception as exc:
+            handle_accelerator_error(
+                exc, daemon=self._accelerator_daemon, breaker=self._accelerator_breaker
+            )
+            raise
+        try:
+            return results[0]
+        except IndexError:
+            return None
+
     def read_row(
         self,
         row_key: str | bytes,
@@ -1084,6 +1203,13 @@ class _DataApiTarget(abc.ABC):
         operation_timeout, attempt_timeout = _get_timeouts(
             operation_timeout, attempt_timeout, self
         )
+        if self._use_accelerator("read_row"):
+            try:
+                return self._read_row_via_accelerator(
+                    query, operation_timeout, attempt_timeout
+                )
+            except _AcceleratorFallback:
+                pass
         retryable_excs = _get_retryable_errors(retryable_errors, self)
         row_merger = CrossSync._Sync_Impl._ReadRowsOperation(
             query,
@@ -1350,6 +1476,25 @@ class _DataApiTarget(abc.ABC):
             batch_retryable_errors=batch_retryable_errors,
         )
 
+    def _mutate_row_via_accelerator(self, request, operation_timeout):
+        """Drive a single MutateRow attempt through the accelerator daemon.
+
+        The daemon owns retry and metrics for accelerated RPCs, so we skip
+        tracked_retry, the predicate, and operation-level metrics entirely.
+
+        Raises ``_AcceleratorFallback`` if the caller should retry on the native
+        client; other gRPC errors are translated to ``google.api_core``
+        exceptions and raised."""
+        try:
+            return self._accelerator_client.mutate_row(
+                request, timeout=operation_timeout
+            )
+        except Exception as exc:
+            handle_accelerator_error(
+                exc, daemon=self._accelerator_daemon, breaker=self._accelerator_breaker
+            )
+            raise
+
     def mutate_row(
         self,
         row_key: str | bytes,
@@ -1395,6 +1540,17 @@ class _DataApiTarget(abc.ABC):
         if not mutations:
             raise ValueError("No mutations provided")
         mutations_list = mutations if isinstance(mutations, list) else [mutations]
+        request = MutateRowRequest(
+            row_key=row_key.encode("utf-8") if isinstance(row_key, str) else row_key,
+            mutations=[mutation._to_pb() for mutation in mutations_list],
+            app_profile_id=self.app_profile_id,
+            **self._request_path,
+        )
+        if self._use_accelerator("mutate_row"):
+            try:
+                return self._mutate_row_via_accelerator(request, operation_timeout)
+            except _AcceleratorFallback:
+                pass
         if all((mutation.is_idempotent() for mutation in mutations_list)):
             predicate = retries.if_exception_type(
                 *_get_retryable_errors(retryable_errors, self)
@@ -1404,14 +1560,7 @@ class _DataApiTarget(abc.ABC):
         with self._create_operation(OperationType.MUTATE_ROW) as operation_metric:
             target = partial(
                 self.client._gapic_client.mutate_row,
-                request=MutateRowRequest(
-                    row_key=row_key.encode("utf-8")
-                    if isinstance(row_key, str)
-                    else row_key,
-                    mutations=[mutation._to_pb() for mutation in mutations_list],
-                    app_profile_id=self.app_profile_id,
-                    **self._request_path,
-                ),
+                request=request,
                 timeout=attempt_timeout,
                 retry=None,
             )
@@ -1602,6 +1751,16 @@ class _DataApiTarget(abc.ABC):
         self.client._remove_instance_registration(
             self.instance_id, self.app_profile_id, id(self)
         )
+        if self._accelerator_client is not None:
+            try:
+                self._accelerator_client.close()
+            finally:
+                self._accelerator_client = None
+        if self._accelerator_daemon is not None:
+            try:
+                self._accelerator_daemon.close()
+            finally:
+                self._accelerator_daemon = None
 
     def __enter__(self):
         """Implement async context manager protocol
