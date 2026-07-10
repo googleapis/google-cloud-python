@@ -24,7 +24,7 @@ import bigframes_vendored.ibis.common.exceptions as ibis_exceptions
 import numpy as np
 import pandas as pd
 import pyarrow as pa
-import pyarrow.types
+import pyarrow.types  # type: ignore
 
 import bigframes.core.blocks
 import bigframes.core.col
