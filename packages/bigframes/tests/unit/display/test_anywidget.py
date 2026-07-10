@@ -17,7 +17,6 @@ import unittest.mock as mock
 
 import pandas as pd
 import pyarrow as pa
-import pyarrow.compute
 import pytest
 
 import bigframes
@@ -196,7 +195,9 @@ def test_cell_execution_count_propagation(mock_df):
 
 def test_json_column_converted_to_string_for_display(polars_session):
     series = bigframes.series.Series(
-        ['{"a": 1}', '{"b": 2}'], dtype=bigframes.dtypes.JSON_DTYPE, session=polars_session
+        ['{"a": 1}', '{"b": 2}'],
+        dtype=bigframes.dtypes.JSON_DTYPE,
+        session=polars_session,
     )
     df = series.to_frame("col_json")
 
