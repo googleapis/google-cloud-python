@@ -342,93 +342,6 @@ class TestGetClientSslCredentials(object):
         assert passphrase is None
 
     @mock.patch(
-        "google.auth.transport._mtls_helper._read_cert_and_key_files", autospec=True
-    )
-    @mock.patch(
-        "google.auth.transport._mtls_helper._get_cert_config_path", autospec=True
-    )
-    @mock.patch("google.auth.transport._mtls_helper._load_json_file", autospec=True)
-    @mock.patch("google.auth.transport._mtls_helper._check_config_path", autospec=True)
-    def test_success_with_certificate_config_cloud_run_patch(
-        self,
-        mock_check_config_path,
-        mock_load_json_file,
-        mock_get_cert_config_path,
-        mock_read_cert_and_key_files,
-    ):
-        cert_config_path = "/path/to/config"
-        mock_check_config_path.return_value = cert_config_path
-        mock_load_json_file.return_value = {
-            "cert_configs": {
-                "workload": {
-                    "cert_path": _mtls_helper._INCORRECT_CLOUD_RUN_CERT_PATH,
-                    "key_path": _mtls_helper._INCORRECT_CLOUD_RUN_KEY_PATH,
-                }
-            }
-        }
-        mock_get_cert_config_path.return_value = cert_config_path
-        mock_read_cert_and_key_files.return_value = (
-            pytest.public_cert_bytes,
-            pytest.private_key_bytes,
-        )
-
-        has_cert, cert, key, passphrase = _mtls_helper.get_client_ssl_credentials()
-        assert has_cert
-        assert cert == pytest.public_cert_bytes
-        assert key == pytest.private_key_bytes
-        assert passphrase is None
-
-        mock_read_cert_and_key_files.assert_called_once_with(
-            _mtls_helper._WELL_KNOWN_CLOUD_RUN_CERT_PATH,
-            _mtls_helper._WELL_KNOWN_CLOUD_RUN_KEY_PATH,
-        )
-
-    @mock.patch("os.path.exists", autospec=True)
-    @mock.patch(
-        "google.auth.transport._mtls_helper._read_cert_and_key_files", autospec=True
-    )
-    @mock.patch(
-        "google.auth.transport._mtls_helper._get_cert_config_path", autospec=True
-    )
-    @mock.patch("google.auth.transport._mtls_helper._load_json_file", autospec=True)
-    @mock.patch("google.auth.transport._mtls_helper._check_config_path", autospec=True)
-    def test_success_with_certificate_config_cloud_run_patch_skipped_if_cert_exists(
-        self,
-        mock_check_config_path,
-        mock_load_json_file,
-        mock_get_cert_config_path,
-        mock_read_cert_and_key_files,
-        mock_os_path_exists,
-    ):
-        cert_config_path = "/path/to/config"
-        mock_check_config_path.return_value = cert_config_path
-        mock_os_path_exists.return_value = True
-        mock_load_json_file.return_value = {
-            "cert_configs": {
-                "workload": {
-                    "cert_path": _mtls_helper._INCORRECT_CLOUD_RUN_CERT_PATH,
-                    "key_path": _mtls_helper._INCORRECT_CLOUD_RUN_KEY_PATH,
-                }
-            }
-        }
-        mock_get_cert_config_path.return_value = cert_config_path
-        mock_read_cert_and_key_files.return_value = (
-            pytest.public_cert_bytes,
-            pytest.private_key_bytes,
-        )
-
-        has_cert, cert, key, passphrase = _mtls_helper.get_client_ssl_credentials()
-        assert has_cert
-        assert cert == pytest.public_cert_bytes
-        assert key == pytest.private_key_bytes
-        assert passphrase is None
-
-        mock_read_cert_and_key_files.assert_called_once_with(
-            _mtls_helper._INCORRECT_CLOUD_RUN_CERT_PATH,
-            _mtls_helper._INCORRECT_CLOUD_RUN_KEY_PATH,
-        )
-
-    @mock.patch(
         "google.auth.transport._mtls_helper._get_workload_cert_and_key", autospec=True
     )
     @mock.patch("google.auth.transport._mtls_helper._check_config_path", autospec=True)
@@ -848,7 +761,9 @@ class TestCheckUseClientCert(object):
             "CLOUDSDK_CONTEXT_AWARE_CERTIFICATE_CONFIG_FILE_PATH": "",
         },
     )
-    def test_config_file_success(self, mock_file):
+    @mock.patch("os.path.exists", autospec=True)
+    def test_config_file_success(self, mock_exists, mock_file):
+        mock_exists.return_value = True
         # We manually apply mock_open here so we can keep autospec=True on the decorator
         mock_file.side_effect = mock.mock_open(
             read_data='{"cert_configs": {"workload": "exists"}}'
@@ -865,7 +780,9 @@ class TestCheckUseClientCert(object):
             "CLOUDSDK_CONTEXT_AWARE_CERTIFICATE_CONFIG_FILE_PATH": "",
         },
     )
-    def test_config_file_missing_keys(self, mock_file):
+    @mock.patch("os.path.exists", autospec=True)
+    def test_config_file_missing_keys(self, mock_exists, mock_file):
+        mock_exists.return_value = True
         mock_file.side_effect = mock.mock_open(read_data='{"cert_configs": {}}')
         assert _mtls_helper.check_use_client_cert() is False
 
@@ -879,7 +796,9 @@ class TestCheckUseClientCert(object):
             "CLOUDSDK_CONTEXT_AWARE_CERTIFICATE_CONFIG_FILE_PATH": "",
         },
     )
-    def test_config_file_bad_json(self, mock_file):
+    @mock.patch("os.path.exists", autospec=True)
+    def test_config_file_bad_json(self, mock_exists, mock_file):
+        mock_exists.return_value = True
         mock_file.side_effect = mock.mock_open(read_data="{bad_json")
         assert _mtls_helper.check_use_client_cert() is False
 
@@ -893,12 +812,16 @@ class TestCheckUseClientCert(object):
             "CLOUDSDK_CONTEXT_AWARE_CERTIFICATE_CONFIG_FILE_PATH": "",
         },
     )
-    def test_config_file_not_found(self, mock_file):
+    @mock.patch("os.path.exists", autospec=True)
+    def test_config_file_not_found(self, mock_exists, mock_file):
+        mock_exists.return_value = True
         mock_file.side_effect = FileNotFoundError
         assert _mtls_helper.check_use_client_cert() is False
 
     @mock.patch.dict(os.environ, {}, clear=True)
-    def test_no_env_vars_set(self):
+    @mock.patch("os.path.exists", autospec=True)
+    def test_no_env_vars_set(self, mock_exists):
+        mock_exists.return_value = False
         assert _mtls_helper.check_use_client_cert() is False
 
     def test_use_client_cert_precedence(self):
@@ -941,7 +864,9 @@ class TestCheckUseClientCert(object):
             assert _mtls_helper.check_use_client_cert() is False
 
     @mock.patch("builtins.open", autospec=True)
-    def test_check_use_client_cert_config_fallback(self, mock_file):
+    @mock.patch("os.path.exists", autospec=True)
+    def test_check_use_client_cert_config_fallback(self, mock_exists, mock_file):
+        mock_exists.return_value = True
         # Test fallback for config file when determining if client cert should be used
         cloudsdk_path = "/path/to/cloudsdk/config"
 

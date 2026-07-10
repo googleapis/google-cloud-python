@@ -61,20 +61,6 @@ _PASSPHRASE_REGEX = re.compile(
     b"-----BEGIN PASSPHRASE-----(.+)-----END PASSPHRASE-----", re.DOTALL
 )
 
-# Temporary patch to accomodate incorrect cert config in Cloud Run prod environment.
-_WELL_KNOWN_CLOUD_RUN_CERT_PATH = (
-    "/var/run/secrets/workload-spiffe-credentials/certificates.pem"
-)
-_WELL_KNOWN_CLOUD_RUN_KEY_PATH = (
-    "/var/run/secrets/workload-spiffe-credentials/private_key.pem"
-)
-_INCORRECT_CLOUD_RUN_CERT_PATH = (
-    "/var/lib/volumes/certificate/workload-certificates/certificates.pem"
-)
-_INCORRECT_CLOUD_RUN_KEY_PATH = (
-    "/var/lib/volumes/certificate/workload-certificates/private_key.pem"
-)
-
 
 class _MemfdCreationError(OSError):
     """Raised when Linux in-memory virtual file creation (memfd) fails."""
@@ -489,25 +475,6 @@ def _get_workload_cert_and_key_paths(config_path, include_context_aware=True):
     cert_path = workload["cert_path"]
     key_path = workload["key_path"]
 
-    # == BEGIN Temporary Cloud Run PATCH ==
-    # See https://github.com/googleapis/google-auth-library-python/issues/1881
-    if (cert_path == _INCORRECT_CLOUD_RUN_CERT_PATH) and (
-        key_path == _INCORRECT_CLOUD_RUN_KEY_PATH
-    ):
-        if not path.exists(cert_path) and not path.exists(key_path):
-            _LOGGER.debug(
-                "Applying Cloud Run certificate path patch. "
-                "Configured paths not found: %s, %s. "
-                "Using well-known paths: %s, %s",
-                cert_path,
-                key_path,
-                _WELL_KNOWN_CLOUD_RUN_CERT_PATH,
-                _WELL_KNOWN_CLOUD_RUN_KEY_PATH,
-            )
-            cert_path = _WELL_KNOWN_CLOUD_RUN_CERT_PATH
-            key_path = _WELL_KNOWN_CLOUD_RUN_KEY_PATH
-    # == END Temporary Cloud Run PATCH ==
-
     return cert_path, key_path
 
 
@@ -768,10 +735,8 @@ def check_use_client_cert():
 
     # Auto-enablement checks (when GOOGLE_API_USE_CLIENT_CERTIFICATE is not set)
 
-    # Check if the value of GOOGLE_API_CERTIFICATE_CONFIG is set.
-    cert_path = getenv(environment_vars.GOOGLE_API_CERTIFICATE_CONFIG) or getenv(
-        environment_vars.CLOUDSDK_CONTEXT_AWARE_CERTIFICATE_CONFIG_FILE_PATH
-    )
+    # Check if a workload config file exists.
+    cert_path = _get_cert_config_path(include_context_aware=True)
 
     if cert_path:
         try:

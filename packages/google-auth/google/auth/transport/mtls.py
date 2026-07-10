@@ -24,7 +24,6 @@ from google.auth import environment_vars
 from google.auth import exceptions
 from google.auth.transport import _mtls_helper
 
-
 _LOGGER = logging.getLogger(__name__)
 
 
@@ -45,24 +44,17 @@ def has_default_client_cert_source(include_context_aware=True):
         bool: indicating if the default client cert source exists.
     """
     if (
+        _mtls_helper._get_cert_config_path(include_context_aware=include_context_aware)
+        is not None
+    ):
+        return True
+    if (
         include_context_aware
         and _mtls_helper._check_config_path(_mtls_helper.CONTEXT_AWARE_METADATA_PATH)
         is not None
     ):
         return True
-    if (
-        _mtls_helper._check_config_path(
-            _mtls_helper.CERTIFICATE_CONFIGURATION_DEFAULT_PATH
-        )
-        is not None
-    ):
-        return True
-    cert_config_path = getenv("GOOGLE_API_CERTIFICATE_CONFIG")
-    if (
-        cert_config_path
-        and _mtls_helper._check_config_path(cert_config_path) is not None
-    ):
-        return True
+
     return False
 
 
