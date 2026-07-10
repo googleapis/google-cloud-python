@@ -1880,12 +1880,12 @@ class MaliciousUriFilterResult(proto.Message):
         number=3,
         enum="FilterMatchState",
     )
-    malicious_uri_matched_items: MutableSequence[MaliciousUriMatchedItem] = (
-        proto.RepeatedField(
-            proto.MESSAGE,
-            number=4,
-            message=MaliciousUriMatchedItem,
-        )
+    malicious_uri_matched_items: MutableSequence[
+        MaliciousUriMatchedItem
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=4,
+        message=MaliciousUriMatchedItem,
     )
 
 

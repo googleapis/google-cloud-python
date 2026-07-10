@@ -281,7 +281,9 @@ class SystemPolicyV1RestTransport(_BaseSystemPolicyV1RestTransport):
 
             """
 
-            http_options = _BaseSystemPolicyV1RestTransport._BaseGetSystemPolicy._get_http_options()
+            http_options = (
+                _BaseSystemPolicyV1RestTransport._BaseGetSystemPolicy._get_http_options()
+            )
 
             request, metadata = self._interceptor.pre_get_system_policy(
                 request, metadata

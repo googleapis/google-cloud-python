@@ -2172,7 +2172,9 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
                     BackupCollection of an instance.
             """
 
-            http_options = _BaseMemorystoreRestTransport._BaseGetBackupCollection._get_http_options()
+            http_options = (
+                _BaseMemorystoreRestTransport._BaseGetBackupCollection._get_http_options()
+            )
 
             request, metadata = self._interceptor.pre_get_backup_collection(
                 request, metadata
@@ -2318,7 +2320,9 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
 
             """
 
-            http_options = _BaseMemorystoreRestTransport._BaseGetCertificateAuthority._get_http_options()
+            http_options = (
+                _BaseMemorystoreRestTransport._BaseGetCertificateAuthority._get_http_options()
+            )
 
             request, metadata = self._interceptor.pre_get_certificate_authority(
                 request, metadata
@@ -2619,12 +2623,15 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
 
             """
 
-            http_options = _BaseMemorystoreRestTransport._BaseGetSharedRegionalCertificateAuthority._get_http_options()
+            http_options = (
+                _BaseMemorystoreRestTransport._BaseGetSharedRegionalCertificateAuthority._get_http_options()
+            )
 
-            request, metadata = (
-                self._interceptor.pre_get_shared_regional_certificate_authority(
-                    request, metadata
-                )
+            (
+                request,
+                metadata,
+            ) = self._interceptor.pre_get_shared_regional_certificate_authority(
+                request, metadata
             )
             transcoded_request = _BaseMemorystoreRestTransport._BaseGetSharedRegionalCertificateAuthority._get_transcoded_request(
                 http_options, request
@@ -2687,10 +2694,11 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
                 resp
             )
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = (
-                self._interceptor.post_get_shared_regional_certificate_authority_with_metadata(
-                    resp, response_metadata
-                )
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_get_shared_regional_certificate_authority_with_metadata(
+                resp, response_metadata
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -2771,7 +2779,9 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
                     Response for [ListBackupCollections].
             """
 
-            http_options = _BaseMemorystoreRestTransport._BaseListBackupCollections._get_http_options()
+            http_options = (
+                _BaseMemorystoreRestTransport._BaseListBackupCollections._get_http_options()
+            )
 
             request, metadata = self._interceptor.pre_list_backup_collections(
                 request, metadata
@@ -3218,7 +3228,9 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
 
             """
 
-            http_options = _BaseMemorystoreRestTransport._BaseRescheduleMaintenance._get_http_options()
+            http_options = (
+                _BaseMemorystoreRestTransport._BaseRescheduleMaintenance._get_http_options()
+            )
 
             request, metadata = self._interceptor.pre_reschedule_maintenance(
                 request, metadata

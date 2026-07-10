@@ -1017,7 +1017,8 @@ def remote_function_op_impl(*values: ibis_types.Value, op: ops.RemoteFunctionOp)
         signature=ibis_py_sig,
         param_name_overrides=arg_names,
     )
-    def udf(*inputs): ...
+    def udf(*inputs):
+        ...
 
     return udf(*values)
 

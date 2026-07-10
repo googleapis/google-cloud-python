@@ -720,12 +720,12 @@ class Instance(proto.Message):
         number=20,
         message="PscAutoConnection",
     )
-    psc_attachment_details: MutableSequence["PscAttachmentDetail"] = (
-        proto.RepeatedField(
-            proto.MESSAGE,
-            number=21,
-            message="PscAttachmentDetail",
-        )
+    psc_attachment_details: MutableSequence[
+        "PscAttachmentDetail"
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=21,
+        message="PscAttachmentDetail",
     )
     endpoints: MutableSequence[InstanceEndpoint] = proto.RepeatedField(
         proto.MESSAGE,
@@ -1339,12 +1339,12 @@ class MaintenancePolicy(proto.Message):
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    weekly_maintenance_window: MutableSequence["WeeklyMaintenanceWindow"] = (
-        proto.RepeatedField(
-            proto.MESSAGE,
-            number=3,
-            message="WeeklyMaintenanceWindow",
-        )
+    weekly_maintenance_window: MutableSequence[
+        "WeeklyMaintenanceWindow"
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message="WeeklyMaintenanceWindow",
     )
 
 

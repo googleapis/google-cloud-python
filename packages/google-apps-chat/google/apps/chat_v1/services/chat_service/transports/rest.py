@@ -2440,7 +2440,9 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
 
             """
 
-            http_options = _BaseChatServiceRestTransport._BaseCompleteImportSpace._get_http_options()
+            http_options = (
+                _BaseChatServiceRestTransport._BaseCompleteImportSpace._get_http_options()
+            )
 
             request, metadata = self._interceptor.pre_complete_import_space(
                 request, metadata
@@ -5437,7 +5439,9 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
 
             """
 
-            http_options = _BaseChatServiceRestTransport._BaseGetSpaceNotificationSetting._get_http_options()
+            http_options = (
+                _BaseChatServiceRestTransport._BaseGetSpaceNotificationSetting._get_http_options()
+            )
 
             request, metadata = self._interceptor.pre_get_space_notification_setting(
                 request, metadata
@@ -5503,10 +5507,11 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
 
             resp = self._interceptor.post_get_space_notification_setting(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = (
-                self._interceptor.post_get_space_notification_setting_with_metadata(
-                    resp, response_metadata
-                )
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_get_space_notification_setting_with_metadata(
+                resp, response_metadata
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -5743,7 +5748,9 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
 
             """
 
-            http_options = _BaseChatServiceRestTransport._BaseGetThreadReadState._get_http_options()
+            http_options = (
+                _BaseChatServiceRestTransport._BaseGetThreadReadState._get_http_options()
+            )
 
             request, metadata = self._interceptor.pre_get_thread_read_state(
                 request, metadata
@@ -8364,7 +8371,9 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
 
             """
 
-            http_options = _BaseChatServiceRestTransport._BaseUpdateSpaceNotificationSetting._get_http_options()
+            http_options = (
+                _BaseChatServiceRestTransport._BaseUpdateSpaceNotificationSetting._get_http_options()
+            )
 
             request, metadata = self._interceptor.pre_update_space_notification_setting(
                 request, metadata
@@ -8435,10 +8444,11 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
 
             resp = self._interceptor.post_update_space_notification_setting(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = (
-                self._interceptor.post_update_space_notification_setting_with_metadata(
-                    resp, response_metadata
-                )
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_update_space_notification_setting_with_metadata(
+                resp, response_metadata
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -8526,7 +8536,9 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
 
             """
 
-            http_options = _BaseChatServiceRestTransport._BaseUpdateSpaceReadState._get_http_options()
+            http_options = (
+                _BaseChatServiceRestTransport._BaseUpdateSpaceReadState._get_http_options()
+            )
 
             request, metadata = self._interceptor.pre_update_space_read_state(
                 request, metadata

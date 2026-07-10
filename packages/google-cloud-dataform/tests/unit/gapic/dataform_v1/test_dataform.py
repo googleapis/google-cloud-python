@@ -945,9 +945,10 @@ def test_dataform_client_get_mtls_endpoint_and_cert_source(client_class):
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        api_endpoint, cert_source = (
-                            client_class.get_mtls_endpoint_and_cert_source(options)
-                        )
+                        (
+                            api_endpoint,
+                            cert_source,
+                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -992,9 +993,10 @@ def test_dataform_client_get_mtls_endpoint_and_cert_source(client_class):
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        api_endpoint, cert_source = (
-                            client_class.get_mtls_endpoint_and_cert_source(options)
-                        )
+                        (
+                            api_endpoint,
+                            cert_source,
+                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1030,9 +1032,10 @@ def test_dataform_client_get_mtls_endpoint_and_cert_source(client_class):
                 "google.auth.transport.mtls.default_client_cert_source",
                 return_value=mock_client_cert_source,
             ):
-                api_endpoint, cert_source = (
-                    client_class.get_mtls_endpoint_and_cert_source()
-                )
+                (
+                    api_endpoint,
+                    cert_source,
+                ) = client_class.get_mtls_endpoint_and_cert_source()
                 assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
                 assert cert_source == mock_client_cert_source
 
@@ -1718,9 +1721,9 @@ def test_create_team_folder_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.create_team_folder] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.create_team_folder
+        ] = mock_rpc
         request = {}
         client.create_team_folder(request)
 
@@ -2074,9 +2077,9 @@ def test_update_team_folder_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.update_team_folder] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.update_team_folder
+        ] = mock_rpc
         request = {}
         client.update_team_folder(request)
 
@@ -2425,9 +2428,9 @@ def test_delete_team_folder_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.delete_team_folder] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.delete_team_folder
+        ] = mock_rpc
         request = {}
         client.delete_team_folder(request)
 
@@ -3684,9 +3687,9 @@ def test_search_team_folders_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.search_team_folders] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.search_team_folders
+        ] = mock_rpc
         request = {}
         client.search_team_folders(request)
 
@@ -5487,9 +5490,9 @@ def test_delete_folder_tree_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.delete_folder_tree] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.delete_folder_tree
+        ] = mock_rpc
         request = {}
         client.delete_folder_tree(request)
 
@@ -5853,9 +5856,9 @@ def test_query_folder_contents_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.query_folder_contents] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.query_folder_contents
+        ] = mock_rpc
         request = {}
         client.query_folder_contents(request)
 
@@ -7304,9 +7307,9 @@ def test_list_repositories_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.list_repositories] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.list_repositories
+        ] = mock_rpc
         request = {}
         client.list_repositories(request)
 
@@ -8223,9 +8226,9 @@ def test_create_repository_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.create_repository] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.create_repository
+        ] = mock_rpc
         request = {}
         client.create_repository(request)
 
@@ -8613,9 +8616,9 @@ def test_update_repository_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.update_repository] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.update_repository
+        ] = mock_rpc
         request = {}
         client.update_repository(request)
 
@@ -8975,9 +8978,9 @@ def test_delete_repository_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.delete_repository] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.delete_repository
+        ] = mock_rpc
         request = {}
         client.delete_repository(request)
 
@@ -9913,9 +9916,9 @@ def test_read_repository_file_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.read_repository_file] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.read_repository_file
+        ] = mock_rpc
         request = {}
         client.read_repository_file(request)
 
@@ -11365,9 +11368,9 @@ def test_fetch_remote_branches_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.fetch_remote_branches] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.fetch_remote_branches
+        ] = mock_rpc
         request = {}
         client.fetch_remote_branches(request)
 
@@ -12475,9 +12478,9 @@ def test_create_workspace_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.create_workspace] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.create_workspace
+        ] = mock_rpc
         request = {}
         client.create_workspace(request)
 
@@ -12818,9 +12821,9 @@ def test_delete_workspace_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.delete_workspace] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.delete_workspace
+        ] = mock_rpc
         request = {}
         client.delete_workspace(request)
 
@@ -13138,9 +13141,9 @@ def test_install_npm_packages_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.install_npm_packages] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.install_npm_packages
+        ] = mock_rpc
         request = {}
         client.install_npm_packages(request)
 
@@ -13386,9 +13389,9 @@ def test_pull_git_commits_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.pull_git_commits] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.pull_git_commits
+        ] = mock_rpc
         request = {}
         client.pull_git_commits(request)
 
@@ -13626,9 +13629,9 @@ def test_push_git_commits_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.push_git_commits] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.push_git_commits
+        ] = mock_rpc
         request = {}
         client.push_git_commits(request)
 
@@ -14131,9 +14134,9 @@ def test_fetch_git_ahead_behind_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.fetch_git_ahead_behind] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.fetch_git_ahead_behind
+        ] = mock_rpc
         request = {}
         client.fetch_git_ahead_behind(request)
 
@@ -16273,9 +16276,9 @@ def test_remove_directory_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.remove_directory] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.remove_directory
+        ] = mock_rpc
         request = {}
         client.remove_directory(request)
 
@@ -17720,9 +17723,9 @@ def test_list_release_configs_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.list_release_configs] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.list_release_configs
+        ] = mock_rpc
         request = {}
         client.list_release_configs(request)
 
@@ -18276,9 +18279,9 @@ def test_get_release_config_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.get_release_config] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.get_release_config
+        ] = mock_rpc
         request = {}
         client.get_release_config(request)
 
@@ -18645,9 +18648,9 @@ def test_create_release_config_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.create_release_config] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.create_release_config
+        ] = mock_rpc
         request = {}
         client.create_release_config(request)
 
@@ -19030,9 +19033,9 @@ def test_update_release_config_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.update_release_config] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.update_release_config
+        ] = mock_rpc
         request = {}
         client.update_release_config(request)
 
@@ -19394,9 +19397,9 @@ def test_delete_release_config_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.delete_release_config] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.delete_release_config
+        ] = mock_rpc
         request = {}
         client.delete_release_config(request)
 
@@ -20292,9 +20295,9 @@ def test_get_compilation_result_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.get_compilation_result] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.get_compilation_result
+        ] = mock_rpc
         request = {}
         client.get_compilation_result(request)
 
@@ -21488,9 +21491,9 @@ def test_list_workflow_configs_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.list_workflow_configs] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.list_workflow_configs
+        ] = mock_rpc
         request = {}
         client.list_workflow_configs(request)
 
@@ -22042,9 +22045,9 @@ def test_get_workflow_config_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.get_workflow_config] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.get_workflow_config
+        ] = mock_rpc
         request = {}
         client.get_workflow_config(request)
 
@@ -22407,9 +22410,9 @@ def test_create_workflow_config_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.create_workflow_config] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.create_workflow_config
+        ] = mock_rpc
         request = {}
         client.create_workflow_config(request)
 
@@ -22788,9 +22791,9 @@ def test_update_workflow_config_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.update_workflow_config] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.update_workflow_config
+        ] = mock_rpc
         request = {}
         client.update_workflow_config(request)
 
@@ -23150,9 +23153,9 @@ def test_delete_workflow_config_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.delete_workflow_config] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.delete_workflow_config
+        ] = mock_rpc
         request = {}
         client.delete_workflow_config(request)
 
@@ -27090,9 +27093,9 @@ def test_test_iam_permissions_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.test_iam_permissions] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.test_iam_permissions
+        ] = mock_rpc
         request = {}
         client.test_iam_permissions(request)
 
@@ -27478,9 +27481,9 @@ def test_create_team_folder_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.create_team_folder] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.create_team_folder
+        ] = mock_rpc
 
         request = {}
         client.create_team_folder(request)
@@ -27671,9 +27674,9 @@ def test_update_team_folder_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.update_team_folder] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.update_team_folder
+        ] = mock_rpc
 
         request = {}
         client.update_team_folder(request)
@@ -27857,9 +27860,9 @@ def test_delete_team_folder_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.delete_team_folder] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.delete_team_folder
+        ] = mock_rpc
 
         request = {}
         client.delete_team_folder(request)
@@ -28497,9 +28500,9 @@ def test_search_team_folders_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.search_team_folders] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.search_team_folders
+        ] = mock_rpc
 
         request = {}
         client.search_team_folders(request)
@@ -29415,9 +29418,9 @@ def test_delete_folder_tree_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.delete_folder_tree] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.delete_folder_tree
+        ] = mock_rpc
 
         request = {}
         client.delete_folder_tree(request)
@@ -29600,9 +29603,9 @@ def test_query_folder_contents_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.query_folder_contents] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.query_folder_contents
+        ] = mock_rpc
 
         request = {}
         client.query_folder_contents(request)
@@ -30315,9 +30318,9 @@ def test_list_repositories_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.list_repositories] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.list_repositories
+        ] = mock_rpc
 
         request = {}
         client.list_repositories(request)
@@ -30755,9 +30758,9 @@ def test_create_repository_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.create_repository] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.create_repository
+        ] = mock_rpc
 
         request = {}
         client.create_repository(request)
@@ -30964,9 +30967,9 @@ def test_update_repository_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.update_repository] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.update_repository
+        ] = mock_rpc
 
         request = {}
         client.update_repository(request)
@@ -31148,9 +31151,9 @@ def test_delete_repository_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.delete_repository] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.delete_repository
+        ] = mock_rpc
 
         request = {}
         client.delete_repository(request)
@@ -31645,9 +31648,9 @@ def test_read_repository_file_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.read_repository_file] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.read_repository_file
+        ] = mock_rpc
 
         request = {}
         client.read_repository_file(request)
@@ -32357,9 +32360,9 @@ def test_fetch_remote_branches_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.fetch_remote_branches] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.fetch_remote_branches
+        ] = mock_rpc
 
         request = {}
         client.fetch_remote_branches(request)
@@ -32919,9 +32922,9 @@ def test_create_workspace_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.create_workspace] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.create_workspace
+        ] = mock_rpc
 
         request = {}
         client.create_workspace(request)
@@ -33130,9 +33133,9 @@ def test_delete_workspace_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.delete_workspace] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.delete_workspace
+        ] = mock_rpc
 
         request = {}
         client.delete_workspace(request)
@@ -33309,9 +33312,9 @@ def test_install_npm_packages_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.install_npm_packages] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.install_npm_packages
+        ] = mock_rpc
 
         request = {}
         client.install_npm_packages(request)
@@ -33432,9 +33435,9 @@ def test_pull_git_commits_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.pull_git_commits] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.pull_git_commits
+        ] = mock_rpc
 
         request = {}
         client.pull_git_commits(request)
@@ -33563,9 +33566,9 @@ def test_push_git_commits_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.push_git_commits] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.push_git_commits
+        ] = mock_rpc
 
         request = {}
         client.push_git_commits(request)
@@ -33814,9 +33817,9 @@ def test_fetch_git_ahead_behind_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.fetch_git_ahead_behind] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.fetch_git_ahead_behind
+        ] = mock_rpc
 
         request = {}
         client.fetch_git_ahead_behind(request)
@@ -34881,9 +34884,9 @@ def test_remove_directory_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.remove_directory] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.remove_directory
+        ] = mock_rpc
 
         request = {}
         client.remove_directory(request)
@@ -35710,9 +35713,9 @@ def test_list_release_configs_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.list_release_configs] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.list_release_configs
+        ] = mock_rpc
 
         request = {}
         client.list_release_configs(request)
@@ -35974,9 +35977,9 @@ def test_get_release_config_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.get_release_config] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.get_release_config
+        ] = mock_rpc
 
         request = {}
         client.get_release_config(request)
@@ -36159,9 +36162,9 @@ def test_create_release_config_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.create_release_config] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.create_release_config
+        ] = mock_rpc
 
         request = {}
         client.create_release_config(request)
@@ -36373,9 +36376,9 @@ def test_update_release_config_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.update_release_config] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.update_release_config
+        ] = mock_rpc
 
         request = {}
         client.update_release_config(request)
@@ -36560,9 +36563,9 @@ def test_delete_release_config_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.delete_release_config] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.delete_release_config
+        ] = mock_rpc
 
         request = {}
         client.delete_release_config(request)
@@ -37009,9 +37012,9 @@ def test_get_compilation_result_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.get_compilation_result] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.get_compilation_result
+        ] = mock_rpc
 
         request = {}
         client.get_compilation_result(request)
@@ -37607,9 +37610,9 @@ def test_list_workflow_configs_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.list_workflow_configs] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.list_workflow_configs
+        ] = mock_rpc
 
         request = {}
         client.list_workflow_configs(request)
@@ -37871,9 +37874,9 @@ def test_get_workflow_config_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.get_workflow_config] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.get_workflow_config
+        ] = mock_rpc
 
         request = {}
         client.get_workflow_config(request)
@@ -38056,9 +38059,9 @@ def test_create_workflow_config_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.create_workflow_config] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.create_workflow_config
+        ] = mock_rpc
 
         request = {}
         client.create_workflow_config(request)
@@ -38270,9 +38273,9 @@ def test_update_workflow_config_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.update_workflow_config] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.update_workflow_config
+        ] = mock_rpc
 
         request = {}
         client.update_workflow_config(request)
@@ -38457,9 +38460,9 @@ def test_delete_workflow_config_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.delete_workflow_config] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.delete_workflow_config
+        ] = mock_rpc
 
         request = {}
         client.delete_workflow_config(request)
@@ -40465,9 +40468,9 @@ def test_test_iam_permissions_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.test_iam_permissions] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.test_iam_permissions
+        ] = mock_rpc
 
         request = {}
         client.test_iam_permissions(request)

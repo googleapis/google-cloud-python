@@ -979,9 +979,10 @@ def test_chat_service_client_get_mtls_endpoint_and_cert_source(client_class):
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        api_endpoint, cert_source = (
-                            client_class.get_mtls_endpoint_and_cert_source(options)
-                        )
+                        (
+                            api_endpoint,
+                            cert_source,
+                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1026,9 +1027,10 @@ def test_chat_service_client_get_mtls_endpoint_and_cert_source(client_class):
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        api_endpoint, cert_source = (
-                            client_class.get_mtls_endpoint_and_cert_source(options)
-                        )
+                        (
+                            api_endpoint,
+                            cert_source,
+                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1064,9 +1066,10 @@ def test_chat_service_client_get_mtls_endpoint_and_cert_source(client_class):
                 "google.auth.transport.mtls.default_client_cert_source",
                 return_value=mock_client_cert_source,
             ):
-                api_endpoint, cert_source = (
-                    client_class.get_mtls_endpoint_and_cert_source()
-                )
+                (
+                    api_endpoint,
+                    cert_source,
+                ) = client_class.get_mtls_endpoint_and_cert_source()
                 assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
                 assert cert_source == mock_client_cert_source
 
@@ -2342,9 +2345,9 @@ def test_list_memberships_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.list_memberships] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.list_memberships
+        ] = mock_rpc
         request = {}
         client.list_memberships(request)
 
@@ -4551,9 +4554,9 @@ def test_upload_attachment_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.upload_attachment] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.upload_attachment
+        ] = mock_rpc
         request = {}
         client.upload_attachment(request)
 
@@ -7166,9 +7169,9 @@ def test_complete_import_space_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.complete_import_space] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.complete_import_space
+        ] = mock_rpc
         request = {}
         client.complete_import_space(request)
 
@@ -7449,9 +7452,9 @@ def test_find_direct_message_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.find_direct_message] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.find_direct_message
+        ] = mock_rpc
         request = {}
         client.find_direct_message(request)
 
@@ -7661,9 +7664,9 @@ def test_find_group_chats_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.find_group_chats] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.find_group_chats
+        ] = mock_rpc
         request = {}
         client.find_group_chats(request)
 
@@ -8039,9 +8042,9 @@ def test_create_membership_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.create_membership] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.create_membership
+        ] = mock_rpc
         request = {}
         client.create_membership(request)
 
@@ -8393,9 +8396,9 @@ def test_update_membership_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.update_membership] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.update_membership
+        ] = mock_rpc
         request = {}
         client.update_membership(request)
 
@@ -8751,9 +8754,9 @@ def test_delete_membership_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.delete_membership] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.delete_membership
+        ] = mock_rpc
         request = {}
         client.delete_membership(request)
 
@@ -10263,9 +10266,9 @@ def test_create_custom_emoji_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.create_custom_emoji] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.create_custom_emoji
+        ] = mock_rpc
         request = {}
         client.create_custom_emoji(request)
 
@@ -10546,9 +10549,9 @@ def test_get_custom_emoji_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.get_custom_emoji] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.get_custom_emoji
+        ] = mock_rpc
         request = {}
         client.get_custom_emoji(request)
 
@@ -10886,9 +10889,9 @@ def test_list_custom_emojis_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.list_custom_emojis] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.list_custom_emojis
+        ] = mock_rpc
         request = {}
         client.list_custom_emojis(request)
 
@@ -11269,9 +11272,9 @@ def test_delete_custom_emoji_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.delete_custom_emoji] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.delete_custom_emoji
+        ] = mock_rpc
         request = {}
         client.delete_custom_emoji(request)
 
@@ -11602,9 +11605,9 @@ def test_get_space_read_state_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.get_space_read_state] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.get_space_read_state
+        ] = mock_rpc
         request = {}
         client.get_space_read_state(request)
 
@@ -12298,9 +12301,9 @@ def test_get_thread_read_state_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.get_thread_read_state] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.get_thread_read_state
+        ] = mock_rpc
         request = {}
         client.get_thread_read_state(request)
 
@@ -12972,9 +12975,9 @@ def test_list_space_events_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.list_space_events] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.list_space_events
+        ] = mock_rpc
         request = {}
         client.list_space_events(request)
 
@@ -15771,9 +15774,9 @@ def test_position_section_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.position_section] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.position_section
+        ] = mock_rpc
         request = {}
         client.position_section(request)
 
@@ -16022,9 +16025,9 @@ def test_list_section_items_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.list_section_items] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.list_section_items
+        ] = mock_rpc
         request = {}
         client.list_section_items(request)
 
@@ -16559,9 +16562,9 @@ def test_move_section_item_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.move_section_item] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.move_section_item
+        ] = mock_rpc
         request = {}
         client.move_section_item(request)
 
@@ -17300,9 +17303,9 @@ def test_list_memberships_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.list_memberships] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.list_memberships
+        ] = mock_rpc
 
         request = {}
         client.list_memberships(request)
@@ -18458,9 +18461,9 @@ def test_upload_attachment_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.upload_attachment] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.upload_attachment
+        ] = mock_rpc
 
         request = {}
         client.upload_attachment(request)
@@ -19725,9 +19728,9 @@ def test_complete_import_space_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.complete_import_space] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.complete_import_space
+        ] = mock_rpc
 
         request = {}
         client.complete_import_space(request)
@@ -19850,9 +19853,9 @@ def test_find_direct_message_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.find_direct_message] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.find_direct_message
+        ] = mock_rpc
 
         request = {}
         client.find_direct_message(request)
@@ -19983,9 +19986,9 @@ def test_find_group_chats_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.find_group_chats] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.find_group_chats
+        ] = mock_rpc
 
         request = {}
         client.find_group_chats(request)
@@ -20082,9 +20085,9 @@ def test_create_membership_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.create_membership] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.create_membership
+        ] = mock_rpc
 
         request = {}
         client.create_membership(request)
@@ -20273,9 +20276,9 @@ def test_update_membership_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.update_membership] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.update_membership
+        ] = mock_rpc
 
         request = {}
         client.update_membership(request)
@@ -20470,9 +20473,9 @@ def test_delete_membership_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.delete_membership] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.delete_membership
+        ] = mock_rpc
 
         request = {}
         client.delete_membership(request)
@@ -21267,9 +21270,9 @@ def test_create_custom_emoji_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.create_custom_emoji] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.create_custom_emoji
+        ] = mock_rpc
 
         request = {}
         client.create_custom_emoji(request)
@@ -21441,9 +21444,9 @@ def test_get_custom_emoji_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.get_custom_emoji] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.get_custom_emoji
+        ] = mock_rpc
 
         request = {}
         client.get_custom_emoji(request)
@@ -21621,9 +21624,9 @@ def test_list_custom_emojis_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.list_custom_emojis] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.list_custom_emojis
+        ] = mock_rpc
 
         request = {}
         client.list_custom_emojis(request)
@@ -21722,9 +21725,9 @@ def test_delete_custom_emoji_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.delete_custom_emoji] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.delete_custom_emoji
+        ] = mock_rpc
 
         request = {}
         client.delete_custom_emoji(request)
@@ -21897,9 +21900,9 @@ def test_get_space_read_state_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.get_space_read_state] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.get_space_read_state
+        ] = mock_rpc
 
         request = {}
         client.get_space_read_state(request)
@@ -22272,9 +22275,9 @@ def test_get_thread_read_state_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.get_thread_read_state] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.get_thread_read_state
+        ] = mock_rpc
 
         request = {}
         client.get_thread_read_state(request)
@@ -22630,9 +22633,9 @@ def test_list_space_events_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.list_space_events] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.list_space_events
+        ] = mock_rpc
 
         request = {}
         client.list_space_events(request)
@@ -24096,9 +24099,9 @@ def test_position_section_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.position_section] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.position_section
+        ] = mock_rpc
 
         request = {}
         client.position_section(request)
@@ -24221,9 +24224,9 @@ def test_list_section_items_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.list_section_items] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.list_section_items
+        ] = mock_rpc
 
         request = {}
         client.list_section_items(request)
@@ -24477,9 +24480,9 @@ def test_move_section_item_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.move_section_item] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.move_section_item
+        ] = mock_rpc
 
         request = {}
         client.move_section_item(request)

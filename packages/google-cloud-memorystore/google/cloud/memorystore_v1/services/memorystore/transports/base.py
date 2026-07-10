@@ -465,19 +465,13 @@ class MemorystoreTransport(abc.ABC):
     @property
     def cancel_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.CancelOperationRequest],
-        None,
-    ]:
+    ) -> Callable[[operations_pb2.CancelOperationRequest], None,]:
         raise NotImplementedError()
 
     @property
     def delete_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.DeleteOperationRequest],
-        None,
-    ]:
+    ) -> Callable[[operations_pb2.DeleteOperationRequest], None,]:
         raise NotImplementedError()
 
     @property

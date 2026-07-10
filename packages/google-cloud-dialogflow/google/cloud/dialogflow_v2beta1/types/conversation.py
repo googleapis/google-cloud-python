@@ -798,13 +798,13 @@ class IngestContextReferencesRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    context_references: MutableMapping[str, "Conversation.ContextReference"] = (
-        proto.MapField(
-            proto.STRING,
-            proto.MESSAGE,
-            number=2,
-            message="Conversation.ContextReference",
-        )
+    context_references: MutableMapping[
+        str, "Conversation.ContextReference"
+    ] = proto.MapField(
+        proto.STRING,
+        proto.MESSAGE,
+        number=2,
+        message="Conversation.ContextReference",
     )
 
 
@@ -1185,13 +1185,13 @@ class GenerateStatelessSuggestionRequest(proto.Message):
         number=3,
         oneof="generator_resource",
     )
-    context_references: MutableMapping[str, "Conversation.ContextReference"] = (
-        proto.MapField(
-            proto.STRING,
-            proto.MESSAGE,
-            number=4,
-            message="Conversation.ContextReference",
-        )
+    context_references: MutableMapping[
+        str, "Conversation.ContextReference"
+    ] = proto.MapField(
+        proto.STRING,
+        proto.MESSAGE,
+        number=4,
+        message="Conversation.ContextReference",
     )
     conversation_context: gcd_generator.ConversationContext = proto.Field(
         proto.MESSAGE,

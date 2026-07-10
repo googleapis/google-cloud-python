@@ -367,12 +367,12 @@ class ClusterConfig(proto.Message):
         number=13,
         message="SoftwareConfig",
     )
-    initialization_actions: MutableSequence["NodeInitializationAction"] = (
-        proto.RepeatedField(
-            proto.MESSAGE,
-            number=11,
-            message="NodeInitializationAction",
-        )
+    initialization_actions: MutableSequence[
+        "NodeInitializationAction"
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=11,
+        message="NodeInitializationAction",
     )
     encryption_config: "EncryptionConfig" = proto.Field(
         proto.MESSAGE,
@@ -1356,12 +1356,12 @@ class InstanceFlexibilityPolicy(proto.Message):
         number=2,
         message=InstanceSelection,
     )
-    instance_selection_results: MutableSequence[InstanceSelectionResult] = (
-        proto.RepeatedField(
-            proto.MESSAGE,
-            number=3,
-            message=InstanceSelectionResult,
-        )
+    instance_selection_results: MutableSequence[
+        InstanceSelectionResult
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message=InstanceSelectionResult,
     )
 
 

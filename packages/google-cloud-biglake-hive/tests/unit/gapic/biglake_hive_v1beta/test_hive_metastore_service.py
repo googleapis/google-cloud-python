@@ -1014,9 +1014,10 @@ def test_hive_metastore_service_client_get_mtls_endpoint_and_cert_source(client_
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        api_endpoint, cert_source = (
-                            client_class.get_mtls_endpoint_and_cert_source(options)
-                        )
+                        (
+                            api_endpoint,
+                            cert_source,
+                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1061,9 +1062,10 @@ def test_hive_metastore_service_client_get_mtls_endpoint_and_cert_source(client_
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        api_endpoint, cert_source = (
-                            client_class.get_mtls_endpoint_and_cert_source(options)
-                        )
+                        (
+                            api_endpoint,
+                            cert_source,
+                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1099,9 +1101,10 @@ def test_hive_metastore_service_client_get_mtls_endpoint_and_cert_source(client_
                 "google.auth.transport.mtls.default_client_cert_source",
                 return_value=mock_client_cert_source,
             ):
-                api_endpoint, cert_source = (
-                    client_class.get_mtls_endpoint_and_cert_source()
-                )
+                (
+                    api_endpoint,
+                    cert_source,
+                ) = client_class.get_mtls_endpoint_and_cert_source()
                 assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
                 assert cert_source == mock_client_cert_source
 
@@ -1488,9 +1491,9 @@ def test_create_hive_catalog_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.create_hive_catalog] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.create_hive_catalog
+        ] = mock_rpc
         request = {}
         client.create_hive_catalog(request)
 
@@ -1852,9 +1855,9 @@ def test_get_hive_catalog_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.get_hive_catalog] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.get_hive_catalog
+        ] = mock_rpc
         request = {}
         client.get_hive_catalog(request)
 
@@ -2192,9 +2195,9 @@ def test_list_hive_catalogs_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.list_hive_catalogs] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.list_hive_catalogs
+        ] = mock_rpc
         request = {}
         client.list_hive_catalogs(request)
 
@@ -2734,9 +2737,9 @@ def test_update_hive_catalog_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.update_hive_catalog] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.update_hive_catalog
+        ] = mock_rpc
         request = {}
         client.update_hive_catalog(request)
 
@@ -3087,9 +3090,9 @@ def test_delete_hive_catalog_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.delete_hive_catalog] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.delete_hive_catalog
+        ] = mock_rpc
         request = {}
         client.delete_hive_catalog(request)
 
@@ -3426,9 +3429,9 @@ def test_create_hive_database_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.create_hive_database] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.create_hive_database
+        ] = mock_rpc
         request = {}
         client.create_hive_database(request)
 
@@ -3796,9 +3799,9 @@ def test_get_hive_database_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.get_hive_database] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.get_hive_database
+        ] = mock_rpc
         request = {}
         client.get_hive_database(request)
 
@@ -4144,9 +4147,9 @@ def test_list_hive_databases_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.list_hive_databases] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.list_hive_databases
+        ] = mock_rpc
         request = {}
         client.list_hive_databases(request)
 
@@ -4684,9 +4687,9 @@ def test_update_hive_database_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.update_hive_database] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.update_hive_database
+        ] = mock_rpc
         request = {}
         client.update_hive_database(request)
 
@@ -5039,9 +5042,9 @@ def test_delete_hive_database_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.delete_hive_database] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.delete_hive_database
+        ] = mock_rpc
         request = {}
         client.delete_hive_database(request)
 
@@ -5378,9 +5381,9 @@ def test_create_hive_table_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.create_hive_table] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.create_hive_table
+        ] = mock_rpc
         request = {}
         client.create_hive_table(request)
 
@@ -6072,9 +6075,9 @@ def test_list_hive_tables_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.list_hive_tables] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.list_hive_tables
+        ] = mock_rpc
         request = {}
         client.list_hive_tables(request)
 
@@ -6592,9 +6595,9 @@ def test_update_hive_table_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.update_hive_table] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.update_hive_table
+        ] = mock_rpc
         request = {}
         client.update_hive_table(request)
 
@@ -6943,9 +6946,9 @@ def test_delete_hive_table_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.delete_hive_table] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.delete_hive_table
+        ] = mock_rpc
         request = {}
         client.delete_hive_table(request)
 
@@ -8540,9 +8543,9 @@ def test_create_hive_catalog_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.create_hive_catalog] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.create_hive_catalog
+        ] = mock_rpc
 
         request = {}
         client.create_hive_catalog(request)
@@ -8770,9 +8773,9 @@ def test_get_hive_catalog_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.get_hive_catalog] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.get_hive_catalog
+        ] = mock_rpc
 
         request = {}
         client.get_hive_catalog(request)
@@ -8951,9 +8954,9 @@ def test_list_hive_catalogs_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.list_hive_catalogs] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.list_hive_catalogs
+        ] = mock_rpc
 
         request = {}
         client.list_hive_catalogs(request)
@@ -9210,9 +9213,9 @@ def test_update_hive_catalog_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.update_hive_catalog] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.update_hive_catalog
+        ] = mock_rpc
 
         request = {}
         client.update_hive_catalog(request)
@@ -9392,9 +9395,9 @@ def test_delete_hive_catalog_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.delete_hive_catalog] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.delete_hive_catalog
+        ] = mock_rpc
 
         request = {}
         client.delete_hive_catalog(request)
@@ -9568,9 +9571,9 @@ def test_create_hive_database_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.create_hive_database] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.create_hive_database
+        ] = mock_rpc
 
         request = {}
         client.create_hive_database(request)
@@ -9777,9 +9780,9 @@ def test_get_hive_database_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.get_hive_database] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.get_hive_database
+        ] = mock_rpc
 
         request = {}
         client.get_hive_database(request)
@@ -9959,9 +9962,9 @@ def test_list_hive_databases_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.list_hive_databases] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.list_hive_databases
+        ] = mock_rpc
 
         request = {}
         client.list_hive_databases(request)
@@ -10219,9 +10222,9 @@ def test_update_hive_database_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.update_hive_database] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.update_hive_database
+        ] = mock_rpc
 
         request = {}
         client.update_hive_database(request)
@@ -10405,9 +10408,9 @@ def test_delete_hive_database_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.delete_hive_database] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.delete_hive_database
+        ] = mock_rpc
 
         request = {}
         client.delete_hive_database(request)
@@ -10580,9 +10583,9 @@ def test_create_hive_table_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.create_hive_table] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.create_hive_table
+        ] = mock_rpc
 
         request = {}
         client.create_hive_table(request)
@@ -10971,9 +10974,9 @@ def test_list_hive_tables_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.list_hive_tables] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.list_hive_tables
+        ] = mock_rpc
 
         request = {}
         client.list_hive_tables(request)
@@ -11233,9 +11236,9 @@ def test_update_hive_table_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.update_hive_table] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.update_hive_table
+        ] = mock_rpc
 
         request = {}
         client.update_hive_table(request)
@@ -11417,9 +11420,9 @@ def test_delete_hive_table_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.delete_hive_table] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.delete_hive_table
+        ] = mock_rpc
 
         request = {}
         client.delete_hive_table(request)

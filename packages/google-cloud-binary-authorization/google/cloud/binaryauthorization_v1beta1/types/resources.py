@@ -118,12 +118,12 @@ class Policy(proto.Message):
         number=7,
         enum=GlobalPolicyEvaluationMode,
     )
-    admission_whitelist_patterns: MutableSequence["AdmissionWhitelistPattern"] = (
-        proto.RepeatedField(
-            proto.MESSAGE,
-            number=2,
-            message="AdmissionWhitelistPattern",
-        )
+    admission_whitelist_patterns: MutableSequence[
+        "AdmissionWhitelistPattern"
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="AdmissionWhitelistPattern",
     )
     cluster_admission_rules: MutableMapping[str, "AdmissionRule"] = proto.MapField(
         proto.STRING,
@@ -131,29 +131,29 @@ class Policy(proto.Message):
         number=3,
         message="AdmissionRule",
     )
-    kubernetes_namespace_admission_rules: MutableMapping[str, "AdmissionRule"] = (
-        proto.MapField(
-            proto.STRING,
-            proto.MESSAGE,
-            number=10,
-            message="AdmissionRule",
-        )
+    kubernetes_namespace_admission_rules: MutableMapping[
+        str, "AdmissionRule"
+    ] = proto.MapField(
+        proto.STRING,
+        proto.MESSAGE,
+        number=10,
+        message="AdmissionRule",
     )
-    kubernetes_service_account_admission_rules: MutableMapping[str, "AdmissionRule"] = (
-        proto.MapField(
-            proto.STRING,
-            proto.MESSAGE,
-            number=8,
-            message="AdmissionRule",
-        )
+    kubernetes_service_account_admission_rules: MutableMapping[
+        str, "AdmissionRule"
+    ] = proto.MapField(
+        proto.STRING,
+        proto.MESSAGE,
+        number=8,
+        message="AdmissionRule",
     )
-    istio_service_identity_admission_rules: MutableMapping[str, "AdmissionRule"] = (
-        proto.MapField(
-            proto.STRING,
-            proto.MESSAGE,
-            number=9,
-            message="AdmissionRule",
-        )
+    istio_service_identity_admission_rules: MutableMapping[
+        str, "AdmissionRule"
+    ] = proto.MapField(
+        proto.STRING,
+        proto.MESSAGE,
+        number=9,
+        message="AdmissionRule",
     )
     default_admission_rule: "AdmissionRule" = proto.Field(
         proto.MESSAGE,

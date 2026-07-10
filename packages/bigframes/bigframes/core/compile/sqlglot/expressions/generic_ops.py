@@ -83,7 +83,9 @@ def _(*operands: TypedExpr, op: ops.GoogleSqlScalarOp) -> sge.Expression:
         if i < len(op.args):
             arg_spec = op.args[i]
         else:
-            assert op.args[-1].is_vararg, (
+            assert op.args[
+                -1
+            ].is_vararg, (
                 f"Too many arguments, for {op.sql_name}, expected {len(op.args)}"
             )
             arg_spec = op.args[-1]

@@ -82,11 +82,13 @@ class BinauthzManagementServiceV1ClientMeta(type):
     objects.
     """
 
-    _transport_registry = OrderedDict()  # type: Dict[str, Type[BinauthzManagementServiceV1Transport]]
+    _transport_registry = (
+        OrderedDict()
+    )  # type: Dict[str, Type[BinauthzManagementServiceV1Transport]]
     _transport_registry["grpc"] = BinauthzManagementServiceV1GrpcTransport
-    _transport_registry["grpc_asyncio"] = (
-        BinauthzManagementServiceV1GrpcAsyncIOTransport
-    )
+    _transport_registry[
+        "grpc_asyncio"
+    ] = BinauthzManagementServiceV1GrpcAsyncIOTransport
     _transport_registry["rest"] = BinauthzManagementServiceV1RestTransport
 
     def get_transport_class(
@@ -653,9 +655,11 @@ class BinauthzManagementServiceV1Client(
 
         universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
-        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = (
-            BinauthzManagementServiceV1Client._read_environment_variables()
-        )
+        (
+            self._use_client_cert,
+            self._use_mtls_endpoint,
+            self._universe_domain_env,
+        ) = BinauthzManagementServiceV1Client._read_environment_variables()
         self._client_cert_source = (
             BinauthzManagementServiceV1Client._get_client_cert_source(
                 self._client_options.client_cert_source, self._use_client_cert

@@ -25,13 +25,17 @@ except ImportError:
 
 from google.auth.exceptions import MutualTLSChannelError
 
-from google.api_core.gapic_v1._client_cert import (get_client_cert_source,
-                                                   use_client_cert_effective)
+from google.api_core.gapic_v1._client_cert import (
+    get_client_cert_source,
+    use_client_cert_effective,
+)
 from google.api_core.gapic_v1._config_helpers import read_environment_variables
 from google.api_core.gapic_v1._method_helpers import setup_request_id
-from google.api_core.gapic_v1._routing import (get_api_endpoint,
-                                               get_default_mtls_endpoint,
-                                               get_universe_domain)
+from google.api_core.gapic_v1._routing import (
+    get_api_endpoint,
+    get_default_mtls_endpoint,
+    get_universe_domain,
+)
 
 
 def test_get_default_mtls_endpoint():

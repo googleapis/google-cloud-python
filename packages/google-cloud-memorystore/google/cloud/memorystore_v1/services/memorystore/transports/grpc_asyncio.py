@@ -545,12 +545,12 @@ class MemorystoreGrpcAsyncIOTransport(MemorystoreTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_shared_regional_certificate_authority" not in self._stubs:
-            self._stubs["get_shared_regional_certificate_authority"] = (
-                self._logged_channel.unary_unary(
-                    "/google.cloud.memorystore.v1.Memorystore/GetSharedRegionalCertificateAuthority",
-                    request_serializer=memorystore.GetSharedRegionalCertificateAuthorityRequest.serialize,
-                    response_deserializer=memorystore.SharedRegionalCertificateAuthority.deserialize,
-                )
+            self._stubs[
+                "get_shared_regional_certificate_authority"
+            ] = self._logged_channel.unary_unary(
+                "/google.cloud.memorystore.v1.Memorystore/GetSharedRegionalCertificateAuthority",
+                request_serializer=memorystore.GetSharedRegionalCertificateAuthorityRequest.serialize,
+                response_deserializer=memorystore.SharedRegionalCertificateAuthority.deserialize,
             )
         return self._stubs["get_shared_regional_certificate_authority"]
 

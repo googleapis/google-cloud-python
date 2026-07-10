@@ -597,6 +597,7 @@ if polars_installed:
                     args = list(py_struct.values())
                     series_arg = function_template.get_pd_series(args[0])
                     return code(series_arg, *args[1:])
+
             else:
 
                 def handler(py_struct):

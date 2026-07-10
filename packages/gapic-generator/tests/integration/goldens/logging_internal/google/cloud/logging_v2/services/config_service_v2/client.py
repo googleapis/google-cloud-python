@@ -19,7 +19,19 @@ import json
 import logging as std_logging
 import os
 import re
-from typing import Dict, Callable, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union, cast
+from typing import (
+    Dict,
+    Callable,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 import warnings
 
 from google.cloud.logging_v2 import gapic_version as package_version
@@ -28,11 +40,11 @@ from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
-from google.auth import credentials as ga_credentials             # type: ignore
-from google.auth.transport import mtls                            # type: ignore
-from google.auth.transport.grpc import SslCredentials             # type: ignore
-from google.auth.exceptions import MutualTLSChannelError          # type: ignore
-from google.oauth2 import service_account                         # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport import mtls  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.auth.exceptions import MutualTLSChannelError  # type: ignore
+from google.oauth2 import service_account  # type: ignore
 import google.protobuf
 
 try:
@@ -42,6 +54,7 @@ except AttributeError:  # pragma: NO COVER
 
 try:
     from google.api_core import client_logging  # type: ignore
+
     CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
 except ImportError:  # pragma: NO COVER
     CLIENT_LOGGING_SUPPORTED = False
@@ -50,7 +63,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 from google.cloud.logging_v2.services.config_service_v2 import pagers
 from google.cloud.logging_v2.types import logging_config
-from google.longrunning import operations_pb2 # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 import google.api_core.operation as operation  # type: ignore
 import google.api_core.operation_async as operation_async  # type: ignore
 import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
@@ -68,13 +81,17 @@ class BaseConfigServiceV2ClientMeta(type):
     support objects (e.g. transport) without polluting the client instance
     objects.
     """
-    _transport_registry = OrderedDict()  # type: Dict[str, Type[ConfigServiceV2Transport]]
+
+    _transport_registry = (
+        OrderedDict()
+    )  # type: Dict[str, Type[ConfigServiceV2Transport]]
     _transport_registry["grpc"] = ConfigServiceV2GrpcTransport
     _transport_registry["grpc_asyncio"] = ConfigServiceV2GrpcAsyncIOTransport
 
-    def get_transport_class(cls,
-            label: Optional[str] = None,
-        ) -> Type[ConfigServiceV2Transport]:
+    def get_transport_class(
+        cls,
+        label: Optional[str] = None,
+    ) -> Type[ConfigServiceV2Transport]:
         """Returns an appropriate transport class.
 
         Args:
@@ -150,14 +167,16 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
             bool: whether client certificate should be used for mTLS
         Raises:
             ValueError: (If using a version of google-auth without should_use_client_cert and
-	    GOOGLE_API_USE_CLIENT_CERTIFICATE is set to an unexpected value.)
+            GOOGLE_API_USE_CLIENT_CERTIFICATE is set to an unexpected value.)
         """
         # check if google-auth version supports should_use_client_cert for automatic mTLS enablement
         if hasattr(mtls, "should_use_client_cert"):  # pragma: NO COVER
             return mtls.should_use_client_cert()
-        else: # pragma: NO COVER
+        else:  # pragma: NO COVER
             # if unsupported, fallback to reading from env var
-            use_client_cert_str = os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false").lower()
+            use_client_cert_str = os.getenv(
+                "GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"
+            ).lower()
             if use_client_cert_str not in ("true", "false"):
                 raise ValueError(
                     "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be"
@@ -196,8 +215,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         Returns:
             BaseConfigServiceV2Client: The constructed client.
         """
-        credentials = service_account.Credentials.from_service_account_file(
-            filename)
+        credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
         return cls(*args, **kwargs)
 
@@ -214,139 +232,220 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         return self._transport
 
     @staticmethod
-    def cmek_settings_path(project: str,) -> str:
+    def cmek_settings_path(
+        project: str,
+    ) -> str:
         """Returns a fully-qualified cmek_settings string."""
-        return "projects/{project}/cmekSettings".format(project=project, )
+        return "projects/{project}/cmekSettings".format(
+            project=project,
+        )
 
     @staticmethod
-    def parse_cmek_settings_path(path: str) -> Dict[str,str]:
+    def parse_cmek_settings_path(path: str) -> Dict[str, str]:
         """Parses a cmek_settings path into its component segments."""
         m = re.match(r"^projects/(?P<project>.+?)/cmekSettings$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def link_path(project: str,location: str,bucket: str,link: str,) -> str:
+    def link_path(
+        project: str,
+        location: str,
+        bucket: str,
+        link: str,
+    ) -> str:
         """Returns a fully-qualified link string."""
-        return "projects/{project}/locations/{location}/buckets/{bucket}/links/{link}".format(project=project, location=location, bucket=bucket, link=link, )
+        return "projects/{project}/locations/{location}/buckets/{bucket}/links/{link}".format(
+            project=project,
+            location=location,
+            bucket=bucket,
+            link=link,
+        )
 
     @staticmethod
-    def parse_link_path(path: str) -> Dict[str,str]:
+    def parse_link_path(path: str) -> Dict[str, str]:
         """Parses a link path into its component segments."""
-        m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/buckets/(?P<bucket>.+?)/links/(?P<link>.+?)$", path)
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/buckets/(?P<bucket>.+?)/links/(?P<link>.+?)$",
+            path,
+        )
         return m.groupdict() if m else {}
 
     @staticmethod
-    def log_bucket_path(project: str,location: str,bucket: str,) -> str:
+    def log_bucket_path(
+        project: str,
+        location: str,
+        bucket: str,
+    ) -> str:
         """Returns a fully-qualified log_bucket string."""
-        return "projects/{project}/locations/{location}/buckets/{bucket}".format(project=project, location=location, bucket=bucket, )
+        return "projects/{project}/locations/{location}/buckets/{bucket}".format(
+            project=project,
+            location=location,
+            bucket=bucket,
+        )
 
     @staticmethod
-    def parse_log_bucket_path(path: str) -> Dict[str,str]:
+    def parse_log_bucket_path(path: str) -> Dict[str, str]:
         """Parses a log_bucket path into its component segments."""
-        m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/buckets/(?P<bucket>.+?)$", path)
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/buckets/(?P<bucket>.+?)$",
+            path,
+        )
         return m.groupdict() if m else {}
 
     @staticmethod
-    def log_exclusion_path(project: str,exclusion: str,) -> str:
+    def log_exclusion_path(
+        project: str,
+        exclusion: str,
+    ) -> str:
         """Returns a fully-qualified log_exclusion string."""
-        return "projects/{project}/exclusions/{exclusion}".format(project=project, exclusion=exclusion, )
+        return "projects/{project}/exclusions/{exclusion}".format(
+            project=project,
+            exclusion=exclusion,
+        )
 
     @staticmethod
-    def parse_log_exclusion_path(path: str) -> Dict[str,str]:
+    def parse_log_exclusion_path(path: str) -> Dict[str, str]:
         """Parses a log_exclusion path into its component segments."""
         m = re.match(r"^projects/(?P<project>.+?)/exclusions/(?P<exclusion>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def log_sink_path(project: str,sink: str,) -> str:
+    def log_sink_path(
+        project: str,
+        sink: str,
+    ) -> str:
         """Returns a fully-qualified log_sink string."""
-        return "projects/{project}/sinks/{sink}".format(project=project, sink=sink, )
+        return "projects/{project}/sinks/{sink}".format(
+            project=project,
+            sink=sink,
+        )
 
     @staticmethod
-    def parse_log_sink_path(path: str) -> Dict[str,str]:
+    def parse_log_sink_path(path: str) -> Dict[str, str]:
         """Parses a log_sink path into its component segments."""
         m = re.match(r"^projects/(?P<project>.+?)/sinks/(?P<sink>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def log_view_path(project: str,location: str,bucket: str,view: str,) -> str:
+    def log_view_path(
+        project: str,
+        location: str,
+        bucket: str,
+        view: str,
+    ) -> str:
         """Returns a fully-qualified log_view string."""
-        return "projects/{project}/locations/{location}/buckets/{bucket}/views/{view}".format(project=project, location=location, bucket=bucket, view=view, )
+        return "projects/{project}/locations/{location}/buckets/{bucket}/views/{view}".format(
+            project=project,
+            location=location,
+            bucket=bucket,
+            view=view,
+        )
 
     @staticmethod
-    def parse_log_view_path(path: str) -> Dict[str,str]:
+    def parse_log_view_path(path: str) -> Dict[str, str]:
         """Parses a log_view path into its component segments."""
-        m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/buckets/(?P<bucket>.+?)/views/(?P<view>.+?)$", path)
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/buckets/(?P<bucket>.+?)/views/(?P<view>.+?)$",
+            path,
+        )
         return m.groupdict() if m else {}
 
     @staticmethod
-    def settings_path(project: str,) -> str:
+    def settings_path(
+        project: str,
+    ) -> str:
         """Returns a fully-qualified settings string."""
-        return "projects/{project}/settings".format(project=project, )
+        return "projects/{project}/settings".format(
+            project=project,
+        )
 
     @staticmethod
-    def parse_settings_path(path: str) -> Dict[str,str]:
+    def parse_settings_path(path: str) -> Dict[str, str]:
         """Parses a settings path into its component segments."""
         m = re.match(r"^projects/(?P<project>.+?)/settings$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_billing_account_path(billing_account: str, ) -> str:
+    def common_billing_account_path(
+        billing_account: str,
+    ) -> str:
         """Returns a fully-qualified billing_account string."""
-        return "billingAccounts/{billing_account}".format(billing_account=billing_account, )
+        return "billingAccounts/{billing_account}".format(
+            billing_account=billing_account,
+        )
 
     @staticmethod
-    def parse_common_billing_account_path(path: str) -> Dict[str,str]:
+    def parse_common_billing_account_path(path: str) -> Dict[str, str]:
         """Parse a billing_account path into its component segments."""
         m = re.match(r"^billingAccounts/(?P<billing_account>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_folder_path(folder: str, ) -> str:
+    def common_folder_path(
+        folder: str,
+    ) -> str:
         """Returns a fully-qualified folder string."""
-        return "folders/{folder}".format(folder=folder, )
+        return "folders/{folder}".format(
+            folder=folder,
+        )
 
     @staticmethod
-    def parse_common_folder_path(path: str) -> Dict[str,str]:
+    def parse_common_folder_path(path: str) -> Dict[str, str]:
         """Parse a folder path into its component segments."""
         m = re.match(r"^folders/(?P<folder>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_organization_path(organization: str, ) -> str:
+    def common_organization_path(
+        organization: str,
+    ) -> str:
         """Returns a fully-qualified organization string."""
-        return "organizations/{organization}".format(organization=organization, )
+        return "organizations/{organization}".format(
+            organization=organization,
+        )
 
     @staticmethod
-    def parse_common_organization_path(path: str) -> Dict[str,str]:
+    def parse_common_organization_path(path: str) -> Dict[str, str]:
         """Parse a organization path into its component segments."""
         m = re.match(r"^organizations/(?P<organization>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_project_path(project: str, ) -> str:
+    def common_project_path(
+        project: str,
+    ) -> str:
         """Returns a fully-qualified project string."""
-        return "projects/{project}".format(project=project, )
+        return "projects/{project}".format(
+            project=project,
+        )
 
     @staticmethod
-    def parse_common_project_path(path: str) -> Dict[str,str]:
+    def parse_common_project_path(path: str) -> Dict[str, str]:
         """Parse a project path into its component segments."""
         m = re.match(r"^projects/(?P<project>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_location_path(project: str, location: str, ) -> str:
+    def common_location_path(
+        project: str,
+        location: str,
+    ) -> str:
         """Returns a fully-qualified location string."""
-        return "projects/{project}/locations/{location}".format(project=project, location=location, )
+        return "projects/{project}/locations/{location}".format(
+            project=project,
+            location=location,
+        )
 
     @staticmethod
-    def parse_common_location_path(path: str) -> Dict[str,str]:
+    def parse_common_location_path(path: str) -> Dict[str, str]:
         """Parse a location path into its component segments."""
         m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)$", path)
         return m.groupdict() if m else {}
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[client_options_lib.ClientOptions] = None):
+    def get_mtls_endpoint_and_cert_source(
+        cls, client_options: Optional[client_options_lib.ClientOptions] = None
+    ):
         """Deprecated. Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -378,14 +477,18 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
 
-        warnings.warn("get_mtls_endpoint_and_cert_source is deprecated. Use the api_endpoint property instead.",
-            DeprecationWarning)
+        warnings.warn(
+            "get_mtls_endpoint_and_cert_source is deprecated. Use the api_endpoint property instead.",
+            DeprecationWarning,
+        )
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
         use_client_cert = BaseConfigServiceV2Client._use_client_cert_effective()
         use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto")
         if use_mtls_endpoint not in ("auto", "never", "always"):
-            raise MutualTLSChannelError("Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`")
+            raise MutualTLSChannelError(
+                "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
+            )
 
         # Figure out the client cert source to use.
         client_cert_source = None
@@ -398,7 +501,9 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # Figure out which api endpoint to use.
         if client_options.api_endpoint is not None:
             api_endpoint = client_options.api_endpoint
-        elif use_mtls_endpoint == "always" or (use_mtls_endpoint == "auto" and client_cert_source):
+        elif use_mtls_endpoint == "always" or (
+            use_mtls_endpoint == "auto" and client_cert_source
+        ):
             api_endpoint = cls.DEFAULT_MTLS_ENDPOINT
         else:
             api_endpoint = cls.DEFAULT_ENDPOINT
@@ -423,7 +528,9 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto").lower()
         universe_domain_env = os.getenv("GOOGLE_CLOUD_UNIVERSE_DOMAIN")
         if use_mtls_endpoint not in ("auto", "never", "always"):
-            raise MutualTLSChannelError("Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`")
+            raise MutualTLSChannelError(
+                "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
+            )
         return use_client_cert, use_mtls_endpoint, universe_domain_env
 
     @staticmethod
@@ -446,7 +553,9 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         return client_cert_source
 
     @staticmethod
-    def _get_api_endpoint(api_override, client_cert_source, universe_domain, use_mtls_endpoint) -> str:
+    def _get_api_endpoint(
+        api_override, client_cert_source, universe_domain, use_mtls_endpoint
+    ) -> str:
         """Return the API endpoint used by the client.
 
         Args:
@@ -462,17 +571,25 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         """
         if api_override is not None:
             api_endpoint = api_override
-        elif use_mtls_endpoint == "always" or (use_mtls_endpoint == "auto" and client_cert_source):
+        elif use_mtls_endpoint == "always" or (
+            use_mtls_endpoint == "auto" and client_cert_source
+        ):
             _default_universe = BaseConfigServiceV2Client._DEFAULT_UNIVERSE
             if universe_domain != _default_universe:
-                raise MutualTLSChannelError(f"mTLS is not supported in any universe other than {_default_universe}.")
+                raise MutualTLSChannelError(
+                    f"mTLS is not supported in any universe other than {_default_universe}."
+                )
             api_endpoint = BaseConfigServiceV2Client.DEFAULT_MTLS_ENDPOINT
         else:
-            api_endpoint = BaseConfigServiceV2Client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=universe_domain)
+            api_endpoint = BaseConfigServiceV2Client._DEFAULT_ENDPOINT_TEMPLATE.format(
+                UNIVERSE_DOMAIN=universe_domain
+            )
         return api_endpoint
 
     @staticmethod
-    def _get_universe_domain(client_universe_domain: Optional[str], universe_domain_env: Optional[str]) -> str:
+    def _get_universe_domain(
+        client_universe_domain: Optional[str], universe_domain_env: Optional[str]
+    ) -> str:
         """Return the universe domain used by the client.
 
         Args:
@@ -508,15 +625,18 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         return True
 
     def _add_cred_info_for_auth_errors(
-        self,
-        error: core_exceptions.GoogleAPICallError
+        self, error: core_exceptions.GoogleAPICallError
     ) -> None:
         """Adds credential info string to error details for 401/403/404 errors.
 
         Args:
             error (google.api_core.exceptions.GoogleAPICallError): The error to add the cred info.
         """
-        if error.code not in [HTTPStatus.UNAUTHORIZED, HTTPStatus.FORBIDDEN, HTTPStatus.NOT_FOUND]:
+        if error.code not in [
+            HTTPStatus.UNAUTHORIZED,
+            HTTPStatus.FORBIDDEN,
+            HTTPStatus.NOT_FOUND,
+        ]:
             return
 
         cred = self._transport._credentials
@@ -549,12 +669,18 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         """
         return self._universe_domain
 
-    def __init__(self, *,
-            credentials: Optional[ga_credentials.Credentials] = None,
-            transport: Optional[Union[str, ConfigServiceV2Transport, Callable[..., ConfigServiceV2Transport]]] = None,
-            client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
-            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-            ) -> None:
+    def __init__(
+        self,
+        *,
+        credentials: Optional[ga_credentials.Credentials] = None,
+        transport: Optional[
+            Union[
+                str, ConfigServiceV2Transport, Callable[..., ConfigServiceV2Transport]
+            ]
+        ] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
+        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+    ) -> None:
         """Instantiates the base config service v2 client.
 
         Args:
@@ -609,13 +735,23 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
             self._client_options = client_options_lib.from_dict(self._client_options)
         if self._client_options is None:
             self._client_options = client_options_lib.ClientOptions()
-        self._client_options = cast(client_options_lib.ClientOptions, self._client_options)
+        self._client_options = cast(
+            client_options_lib.ClientOptions, self._client_options
+        )
 
-        universe_domain_opt = getattr(self._client_options, 'universe_domain', None)
+        universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
-        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = BaseConfigServiceV2Client._read_environment_variables()
-        self._client_cert_source = BaseConfigServiceV2Client._get_client_cert_source(self._client_options.client_cert_source, self._use_client_cert)
-        self._universe_domain = BaseConfigServiceV2Client._get_universe_domain(universe_domain_opt, self._universe_domain_env)
+        (
+            self._use_client_cert,
+            self._use_mtls_endpoint,
+            self._universe_domain_env,
+        ) = BaseConfigServiceV2Client._read_environment_variables()
+        self._client_cert_source = BaseConfigServiceV2Client._get_client_cert_source(
+            self._client_options.client_cert_source, self._use_client_cert
+        )
+        self._universe_domain = BaseConfigServiceV2Client._get_universe_domain(
+            universe_domain_opt, self._universe_domain_env
+        )
         self._api_endpoint: str = ""  # updated below, depending on `transport`
 
         # Initialize the universe domain validation.
@@ -627,7 +763,9 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
 
         api_key_value = getattr(self._client_options, "api_key", None)
         if api_key_value and credentials:
-            raise ValueError("client_options.api_key and credentials are mutually exclusive")
+            raise ValueError(
+                "client_options.api_key and credentials are mutually exclusive"
+            )
 
         # Save or instantiate the transport.
         # Ordinarily, we provide the transport, but allowing a custom transport
@@ -636,8 +774,10 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         if transport_provided:
             # transport is a ConfigServiceV2Transport instance.
             if credentials or self._client_options.credentials_file or api_key_value:
-                raise ValueError("When providing a transport instance, "
-                                 "provide its credentials directly.")
+                raise ValueError(
+                    "When providing a transport instance, "
+                    "provide its credentials directly."
+                )
             if self._client_options.scopes:
                 raise ValueError(
                     "When providing a transport instance, provide its scopes "
@@ -646,20 +786,29 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
             self._transport = cast(ConfigServiceV2Transport, transport)
             self._api_endpoint = self._transport.host
 
-        self._api_endpoint = (self._api_endpoint or
-            BaseConfigServiceV2Client._get_api_endpoint(
+        self._api_endpoint = (
+            self._api_endpoint
+            or BaseConfigServiceV2Client._get_api_endpoint(
                 self._client_options.api_endpoint,
                 self._client_cert_source,
                 self._universe_domain,
-                self._use_mtls_endpoint))
+                self._use_mtls_endpoint,
+            )
+        )
 
         if not transport_provided:
             import google.auth._default  # type: ignore
 
-            if api_key_value and hasattr(google.auth._default, "get_api_key_credentials"):
-                credentials = google.auth._default.get_api_key_credentials(api_key_value)
+            if api_key_value and hasattr(
+                google.auth._default, "get_api_key_credentials"
+            ):
+                credentials = google.auth._default.get_api_key_credentials(
+                    api_key_value
+                )
 
-            transport_init: Union[Type[ConfigServiceV2Transport], Callable[..., ConfigServiceV2Transport]] = (
+            transport_init: Union[
+                Type[ConfigServiceV2Transport], Callable[..., ConfigServiceV2Transport]
+            ] = (
                 BaseConfigServiceV2Client.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., ConfigServiceV2Transport], transport)
@@ -678,28 +827,37 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
             )
 
         if "async" not in str(self._transport):
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                std_logging.DEBUG
+            ):  # pragma: NO COVER
                 _LOGGER.debug(
                     "Created client `google.logging_v2.BaseConfigServiceV2Client`.",
-                    extra = {
+                    extra={
                         "serviceName": "google.logging.v2.ConfigServiceV2",
-                        "universeDomain": getattr(self._transport._credentials, "universe_domain", ""),
+                        "universeDomain": getattr(
+                            self._transport._credentials, "universe_domain", ""
+                        ),
                         "credentialsType": f"{type(self._transport._credentials).__module__}.{type(self._transport._credentials).__qualname__}",
-                        "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
-                    } if hasattr(self._transport, "_credentials") else {
+                        "credentialsInfo": getattr(
+                            self.transport._credentials, "get_cred_info", lambda: None
+                        )(),
+                    }
+                    if hasattr(self._transport, "_credentials")
+                    else {
                         "serviceName": "google.logging.v2.ConfigServiceV2",
                         "credentialsType": None,
-                    }
+                    },
                 )
 
-    def list_buckets(self,
-            request: Optional[Union[logging_config.ListBucketsRequest, dict]] = None,
-            *,
-            parent: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> pagers.ListBucketsPager:
+    def list_buckets(
+        self,
+        request: Optional[Union[logging_config.ListBucketsRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.ListBucketsPager:
         r"""Lists log buckets.
 
         .. code-block:: python
@@ -771,10 +929,14 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -792,9 +954,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("parent", request.parent),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
         )
 
         # Validate the universe domain.
@@ -822,13 +982,14 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # Done; return the response.
         return response
 
-    def get_bucket(self,
-            request: Optional[Union[logging_config.GetBucketRequest, dict]] = None,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> logging_config.LogBucket:
+    def get_bucket(
+        self,
+        request: Optional[Union[logging_config.GetBucketRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> logging_config.LogBucket:
         r"""Gets a log bucket.
 
         .. code-block:: python
@@ -887,9 +1048,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("name", request.name),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
 
         # Validate the universe domain.
@@ -906,13 +1065,14 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # Done; return the response.
         return response
 
-    def create_bucket_async(self,
-            request: Optional[Union[logging_config.CreateBucketRequest, dict]] = None,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> operation.Operation:
+    def create_bucket_async(
+        self,
+        request: Optional[Union[logging_config.CreateBucketRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation.Operation:
         r"""Creates a log bucket asynchronously that can be used
         to store log entries.
         After a bucket has been created, the bucket's location
@@ -982,9 +1142,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("parent", request.parent),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
         )
 
         # Validate the universe domain.
@@ -1009,13 +1167,14 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # Done; return the response.
         return response
 
-    def update_bucket_async(self,
-            request: Optional[Union[logging_config.UpdateBucketRequest, dict]] = None,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> operation.Operation:
+    def update_bucket_async(
+        self,
+        request: Optional[Union[logging_config.UpdateBucketRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation.Operation:
         r"""Updates a log bucket asynchronously.
 
         If the bucket has a ``lifecycle_state`` of ``DELETE_REQUESTED``,
@@ -1087,9 +1246,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("name", request.name),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
 
         # Validate the universe domain.
@@ -1114,13 +1271,14 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # Done; return the response.
         return response
 
-    def create_bucket(self,
-            request: Optional[Union[logging_config.CreateBucketRequest, dict]] = None,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> logging_config.LogBucket:
+    def create_bucket(
+        self,
+        request: Optional[Union[logging_config.CreateBucketRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> logging_config.LogBucket:
         r"""Creates a log bucket that can be used to store log
         entries. After a bucket has been created, the bucket's
         location cannot be changed.
@@ -1182,9 +1340,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("parent", request.parent),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
         )
 
         # Validate the universe domain.
@@ -1201,13 +1357,14 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # Done; return the response.
         return response
 
-    def update_bucket(self,
-            request: Optional[Union[logging_config.UpdateBucketRequest, dict]] = None,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> logging_config.LogBucket:
+    def update_bucket(
+        self,
+        request: Optional[Union[logging_config.UpdateBucketRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> logging_config.LogBucket:
         r"""Updates a log bucket.
 
         If the bucket has a ``lifecycle_state`` of ``DELETE_REQUESTED``,
@@ -1272,9 +1429,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("name", request.name),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
 
         # Validate the universe domain.
@@ -1291,13 +1446,14 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # Done; return the response.
         return response
 
-    def delete_bucket(self,
-            request: Optional[Union[logging_config.DeleteBucketRequest, dict]] = None,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> None:
+    def delete_bucket(
+        self,
+        request: Optional[Union[logging_config.DeleteBucketRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> None:
         r"""Deletes a log bucket.
 
         Changes the bucket's ``lifecycle_state`` to the
@@ -1352,9 +1508,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("name", request.name),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
 
         # Validate the universe domain.
@@ -1368,13 +1522,14 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
             metadata=metadata,
         )
 
-    def undelete_bucket(self,
-            request: Optional[Union[logging_config.UndeleteBucketRequest, dict]] = None,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> None:
+    def undelete_bucket(
+        self,
+        request: Optional[Union[logging_config.UndeleteBucketRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> None:
         r"""Undeletes a log bucket. A bucket that has been
         deleted can be undeleted within the grace period of 7
         days.
@@ -1426,9 +1581,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("name", request.name),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
 
         # Validate the universe domain.
@@ -1442,14 +1595,15 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
             metadata=metadata,
         )
 
-    def _list_views(self,
-            request: Optional[Union[logging_config.ListViewsRequest, dict]] = None,
-            *,
-            parent: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> pagers.ListViewsPager:
+    def _list_views(
+        self,
+        request: Optional[Union[logging_config.ListViewsRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.ListViewsPager:
         r"""Lists views on a log bucket.
 
         .. code-block:: python
@@ -1513,10 +1667,14 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1534,9 +1692,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("parent", request.parent),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
         )
 
         # Validate the universe domain.
@@ -1564,13 +1720,14 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # Done; return the response.
         return response
 
-    def _get_view(self,
-            request: Optional[Union[logging_config.GetViewRequest, dict]] = None,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> logging_config.LogView:
+    def _get_view(
+        self,
+        request: Optional[Union[logging_config.GetViewRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> logging_config.LogView:
         r"""Gets a view on a log bucket..
 
         .. code-block:: python
@@ -1629,9 +1786,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("name", request.name),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
 
         # Validate the universe domain.
@@ -1648,13 +1803,14 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # Done; return the response.
         return response
 
-    def _create_view(self,
-            request: Optional[Union[logging_config.CreateViewRequest, dict]] = None,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> logging_config.LogView:
+    def _create_view(
+        self,
+        request: Optional[Union[logging_config.CreateViewRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> logging_config.LogView:
         r"""Creates a view over log entries in a log bucket. A
         bucket may contain a maximum of 30 views.
 
@@ -1715,9 +1871,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("parent", request.parent),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
         )
 
         # Validate the universe domain.
@@ -1734,13 +1888,14 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # Done; return the response.
         return response
 
-    def _update_view(self,
-            request: Optional[Union[logging_config.UpdateViewRequest, dict]] = None,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> logging_config.LogView:
+    def _update_view(
+        self,
+        request: Optional[Union[logging_config.UpdateViewRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> logging_config.LogView:
         r"""Updates a view on a log bucket. This method replaces the
         following fields in the existing view with values from the new
         view: ``filter``. If an ``UNAVAILABLE`` error is returned, this
@@ -1803,9 +1958,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("name", request.name),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
 
         # Validate the universe domain.
@@ -1822,13 +1975,14 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # Done; return the response.
         return response
 
-    def _delete_view(self,
-            request: Optional[Union[logging_config.DeleteViewRequest, dict]] = None,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> None:
+    def _delete_view(
+        self,
+        request: Optional[Union[logging_config.DeleteViewRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> None:
         r"""Deletes a view on a log bucket. If an ``UNAVAILABLE`` error is
         returned, this indicates that system is not in a state where it
         can delete the view. If this occurs, please try again in a few
@@ -1881,9 +2035,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("name", request.name),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
 
         # Validate the universe domain.
@@ -1897,14 +2049,15 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
             metadata=metadata,
         )
 
-    def _list_sinks(self,
-            request: Optional[Union[logging_config.ListSinksRequest, dict]] = None,
-            *,
-            parent: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> pagers.ListSinksPager:
+    def _list_sinks(
+        self,
+        request: Optional[Union[logging_config.ListSinksRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.ListSinksPager:
         r"""Lists sinks.
 
         .. code-block:: python
@@ -1971,10 +2124,14 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1992,9 +2149,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("parent", request.parent),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
         )
 
         # Validate the universe domain.
@@ -2022,14 +2177,15 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # Done; return the response.
         return response
 
-    def _get_sink(self,
-            request: Optional[Union[logging_config.GetSinkRequest, dict]] = None,
-            *,
-            sink_name: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> logging_config.LogSink:
+    def _get_sink(
+        self,
+        request: Optional[Union[logging_config.GetSinkRequest, dict]] = None,
+        *,
+        sink_name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> logging_config.LogSink:
         r"""Gets a sink.
 
         .. code-block:: python
@@ -2103,10 +2259,14 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [sink_name]
-        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2124,9 +2284,9 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("sink_name", request.sink_name),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("sink_name", request.sink_name),)
+            ),
         )
 
         # Validate the universe domain.
@@ -2143,15 +2303,16 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # Done; return the response.
         return response
 
-    def _create_sink(self,
-            request: Optional[Union[logging_config.CreateSinkRequest, dict]] = None,
-            *,
-            parent: Optional[str] = None,
-            sink: Optional[logging_config.LogSink] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> logging_config.LogSink:
+    def _create_sink(
+        self,
+        request: Optional[Union[logging_config.CreateSinkRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        sink: Optional[logging_config.LogSink] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> logging_config.LogSink:
         r"""Creates a sink that exports specified log entries to a
         destination. The export of newly-ingested log entries begins
         immediately, unless the sink's ``writer_identity`` is not
@@ -2241,10 +2402,14 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, sink]
-        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2264,9 +2429,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("parent", request.parent),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
         )
 
         # Validate the universe domain.
@@ -2283,16 +2446,17 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # Done; return the response.
         return response
 
-    def _update_sink(self,
-            request: Optional[Union[logging_config.UpdateSinkRequest, dict]] = None,
-            *,
-            sink_name: Optional[str] = None,
-            sink: Optional[logging_config.LogSink] = None,
-            update_mask: Optional[field_mask_pb2.FieldMask] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> logging_config.LogSink:
+    def _update_sink(
+        self,
+        request: Optional[Union[logging_config.UpdateSinkRequest, dict]] = None,
+        *,
+        sink_name: Optional[str] = None,
+        sink: Optional[logging_config.LogSink] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> logging_config.LogSink:
         r"""Updates a sink. This method replaces the following fields in the
         existing sink with values from the new sink: ``destination``,
         and ``filter``.
@@ -2406,10 +2570,14 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [sink_name, sink, update_mask]
-        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2431,9 +2599,9 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("sink_name", request.sink_name),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("sink_name", request.sink_name),)
+            ),
         )
 
         # Validate the universe domain.
@@ -2450,14 +2618,15 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # Done; return the response.
         return response
 
-    def _delete_sink(self,
-            request: Optional[Union[logging_config.DeleteSinkRequest, dict]] = None,
-            *,
-            sink_name: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> None:
+    def _delete_sink(
+        self,
+        request: Optional[Union[logging_config.DeleteSinkRequest, dict]] = None,
+        *,
+        sink_name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> None:
         r"""Deletes a sink. If the sink has a unique ``writer_identity``,
         then that service account is also deleted.
 
@@ -2517,10 +2686,14 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [sink_name]
-        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2538,9 +2711,9 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("sink_name", request.sink_name),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("sink_name", request.sink_name),)
+            ),
         )
 
         # Validate the universe domain.
@@ -2554,16 +2727,17 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
             metadata=metadata,
         )
 
-    def _create_link(self,
-            request: Optional[Union[logging_config.CreateLinkRequest, dict]] = None,
-            *,
-            parent: Optional[str] = None,
-            link: Optional[logging_config.Link] = None,
-            link_id: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> operation.Operation:
+    def _create_link(
+        self,
+        request: Optional[Union[logging_config.CreateLinkRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        link: Optional[logging_config.Link] = None,
+        link_id: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation.Operation:
         r"""Asynchronously creates a linked dataset in BigQuery
         which makes it possible to use BigQuery to read the logs
         stored in the log bucket. A log bucket may currently
@@ -2651,10 +2825,14 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, link, link_id]
-        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2676,9 +2854,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("parent", request.parent),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
         )
 
         # Validate the universe domain.
@@ -2703,14 +2879,15 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # Done; return the response.
         return response
 
-    def _delete_link(self,
-            request: Optional[Union[logging_config.DeleteLinkRequest, dict]] = None,
-            *,
-            name: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> operation.Operation:
+    def _delete_link(
+        self,
+        request: Optional[Union[logging_config.DeleteLinkRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation.Operation:
         r"""Deletes a link. This will also delete the
         corresponding BigQuery linked dataset.
 
@@ -2786,10 +2963,14 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2807,9 +2988,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("name", request.name),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
 
         # Validate the universe domain.
@@ -2834,14 +3013,15 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # Done; return the response.
         return response
 
-    def _list_links(self,
-            request: Optional[Union[logging_config.ListLinksRequest, dict]] = None,
-            *,
-            parent: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> pagers.ListLinksPager:
+    def _list_links(
+        self,
+        request: Optional[Union[logging_config.ListLinksRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.ListLinksPager:
         r"""Lists links.
 
         .. code-block:: python
@@ -2907,10 +3087,14 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2928,9 +3112,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("parent", request.parent),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
         )
 
         # Validate the universe domain.
@@ -2958,14 +3140,15 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # Done; return the response.
         return response
 
-    def _get_link(self,
-            request: Optional[Union[logging_config.GetLinkRequest, dict]] = None,
-            *,
-            name: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> logging_config.Link:
+    def _get_link(
+        self,
+        request: Optional[Union[logging_config.GetLinkRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> logging_config.Link:
         r"""Gets a link.
 
         .. code-block:: python
@@ -3026,10 +3209,14 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3047,9 +3234,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("name", request.name),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
 
         # Validate the universe domain.
@@ -3066,14 +3251,15 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # Done; return the response.
         return response
 
-    def _list_exclusions(self,
-            request: Optional[Union[logging_config.ListExclusionsRequest, dict]] = None,
-            *,
-            parent: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> pagers.ListExclusionsPager:
+    def _list_exclusions(
+        self,
+        request: Optional[Union[logging_config.ListExclusionsRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.ListExclusionsPager:
         r"""Lists all the exclusions on the \_Default sink in a parent
         resource.
 
@@ -3141,10 +3327,14 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3162,9 +3352,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("parent", request.parent),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
         )
 
         # Validate the universe domain.
@@ -3192,14 +3380,15 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # Done; return the response.
         return response
 
-    def _get_exclusion(self,
-            request: Optional[Union[logging_config.GetExclusionRequest, dict]] = None,
-            *,
-            name: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> logging_config.LogExclusion:
+    def _get_exclusion(
+        self,
+        request: Optional[Union[logging_config.GetExclusionRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> logging_config.LogExclusion:
         r"""Gets the description of an exclusion in the \_Default sink.
 
         .. code-block:: python
@@ -3271,10 +3460,14 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3292,9 +3485,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("name", request.name),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
 
         # Validate the universe domain.
@@ -3311,15 +3502,16 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # Done; return the response.
         return response
 
-    def _create_exclusion(self,
-            request: Optional[Union[logging_config.CreateExclusionRequest, dict]] = None,
-            *,
-            parent: Optional[str] = None,
-            exclusion: Optional[logging_config.LogExclusion] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> logging_config.LogExclusion:
+    def _create_exclusion(
+        self,
+        request: Optional[Union[logging_config.CreateExclusionRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        exclusion: Optional[logging_config.LogExclusion] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> logging_config.LogExclusion:
         r"""Creates a new exclusion in the \_Default sink in a specified
         parent resource. Only log entries belonging to that resource can
         be excluded. You can have up to 10 exclusions in a resource.
@@ -3408,10 +3600,14 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, exclusion]
-        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3431,9 +3627,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("parent", request.parent),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
         )
 
         # Validate the universe domain.
@@ -3450,16 +3644,17 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # Done; return the response.
         return response
 
-    def _update_exclusion(self,
-            request: Optional[Union[logging_config.UpdateExclusionRequest, dict]] = None,
-            *,
-            name: Optional[str] = None,
-            exclusion: Optional[logging_config.LogExclusion] = None,
-            update_mask: Optional[field_mask_pb2.FieldMask] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> logging_config.LogExclusion:
+    def _update_exclusion(
+        self,
+        request: Optional[Union[logging_config.UpdateExclusionRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        exclusion: Optional[logging_config.LogExclusion] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> logging_config.LogExclusion:
         r"""Changes one or more properties of an existing exclusion in the
         \_Default sink.
 
@@ -3559,10 +3754,14 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name, exclusion, update_mask]
-        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3584,9 +3783,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("name", request.name),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
 
         # Validate the universe domain.
@@ -3603,14 +3800,15 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # Done; return the response.
         return response
 
-    def _delete_exclusion(self,
-            request: Optional[Union[logging_config.DeleteExclusionRequest, dict]] = None,
-            *,
-            name: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> None:
+    def _delete_exclusion(
+        self,
+        request: Optional[Union[logging_config.DeleteExclusionRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> None:
         r"""Deletes an exclusion in the \_Default sink.
 
         .. code-block:: python
@@ -3669,10 +3867,14 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3690,9 +3892,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("name", request.name),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
 
         # Validate the universe domain.
@@ -3706,13 +3906,14 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
             metadata=metadata,
         )
 
-    def _get_cmek_settings(self,
-            request: Optional[Union[logging_config.GetCmekSettingsRequest, dict]] = None,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> logging_config.CmekSettings:
+    def _get_cmek_settings(
+        self,
+        request: Optional[Union[logging_config.GetCmekSettingsRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> logging_config.CmekSettings:
         r"""Gets the Logging CMEK settings for the given resource.
 
         Note: CMEK for the Log Router can be configured for Google Cloud
@@ -3795,9 +3996,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("name", request.name),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
 
         # Validate the universe domain.
@@ -3814,13 +4013,14 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # Done; return the response.
         return response
 
-    def _update_cmek_settings(self,
-            request: Optional[Union[logging_config.UpdateCmekSettingsRequest, dict]] = None,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> logging_config.CmekSettings:
+    def _update_cmek_settings(
+        self,
+        request: Optional[Union[logging_config.UpdateCmekSettingsRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> logging_config.CmekSettings:
         r"""Updates the Log Router CMEK settings for the given resource.
 
         Note: CMEK for the Log Router can currently only be configured
@@ -3908,9 +4108,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("name", request.name),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
 
         # Validate the universe domain.
@@ -3927,14 +4125,15 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # Done; return the response.
         return response
 
-    def _get_settings(self,
-            request: Optional[Union[logging_config.GetSettingsRequest, dict]] = None,
-            *,
-            name: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> logging_config.Settings:
+    def _get_settings(
+        self,
+        request: Optional[Union[logging_config.GetSettingsRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> logging_config.Settings:
         r"""Gets the Log Router settings for the given resource.
 
         Note: Settings for the Log Router can be get for Google Cloud
@@ -4024,10 +4223,14 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -4045,9 +4248,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("name", request.name),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
 
         # Validate the universe domain.
@@ -4064,15 +4265,16 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # Done; return the response.
         return response
 
-    def _update_settings(self,
-            request: Optional[Union[logging_config.UpdateSettingsRequest, dict]] = None,
-            *,
-            settings: Optional[logging_config.Settings] = None,
-            update_mask: Optional[field_mask_pb2.FieldMask] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> logging_config.Settings:
+    def _update_settings(
+        self,
+        request: Optional[Union[logging_config.UpdateSettingsRequest, dict]] = None,
+        *,
+        settings: Optional[logging_config.Settings] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> logging_config.Settings:
         r"""Updates the Log Router settings for the given resource.
 
         Note: Settings for the Log Router can currently only be
@@ -4169,10 +4371,14 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [settings, update_mask]
-        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -4192,9 +4398,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("name", request.name),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
 
         # Validate the universe domain.
@@ -4211,13 +4415,14 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # Done; return the response.
         return response
 
-    def _copy_log_entries(self,
-            request: Optional[Union[logging_config.CopyLogEntriesRequest, dict]] = None,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> operation.Operation:
+    def _copy_log_entries(
+        self,
+        request: Optional[Union[logging_config.CopyLogEntriesRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation.Operation:
         r"""Copies a set of log entries from a log bucket to a
         Cloud Storage bucket.
 
@@ -4360,8 +4565,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("name", request_pb.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
@@ -4370,7 +4574,11 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         try:
             # Send the request.
             response = rpc(
-                request_pb, retry=retry, timeout=timeout, metadata=metadata,)
+                request_pb,
+                retry=retry,
+                timeout=timeout,
+                metadata=metadata,
+            )
 
             # Done; return the response.
             return response
@@ -4420,8 +4628,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("name", request_pb.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
@@ -4430,7 +4637,11 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         try:
             # Send the request.
             response = rpc(
-                request_pb, retry=retry, timeout=timeout, metadata=metadata,)
+                request_pb,
+                retry=retry,
+                timeout=timeout,
+                metadata=metadata,
+            )
 
             # Done; return the response.
             return response
@@ -4483,27 +4694,26 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("name", request_pb.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
         self._validate_universe_domain()
 
         # Send the request.
-        rpc(request_pb, retry=retry, timeout=timeout, metadata=metadata,)
+        rpc(
+            request_pb,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
 
-
-
-
-
-
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
-__all__ = (
-    "BaseConfigServiceV2Client",
-)
+__all__ = ("BaseConfigServiceV2Client",)

@@ -92,7 +92,9 @@ class SecureSourceManagerClientMeta(type):
     objects.
     """
 
-    _transport_registry = OrderedDict()  # type: Dict[str, Type[SecureSourceManagerTransport]]
+    _transport_registry = (
+        OrderedDict()
+    )  # type: Dict[str, Type[SecureSourceManagerTransport]]
     _transport_registry["grpc"] = SecureSourceManagerGrpcTransport
     _transport_registry["grpc_asyncio"] = SecureSourceManagerGrpcAsyncIOTransport
     _transport_registry["rest"] = SecureSourceManagerRestTransport
@@ -884,9 +886,11 @@ class SecureSourceManagerClient(metaclass=SecureSourceManagerClientMeta):
 
         universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
-        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = (
-            SecureSourceManagerClient._read_environment_variables()
-        )
+        (
+            self._use_client_cert,
+            self._use_mtls_endpoint,
+            self._universe_domain_env,
+        ) = SecureSourceManagerClient._read_environment_variables()
         self._client_cert_source = SecureSourceManagerClient._get_client_cert_source(
             self._client_options.client_cert_source, self._use_client_cert
         )

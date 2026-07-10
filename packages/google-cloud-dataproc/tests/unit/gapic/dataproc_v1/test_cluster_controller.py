@@ -1013,9 +1013,10 @@ def test_cluster_controller_client_get_mtls_endpoint_and_cert_source(client_clas
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        api_endpoint, cert_source = (
-                            client_class.get_mtls_endpoint_and_cert_source(options)
-                        )
+                        (
+                            api_endpoint,
+                            cert_source,
+                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1060,9 +1061,10 @@ def test_cluster_controller_client_get_mtls_endpoint_and_cert_source(client_clas
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        api_endpoint, cert_source = (
-                            client_class.get_mtls_endpoint_and_cert_source(options)
-                        )
+                        (
+                            api_endpoint,
+                            cert_source,
+                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1098,9 +1100,10 @@ def test_cluster_controller_client_get_mtls_endpoint_and_cert_source(client_clas
                 "google.auth.transport.mtls.default_client_cert_source",
                 return_value=mock_client_cert_source,
             ):
-                api_endpoint, cert_source = (
-                    client_class.get_mtls_endpoint_and_cert_source()
-                )
+                (
+                    api_endpoint,
+                    cert_source,
+                ) = client_class.get_mtls_endpoint_and_cert_source()
                 assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
                 assert cert_source == mock_client_cert_source
 
@@ -3976,9 +3979,9 @@ def test_diagnose_cluster_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.diagnose_cluster] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.diagnose_cluster
+        ] = mock_rpc
         request = {}
         client.diagnose_cluster(request)
 
@@ -5654,9 +5657,9 @@ def test_diagnose_cluster_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.diagnose_cluster] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.diagnose_cluster
+        ] = mock_rpc
 
         request = {}
         client.diagnose_cluster(request)

@@ -97,10 +97,12 @@ from .types.trigger import StateCondition
 from .types.trigger import Transport
 from .types.trigger import Trigger
 
-if hasattr(api_core, "check_python_version") and hasattr(api_core, "check_dependency_versions"):   # pragma: NO COVER
-    api_core.check_python_version("google.cloud.eventarc_v1") # type: ignore
-    api_core.check_dependency_versions("google.cloud.eventarc_v1") # type: ignore
-else:   # pragma: NO COVER
+if hasattr(api_core, "check_python_version") and hasattr(
+    api_core, "check_dependency_versions"
+):  # pragma: NO COVER
+    api_core.check_python_version("google.cloud.eventarc_v1")  # type: ignore
+    api_core.check_dependency_versions("google.cloud.eventarc_v1")  # type: ignore
+else:  # pragma: NO COVER
     # An older version of api_core is installed which does not define the
     # functions above. We do equivalent checks manually.
     try:
@@ -109,12 +111,14 @@ else:   # pragma: NO COVER
         _py_version_str = sys.version.split()[0]
         _package_label = "google.cloud.eventarc_v1"
         if sys.version_info < (3, 10):
-            warnings.warn("You are using a non-supported Python version " +
-                          f"({_py_version_str}).  Google will not post any further " +
-                          f"updates to {_package_label} supporting this Python version. " +
-                          "Please upgrade to the latest Python version, or at " +
-                          f"least to Python 3.10, and then update {_package_label}.",
-                          FutureWarning)
+            warnings.warn(
+                "You are using a non-supported Python version "
+                + f"({_py_version_str}).  Google will not post any further "
+                + f"updates to {_package_label} supporting this Python version. "
+                + "Please upgrade to the latest Python version, or at "
+                + f"least to Python 3.10, and then update {_package_label}.",
+                FutureWarning,
+            )
 
         def parse_version_to_tuple(version_string: str):
             """Safely converts a semantic version string to a comparable tuple of integers.
@@ -152,97 +156,101 @@ else:   # pragma: NO COVER
         _recommendation = " (we recommend 7.x)"
         (_version_used, _version_used_string) = _get_version(_dependency_package)
         if _version_used and _version_used < _next_supported_version_tuple:
-            warnings.warn(f"Package {_package_label} depends on " +
-                          f"{_dependency_package}, currently installed at version " +
-                          f"{_version_used_string}. Future updates to " +
-                          f"{_package_label} will require {_dependency_package} at " +
-                          f"version {_next_supported_version} or higher{_recommendation}." +
-                          " Please ensure " +
-                          "that either (a) your Python environment doesn't pin the " +
-                          f"version of {_dependency_package}, so that updates to " +
-                          f"{_package_label} can require the higher version, or " +
-                          "(b) you manually update your Python environment to use at " +
-                          f"least version {_next_supported_version} of " +
-                          f"{_dependency_package}.",
-                          FutureWarning)
+            warnings.warn(
+                f"Package {_package_label} depends on "
+                + f"{_dependency_package}, currently installed at version "
+                + f"{_version_used_string}. Future updates to "
+                + f"{_package_label} will require {_dependency_package} at "
+                + f"version {_next_supported_version} or higher{_recommendation}."
+                + " Please ensure "
+                + "that either (a) your Python environment doesn't pin the "
+                + f"version of {_dependency_package}, so that updates to "
+                + f"{_package_label} can require the higher version, or "
+                + "(b) you manually update your Python environment to use at "
+                + f"least version {_next_supported_version} of "
+                + f"{_dependency_package}.",
+                FutureWarning,
+            )
     except Exception:
-            warnings.warn("Could not determine the version of Python " +
-                          "currently being used. To continue receiving " +
-                          "updates for {_package_label}, ensure you are " +
-                          "using a supported version of Python; see " +
-                          "https://devguide.python.org/versions/")
+        warnings.warn(
+            "Could not determine the version of Python "
+            + "currently being used. To continue receiving "
+            + "updates for {_package_label}, ensure you are "
+            + "using a supported version of Python; see "
+            + "https://devguide.python.org/versions/"
+        )
 
 __all__ = (
-    'EventarcAsyncClient',
-'Channel',
-'ChannelConnection',
-'CloudRun',
-'CreateChannelConnectionRequest',
-'CreateChannelRequest',
-'CreateEnrollmentRequest',
-'CreateGoogleApiSourceRequest',
-'CreateMessageBusRequest',
-'CreatePipelineRequest',
-'CreateTriggerRequest',
-'DeleteChannelConnectionRequest',
-'DeleteChannelRequest',
-'DeleteEnrollmentRequest',
-'DeleteGoogleApiSourceRequest',
-'DeleteMessageBusRequest',
-'DeletePipelineRequest',
-'DeleteTriggerRequest',
-'Destination',
-'Enrollment',
-'EventFilter',
-'EventType',
-'EventarcClient',
-'FilteringAttribute',
-'GKE',
-'GetChannelConnectionRequest',
-'GetChannelRequest',
-'GetEnrollmentRequest',
-'GetGoogleApiSourceRequest',
-'GetGoogleChannelConfigRequest',
-'GetMessageBusRequest',
-'GetPipelineRequest',
-'GetProviderRequest',
-'GetTriggerRequest',
-'GoogleApiSource',
-'GoogleChannelConfig',
-'HttpEndpoint',
-'ListChannelConnectionsRequest',
-'ListChannelConnectionsResponse',
-'ListChannelsRequest',
-'ListChannelsResponse',
-'ListEnrollmentsRequest',
-'ListEnrollmentsResponse',
-'ListGoogleApiSourcesRequest',
-'ListGoogleApiSourcesResponse',
-'ListMessageBusEnrollmentsRequest',
-'ListMessageBusEnrollmentsResponse',
-'ListMessageBusesRequest',
-'ListMessageBusesResponse',
-'ListPipelinesRequest',
-'ListPipelinesResponse',
-'ListProvidersRequest',
-'ListProvidersResponse',
-'ListTriggersRequest',
-'ListTriggersResponse',
-'LoggingConfig',
-'MessageBus',
-'NetworkConfig',
-'OperationMetadata',
-'Pipeline',
-'Provider',
-'Pubsub',
-'StateCondition',
-'Transport',
-'Trigger',
-'UpdateChannelRequest',
-'UpdateEnrollmentRequest',
-'UpdateGoogleApiSourceRequest',
-'UpdateGoogleChannelConfigRequest',
-'UpdateMessageBusRequest',
-'UpdatePipelineRequest',
-'UpdateTriggerRequest',
+    "EventarcAsyncClient",
+    "Channel",
+    "ChannelConnection",
+    "CloudRun",
+    "CreateChannelConnectionRequest",
+    "CreateChannelRequest",
+    "CreateEnrollmentRequest",
+    "CreateGoogleApiSourceRequest",
+    "CreateMessageBusRequest",
+    "CreatePipelineRequest",
+    "CreateTriggerRequest",
+    "DeleteChannelConnectionRequest",
+    "DeleteChannelRequest",
+    "DeleteEnrollmentRequest",
+    "DeleteGoogleApiSourceRequest",
+    "DeleteMessageBusRequest",
+    "DeletePipelineRequest",
+    "DeleteTriggerRequest",
+    "Destination",
+    "Enrollment",
+    "EventFilter",
+    "EventType",
+    "EventarcClient",
+    "FilteringAttribute",
+    "GKE",
+    "GetChannelConnectionRequest",
+    "GetChannelRequest",
+    "GetEnrollmentRequest",
+    "GetGoogleApiSourceRequest",
+    "GetGoogleChannelConfigRequest",
+    "GetMessageBusRequest",
+    "GetPipelineRequest",
+    "GetProviderRequest",
+    "GetTriggerRequest",
+    "GoogleApiSource",
+    "GoogleChannelConfig",
+    "HttpEndpoint",
+    "ListChannelConnectionsRequest",
+    "ListChannelConnectionsResponse",
+    "ListChannelsRequest",
+    "ListChannelsResponse",
+    "ListEnrollmentsRequest",
+    "ListEnrollmentsResponse",
+    "ListGoogleApiSourcesRequest",
+    "ListGoogleApiSourcesResponse",
+    "ListMessageBusEnrollmentsRequest",
+    "ListMessageBusEnrollmentsResponse",
+    "ListMessageBusesRequest",
+    "ListMessageBusesResponse",
+    "ListPipelinesRequest",
+    "ListPipelinesResponse",
+    "ListProvidersRequest",
+    "ListProvidersResponse",
+    "ListTriggersRequest",
+    "ListTriggersResponse",
+    "LoggingConfig",
+    "MessageBus",
+    "NetworkConfig",
+    "OperationMetadata",
+    "Pipeline",
+    "Provider",
+    "Pubsub",
+    "StateCondition",
+    "Transport",
+    "Trigger",
+    "UpdateChannelRequest",
+    "UpdateEnrollmentRequest",
+    "UpdateGoogleApiSourceRequest",
+    "UpdateGoogleChannelConfigRequest",
+    "UpdateMessageBusRequest",
+    "UpdatePipelineRequest",
+    "UpdateTriggerRequest",
 )

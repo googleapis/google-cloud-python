@@ -292,7 +292,9 @@ class ValidationHelperV1RestTransport(_BaseValidationHelperV1RestTransport):
 
             """
 
-            http_options = _BaseValidationHelperV1RestTransport._BaseValidateAttestationOccurrence._get_http_options()
+            http_options = (
+                _BaseValidationHelperV1RestTransport._BaseValidateAttestationOccurrence._get_http_options()
+            )
 
             request, metadata = self._interceptor.pre_validate_attestation_occurrence(
                 request, metadata
@@ -361,10 +363,11 @@ class ValidationHelperV1RestTransport(_BaseValidationHelperV1RestTransport):
 
             resp = self._interceptor.post_validate_attestation_occurrence(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = (
-                self._interceptor.post_validate_attestation_occurrence_with_metadata(
-                    resp, response_metadata
-                )
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_validate_attestation_occurrence_with_metadata(
+                resp, response_metadata
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG

@@ -2170,12 +2170,12 @@ class ChatServiceGrpcTransport(ChatServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_space_notification_setting" not in self._stubs:
-            self._stubs["get_space_notification_setting"] = (
-                self._logged_channel.unary_unary(
-                    "/google.chat.v1.ChatService/GetSpaceNotificationSetting",
-                    request_serializer=space_notification_setting.GetSpaceNotificationSettingRequest.serialize,
-                    response_deserializer=space_notification_setting.SpaceNotificationSetting.deserialize,
-                )
+            self._stubs[
+                "get_space_notification_setting"
+            ] = self._logged_channel.unary_unary(
+                "/google.chat.v1.ChatService/GetSpaceNotificationSetting",
+                request_serializer=space_notification_setting.GetSpaceNotificationSettingRequest.serialize,
+                response_deserializer=space_notification_setting.SpaceNotificationSetting.deserialize,
             )
         return self._stubs["get_space_notification_setting"]
 
@@ -2211,12 +2211,12 @@ class ChatServiceGrpcTransport(ChatServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_space_notification_setting" not in self._stubs:
-            self._stubs["update_space_notification_setting"] = (
-                self._logged_channel.unary_unary(
-                    "/google.chat.v1.ChatService/UpdateSpaceNotificationSetting",
-                    request_serializer=gc_space_notification_setting.UpdateSpaceNotificationSettingRequest.serialize,
-                    response_deserializer=gc_space_notification_setting.SpaceNotificationSetting.deserialize,
-                )
+            self._stubs[
+                "update_space_notification_setting"
+            ] = self._logged_channel.unary_unary(
+                "/google.chat.v1.ChatService/UpdateSpaceNotificationSetting",
+                request_serializer=gc_space_notification_setting.UpdateSpaceNotificationSettingRequest.serialize,
+                response_deserializer=gc_space_notification_setting.SpaceNotificationSetting.deserialize,
             )
         return self._stubs["update_space_notification_setting"]
 

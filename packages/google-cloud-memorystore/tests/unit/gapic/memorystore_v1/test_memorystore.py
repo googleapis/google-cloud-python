@@ -953,9 +953,10 @@ def test_memorystore_client_get_mtls_endpoint_and_cert_source(client_class):
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        api_endpoint, cert_source = (
-                            client_class.get_mtls_endpoint_and_cert_source(options)
-                        )
+                        (
+                            api_endpoint,
+                            cert_source,
+                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1000,9 +1001,10 @@ def test_memorystore_client_get_mtls_endpoint_and_cert_source(client_class):
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        api_endpoint, cert_source = (
-                            client_class.get_mtls_endpoint_and_cert_source(options)
-                        )
+                        (
+                            api_endpoint,
+                            cert_source,
+                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1038,9 +1040,10 @@ def test_memorystore_client_get_mtls_endpoint_and_cert_source(client_class):
                 "google.auth.transport.mtls.default_client_cert_source",
                 return_value=mock_client_cert_source,
             ):
-                api_endpoint, cert_source = (
-                    client_class.get_mtls_endpoint_and_cert_source()
-                )
+                (
+                    api_endpoint,
+                    cert_source,
+                ) = client_class.get_mtls_endpoint_and_cert_source()
                 assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
                 assert cert_source == mock_client_cert_source
 
@@ -4085,9 +4088,9 @@ def test_reschedule_maintenance_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.reschedule_maintenance] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.reschedule_maintenance
+        ] = mock_rpc
         request = {}
         client.reschedule_maintenance(request)
 
@@ -5018,9 +5021,9 @@ def test_get_backup_collection_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.get_backup_collection] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.get_backup_collection
+        ] = mock_rpc
         request = {}
         client.get_backup_collection(request)
 
@@ -8501,9 +8504,9 @@ def test_reschedule_maintenance_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.reschedule_maintenance] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.reschedule_maintenance
+        ] = mock_rpc
 
         request = {}
         client.reschedule_maintenance(request)
@@ -8959,9 +8962,9 @@ def test_get_backup_collection_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.get_backup_collection] = (
-            mock_rpc
-        )
+        client._transport._wrapped_methods[
+            client._transport.get_backup_collection
+        ] = mock_rpc
 
         request = {}
         client.get_backup_collection(request)

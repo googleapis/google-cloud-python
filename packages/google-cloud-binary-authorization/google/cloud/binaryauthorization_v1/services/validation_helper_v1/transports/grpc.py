@@ -349,12 +349,12 @@ class ValidationHelperV1GrpcTransport(ValidationHelperV1Transport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "validate_attestation_occurrence" not in self._stubs:
-            self._stubs["validate_attestation_occurrence"] = (
-                self._logged_channel.unary_unary(
-                    "/google.cloud.binaryauthorization.v1.ValidationHelperV1/ValidateAttestationOccurrence",
-                    request_serializer=service.ValidateAttestationOccurrenceRequest.serialize,
-                    response_deserializer=service.ValidateAttestationOccurrenceResponse.deserialize,
-                )
+            self._stubs[
+                "validate_attestation_occurrence"
+            ] = self._logged_channel.unary_unary(
+                "/google.cloud.binaryauthorization.v1.ValidationHelperV1/ValidateAttestationOccurrence",
+                request_serializer=service.ValidateAttestationOccurrenceRequest.serialize,
+                response_deserializer=service.ValidateAttestationOccurrenceResponse.deserialize,
             )
         return self._stubs["validate_attestation_occurrence"]
 

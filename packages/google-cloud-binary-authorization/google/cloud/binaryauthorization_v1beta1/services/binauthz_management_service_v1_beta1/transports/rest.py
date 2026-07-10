@@ -574,7 +574,9 @@ class BinauthzManagementServiceV1Beta1RestTransport(
 
             """
 
-            http_options = _BaseBinauthzManagementServiceV1Beta1RestTransport._BaseCreateAttestor._get_http_options()
+            http_options = (
+                _BaseBinauthzManagementServiceV1Beta1RestTransport._BaseCreateAttestor._get_http_options()
+            )
 
             request, metadata = self._interceptor.pre_create_attestor(request, metadata)
             transcoded_request = _BaseBinauthzManagementServiceV1Beta1RestTransport._BaseCreateAttestor._get_transcoded_request(
@@ -719,7 +721,9 @@ class BinauthzManagementServiceV1Beta1RestTransport(
                     be of type `bytes`.
             """
 
-            http_options = _BaseBinauthzManagementServiceV1Beta1RestTransport._BaseDeleteAttestor._get_http_options()
+            http_options = (
+                _BaseBinauthzManagementServiceV1Beta1RestTransport._BaseDeleteAttestor._get_http_options()
+            )
 
             request, metadata = self._interceptor.pre_delete_attestor(request, metadata)
             transcoded_request = _BaseBinauthzManagementServiceV1Beta1RestTransport._BaseDeleteAttestor._get_transcoded_request(
@@ -833,7 +837,9 @@ class BinauthzManagementServiceV1Beta1RestTransport(
 
             """
 
-            http_options = _BaseBinauthzManagementServiceV1Beta1RestTransport._BaseGetAttestor._get_http_options()
+            http_options = (
+                _BaseBinauthzManagementServiceV1Beta1RestTransport._BaseGetAttestor._get_http_options()
+            )
 
             request, metadata = self._interceptor.pre_get_attestor(request, metadata)
             transcoded_request = _BaseBinauthzManagementServiceV1Beta1RestTransport._BaseGetAttestor._get_transcoded_request(
@@ -980,7 +986,9 @@ class BinauthzManagementServiceV1Beta1RestTransport(
 
             """
 
-            http_options = _BaseBinauthzManagementServiceV1Beta1RestTransport._BaseGetPolicy._get_http_options()
+            http_options = (
+                _BaseBinauthzManagementServiceV1Beta1RestTransport._BaseGetPolicy._get_http_options()
+            )
 
             request, metadata = self._interceptor.pre_get_policy(request, metadata)
             transcoded_request = _BaseBinauthzManagementServiceV1Beta1RestTransport._BaseGetPolicy._get_transcoded_request(
@@ -1128,7 +1136,9 @@ class BinauthzManagementServiceV1Beta1RestTransport(
 
             """
 
-            http_options = _BaseBinauthzManagementServiceV1Beta1RestTransport._BaseListAttestors._get_http_options()
+            http_options = (
+                _BaseBinauthzManagementServiceV1Beta1RestTransport._BaseListAttestors._get_http_options()
+            )
 
             request, metadata = self._interceptor.pre_list_attestors(request, metadata)
             transcoded_request = _BaseBinauthzManagementServiceV1Beta1RestTransport._BaseListAttestors._get_transcoded_request(
@@ -1277,7 +1287,9 @@ class BinauthzManagementServiceV1Beta1RestTransport(
 
             """
 
-            http_options = _BaseBinauthzManagementServiceV1Beta1RestTransport._BaseUpdateAttestor._get_http_options()
+            http_options = (
+                _BaseBinauthzManagementServiceV1Beta1RestTransport._BaseUpdateAttestor._get_http_options()
+            )
 
             request, metadata = self._interceptor.pre_update_attestor(request, metadata)
             transcoded_request = _BaseBinauthzManagementServiceV1Beta1RestTransport._BaseUpdateAttestor._get_transcoded_request(
@@ -1430,7 +1442,9 @@ class BinauthzManagementServiceV1Beta1RestTransport(
 
             """
 
-            http_options = _BaseBinauthzManagementServiceV1Beta1RestTransport._BaseUpdatePolicy._get_http_options()
+            http_options = (
+                _BaseBinauthzManagementServiceV1Beta1RestTransport._BaseUpdatePolicy._get_http_options()
+            )
 
             request, metadata = self._interceptor.pre_update_policy(request, metadata)
             transcoded_request = _BaseBinauthzManagementServiceV1Beta1RestTransport._BaseUpdatePolicy._get_transcoded_request(

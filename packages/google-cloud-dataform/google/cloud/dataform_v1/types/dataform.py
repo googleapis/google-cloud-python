@@ -1484,12 +1484,12 @@ class FetchFileGitStatusesResponse(proto.Message):
             enum="FetchFileGitStatusesResponse.UncommittedFileChange.State",
         )
 
-    uncommitted_file_changes: MutableSequence[UncommittedFileChange] = (
-        proto.RepeatedField(
-            proto.MESSAGE,
-            number=1,
-            message=UncommittedFileChange,
-        )
+    uncommitted_file_changes: MutableSequence[
+        UncommittedFileChange
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=UncommittedFileChange,
     )
 
 
@@ -2280,12 +2280,12 @@ class ReleaseConfig(proto.Message):
         proto.STRING,
         number=7,
     )
-    recent_scheduled_release_records: MutableSequence[ScheduledReleaseRecord] = (
-        proto.RepeatedField(
-            proto.MESSAGE,
-            number=5,
-            message=ScheduledReleaseRecord,
-        )
+    recent_scheduled_release_records: MutableSequence[
+        ScheduledReleaseRecord
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=5,
+        message=ScheduledReleaseRecord,
     )
     release_compilation_result: str = proto.Field(
         proto.STRING,
@@ -3702,12 +3702,12 @@ class QueryCompilationResultActionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    compilation_result_actions: MutableSequence["CompilationResultAction"] = (
-        proto.RepeatedField(
-            proto.MESSAGE,
-            number=1,
-            message="CompilationResultAction",
-        )
+    compilation_result_actions: MutableSequence[
+        "CompilationResultAction"
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="CompilationResultAction",
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -3830,12 +3830,12 @@ class WorkflowConfig(proto.Message):
         proto.STRING,
         number=7,
     )
-    recent_scheduled_execution_records: MutableSequence[ScheduledExecutionRecord] = (
-        proto.RepeatedField(
-            proto.MESSAGE,
-            number=5,
-            message=ScheduledExecutionRecord,
-        )
+    recent_scheduled_execution_records: MutableSequence[
+        ScheduledExecutionRecord
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=5,
+        message=ScheduledExecutionRecord,
     )
     disabled: bool = proto.Field(
         proto.BOOL,
@@ -4805,12 +4805,12 @@ class QueryWorkflowInvocationActionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    workflow_invocation_actions: MutableSequence["WorkflowInvocationAction"] = (
-        proto.RepeatedField(
-            proto.MESSAGE,
-            number=1,
-            message="WorkflowInvocationAction",
-        )
+    workflow_invocation_actions: MutableSequence[
+        "WorkflowInvocationAction"
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="WorkflowInvocationAction",
     )
     next_page_token: str = proto.Field(
         proto.STRING,
