@@ -79,9 +79,7 @@ def get_api_endpoint(
             )
         return default_mtls_endpoint
     else:
-        return default_endpoint_template.format(
-            UNIVERSE_DOMAIN=universe_domain
-        )  # noqa: E501
+        return default_endpoint_template.format(UNIVERSE_DOMAIN=universe_domain)
 
 
 def get_universe_domain(
@@ -98,9 +96,3 @@ def get_universe_domain(
     if len(universe_domain.strip()) == 0:
         raise ValueError("Universe Domain cannot be an empty string.")
     return universe_domain
-
-
-# Backward compatibility aliases for private methods
-# Previously, gapic-generator-python generated clients used these methods
-_get_default_mtls_endpoint = get_default_mtls_endpoint
-_get_universe_domain = get_universe_domain

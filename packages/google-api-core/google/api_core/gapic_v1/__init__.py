@@ -13,10 +13,6 @@
 # limitations under the License.
 
 from google.api_core.gapic_v1 import (
-    _client_cert,
-    _config_helpers,
-    _method_helpers,
-    _routing,
     client_info,
     config,
     config_async,
@@ -26,14 +22,10 @@ from google.api_core.gapic_v1 import (
 )
 
 __all__ = [
-    "_client_cert",
     "client_info",
     "config",
     "config_async",
-    "_config_helpers",
     "method",
     "method_async",
-    "_method_helpers",
-    "_routing",
     "routing_header",
 ]

@@ -39,9 +39,7 @@ def read_environment_variables() -> Tuple[bool, str, Optional[str]]:
             ["auto", "never", "always"].
     """
     use_client_cert = use_client_cert_effective()
-    use_mtls_endpoint = os.getenv(
-        "GOOGLE_API_USE_MTLS_ENDPOINT", "auto"
-    ).lower()  # noqa: E501
+    use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto").lower()
     universe_domain_env = os.getenv("GOOGLE_CLOUD_UNIVERSE_DOMAIN")
     if use_mtls_endpoint not in ("auto", "never", "always"):
         raise MutualTLSChannelError(
@@ -49,8 +47,3 @@ def read_environment_variables() -> Tuple[bool, str, Optional[str]]:
             "must be `never`, `auto` or `always`"
         )
     return use_client_cert, use_mtls_endpoint, universe_domain_env
-
-
-# Backward compatibility aliases for private methods
-# Previously, gapic-generator-python generated clients used these methods
-_read_environment_variables = read_environment_variables

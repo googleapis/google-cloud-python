@@ -20,9 +20,7 @@ import uuid
 from typing import Any
 
 
-def setup_request_id(
-    request: Any, field_name: str, is_proto3_optional: bool
-) -> None:  # noqa: E501
+def setup_request_id(request: Any, field_name: str, is_proto3_optional: bool) -> None:
     """Populate a UUID4 field in the request if it is not already set.
 
     Args:
@@ -51,8 +49,3 @@ def setup_request_id(
     else:
         if not getattr(request, field_name):
             setattr(request, field_name, str(uuid.uuid4()))
-
-
-# Backward compatibility aliases for private methods
-# Previously, gapic-generator-python generated clients used these methods
-_setup_request_id = setup_request_id

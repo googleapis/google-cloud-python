@@ -59,12 +59,12 @@ def get_client_cert_source(
     """Return the client cert source to be used by the client.
 
     Args:
-        provided_cert_source (bytes): The client certificate source provided.
+        provided_cert_source (Callable[[], Tuple[bytes, bytes]]): The client certificate source provided.
         use_cert_flag (bool): A flag indicating whether to use the
             client certificate.
 
     Returns:
-        bytes or None: The client cert source to be used by the client.
+        Callable[[], Tuple[bytes, bytes]] or None: The client cert source to be used by the client.
     """
     client_cert_source = None
     if use_cert_flag:
@@ -76,9 +76,3 @@ def get_client_cert_source(
         ):
             client_cert_source = mtls.default_client_cert_source()
     return client_cert_source
-
-
-# Backward compatibility aliases for private methods
-# Previously, gapic-generator-python generated clients used these methods
-_use_client_cert_effective = use_client_cert_effective
-_get_client_cert_source = get_client_cert_source
