@@ -62,6 +62,21 @@ def mypy(session):
     # Add mypy tests
     session.skip("mypy tests are not yet supported")
 
+    session.install("-e", ".")
+    session.install(
+        "mypy",
+        "types-setuptools",
+        "types-protobuf",
+        "types-requests",
+    )
+    session.run(
+        "mypy",
+        f"--config-file={MYPY_CONFIG_FILE}",
+        "-p",
+        "docfx_yaml",
+        *session.posargs,
+    )
+
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def core_deps_from_source(session):

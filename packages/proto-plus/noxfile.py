@@ -318,6 +318,21 @@ def mypy(session):
     # Enable mypy once this bug is fixed.
     session.skip("Skip mypy since this library doesn't have py.typed")
 
+    session.install("-e", ".")
+    session.install(
+        "mypy",
+        "types-setuptools",
+        "types-protobuf",
+        "types-requests",
+    )
+    session.run(
+        "mypy",
+        f"--config-file={MYPY_CONFIG_FILE}",
+        "-p",
+        "proto",
+        *session.posargs,
+    )
+
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def lint(session):

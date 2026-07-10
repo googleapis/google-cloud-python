@@ -331,6 +331,21 @@ def mypy(session):
     # Add typehints to this package.
     session.skip("Typehints and thus mypy are not yet supported.")
 
+    session.install("-e", ".")
+    session.install(
+        "mypy",
+        "types-setuptools",
+        "types-protobuf",
+        "types-requests",
+    )
+    session.run(
+        "mypy",
+        f"--config-file={MYPY_CONFIG_FILE}",
+        "-p",
+        "django_spanner",
+        *session.posargs,
+    )
+
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 @nox.parametrize(
