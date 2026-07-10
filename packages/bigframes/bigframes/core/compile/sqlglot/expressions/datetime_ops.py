@@ -373,9 +373,11 @@ def _(expr: TypedExpr, op: ops.ToDatetimeOp) -> sge.Expression:
             )
             return sge.Cast(this=result, to="DATETIME")
 
+    if expr.dtype == dtypes.TIMESTAMP_DTYPE:
+        return sge.func("DATETIME", expr.expr, sge.convert("UTC"))
+
     if expr.dtype in (
         dtypes.STRING_DTYPE,
-        dtypes.TIMESTAMP_DTYPE,
         dtypes.DATETIME_DTYPE,
         dtypes.DATE_DTYPE,
     ):
@@ -387,9 +389,10 @@ def _(expr: TypedExpr, op: ops.ToDatetimeOp) -> sge.Expression:
     if factor != 1:
         value = sge.Mul(this=value, expression=sge.convert(factor))
     value = sge.func("TRUNC", value)
-    return sge.Cast(
-        this=sge.func("TIMESTAMP_MICROS", sge.Cast(this=value, to="INT64")),
-        to="DATETIME",
+    return sge.func(
+        "DATETIME",
+        sge.func("TIMESTAMP_MICROS", sge.Cast(this=value, to="INT64")),
+        sge.convert("UTC"),
     )
 
 
@@ -400,7 +403,7 @@ def _(expr: TypedExpr, op: ops.ToTimestampOp) -> sge.Expression:
         if expr.dtype != dtypes.STRING_DTYPE:
             result = sge.Cast(this=result, to="STRING")
         return sge.func(
-            "PARSE_TIMESTAMP", sge.convert(op.format), expr.expr, sge.convert("UTC")
+            "PARSE_TIMESTAMP", sge.convert(op.format), result, sge.convert("UTC")
         )
 
     if expr.dtype in (
@@ -683,3 +686,49 @@ def _integer_label_to_datetime_op_yearly_freq(
         this=next_month_date, expression=sge.Interval(this=one, unit="DAY")
     )
     return sge.Cast(this=x_label, to=sqlglot_types.from_bigframes_dtype(y.dtype))
+
+
+@register_binary_op(ops.timestamp_add_op)
+def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
+    return sge.TimestampAdd(
+        this=left.expr, expression=right.expr, unit=sge.Var(this="MICROSECOND")
+    )
+
+
+@register_binary_op(ops.timestamp_sub_op)
+def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
+    return sge.TimestampSub(
+        this=left.expr, expression=right.expr, unit=sge.Var(this="MICROSECOND")
+    )
+
+
+@register_binary_op(ops.timestamp_diff_op)
+def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
+    return sge.TimestampDiff(
+        this=left.expr, expression=right.expr, unit=sge.Var(this="MICROSECOND")
+    )
+
+
+@register_binary_op(ops.date_add_op)
+def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
+    left_expr = sge.Cast(this=left.expr, to="TIMESTAMP")
+    return sge.TimestampAdd(
+        this=left_expr, expression=right.expr, unit=sge.Var(this="MICROSECOND")
+    )
+
+
+@register_binary_op(ops.date_sub_op)
+def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
+    left_expr = sge.Cast(this=left.expr, to="TIMESTAMP")
+    return sge.TimestampSub(
+        this=left_expr, expression=right.expr, unit=sge.Var(this="MICROSECOND")
+    )
+
+
+@register_binary_op(ops.date_diff_op)
+def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
+    diff = sge.DateDiff(this=left.expr, expression=right.expr, unit=sge.Var(this="DAY"))
+    return sge.Mul(
+        this=diff,
+        expression=sge.convert(int(UNIT_TO_US_CONVERSION_FACTORS["d"])),
+    )

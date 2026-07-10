@@ -299,6 +299,29 @@ class TestAsyncAppendableObjectWriter:
         assert writer.offset == data_len
         assert writer.bytes_appended_since_last_flush == data_len
 
+    @pytest.mark.asyncio
+    async def test_append_with_checksum_disabled(self, mock_appendable_writer):
+        """Verify append propagates enable_checksum=False to the _WriteState."""
+        writer = self._make_one(mock_appendable_writer["mock_client"])
+        writer._is_stream_open = True
+        writer.persisted_size = 0
+        writer.write_obj_stream = mock_appendable_writer["mock_stream"]
+        writer.write_obj_stream.send = AsyncMock()
+
+        with mock.patch(
+            "google.cloud.storage.asyncio.async_appendable_object_writer._BidiStreamRetryManager"
+        ) as MockManager:
+            mock_execute = AsyncMock()
+            MockManager.return_value.execute = mock_execute
+
+            await writer.append(DATA_LESS_THAN_FLUSH_INTERVAL, enable_checksum=False)
+
+            # Check that execute was called with a state dictionary containing write_state having enable_checksum=False
+            mock_execute.assert_called_once()
+            state_arg = mock_execute.call_args[0][0]
+            assert "write_state" in state_arg
+            assert state_arg["write_state"].enable_checksum is False
+
     @pytest.mark.parametrize(
         "data_len",
         [
@@ -552,3 +575,53 @@ class TestAsyncAppendableObjectWriter:
             match="full_object_checksum can only be provided when finalize_on_close is True",
         ):
             await writer.close(finalize_on_close=False, full_object_checksum=checksum)
+
+    @pytest.mark.asyncio
+    async def test_finalize_invalid_checksum_type(self, mock_appendable_writer):
+        writer = self._make_one(mock_appendable_writer["mock_client"])
+        writer._is_stream_open = True
+        writer.write_obj_stream = mock_appendable_writer["mock_stream"]
+
+        with pytest.raises(TypeError, match="full_object_checksum must be an integer"):
+            await writer.finalize(full_object_checksum="not-an-int")
+
+        with pytest.raises(TypeError, match="full_object_checksum must be an integer"):
+            await writer.finalize(full_object_checksum=True)
+
+    @pytest.mark.asyncio
+    async def test_finalize_invalid_checksum_range(self, mock_appendable_writer):
+        writer = self._make_one(mock_appendable_writer["mock_client"])
+        writer._is_stream_open = True
+        writer.write_obj_stream = mock_appendable_writer["mock_stream"]
+
+        # negative
+        with pytest.raises(
+            ValueError, match="full_object_checksum must be a 32-bit unsigned integer"
+        ):
+            await writer.finalize(full_object_checksum=-1)
+
+        # overflow
+        with pytest.raises(
+            ValueError, match="full_object_checksum must be a 32-bit unsigned integer"
+        ):
+            await writer.finalize(full_object_checksum=0x100000000)
+
+    @pytest.mark.asyncio
+    async def test_finalize_mismatch_closes_stream(self, mock_appendable_writer):
+        writer = self._make_one(mock_appendable_writer["mock_client"])
+        writer._is_stream_open = True
+        writer.write_obj_stream = mock_appendable_writer["mock_stream"]
+
+        # Mock recv to raise an exception (like server rejecting checksum mismatch)
+        from google.api_core.exceptions import InvalidArgument
+
+        mock_appendable_writer["mock_stream"].recv.side_effect = InvalidArgument(
+            "checksum mismatch"
+        )
+
+        with pytest.raises(InvalidArgument):
+            await writer.finalize(full_object_checksum=12345)
+
+        # Assert stream was closed and local state reset despite exception
+        mock_appendable_writer["mock_stream"].close.assert_awaited()
+        assert not writer._is_stream_open

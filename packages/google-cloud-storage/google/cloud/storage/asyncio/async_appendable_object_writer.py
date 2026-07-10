@@ -386,6 +386,7 @@ class AsyncAppendableObjectWriter:
         data: bytes,
         retry_policy: Optional[AsyncRetry] = None,
         metadata: Optional[List[Tuple[str, str]]] = None,
+        enable_checksum: bool = True,
     ) -> None:
         """Appends data to the Appendable object with automatic retries.
 
@@ -405,6 +406,9 @@ class AsyncAppendableObjectWriter:
 
         :type metadata: List[Tuple[str, str]]
         :param metadata: (Optional) The metadata to be sent with the request.
+
+        :type enable_checksum: bool
+        :param enable_checksum: (Optional) If True, calculates and checks checksums for each chunk. Defaults to True.
 
         :raises ValueError: If the stream is not open.
         """
@@ -487,7 +491,12 @@ class AsyncAppendableObjectWriter:
             return generator()
 
         # State initialization
-        write_state = _WriteState(_MAX_CHUNK_SIZE_BYTES, buffer, self.flush_interval)
+        write_state = _WriteState(
+            _MAX_CHUNK_SIZE_BYTES,
+            buffer,
+            self.flush_interval,
+            enable_checksum=enable_checksum,
+        )
         write_state.write_handle = self.write_handle
         write_state.persisted_size = self.persisted_size
         # offset is set during `open()` call.
@@ -641,22 +650,32 @@ class AsyncAppendableObjectWriter:
         if not self._is_stream_open:
             raise ValueError("Stream is not open. Call open() before finalize().")
 
-        finalize_req = _storage_v2.BidiWriteObjectRequest(finish_write=True)
-
-        if full_object_checksum is not None:
-            finalize_req.object_checksums = _storage_v2.ObjectChecksums(
-                crc32c=full_object_checksum
+        if full_object_checksum is None:
+            finalize_req = _storage_v2.BidiWriteObjectRequest(finish_write=True)
+        elif isinstance(full_object_checksum, bool) or not isinstance(
+            full_object_checksum, int
+        ):
+            raise TypeError("full_object_checksum must be an integer.")
+        elif not (0 <= full_object_checksum <= 0xFFFFFFFF):
+            raise ValueError("full_object_checksum must be a 32-bit unsigned integer.")
+        else:
+            finalize_req = _storage_v2.BidiWriteObjectRequest(
+                finish_write=True,
+                object_checksums=_storage_v2.ObjectChecksums(
+                    crc32c=full_object_checksum
+                ),
             )
 
-        await self.write_obj_stream.send(finalize_req)
-        response = await self.write_obj_stream.recv()
-        self.object_resource = response.resource
-        self.persisted_size = self.object_resource.size
-        await self.write_obj_stream.close()
-
-        self._is_stream_open = False
-        self.offset = None
-        return self.object_resource
+        try:
+            await self.write_obj_stream.send(finalize_req)
+            response = await self.write_obj_stream.recv()
+            self.object_resource = response.resource
+            self.persisted_size = self.object_resource.size
+            return self.object_resource
+        finally:
+            await self.write_obj_stream.close()
+            self._is_stream_open = False
+            self.offset = None
 
     @property
     def is_stream_open(self) -> bool:
