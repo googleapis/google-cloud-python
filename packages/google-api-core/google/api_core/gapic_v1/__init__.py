@@ -12,7 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-__lazy_modules__ = {
+from typing import Set
+
+__lazy_modules__: Set[str] = {
     "google.api_core.gapic_v1.client_info",
     "google.api_core.gapic_v1.config",
     "google.api_core.gapic_v1.config_async",
