@@ -45,8 +45,8 @@ Perform a query
 
     import pandas_gbq
 
-    # If running in your local environment or Colab, use the code below and specify the GCP project ID "PROJECT_ID"
-    # result_dataframe = pandas_gbq.read_gbq("SELECT * FROM bigquery-public-data.usa_names.usa_1910_2013 LIMIT 10", project_id=PROJECT_ID)
+    # If running in your local environment or Colab, use the code below and specify your GCP project ID
+    # result_dataframe = pandas_gbq.read_gbq("SELECT * FROM bigquery-public-data.usa_names.usa_1910_2013 LIMIT 10", project_id="your-project-id")
 
     result_dataframe = pandas_gbq.read_gbq("SELECT column FROM dataset.table WHERE value = 'something'")
 
