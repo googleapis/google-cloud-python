@@ -15,10 +15,10 @@
 import bigframes.operations as ops
 
 
-def convert_index(key: int) -> ops.ArrayIndexOp:
+def convert_index(key: int) -> ops.GetItemOp:
     if key < 0:
         raise NotImplementedError("Negative indexing is not supported.")
-    return ops.ArrayIndexOp(index=key)
+    return ops.GetItemOp(key=key)
 
 
 def convert_slice(key: slice) -> ops.ArraySliceOp:

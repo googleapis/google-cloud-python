@@ -92,9 +92,7 @@ class KeyManagementServiceClientMeta(type):
     objects.
     """
 
-    _transport_registry = (
-        OrderedDict()
-    )  # type: Dict[str, Type[KeyManagementServiceTransport]]
+    _transport_registry = OrderedDict()  # type: Dict[str, Type[KeyManagementServiceTransport]]
     _transport_registry["grpc"] = KeyManagementServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = KeyManagementServiceGrpcAsyncIOTransport
     _transport_registry["rest"] = KeyManagementServiceRestTransport
@@ -776,11 +774,9 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
         universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
-        (
-            self._use_client_cert,
-            self._use_mtls_endpoint,
-            self._universe_domain_env,
-        ) = KeyManagementServiceClient._read_environment_variables()
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = (
+            KeyManagementServiceClient._read_environment_variables()
+        )
         self._client_cert_source = KeyManagementServiceClient._get_client_cert_source(
             self._client_options.client_cert_source, self._use_client_cert
         )
@@ -3087,7 +3083,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
                 # Initialize request argument(s)
                 import_job = kms_v1.ImportJob()
-                import_job.import_method = "RSA_OAEP_4096_SHA256"
+                import_job.import_method = "HPKE_KEM_XWING_HKDF_SHA256_AES_256_GCM"
                 import_job.protection_level = "HSM_SINGLE_TENANT"
 
                 request = kms_v1.CreateImportJobRequest(

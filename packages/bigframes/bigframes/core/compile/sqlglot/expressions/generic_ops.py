@@ -83,9 +83,7 @@ def _(*operands: TypedExpr, op: ops.GoogleSqlScalarOp) -> sge.Expression:
         if i < len(op.args):
             arg_spec = op.args[i]
         else:
-            assert op.args[
-                -1
-            ].is_vararg, (
+            assert op.args[-1].is_vararg, (
                 f"Too many arguments, for {op.sql_name}, expected {len(op.args)}"
             )
             arg_spec = op.args[-1]
@@ -148,6 +146,28 @@ def _(expr: TypedExpr) -> sge.Expression:
         this=sge.paren(expr.expr, copy=False),
         expression=sg.not_(sge.Null(), copy=False),
     )
+
+
+@register_unary_op(ops.coerce_to_bool_op)
+def _(expr: TypedExpr) -> sge.Expression:
+    from_type = expr.dtype
+    sg_expr = expr.expr
+
+    if from_type == dtypes.BOOL_DTYPE:
+        res = sg_expr
+    elif dtypes.is_numeric(from_type):
+        res = sge.NEQ(this=sg_expr, expression=sge.convert(0))
+    elif dtypes.is_string_like(from_type):
+        res = sge.GT(this=sge.func("LENGTH", sg_expr), expression=sge.convert(0))
+    elif dtypes.is_array_like(from_type):
+        res = sge.GT(this=sge.func("ARRAY_LENGTH", sg_expr), expression=sge.convert(0))
+    else:
+        res = sge.Is(
+            this=sge.paren(sg_expr, copy=False),
+            expression=sg.not_(sge.Null(), copy=False),
+        )
+
+    return sge.Coalesce(this=res, expressions=[sge.convert(False)])
 
 
 @register_ternary_op(ops.where_op)

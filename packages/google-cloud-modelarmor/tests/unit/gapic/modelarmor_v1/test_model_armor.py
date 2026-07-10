@@ -940,10 +940,9 @@ def test_model_armor_client_get_mtls_endpoint_and_cert_source(client_class):
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -988,10 +987,9 @@ def test_model_armor_client_get_mtls_endpoint_and_cert_source(client_class):
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1027,10 +1025,9 @@ def test_model_armor_client_get_mtls_endpoint_and_cert_source(client_class):
                 "google.auth.transport.mtls.default_client_cert_source",
                 return_value=mock_client_cert_source,
             ):
-                (
-                    api_endpoint,
-                    cert_source,
-                ) = client_class.get_mtls_endpoint_and_cert_source()
+                api_endpoint, cert_source = (
+                    client_class.get_mtls_endpoint_and_cert_source()
+                )
                 assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
                 assert cert_source == mock_client_cert_source
 
@@ -3207,9 +3204,9 @@ def test_get_floor_setting_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_floor_setting
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_floor_setting] = (
+            mock_rpc
+        )
         request = {}
         client.get_floor_setting(request)
 
@@ -3559,9 +3556,9 @@ def test_update_floor_setting_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.update_floor_setting
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.update_floor_setting] = (
+            mock_rpc
+        )
         request = {}
         client.update_floor_setting(request)
 
@@ -3918,9 +3915,9 @@ def test_sanitize_user_prompt_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.sanitize_user_prompt
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.sanitize_user_prompt] = (
+            mock_rpc
+        )
         request = {}
         client.sanitize_user_prompt(request)
 
@@ -5699,9 +5696,9 @@ def test_get_floor_setting_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_floor_setting
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_floor_setting] = (
+            mock_rpc
+        )
 
         request = {}
         client.get_floor_setting(request)
@@ -5880,9 +5877,9 @@ def test_update_floor_setting_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.update_floor_setting
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.update_floor_setting] = (
+            mock_rpc
+        )
 
         request = {}
         client.update_floor_setting(request)
@@ -6064,9 +6061,9 @@ def test_sanitize_user_prompt_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.sanitize_user_prompt
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.sanitize_user_prompt] = (
+            mock_rpc
+        )
 
         request = {}
         client.sanitize_user_prompt(request)
@@ -7242,6 +7239,7 @@ def test_create_template_rest_call_success(request_type):
             "log_sanitize_operations": True,
             "enforcement_type": 1,
             "multi_language_detection": {"enable_multi_language_detection": True},
+            "modalities": [1],
         },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
@@ -7473,6 +7471,7 @@ def test_update_template_rest_call_success(request_type):
             "log_sanitize_operations": True,
             "enforcement_type": 1,
             "multi_language_detection": {"enable_multi_language_detection": True},
+            "modalities": [1],
         },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.

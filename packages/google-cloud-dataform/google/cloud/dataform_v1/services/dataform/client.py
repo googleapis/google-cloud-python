@@ -359,6 +359,30 @@ class DataformClient(metaclass=DataformClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def git_repository_link_path(
+        project: str,
+        location: str,
+        connection: str,
+        git_repository_link: str,
+    ) -> str:
+        """Returns a fully-qualified git_repository_link string."""
+        return "projects/{project}/locations/{location}/connections/{connection}/gitRepositoryLinks/{git_repository_link}".format(
+            project=project,
+            location=location,
+            connection=connection,
+            git_repository_link=git_repository_link,
+        )
+
+    @staticmethod
+    def parse_git_repository_link_path(path: str) -> Dict[str, str]:
+        """Parses a git_repository_link path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/connections/(?P<connection>.+?)/gitRepositoryLinks/(?P<git_repository_link>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def notebook_runtime_template_path(
         project: str,
         location: str,
@@ -920,11 +944,9 @@ class DataformClient(metaclass=DataformClientMeta):
 
         universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
-        (
-            self._use_client_cert,
-            self._use_mtls_endpoint,
-            self._universe_domain_env,
-        ) = DataformClient._read_environment_variables()
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = (
+            DataformClient._read_environment_variables()
+        )
         self._client_cert_source = DataformClient._get_client_cert_source(
             self._client_options.client_cert_source, self._use_client_cert
         )
@@ -1669,8 +1691,9 @@ class DataformClient(metaclass=DataformClientMeta):
             request (Union[google.cloud.dataform_v1.types.QueryTeamFolderContentsRequest, dict]):
                 The request object. ``QueryTeamFolderContents`` request message.
             team_folder (str):
-                Required. Name of the team_folder whose contents to
-                list. Format: ``projects/*/locations/*/teamFolders/*``.
+                Required. Resource name of the TeamFolder to list
+                contents for. Format:
+                ``projects/*/locations/*/teamFolders/*``.
 
                 This corresponds to the ``team_folder`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2487,8 +2510,8 @@ class DataformClient(metaclass=DataformClientMeta):
             request (Union[google.cloud.dataform_v1.types.QueryFolderContentsRequest, dict]):
                 The request object. ``QueryFolderContents`` request message.
             folder (str):
-                Required. Name of the folder whose contents to list.
-                Format: projects/*/locations/*/folders/\*
+                Required. Resource name of the Folder to list contents
+                for. Format: projects/*/locations/*/folders/\*
 
                 This corresponds to the ``folder`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2611,8 +2634,8 @@ class DataformClient(metaclass=DataformClientMeta):
             request (Union[google.cloud.dataform_v1.types.QueryUserRootContentsRequest, dict]):
                 The request object. ``QueryUserRootContents`` request message.
             location (str):
-                Required. Location of the user root folder whose
-                contents to list. Format: projects/*/locations/*
+                Required. Location of the user root folder to list
+                contents for. Format: projects/*/locations/*
 
                 This corresponds to the ``location`` field
                 on the ``request`` instance; if ``request`` is provided, this

@@ -438,6 +438,28 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def network_attachment_path(
+        project: str,
+        region: str,
+        network_attachment: str,
+    ) -> str:
+        """Returns a fully-qualified network_attachment string."""
+        return "projects/{project}/regions/{region}/networkAttachments/{network_attachment}".format(
+            project=project,
+            region=region,
+            network_attachment=network_attachment,
+        )
+
+    @staticmethod
+    def parse_network_attachment_path(path: str) -> Dict[str, str]:
+        """Parses a network_attachment path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/regions/(?P<region>.+?)/networkAttachments/(?P<network_attachment>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def service_attachment_path(
         project: str,
         region: str,
@@ -853,11 +875,9 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
 
         universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
-        (
-            self._use_client_cert,
-            self._use_mtls_endpoint,
-            self._universe_domain_env,
-        ) = MemorystoreClient._read_environment_variables()
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = (
+            MemorystoreClient._read_environment_variables()
+        )
         self._client_cert_source = MemorystoreClient._get_client_cert_source(
             self._client_options.client_cert_source, self._use_client_cert
         )
@@ -1016,7 +1036,7 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
 
         Returns:
             google.cloud.memorystore_v1.services.memorystore.pagers.ListInstancesPager:
-                Response message for [ListInstances][].
+                Response message for ListInstances.
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -1642,7 +1662,7 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
 
         Args:
             request (Union[google.cloud.memorystore_v1.types.GetCertificateAuthorityRequest, dict]):
-                The request object. Request message for [GetCertificateAuthority][].
+                The request object. Request message for ``GetCertificateAuthority``.
             name (str):
                 Required. The name of the certificate
                 authority. Format:
@@ -1756,8 +1776,7 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
 
         Args:
             request (Union[google.cloud.memorystore_v1.types.GetSharedRegionalCertificateAuthorityRequest, dict]):
-                The request object. Request for
-                [GetSharedRegionalCertificateAuthority][google.cloud.memorystore.v1.Memorystore.GetSharedRegionalCertificateAuthority].
+                The request object. Request for ``GetSharedRegionalCertificateAuthority``.
             name (str):
                 Required. Regional certificate authority resource name
                 using the form:
@@ -2024,7 +2043,7 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
 
         Args:
             request (Union[google.cloud.memorystore_v1.types.ListBackupCollectionsRequest, dict]):
-                The request object. Request for [ListBackupCollections]
+                The request object. Request for ``ListBackupCollections``.
             parent (str):
                 Required. The resource name of the backupCollection
                 location using the form:
@@ -2044,7 +2063,7 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
 
         Returns:
             google.cloud.memorystore_v1.services.memorystore.pagers.ListBackupCollectionsPager:
-                Response for [ListBackupCollections].
+                Response for ListBackupCollections.
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -2146,7 +2165,7 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
 
         Args:
             request (Union[google.cloud.memorystore_v1.types.GetBackupCollectionRequest, dict]):
-                The request object. Request for [GetBackupCollection].
+                The request object. Request for ``GetBackupCollection``.
             name (str):
                 Required. Instance backupCollection resource name using
                 the form:
@@ -2254,7 +2273,7 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
 
         Args:
             request (Union[google.cloud.memorystore_v1.types.ListBackupsRequest, dict]):
-                The request object. Request for [ListBackups].
+                The request object. Request for ``ListBackups``.
             parent (str):
                 Required. The resource name of the backupCollection
                 using the form:
@@ -2273,7 +2292,7 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
 
         Returns:
             google.cloud.memorystore_v1.services.memorystore.pagers.ListBackupsPager:
-                Response for [ListBackups].
+                Response for ListBackups.
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -2375,7 +2394,7 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
 
         Args:
             request (Union[google.cloud.memorystore_v1.types.GetBackupRequest, dict]):
-                The request object. Request for [GetBackup].
+                The request object. Request for ``GetBackup``.
             name (str):
                 Required. Instance backup resource name using the form:
                 ``projects/{project_id}/locations/{location_id}/backupCollections/{backup_collection_id}/backups/{backup_id}``
@@ -2484,7 +2503,7 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
 
         Args:
             request (Union[google.cloud.memorystore_v1.types.DeleteBackupRequest, dict]):
-                The request object. Request for [DeleteBackup].
+                The request object. Request for ``DeleteBackup``.
             name (str):
                 Required. Instance backup resource name using the form:
                 ``projects/{project_id}/locations/{location_id}/backupCollections/{backup_collection_id}/backups/{backup_id}``
@@ -2614,7 +2633,7 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
 
         Args:
             request (Union[google.cloud.memorystore_v1.types.ExportBackupRequest, dict]):
-                The request object. Request for [ExportBackup].
+                The request object. Request for ``ExportBackup``.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -2728,7 +2747,7 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
 
         Args:
             request (Union[google.cloud.memorystore_v1.types.BackupInstanceRequest, dict]):
-                The request object. Request for [BackupInstance].
+                The request object. Request for ``BackupInstance``.
             name (str):
                 Required. Instance resource name using the form:
                 ``projects/{project_id}/locations/{location_id}/instances/{instance_id}``
@@ -2779,6 +2798,260 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.backup_instance]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            memorystore.Instance,
+            metadata_type=memorystore.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def start_migration(
+        self,
+        request: Optional[Union[memorystore.StartMigrationRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation.Operation:
+        r"""Initiates the migration of a source instance to the
+        target Memorystore instance.
+
+        After the successful completion of this operation, the
+        target instance will:
+
+        1. Set up replication with the source instance and
+            replicate any writes to the source instance.
+        2. Only allow reads.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import memorystore_v1
+
+            def sample_start_migration():
+                # Create a client
+                client = memorystore_v1.MemorystoreClient()
+
+                # Initialize request argument(s)
+                self_managed_source = memorystore_v1.SelfManagedSource()
+                self_managed_source.ip_address = "ip_address_value"
+                self_managed_source.port = 453
+                self_managed_source.network_attachment = "network_attachment_value"
+
+                request = memorystore_v1.StartMigrationRequest(
+                    self_managed_source=self_managed_source,
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.start_migration(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.memorystore_v1.types.StartMigrationRequest, dict]):
+                The request object. Request for ``StartMigration``.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.memorystore_v1.types.Instance` A
+                Memorystore instance.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, memorystore.StartMigrationRequest):
+            request = memorystore.StartMigrationRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.start_migration]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            memorystore.Instance,
+            metadata_type=memorystore.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def finish_migration(
+        self,
+        request: Optional[Union[memorystore.FinishMigrationRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        force: Optional[bool] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation.Operation:
+        r"""Finalizes the migration process.
+
+        After the successful completion of this operation, the
+        target instance will:
+
+        1. Stop replicating from the source instance.
+        2. Allow both reads and writes.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import memorystore_v1
+
+            def sample_finish_migration():
+                # Create a client
+                client = memorystore_v1.MemorystoreClient()
+
+                # Initialize request argument(s)
+                request = memorystore_v1.FinishMigrationRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.finish_migration(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.memorystore_v1.types.FinishMigrationRequest, dict]):
+                The request object. Request for ``FinishMigration``.
+            name (str):
+                Required. The resource name of the
+                instance to finalize migration on.
+                Format:
+                projects/{project}/locations/{location}/instances/{instance}
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            force (bool):
+                Optional. By default, the ``FinishMigration`` operation
+                ensures the target replication offset to catch up to the
+                source offset as of the time of the call. Set this field
+                to ``true`` to bypass this offset verification check.
+
+                This corresponds to the ``force`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.memorystore_v1.types.Instance` A
+                Memorystore instance.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name, force]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, memorystore.FinishMigrationRequest):
+            request = memorystore.FinishMigrationRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+            if force is not None:
+                request.force = force
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.finish_migration]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

@@ -16,18 +16,7 @@
 import logging as std_logging
 from collections import OrderedDict
 import re
-from typing import (
-    Dict,
-    Callable,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Dict, Callable, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 import uuid
 
 from google.cloud.storagebatchoperations_v1 import gapic_version as package_version
@@ -36,8 +25,8 @@ from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.oauth2 import service_account  # type: ignore
+from google.auth import credentials as ga_credentials   # type: ignore
+from google.oauth2 import service_account              # type: ignore
 import google.protobuf
 
 
@@ -46,13 +35,11 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.cloud.location import locations_pb2  # type: ignore
-from google.cloud.storagebatchoperations_v1.services.storage_batch_operations import (
-    pagers,
-)
+from google.cloud.location import locations_pb2 # type: ignore
+from google.cloud.storagebatchoperations_v1.services.storage_batch_operations import pagers
 from google.cloud.storagebatchoperations_v1.types import storage_batch_operations
 from google.cloud.storagebatchoperations_v1.types import storage_batch_operations_types
-from google.longrunning import operations_pb2  # type: ignore
+from google.longrunning import operations_pb2 # type: ignore
 import google.api_core.operation as operation  # type: ignore
 import google.api_core.operation_async as operation_async  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
@@ -62,13 +49,11 @@ from .client import StorageBatchOperationsClient
 
 try:
     from google.api_core import client_logging  # type: ignore
-
     CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
 except ImportError:  # pragma: NO COVER
     CLIENT_LOGGING_SUPPORTED = False
 
 _LOGGER = std_logging.getLogger(__name__)
-
 
 class StorageBatchOperationsAsyncClient:
     """Storage Batch Operations offers a managed experience to
@@ -87,44 +72,22 @@ class StorageBatchOperationsAsyncClient:
     _DEFAULT_ENDPOINT_TEMPLATE = StorageBatchOperationsClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = StorageBatchOperationsClient._DEFAULT_UNIVERSE
 
-    bucket_operation_path = staticmethod(
-        StorageBatchOperationsClient.bucket_operation_path
-    )
-    parse_bucket_operation_path = staticmethod(
-        StorageBatchOperationsClient.parse_bucket_operation_path
-    )
+    bucket_operation_path = staticmethod(StorageBatchOperationsClient.bucket_operation_path)
+    parse_bucket_operation_path = staticmethod(StorageBatchOperationsClient.parse_bucket_operation_path)
     crypto_key_path = staticmethod(StorageBatchOperationsClient.crypto_key_path)
-    parse_crypto_key_path = staticmethod(
-        StorageBatchOperationsClient.parse_crypto_key_path
-    )
+    parse_crypto_key_path = staticmethod(StorageBatchOperationsClient.parse_crypto_key_path)
     job_path = staticmethod(StorageBatchOperationsClient.job_path)
     parse_job_path = staticmethod(StorageBatchOperationsClient.parse_job_path)
-    common_billing_account_path = staticmethod(
-        StorageBatchOperationsClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        StorageBatchOperationsClient.parse_common_billing_account_path
-    )
+    common_billing_account_path = staticmethod(StorageBatchOperationsClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(StorageBatchOperationsClient.parse_common_billing_account_path)
     common_folder_path = staticmethod(StorageBatchOperationsClient.common_folder_path)
-    parse_common_folder_path = staticmethod(
-        StorageBatchOperationsClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        StorageBatchOperationsClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        StorageBatchOperationsClient.parse_common_organization_path
-    )
+    parse_common_folder_path = staticmethod(StorageBatchOperationsClient.parse_common_folder_path)
+    common_organization_path = staticmethod(StorageBatchOperationsClient.common_organization_path)
+    parse_common_organization_path = staticmethod(StorageBatchOperationsClient.parse_common_organization_path)
     common_project_path = staticmethod(StorageBatchOperationsClient.common_project_path)
-    parse_common_project_path = staticmethod(
-        StorageBatchOperationsClient.parse_common_project_path
-    )
-    common_location_path = staticmethod(
-        StorageBatchOperationsClient.common_location_path
-    )
-    parse_common_location_path = staticmethod(
-        StorageBatchOperationsClient.parse_common_location_path
-    )
+    parse_common_project_path = staticmethod(StorageBatchOperationsClient.parse_common_project_path)
+    common_location_path = staticmethod(StorageBatchOperationsClient.common_location_path)
+    parse_common_location_path = staticmethod(StorageBatchOperationsClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -161,16 +124,12 @@ class StorageBatchOperationsAsyncClient:
         sa_file_func = (
             StorageBatchOperationsClient.from_service_account_file.__func__  # type: ignore
         )
-        return sa_file_func(
-            StorageBatchOperationsAsyncClient, filename, *args, **kwargs
-        )
+        return sa_file_func(StorageBatchOperationsAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -233,20 +192,12 @@ class StorageBatchOperationsAsyncClient:
 
     get_transport_class = StorageBatchOperationsClient.get_transport_class
 
-    def __init__(
-        self,
-        *,
-        credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[
-                str,
-                StorageBatchOperationsTransport,
-                Callable[..., StorageBatchOperationsTransport],
-            ]
-        ] = "grpc_asyncio",
-        client_options: Optional[ClientOptions] = None,
-        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-    ) -> None:
+    def __init__(self, *,
+            credentials: Optional[ga_credentials.Credentials] = None,
+            transport: Optional[Union[str, StorageBatchOperationsTransport, Callable[..., StorageBatchOperationsTransport]]] = "grpc_asyncio",
+            client_options: Optional[ClientOptions] = None,
+            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+            ) -> None:
         """Instantiates the storage batch operations async client.
 
         Args:
@@ -304,39 +255,31 @@ class StorageBatchOperationsAsyncClient:
             transport=transport,
             client_options=client_options,
             client_info=client_info,
+
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.cloud.storagebatchoperations_v1.StorageBatchOperationsAsyncClient`.",
-                extra={
+                extra = {
                     "serviceName": "google.cloud.storagebatchoperations.v1.StorageBatchOperations",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
-                }
-                if hasattr(self._client._transport, "_credentials")
-                else {
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
+                } if hasattr(self._client._transport, "_credentials") else {
                     "serviceName": "google.cloud.storagebatchoperations.v1.StorageBatchOperations",
                     "credentialsType": None,
-                },
+                }
             )
 
-    async def list_jobs(
-        self,
-        request: Optional[Union[storage_batch_operations.ListJobsRequest, dict]] = None,
-        *,
-        parent: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> pagers.ListJobsAsyncPager:
+    async def list_jobs(self,
+            request: Optional[Union[storage_batch_operations.ListJobsRequest, dict]] = None,
+            *,
+            parent: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> pagers.ListJobsAsyncPager:
         r"""Lists Jobs in a given project.
 
         .. code-block:: python
@@ -397,14 +340,10 @@ class StorageBatchOperationsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of "
+                             "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -418,14 +357,14 @@ class StorageBatchOperationsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_jobs
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_jobs]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("parent", request.parent),
+            )),
         )
 
         # Validate the universe domain.
@@ -453,15 +392,14 @@ class StorageBatchOperationsAsyncClient:
         # Done; return the response.
         return response
 
-    async def get_job(
-        self,
-        request: Optional[Union[storage_batch_operations.GetJobRequest, dict]] = None,
-        *,
-        name: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> storage_batch_operations_types.Job:
+    async def get_job(self,
+            request: Optional[Union[storage_batch_operations.GetJobRequest, dict]] = None,
+            *,
+            name: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> storage_batch_operations_types.Job:
         r"""Gets a batch job.
 
         .. code-block:: python
@@ -518,14 +456,10 @@ class StorageBatchOperationsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of "
+                             "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -544,7 +478,9 @@ class StorageBatchOperationsAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("name", request.name),
+            )),
         )
 
         # Validate the universe domain.
@@ -561,19 +497,16 @@ class StorageBatchOperationsAsyncClient:
         # Done; return the response.
         return response
 
-    async def create_job(
-        self,
-        request: Optional[
-            Union[storage_batch_operations.CreateJobRequest, dict]
-        ] = None,
-        *,
-        parent: Optional[str] = None,
-        job: Optional[storage_batch_operations_types.Job] = None,
-        job_id: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> operation_async.AsyncOperation:
+    async def create_job(self,
+            request: Optional[Union[storage_batch_operations.CreateJobRequest, dict]] = None,
+            *,
+            parent: Optional[str] = None,
+            job: Optional[storage_batch_operations_types.Job] = None,
+            job_id: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> operation_async.AsyncOperation:
         r"""Creates a batch job.
 
         .. code-block:: python
@@ -657,14 +590,10 @@ class StorageBatchOperationsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, job, job_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of "
+                             "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -682,17 +611,17 @@ class StorageBatchOperationsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_job
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_job]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("parent", request.parent),
+            )),
         )
 
-        self._client._setup_request_id(request, "request_id", False)
+        self._client._setup_request_id(request, 'request_id', False)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -716,17 +645,14 @@ class StorageBatchOperationsAsyncClient:
         # Done; return the response.
         return response
 
-    async def delete_job(
-        self,
-        request: Optional[
-            Union[storage_batch_operations.DeleteJobRequest, dict]
-        ] = None,
-        *,
-        name: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> None:
+    async def delete_job(self,
+            request: Optional[Union[storage_batch_operations.DeleteJobRequest, dict]] = None,
+            *,
+            name: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> None:
         r"""Deletes a batch job.
 
         .. code-block:: python
@@ -774,14 +700,10 @@ class StorageBatchOperationsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of "
+                             "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -795,17 +717,17 @@ class StorageBatchOperationsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_job
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_job]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("name", request.name),
+            )),
         )
 
-        self._client._setup_request_id(request, "request_id", False)
+        self._client._setup_request_id(request, 'request_id', False)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -818,17 +740,14 @@ class StorageBatchOperationsAsyncClient:
             metadata=metadata,
         )
 
-    async def cancel_job(
-        self,
-        request: Optional[
-            Union[storage_batch_operations.CancelJobRequest, dict]
-        ] = None,
-        *,
-        name: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> storage_batch_operations.CancelJobResponse:
+    async def cancel_job(self,
+            request: Optional[Union[storage_batch_operations.CancelJobRequest, dict]] = None,
+            *,
+            name: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> storage_batch_operations.CancelJobResponse:
         r"""Cancels a batch job.
 
         .. code-block:: python
@@ -883,14 +802,10 @@ class StorageBatchOperationsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of "
+                             "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -904,17 +819,17 @@ class StorageBatchOperationsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.cancel_job
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.cancel_job]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("name", request.name),
+            )),
         )
 
-        self._client._setup_request_id(request, "request_id", False)
+        self._client._setup_request_id(request, 'request_id', False)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -930,17 +845,14 @@ class StorageBatchOperationsAsyncClient:
         # Done; return the response.
         return response
 
-    async def list_bucket_operations(
-        self,
-        request: Optional[
-            Union[storage_batch_operations.ListBucketOperationsRequest, dict]
-        ] = None,
-        *,
-        parent: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> pagers.ListBucketOperationsAsyncPager:
+    async def list_bucket_operations(self,
+            request: Optional[Union[storage_batch_operations.ListBucketOperationsRequest, dict]] = None,
+            *,
+            parent: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> pagers.ListBucketOperationsAsyncPager:
         r"""Lists BucketOperations in a given project and job.
 
         .. code-block:: python
@@ -1002,20 +914,14 @@ class StorageBatchOperationsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of "
+                             "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, storage_batch_operations.ListBucketOperationsRequest
-        ):
+        if not isinstance(request, storage_batch_operations.ListBucketOperationsRequest):
             request = storage_batch_operations.ListBucketOperationsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -1025,14 +931,14 @@ class StorageBatchOperationsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_bucket_operations
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_bucket_operations]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("parent", request.parent),
+            )),
         )
 
         # Validate the universe domain.
@@ -1060,17 +966,14 @@ class StorageBatchOperationsAsyncClient:
         # Done; return the response.
         return response
 
-    async def get_bucket_operation(
-        self,
-        request: Optional[
-            Union[storage_batch_operations.GetBucketOperationRequest, dict]
-        ] = None,
-        *,
-        name: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> storage_batch_operations_types.BucketOperation:
+    async def get_bucket_operation(self,
+            request: Optional[Union[storage_batch_operations.GetBucketOperationRequest, dict]] = None,
+            *,
+            name: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> storage_batch_operations_types.BucketOperation:
         r"""Gets a BucketOperation.
 
         .. code-block:: python
@@ -1129,14 +1032,10 @@ class StorageBatchOperationsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of "
+                             "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1150,14 +1049,14 @@ class StorageBatchOperationsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_bucket_operation
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_bucket_operation]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("name", request.name),
+            )),
         )
 
         # Validate the universe domain.
@@ -1216,7 +1115,8 @@ class StorageBatchOperationsAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request_pb.name),)),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
@@ -1224,11 +1124,7 @@ class StorageBatchOperationsAsyncClient:
 
         # Send the request.
         response = await rpc(
-            request_pb,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+            request_pb, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
@@ -1275,7 +1171,8 @@ class StorageBatchOperationsAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request_pb.name),)),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
@@ -1283,11 +1180,7 @@ class StorageBatchOperationsAsyncClient:
 
         # Send the request.
         response = await rpc(
-            request_pb,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+            request_pb, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
@@ -1338,19 +1231,15 @@ class StorageBatchOperationsAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request_pb.name),)),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
 
         # Send the request.
-        await rpc(
-            request_pb,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+        await rpc(request_pb, retry=retry, timeout=timeout, metadata=metadata,)
 
     async def cancel_operation(
         self,
@@ -1397,19 +1286,15 @@ class StorageBatchOperationsAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request_pb.name),)),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
 
         # Send the request.
-        await rpc(
-            request_pb,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+        await rpc(request_pb, retry=retry, timeout=timeout, metadata=metadata,)
 
     async def get_location(
         self,
@@ -1453,7 +1338,8 @@ class StorageBatchOperationsAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request_pb.name),)),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
@@ -1461,11 +1347,7 @@ class StorageBatchOperationsAsyncClient:
 
         # Send the request.
         response = await rpc(
-            request_pb,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+            request_pb, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
@@ -1512,7 +1394,8 @@ class StorageBatchOperationsAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request_pb.name),)),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
@@ -1520,11 +1403,7 @@ class StorageBatchOperationsAsyncClient:
 
         # Send the request.
         response = await rpc(
-            request_pb,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+            request_pb, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
@@ -1535,13 +1414,10 @@ class StorageBatchOperationsAsyncClient:
     async def __aexit__(self, exc_type, exc, tb):
         await self.transport.close()
 
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
+
+__all__ = (
+    "StorageBatchOperationsAsyncClient",
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
-
-
-__all__ = ("StorageBatchOperationsAsyncClient",)

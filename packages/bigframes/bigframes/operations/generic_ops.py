@@ -45,6 +45,21 @@ NotNullOp = base_ops.create_unary_op(
 )
 notnull_op = NotNullOp()
 
+
+# Semantics match Python's truth value testing (truthy and falsey objects).
+# See https://docs.python.org/3/library/stdtypes.html#truth-value-testing
+CoerceToBoolOp = base_ops.create_unary_op(
+    name="coerce_to_bool",
+    type_signature=op_typing.FixedOutputType(
+        dtypes.is_bool_coercable, dtypes.BOOL_DTYPE, description="coercable to bool"
+    ),
+)
+CoerceToBoolOp.__doc__ = (
+    "Coerce a value to a boolean, matching Python's truth value testing semantics "
+    "(truthy/falsey). See https://docs.python.org/3/library/stdtypes.html#truth-value-testing"
+)
+coerce_to_bool_op = CoerceToBoolOp()
+
 HashOp = base_ops.create_unary_op(
     name="hash",
     type_signature=op_typing.FixedOutputType(
@@ -430,3 +445,66 @@ class PyUdfOp(base_ops.NaryOp):
 
     def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
         return self._output_type
+
+
+@dataclasses.dataclass(frozen=True)
+class GetItemOp(base_ops.UnaryOp):
+    """Represents subscripting with a statically-known key (e.g. `obj[1]` or `obj["field"]`).
+
+    We must keep this static UnaryOp separate from DynamicGetItemOp (a BinaryOp)
+    primarily to support Struct field subscripting. Because the return type of a Struct
+    field lookup depends on the specific field being accessed, and type resolution
+    (output_type) only has access to input types rather than input values, we must store
+    the static key inside the operation instance to infer the correct output type.
+    """
+
+    name: typing.ClassVar[str] = "getitem"
+    key: typing.Union[str, int]
+
+    def output_type(self, *input_types):
+        input_type = input_types[0]
+        if dtypes.is_struct_like(input_type):
+            pa_type = input_type.pyarrow_dtype
+            pa_result_type = pa_type[self.key].type
+            return dtypes.arrow_dtype_to_bigframes_dtype(pa_result_type)
+        elif dtypes.is_array_like(input_type):
+            if not isinstance(self.key, int):
+                raise TypeError("Array index must be an integer")
+            return dtypes.arrow_dtype_to_bigframes_dtype(
+                input_type.pyarrow_dtype.value_type
+            )
+        elif dtypes.is_string_like(input_type):
+            if not isinstance(self.key, int):
+                raise TypeError("String index must be an integer")
+            return dtypes.STRING_DTYPE
+        else:
+            raise TypeError(f"Cannot subscript input of type {input_type}")
+
+
+@dataclasses.dataclass(frozen=True)
+class DynamicGetItemOp(base_ops.BinaryOp):
+    """Represents subscripting with a dynamic key expression (e.g. `obj[expr]`).
+
+    Unlike GetItemOp, this operates on 2 dynamic inputs (the container and the key).
+    Because SQL/BigQuery does not support dynamic struct field access (struct paths must
+    be statically declared), this operation is only supported for array and string
+    subscripting, where output type inference does not require knowing the runtime
+    index value.
+    """
+
+    name: typing.ClassVar[str] = "dynamic_getitem"
+
+    def output_type(self, *input_types):
+        left_type = input_types[0]
+        right_type = input_types[1]
+        if not dtypes.is_numeric(right_type):
+            raise TypeError(f"Subscript index must be numeric type, got {right_type}")
+
+        if dtypes.is_array_like(left_type):
+            return dtypes.arrow_dtype_to_bigframes_dtype(
+                left_type.pyarrow_dtype.value_type
+            )
+        elif dtypes.is_string_like(left_type):
+            return dtypes.STRING_DTYPE
+        else:
+            raise TypeError(f"Cannot dynamically subscript input of type {left_type}")

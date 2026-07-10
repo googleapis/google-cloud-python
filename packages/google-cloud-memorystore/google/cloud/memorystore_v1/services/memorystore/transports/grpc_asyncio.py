@@ -545,12 +545,12 @@ class MemorystoreGrpcAsyncIOTransport(MemorystoreTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_shared_regional_certificate_authority" not in self._stubs:
-            self._stubs[
-                "get_shared_regional_certificate_authority"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.memorystore.v1.Memorystore/GetSharedRegionalCertificateAuthority",
-                request_serializer=memorystore.GetSharedRegionalCertificateAuthorityRequest.serialize,
-                response_deserializer=memorystore.SharedRegionalCertificateAuthority.deserialize,
+            self._stubs["get_shared_regional_certificate_authority"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.memorystore.v1.Memorystore/GetSharedRegionalCertificateAuthority",
+                    request_serializer=memorystore.GetSharedRegionalCertificateAuthorityRequest.serialize,
+                    response_deserializer=memorystore.SharedRegionalCertificateAuthority.deserialize,
+                )
             )
         return self._stubs["get_shared_regional_certificate_authority"]
 
@@ -799,6 +799,76 @@ class MemorystoreGrpcAsyncIOTransport(MemorystoreTransport):
             )
         return self._stubs["backup_instance"]
 
+    @property
+    def start_migration(
+        self,
+    ) -> Callable[
+        [memorystore.StartMigrationRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the start migration method over gRPC.
+
+        Initiates the migration of a source instance to the
+        target Memorystore instance.
+
+        After the successful completion of this operation, the
+        target instance will:
+
+        1. Set up replication with the source instance and
+            replicate any writes to the source instance.
+        2. Only allow reads.
+
+        Returns:
+            Callable[[~.StartMigrationRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "start_migration" not in self._stubs:
+            self._stubs["start_migration"] = self._logged_channel.unary_unary(
+                "/google.cloud.memorystore.v1.Memorystore/StartMigration",
+                request_serializer=memorystore.StartMigrationRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["start_migration"]
+
+    @property
+    def finish_migration(
+        self,
+    ) -> Callable[
+        [memorystore.FinishMigrationRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the finish migration method over gRPC.
+
+        Finalizes the migration process.
+
+        After the successful completion of this operation, the
+        target instance will:
+
+        1. Stop replicating from the source instance.
+        2. Allow both reads and writes.
+
+        Returns:
+            Callable[[~.FinishMigrationRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "finish_migration" not in self._stubs:
+            self._stubs["finish_migration"] = self._logged_channel.unary_unary(
+                "/google.cloud.memorystore.v1.Memorystore/FinishMigration",
+                request_serializer=memorystore.FinishMigrationRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["finish_migration"]
+
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
@@ -901,6 +971,16 @@ class MemorystoreGrpcAsyncIOTransport(MemorystoreTransport):
             ),
             self.backup_instance: self._wrap_method(
                 self.backup_instance,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.start_migration: self._wrap_method(
+                self.start_migration,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.finish_migration: self._wrap_method(
+                self.finish_migration,
                 default_timeout=None,
                 client_info=client_info,
             ),

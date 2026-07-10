@@ -182,18 +182,16 @@ class AsyncAuthorizedSession:
                     google.auth.transport._mtls_helper.check_use_client_cert
                 )
                 if not use_client_cert:
-                    self._is_mtls = False
                     return
 
                 try:
                     (
-                        self._is_mtls,
+                        is_mtls,
                         cert,
                         key,
                     ) = await mtls.get_client_cert_and_key(client_cert_callback)
 
-                    if self._is_mtls:
-                        self._cached_cert = cert
+                    if is_mtls:
                         ssl_context = await mtls._run_in_executor(
                             mtls.make_client_cert_ssl_context, cert, key
                         )
@@ -208,9 +206,13 @@ class AsyncAuthorizedSession:
                             old_auth_request = self._auth_request
                             self._auth_request = AiohttpRequest(session=new_session)
 
-                            await old_auth_request.close()
+                            try:
+                                await old_auth_request.close()
+                            except Exception:
+                                # Suppress so it doesn't abort the mTLS configuration
+                                pass
                         else:
-                            self._is_mtls = False
+                            is_mtls = False
                             warnings.warn(
                                 "Attempted to establish mTLS, but a custom async transport was provided. "
                                 "google-auth cannot automatically configure custom transports for mTLS. "
@@ -220,12 +222,13 @@ class AsyncAuthorizedSession:
                                 UserWarning,
                             )
 
-                except (
-                    exceptions.ClientCertError,
-                    ImportError,
-                    OSError,
-                ) as caught_exc:
-                    self._is_mtls = False
+                    self._is_mtls = is_mtls
+                    if is_mtls:
+                        self._cached_cert = cert
+                    else:
+                        self._cached_cert = None
+
+                except Exception as caught_exc:
                     new_exc = exceptions.MutualTLSChannelError(caught_exc)
                     raise new_exc from caught_exc
 
@@ -586,4 +589,10 @@ class AsyncAuthorizedSession:
         """
         Close the underlying auth request session.
         """
+        if self._mtls_init_task and not self._mtls_init_task.done():
+            self._mtls_init_task.cancel()
+            try:
+                await self._mtls_init_task
+            except asyncio.CancelledError:
+                pass
         await self._auth_request.close()

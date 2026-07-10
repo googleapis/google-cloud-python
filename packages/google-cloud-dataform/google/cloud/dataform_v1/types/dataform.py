@@ -172,7 +172,7 @@ class DirectoryContentsView(proto.Enum):
 
     Values:
         DIRECTORY_CONTENTS_VIEW_UNSPECIFIED (0):
-            The default / unset value. Defaults to
+            The default unset value. Defaults to
             DIRECTORY_CONTENTS_VIEW_BASIC.
         DIRECTORY_CONTENTS_VIEW_BASIC (1):
             Includes only the file or directory name.
@@ -284,12 +284,18 @@ class Repository(proto.Message):
     class GitRemoteSettings(proto.Message):
         r"""Controls Git remote configuration for a repository.
 
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
         Attributes:
             url (str):
                 Required. The Git remote's URL.
             default_branch (str):
-                Required. The Git remote's default branch
-                name.
+                Optional. The Git remote's default branch name. If not set,
+                ``main`` will be used.
+            effective_default_branch (str):
+                Output only. The Git remote's effective default branch name.
+                This is the default branch name of the Git remote if it is
+                set, otherwise it is ``main``.
             authentication_token_secret_version (str):
                 Optional. The name of the Secret Manager secret version to
                 use as an authentication token for Git operations. Must be
@@ -297,6 +303,12 @@ class Repository(proto.Message):
             ssh_authentication_config (google.cloud.dataform_v1.types.Repository.GitRemoteSettings.SshAuthenticationConfig):
                 Optional. Authentication fields for remote
                 uris using SSH protocol.
+            git_repository_link (str):
+                Optional. Resource name for the ``GitRepositoryLink`` used
+                for machine credentials. Must be in the format
+                ``projects/*/locations/*/connections/*/gitRepositoryLinks/*``
+
+                This field is a member of `oneof`_ ``_git_repository_link``.
             token_status (google.cloud.dataform_v1.types.Repository.GitRemoteSettings.TokenStatus):
                 Output only. Deprecated: The field does not
                 contain any token status information.
@@ -355,6 +367,10 @@ class Repository(proto.Message):
             proto.STRING,
             number=2,
         )
+        effective_default_branch: str = proto.Field(
+            proto.STRING,
+            number=9,
+        )
         authentication_token_secret_version: str = proto.Field(
             proto.STRING,
             number=3,
@@ -363,6 +379,11 @@ class Repository(proto.Message):
             proto.MESSAGE,
             number=5,
             message="Repository.GitRemoteSettings.SshAuthenticationConfig",
+        )
+        git_repository_link: str = proto.Field(
+            proto.STRING,
+            number=7,
+            optional=True,
         )
         token_status: "Repository.GitRemoteSettings.TokenStatus" = proto.Field(
             proto.ENUM,
@@ -1484,12 +1505,12 @@ class FetchFileGitStatusesResponse(proto.Message):
             enum="FetchFileGitStatusesResponse.UncommittedFileChange.State",
         )
 
-    uncommitted_file_changes: MutableSequence[
-        UncommittedFileChange
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=UncommittedFileChange,
+    uncommitted_file_changes: MutableSequence[UncommittedFileChange] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=UncommittedFileChange,
+        )
     )
 
 
@@ -1740,11 +1761,15 @@ class DirectoryEntry(proto.Message):
 
     Attributes:
         file (str):
-            A file in the directory.
+            A file in the directory. The path is returned
+            including the full folder structure from the
+            root.
 
             This field is a member of `oneof`_ ``entry``.
         directory (str):
-            A child directory in the directory.
+            A child directory in the directory. The path
+            is returned including the full folder structure
+            from the root.
 
             This field is a member of `oneof`_ ``entry``.
         metadata (google.cloud.dataform_v1.types.FilesystemEntryMetadata):
@@ -2280,12 +2305,12 @@ class ReleaseConfig(proto.Message):
         proto.STRING,
         number=7,
     )
-    recent_scheduled_release_records: MutableSequence[
-        ScheduledReleaseRecord
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=5,
-        message=ScheduledReleaseRecord,
+    recent_scheduled_release_records: MutableSequence[ScheduledReleaseRecord] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=5,
+            message=ScheduledReleaseRecord,
+        )
     )
     release_compilation_result: str = proto.Field(
         proto.STRING,
@@ -3702,12 +3727,12 @@ class QueryCompilationResultActionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    compilation_result_actions: MutableSequence[
-        "CompilationResultAction"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="CompilationResultAction",
+    compilation_result_actions: MutableSequence["CompilationResultAction"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="CompilationResultAction",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -3830,12 +3855,12 @@ class WorkflowConfig(proto.Message):
         proto.STRING,
         number=7,
     )
-    recent_scheduled_execution_records: MutableSequence[
-        ScheduledExecutionRecord
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=5,
-        message=ScheduledExecutionRecord,
+    recent_scheduled_execution_records: MutableSequence[ScheduledExecutionRecord] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=5,
+            message=ScheduledExecutionRecord,
+        )
     )
     disabled: bool = proto.Field(
         proto.BOOL,
@@ -4511,11 +4536,11 @@ class WorkflowInvocationAction(proto.Message):
                 Output only. The code contents of a Notebook
                 to be run.
             job_id (str):
-                Output only. The ID of the Vertex job that
-                executed the notebook in contents and also the
-                ID used for the outputs created in Google Cloud
-                Storage buckets. Only set once the job has
-                started to run.
+                Output only. The ID of the Gemini Enterprise
+                Agent Platform job that executed the notebook in
+                contents and also the ID used for the outputs
+                created in Google Cloud Storage buckets. Only
+                set once the job has started to run.
         """
 
         contents: str = proto.Field(
@@ -4805,12 +4830,12 @@ class QueryWorkflowInvocationActionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    workflow_invocation_actions: MutableSequence[
-        "WorkflowInvocationAction"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="WorkflowInvocationAction",
+    workflow_invocation_actions: MutableSequence["WorkflowInvocationAction"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="WorkflowInvocationAction",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -4909,9 +4934,8 @@ class Folder(proto.Message):
             name. This should take the format:
             projects/{project}/locations/{location}/folders/{folder},
             projects/{project}/locations/{location}/teamFolders/{teamFolder},
-            or just projects/{project}/locations/{location}
-            if this is a root Folder. This field can only be
-            updated through MoveFolder.
+            or just "" if this is a root Folder. This field
+            can only be updated through MoveFolder.
         team_folder_name (str):
             Output only. The resource name of the
             TeamFolder that this Folder is associated with.
@@ -5216,8 +5240,8 @@ class QueryFolderContentsRequest(proto.Message):
 
     Attributes:
         folder (str):
-            Required. Name of the folder whose contents to list. Format:
-            projects/*/locations/*/folders/\*
+            Required. Resource name of the Folder to list contents for.
+            Format: projects/*/locations/*/folders/\*
         page_size (int):
             Optional. Maximum number of paths to return.
             The server may return fewer items than
@@ -5338,8 +5362,8 @@ class QueryUserRootContentsRequest(proto.Message):
 
     Attributes:
         location (str):
-            Required. Location of the user root folder whose contents to
-            list. Format: projects/*/locations/*
+            Required. Location of the user root folder to list contents
+            for. Format: projects/*/locations/*
         page_size (int):
             Optional. Maximum number of paths to return.
             The server may return fewer items than
@@ -5599,8 +5623,8 @@ class QueryTeamFolderContentsRequest(proto.Message):
 
     Attributes:
         team_folder (str):
-            Required. Name of the team_folder whose contents to list.
-            Format: ``projects/*/locations/*/teamFolders/*``.
+            Required. Resource name of the TeamFolder to list contents
+            for. Format: ``projects/*/locations/*/teamFolders/*``.
         page_size (int):
             Optional. Maximum number of paths to return.
             The server may return fewer items than
@@ -5724,10 +5748,10 @@ class SearchTeamFoldersRequest(proto.Message):
             Required. Location in which to query TeamFolders. Format:
             ``projects/*/locations/*``.
         page_size (int):
-            Optional. Maximum number of TeamFolders to
-            return. The server may return fewer items than
-            requested. If unspecified, the server will pick
-            an appropriate default.
+            Optional. Maximum number of ``TeamFolders`` to return. The
+            server may return fewer items than requested. If
+            unspecified, the server will pick a default of ``page_size``
+            = 50.
         page_token (str):
             Optional. Page token received from a previous
             ``SearchTeamFolders`` call. Provide this to retrieve the

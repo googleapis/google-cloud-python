@@ -1022,10 +1022,9 @@ def test_node_group_controller_client_get_mtls_endpoint_and_cert_source(client_c
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1070,10 +1069,9 @@ def test_node_group_controller_client_get_mtls_endpoint_and_cert_source(client_c
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1109,10 +1107,9 @@ def test_node_group_controller_client_get_mtls_endpoint_and_cert_source(client_c
                 "google.auth.transport.mtls.default_client_cert_source",
                 return_value=mock_client_cert_source,
             ):
-                (
-                    api_endpoint,
-                    cert_source,
-                ) = client_class.get_mtls_endpoint_and_cert_source()
+                api_endpoint, cert_source = (
+                    client_class.get_mtls_endpoint_and_cert_source()
+                )
                 assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
                 assert cert_source == mock_client_cert_source
 
@@ -1487,9 +1484,9 @@ def test_create_node_group_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_node_group
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_node_group] = (
+            mock_rpc
+        )
         request = {}
         client.create_node_group(request)
 
@@ -1853,9 +1850,9 @@ def test_resize_node_group_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.resize_node_group
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.resize_node_group] = (
+            mock_rpc
+        )
         request = {}
         client.resize_node_group(request)
 
@@ -2465,9 +2462,9 @@ def test_create_node_group_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_node_group
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_node_group] = (
+            mock_rpc
+        )
 
         request = {}
         client.create_node_group(request)
@@ -2669,9 +2666,9 @@ def test_resize_node_group_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.resize_node_group
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.resize_node_group] = (
+            mock_rpc
+        )
 
         request = {}
         client.resize_node_group(request)
@@ -3357,6 +3354,14 @@ def test_create_node_group_rest_call_success(request_type):
                 "local_ssd_interface": "local_ssd_interface_value",
                 "boot_disk_provisioned_iops": 2793,
                 "boot_disk_provisioned_throughput": 3464,
+                "attached_disk_configs": [
+                    {
+                        "disk_type": 1,
+                        "disk_size_gb": 1261,
+                        "provisioned_iops": 1740,
+                        "provisioned_throughput": 2411,
+                    }
+                ],
             },
             "is_preemptible": True,
             "preemptibility": 1,
@@ -3385,6 +3390,7 @@ def test_create_node_group_rest_call_success(request_type):
                             "machine_types_value2",
                         ],
                         "rank": 428,
+                        "disk_config": {},
                     }
                 ],
                 "instance_selection_results": [

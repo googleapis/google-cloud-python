@@ -60,7 +60,7 @@ def test_ai_function_pandas_tuple_input(session):
     s2 = bpd.Series(["fruit", "tree"], session=session)
     prompt = (s1, " is a ", s2)
 
-    result = bbq.ai.generate_bool(prompt, endpoint="gemini-3.5-flash")
+    result = bbq.ai.generate_bool(prompt, endpoint="gemini-2.5-flash")
 
     assert _contains_no_nulls(result)
     assert result.dtype == pd.ArrowDtype(
@@ -92,7 +92,7 @@ def test_ai_function_string_input(session):
         mock_get_session.return_value = session
         prompt = "Is apple a fruit?"
 
-        result = bbq.ai.generate_bool(prompt, endpoint="gemini-3.5-flash")
+        result = bbq.ai.generate_bool(prompt, endpoint="gemini-2.5-flash")
 
         assert _contains_no_nulls(result)
         assert result.dtype == pd.ArrowDtype(
@@ -113,7 +113,7 @@ def test_ai_function_compile_model_params(session):
     model_params = {"generation_config": {"thinking_config": {"thinking_budget": 0}}}
 
     result = bbq.ai.generate_bool(
-        prompt, endpoint="gemini-3.5-flash", model_params=model_params
+        prompt, endpoint="gemini-2.5-flash", model_params=model_params
     )
 
     assert _contains_no_nulls(result)
@@ -132,7 +132,7 @@ def test_ai_generate(session):
     country = bpd.Series(["Japan", "Canada"], session=session)
     prompt = ("What's the capital city of ", country, "? one word only")
 
-    result = bbq.ai.generate(prompt, endpoint="gemini-3.5-flash")
+    result = bbq.ai.generate(prompt, endpoint="gemini-2.5-flash")
 
     assert _contains_no_nulls(result)
     assert result.dtype == pd.ArrowDtype(
@@ -152,7 +152,7 @@ def test_ai_generate_with_output_schema(session):
 
     result = bbq.ai.generate(
         prompt,
-        endpoint="gemini-3.5-flash",
+        endpoint="gemini-2.5-flash",
         output_schema={"population": "INT64", "is_in_north_america": "bool"},
     )
 
@@ -176,7 +176,7 @@ def test_ai_generate_with_invalid_output_schema_raise_error(session):
     with pytest.raises(ValueError):
         bbq.ai.generate(
             prompt,
-            endpoint="gemini-3.5-flash",
+            endpoint="gemini-2.5-flash",
             output_schema={"population": "INT64", "is_in_north_america": "JSON"},
         )
 
@@ -186,7 +186,7 @@ def test_ai_generate_bool(session):
     s2 = bpd.Series(["fruit", "tree"], session=session)
     prompt = (s1, " is a ", s2)
 
-    result = bbq.ai.generate_bool(prompt, endpoint="gemini-3.5-flash")
+    result = bbq.ai.generate_bool(prompt, endpoint="gemini-2.5-flash")
 
     assert _contains_no_nulls(result)
     assert result.dtype == pd.ArrowDtype(
@@ -227,7 +227,7 @@ def test_ai_generate_int(session):
     s = bpd.Series(["Cat"], session=session)
     prompt = ("How many legs does a ", s, " have?")
 
-    result = bbq.ai.generate_int(prompt, endpoint="gemini-3.5-flash")
+    result = bbq.ai.generate_int(prompt, endpoint="gemini-2.5-flash")
 
     assert _contains_no_nulls(result)
     assert result.dtype == pd.ArrowDtype(
@@ -270,7 +270,7 @@ def test_ai_generate_double(session):
     s = bpd.Series(["Cat"], session=session)
     prompt = ("How many legs does a ", s, " have?")
 
-    result = bbq.ai.generate_double(prompt, endpoint="gemini-3.5-flash")
+    result = bbq.ai.generate_double(prompt, endpoint="gemini-2.5-flash")
 
     assert _contains_no_nulls(result)
     assert result.dtype == pd.ArrowDtype(

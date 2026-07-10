@@ -1031,10 +1031,9 @@ def test_workflow_template_service_client_get_mtls_endpoint_and_cert_source(
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1079,10 +1078,9 @@ def test_workflow_template_service_client_get_mtls_endpoint_and_cert_source(
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1118,10 +1116,9 @@ def test_workflow_template_service_client_get_mtls_endpoint_and_cert_source(
                 "google.auth.transport.mtls.default_client_cert_source",
                 return_value=mock_client_cert_source,
             ):
-                (
-                    api_endpoint,
-                    cert_source,
-                ) = client_class.get_mtls_endpoint_and_cert_source()
+                api_endpoint, cert_source = (
+                    client_class.get_mtls_endpoint_and_cert_source()
+                )
                 assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
                 assert cert_source == mock_client_cert_source
 
@@ -1865,9 +1862,9 @@ def test_get_workflow_template_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_workflow_template
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_workflow_template] = (
+            mock_rpc
+        )
         request = {}
         client.get_workflow_template(request)
 
@@ -4294,9 +4291,9 @@ def test_get_workflow_template_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_workflow_template
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_workflow_template] = (
+            mock_rpc
+        )
 
         request = {}
         client.get_workflow_template(request)
@@ -6061,6 +6058,14 @@ def test_create_workflow_template_rest_call_success(request_type):
                             "local_ssd_interface": "local_ssd_interface_value",
                             "boot_disk_provisioned_iops": 2793,
                             "boot_disk_provisioned_throughput": 3464,
+                            "attached_disk_configs": [
+                                {
+                                    "disk_type": 1,
+                                    "disk_size_gb": 1261,
+                                    "provisioned_iops": 1740,
+                                    "provisioned_throughput": 2411,
+                                }
+                            ],
                         },
                         "is_preemptible": True,
                         "preemptibility": 1,
@@ -6089,6 +6094,7 @@ def test_create_workflow_template_rest_call_success(request_type):
                                         "machine_types_value2",
                                     ],
                                     "rank": 428,
+                                    "disk_config": {},
                                 }
                             ],
                             "instance_selection_results": [
@@ -6859,6 +6865,14 @@ def test_instantiate_inline_workflow_template_rest_call_success(request_type):
                             "local_ssd_interface": "local_ssd_interface_value",
                             "boot_disk_provisioned_iops": 2793,
                             "boot_disk_provisioned_throughput": 3464,
+                            "attached_disk_configs": [
+                                {
+                                    "disk_type": 1,
+                                    "disk_size_gb": 1261,
+                                    "provisioned_iops": 1740,
+                                    "provisioned_throughput": 2411,
+                                }
+                            ],
                         },
                         "is_preemptible": True,
                         "preemptibility": 1,
@@ -6887,6 +6901,7 @@ def test_instantiate_inline_workflow_template_rest_call_success(request_type):
                                         "machine_types_value2",
                                     ],
                                     "rank": 428,
+                                    "disk_config": {},
                                 }
                             ],
                             "instance_selection_results": [
@@ -7375,6 +7390,14 @@ def test_update_workflow_template_rest_call_success(request_type):
                             "local_ssd_interface": "local_ssd_interface_value",
                             "boot_disk_provisioned_iops": 2793,
                             "boot_disk_provisioned_throughput": 3464,
+                            "attached_disk_configs": [
+                                {
+                                    "disk_type": 1,
+                                    "disk_size_gb": 1261,
+                                    "provisioned_iops": 1740,
+                                    "provisioned_throughput": 2411,
+                                }
+                            ],
                         },
                         "is_preemptible": True,
                         "preemptibility": 1,
@@ -7403,6 +7426,7 @@ def test_update_workflow_template_rest_call_success(request_type):
                                         "machine_types_value2",
                                     ],
                                     "rank": 428,
+                                    "disk_config": {},
                                 }
                             ],
                             "instance_selection_results": [

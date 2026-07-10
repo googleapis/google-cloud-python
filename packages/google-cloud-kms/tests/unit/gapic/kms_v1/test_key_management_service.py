@@ -1028,10 +1028,9 @@ def test_key_management_service_client_get_mtls_endpoint_and_cert_source(client_
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1076,10 +1075,9 @@ def test_key_management_service_client_get_mtls_endpoint_and_cert_source(client_
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1115,10 +1113,9 @@ def test_key_management_service_client_get_mtls_endpoint_and_cert_source(client_
                 "google.auth.transport.mtls.default_client_cert_source",
                 return_value=mock_client_cert_source,
             ):
-                (
-                    api_endpoint,
-                    cert_source,
-                ) = client_class.get_mtls_endpoint_and_cert_source()
+                api_endpoint, cert_source = (
+                    client_class.get_mtls_endpoint_and_cert_source()
+                )
                 assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
                 assert cert_source == mock_client_cert_source
 
@@ -2023,9 +2020,9 @@ def test_list_crypto_keys_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_crypto_keys
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_crypto_keys] = (
+            mock_rpc
+        )
         request = {}
         client.list_crypto_keys(request)
 
@@ -3104,9 +3101,9 @@ def test_list_import_jobs_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_import_jobs
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_import_jobs] = (
+            mock_rpc
+        )
         request = {}
         client.list_import_jobs(request)
 
@@ -3633,9 +3630,9 @@ def test_list_retired_resources_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_retired_resources
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_retired_resources] = (
+            mock_rpc
+        )
         request = {}
         client.list_retired_resources(request)
 
@@ -4855,9 +4852,9 @@ def test_get_crypto_key_version_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_crypto_key_version
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_crypto_key_version] = (
+            mock_rpc
+        )
         request = {}
         client.get_crypto_key_version(request)
 
@@ -5499,6 +5496,7 @@ def test_get_import_job(request_type, transport: str = "grpc"):
             import_method=resources.ImportJob.ImportMethod.RSA_OAEP_3072_SHA1_AES_256,
             protection_level=resources.ProtectionLevel.SOFTWARE,
             state=resources.ImportJob.ImportJobState.PENDING_GENERATION,
+            public_key_format=resources.PublicKey.PublicKeyFormat.PEM,
             crypto_key_backend="crypto_key_backend_value",
         )
         response = client.get_import_job(request)
@@ -5518,6 +5516,7 @@ def test_get_import_job(request_type, transport: str = "grpc"):
     )
     assert response.protection_level == resources.ProtectionLevel.SOFTWARE
     assert response.state == resources.ImportJob.ImportJobState.PENDING_GENERATION
+    assert response.public_key_format == resources.PublicKey.PublicKeyFormat.PEM
     assert response.crypto_key_backend == "crypto_key_backend_value"
 
 
@@ -5654,6 +5653,7 @@ async def test_get_import_job_async(request_type, transport: str = "grpc_asyncio
                 import_method=resources.ImportJob.ImportMethod.RSA_OAEP_3072_SHA1_AES_256,
                 protection_level=resources.ProtectionLevel.SOFTWARE,
                 state=resources.ImportJob.ImportJobState.PENDING_GENERATION,
+                public_key_format=resources.PublicKey.PublicKeyFormat.PEM,
                 crypto_key_backend="crypto_key_backend_value",
             )
         )
@@ -5674,6 +5674,7 @@ async def test_get_import_job_async(request_type, transport: str = "grpc_asyncio
     )
     assert response.protection_level == resources.ProtectionLevel.SOFTWARE
     assert response.state == resources.ImportJob.ImportJobState.PENDING_GENERATION
+    assert response.public_key_format == resources.PublicKey.PublicKeyFormat.PEM
     assert response.crypto_key_backend == "crypto_key_backend_value"
 
 
@@ -5912,9 +5913,9 @@ def test_get_retired_resource_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_retired_resource
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_retired_resource] = (
+            mock_rpc
+        )
         request = {}
         client.get_retired_resource(request)
 
@@ -6608,9 +6609,9 @@ def test_create_crypto_key_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_crypto_key
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_crypto_key] = (
+            mock_rpc
+        )
         request = {}
         client.create_crypto_key(request)
 
@@ -7372,9 +7373,9 @@ def test_delete_crypto_key_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.delete_crypto_key
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.delete_crypto_key] = (
+            mock_rpc
+        )
         request = {}
         client.delete_crypto_key(request)
 
@@ -8318,6 +8319,7 @@ def test_create_import_job(request_type, transport: str = "grpc"):
             import_method=resources.ImportJob.ImportMethod.RSA_OAEP_3072_SHA1_AES_256,
             protection_level=resources.ProtectionLevel.SOFTWARE,
             state=resources.ImportJob.ImportJobState.PENDING_GENERATION,
+            public_key_format=resources.PublicKey.PublicKeyFormat.PEM,
             crypto_key_backend="crypto_key_backend_value",
         )
         response = client.create_import_job(request)
@@ -8337,6 +8339,7 @@ def test_create_import_job(request_type, transport: str = "grpc"):
     )
     assert response.protection_level == resources.ProtectionLevel.SOFTWARE
     assert response.state == resources.ImportJob.ImportJobState.PENDING_GENERATION
+    assert response.public_key_format == resources.PublicKey.PublicKeyFormat.PEM
     assert response.crypto_key_backend == "crypto_key_backend_value"
 
 
@@ -8394,9 +8397,9 @@ def test_create_import_job_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_import_job
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_import_job] = (
+            mock_rpc
+        )
         request = {}
         client.create_import_job(request)
 
@@ -8481,6 +8484,7 @@ async def test_create_import_job_async(request_type, transport: str = "grpc_asyn
                 import_method=resources.ImportJob.ImportMethod.RSA_OAEP_3072_SHA1_AES_256,
                 protection_level=resources.ProtectionLevel.SOFTWARE,
                 state=resources.ImportJob.ImportJobState.PENDING_GENERATION,
+                public_key_format=resources.PublicKey.PublicKeyFormat.PEM,
                 crypto_key_backend="crypto_key_backend_value",
             )
         )
@@ -8501,6 +8505,7 @@ async def test_create_import_job_async(request_type, transport: str = "grpc_asyn
     )
     assert response.protection_level == resources.ProtectionLevel.SOFTWARE
     assert response.state == resources.ImportJob.ImportJobState.PENDING_GENERATION
+    assert response.public_key_format == resources.PublicKey.PublicKeyFormat.PEM
     assert response.crypto_key_backend == "crypto_key_backend_value"
 
 
@@ -8763,9 +8768,9 @@ def test_update_crypto_key_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.update_crypto_key
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.update_crypto_key] = (
+            mock_rpc
+        )
         request = {}
         client.update_crypto_key(request)
 
@@ -12243,9 +12248,9 @@ def test_asymmetric_decrypt_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.asymmetric_decrypt
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.asymmetric_decrypt] = (
+            mock_rpc
+        )
         request = {}
         client.asymmetric_decrypt(request)
 
@@ -13564,9 +13569,9 @@ def test_generate_random_bytes_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.generate_random_bytes
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.generate_random_bytes] = (
+            mock_rpc
+        )
         request = {}
         client.generate_random_bytes(request)
 
@@ -14112,9 +14117,9 @@ def test_list_crypto_keys_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_crypto_keys
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_crypto_keys] = (
+            mock_rpc
+        )
 
         request = {}
         client.list_crypto_keys(request)
@@ -14649,9 +14654,9 @@ def test_list_import_jobs_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_import_jobs
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_import_jobs] = (
+            mock_rpc
+        )
 
         request = {}
         client.list_import_jobs(request)
@@ -14916,9 +14921,9 @@ def test_list_retired_resources_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_retired_resources
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_retired_resources] = (
+            mock_rpc
+        )
 
         request = {}
         client.list_retired_resources(request)
@@ -15530,9 +15535,9 @@ def test_get_crypto_key_version_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_crypto_key_version
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_crypto_key_version] = (
+            mock_rpc
+        )
 
         request = {}
         client.get_crypto_key_version(request)
@@ -15932,6 +15937,8 @@ def test_get_import_job_rest_required_fields(request_type=service.GetImportJobRe
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
     ).get_import_job._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("public_key_format",))
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -15986,7 +15993,7 @@ def test_get_import_job_rest_unset_required_fields():
     )
 
     unset_fields = transport.get_import_job._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
+    assert set(unset_fields) == (set(("publicKeyFormat",)) & set(("name",)))
 
 
 def test_get_import_job_rest_flattened():
@@ -16072,9 +16079,9 @@ def test_get_retired_resource_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_retired_resource
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_retired_resource] = (
+            mock_rpc
+        )
 
         request = {}
         client.get_retired_resource(request)
@@ -16460,9 +16467,9 @@ def test_create_crypto_key_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_crypto_key
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_crypto_key] = (
+            mock_rpc
+        )
 
         request = {}
         client.create_crypto_key(request)
@@ -16877,9 +16884,9 @@ def test_delete_crypto_key_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.delete_crypto_key
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.delete_crypto_key] = (
+            mock_rpc
+        )
 
         request = {}
         client.delete_crypto_key(request)
@@ -17381,9 +17388,9 @@ def test_create_import_job_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_import_job
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_import_job] = (
+            mock_rpc
+        )
 
         request = {}
         client.create_import_job(request)
@@ -17592,9 +17599,9 @@ def test_update_crypto_key_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.update_crypto_key
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.update_crypto_key] = (
+            mock_rpc
+        )
 
         request = {}
         client.update_crypto_key(request)
@@ -19393,9 +19400,9 @@ def test_asymmetric_decrypt_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.asymmetric_decrypt
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.asymmetric_decrypt] = (
+            mock_rpc
+        )
 
         request = {}
         client.asymmetric_decrypt(request)
@@ -20117,9 +20124,9 @@ def test_generate_random_bytes_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.generate_random_bytes
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.generate_random_bytes] = (
+            mock_rpc
+        )
 
         request = {}
         client.generate_random_bytes(request)
@@ -21288,6 +21295,7 @@ async def test_get_import_job_empty_call_grpc_asyncio():
                 import_method=resources.ImportJob.ImportMethod.RSA_OAEP_3072_SHA1_AES_256,
                 protection_level=resources.ProtectionLevel.SOFTWARE,
                 state=resources.ImportJob.ImportJobState.PENDING_GENERATION,
+                public_key_format=resources.PublicKey.PublicKeyFormat.PEM,
                 crypto_key_backend="crypto_key_backend_value",
             )
         )
@@ -21531,6 +21539,7 @@ async def test_create_import_job_empty_call_grpc_asyncio():
                 import_method=resources.ImportJob.ImportMethod.RSA_OAEP_3072_SHA1_AES_256,
                 protection_level=resources.ProtectionLevel.SOFTWARE,
                 state=resources.ImportJob.ImportJobState.PENDING_GENERATION,
+                public_key_format=resources.PublicKey.PublicKeyFormat.PEM,
                 crypto_key_backend="crypto_key_backend_value",
             )
         )
@@ -23314,6 +23323,7 @@ def test_get_import_job_rest_call_success(request_type):
             import_method=resources.ImportJob.ImportMethod.RSA_OAEP_3072_SHA1_AES_256,
             protection_level=resources.ProtectionLevel.SOFTWARE,
             state=resources.ImportJob.ImportJobState.PENDING_GENERATION,
+            public_key_format=resources.PublicKey.PublicKeyFormat.PEM,
             crypto_key_backend="crypto_key_backend_value",
         )
 
@@ -23338,6 +23348,7 @@ def test_get_import_job_rest_call_success(request_type):
     )
     assert response.protection_level == resources.ProtectionLevel.SOFTWARE
     assert response.state == resources.ImportJob.ImportJobState.PENDING_GENERATION
+    assert response.public_key_format == resources.PublicKey.PublicKeyFormat.PEM
     assert response.crypto_key_backend == "crypto_key_backend_value"
 
 
@@ -24726,7 +24737,8 @@ def test_create_import_job_rest_call_success(request_type):
         "expire_time": {},
         "expire_event_time": {},
         "state": 1,
-        "public_key": {"pem": "pem_value"},
+        "public_key": {"pem": "pem_value", "data": b"data_blob"},
+        "public_key_format": 1,
         "attestation": {
             "format": 3,
             "content": b"content_blob",
@@ -24821,6 +24833,7 @@ def test_create_import_job_rest_call_success(request_type):
             import_method=resources.ImportJob.ImportMethod.RSA_OAEP_3072_SHA1_AES_256,
             protection_level=resources.ProtectionLevel.SOFTWARE,
             state=resources.ImportJob.ImportJobState.PENDING_GENERATION,
+            public_key_format=resources.PublicKey.PublicKeyFormat.PEM,
             crypto_key_backend="crypto_key_backend_value",
         )
 
@@ -24845,6 +24858,7 @@ def test_create_import_job_rest_call_success(request_type):
     )
     assert response.protection_level == resources.ProtectionLevel.SOFTWARE
     assert response.state == resources.ImportJob.ImportJobState.PENDING_GENERATION
+    assert response.public_key_format == resources.PublicKey.PublicKeyFormat.PEM
     assert response.crypto_key_backend == "crypto_key_backend_value"
 
 

@@ -87,6 +87,12 @@ class Policy(proto.Message):
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Time when the policy was last
             updated.
+        etag (str):
+            Optional. A checksum, returned by the server,
+            that can be sent on update requests to ensure
+            the policy has an up-to-date value before
+            attempting to update it. See
+            https://google.aip.dev/154.
     """
 
     class GlobalPolicyEvaluationMode(proto.Enum):
@@ -118,12 +124,12 @@ class Policy(proto.Message):
         number=7,
         enum=GlobalPolicyEvaluationMode,
     )
-    admission_whitelist_patterns: MutableSequence[
-        "AdmissionWhitelistPattern"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=2,
-        message="AdmissionWhitelistPattern",
+    admission_whitelist_patterns: MutableSequence["AdmissionWhitelistPattern"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message="AdmissionWhitelistPattern",
+        )
     )
     cluster_admission_rules: MutableMapping[str, "AdmissionRule"] = proto.MapField(
         proto.STRING,
@@ -131,29 +137,29 @@ class Policy(proto.Message):
         number=3,
         message="AdmissionRule",
     )
-    kubernetes_namespace_admission_rules: MutableMapping[
-        str, "AdmissionRule"
-    ] = proto.MapField(
-        proto.STRING,
-        proto.MESSAGE,
-        number=10,
-        message="AdmissionRule",
+    kubernetes_namespace_admission_rules: MutableMapping[str, "AdmissionRule"] = (
+        proto.MapField(
+            proto.STRING,
+            proto.MESSAGE,
+            number=10,
+            message="AdmissionRule",
+        )
     )
-    kubernetes_service_account_admission_rules: MutableMapping[
-        str, "AdmissionRule"
-    ] = proto.MapField(
-        proto.STRING,
-        proto.MESSAGE,
-        number=8,
-        message="AdmissionRule",
+    kubernetes_service_account_admission_rules: MutableMapping[str, "AdmissionRule"] = (
+        proto.MapField(
+            proto.STRING,
+            proto.MESSAGE,
+            number=8,
+            message="AdmissionRule",
+        )
     )
-    istio_service_identity_admission_rules: MutableMapping[
-        str, "AdmissionRule"
-    ] = proto.MapField(
-        proto.STRING,
-        proto.MESSAGE,
-        number=9,
-        message="AdmissionRule",
+    istio_service_identity_admission_rules: MutableMapping[str, "AdmissionRule"] = (
+        proto.MapField(
+            proto.STRING,
+            proto.MESSAGE,
+            number=9,
+            message="AdmissionRule",
+        )
     )
     default_admission_rule: "AdmissionRule" = proto.Field(
         proto.MESSAGE,
@@ -164,6 +170,10 @@ class Policy(proto.Message):
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
+    )
+    etag: str = proto.Field(
+        proto.STRING,
+        number=11,
     )
 
 
@@ -210,16 +220,7 @@ class AdmissionRule(proto.Message):
             Required. How this admission rule will be
             evaluated.
         require_attestations_by (MutableSequence[str]):
-            Optional. The resource names of the attestors that must
-            attest to a container image, in the format
-            ``projects/*/attestors/*``. Each attestor must exist before
-            a policy can reference it. To add an attestor to a policy
-            the principal issuing the policy change request must be able
-            to read the attestor resource.
 
-            Note: this field must be non-empty when the evaluation_mode
-            field specifies REQUIRE_ATTESTATION, otherwise it must be
-            empty.
         enforcement_mode (google.cloud.binaryauthorization_v1beta1.types.AdmissionRule.EnforcementMode):
             Required. The action when a pod creation is
             denied by the admission rule.
@@ -247,8 +248,10 @@ class AdmissionRule(proto.Message):
         ALWAYS_DENY = 3
 
     class EnforcementMode(proto.Enum):
-        r"""Defines the possible actions when a pod creation is denied by
-        an admission rule.
+        r"""TODO(wietse) re-word this text to 'per-image' instead of
+        'per-pod' and to allow for three-way evaluation (allow, deny,
+        delegate). Defines the possible actions when a pod creation is
+        denied by an admission rule.
 
         Values:
             ENFORCEMENT_MODE_UNSPECIFIED (0):
@@ -305,6 +308,12 @@ class Attestor(proto.Message):
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Time when the attestor was last
             updated.
+        etag (str):
+            Optional. A checksum, returned by the server,
+            that can be sent on update requests to ensure
+            the attestor has an up-to-date value before
+            attempting to update it. See
+            https://google.aip.dev/154.
     """
 
     name: str = proto.Field(
@@ -325,6 +334,10 @@ class Attestor(proto.Message):
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
+    )
+    etag: str = proto.Field(
+        proto.STRING,
+        number=7,
     )
 
 
@@ -417,11 +430,19 @@ class PkixPublicKey(proto.Message):
                 Not specified.
             RSA_PSS_2048_SHA256 (1):
                 RSASSA-PSS 2048 bit key with a SHA256 digest.
+            RSA_SIGN_PSS_2048_SHA256 (1):
+                RSASSA-PSS 2048 bit key with a SHA256 digest.
             RSA_PSS_3072_SHA256 (2):
+                RSASSA-PSS 3072 bit key with a SHA256 digest.
+            RSA_SIGN_PSS_3072_SHA256 (2):
                 RSASSA-PSS 3072 bit key with a SHA256 digest.
             RSA_PSS_4096_SHA256 (3):
                 RSASSA-PSS 4096 bit key with a SHA256 digest.
+            RSA_SIGN_PSS_4096_SHA256 (3):
+                RSASSA-PSS 4096 bit key with a SHA256 digest.
             RSA_PSS_4096_SHA512 (4):
+                RSASSA-PSS 4096 bit key with a SHA512 digest.
+            RSA_SIGN_PSS_4096_SHA512 (4):
                 RSASSA-PSS 4096 bit key with a SHA512 digest.
             RSA_SIGN_PKCS1_2048_SHA256 (5):
                 RSASSA-PKCS1-v1_5 with a 2048 bit key and a SHA256 digest.
@@ -449,14 +470,21 @@ class PkixPublicKey(proto.Message):
             EC_SIGN_P521_SHA512 (11):
                 ECDSA on the NIST P-521 curve with a SHA512
                 digest.
+            ML_DSA_65 (13):
+                ML-DSA-65 Post-Quantum Cryptography signature
+                algorithm.
         """
 
         _pb_options = {"allow_alias": True}
         SIGNATURE_ALGORITHM_UNSPECIFIED = 0
         RSA_PSS_2048_SHA256 = 1
+        RSA_SIGN_PSS_2048_SHA256 = 1
         RSA_PSS_3072_SHA256 = 2
+        RSA_SIGN_PSS_3072_SHA256 = 2
         RSA_PSS_4096_SHA256 = 3
+        RSA_SIGN_PSS_4096_SHA256 = 3
         RSA_PSS_4096_SHA512 = 4
+        RSA_SIGN_PSS_4096_SHA512 = 4
         RSA_SIGN_PKCS1_2048_SHA256 = 5
         RSA_SIGN_PKCS1_3072_SHA256 = 6
         RSA_SIGN_PKCS1_4096_SHA256 = 7
@@ -467,6 +495,7 @@ class PkixPublicKey(proto.Message):
         EC_SIGN_P384_SHA384 = 10
         ECDSA_P521_SHA512 = 11
         EC_SIGN_P521_SHA512 = 11
+        ML_DSA_65 = 13
 
     public_key_pem: str = proto.Field(
         proto.STRING,

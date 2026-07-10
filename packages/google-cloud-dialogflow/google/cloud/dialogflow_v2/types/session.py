@@ -271,12 +271,12 @@ class QueryParameters(proto.Message):
         proto.BOOL,
         number=4,
     )
-    session_entity_types: MutableSequence[
-        session_entity_type.SessionEntityType
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=5,
-        message=session_entity_type.SessionEntityType,
+    session_entity_types: MutableSequence[session_entity_type.SessionEntityType] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=5,
+            message=session_entity_type.SessionEntityType,
+        )
     )
     payload: struct_pb2.Struct = proto.Field(
         proto.MESSAGE,
@@ -504,12 +504,12 @@ class QueryResult(proto.Message):
         proto.STRING,
         number=6,
     )
-    fulfillment_messages: MutableSequence[
-        gcd_intent.Intent.Message
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=7,
-        message=gcd_intent.Intent.Message,
+    fulfillment_messages: MutableSequence[gcd_intent.Intent.Message] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=7,
+            message=gcd_intent.Intent.Message,
+        )
     )
     webhook_source: str = proto.Field(
         proto.STRING,
@@ -771,19 +771,19 @@ class CloudConversationDebuggingInfo(proto.Message):
         proto.BOOL,
         number=5,
     )
-    speech_partial_results_end_times: MutableSequence[
-        duration_pb2.Duration
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=6,
-        message=duration_pb2.Duration,
+    speech_partial_results_end_times: MutableSequence[duration_pb2.Duration] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=6,
+            message=duration_pb2.Duration,
+        )
     )
-    speech_final_results_end_times: MutableSequence[
-        duration_pb2.Duration
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=7,
-        message=duration_pb2.Duration,
+    speech_final_results_end_times: MutableSequence[duration_pb2.Duration] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=7,
+            message=duration_pb2.Duration,
+        )
     )
     partial_responses: int = proto.Field(
         proto.INT32,
@@ -801,19 +801,19 @@ class CloudConversationDebuggingInfo(proto.Message):
         proto.BOOL,
         number=11,
     )
-    dtmf_partial_results_times: MutableSequence[
-        duration_pb2.Duration
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=12,
-        message=duration_pb2.Duration,
+    dtmf_partial_results_times: MutableSequence[duration_pb2.Duration] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=12,
+            message=duration_pb2.Duration,
+        )
     )
-    dtmf_final_results_times: MutableSequence[
-        duration_pb2.Duration
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=13,
-        message=duration_pb2.Duration,
+    dtmf_final_results_times: MutableSequence[duration_pb2.Duration] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=13,
+            message=duration_pb2.Duration,
+        )
     )
     single_utterance_end_time_offset: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
@@ -1020,6 +1020,8 @@ class StreamingRecognitionResult(proto.Message):
             TRANSCRIPT (1):
                 Message contains a (possibly partial)
                 transcript.
+            DTMF_DIGITS (3):
+                Message contains DTMF digits.
             END_OF_SINGLE_UTTERANCE (2):
                 This event indicates that the server has detected the end of
                 the user's speech utterance and expects no additional
@@ -1031,11 +1033,32 @@ class StreamingRecognitionResult(proto.Message):
                 connection. This message is only sent if
                 ``single_utterance`` was set to ``true``, and is not used
                 otherwise.
+            PARTIAL_DTMF_DIGITS (4):
+                Message contains DTMF digits. Before a message with
+                DTMF_DIGITS is sent, a message with PARTIAL_DTMF_DIGITS may
+                be sent with DTMF digits collected up to the time of
+                sending, which represents an intermediate result.
+            SPEECH_ACTIVITY_BEGIN (5):
+                This event indicates that the server has
+                detected the beginning of human voice activity
+                in the stream. This event can be returned
+                multiple times if speech starts and stops
+                repeatedly throughout the stream.
+            SPEECH_ACTIVITY_END (6):
+                This event indicates that the server has
+                detected the end of human voice activity in the
+                stream. This event can be returned multiple
+                times if speech starts and stops repeatedly
+                throughout the stream.
         """
 
         MESSAGE_TYPE_UNSPECIFIED = 0
         TRANSCRIPT = 1
+        DTMF_DIGITS = 3
         END_OF_SINGLE_UTTERANCE = 2
+        PARTIAL_DTMF_DIGITS = 4
+        SPEECH_ACTIVITY_BEGIN = 5
+        SPEECH_ACTIVITY_END = 6
 
     message_type: MessageType = proto.Field(
         proto.ENUM,
@@ -1054,12 +1077,12 @@ class StreamingRecognitionResult(proto.Message):
         proto.FLOAT,
         number=4,
     )
-    speech_word_info: MutableSequence[
-        gcd_audio_config.SpeechWordInfo
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=7,
-        message=gcd_audio_config.SpeechWordInfo,
+    speech_word_info: MutableSequence[gcd_audio_config.SpeechWordInfo] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=7,
+            message=gcd_audio_config.SpeechWordInfo,
+        )
     )
     speech_end_offset: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,

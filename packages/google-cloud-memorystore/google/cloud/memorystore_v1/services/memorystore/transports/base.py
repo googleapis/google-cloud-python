@@ -41,7 +41,11 @@ if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
 class MemorystoreTransport(abc.ABC):
     """Abstract transport class for Memorystore."""
 
-    AUTH_SCOPES = ("https://www.googleapis.com/auth/cloud-platform",)
+    AUTH_SCOPES = (
+        "https://www.googleapis.com/auth/cloud-platform",
+        "https://www.googleapis.com/auth/memorystore.read-only",
+        "https://www.googleapis.com/auth/memorystore.read-write",
+    )
 
     DEFAULT_HOST: str = "memorystore.googleapis.com"
 
@@ -246,6 +250,16 @@ class MemorystoreTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.start_migration: gapic_v1.method.wrap_method(
+                self.start_migration,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.finish_migration: gapic_v1.method.wrap_method(
+                self.finish_migration,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_location: gapic_v1.method.wrap_method(
                 self.get_location,
                 default_timeout=None,
@@ -442,6 +456,24 @@ class MemorystoreTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def start_migration(
+        self,
+    ) -> Callable[
+        [memorystore.StartMigrationRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def finish_migration(
+        self,
+    ) -> Callable[
+        [memorystore.FinishMigrationRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def list_operations(
         self,
     ) -> Callable[
@@ -465,13 +497,19 @@ class MemorystoreTransport(abc.ABC):
     @property
     def cancel_operation(
         self,
-    ) -> Callable[[operations_pb2.CancelOperationRequest], None,]:
+    ) -> Callable[
+        [operations_pb2.CancelOperationRequest],
+        None,
+    ]:
         raise NotImplementedError()
 
     @property
     def delete_operation(
         self,
-    ) -> Callable[[operations_pb2.DeleteOperationRequest], None,]:
+    ) -> Callable[
+        [operations_pb2.DeleteOperationRequest],
+        None,
+    ]:
         raise NotImplementedError()
 
     @property

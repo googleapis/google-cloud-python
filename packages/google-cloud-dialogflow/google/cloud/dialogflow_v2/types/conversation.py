@@ -726,13 +726,13 @@ class IngestContextReferencesRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    context_references: MutableMapping[
-        str, "Conversation.ContextReference"
-    ] = proto.MapField(
-        proto.STRING,
-        proto.MESSAGE,
-        number=2,
-        message="Conversation.ContextReference",
+    context_references: MutableMapping[str, "Conversation.ContextReference"] = (
+        proto.MapField(
+            proto.STRING,
+            proto.MESSAGE,
+            number=2,
+            message="Conversation.ContextReference",
+        )
     )
 
 
@@ -1114,13 +1114,13 @@ class GenerateStatelessSuggestionRequest(proto.Message):
         number=3,
         oneof="generator_resource",
     )
-    context_references: MutableMapping[
-        str, "Conversation.ContextReference"
-    ] = proto.MapField(
-        proto.STRING,
-        proto.MESSAGE,
-        number=4,
-        message="Conversation.ContextReference",
+    context_references: MutableMapping[str, "Conversation.ContextReference"] = (
+        proto.MapField(
+            proto.STRING,
+            proto.MESSAGE,
+            number=4,
+            message="Conversation.ContextReference",
+        )
     )
     conversation_context: gcd_generator.ConversationContext = proto.Field(
         proto.MESSAGE,
@@ -1587,6 +1587,9 @@ class SearchKnowledgeDebugInfo(proto.Message):
             search knowledge.
         service_latency (google.cloud.dialogflow_v2.types.ServiceLatency):
             The latency of the service.
+        ces_debug_info (google.protobuf.struct_pb2.Struct):
+            Optional. Debug info from the Customer
+            Engagement Suite (CES) execution.
     """
 
     class SearchKnowledgeBehavior(proto.Message):
@@ -1638,6 +1641,11 @@ class SearchKnowledgeDebugInfo(proto.Message):
         proto.MESSAGE,
         number=4,
         message=participant.ServiceLatency,
+    )
+    ces_debug_info: struct_pb2.Struct = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=struct_pb2.Struct,
     )
 
 

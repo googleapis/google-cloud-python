@@ -58,11 +58,7 @@ CLOUD_SDK_ROOT = os.environ.get("CLOUD_SDK_ROOT")
 if CLOUD_SDK_ROOT is not None:
     CLOUD_SDK_ROOT = pathlib.Path(CLOUD_SDK_ROOT)
     if not CLOUD_SDK_ROOT.exists() or not CLOUD_SDK_ROOT.is_dir():
-        print(
-            "{} did not exist! Please set the CLOUD_SDK_ROOT environment variable to a directory that exists".format(
-                CLOUD_SDK_ROOT
-            )
-        )
+        print("{} did not exist! Please set the CLOUD_SDK_ROOT environment variable to a directory that exists".format(CLOUD_SDK_ROOT))
         exit(1)
 else:
     CLOUD_SDK_ROOT = pathlib.Path(tempfile.mkdtemp())
@@ -176,13 +172,9 @@ def default(session, *test_paths):
     # replace 'session._runner.friendly_name' with
     # session.name once nox has released a new version
     # https://github.com/theacodes/nox/pull/386
-    sponge_log = (
-        f"--junitxml=system_{str(session._runner.friendly_name)}_sponge_log.xml"
-    )
+    sponge_log = f"--junitxml=system_{str(session._runner.friendly_name)}_sponge_log.xml"
     session.run(
-        "pytest",
-        sponge_log,
-        *test_paths,
+        "pytest", sponge_log, *test_paths,
     )
 
 
@@ -330,7 +322,7 @@ def urllib3(session):
 @nox.session(python=PYTHON_VERSIONS_SYNC)
 def mtls_http(session):
     session.install(LIBRARY_DIR)
-    session.install(*TEST_DEPENDENCIES_SYNC, "pyopenssl")
+    session.install(*TEST_DEPENDENCIES_SYNC)
     session.env[EXPLICIT_CREDENTIALS_ENV] = SERVICE_ACCOUNT_FILE
     default(
         session,
@@ -369,7 +361,6 @@ def downscoping(session):
 
 
 # ASYNC SYSTEM TESTS
-
 
 @nox.session(python=PYTHON_VERSIONS_ASYNC)
 def service_account_async(session):

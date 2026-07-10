@@ -17,23 +17,23 @@ import io
 import os
 import re
 
-import setuptools  # type: ignore
+import setuptools # type: ignore
 
 package_root = os.path.abspath(os.path.dirname(__file__))
 
-name = "google-cloud-redis"
+name = 'google-cloud-redis'
 
 
 description = "Google Cloud Redis API client library"
 
 version = None
 
-with open(os.path.join(package_root, "google/cloud/redis/gapic_version.py")) as fp:
+with open(os.path.join(package_root, 'google/cloud/redis/gapic_version.py')) as fp:
     version_candidates = re.findall(
         r"(?<=\")\d+\.\d+\.\d+[^\"\s]*(?=\")",
         fp.read(),
     )
-    assert len(version_candidates) == 1
+    assert (len(version_candidates) == 1)
     version = version_candidates[0]
 
 if version[0] == "0":
@@ -42,7 +42,7 @@ else:
     release_status = "Development Status :: 5 - Production/Stable"
 
 dependencies = [
-    "google-api-core[grpc] >= 2.24.2, <3.0.0",
+    "google-api-core[grpc] >= 2.25.0, <3.0.0",
     # Exclude incompatible versions of `google-auth`
     # See https://github.com/googleapis/google-cloud-python/issues/12364
     "google-auth >= 2.14.1, <3.0.0,!=2.24.0,!=2.25.0",
@@ -52,7 +52,9 @@ dependencies = [
     "protobuf >= 6.33.5, < 8.0.0",
 ]
 extras = {
-    "async_rest": ["google-auth[aiohttp] >= 2.35.0, <3.0.0"],
+    "async_rest": [
+        "google-auth[aiohttp] >= 2.35.0, <3.0.0"
+    ],
 }
 url = "https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-redis"
 

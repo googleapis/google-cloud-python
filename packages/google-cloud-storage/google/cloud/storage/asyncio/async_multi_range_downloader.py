@@ -407,6 +407,12 @@ class AsyncMultiRangeDownloader:
         :type retry_policy: :class:`~google.api_core.retry_async.AsyncRetry`
         :param retry_policy: (Optional) The retry policy to use for the operation.
 
+        :type metadata: List[Tuple[str, str]]
+        :param metadata: (Optional) The metadata to be sent with the request.
+
+        :type enable_checksum: bool
+        :param enable_checksum: (Optional) If True, checksums are verified for downloaded data. Defaults to True.
+
         :raises ValueError: if the underlying bidi-GRPC stream is not open.
         :raises ValueError: if the length of read_ranges is more than 1000.
         :raises DataCorruption: if a checksum mismatch is detected while reading data.

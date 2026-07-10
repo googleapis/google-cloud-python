@@ -92,9 +92,7 @@ class SecureSourceManagerClientMeta(type):
     objects.
     """
 
-    _transport_registry = (
-        OrderedDict()
-    )  # type: Dict[str, Type[SecureSourceManagerTransport]]
+    _transport_registry = OrderedDict()  # type: Dict[str, Type[SecureSourceManagerTransport]]
     _transport_registry["grpc"] = SecureSourceManagerGrpcTransport
     _transport_registry["grpc_asyncio"] = SecureSourceManagerGrpcAsyncIOTransport
     _transport_registry["rest"] = SecureSourceManagerRestTransport
@@ -341,6 +339,28 @@ class SecureSourceManagerClient(metaclass=SecureSourceManagerClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def inspect_template_path(
+        project: str,
+        location: str,
+        inspect_template: str,
+    ) -> str:
+        """Returns a fully-qualified inspect_template string."""
+        return "projects/{project}/locations/{location}/inspectTemplates/{inspect_template}".format(
+            project=project,
+            location=location,
+            inspect_template=inspect_template,
+        )
+
+    @staticmethod
+    def parse_inspect_template_path(path: str) -> Dict[str, str]:
+        """Parses a inspect_template path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/inspectTemplates/(?P<inspect_template>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def instance_path(
         project: str,
         location: str,
@@ -482,6 +502,26 @@ class SecureSourceManagerClient(metaclass=SecureSourceManagerClientMeta):
         """Parses a repository path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/repositories/(?P<repository>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def service_account_path(
+        project: str,
+        service_account: str,
+    ) -> str:
+        """Returns a fully-qualified service_account string."""
+        return "projects/{project}/serviceAccounts/{service_account}".format(
+            project=project,
+            service_account=service_account,
+        )
+
+    @staticmethod
+    def parse_service_account_path(path: str) -> Dict[str, str]:
+        """Parses a service_account path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/serviceAccounts/(?P<service_account>.+?)$",
             path,
         )
         return m.groupdict() if m else {}
@@ -886,11 +926,9 @@ class SecureSourceManagerClient(metaclass=SecureSourceManagerClientMeta):
 
         universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
-        (
-            self._use_client_cert,
-            self._use_mtls_endpoint,
-            self._universe_domain_env,
-        ) = SecureSourceManagerClient._read_environment_variables()
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = (
+            SecureSourceManagerClient._read_environment_variables()
+        )
         self._client_cert_source = SecureSourceManagerClient._get_client_cert_source(
             self._client_options.client_cert_source, self._use_client_cert
         )
