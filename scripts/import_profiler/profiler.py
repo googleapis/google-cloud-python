@@ -19,7 +19,7 @@ def clean_bytecode():
     count = 0
     # Walk the directory avoiding hidden directories (e.g. .git, .venv, .nox)
     for root, dirs, files in os.walk('.'):
-        dirs[:] = [d for d in dirs if not d.startswith('.')]
+        dirs[:] = [d for d in dirs if not d.startswith('.') or d == '.venv-profiler']
         if '__pycache__' in dirs:
             shutil.rmtree(os.path.join(root, '__pycache__'))
             dirs.remove('__pycache__')
@@ -207,6 +207,13 @@ def run_master(iterations, target_module, cpu=0, csv_path=None, clear_cache=True
             print(f"Error in worker process:\n{e.stderr}", file=sys.stderr)
             raise e
         
+    if iterations > 1:
+        times = times[1:]
+        memories = memories[1:]
+        rss_memories = rss_memories[1:]
+        iterations -= 1
+        print("Discarded the first iteration as a cache burn-in run.")
+
     # Write CSV if requested
     if csv_path:
         with open(csv_path, "w", newline="", encoding="utf-8") as f:
@@ -356,6 +363,39 @@ if __name__ == "__main__":
         return module_name
 
     def find_module_from_package(pkg):
+        import importlib.metadata
+        
+        # 1. Try to use importlib.metadata.files (works for standard installations from PyPI/wheels)
+        try:
+            files = importlib.metadata.files(pkg)
+            if files:
+                init_files = [str(f) for f in files if str(f).endswith('__init__.py') and '__pycache__' not in str(f) and not str(f).startswith('tests/')]
+                if init_files:
+                    shortest_init = min(init_files, key=lambda p: len(p.split('/')))
+                    parts = shortest_init.split('/')[:-1]
+                    mod = '.'.join(parts)
+                    if importlib.util.find_spec(mod):
+                        return mod
+        except Exception:
+            pass
+
+        # 2. Try setuptools.find_namespace_packages() in current directory (works for editable installs in source trees)
+        try:
+            import setuptools
+            import os
+            if os.path.exists('setup.py') or os.path.exists('pyproject.toml'):
+                pkgs = setuptools.find_namespace_packages(where='.')
+                for p in sorted(pkgs, key=len):
+                    if p.startswith('tests'):
+                        continue
+                    path = p.replace('.', os.sep)
+                    if os.path.isfile(os.path.join(path, '__init__.py')):
+                        if importlib.util.find_spec(p):
+                            return p
+        except Exception:
+            pass
+
+        # 3. Fallback to basic string manipulation heuristics
         candidates = [
             pkg.replace('-', '.'),
             '.'.join(pkg.split('-')[:-1]) + '_' + pkg.split('-')[-1] if '-' in pkg else pkg,

@@ -123,23 +123,20 @@ case ${TEST_TYPE} in
                     echo "Checking out HEAD^1 for baseline..."
                     git checkout HEAD^1
                     if [ -f setup.py ]; then
-                        pip install -e .
-                        python ${PROFILER_SCRIPT} --package ${PACKAGE_NAME} --iterations 10 --csv /tmp/baseline.csv
+                        python ${PROFILER_SCRIPT} --package ${PACKAGE_NAME} --iterations 11 --csv /tmp/baseline.csv
                     else
                         echo "setup.py not found on baseline. Skipping baseline generation."
                     fi
                     git checkout -
-                    # Re-install the current branch to ensure we profile the latest code
-                    pip install -e .
                 else
                     echo "Could not find HEAD^1. Skipping baseline generation."
                 fi
             fi
             
             if [ -f /tmp/baseline.csv ]; then
-                python ${PROFILER_SCRIPT} --package ${PACKAGE_NAME} --iterations 10 --fail-threshold 5000 --diff-baseline /tmp/baseline.csv --diff-threshold 100
+                python ${PROFILER_SCRIPT} --package ${PACKAGE_NAME} --iterations 11 --fail-threshold 5000 --diff-baseline /tmp/baseline.csv --diff-threshold 100
             else
-                python ${PROFILER_SCRIPT} --package ${PACKAGE_NAME} --iterations 10 --fail-threshold 5000
+                python ${PROFILER_SCRIPT} --package ${PACKAGE_NAME} --iterations 11 --fail-threshold 5000
             fi
             retval=$?
             deactivate
