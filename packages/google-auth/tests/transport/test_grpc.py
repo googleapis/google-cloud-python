@@ -633,9 +633,16 @@ class TestSslCredentials(object):
             {
                 environment_vars.GOOGLE_API_CERTIFICATE_CONFIG: "fake_config_path.json",
             },
-        ), mock.patch("builtins.open", mock.mock_open(read_data=fake_config_content)):
-            # Ensure GOOGLE_API_USE_CLIENT_CERTIFICATE is not present in the environment
+        ), mock.patch(
+            "builtins.open", mock.mock_open(read_data=fake_config_content)
+        ), mock.patch(
+            "os.path.exists", return_value=True
+        ):
+            # Ensure mTLS explicit flags are not present in the environment
             os.environ.pop(environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE, None)
+            os.environ.pop(
+                environment_vars.CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE, None
+            )
             ssl_credentials = google.auth.transport.grpc.SslCredentials()
 
         assert ssl_credentials.ssl_credentials is not None
