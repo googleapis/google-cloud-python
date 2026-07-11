@@ -24,12 +24,12 @@ import pytest
 import bigframes
 import bigframes.core.global_session
 import bigframes.pandas as bpd
+from bigframes.core.bytecode import py_to_expression
 from bigframes.testing.utils import (
     assert_frame_equal,
     assert_series_equal,
     convert_pandas_dtypes,
 )
-from bigframes.core.bytecode import py_to_expression
 
 pytest.importorskip("polars")
 pytest.importorskip("pandas", minversion="2.0.0")
@@ -621,6 +621,24 @@ def test_series_apply_string_ops(session):
             "123A 123a 123A 123a",
         ],
         dtype="string",
+    )
+    assert_series_equal(bf_result, pd_result, check_dtype=False)
+
+
+def test_series_apply_string_predicates(session):
+    pd_series = pd.Series(
+        ["hello world", "abc123", "123", "HELLO!", None], dtype="string"
+    )
+    bf_series = bpd.Series(pd_series, session=session)
+
+    def predicates_udf(x):
+        if x is None:
+            return None
+        return f"{x.islower()}_{x.isupper()}"
+
+    bf_result = bf_series.apply(predicates_udf).to_pandas()
+    pd_result = pd.Series(
+        ["True_False", "True_False", "False_False", "False_True", None], dtype="string"
     )
     assert_series_equal(bf_result, pd_result, check_dtype=False)
 

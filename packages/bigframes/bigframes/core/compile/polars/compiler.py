@@ -495,12 +495,12 @@ if polars_installed:
         @compile_op.register(string_ops.IsLowerOp)
         def _(self, op: ops.ScalarOp, input: pl.Expr) -> pl.Expr:
             assert isinstance(op, string_ops.IsLowerOp)
-            return input.str.contains(r"^[a-z]+$")
+            return input.str.contains(r"[a-z]") & ~input.str.contains(r"[A-Z]")
 
         @compile_op.register(string_ops.IsUpperOp)
         def _(self, op: ops.ScalarOp, input: pl.Expr) -> pl.Expr:
             assert isinstance(op, string_ops.IsUpperOp)
-            return input.str.contains(r"^[A-Z]+$")
+            return input.str.contains(r"[A-Z]") & ~input.str.contains(r"[a-z]")
 
         @compile_op.register(freq_ops.FloorDtOp)
         def _(self, op: ops.ScalarOp, input: pl.Expr) -> pl.Expr:
