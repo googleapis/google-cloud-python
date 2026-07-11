@@ -437,14 +437,12 @@ def _get_cert_config_path(certificate_config_path=None, include_context_aware=Tr
                 certificate_config_path = CERTIFICATE_CONFIGURATION_DEFAULT_PATH
 
     certificate_config_path = path.expanduser(certificate_config_path)
-    if not path.exists(certificate_config_path):
-        return None
     return certificate_config_path
 
 
 def _get_workload_cert_and_key_paths(config_path, include_context_aware=True):
     absolute_path = _get_cert_config_path(config_path, include_context_aware)
-    if absolute_path is None:
+    if absolute_path is None or not os.path.exists(absolute_path):
         return None, None
 
     data = _load_json_file(absolute_path)
@@ -722,7 +720,8 @@ def check_use_client_cert():
     will default to False.
     If GOOGLE_API_USE_CLIENT_CERTIFICATE is unset, the value will be inferred
     as True (auto-enabled) if a workload config file exists (pointed at by
-    GOOGLE_API_CERTIFICATE_CONFIG) containing a "workload" section.
+    GOOGLE_API_CERTIFICATE_CONFIG or CLOUDSDK_CONTEXT_AWARE_CERTIFICATE_CONFIG_FILE_PATH)
+    containing a "workload" section.
     Otherwise, it returns False.
 
     Returns:
