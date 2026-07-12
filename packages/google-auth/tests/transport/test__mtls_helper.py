@@ -859,6 +859,22 @@ class TestCheckUseClientCert(object):
         assert _mtls_helper.check_use_client_cert() is False
 
     @mock.patch("builtins.open", autospec=True)
+    @mock.patch.dict(
+        os.environ,
+        {
+            "GOOGLE_API_USE_CLIENT_CERTIFICATE": "",
+            "CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE": "",
+            "GOOGLE_API_CERTIFICATE_CONFIG": "/path/to/config",
+            "CLOUDSDK_CONTEXT_AWARE_CERTIFICATE_CONFIG_FILE_PATH": "",
+        },
+    )
+    @mock.patch("os.path.exists", autospec=True)
+    def test_config_file_invalid_json_type(self, mock_exists, mock_file):
+        mock_exists.return_value = True
+        mock_file.side_effect = mock.mock_open(read_data="[]")
+        assert _mtls_helper.check_use_client_cert() is False
+
+    @mock.patch("builtins.open", autospec=True)
     @mock.patch.dict(os.environ, {}, clear=True)
     @mock.patch("os.path.exists", autospec=True)
     def test_no_env_vars_set(self, mock_exists, mock_open):
