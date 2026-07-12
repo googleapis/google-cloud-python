@@ -611,19 +611,14 @@ class TestSslCredentials(object):
             certificate_chain=b"cert", private_key=b"key"
         )
 
-    @mock.patch(
-        "google.auth.transport.mtls.has_default_client_cert_source", autospec=True
-    )
     def test_get_client_ssl_credentials_auto_enablement(
         self,
-        mock_has_default_client_cert_source,
         mock_check_config_path,
         mock_load_json_file,
         mock_get_client_ssl_credentials,
         mock_ssl_channel_credentials,
     ):
         fake_config_content = '{"version": 1, "cert_configs": {"workload": {"cert_path": "/tmp/mock_cert.pem", "key_path": "/tmp/mock_key.pem"}}}'
-        mock_has_default_client_cert_source.return_value = True
         mock_get_client_ssl_credentials.return_value = (
             True,
             PUBLIC_CERT_BYTES,

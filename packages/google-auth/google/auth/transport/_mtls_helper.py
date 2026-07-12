@@ -441,7 +441,7 @@ def _get_cert_config_path(certificate_config_path=None, include_context_aware=Tr
     certificate_config_path = path.expanduser(certificate_config_path)
     if not path.exists(certificate_config_path):
         if is_explicit:
-            _LOGGER.warning(
+            _LOGGER.debug(
                 "Certificate configuration file at %s does not exist",
                 certificate_config_path,
             )
@@ -729,7 +729,8 @@ def check_use_client_cert():
     will default to False.
     If GOOGLE_API_USE_CLIENT_CERTIFICATE is unset, the value will be inferred
     as True (auto-enabled) if a workload config file exists (pointed at by
-    GOOGLE_API_CERTIFICATE_CONFIG or CLOUDSDK_CONTEXT_AWARE_CERTIFICATE_CONFIG_FILE_PATH)
+    GOOGLE_API_CERTIFICATE_CONFIG or CLOUDSDK_CONTEXT_AWARE_CERTIFICATE_CONFIG_FILE_PATH,
+    or the default path like ~/.config/gcloud/certificate_config.json)
     containing a "workload" section.
     Otherwise, it returns False.
 
