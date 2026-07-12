@@ -591,7 +591,7 @@ class TestGetCertConfigPath(object):
     def test_override_does_not_exist(self):
         config_path = "fake/file/path"
         returned_path = _mtls_helper._get_cert_config_path(config_path)
-        assert returned_path == config_path
+        assert returned_path is None
 
     @mock.patch.dict(
         os.environ,
@@ -630,10 +630,7 @@ class TestGetCertConfigPath(object):
     def test_default_file_does_not_exist(self, mock_path_exists):
         mock_path_exists.return_value = False
         returned_path = _mtls_helper._get_cert_config_path()
-        expected_path = os.path.expanduser(
-            _mtls_helper.CERTIFICATE_CONFIGURATION_DEFAULT_PATH
-        )
-        assert returned_path == expected_path
+        assert returned_path is None
 
     def test_cert_config_path_precedence(self):
         # GOOGLE_API_CERTIFICATE_CONFIG takes precedence
@@ -673,7 +670,7 @@ class TestGetCertConfigPath(object):
     def test_env_variable_file_does_not_exist(self, mock_path_exists):
         mock_path_exists.return_value = False
         returned_path = _mtls_helper._get_cert_config_path()
-        assert returned_path == "path/to/config/file"
+        assert returned_path is None
 
     @mock.patch.dict(
         os.environ,

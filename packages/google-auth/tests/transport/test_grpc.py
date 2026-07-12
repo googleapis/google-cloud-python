@@ -404,13 +404,16 @@ class TestSecureAuthorizedChannel(object):
 @mock.patch("google.auth.transport._mtls_helper._load_json_file", autospec=True)
 @mock.patch("google.auth.transport._mtls_helper._check_config_path", autospec=True)
 class TestSslCredentials(object):
+    @mock.patch("os.path.exists", autospec=True)
     def test_no_context_aware_metadata(
         self,
+        mock_path_exists,
         mock_check_config_path,
         mock_load_json_file,
         mock_get_client_ssl_credentials,
         mock_ssl_channel_credentials,
     ):
+        mock_path_exists.return_value = False
         # Mock that the metadata file doesn't exist.
         mock_check_config_path.return_value = None
 

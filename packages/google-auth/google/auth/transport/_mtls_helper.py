@@ -422,6 +422,7 @@ def _get_cert_config_path(certificate_config_path=None, include_context_aware=Tr
         The absolute path of the certificate config file, and None if the file does not exist.
     """
 
+    is_explicit = True
     if certificate_config_path is None:
         env_path = environ.get(environment_vars.GOOGLE_API_CERTIFICATE_CONFIG, None)
         if env_path is not None and env_path != "":
@@ -435,14 +436,22 @@ def _get_cert_config_path(certificate_config_path=None, include_context_aware=Tr
                 certificate_config_path = env_path
             else:
                 certificate_config_path = CERTIFICATE_CONFIGURATION_DEFAULT_PATH
+                is_explicit = False
 
     certificate_config_path = path.expanduser(certificate_config_path)
+    if not path.exists(certificate_config_path):
+        if is_explicit:
+            _LOGGER.warning(
+                "Certificate configuration file at %s does not exist",
+                certificate_config_path,
+            )
+        return None
     return certificate_config_path
 
 
 def _get_workload_cert_and_key_paths(config_path, include_context_aware=True):
     absolute_path = _get_cert_config_path(config_path, include_context_aware)
-    if absolute_path is None or not os.path.exists(absolute_path):
+    if absolute_path is None:
         return None, None
 
     data = _load_json_file(absolute_path)

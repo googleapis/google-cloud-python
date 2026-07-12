@@ -43,10 +43,10 @@ def has_default_client_cert_source(include_context_aware=True):
     Returns:
         bool: indicating if the default client cert source exists.
     """
-    if (
-        _mtls_helper._get_cert_config_path(include_context_aware=include_context_aware)
-        is not None
-    ):
+    cert_path = _mtls_helper._get_cert_config_path(
+        include_context_aware=include_context_aware
+    )
+    if cert_path is not None:
         return True
     if (
         include_context_aware
