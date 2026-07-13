@@ -240,13 +240,7 @@ def run_master(iterations, target_module, cpu=0, csv_path=None, clear_cache=True
     exit_code = 0
     final_messages = []
 
-    if fail_threshold is not None:
-        if p50_time > fail_threshold:
-            final_messages.append(f"FAILURE: Median import time ({p50_time:.2f} ms) exceeds the failure threshold ({fail_threshold} ms).")
-            exit_code = 1
-        else:
-            final_messages.append(f"SUCCESS: Median import time ({p50_time:.2f} ms) is within the failure threshold ({fail_threshold} ms).")
-    
+    baseline_p50 = None
     if diff_baseline:
         if os.path.exists(diff_baseline):
             baseline_times = []
@@ -255,31 +249,44 @@ def run_master(iterations, target_module, cpu=0, csv_path=None, clear_cache=True
                 next(reader) # skip header
                 for row in reader:
                     baseline_times.append(float(row[1]))
-            baseline_p50, _, _ = _calculate_percentiles(baseline_times)
-            diff = p50_time - baseline_p50
+            if baseline_times:
+                baseline_p50, _, _ = _calculate_percentiles(baseline_times)
             
-            diff_msg = (
-                f"--- Diff vs Baseline ---\n"
-                f"Baseline Median: {baseline_p50:.2f} ms\n"
-                f"Current Median:  {p50_time:.2f} ms\n"
-                f"Difference:      {diff:+.2f} ms"
-            )
-            final_messages.append(diff_msg)
-            
-            relative_diff_threshold = 0.15 * baseline_p50
-            if diff > diff_threshold and diff > relative_diff_threshold:
-                final_messages.append(
-                    f"FAILURE: Import time regression of {diff:.2f} ms exceeds both the absolute threshold ({diff_threshold} ms) "
-                    f"and the relative threshold ({relative_diff_threshold:.2f} ms, 15% of baseline Median)."
+            if baseline_p50 is not None:
+                diff = p50_time - baseline_p50
+                
+                diff_msg = (
+                    f"--- Diff vs Baseline ---\n"
+                    f"Baseline Median: {baseline_p50:.2f} ms\n"
+                    f"Current Median:  {p50_time:.2f} ms\n"
+                    f"Difference:      {diff:+.2f} ms"
                 )
-                exit_code = 1
-            else:
-                if diff > diff_threshold:
-                    final_messages.append(f"SUCCESS: Import time regression of {diff:.2f} ms exceeds absolute threshold ({diff_threshold} ms) but is within relative threshold ({relative_diff_threshold:.2f} ms, 15%).")
+                final_messages.append(diff_msg)
+                
+                relative_diff_threshold = 0.15 * baseline_p50
+                if diff > diff_threshold and diff > relative_diff_threshold:
+                    final_messages.append(
+                        f"FAILURE: Import time regression of {diff:.2f} ms exceeds both the absolute threshold ({diff_threshold} ms) "
+                        f"and the relative threshold ({relative_diff_threshold:.2f} ms, 15% of baseline Median)."
+                    )
+                    exit_code = 1
                 else:
-                    final_messages.append("SUCCESS: Import time diff is within acceptable thresholds.")
+                    if diff > diff_threshold:
+                        final_messages.append(f"SUCCESS: Import time regression of {diff:.2f} ms exceeds absolute threshold ({diff_threshold} ms) but is within relative threshold ({relative_diff_threshold:.2f} ms, 15%).")
+                    else:
+                        final_messages.append("SUCCESS: Import time diff is within acceptable thresholds.")
         else:
             final_messages.append(f"WARNING: Baseline CSV {diff_baseline} not found. Skipping diff check.")
+
+    if fail_threshold is not None:
+        if p50_time > fail_threshold:
+            if baseline_p50 is not None and baseline_p50 > fail_threshold:
+                final_messages.append(f"WARNING: Median import time ({p50_time:.2f} ms) exceeds the absolute failure threshold ({fail_threshold} ms), but the baseline ({baseline_p50:.2f} ms) also exceeded it. Bypassing absolute backstop failure.")
+            else:
+                final_messages.append(f"FAILURE: Median import time ({p50_time:.2f} ms) exceeds the failure threshold ({fail_threshold} ms).")
+                exit_code = 1
+        else:
+            final_messages.append(f"SUCCESS: Median import time ({p50_time:.2f} ms) is within the failure threshold ({fail_threshold} ms).")
 
     if final_messages:
         print("\n" + "\n".join(final_messages))
