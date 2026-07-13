@@ -2814,13 +2814,19 @@ class RowIterator(HTTPIterator):
         if _versions_helpers.PANDAS_GBQ_VERSIONS.is_delegation_supported:
             import pandas_gbq  # type: ignore
 
-            if self.client and hasattr(self.client, "_connection") and hasattr(self.client._connection, "_client_info"):
+            if (
+                self.client
+                and hasattr(self.client, "_connection")
+                and hasattr(self.client._connection, "_client_info")
+            ):
                 client_info = self.client._connection._client_info
                 if client_info:
                     ua = client_info.user_agent or ""
                     if "pandas-gbq" not in ua:
                         pandas_gbq_version = getattr(pandas_gbq, "__version__", "0.0.0")
-                        client_info.user_agent = f"{ua} pandas-gbq/{pandas_gbq_version}".strip()
+                        client_info.user_agent = (
+                            f"{ua} pandas-gbq/{pandas_gbq_version}".strip()
+                        )
 
             return pandas_gbq.pandas.from_row_iterator(
                 self,

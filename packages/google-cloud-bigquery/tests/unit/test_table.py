@@ -5722,6 +5722,7 @@ class TestRowIterator(unittest.TestCase):
         import sys
 
         import db_dtypes
+
         pandas = pytest.importorskip("pandas")
         mock_pandas_gbq = mock.Mock()
         mock_pandas_gbq.pandas.from_row_iterator.return_value = mock.sentinel.dataframe
@@ -5738,10 +5739,11 @@ class TestRowIterator(unittest.TestCase):
             ):
                 with mock.patch.dict(sys.modules, {"pandas_gbq": mock_pandas_gbq}):
                     row_iterator = self._make_one_from_data(
-                        (("name", "STRING"),),
-                        (("foo",),)
+                        (("name", "STRING"),), (("foo",),)
                     )
-                    df = row_iterator.to_dataframe(progress_bar_type="tqdm", timeout=5.0)
+                    df = row_iterator.to_dataframe(
+                        progress_bar_type="tqdm", timeout=5.0
+                    )
 
                     mock_pandas_gbq.pandas.from_row_iterator.assert_called_once_with(
                         row_iterator,
@@ -5769,6 +5771,7 @@ class TestRowIterator(unittest.TestCase):
         import sys
 
         import db_dtypes
+
         pandas = pytest.importorskip("pandas")
         pyarrow = pytest.importorskip("pyarrow")
         mock_pandas_gbq = mock.Mock()
@@ -5786,19 +5789,32 @@ class TestRowIterator(unittest.TestCase):
             ):
                 with mock.patch.dict(sys.modules, {"pandas_gbq": mock_pandas_gbq}):
                     row_iterator = self._make_one_from_data(
-                        (("name", "STRING"),),
-                        (("foo",),)
+                        (("name", "STRING"),), (("foo",),)
                     )
-                    df = row_iterator.to_dataframe(progress_bar_type="tqdm", timeout=5.0)
+                    df = row_iterator.to_dataframe(
+                        progress_bar_type="tqdm", timeout=5.0
+                    )
 
                     expected_range_date = pandas.ArrowDtype(
-                        pyarrow.struct([("start", pyarrow.date32()), ("end", pyarrow.date32())])
+                        pyarrow.struct(
+                            [("start", pyarrow.date32()), ("end", pyarrow.date32())]
+                        )
                     )
                     expected_range_datetime = pandas.ArrowDtype(
-                        pyarrow.struct([("start", pyarrow.timestamp("us")), ("end", pyarrow.timestamp("us"))])
+                        pyarrow.struct(
+                            [
+                                ("start", pyarrow.timestamp("us")),
+                                ("end", pyarrow.timestamp("us")),
+                            ]
+                        )
                     )
                     expected_range_timestamp = pandas.ArrowDtype(
-                        pyarrow.struct([("start", pyarrow.timestamp("us", tz="UTC")), ("end", pyarrow.timestamp("us", tz="UTC"))])
+                        pyarrow.struct(
+                            [
+                                ("start", pyarrow.timestamp("us", tz="UTC")),
+                                ("end", pyarrow.timestamp("us", tz="UTC")),
+                            ]
+                        )
                     )
 
                     mock_pandas_gbq.pandas.from_row_iterator.assert_called_once_with(
@@ -5825,8 +5841,9 @@ class TestRowIterator(unittest.TestCase):
 
     def test_to_dataframe_not_delegated_when_unsupported(self):
         import sys
+
         pandas = pytest.importorskip("pandas")
-        pyarrow = pytest.importorskip("pyarrow")
+        pytest.importorskip("pyarrow")
         mock_pandas_gbq = mock.Mock()
 
         with mock.patch(
@@ -5836,8 +5853,7 @@ class TestRowIterator(unittest.TestCase):
         ):
             with mock.patch.dict(sys.modules, {"pandas_gbq": mock_pandas_gbq}):
                 row_iterator = self._make_one_from_data(
-                    (("name", "STRING"),),
-                    (("foo",),)
+                    (("name", "STRING"),), (("foo",),)
                 )
 
                 with warnings.catch_warnings(record=True) as warned:
@@ -5849,7 +5865,8 @@ class TestRowIterator(unittest.TestCase):
                 self.assertEqual(df.name.tolist(), ["foo"])
 
                 deprecation_warnings = [
-                    w for w in warned
+                    w
+                    for w in warned
                     if issubclass(w.category, PendingDeprecationWarning)
                     and "pandas-gbq" in str(w.message)
                 ]
