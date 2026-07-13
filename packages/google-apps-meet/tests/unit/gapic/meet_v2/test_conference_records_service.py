@@ -1992,6 +1992,9 @@ def test_list_conference_records_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resource.ConferenceRecord) for i in results)
@@ -2084,6 +2087,8 @@ async def test_list_conference_records_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -2862,6 +2867,9 @@ def test_list_participants_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resource.Participant) for i in results)
@@ -2954,6 +2962,8 @@ async def test_list_participants_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -3756,6 +3766,9 @@ def test_list_participant_sessions_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resource.ParticipantSession) for i in results)
@@ -3848,6 +3861,8 @@ async def test_list_participant_sessions_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -4602,6 +4617,9 @@ def test_list_recordings_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resource.Recording) for i in results)
@@ -4690,6 +4708,8 @@ async def test_list_recordings_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -5444,6 +5464,9 @@ def test_list_transcripts_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resource.Transcript) for i in results)
@@ -5532,6 +5555,8 @@ async def test_list_transcripts_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -6339,6 +6364,9 @@ def test_list_transcript_entries_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resource.TranscriptEntry) for i in results)
@@ -6431,6 +6459,8 @@ async def test_list_transcript_entries_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -6761,6 +6791,9 @@ def test_list_conference_records_rest_pager(transport: str = "rest"):
         sample_request = {}
 
         pager = client.list_conference_records(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -7195,6 +7228,9 @@ def test_list_participants_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "conferenceRecords/sample1"}
 
         pager = client.list_participants(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -7644,6 +7680,9 @@ def test_list_participant_sessions_rest_pager(transport: str = "rest"):
 
         pager = client.list_participant_sessions(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resource.ParticipantSession) for i in results)
@@ -8071,6 +8110,9 @@ def test_list_recordings_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "conferenceRecords/sample1"}
 
         pager = client.list_recordings(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -8501,6 +8543,9 @@ def test_list_transcripts_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "conferenceRecords/sample1"}
 
         pager = client.list_transcripts(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -8946,6 +8991,9 @@ def test_list_transcript_entries_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "conferenceRecords/sample1/transcripts/sample2"}
 
         pager = client.list_transcript_entries(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6

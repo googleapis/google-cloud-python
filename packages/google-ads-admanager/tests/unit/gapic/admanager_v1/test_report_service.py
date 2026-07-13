@@ -1594,6 +1594,9 @@ def test_list_reports_rest_pager(transport: str = "rest"):
 
         pager = client.list_reports(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, report_messages.Report) for i in results)
@@ -2292,6 +2295,9 @@ def test_fetch_report_result_rows_rest_pager(transport: str = "rest"):
         sample_request = {"name": "networks/sample1/reports/sample2/results/sample3"}
 
         pager = client.fetch_report_result_rows(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
