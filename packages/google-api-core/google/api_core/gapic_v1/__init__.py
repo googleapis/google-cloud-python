@@ -14,6 +14,12 @@
 
 from typing import Set
 
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
 __lazy_modules__: Set[str] = {
     "google.api_core.gapic_v1.client_info",
     "google.api_core.gapic_v1.config",
