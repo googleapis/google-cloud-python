@@ -21,9 +21,8 @@ import datetime
 import functools
 import operator
 import typing
-from typing import Any, Dict, Iterable, Iterator, List, Optional, Tuple, Union, Sequence
-
 import warnings
+from typing import Any, Dict, Iterable, Iterator, List, Optional, Sequence, Tuple, Union
 
 try:
     import pandas  # type: ignore
@@ -56,30 +55,33 @@ else:
     _read_wkt = wkt.loads
 
 import google.api_core.exceptions
-from google.api_core.page_iterator import HTTPIterator
-
 import google.cloud._helpers  # type: ignore
-from google.cloud.bigquery import _helpers
-from google.cloud.bigquery import _pandas_helpers
-from google.cloud.bigquery import _versions_helpers
+from google.api_core.page_iterator import HTTPIterator
+from google.cloud.bigquery import (
+    _helpers,
+    _pandas_helpers,
+    _string_references,
+    _versions_helpers,
+    external_config,
+)
 from google.cloud.bigquery import exceptions as bq_exceptions
+from google.cloud.bigquery import schema as _schema
 from google.cloud.bigquery._tqdm_helpers import get_progress_bar
 from google.cloud.bigquery.encryption_configuration import EncryptionConfiguration
 from google.cloud.bigquery.enums import DefaultPandasDTypes
 from google.cloud.bigquery.external_config import ExternalConfig
-from google.cloud.bigquery import schema as _schema
-from google.cloud.bigquery.schema import _build_schema_resource
-from google.cloud.bigquery.schema import _parse_schema_resource
-from google.cloud.bigquery.schema import _to_schema_fields
-from google.cloud.bigquery import external_config
-from google.cloud.bigquery import _string_references
+from google.cloud.bigquery.schema import (
+    _build_schema_resource,
+    _parse_schema_resource,
+    _to_schema_fields,
+)
 
 if typing.TYPE_CHECKING:  # pragma: NO COVER
     # Unconditionally import optional dependencies again to tell pytype that
     # they are not None, avoiding false "no attribute" errors.
+    import geopandas  # type: ignore
     import pandas
     import pyarrow
-    import geopandas  # type: ignore
     from google.cloud import bigquery_storage  # type: ignore
     from google.cloud.bigquery.dataset import DatasetReference
 
@@ -2709,6 +2711,14 @@ class RowIterator(HTTPIterator):
                 is not supported dtype.
 
         """
+        if not _versions_helpers.PANDAS_GBQ_VERSIONS.is_delegation_supported:
+            warnings.warn(
+                "Retrieving dataframes via the core client is deprecated. "
+                "Please install 'pandas-gbq' for the new high-performance backend.",
+                PendingDeprecationWarning,
+                stacklevel=2,
+            )
+
         _pandas_helpers.verify_pandas_imports()
 
         if geography_as_object and shapely is None:
@@ -2800,6 +2810,37 @@ class RowIterator(HTTPIterator):
         if not self._should_use_bqstorage(bqstorage_client, create_bqstorage_client):
             create_bqstorage_client = False
             bqstorage_client = None
+
+        if _versions_helpers.PANDAS_GBQ_VERSIONS.is_delegation_supported:
+            import pandas_gbq  # type: ignore
+
+            if self.client and hasattr(self.client, "_connection") and hasattr(self.client._connection, "_client_info"):
+                client_info = self.client._connection._client_info
+                if client_info:
+                    ua = client_info.user_agent or ""
+                    if "pandas-gbq" not in ua:
+                        client_info.user_agent = f"{ua} pandas-gbq/{pandas_gbq.__version__}".strip()
+
+            return pandas_gbq.pandas.from_row_iterator(
+                self,
+                bqstorage_client=bqstorage_client,
+                dtypes=dtypes,
+                progress_bar_type=progress_bar_type,
+                create_bqstorage_client=create_bqstorage_client,
+                geography_as_object=geography_as_object,
+                bool_dtype=bool_dtype,
+                int_dtype=int_dtype,
+                float_dtype=float_dtype,
+                string_dtype=string_dtype,
+                date_dtype=date_dtype,
+                datetime_dtype=datetime_dtype,
+                time_dtype=time_dtype,
+                timestamp_dtype=timestamp_dtype,
+                range_date_dtype=range_date_dtype,
+                range_datetime_dtype=range_datetime_dtype,
+                range_timestamp_dtype=range_timestamp_dtype,
+                timeout=timeout,
+            )
 
         record_batch = self.to_arrow(
             progress_bar_type=progress_bar_type,
