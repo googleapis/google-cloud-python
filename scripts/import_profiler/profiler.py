@@ -287,7 +287,7 @@ def run_master(iterations, target_module, cpu=0, csv_path=None, clear_cache=True
         print("\nSession import_profiler was successful.")
         sys.exit(0)
     else:
-        print("\nSession import_profiler was failed.")
+        print("\nSession import_profiler failed.")
         sys.exit(1)
 
 
