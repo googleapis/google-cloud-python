@@ -51,14 +51,24 @@ SCRIPT_PRE_315 = """
 import sys
 import google.api_core.gapic_v1
 
+try:
+    import grpc
+    has_grpc = True
+except ImportError:
+    has_grpc = False
+
 HEAVY_MODULES = [
     "google.api_core.gapic_v1.client_info",
-    "google.api_core.gapic_v1.config",
-    "google.api_core.gapic_v1.config_async",
-    "google.api_core.gapic_v1.method",
-    "google.api_core.gapic_v1.method_async",
     "google.api_core.gapic_v1.routing_header",
 ]
+
+if has_grpc:
+    HEAVY_MODULES.extend([
+        "google.api_core.gapic_v1.config",
+        "google.api_core.gapic_v1.config_async",
+        "google.api_core.gapic_v1.method",
+        "google.api_core.gapic_v1.method_async",
+    ])
 
 for mod in HEAVY_MODULES:
     if mod not in sys.modules:
