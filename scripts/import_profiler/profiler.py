@@ -380,6 +380,7 @@ if __name__ == "__main__":
     def find_module_from_package(pkg):
         import importlib.metadata
         import importlib.util
+
         # 1. Try to use importlib.metadata.files (works for standard installations from PyPI/wheels)
         try:
             files = importlib.metadata.files(pkg)
