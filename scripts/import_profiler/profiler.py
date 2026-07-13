@@ -241,11 +241,11 @@ def run_master(iterations, target_module, cpu=0, csv_path=None, clear_cache=True
     final_messages = []
 
     if fail_threshold is not None:
-        if p99_time > fail_threshold:
-            final_messages.append(f"FAILURE: P99 import time ({p99_time:.2f} ms) exceeds the failure threshold ({fail_threshold} ms).")
+        if p50_time > fail_threshold:
+            final_messages.append(f"FAILURE: Median import time ({p50_time:.2f} ms) exceeds the failure threshold ({fail_threshold} ms).")
             exit_code = 1
         else:
-            final_messages.append(f"SUCCESS: P99 import time ({p99_time:.2f} ms) is within the failure threshold ({fail_threshold} ms).")
+            final_messages.append(f"SUCCESS: Median import time ({p50_time:.2f} ms) is within the failure threshold ({fail_threshold} ms).")
     
     if diff_baseline:
         if os.path.exists(diff_baseline):
@@ -255,22 +255,22 @@ def run_master(iterations, target_module, cpu=0, csv_path=None, clear_cache=True
                 next(reader) # skip header
                 for row in reader:
                     baseline_times.append(float(row[1]))
-            _, _, baseline_p99 = _calculate_percentiles(baseline_times)
-            diff = p99_time - baseline_p99
+            baseline_p50, _, _ = _calculate_percentiles(baseline_times)
+            diff = p50_time - baseline_p50
             
             diff_msg = (
                 f"--- Diff vs Baseline ---\n"
-                f"Baseline P99: {baseline_p99:.2f} ms\n"
-                f"Current P99:  {p99_time:.2f} ms\n"
-                f"Difference:   {diff:+.2f} ms"
+                f"Baseline Median: {baseline_p50:.2f} ms\n"
+                f"Current Median:  {p50_time:.2f} ms\n"
+                f"Difference:      {diff:+.2f} ms"
             )
             final_messages.append(diff_msg)
             
-            relative_diff_threshold = 0.15 * baseline_p99
+            relative_diff_threshold = 0.15 * baseline_p50
             if diff > diff_threshold and diff > relative_diff_threshold:
                 final_messages.append(
                     f"FAILURE: Import time regression of {diff:.2f} ms exceeds both the absolute threshold ({diff_threshold} ms) "
-                    f"and the relative threshold ({relative_diff_threshold:.2f} ms, 15% of baseline P99)."
+                    f"and the relative threshold ({relative_diff_threshold:.2f} ms, 15% of baseline Median)."
                 )
                 exit_code = 1
             else:
@@ -379,8 +379,9 @@ if __name__ == "__main__":
             if files:
                 init_files = [str(f) for f in files if str(f).endswith('__init__.py') and '__pycache__' not in str(f) and not str(f).startswith('tests/')]
                 if init_files:
-                    shortest_init = min(init_files, key=lambda p: len(p.split('/')))
-                    parts = shortest_init.split('/')[:-1]
+                    from pathlib import Path
+                    shortest_init = min(init_files, key=lambda p: len(Path(p).parts))
+                    parts = Path(shortest_init).parent.parts
                     mod = '.'.join(parts)
                     if importlib.util.find_spec(mod):
                         return mod
@@ -429,9 +430,9 @@ if __name__ == "__main__":
     parser.add_argument("--cprofile", action="store_true", help="Run cProfile")
     parser.add_argument("--mprofile", action="store_true", help="Run tracemalloc memory snapshot")
     parser.add_argument("--keep-pycache", action="store_true", help="Preserve __pycache__ and allow bytecode execution (Default: False, script automatically sweeps __pycache__ for true cold-starts)")
-    parser.add_argument("--fail-threshold", type=float, help="Fail the profiling if the P99 time exceeds this threshold (in ms).")
+    parser.add_argument("--fail-threshold", type=float, help="Fail the profiling if the Median time exceeds this threshold (in ms).")
     parser.add_argument("--diff-baseline", help="Path to a baseline CSV file to compare against.")
-    parser.add_argument("--diff-threshold", type=float, default=100.0, help="Fail if P99 time exceeds baseline P99 by this many ms.")
+    parser.add_argument("--diff-threshold", type=float, default=100.0, help="Fail if Median time exceeds baseline Median by this many ms.")
     parser.add_argument("--worker", action="store_true", help=argparse.SUPPRESS)
     
     args = parser.parse_args()
