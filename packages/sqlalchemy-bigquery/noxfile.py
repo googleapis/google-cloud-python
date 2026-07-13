@@ -280,6 +280,7 @@ def unit(session, protobuf_implementation, install_extras=True):
         "3.13",
         "3.14",
     ):
+        session.skip("cpp implementation is not supported in python 3.11+")
 
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
