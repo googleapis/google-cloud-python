@@ -23,10 +23,10 @@ __all__ = [
 try:
     import grpc  # noqa: F401
 
-    from google.api_core.gapic_v1 import config
-    from google.api_core.gapic_v1 import config_async
-    from google.api_core.gapic_v1 import method
-    from google.api_core.gapic_v1 import method_async
+    from google.api_core.gapic_v1 import config  # noqa: F401
+    from google.api_core.gapic_v1 import config_async  # noqa: F401
+    from google.api_core.gapic_v1 import method  # noqa: F401
+    from google.api_core.gapic_v1 import method_async  # noqa: F401
 
     __all__.extend(["config", "config_async", "method", "method_async"])
 except ImportError:  # pragma: NO COVER

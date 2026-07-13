@@ -13,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import pytest
 
 from google.api_core.gapic_v1._method_helpers import setup_request_id
 
