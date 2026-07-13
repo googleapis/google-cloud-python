@@ -303,7 +303,7 @@ mdit-py-plugins==0.4.2
 mdurl==0.1.2
 miniKanren==1.0.5
 missingno==0.5.2
-mistune==3.2.1
+mistune==3.3.0
 mizani==0.13.5
 mkl==2025.2.0
 ml_dtypes==0.5.3
