@@ -5716,7 +5716,54 @@ class TestRowIterator(unittest.TestCase):
 
         self.assertEqual([v.__class__.__name__ for v in df.g], ["Point"])
 
-    def test_to_dataframe_delegated_when_supported(self):
+    def test_to_dataframe_delegated_when_supported_no_range_types(self):
+        import sys
+
+        import db_dtypes
+        pandas = pytest.importorskip("pandas")
+        mock_pandas_gbq = mock.Mock()
+        mock_pandas_gbq.pandas.from_row_iterator.return_value = mock.sentinel.dataframe
+        mock_pandas_gbq.__version__ = "1.0.0"
+
+        with mock.patch(
+            "google.cloud.bigquery._versions_helpers.PandasGBQVersions.is_delegation_supported",
+            new_callable=mock.PropertyMock,
+            return_value=True,
+        ):
+            with mock.patch(
+                "google.cloud.bigquery._versions_helpers.SUPPORTS_RANGE_PYARROW",
+                False,
+            ):
+                with mock.patch.dict(sys.modules, {"pandas_gbq": mock_pandas_gbq}):
+                    row_iterator = self._make_one_from_data(
+                        (("name", "STRING"),),
+                        (("foo",),)
+                    )
+                    df = row_iterator.to_dataframe(progress_bar_type="tqdm", timeout=5.0)
+
+                    mock_pandas_gbq.pandas.from_row_iterator.assert_called_once_with(
+                        row_iterator,
+                        bqstorage_client=None,
+                        dtypes={},
+                        progress_bar_type="tqdm",
+                        create_bqstorage_client=True,
+                        geography_as_object=False,
+                        bool_dtype=pandas.BooleanDtype(),
+                        int_dtype=pandas.Int64Dtype(),
+                        float_dtype=None,
+                        string_dtype=None,
+                        date_dtype=DefaultPandasDTypes.DATE_DTYPE,
+                        datetime_dtype=None,
+                        time_dtype=db_dtypes.TimeDtype(),
+                        timestamp_dtype=None,
+                        range_date_dtype=None,
+                        range_datetime_dtype=None,
+                        range_timestamp_dtype=None,
+                        timeout=5.0,
+                    )
+                    self.assertEqual(df, mock.sentinel.dataframe)
+
+    def test_to_dataframe_delegated_when_supported_with_range_types(self):
         import sys
 
         import db_dtypes
@@ -5731,22 +5778,17 @@ class TestRowIterator(unittest.TestCase):
             new_callable=mock.PropertyMock,
             return_value=True,
         ):
-            with mock.patch.dict(sys.modules, {"pandas_gbq": mock_pandas_gbq}):
-                row_iterator = self._make_one_from_data(
-                    (("name", "STRING"),),
-                    (("foo",),)
-                )
-                df = row_iterator.to_dataframe(progress_bar_type="tqdm", timeout=5.0)
+            with mock.patch(
+                "google.cloud.bigquery._versions_helpers.SUPPORTS_RANGE_PYARROW",
+                True,
+            ):
+                with mock.patch.dict(sys.modules, {"pandas_gbq": mock_pandas_gbq}):
+                    row_iterator = self._make_one_from_data(
+                        (("name", "STRING"),),
+                        (("foo",),)
+                    )
+                    df = row_iterator.to_dataframe(progress_bar_type="tqdm", timeout=5.0)
 
-                # Check resolved dtypes matching the environment capabilities
-                import packaging.version
-                _pandas_version = packaging.version.parse(pandas.__version__)
-                _pyarrow_version = packaging.version.parse(pyarrow.__version__)
-                supports_range_pyarrow = (
-                    _pandas_version >= packaging.version.Version("1.5.0")
-                    and _pyarrow_version >= packaging.version.Version("10.0.1")
-                )
-                if supports_range_pyarrow:
                     expected_range_date = pandas.ArrowDtype(
                         pyarrow.struct([("start", pyarrow.date32()), ("end", pyarrow.date32())])
                     )
@@ -5756,32 +5798,28 @@ class TestRowIterator(unittest.TestCase):
                     expected_range_timestamp = pandas.ArrowDtype(
                         pyarrow.struct([("start", pyarrow.timestamp("us", tz="UTC")), ("end", pyarrow.timestamp("us", tz="UTC"))])
                     )
-                else:
-                    expected_range_date = None
-                    expected_range_datetime = None
-                    expected_range_timestamp = None
 
-                mock_pandas_gbq.pandas.from_row_iterator.assert_called_once_with(
-                    row_iterator,
-                    bqstorage_client=None,
-                    dtypes={},
-                    progress_bar_type="tqdm",
-                    create_bqstorage_client=True,
-                    geography_as_object=False,
-                    bool_dtype=pandas.BooleanDtype(),
-                    int_dtype=pandas.Int64Dtype(),
-                    float_dtype=None,
-                    string_dtype=None,
-                    date_dtype=DefaultPandasDTypes.DATE_DTYPE,
-                    datetime_dtype=None,
-                    time_dtype=db_dtypes.TimeDtype(),
-                    timestamp_dtype=None,
-                    range_date_dtype=expected_range_date,
-                    range_datetime_dtype=expected_range_datetime,
-                    range_timestamp_dtype=expected_range_timestamp,
-                    timeout=5.0,
-                )
-                self.assertEqual(df, mock.sentinel.dataframe)
+                    mock_pandas_gbq.pandas.from_row_iterator.assert_called_once_with(
+                        row_iterator,
+                        bqstorage_client=None,
+                        dtypes={},
+                        progress_bar_type="tqdm",
+                        create_bqstorage_client=True,
+                        geography_as_object=False,
+                        bool_dtype=pandas.BooleanDtype(),
+                        int_dtype=pandas.Int64Dtype(),
+                        float_dtype=None,
+                        string_dtype=None,
+                        date_dtype=DefaultPandasDTypes.DATE_DTYPE,
+                        datetime_dtype=None,
+                        time_dtype=db_dtypes.TimeDtype(),
+                        timestamp_dtype=None,
+                        range_date_dtype=expected_range_date,
+                        range_datetime_dtype=expected_range_datetime,
+                        range_timestamp_dtype=expected_range_timestamp,
+                        timeout=5.0,
+                    )
+                    self.assertEqual(df, mock.sentinel.dataframe)
 
     def test_to_dataframe_not_delegated_when_unsupported(self):
         import sys
