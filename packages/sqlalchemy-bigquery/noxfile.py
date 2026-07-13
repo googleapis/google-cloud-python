@@ -273,7 +273,6 @@ def install_unittest_dependencies(session, *constraints):
 def unit(session, protobuf_implementation, install_extras=True):
     # Install all test dependencies, then install this package in-place.
 
-    # Install all test dependencies, then install this package in-place.
     if protobuf_implementation == "cpp" and session.python in (
         "3.11",
         "3.12",
