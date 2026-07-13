@@ -146,7 +146,7 @@ libraries:
     python:
       default_version: v1
   - name: google-apps-chat
-    version: 0.10.1
+    version: 0.10.2
     apis:
       - path: google/chat/v1
     python:
@@ -227,7 +227,7 @@ libraries:
       metadata_name_override: area120tables
       default_version: v1alpha1
   - name: google-auth
-    version: 2.55.2
+    version: 2.56.0
     python:
       library_type: AUTH
   - name: google-auth-httplib2
@@ -348,7 +348,7 @@ libraries:
       metadata_name_override: apigeeconnect
       default_version: v1
   - name: google-cloud-apigee-registry
-    version: 0.10.0
+    version: 0.10.1
     skip_generate: true
   - name: google-cloud-apihub
     version: 0.7.0
@@ -670,7 +670,7 @@ libraries:
       metadata_name_override: billingbudgets
       default_version: v1
   - name: google-cloud-binary-authorization
-    version: 1.18.0
+    version: 1.19.0
     apis:
       - path: google/cloud/binaryauthorization/v1
       - path: google/cloud/binaryauthorization/v1beta1
@@ -1045,7 +1045,7 @@ libraries:
       metadata_name_override: documentai
       default_version: v1
   - name: google-cloud-documentai-toolbox
-    version: 0.17.0
+    version: 0.17.1
     python:
       library_type: OTHER
       metadata_name_override: documentai-toolbox
@@ -1429,7 +1429,7 @@ libraries:
       metadata_name_override: memcache
       default_version: v1
   - name: google-cloud-memorystore
-    version: 0.5.1
+    version: 0.5.2
     apis:
       - path: google/cloud/memorystore/v1
       - path: google/cloud/memorystore/v1beta
@@ -1956,7 +1956,7 @@ libraries:
       metadata_name_override: speech
       default_version: v1
   - name: google-cloud-storage
-    version: 3.12.1
+    version: 3.13.0
     apis:
       - path: google/storage/v2
     python:
@@ -2234,7 +2234,7 @@ libraries:
           - python-gapic-name=developer_knowledge
       default_version: v1
   - name: google-devicesandservices-health
-    version: 0.1.0
+    version: 0.1.1
     apis:
       - path: google/devicesandservices/health/v4
     copyright_year: "2026"
