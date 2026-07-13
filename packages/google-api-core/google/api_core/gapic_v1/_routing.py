@@ -64,7 +64,7 @@ def get_api_endpoint(
     use_mtls_endpoint: str,
     default_universe: str,
     default_mtls_endpoint: Optional[str],
-    default_endpoint_template: str,
+    default_endpoint_template: Optional[str],
 ) -> Optional[str]:
     """Return the API endpoint used by the client."""
     if api_override is not None:
@@ -79,7 +79,11 @@ def get_api_endpoint(
             )
         return default_mtls_endpoint
     else:
-        return default_endpoint_template.format(UNIVERSE_DOMAIN=universe_domain)
+        return (
+            default_endpoint_template.format(UNIVERSE_DOMAIN=universe_domain)
+            if default_endpoint_template
+            else None
+        )
 
 
 def get_universe_domain(

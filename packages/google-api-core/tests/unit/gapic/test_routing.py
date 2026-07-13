@@ -141,3 +141,16 @@ def test_get_universe_domain():
 def test_get_universe_domain_empty():
     with pytest.raises(ValueError, match="cannot be an empty string"):
         get_universe_domain("", None, "default.com")
+
+
+def test_get_api_endpoint_none_template():
+    endpoint = get_api_endpoint(
+        api_override=None,
+        client_cert_source=None,
+        universe_domain="googleapis.com",
+        use_mtls_endpoint="never",
+        default_universe="googleapis.com",
+        default_mtls_endpoint=None,
+        default_endpoint_template=None,
+    )
+    assert endpoint is None
