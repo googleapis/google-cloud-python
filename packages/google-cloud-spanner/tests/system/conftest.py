@@ -17,7 +17,6 @@ import os
 import time
 
 import pytest
-
 from google.cloud import spanner_v1
 from google.cloud.spanner_admin_database_v1 import DatabaseDialect
 from google.cloud.spanner_admin_database_v1.types.backup import (
@@ -217,6 +216,8 @@ def shared_instance(
     else:  # reuse existing instance
         instance = spanner_client.instance(shared_instance_id)
         instance.reload()
+
+    _helpers.cleanup_stale_databases(instance)
 
     yield instance
 
