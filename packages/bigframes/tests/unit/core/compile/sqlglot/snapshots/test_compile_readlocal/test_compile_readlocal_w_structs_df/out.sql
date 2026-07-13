@@ -1,27 +1,145 @@
 WITH `bfcte_0` AS (
   SELECT
     *
-  FROM UNNEST(ARRAY<STRUCT<`bfcol_0` INT64, `bfcol_1` STRUCT<name STRING, age INT64, address STRUCT<city STRING, country STRING>>, `bfcol_2` INT64>>[STRUCT(
+  FROM UNNEST(ARRAY<STRUCT<`bfcol_0` INT64, `bfcol_1` STRUCT<name STRING, age INT64, address STRUCT<city STRING, country STRING>>, `bfcol_2` FLOAT64, `bfcol_3` FLOAT64, `bfcol_4` FLOAT64, `bfcol_5` STRING, `bfcol_6` JSON, `bfcol_7` STRING, `bfcol_8` STRING, `bfcol_9` STRING, `bfcol_10` TIMESTAMP, `bfcol_11` STRING, `bfcol_12` FLOAT64, `bfcol_13` FLOAT64, `bfcol_14` STRING, `bfcol_15` FLOAT64, `bfcol_16` INT64>>[STRUCT(
     1,
     STRUCT(
       'Alice' AS `name`,
       30 AS `age`,
       STRUCT('New York' AS `city`, 'USA' AS `country`) AS `address`
     ),
+    1.0,
+    123456789.0,
+    1.25,
+    'Hello World',
+    PARSE_JSON('{"a":1,"b":[1,2]}'),
+    '2026-06-24',
+    '12:34:56.789012',
+    '2026-06-24 12:34:56.789012',
+    CAST('2026-06-24T12:34:56.789012+00:00' AS TIMESTAMP),
+    'SGVsbG8=',
+    123456.789,
+    123456.78901234567,
+    'POINT(30 10)',
+    1000.0,
     0
   ), STRUCT(
     2,
+    STRUCT('' AS `name`, -1 AS `age`, STRUCT('' AS `city`, '' AS `country`) AS `address`),
+    0.0,
+    -9.223372036854776e+18,
+    CAST('-Infinity' AS FLOAT64),
+    '',
+    PARSE_JSON('{}'),
+    '0001-01-01',
+    '00:00:00',
+    '0001-01-02 00:00:00',
+    CAST('0001-01-02T00:00:00+00:00' AS TIMESTAMP),
+    '',
+    -1e+29,
+    -1e+38,
+    'POINT(0 0)',
+    -9223372036854776.0,
+    1
+  ), STRUCT(
+    3,
+    STRUCT(
+      'Very Long Name...' AS `name`,
+      150 AS `age`,
+      STRUCT('City' AS `city`, 'Country' AS `country`) AS `address`
+    ),
+    1.0,
+    9.223372036854776e+18,
+    CAST('Infinity' AS FLOAT64),
+    'Unicode: 🚀 Spark ✨',
+    PARSE_JSON('{"max":true,"nested":{"val":999}}'),
+    '9999-12-31',
+    '23:59:59.999999',
+    '9999-12-31 23:59:59.999999',
+    CAST('9999-12-31T23:59:59.999999+00:00' AS TIMESTAMP),
+    'dmVyeSBsb25nIGJ5dGVzIHZhbHVl',
+    1e+29,
+    1e+38,
+    'POLYGON((0 0, 10 0, 10 10, 0 10, 0 0))',
+    9223372036854776.0,
+    2
+  ), STRUCT(
+    4,
+    CAST(NULL AS STRUCT<name STRING, age INT64, address STRUCT<city STRING, country STRING>>),
+    CAST(NULL AS FLOAT64),
+    CAST(NULL AS FLOAT64),
+    CAST(NULL AS FLOAT64),
+    CAST(NULL AS STRING),
+    CAST(NULL AS JSON),
+    CAST(NULL AS STRING),
+    CAST(NULL AS STRING),
+    CAST(NULL AS STRING),
+    CAST(NULL AS TIMESTAMP),
+    CAST(NULL AS STRING),
+    CAST(NULL AS FLOAT64),
+    CAST(NULL AS FLOAT64),
+    CAST(NULL AS STRING),
+    CAST(NULL AS FLOAT64),
+    3
+  ), STRUCT(
+    5,
     STRUCT(
       'Bob' AS `name`,
-      25 AS `age`,
-      STRUCT('London' AS `city`, 'UK' AS `country`) AS `address`
+      0 AS `age`,
+      CAST(NULL AS STRUCT<city STRING, country STRING>) AS `address`
     ),
-    1
+    0.0,
+    0.0,
+    CAST(NULL AS FLOAT64),
+    'Line 1\nLine 2\n"Quotes"',
+    PARSE_JSON('[1,"two",null]'),
+    '1970-01-01',
+    '12:00:00',
+    '1970-01-01 12:00:00',
+    CAST('1970-01-01T12:00:00+00:00' AS TIMESTAMP),
+    'AA==',
+    0.0,
+    0.0,
+    'LINESTRING(0 0, 1 1, 2 2)',
+    0.0,
+    4
+  ), STRUCT(
+    6,
+    CAST(NULL AS STRUCT<name STRING, age INT64, address STRUCT<city STRING, country STRING>>),
+    CAST(NULL AS FLOAT64),
+    CAST(NULL AS FLOAT64),
+    CAST(NULL AS FLOAT64),
+    CAST(NULL AS STRING),
+    CAST(NULL AS JSON),
+    CAST(NULL AS STRING),
+    CAST(NULL AS STRING),
+    CAST(NULL AS STRING),
+    CAST(NULL AS TIMESTAMP),
+    CAST(NULL AS STRING),
+    CAST(NULL AS FLOAT64),
+    CAST(NULL AS FLOAT64),
+    CAST(NULL AS STRING),
+    CAST(NULL AS FLOAT64),
+    5
   )])
 )
 SELECT
   `bfcol_0` AS `id`,
-  `bfcol_1` AS `person`
+  `bfcol_1` AS `person`,
+  `bfcol_2` AS `bool_col`,
+  `bfcol_3` AS `int64_col`,
+  `bfcol_4` AS `float64_col`,
+  `bfcol_5` AS `string_col`,
+  `bfcol_6` AS `json_col`,
+  `bfcol_7` AS `date_col`,
+  `bfcol_8` AS `time_col`,
+  `bfcol_9` AS `datetime_col`,
+  `bfcol_10` AS `timestamp_col`,
+  `bfcol_11` AS `bytes_col`,
+  `bfcol_12` AS `numeric_col`,
+  `bfcol_13` AS `bignumeric_col`,
+  `bfcol_14` AS `geography_col`,
+  `bfcol_15` AS `duration_col`
 FROM `bfcte_0`
 ORDER BY
-  `bfcol_2` ASC NULLS LAST
+  `bfcol_16` ASC NULLS LAST

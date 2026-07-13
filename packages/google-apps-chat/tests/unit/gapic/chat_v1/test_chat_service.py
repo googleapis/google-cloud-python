@@ -39,6 +39,7 @@ except ImportError:  # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 
 import google.auth
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import google.protobuf.wrappers_pb2 as wrappers_pb2  # type: ignore
@@ -68,6 +69,7 @@ from google.apps.chat_v1.types import (
     action_status,
     annotation,
     attachment,
+    availability,
     contextual_addon,
     deletion_metadata,
     event_payload,
@@ -88,6 +90,7 @@ from google.apps.chat_v1.types import (
     user,
     widgets,
 )
+from google.apps.chat_v1.types import availability as gc_availability
 from google.apps.chat_v1.types import membership as gc_membership
 from google.apps.chat_v1.types import message as gc_message
 from google.apps.chat_v1.types import reaction as gc_reaction
@@ -1342,6 +1345,8 @@ def test_chat_service_client_create_channel_credentials_file(
                 "https://www.googleapis.com/auth/chat.spaces",
                 "https://www.googleapis.com/auth/chat.spaces.create",
                 "https://www.googleapis.com/auth/chat.spaces.readonly",
+                "https://www.googleapis.com/auth/chat.users.availability",
+                "https://www.googleapis.com/auth/chat.users.availability.readonly",
                 "https://www.googleapis.com/auth/chat.users.readstate",
                 "https://www.googleapis.com/auth/chat.users.readstate.readonly",
                 "https://www.googleapis.com/auth/chat.users.sections",
@@ -12588,6 +12593,1443 @@ async def test_get_thread_read_state_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
+        availability.GetAvailabilityRequest(),
+        {},
+    ],
+)
+def test_get_availability(request_type, transport: str = "grpc"):
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_availability), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = availability.Availability(
+            name="name_value",
+            state=availability.Availability.State.ACTIVE,
+        )
+        response = client.get_availability(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = availability.GetAvailabilityRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, availability.Availability)
+    assert response.name == "name_value"
+    assert response.state == availability.Availability.State.ACTIVE
+
+
+def test_get_availability_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = availability.GetAvailabilityRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_availability), "__call__") as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.get_availability(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = availability.GetAvailabilityRequest(
+            name="name_value",
+        )
+        assert args[0] == request_msg
+
+
+def test_get_availability_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ChatServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.get_availability in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.get_availability] = (
+            mock_rpc
+        )
+        request = {}
+        client.get_availability(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_availability(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_get_availability_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = ChatServiceAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.get_availability
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.get_availability
+        ] = mock_rpc
+
+        request = {}
+        await client.get_availability(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.get_availability(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        availability.GetAvailabilityRequest(),
+        {},
+    ],
+)
+async def test_get_availability_async(request_type, transport: str = "grpc_asyncio"):
+    client = ChatServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_availability), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            availability.Availability(
+                name="name_value",
+                state=availability.Availability.State.ACTIVE,
+            )
+        )
+        response = await client.get_availability(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = availability.GetAvailabilityRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, availability.Availability)
+    assert response.name == "name_value"
+    assert response.state == availability.Availability.State.ACTIVE
+
+
+def test_get_availability_field_headers():
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = availability.GetAvailabilityRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_availability), "__call__") as call:
+        call.return_value = availability.Availability()
+        client.get_availability(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_availability_field_headers_async():
+    client = ChatServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = availability.GetAvailabilityRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_availability), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            availability.Availability()
+        )
+        await client.get_availability(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_availability_flattened():
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_availability), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = availability.Availability()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_availability(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_availability_flattened_error():
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_availability(
+            availability.GetAvailabilityRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_availability_flattened_async():
+    client = ChatServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_availability), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = availability.Availability()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            availability.Availability()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_availability(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_availability_flattened_error_async():
+    client = ChatServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_availability(
+            availability.GetAvailabilityRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        availability.MarkAsActiveRequest(),
+        {},
+    ],
+)
+def test_mark_as_active(request_type, transport: str = "grpc"):
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.mark_as_active), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = availability.Availability(
+            name="name_value",
+            state=availability.Availability.State.ACTIVE,
+        )
+        response = client.mark_as_active(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = availability.MarkAsActiveRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, availability.Availability)
+    assert response.name == "name_value"
+    assert response.state == availability.Availability.State.ACTIVE
+
+
+def test_mark_as_active_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = availability.MarkAsActiveRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.mark_as_active), "__call__") as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.mark_as_active(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = availability.MarkAsActiveRequest(
+            name="name_value",
+        )
+        assert args[0] == request_msg
+
+
+def test_mark_as_active_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ChatServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.mark_as_active in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.mark_as_active] = mock_rpc
+        request = {}
+        client.mark_as_active(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.mark_as_active(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_mark_as_active_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = ChatServiceAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.mark_as_active
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.mark_as_active
+        ] = mock_rpc
+
+        request = {}
+        await client.mark_as_active(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.mark_as_active(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        availability.MarkAsActiveRequest(),
+        {},
+    ],
+)
+async def test_mark_as_active_async(request_type, transport: str = "grpc_asyncio"):
+    client = ChatServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.mark_as_active), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            availability.Availability(
+                name="name_value",
+                state=availability.Availability.State.ACTIVE,
+            )
+        )
+        response = await client.mark_as_active(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = availability.MarkAsActiveRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, availability.Availability)
+    assert response.name == "name_value"
+    assert response.state == availability.Availability.State.ACTIVE
+
+
+def test_mark_as_active_field_headers():
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = availability.MarkAsActiveRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.mark_as_active), "__call__") as call:
+        call.return_value = availability.Availability()
+        client.mark_as_active(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_mark_as_active_field_headers_async():
+    client = ChatServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = availability.MarkAsActiveRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.mark_as_active), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            availability.Availability()
+        )
+        await client.mark_as_active(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        availability.MarkAsAwayRequest(),
+        {},
+    ],
+)
+def test_mark_as_away(request_type, transport: str = "grpc"):
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.mark_as_away), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = availability.Availability(
+            name="name_value",
+            state=availability.Availability.State.ACTIVE,
+        )
+        response = client.mark_as_away(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = availability.MarkAsAwayRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, availability.Availability)
+    assert response.name == "name_value"
+    assert response.state == availability.Availability.State.ACTIVE
+
+
+def test_mark_as_away_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = availability.MarkAsAwayRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.mark_as_away), "__call__") as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.mark_as_away(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = availability.MarkAsAwayRequest(
+            name="name_value",
+        )
+        assert args[0] == request_msg
+
+
+def test_mark_as_away_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ChatServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.mark_as_away in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.mark_as_away] = mock_rpc
+        request = {}
+        client.mark_as_away(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.mark_as_away(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_mark_as_away_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = ChatServiceAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.mark_as_away
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.mark_as_away
+        ] = mock_rpc
+
+        request = {}
+        await client.mark_as_away(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.mark_as_away(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        availability.MarkAsAwayRequest(),
+        {},
+    ],
+)
+async def test_mark_as_away_async(request_type, transport: str = "grpc_asyncio"):
+    client = ChatServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.mark_as_away), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            availability.Availability(
+                name="name_value",
+                state=availability.Availability.State.ACTIVE,
+            )
+        )
+        response = await client.mark_as_away(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = availability.MarkAsAwayRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, availability.Availability)
+    assert response.name == "name_value"
+    assert response.state == availability.Availability.State.ACTIVE
+
+
+def test_mark_as_away_field_headers():
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = availability.MarkAsAwayRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.mark_as_away), "__call__") as call:
+        call.return_value = availability.Availability()
+        client.mark_as_away(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_mark_as_away_field_headers_async():
+    client = ChatServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = availability.MarkAsAwayRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.mark_as_away), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            availability.Availability()
+        )
+        await client.mark_as_away(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        availability.MarkAsDoNotDisturbRequest(),
+        {},
+    ],
+)
+def test_mark_as_do_not_disturb(request_type, transport: str = "grpc"):
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.mark_as_do_not_disturb), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = availability.Availability(
+            name="name_value",
+            state=availability.Availability.State.ACTIVE,
+        )
+        response = client.mark_as_do_not_disturb(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = availability.MarkAsDoNotDisturbRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, availability.Availability)
+    assert response.name == "name_value"
+    assert response.state == availability.Availability.State.ACTIVE
+
+
+def test_mark_as_do_not_disturb_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = availability.MarkAsDoNotDisturbRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.mark_as_do_not_disturb), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.mark_as_do_not_disturb(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = availability.MarkAsDoNotDisturbRequest(
+            name="name_value",
+        )
+        assert args[0] == request_msg
+
+
+def test_mark_as_do_not_disturb_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ChatServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.mark_as_do_not_disturb
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.mark_as_do_not_disturb] = (
+            mock_rpc
+        )
+        request = {}
+        client.mark_as_do_not_disturb(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.mark_as_do_not_disturb(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_mark_as_do_not_disturb_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = ChatServiceAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.mark_as_do_not_disturb
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.mark_as_do_not_disturb
+        ] = mock_rpc
+
+        request = {}
+        await client.mark_as_do_not_disturb(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.mark_as_do_not_disturb(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        availability.MarkAsDoNotDisturbRequest(),
+        {},
+    ],
+)
+async def test_mark_as_do_not_disturb_async(
+    request_type, transport: str = "grpc_asyncio"
+):
+    client = ChatServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.mark_as_do_not_disturb), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            availability.Availability(
+                name="name_value",
+                state=availability.Availability.State.ACTIVE,
+            )
+        )
+        response = await client.mark_as_do_not_disturb(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = availability.MarkAsDoNotDisturbRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, availability.Availability)
+    assert response.name == "name_value"
+    assert response.state == availability.Availability.State.ACTIVE
+
+
+def test_mark_as_do_not_disturb_field_headers():
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = availability.MarkAsDoNotDisturbRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.mark_as_do_not_disturb), "__call__"
+    ) as call:
+        call.return_value = availability.Availability()
+        client.mark_as_do_not_disturb(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_mark_as_do_not_disturb_field_headers_async():
+    client = ChatServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = availability.MarkAsDoNotDisturbRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.mark_as_do_not_disturb), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            availability.Availability()
+        )
+        await client.mark_as_do_not_disturb(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gc_availability.UpdateAvailabilityRequest(),
+        {},
+    ],
+)
+def test_update_availability(request_type, transport: str = "grpc"):
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_availability), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = gc_availability.Availability(
+            name="name_value",
+            state=gc_availability.Availability.State.ACTIVE,
+        )
+        response = client.update_availability(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = gc_availability.UpdateAvailabilityRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gc_availability.Availability)
+    assert response.name == "name_value"
+    assert response.state == gc_availability.Availability.State.ACTIVE
+
+
+def test_update_availability_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gc_availability.UpdateAvailabilityRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_availability), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.update_availability(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = gc_availability.UpdateAvailabilityRequest()
+        assert args[0] == request_msg
+
+
+def test_update_availability_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ChatServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.update_availability in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.update_availability] = (
+            mock_rpc
+        )
+        request = {}
+        client.update_availability(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.update_availability(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_update_availability_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = ChatServiceAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.update_availability
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.update_availability
+        ] = mock_rpc
+
+        request = {}
+        await client.update_availability(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.update_availability(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gc_availability.UpdateAvailabilityRequest(),
+        {},
+    ],
+)
+async def test_update_availability_async(request_type, transport: str = "grpc_asyncio"):
+    client = ChatServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_availability), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gc_availability.Availability(
+                name="name_value",
+                state=gc_availability.Availability.State.ACTIVE,
+            )
+        )
+        response = await client.update_availability(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = gc_availability.UpdateAvailabilityRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gc_availability.Availability)
+    assert response.name == "name_value"
+    assert response.state == gc_availability.Availability.State.ACTIVE
+
+
+def test_update_availability_field_headers():
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = gc_availability.UpdateAvailabilityRequest()
+
+    request.availability.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_availability), "__call__"
+    ) as call:
+        call.return_value = gc_availability.Availability()
+        client.update_availability(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "availability.name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_update_availability_field_headers_async():
+    client = ChatServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = gc_availability.UpdateAvailabilityRequest()
+
+    request.availability.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_availability), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gc_availability.Availability()
+        )
+        await client.update_availability(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "availability.name=name_value",
+    ) in kw["metadata"]
+
+
+def test_update_availability_flattened():
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_availability), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = gc_availability.Availability()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.update_availability(
+            availability=gc_availability.Availability(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].availability
+        mock_val = gc_availability.Availability(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+def test_update_availability_flattened_error():
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_availability(
+            gc_availability.UpdateAvailabilityRequest(),
+            availability=gc_availability.Availability(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_availability_flattened_async():
+    client = ChatServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_availability), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = gc_availability.Availability()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gc_availability.Availability()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.update_availability(
+            availability=gc_availability.Availability(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].availability
+        mock_val = gc_availability.Availability(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_update_availability_flattened_error_async():
+    client = ChatServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.update_availability(
+            gc_availability.UpdateAvailabilityRequest(),
+            availability=gc_availability.Availability(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         space_event.GetSpaceEventRequest(),
         {},
     ],
@@ -22504,6 +23946,739 @@ def test_get_thread_read_state_rest_flattened_error(transport: str = "rest"):
         )
 
 
+def test_get_availability_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ChatServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.get_availability in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.get_availability] = (
+            mock_rpc
+        )
+
+        request = {}
+        client.get_availability(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_availability(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_get_availability_rest_required_fields(
+    request_type=availability.GetAvailabilityRequest,
+):
+    transport_class = transports.ChatServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_availability._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_availability._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = availability.Availability()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = availability.Availability.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.get_availability(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert sorted(expected_params) == sorted(actual_params)
+
+
+def test_get_availability_rest_unset_required_fields():
+    transport = transports.ChatServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_availability._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+def test_get_availability_rest_flattened():
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = availability.Availability()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "users/sample1/availability"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = availability.Availability.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.get_availability(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=users/*/availability}" % client.transport._host, args[1]
+        )
+
+
+def test_get_availability_rest_flattened_error(transport: str = "rest"):
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_availability(
+            availability.GetAvailabilityRequest(),
+            name="name_value",
+        )
+
+
+def test_mark_as_active_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ChatServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.mark_as_active in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.mark_as_active] = mock_rpc
+
+        request = {}
+        client.mark_as_active(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.mark_as_active(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_mark_as_active_rest_required_fields(
+    request_type=availability.MarkAsActiveRequest,
+):
+    transport_class = transports.ChatServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).mark_as_active._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).mark_as_active._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = availability.Availability()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = availability.Availability.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.mark_as_active(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert sorted(expected_params) == sorted(actual_params)
+
+
+def test_mark_as_active_rest_unset_required_fields():
+    transport = transports.ChatServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.mark_as_active._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+def test_mark_as_away_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ChatServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.mark_as_away in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.mark_as_away] = mock_rpc
+
+        request = {}
+        client.mark_as_away(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.mark_as_away(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_mark_as_away_rest_required_fields(request_type=availability.MarkAsAwayRequest):
+    transport_class = transports.ChatServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).mark_as_away._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).mark_as_away._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = availability.Availability()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = availability.Availability.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.mark_as_away(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert sorted(expected_params) == sorted(actual_params)
+
+
+def test_mark_as_away_rest_unset_required_fields():
+    transport = transports.ChatServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.mark_as_away._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+def test_mark_as_do_not_disturb_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ChatServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.mark_as_do_not_disturb
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.mark_as_do_not_disturb] = (
+            mock_rpc
+        )
+
+        request = {}
+        client.mark_as_do_not_disturb(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.mark_as_do_not_disturb(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_mark_as_do_not_disturb_rest_required_fields(
+    request_type=availability.MarkAsDoNotDisturbRequest,
+):
+    transport_class = transports.ChatServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).mark_as_do_not_disturb._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).mark_as_do_not_disturb._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = availability.Availability()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = availability.Availability.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.mark_as_do_not_disturb(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert sorted(expected_params) == sorted(actual_params)
+
+
+def test_mark_as_do_not_disturb_rest_unset_required_fields():
+    transport = transports.ChatServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.mark_as_do_not_disturb._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+def test_update_availability_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ChatServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.update_availability in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.update_availability] = (
+            mock_rpc
+        )
+
+        request = {}
+        client.update_availability(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.update_availability(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_update_availability_rest_required_fields(
+    request_type=gc_availability.UpdateAvailabilityRequest,
+):
+    transport_class = transports.ChatServiceRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_availability._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_availability._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("update_mask",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = gc_availability.Availability()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = gc_availability.Availability.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.update_availability(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert sorted(expected_params) == sorted(actual_params)
+
+
+def test_update_availability_rest_unset_required_fields():
+    transport = transports.ChatServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_availability._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("updateMask",))
+        & set(
+            (
+                "availability",
+                "updateMask",
+            )
+        )
+    )
+
+
+def test_update_availability_rest_flattened():
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gc_availability.Availability()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"availability": {"name": "users/sample1/availability"}}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            availability=gc_availability.Availability(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = gc_availability.Availability.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.update_availability(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{availability.name=users/*/availability}" % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_availability_rest_flattened_error(transport: str = "rest"):
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_availability(
+            gc_availability.UpdateAvailabilityRequest(),
+            availability=gc_availability.Availability(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
 def test_get_space_event_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -25502,6 +27677,110 @@ def test_get_thread_read_state_empty_call_grpc():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
+def test_get_availability_empty_call_grpc():
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_availability), "__call__") as call:
+        call.return_value = availability.Availability()
+        client.get_availability(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = availability.GetAvailabilityRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_mark_as_active_empty_call_grpc():
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.mark_as_active), "__call__") as call:
+        call.return_value = availability.Availability()
+        client.mark_as_active(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = availability.MarkAsActiveRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_mark_as_away_empty_call_grpc():
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.mark_as_away), "__call__") as call:
+        call.return_value = availability.Availability()
+        client.mark_as_away(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = availability.MarkAsAwayRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_mark_as_do_not_disturb_empty_call_grpc():
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.mark_as_do_not_disturb), "__call__"
+    ) as call:
+        call.return_value = availability.Availability()
+        client.mark_as_do_not_disturb(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = availability.MarkAsDoNotDisturbRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_availability_empty_call_grpc():
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_availability), "__call__"
+    ) as call:
+        call.return_value = gc_availability.Availability()
+        client.update_availability(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = gc_availability.UpdateAvailabilityRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 def test_get_space_event_empty_call_grpc():
     client = ChatServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -26680,6 +28959,145 @@ async def test_get_thread_read_state_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = thread_read_state.GetThreadReadStateRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_availability_empty_call_grpc_asyncio():
+    client = ChatServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_availability), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            availability.Availability(
+                name="name_value",
+                state=availability.Availability.State.ACTIVE,
+            )
+        )
+        await client.get_availability(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = availability.GetAvailabilityRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_mark_as_active_empty_call_grpc_asyncio():
+    client = ChatServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.mark_as_active), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            availability.Availability(
+                name="name_value",
+                state=availability.Availability.State.ACTIVE,
+            )
+        )
+        await client.mark_as_active(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = availability.MarkAsActiveRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_mark_as_away_empty_call_grpc_asyncio():
+    client = ChatServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.mark_as_away), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            availability.Availability(
+                name="name_value",
+                state=availability.Availability.State.ACTIVE,
+            )
+        )
+        await client.mark_as_away(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = availability.MarkAsAwayRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_mark_as_do_not_disturb_empty_call_grpc_asyncio():
+    client = ChatServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.mark_as_do_not_disturb), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            availability.Availability(
+                name="name_value",
+                state=availability.Availability.State.ACTIVE,
+            )
+        )
+        await client.mark_as_do_not_disturb(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = availability.MarkAsDoNotDisturbRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_availability_empty_call_grpc_asyncio():
+    client = ChatServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_availability), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gc_availability.Availability(
+                name="name_value",
+                state=gc_availability.Availability.State.ACTIVE,
+            )
+        )
+        await client.update_availability(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = gc_availability.UpdateAvailabilityRequest()
         assert args[0] == request_msg
 
 
@@ -32980,6 +35398,754 @@ def test_get_thread_read_state_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
+def test_get_availability_rest_bad_request(
+    request_type=availability.GetAvailabilityRequest,
+):
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "users/sample1/availability"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.get_availability(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        availability.GetAvailabilityRequest,
+        dict,
+    ],
+)
+def test_get_availability_rest_call_success(request_type):
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "users/sample1/availability"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = availability.Availability(
+            name="name_value",
+            state=availability.Availability.State.ACTIVE,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = availability.Availability.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.get_availability(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, availability.Availability)
+    assert response.name == "name_value"
+    assert response.state == availability.Availability.State.ACTIVE
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_availability_rest_interceptors(null_interceptor):
+    transport = transports.ChatServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ChatServiceRestInterceptor(),
+    )
+    client = ChatServiceClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "post_get_availability"
+        ) as post,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "post_get_availability_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "pre_get_availability"
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = availability.GetAvailabilityRequest.pb(
+            availability.GetAvailabilityRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = availability.Availability.to_json(availability.Availability())
+        req.return_value.content = return_value
+
+        request = availability.GetAvailabilityRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = availability.Availability()
+        post_with_metadata.return_value = availability.Availability(), metadata
+
+        client.get_availability(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
+def test_mark_as_active_rest_bad_request(request_type=availability.MarkAsActiveRequest):
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "users/sample1/availability"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.mark_as_active(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        availability.MarkAsActiveRequest,
+        dict,
+    ],
+)
+def test_mark_as_active_rest_call_success(request_type):
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "users/sample1/availability"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = availability.Availability(
+            name="name_value",
+            state=availability.Availability.State.ACTIVE,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = availability.Availability.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.mark_as_active(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, availability.Availability)
+    assert response.name == "name_value"
+    assert response.state == availability.Availability.State.ACTIVE
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_mark_as_active_rest_interceptors(null_interceptor):
+    transport = transports.ChatServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ChatServiceRestInterceptor(),
+    )
+    client = ChatServiceClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "post_mark_as_active"
+        ) as post,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "post_mark_as_active_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "pre_mark_as_active"
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = availability.MarkAsActiveRequest.pb(
+            availability.MarkAsActiveRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = availability.Availability.to_json(availability.Availability())
+        req.return_value.content = return_value
+
+        request = availability.MarkAsActiveRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = availability.Availability()
+        post_with_metadata.return_value = availability.Availability(), metadata
+
+        client.mark_as_active(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
+def test_mark_as_away_rest_bad_request(request_type=availability.MarkAsAwayRequest):
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "users/sample1/availability"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.mark_as_away(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        availability.MarkAsAwayRequest,
+        dict,
+    ],
+)
+def test_mark_as_away_rest_call_success(request_type):
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "users/sample1/availability"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = availability.Availability(
+            name="name_value",
+            state=availability.Availability.State.ACTIVE,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = availability.Availability.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.mark_as_away(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, availability.Availability)
+    assert response.name == "name_value"
+    assert response.state == availability.Availability.State.ACTIVE
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_mark_as_away_rest_interceptors(null_interceptor):
+    transport = transports.ChatServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ChatServiceRestInterceptor(),
+    )
+    client = ChatServiceClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "post_mark_as_away"
+        ) as post,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "post_mark_as_away_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "pre_mark_as_away"
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = availability.MarkAsAwayRequest.pb(availability.MarkAsAwayRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = availability.Availability.to_json(availability.Availability())
+        req.return_value.content = return_value
+
+        request = availability.MarkAsAwayRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = availability.Availability()
+        post_with_metadata.return_value = availability.Availability(), metadata
+
+        client.mark_as_away(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
+def test_mark_as_do_not_disturb_rest_bad_request(
+    request_type=availability.MarkAsDoNotDisturbRequest,
+):
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "users/sample1/availability"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.mark_as_do_not_disturb(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        availability.MarkAsDoNotDisturbRequest,
+        dict,
+    ],
+)
+def test_mark_as_do_not_disturb_rest_call_success(request_type):
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "users/sample1/availability"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = availability.Availability(
+            name="name_value",
+            state=availability.Availability.State.ACTIVE,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = availability.Availability.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.mark_as_do_not_disturb(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, availability.Availability)
+    assert response.name == "name_value"
+    assert response.state == availability.Availability.State.ACTIVE
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_mark_as_do_not_disturb_rest_interceptors(null_interceptor):
+    transport = transports.ChatServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ChatServiceRestInterceptor(),
+    )
+    client = ChatServiceClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "post_mark_as_do_not_disturb"
+        ) as post,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor,
+            "post_mark_as_do_not_disturb_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "pre_mark_as_do_not_disturb"
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = availability.MarkAsDoNotDisturbRequest.pb(
+            availability.MarkAsDoNotDisturbRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = availability.Availability.to_json(availability.Availability())
+        req.return_value.content = return_value
+
+        request = availability.MarkAsDoNotDisturbRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = availability.Availability()
+        post_with_metadata.return_value = availability.Availability(), metadata
+
+        client.mark_as_do_not_disturb(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
+def test_update_availability_rest_bad_request(
+    request_type=gc_availability.UpdateAvailabilityRequest,
+):
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"availability": {"name": "users/sample1/availability"}}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.update_availability(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gc_availability.UpdateAvailabilityRequest,
+        dict,
+    ],
+)
+def test_update_availability_rest_call_success(request_type):
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"availability": {"name": "users/sample1/availability"}}
+    request_init["availability"] = {
+        "name": "users/sample1/availability",
+        "state": 1,
+        "do_not_disturb_metadata": {"expiration_time": {"seconds": 751, "nanos": 543}},
+        "custom_status": {
+            "text": "text_value",
+            "emoji": {
+                "unicode": "unicode_value",
+                "custom_emoji": {
+                    "name": "name_value",
+                    "uid": "uid_value",
+                    "emoji_name": "emoji_name_value",
+                    "temporary_image_uri": "temporary_image_uri_value",
+                    "payload": {
+                        "file_content": b"file_content_blob",
+                        "filename": "filename_value",
+                    },
+                },
+            },
+            "expire_time": {},
+            "ttl": {"seconds": 751, "nanos": 543},
+        },
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = gc_availability.UpdateAvailabilityRequest.meta.fields["availability"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["availability"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["availability"][field])):
+                    del request_init["availability"][field][i][subfield]
+            else:
+                del request_init["availability"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gc_availability.Availability(
+            name="name_value",
+            state=gc_availability.Availability.State.ACTIVE,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = gc_availability.Availability.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.update_availability(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gc_availability.Availability)
+    assert response.name == "name_value"
+    assert response.state == gc_availability.Availability.State.ACTIVE
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_availability_rest_interceptors(null_interceptor):
+    transport = transports.ChatServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ChatServiceRestInterceptor(),
+    )
+    client = ChatServiceClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "post_update_availability"
+        ) as post,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor,
+            "post_update_availability_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "pre_update_availability"
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = gc_availability.UpdateAvailabilityRequest.pb(
+            gc_availability.UpdateAvailabilityRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = gc_availability.Availability.to_json(
+            gc_availability.Availability()
+        )
+        req.return_value.content = return_value
+
+        request = gc_availability.UpdateAvailabilityRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = gc_availability.Availability()
+        post_with_metadata.return_value = gc_availability.Availability(), metadata
+
+        client.update_availability(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
 def test_get_space_event_rest_bad_request(
     request_type=space_event.GetSpaceEventRequest,
 ):
@@ -35311,6 +38477,105 @@ def test_get_thread_read_state_empty_call_rest():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
+def test_get_availability_empty_call_rest():
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_availability), "__call__") as call:
+        client.get_availability(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = availability.GetAvailabilityRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_mark_as_active_empty_call_rest():
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.mark_as_active), "__call__") as call:
+        client.mark_as_active(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = availability.MarkAsActiveRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_mark_as_away_empty_call_rest():
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.mark_as_away), "__call__") as call:
+        client.mark_as_away(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = availability.MarkAsAwayRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_mark_as_do_not_disturb_empty_call_rest():
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.mark_as_do_not_disturb), "__call__"
+    ) as call:
+        client.mark_as_do_not_disturb(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = availability.MarkAsDoNotDisturbRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_availability_empty_call_rest():
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_availability), "__call__"
+    ) as call:
+        client.update_availability(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = gc_availability.UpdateAvailabilityRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 def test_get_space_event_empty_call_rest():
     client = ChatServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -35595,6 +38860,11 @@ def test_chat_service_base_transport():
         "get_space_read_state",
         "update_space_read_state",
         "get_thread_read_state",
+        "get_availability",
+        "mark_as_active",
+        "mark_as_away",
+        "mark_as_do_not_disturb",
+        "update_availability",
         "get_space_event",
         "list_space_events",
         "get_space_notification_setting",
@@ -35672,6 +38942,8 @@ def test_chat_service_base_transport_with_credentials_file():
                 "https://www.googleapis.com/auth/chat.spaces",
                 "https://www.googleapis.com/auth/chat.spaces.create",
                 "https://www.googleapis.com/auth/chat.spaces.readonly",
+                "https://www.googleapis.com/auth/chat.users.availability",
+                "https://www.googleapis.com/auth/chat.users.availability.readonly",
                 "https://www.googleapis.com/auth/chat.users.readstate",
                 "https://www.googleapis.com/auth/chat.users.readstate.readonly",
                 "https://www.googleapis.com/auth/chat.users.sections",
@@ -35733,6 +39005,8 @@ def test_chat_service_auth_adc():
                 "https://www.googleapis.com/auth/chat.spaces",
                 "https://www.googleapis.com/auth/chat.spaces.create",
                 "https://www.googleapis.com/auth/chat.spaces.readonly",
+                "https://www.googleapis.com/auth/chat.users.availability",
+                "https://www.googleapis.com/auth/chat.users.availability.readonly",
                 "https://www.googleapis.com/auth/chat.users.readstate",
                 "https://www.googleapis.com/auth/chat.users.readstate.readonly",
                 "https://www.googleapis.com/auth/chat.users.sections",
@@ -35788,6 +39062,8 @@ def test_chat_service_transport_auth_adc(transport_class):
                 "https://www.googleapis.com/auth/chat.spaces",
                 "https://www.googleapis.com/auth/chat.spaces.create",
                 "https://www.googleapis.com/auth/chat.spaces.readonly",
+                "https://www.googleapis.com/auth/chat.users.availability",
+                "https://www.googleapis.com/auth/chat.users.availability.readonly",
                 "https://www.googleapis.com/auth/chat.users.readstate",
                 "https://www.googleapis.com/auth/chat.users.readstate.readonly",
                 "https://www.googleapis.com/auth/chat.users.sections",
@@ -35876,6 +39152,8 @@ def test_chat_service_transport_create_channel(transport_class, grpc_helpers):
                 "https://www.googleapis.com/auth/chat.spaces",
                 "https://www.googleapis.com/auth/chat.spaces.create",
                 "https://www.googleapis.com/auth/chat.spaces.readonly",
+                "https://www.googleapis.com/auth/chat.users.availability",
+                "https://www.googleapis.com/auth/chat.users.availability.readonly",
                 "https://www.googleapis.com/auth/chat.users.readstate",
                 "https://www.googleapis.com/auth/chat.users.readstate.readonly",
                 "https://www.googleapis.com/auth/chat.users.sections",
@@ -36102,6 +39380,21 @@ def test_chat_service_client_transport_session_collision(transport_name):
     session1 = client1.transport.get_thread_read_state._session
     session2 = client2.transport.get_thread_read_state._session
     assert session1 != session2
+    session1 = client1.transport.get_availability._session
+    session2 = client2.transport.get_availability._session
+    assert session1 != session2
+    session1 = client1.transport.mark_as_active._session
+    session2 = client2.transport.mark_as_active._session
+    assert session1 != session2
+    session1 = client1.transport.mark_as_away._session
+    session2 = client2.transport.mark_as_away._session
+    assert session1 != session2
+    session1 = client1.transport.mark_as_do_not_disturb._session
+    session2 = client2.transport.mark_as_do_not_disturb._session
+    assert session1 != session2
+    session1 = client1.transport.update_availability._session
+    session2 = client2.transport.update_availability._session
+    assert session1 != session2
     session1 = client1.transport.get_space_event._session
     session2 = client2.transport.get_space_event._session
     assert session1 != session2
@@ -36282,8 +39575,28 @@ def test_parse_attachment_path():
     assert expected == actual
 
 
+def test_availability_path():
+    user = "cuttlefish"
+    expected = "users/{user}/availability".format(
+        user=user,
+    )
+    actual = ChatServiceClient.availability_path(user)
+    assert expected == actual
+
+
+def test_parse_availability_path():
+    expected = {
+        "user": "mussel",
+    }
+    path = ChatServiceClient.availability_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ChatServiceClient.parse_availability_path(path)
+    assert expected == actual
+
+
 def test_custom_emoji_path():
-    custom_emoji = "cuttlefish"
+    custom_emoji = "winkle"
     expected = "customEmojis/{custom_emoji}".format(
         custom_emoji=custom_emoji,
     )
@@ -36293,7 +39606,7 @@ def test_custom_emoji_path():
 
 def test_parse_custom_emoji_path():
     expected = {
-        "custom_emoji": "mussel",
+        "custom_emoji": "nautilus",
     }
     path = ChatServiceClient.custom_emoji_path(**expected)
 
@@ -36303,8 +39616,8 @@ def test_parse_custom_emoji_path():
 
 
 def test_membership_path():
-    space = "winkle"
-    member = "nautilus"
+    space = "scallop"
+    member = "abalone"
     expected = "spaces/{space}/members/{member}".format(
         space=space,
         member=member,
@@ -36315,8 +39628,8 @@ def test_membership_path():
 
 def test_parse_membership_path():
     expected = {
-        "space": "scallop",
-        "member": "abalone",
+        "space": "squid",
+        "member": "clam",
     }
     path = ChatServiceClient.membership_path(**expected)
 
@@ -36326,8 +39639,8 @@ def test_parse_membership_path():
 
 
 def test_message_path():
-    space = "squid"
-    message = "clam"
+    space = "whelk"
+    message = "octopus"
     expected = "spaces/{space}/messages/{message}".format(
         space=space,
         message=message,
@@ -36338,8 +39651,8 @@ def test_message_path():
 
 def test_parse_message_path():
     expected = {
-        "space": "whelk",
-        "message": "octopus",
+        "space": "oyster",
+        "message": "nudibranch",
     }
     path = ChatServiceClient.message_path(**expected)
 
@@ -36349,9 +39662,9 @@ def test_parse_message_path():
 
 
 def test_quoted_message_metadata_path():
-    space = "oyster"
-    message = "nudibranch"
-    quoted_message_metadata = "cuttlefish"
+    space = "cuttlefish"
+    message = "mussel"
+    quoted_message_metadata = "winkle"
     expected = "spaces/{space}/messages/{message}/quotedMessageMetadata/{quoted_message_metadata}".format(
         space=space,
         message=message,
@@ -36365,9 +39678,9 @@ def test_quoted_message_metadata_path():
 
 def test_parse_quoted_message_metadata_path():
     expected = {
-        "space": "mussel",
-        "message": "winkle",
-        "quoted_message_metadata": "nautilus",
+        "space": "nautilus",
+        "message": "scallop",
+        "quoted_message_metadata": "abalone",
     }
     path = ChatServiceClient.quoted_message_metadata_path(**expected)
 
@@ -36377,9 +39690,9 @@ def test_parse_quoted_message_metadata_path():
 
 
 def test_reaction_path():
-    space = "scallop"
-    message = "abalone"
-    reaction = "squid"
+    space = "squid"
+    message = "clam"
+    reaction = "whelk"
     expected = "spaces/{space}/messages/{message}/reactions/{reaction}".format(
         space=space,
         message=message,
@@ -36391,9 +39704,9 @@ def test_reaction_path():
 
 def test_parse_reaction_path():
     expected = {
-        "space": "clam",
-        "message": "whelk",
-        "reaction": "octopus",
+        "space": "octopus",
+        "message": "oyster",
+        "reaction": "nudibranch",
     }
     path = ChatServiceClient.reaction_path(**expected)
 
@@ -36403,8 +39716,8 @@ def test_parse_reaction_path():
 
 
 def test_section_path():
-    user = "oyster"
-    section = "nudibranch"
+    user = "cuttlefish"
+    section = "mussel"
     expected = "users/{user}/sections/{section}".format(
         user=user,
         section=section,
@@ -36415,8 +39728,8 @@ def test_section_path():
 
 def test_parse_section_path():
     expected = {
-        "user": "cuttlefish",
-        "section": "mussel",
+        "user": "winkle",
+        "section": "nautilus",
     }
     path = ChatServiceClient.section_path(**expected)
 
@@ -36426,9 +39739,9 @@ def test_parse_section_path():
 
 
 def test_section_item_path():
-    user = "winkle"
-    section = "nautilus"
-    item = "scallop"
+    user = "scallop"
+    section = "abalone"
+    item = "squid"
     expected = "users/{user}/sections/{section}/items/{item}".format(
         user=user,
         section=section,
@@ -36440,9 +39753,9 @@ def test_section_item_path():
 
 def test_parse_section_item_path():
     expected = {
-        "user": "abalone",
-        "section": "squid",
-        "item": "clam",
+        "user": "clam",
+        "section": "whelk",
+        "item": "octopus",
     }
     path = ChatServiceClient.section_item_path(**expected)
 
@@ -36452,7 +39765,7 @@ def test_parse_section_item_path():
 
 
 def test_space_path():
-    space = "whelk"
+    space = "oyster"
     expected = "spaces/{space}".format(
         space=space,
     )
@@ -36462,7 +39775,7 @@ def test_space_path():
 
 def test_parse_space_path():
     expected = {
-        "space": "octopus",
+        "space": "nudibranch",
     }
     path = ChatServiceClient.space_path(**expected)
 
@@ -36472,8 +39785,8 @@ def test_parse_space_path():
 
 
 def test_space_event_path():
-    space = "oyster"
-    space_event = "nudibranch"
+    space = "cuttlefish"
+    space_event = "mussel"
     expected = "spaces/{space}/spaceEvents/{space_event}".format(
         space=space,
         space_event=space_event,
@@ -36484,8 +39797,8 @@ def test_space_event_path():
 
 def test_parse_space_event_path():
     expected = {
-        "space": "cuttlefish",
-        "space_event": "mussel",
+        "space": "winkle",
+        "space_event": "nautilus",
     }
     path = ChatServiceClient.space_event_path(**expected)
 
@@ -36495,8 +39808,8 @@ def test_parse_space_event_path():
 
 
 def test_space_notification_setting_path():
-    user = "winkle"
-    space = "nautilus"
+    user = "scallop"
+    space = "abalone"
     expected = "users/{user}/spaces/{space}/spaceNotificationSetting".format(
         user=user,
         space=space,
@@ -36507,8 +39820,8 @@ def test_space_notification_setting_path():
 
 def test_parse_space_notification_setting_path():
     expected = {
-        "user": "scallop",
-        "space": "abalone",
+        "user": "squid",
+        "space": "clam",
     }
     path = ChatServiceClient.space_notification_setting_path(**expected)
 
@@ -36518,8 +39831,8 @@ def test_parse_space_notification_setting_path():
 
 
 def test_space_read_state_path():
-    user = "squid"
-    space = "clam"
+    user = "whelk"
+    space = "octopus"
     expected = "users/{user}/spaces/{space}/spaceReadState".format(
         user=user,
         space=space,
@@ -36530,8 +39843,8 @@ def test_space_read_state_path():
 
 def test_parse_space_read_state_path():
     expected = {
-        "user": "whelk",
-        "space": "octopus",
+        "user": "oyster",
+        "space": "nudibranch",
     }
     path = ChatServiceClient.space_read_state_path(**expected)
 
@@ -36541,8 +39854,8 @@ def test_parse_space_read_state_path():
 
 
 def test_thread_path():
-    space = "oyster"
-    thread = "nudibranch"
+    space = "cuttlefish"
+    thread = "mussel"
     expected = "spaces/{space}/threads/{thread}".format(
         space=space,
         thread=thread,
@@ -36553,8 +39866,8 @@ def test_thread_path():
 
 def test_parse_thread_path():
     expected = {
-        "space": "cuttlefish",
-        "thread": "mussel",
+        "space": "winkle",
+        "thread": "nautilus",
     }
     path = ChatServiceClient.thread_path(**expected)
 
@@ -36564,9 +39877,9 @@ def test_parse_thread_path():
 
 
 def test_thread_read_state_path():
-    user = "winkle"
-    space = "nautilus"
-    thread = "scallop"
+    user = "scallop"
+    space = "abalone"
+    thread = "squid"
     expected = "users/{user}/spaces/{space}/threads/{thread}/threadReadState".format(
         user=user,
         space=space,
@@ -36578,9 +39891,9 @@ def test_thread_read_state_path():
 
 def test_parse_thread_read_state_path():
     expected = {
-        "user": "abalone",
-        "space": "squid",
-        "thread": "clam",
+        "user": "clam",
+        "space": "whelk",
+        "thread": "octopus",
     }
     path = ChatServiceClient.thread_read_state_path(**expected)
 
@@ -36590,7 +39903,7 @@ def test_parse_thread_read_state_path():
 
 
 def test_user_path():
-    user = "whelk"
+    user = "oyster"
     expected = "users/{user}".format(
         user=user,
     )
@@ -36600,7 +39913,7 @@ def test_user_path():
 
 def test_parse_user_path():
     expected = {
-        "user": "octopus",
+        "user": "nudibranch",
     }
     path = ChatServiceClient.user_path(**expected)
 
@@ -36610,7 +39923,7 @@ def test_parse_user_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "oyster"
+    billing_account = "cuttlefish"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -36620,7 +39933,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "nudibranch",
+        "billing_account": "mussel",
     }
     path = ChatServiceClient.common_billing_account_path(**expected)
 
@@ -36630,7 +39943,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "cuttlefish"
+    folder = "winkle"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -36640,7 +39953,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "mussel",
+        "folder": "nautilus",
     }
     path = ChatServiceClient.common_folder_path(**expected)
 
@@ -36650,7 +39963,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "winkle"
+    organization = "scallop"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -36660,7 +39973,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nautilus",
+        "organization": "abalone",
     }
     path = ChatServiceClient.common_organization_path(**expected)
 
@@ -36670,7 +39983,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "scallop"
+    project = "squid"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -36680,7 +39993,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "abalone",
+        "project": "clam",
     }
     path = ChatServiceClient.common_project_path(**expected)
 
@@ -36690,8 +40003,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "squid"
-    location = "clam"
+    project = "whelk"
+    location = "octopus"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -36702,8 +40015,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "whelk",
-        "location": "octopus",
+        "project": "oyster",
+        "location": "nudibranch",
     }
     path = ChatServiceClient.common_location_path(**expected)
 

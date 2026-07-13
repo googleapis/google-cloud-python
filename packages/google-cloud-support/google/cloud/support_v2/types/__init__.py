@@ -53,6 +53,18 @@ from .comment_service import (
 from .escalation import (
     Escalation,
 )
+from .support_event_subscription import (
+    SupportEventSubscription,
+)
+from .support_event_subscription_service import (
+    CreateSupportEventSubscriptionRequest,
+    DeleteSupportEventSubscriptionRequest,
+    GetSupportEventSubscriptionRequest,
+    ListSupportEventSubscriptionsRequest,
+    ListSupportEventSubscriptionsResponse,
+    UndeleteSupportEventSubscriptionRequest,
+    UpdateSupportEventSubscriptionRequest,
+)
 
 __all__ = (
     "Actor",
@@ -79,4 +91,12 @@ __all__ = (
     "ListCommentsRequest",
     "ListCommentsResponse",
     "Escalation",
+    "SupportEventSubscription",
+    "CreateSupportEventSubscriptionRequest",
+    "DeleteSupportEventSubscriptionRequest",
+    "GetSupportEventSubscriptionRequest",
+    "ListSupportEventSubscriptionsRequest",
+    "ListSupportEventSubscriptionsResponse",
+    "UndeleteSupportEventSubscriptionRequest",
+    "UpdateSupportEventSubscriptionRequest",
 )

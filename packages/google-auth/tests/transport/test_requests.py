@@ -16,11 +16,9 @@ import datetime
 import functools
 import http.client as http_client
 import os
-import sys
 from unittest import mock
 
 import freezegun
-import OpenSSL
 import pytest  # type: ignore
 import requests
 import requests.adapters
@@ -192,17 +190,18 @@ class TestMutualTlsAdapter(object):
         mock_proxy_manager_for.assert_called_with(ssl_context=adapter._ctx_proxymanager)
 
     def test_invalid_cert_or_key(self):
-        with pytest.raises(OpenSSL.crypto.Error):
+        with pytest.raises(exceptions.MutualTLSChannelError):
             google.auth.transport.requests._MutualTlsAdapter(
                 b"invalid cert", b"invalid key"
             )
 
-    @mock.patch.dict("sys.modules", {"OpenSSL.crypto": None})
-    def test_import_error(self):
-        with pytest.raises(ImportError):
-            google.auth.transport.requests._MutualTlsAdapter(
-                pytest.public_cert_bytes, pytest.private_key_bytes
-            )
+    @mock.patch("google.auth.transport.requests._mtls_helper.secure_cert_key_paths")
+    def test_setup_error_raises_mutual_tls_channel_error(self, mock_secure_paths):
+        mock_secure_paths.side_effect = OSError("Disk full")
+        with pytest.raises(exceptions.MutualTLSChannelError) as exc_info:
+            google.auth.transport.requests._MutualTlsAdapter(b"cert", b"key")
+        assert "Failed to configure client certificate" in str(exc_info.value)
+        assert isinstance(exc_info.value.__cause__, OSError)
 
 
 def make_response(status=http_client.OK, data=None):
@@ -496,9 +495,29 @@ class TestAuthorizedSession(object):
                 auth_session.configure_mtls_channel()
         assert auth_session._is_mtls is False
 
-        mock_get_client_cert_and_key.return_value = (False, None, None)
-        with mock.patch.dict("sys.modules"):
-            sys.modules["OpenSSL"] = None
+    @mock.patch(
+        "google.auth.transport._mtls_helper.get_client_cert_and_key", autospec=True
+    )
+    @mock.patch("google.auth.transport.requests.create_urllib3_context", autospec=True)
+    def test_configure_mtls_channel_cert_loading_exceptions(
+        self, mock_create_urllib3_context, mock_get_client_cert_and_key
+    ):
+        import ssl
+
+        mock_get_client_cert_and_key.return_value = (
+            True,
+            pytest.public_cert_bytes,
+            pytest.private_key_bytes,
+        )
+
+        for exception_type in [ValueError("error"), ssl.SSLError("error")]:
+            mock_ctx = mock.Mock()
+            mock_ctx.load_cert_chain.side_effect = exception_type
+            mock_create_urllib3_context.return_value = mock_ctx
+
+            auth_session = google.auth.transport.requests.AuthorizedSession(
+                credentials=mock.Mock()
+            )
             with pytest.raises(exceptions.MutualTLSChannelError):
                 with mock.patch.dict(
                     os.environ,
@@ -507,8 +526,19 @@ class TestAuthorizedSession(object):
                     auth_session.configure_mtls_channel()
             assert auth_session._is_mtls is False
 
+            assert not auth_session.is_mtls
+
     @mock.patch(
         "google.auth.transport._mtls_helper.get_client_cert_and_key", autospec=True
+    )
+    @mock.patch.dict(
+        os.environ,
+        {
+            "GOOGLE_API_USE_CLIENT_CERTIFICATE": "false",
+            "CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE": "false",
+            "GOOGLE_API_CERTIFICATE_CONFIG": "",
+            "CLOUDSDK_CONTEXT_AWARE_CERTIFICATE_CONFIG_FILE_PATH": "",
+        },
     )
     def test_configure_mtls_channel_without_client_cert_env(
         self, get_client_cert_and_key
@@ -904,7 +934,7 @@ class TestMutualTlsOffloadAdapter(object):
             enterprise_cert_file_path
         )
 
-        mock_should_use_provider.side_effect = True
+        mock_should_use_provider.return_value = True
         mock_load_libraries.assert_called_once()
         assert mock_attach_to_ssl_context.call_count == 2
 

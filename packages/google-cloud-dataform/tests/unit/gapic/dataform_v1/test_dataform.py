@@ -46972,11 +46972,13 @@ def test_create_repository_rest_call_success(request_type):
         "git_remote_settings": {
             "url": "url_value",
             "default_branch": "default_branch_value",
+            "effective_default_branch": "effective_default_branch_value",
             "authentication_token_secret_version": "authentication_token_secret_version_value",
             "ssh_authentication_config": {
                 "user_private_key_secret_version": "user_private_key_secret_version_value",
                 "host_public_key": "host_public_key_value",
             },
+            "git_repository_link": "git_repository_link_value",
             "token_status": 1,
         },
         "npmrc_environment_variables_secret_version": "npmrc_environment_variables_secret_version_value",
@@ -47223,11 +47225,13 @@ def test_update_repository_rest_call_success(request_type):
         "git_remote_settings": {
             "url": "url_value",
             "default_branch": "default_branch_value",
+            "effective_default_branch": "effective_default_branch_value",
             "authentication_token_secret_version": "authentication_token_secret_version_value",
             "ssh_authentication_config": {
                 "user_private_key_secret_version": "user_private_key_secret_version_value",
                 "host_public_key": "host_public_key_value",
             },
+            "git_repository_link": "git_repository_link_value",
             "token_status": 1,
         },
         "npmrc_environment_variables_secret_version": "npmrc_environment_variables_secret_version_value",
@@ -58095,10 +58099,41 @@ def test_parse_folder_path():
     assert expected == actual
 
 
-def test_notebook_runtime_template_path():
+def test_git_repository_link_path():
     project = "squid"
     location = "clam"
-    notebook_runtime_template = "whelk"
+    connection = "whelk"
+    git_repository_link = "octopus"
+    expected = "projects/{project}/locations/{location}/connections/{connection}/gitRepositoryLinks/{git_repository_link}".format(
+        project=project,
+        location=location,
+        connection=connection,
+        git_repository_link=git_repository_link,
+    )
+    actual = DataformClient.git_repository_link_path(
+        project, location, connection, git_repository_link
+    )
+    assert expected == actual
+
+
+def test_parse_git_repository_link_path():
+    expected = {
+        "project": "oyster",
+        "location": "nudibranch",
+        "connection": "cuttlefish",
+        "git_repository_link": "mussel",
+    }
+    path = DataformClient.git_repository_link_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = DataformClient.parse_git_repository_link_path(path)
+    assert expected == actual
+
+
+def test_notebook_runtime_template_path():
+    project = "winkle"
+    location = "nautilus"
+    notebook_runtime_template = "scallop"
     expected = "projects/{project}/locations/{location}/notebookRuntimeTemplates/{notebook_runtime_template}".format(
         project=project,
         location=location,
@@ -58112,9 +58147,9 @@ def test_notebook_runtime_template_path():
 
 def test_parse_notebook_runtime_template_path():
     expected = {
-        "project": "octopus",
-        "location": "oyster",
-        "notebook_runtime_template": "nudibranch",
+        "project": "abalone",
+        "location": "squid",
+        "notebook_runtime_template": "clam",
     }
     path = DataformClient.notebook_runtime_template_path(**expected)
 
@@ -58124,10 +58159,10 @@ def test_parse_notebook_runtime_template_path():
 
 
 def test_release_config_path():
-    project = "cuttlefish"
-    location = "mussel"
-    repository = "winkle"
-    release_config = "nautilus"
+    project = "whelk"
+    location = "octopus"
+    repository = "oyster"
+    release_config = "nudibranch"
     expected = "projects/{project}/locations/{location}/repositories/{repository}/releaseConfigs/{release_config}".format(
         project=project,
         location=location,
@@ -58142,10 +58177,10 @@ def test_release_config_path():
 
 def test_parse_release_config_path():
     expected = {
-        "project": "scallop",
-        "location": "abalone",
-        "repository": "squid",
-        "release_config": "clam",
+        "project": "cuttlefish",
+        "location": "mussel",
+        "repository": "winkle",
+        "release_config": "nautilus",
     }
     path = DataformClient.release_config_path(**expected)
 
@@ -58155,9 +58190,9 @@ def test_parse_release_config_path():
 
 
 def test_repository_path():
-    project = "whelk"
-    location = "octopus"
-    repository = "oyster"
+    project = "scallop"
+    location = "abalone"
+    repository = "squid"
     expected = (
         "projects/{project}/locations/{location}/repositories/{repository}".format(
             project=project,
@@ -58171,9 +58206,9 @@ def test_repository_path():
 
 def test_parse_repository_path():
     expected = {
-        "project": "nudibranch",
-        "location": "cuttlefish",
-        "repository": "mussel",
+        "project": "clam",
+        "location": "whelk",
+        "repository": "octopus",
     }
     path = DataformClient.repository_path(**expected)
 
@@ -58183,9 +58218,9 @@ def test_parse_repository_path():
 
 
 def test_secret_version_path():
-    project = "winkle"
-    secret = "nautilus"
-    version = "scallop"
+    project = "oyster"
+    secret = "nudibranch"
+    version = "cuttlefish"
     expected = "projects/{project}/secrets/{secret}/versions/{version}".format(
         project=project,
         secret=secret,
@@ -58197,9 +58232,9 @@ def test_secret_version_path():
 
 def test_parse_secret_version_path():
     expected = {
-        "project": "abalone",
-        "secret": "squid",
-        "version": "clam",
+        "project": "mussel",
+        "secret": "winkle",
+        "version": "nautilus",
     }
     path = DataformClient.secret_version_path(**expected)
 
@@ -58209,9 +58244,9 @@ def test_parse_secret_version_path():
 
 
 def test_team_folder_path():
-    project = "whelk"
-    location = "octopus"
-    team_folder = "oyster"
+    project = "scallop"
+    location = "abalone"
+    team_folder = "squid"
     expected = (
         "projects/{project}/locations/{location}/teamFolders/{team_folder}".format(
             project=project,
@@ -58225,9 +58260,9 @@ def test_team_folder_path():
 
 def test_parse_team_folder_path():
     expected = {
-        "project": "nudibranch",
-        "location": "cuttlefish",
-        "team_folder": "mussel",
+        "project": "clam",
+        "location": "whelk",
+        "team_folder": "octopus",
     }
     path = DataformClient.team_folder_path(**expected)
 
@@ -58237,10 +58272,10 @@ def test_parse_team_folder_path():
 
 
 def test_workflow_config_path():
-    project = "winkle"
-    location = "nautilus"
-    repository = "scallop"
-    workflow_config = "abalone"
+    project = "oyster"
+    location = "nudibranch"
+    repository = "cuttlefish"
+    workflow_config = "mussel"
     expected = "projects/{project}/locations/{location}/repositories/{repository}/workflowConfigs/{workflow_config}".format(
         project=project,
         location=location,
@@ -58255,10 +58290,10 @@ def test_workflow_config_path():
 
 def test_parse_workflow_config_path():
     expected = {
-        "project": "squid",
-        "location": "clam",
-        "repository": "whelk",
-        "workflow_config": "octopus",
+        "project": "winkle",
+        "location": "nautilus",
+        "repository": "scallop",
+        "workflow_config": "abalone",
     }
     path = DataformClient.workflow_config_path(**expected)
 
@@ -58268,10 +58303,10 @@ def test_parse_workflow_config_path():
 
 
 def test_workflow_invocation_path():
-    project = "oyster"
-    location = "nudibranch"
-    repository = "cuttlefish"
-    workflow_invocation = "mussel"
+    project = "squid"
+    location = "clam"
+    repository = "whelk"
+    workflow_invocation = "octopus"
     expected = "projects/{project}/locations/{location}/repositories/{repository}/workflowInvocations/{workflow_invocation}".format(
         project=project,
         location=location,
@@ -58286,10 +58321,10 @@ def test_workflow_invocation_path():
 
 def test_parse_workflow_invocation_path():
     expected = {
-        "project": "winkle",
-        "location": "nautilus",
-        "repository": "scallop",
-        "workflow_invocation": "abalone",
+        "project": "oyster",
+        "location": "nudibranch",
+        "repository": "cuttlefish",
+        "workflow_invocation": "mussel",
     }
     path = DataformClient.workflow_invocation_path(**expected)
 
@@ -58299,10 +58334,10 @@ def test_parse_workflow_invocation_path():
 
 
 def test_workspace_path():
-    project = "squid"
-    location = "clam"
-    repository = "whelk"
-    workspace = "octopus"
+    project = "winkle"
+    location = "nautilus"
+    repository = "scallop"
+    workspace = "abalone"
     expected = "projects/{project}/locations/{location}/repositories/{repository}/workspaces/{workspace}".format(
         project=project,
         location=location,
@@ -58315,10 +58350,10 @@ def test_workspace_path():
 
 def test_parse_workspace_path():
     expected = {
-        "project": "oyster",
-        "location": "nudibranch",
-        "repository": "cuttlefish",
-        "workspace": "mussel",
+        "project": "squid",
+        "location": "clam",
+        "repository": "whelk",
+        "workspace": "octopus",
     }
     path = DataformClient.workspace_path(**expected)
 
@@ -58328,7 +58363,7 @@ def test_parse_workspace_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "winkle"
+    billing_account = "oyster"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -58338,7 +58373,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "nautilus",
+        "billing_account": "nudibranch",
     }
     path = DataformClient.common_billing_account_path(**expected)
 
@@ -58348,7 +58383,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "scallop"
+    folder = "cuttlefish"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -58358,7 +58393,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "abalone",
+        "folder": "mussel",
     }
     path = DataformClient.common_folder_path(**expected)
 
@@ -58368,7 +58403,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "squid"
+    organization = "winkle"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -58378,7 +58413,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "clam",
+        "organization": "nautilus",
     }
     path = DataformClient.common_organization_path(**expected)
 
@@ -58388,7 +58423,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "whelk"
+    project = "scallop"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -58398,7 +58433,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "octopus",
+        "project": "abalone",
     }
     path = DataformClient.common_project_path(**expected)
 
@@ -58408,8 +58443,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "oyster"
-    location = "nudibranch"
+    project = "squid"
+    location = "clam"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -58420,8 +58455,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "cuttlefish",
-        "location": "mussel",
+        "project": "whelk",
+        "location": "octopus",
     }
     path = DataformClient.common_location_path(**expected)
 

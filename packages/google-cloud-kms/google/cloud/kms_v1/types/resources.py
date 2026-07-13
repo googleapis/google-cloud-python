@@ -1351,6 +1351,12 @@ class ImportJob(proto.Message):
             prior to import. Only returned if
             [state][google.cloud.kms.v1.ImportJob.state] is
             [ACTIVE][google.cloud.kms.v1.ImportJob.ImportJobState.ACTIVE].
+        public_key_format (google.cloud.kms_v1.types.PublicKey.PublicKeyFormat):
+            Output only. Specifies the
+            [WrappingPublicKey][google.cloud.kms.v1.ImportJob.WrappingPublicKey]
+            format provided by the customer in the
+            [KeyManagementService.GetImportJob][google.cloud.kms.v1.KeyManagementService.GetImportJob]
+            request.
         attestation (google.cloud.kms_v1.types.KeyOperationAttestation):
             Output only. Statement that was generated and signed by the
             key creator (for example, an HSM) at key creation time. Use
@@ -1422,6 +1428,36 @@ class ImportJob(proto.Message):
                 Due to technical limitations of RSA wrapping,
                 this method cannot be used to wrap RSA keys for
                 import.
+            HPKE_KEM_ML_KEM_768_HKDF_SHA256_AES_256_GCM (8):
+                Represents the Hybrid Public Key Encryption (HPKE) Scheme
+                originally defined in `RFC
+                9180 <https://www.rfc-editor.org/rfc/rfc9180>`__. It
+                involves wrapping the raw key with an ephemeral AES key,
+                derived with HKDF-SHA256 from an encryption context, that
+                is, in turn obtained from the receiver’s public key with the
+                help of the ML-KEM-768 KEM. For more details, see the
+                `ML-KEM HPKE
+                standard <http://datatracker.ietf.org/doc/draft-ietf-hpke-pq/01/>`__.
+            HPKE_KEM_ML_KEM_1024_HKDF_SHA256_AES_256_GCM (9):
+                Represents the Hybrid Public Key Encryption (HPKE) Scheme
+                originally defined in `RFC
+                9180 <https://www.rfc-editor.org/rfc/rfc9180>`__. It
+                involves wrapping the raw key with an ephemeral AES key,
+                derived with HKDF-SHA256 from an encryption context, that
+                is, in turn obtained from the receiver’s public key with the
+                help of the ML-KEM-1024 KEM. For more details, see the
+                `ML-KEM HPKE
+                standard <http://datatracker.ietf.org/doc/draft-ietf-hpke-pq/01/>`__.
+            HPKE_KEM_XWING_HKDF_SHA256_AES_256_GCM (10):
+                Represents the Hybrid Public Key Encryption (HPKE) Scheme
+                originally defined in `RFC
+                9180 <https://www.rfc-editor.org/rfc/rfc9180>`__. It
+                involves wrapping the raw key with an ephemeral AES key,
+                derived with HKDF-SHA256 from an encryption context, that
+                is, in turn obtained from the receiver’s public key with the
+                help of the X-Wing hybrid KEM. For more details, see the
+                `X-Wing
+                standard <http://datatracker.ietf.org/doc/draft-connolly-cfrg-xwing-kem/09/>`__.
         """
 
         IMPORT_METHOD_UNSPECIFIED = 0
@@ -1431,6 +1467,9 @@ class ImportJob(proto.Message):
         RSA_OAEP_4096_SHA256_AES_256 = 4
         RSA_OAEP_3072_SHA256 = 5
         RSA_OAEP_4096_SHA256 = 6
+        HPKE_KEM_ML_KEM_768_HKDF_SHA256_AES_256_GCM = 8
+        HPKE_KEM_ML_KEM_1024_HKDF_SHA256_AES_256_GCM = 9
+        HPKE_KEM_XWING_HKDF_SHA256_AES_256_GCM = 10
 
     class ImportJobState(proto.Enum):
         r"""The state of the [ImportJob][google.cloud.kms.v1.ImportJob],
@@ -1473,12 +1512,31 @@ class ImportJob(proto.Message):
                 sections for `General
                 Considerations <https://tools.ietf.org/html/rfc7468#section-2>`__
                 and [Textual Encoding of Subject Public Key Info]
-                (https://tools.ietf.org/html/rfc7468#section-13).
+                (https://tools.ietf.org/html/rfc7468#section-13). This field
+                gets populated by default for RSA-based import methods, if
+                no public_key_format is specified in the request. If you
+                want to retrieve the wrapping key of an
+                [ImportJob][google.cloud.kms.v1.ImportJob] in some other
+                format, use
+                [KeyManagementService.GetImportJob][google.cloud.kms.v1.KeyManagementService.GetImportJob]
+                and set the public_key_format to the desired public key
+                format.
+            data (bytes):
+                Output only. Contains the public key, formatted according to
+                the
+                [PublicKey.PublicKeyFormat][google.cloud.kms.v1.PublicKey.PublicKeyFormat]
+                specified in the
+                [KeyManagementService.GetImportJob][google.cloud.kms.v1.KeyManagementService.GetImportJob]
+                request.
         """
 
         pem: str = proto.Field(
             proto.STRING,
             number=1,
+        )
+        data: bytes = proto.Field(
+            proto.BYTES,
+            number=2,
         )
 
     name: str = proto.Field(
@@ -1524,6 +1582,11 @@ class ImportJob(proto.Message):
         proto.MESSAGE,
         number=7,
         message=WrappingPublicKey,
+    )
+    public_key_format: "PublicKey.PublicKeyFormat" = proto.Field(
+        proto.ENUM,
+        number=12,
+        enum="PublicKey.PublicKeyFormat",
     )
     attestation: "KeyOperationAttestation" = proto.Field(
         proto.MESSAGE,
