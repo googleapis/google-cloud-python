@@ -73,6 +73,7 @@ def test_bigquery_magic(ipython_interactive):
             result = ip.run_cell_magic("bigquery", "--use_rest_api", sql)
 
     import gc
+
     gc.collect()
 
     for _ in range(30):  # Wait up to 3 seconds
