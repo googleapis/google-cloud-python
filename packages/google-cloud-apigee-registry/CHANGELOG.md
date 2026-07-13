@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-apigee-registry/#history
 
+## [0.10.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-apigee-registry-v0.10.0...google-cloud-apigee-registry-v0.10.1) (2026-07-13)
+
+
+### Features
+
+* update googleapis and regenerate ([#17678](https://github.com/googleapis/google-cloud-python/issues/17678)) ([670917c](https://github.com/googleapis/google-cloud-python/commit/670917c9cff5b93983bb75790170716e917b72bb))
+
 ## [0.10.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-apigee-registry-v0.9.0...google-cloud-apigee-registry-v0.10.0) (2026-06-02)
 
 
