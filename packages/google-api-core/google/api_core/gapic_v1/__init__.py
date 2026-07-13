@@ -12,7 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import importlib.util
 from typing import Set
+
+_has_grpc = importlib.util.find_spec("grpc") is not None
 
 # PEP 0810: Explicit Lazy Imports
 # Python 3.15+ natively intercepts and defers these imports.
@@ -22,34 +25,38 @@ from typing import Set
 # Older Python versions safely ignore this variable.
 __lazy_modules__: Set[str] = {
     "google.api_core.gapic_v1.client_info",
-    "google.api_core.gapic_v1.config",
-    "google.api_core.gapic_v1.config_async",
-    "google.api_core.gapic_v1.method",
-    "google.api_core.gapic_v1.method_async",
     "google.api_core.gapic_v1.routing_header",
 }
 
-from google.api_core.gapic_v1 import client_info
-from google.api_core.gapic_v1 import routing_header
-
-__all__ = [
-    "client_info",
-    "routing_header",
-]
-
-try:
-    from google.api_core.gapic_v1 import config
-    from google.api_core.gapic_v1 import config_async
-    from google.api_core.gapic_v1 import method
-    from google.api_core.gapic_v1 import method_async
-
-    __all__.extend(
-        [
-            "config",
-            "config_async",
-            "method",
-            "method_async",
-        ]
+if _has_grpc:
+    __lazy_modules__.update(
+        {
+            "google.api_core.gapic_v1.config",
+            "google.api_core.gapic_v1.config_async",
+            "google.api_core.gapic_v1.method",
+            "google.api_core.gapic_v1.method_async",
+        }
     )
-except ImportError:
-    pass
+
+from google.api_core.gapic_v1 import client_info  # noqa: E402
+from google.api_core.gapic_v1 import routing_header  # noqa: E402
+
+if _has_grpc:
+    from google.api_core.gapic_v1 import config  # noqa: F401
+    from google.api_core.gapic_v1 import config_async  # noqa: F401
+    from google.api_core.gapic_v1 import method  # noqa: F401
+    from google.api_core.gapic_v1 import method_async  # noqa: F401
+
+    __all__ = [
+        "client_info",
+        "routing_header",
+        "config",
+        "config_async",
+        "method",
+        "method_async",
+    ]
+else:
+    __all__ = [
+        "client_info",
+        "routing_header",
+    ]
