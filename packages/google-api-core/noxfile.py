@@ -350,7 +350,7 @@ def prerelease_deps(session):
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def core_deps_from_source(session):
     """Run the test suite installing dependencies from source."""
-    default(session, prerelease=True)
+    default(session, install_deps_from_source=True)
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
