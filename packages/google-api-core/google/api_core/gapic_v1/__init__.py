@@ -22,7 +22,7 @@ __all__ = [
 
 try:
     import grpc  # noqa: F401
-    
+
     from google.api_core.gapic_v1 import config
     from google.api_core.gapic_v1 import config_async
     from google.api_core.gapic_v1 import method
