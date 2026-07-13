@@ -2819,7 +2819,8 @@ class RowIterator(HTTPIterator):
                 if client_info:
                     ua = client_info.user_agent or ""
                     if "pandas-gbq" not in ua:
-                        client_info.user_agent = f"{ua} pandas-gbq/{pandas_gbq.__version__}".strip()
+                        pandas_gbq_version = getattr(pandas_gbq, "__version__", "0.0.0")
+                        client_info.user_agent = f"{ua} pandas-gbq/{pandas_gbq_version}".strip()
 
             return pandas_gbq.pandas.from_row_iterator(
                 self,
