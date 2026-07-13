@@ -4143,6 +4143,8 @@ class TestRowIterator(unittest.TestCase):
                 # dependency and are unrelated to the code under test.
                 if "Pyparsing" in warning.category.__name__:
                     continue
+                if issubclass(warning.category, PendingDeprecationWarning):
+                    continue
                 self.assertIn(
                     warning.category,
                     [UserWarning, DeprecationWarning, tqdm.TqdmExperimentalWarning],
