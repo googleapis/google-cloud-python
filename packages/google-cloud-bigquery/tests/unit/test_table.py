@@ -5824,6 +5824,7 @@ class TestRowIterator(unittest.TestCase):
     def test_to_dataframe_not_delegated_when_unsupported(self):
         import sys
         pandas = pytest.importorskip("pandas")
+        pyarrow = pytest.importorskip("pyarrow")
         mock_pandas_gbq = mock.Mock()
 
         with mock.patch(
