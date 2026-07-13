@@ -5721,8 +5721,7 @@ class TestRowIterator(unittest.TestCase):
     def test_to_dataframe_delegated_when_supported_no_range_types(self):
         import sys
 
-        import db_dtypes
-
+        db_dtypes = pytest.importorskip("db_dtypes")
         pandas = pytest.importorskip("pandas")
         mock_pandas_gbq = mock.Mock()
         mock_pandas_gbq.pandas.from_row_iterator.return_value = mock.sentinel.dataframe
@@ -5770,8 +5769,7 @@ class TestRowIterator(unittest.TestCase):
     def test_to_dataframe_delegated_when_supported_with_range_types(self):
         import sys
 
-        import db_dtypes
-
+        db_dtypes = pytest.importorskip("db_dtypes")
         pandas = pytest.importorskip("pandas")
         pyarrow = pytest.importorskip("pyarrow")
         mock_pandas_gbq = mock.Mock()
