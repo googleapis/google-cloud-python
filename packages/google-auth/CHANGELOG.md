@@ -4,6 +4,22 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.56.0](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.55.2...google-auth-v2.56.0) (2026-07-13)
+
+
+### Features
+
+* **auth:** Implement python mtls helpers ([#17495](https://github.com/googleapis/google-cloud-python/issues/17495)) ([e7baed1](https://github.com/googleapis/google-cloud-python/commit/e7baed1a79677ca85f4dad7918a2f3e50a4fb9f2))
+
+
+### Bug Fixes
+
+* **google-auth:** add aiohttp bound for Python 3.14 ([#17654](https://github.com/googleapis/google-cloud-python/issues/17654)) ([b2ec761](https://github.com/googleapis/google-cloud-python/commit/b2ec76170d0550dc45e1b88cd66515e6dd9475cc))
+* **google-auth:** add bounds for urllib3 and packaging dependencies ([#17647](https://github.com/googleapis/google-cloud-python/issues/17647)) ([e9c6265](https://github.com/googleapis/google-cloud-python/commit/e9c626515efbcd5afefe1f6be40d0be068dac64f))
+* **google-auth:** add cryptography bound for Python 3.14 ([#17649](https://github.com/googleapis/google-cloud-python/issues/17649)) ([e9ca4c4](https://github.com/googleapis/google-cloud-python/commit/e9ca4c43029cffe1cc7386797a6477477fca218b))
+* **google-auth:** add gRPC extra and clean up obsolete TODOs ([#17644](https://github.com/googleapis/google-cloud-python/issues/17644)) ([6da41e8](https://github.com/googleapis/google-cloud-python/commit/6da41e83afd96e4719fc99a20c8fc6336de7da58)), closes [#1735](https://github.com/googleapis/google-cloud-python/issues/1735) [#1736](https://github.com/googleapis/google-cloud-python/issues/1736) [#1739](https://github.com/googleapis/google-cloud-python/issues/1739)
+* **google-auth:** raise rsa extra lower bound to 4.0 ([#17652](https://github.com/googleapis/google-cloud-python/issues/17652)) ([4087828](https://github.com/googleapis/google-cloud-python/commit/40878283c3fd8838439880b0d0eece5692b3e325))
+
 ## [2.55.2](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.55.1...google-auth-v2.55.2) (2026-07-07)
 
 
