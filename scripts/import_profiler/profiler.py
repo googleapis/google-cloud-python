@@ -19,7 +19,7 @@ def clean_bytecode():
     count = 0
     # Walk the directory avoiding hidden directories (e.g. .git, .venv, .nox)
     for root, dirs, files in os.walk('.'):
-        dirs[:] = [d for d in dirs if not d.startswith('.') or d == '.venv-profiler']
+        dirs[:] = [d for d in dirs if not d.startswith('.')]
         if '__pycache__' in dirs:
             shutil.rmtree(os.path.join(root, '__pycache__'))
             dirs.remove('__pycache__')
