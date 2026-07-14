@@ -156,6 +156,6 @@ load("@rules_python//python:repositories.bzl", "python_register_toolchains")
 python_register_toolchains(
     name = "python311",
     python_version = "3.11",
+    ignore_root_user_error = True,
 )
 # END workaround
-
