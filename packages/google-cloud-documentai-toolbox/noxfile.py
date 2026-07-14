@@ -191,7 +191,7 @@ def unit(session, protobuf_implementation):
     # Install all test dependencies, then install this package in-place.
     if session.python == "3.15":
         session.skip(
-            "Skipping 3.15 until wheels are available for numba (from pandas) and lxml (from pikepdf)"
+            "Skipping 3.15 until wheels are available for 1. numba (from dependency pandas[performance]) 2. lxml (from dependency pikepdf) 3. pyarrow."
         )
 
     constraints_path = str(

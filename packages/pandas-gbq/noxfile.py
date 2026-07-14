@@ -245,7 +245,7 @@ def unit(session):
     """Run the unit test suite."""
     if session.python == "3.15":
         session.skip(
-            "Skipping 3.15 until wheels are available for pyproj needed for dependency geopandas"
+            "Skipping 3.15 until wheels are available for pyarrow. Also pyproj wheels are needed for dependency geopandas."
         )
 
     default(session)
