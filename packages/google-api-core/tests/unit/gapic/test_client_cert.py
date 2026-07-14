@@ -18,10 +18,6 @@ from unittest import mock
 
 import pytest
 
-try:
-    import grpc  # noqa: F401
-except ImportError:
-    pytest.skip("No GRPC", allow_module_level=True)
 
 from google.api_core.gapic_v1._client_cert import (
     get_client_cert_source,
