@@ -5771,6 +5771,8 @@ class TestRowIterator(unittest.TestCase):
 
         db_dtypes = pytest.importorskip("db_dtypes")
         pandas = pytest.importorskip("pandas")
+        if not hasattr(pandas, "ArrowDtype"):
+            pytest.skip("pandas.ArrowDtype is not available in this environment.")
         pyarrow = pytest.importorskip("pyarrow")
         mock_pandas_gbq = mock.Mock()
         mock_pandas_gbq.pandas.from_row_iterator.return_value = mock.sentinel.dataframe
