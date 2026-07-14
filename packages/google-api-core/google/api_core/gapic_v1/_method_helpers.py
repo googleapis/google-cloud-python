@@ -44,7 +44,7 @@ def setup_request_id(request: Any, field_name: str, is_proto3_optional: bool) ->
                 setattr(request, field_name, str(uuid.uuid4()))
         except (AttributeError, ValueError):
             # Proto-plus messages or other objects
-            if field_name not in request:
+            if not getattr(request, field_name, None):
                 setattr(request, field_name, str(uuid.uuid4()))
     else:
         if not getattr(request, field_name):
