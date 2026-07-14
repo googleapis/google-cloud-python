@@ -13,7 +13,6 @@
 # limitations under the License.
 
 import pytest
-
 from google.api_core.observability import options
 from google.api_core.observability.options import (
     _get_env_bool,
@@ -104,68 +103,71 @@ def test_get_env_bool_with_dev_fallback_other_prefix(monkeypatch):
 
 
 @pytest.mark.parametrize(
-    "signal_type, env_vars, client_options, default_val, expected",
+    "feature_name, env_vars, client_options, default_val, expected",
     [
         # Default fallback tests
         ("tracing", {}, None, False, False),
-        ("tracing", {}, None, True, True),
-        # Global env var
-        ("tracing", {"GOOGLE_CLOUD_PYTHON_TRACING_ENABLED": True}, None, False, True),
-        ("tracing", {"GOOGLE_CLOUD_PYTHON_TRACING_ENABLED": False}, None, True, False),
+        # Default=True is ignored if blocked
+        ("tracing", {}, None, True, False),
+        # Global GA env var is ignored if experimental flag is missing
+        ("tracing", {"GOOGLE_SDK_PYTHON_TRACING_ENABLED": True}, None, False, False),
+        ("tracing", {"GOOGLE_SDK_PYTHON_TRACING_ENABLED": False}, None, True, False),
         # Experimental fallback
         (
             "tracing",
-            {"GOOGLE_CLOUD_EXPERIMENTAL_PYTHON_TRACING_ENABLED": True},
+            {"GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED": True},
             None,
             False,
             True,
         ),
         (
             "tracing",
-            {"GOOGLE_CLOUD_EXPERIMENTAL_PYTHON_TRACING_ENABLED": False},
+            {"GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED": False},
             None,
             True,
             False,
-        ),
-        # Implicit opt-in with provider
-        (
-            "tracing",
-            {"GOOGLE_CLOUD_PYTHON_TRACING_ENABLED": False},
-            {"tracer_provider": object()},
-            False,
-            True,
         ),
         # Programmatic boolean flags are NOT supported in client_options
         # (should default/fallback to False)
         (
             "tracing",
-            {"GOOGLE_CLOUD_PYTHON_TRACING_ENABLED": False},
+            {"GOOGLE_SDK_PYTHON_TRACING_ENABLED": False},
             {"enable_metrics": True},
             False,
             False,
         ),
         (
             "tracing",
-            {"GOOGLE_CLOUD_PYTHON_TRACING_ENABLED": False},
+            {"GOOGLE_SDK_PYTHON_TRACING_ENABLED": False},
             {"enable_tracing": True},
             False,
             False,
         ),
     ],
 )
-def test_is_signal_enabled(
-    signal_type, env_vars, client_options, default_val, expected
+def test_resolve_feature_flags(
+    feature_name, env_vars, client_options, default_val, expected
 ):
     # Setup environment variables using our test overrides
     for k, v in env_vars.items():
         set_test_env_override(k, v)
 
-    result = options.is_signal_enabled(
-        signal_type, client_options=client_options, default=default_val
+    result = options.resolve_feature_flags(
+        feature_name, client_options=client_options, default=default_val
     )
     assert result is expected
 
 
-def test_is_signal_enabled_invalid_signal():
+def test_resolve_feature_flags_invalid_signal():
     with pytest.raises(ValueError, match="Only 'tracing' is supported"):
-        options.is_signal_enabled("metrics")
+        options.resolve_feature_flags("metrics")
+
+
+def test_resolve_feature_flags_experimental_gate_blocks_provider():
+    """Verify that programmatic provider is blocked for experimental features without env var."""
+    # Assume 'tracing' is experimental for this test.
+    # We pass tracer_provider but do NOT set GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED
+    client_options = {"tracer_provider": object()}
+
+    with pytest.raises(ValueError, match="Experimental feature"):
+        options.resolve_feature_flags("tracing", client_options=client_options)

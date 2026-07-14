@@ -74,16 +74,16 @@ def _get_env_bool(name: str) -> Optional[bool]:
 
 def _get_env_bool_with_dev_fallback(name: str) -> Optional[bool]:
     """Retrieve the boolean value of an environment variable, checking experimental fallbacks first."""
-    if name.startswith("GOOGLE_CLOUD_"):
-        exp_name = name.replace("GOOGLE_CLOUD_", "GOOGLE_CLOUD_EXPERIMENTAL_", 1)
+    if name.startswith("GOOGLE_SDK_"):
+        exp_name = name.replace("GOOGLE_SDK_", "GOOGLE_SDK_EXPERIMENTAL_", 1)
         val = _get_env_bool(exp_name)
         if val is not None:
             return val
     return _get_env_bool(name)
 
 
-def is_signal_enabled(
-    signal_type: str,
+def resolve_feature_flags(
+    feature_name: str,
     client_options: Optional[Union[Dict[str, Any], Any]] = None,
     default: bool = False,
 ) -> bool:
@@ -91,38 +91,43 @@ def is_signal_enabled(
 
     Resolves settings in the following order of precedence:
     1. Programmatic overrides in client_options (checks tracer_provider)
-    2. Language-wide Environment Variable: GOOGLE_CLOUD_PYTHON_TRACING_ENABLED
+    2. Language-wide Environment Variable: GOOGLE_SDK_PYTHON_TRACING_ENABLED
        (natively checks for a variant with an "EXPERIMENTAL" token first)
     3. Default fallback
 
     Args:
-        signal_type: The signal type: must be 'tracing'.
+        feature_name: The feature name: must be 'tracing'.
         client_options: A dictionary or object containing client configuration.
         default: Fallback boolean if no options or env variables match.
 
     Returns:
         bool: True if the signal is resolved to enabled, False otherwise.
     """
-    if signal_type != "tracing":
+    if feature_name != "tracing":
         raise ValueError(
-            f"Invalid signal_type: {signal_type!r}. Only 'tracing' is supported at this time."
+            f"Invalid feature_name: {feature_name!r}. Only 'tracing' is supported at this time."
         )
 
-    # 1. Resolve Programmatic Options First
+    # 1. Experimental Gate
+    exp_var = "GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED"
+    exp_val = _get_env_bool(exp_var)
+
+    has_provider = False
     if client_options is not None:
         options_dict = (
             client_options
             if isinstance(client_options, dict)
             else getattr(client_options, "__dict__", {})
         )
-
         if options_dict.get("tracer_provider") is not None:
-            return True
+            has_provider = True
 
-    # 2. Check Language-Wide Environment Variable
-    val = _get_env_bool_with_dev_fallback("GOOGLE_CLOUD_PYTHON_TRACING_ENABLED")
-    if val is not None:
-        return val
+    if exp_val is not True:
+        if has_provider:
+            raise ValueError(
+                f"Experimental feature {feature_name!r} requires {exp_var} to be set to 'true' to use programmatic providers."
+            )
+        return False # Blocked
 
-    # 3. Default Fallback
-    return default
+    # If we are here, exp_val IS True.
+    return True
