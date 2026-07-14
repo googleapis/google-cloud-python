@@ -568,7 +568,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
-        self._client_options: client_options_lib.ClientOptions = client_options
+        self._client_options = cast(client_options_lib.ClientOptions, client_options)
 
         universe_domain_opt = getattr(self._client_options, 'universe_domain', None)
 
