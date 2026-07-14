@@ -247,9 +247,9 @@ def install_unittest_dependencies(session, *constraints):
         extras = []
 
     if extras:
-        session.install("-e", f".[{','.join(extras)}]", *constraints)
+        session.install(f".[{','.join(extras)}]", *constraints)
     else:
-        session.install("-e", ".", *constraints)
+        session.install(".", *constraints)
 
 
 @nox.session(python=ALL_PYTHON)
@@ -318,9 +318,9 @@ def install_systemtest_dependencies(session, *constraints):
         extras = []
 
     if extras:
-        session.install("-e", f".[{','.join(extras)}]", *constraints)
+        session.install(f".[{','.join(extras)}]", *constraints)
     else:
-        session.install("-e", ".", *constraints)
+        session.install(".", *constraints)
 
 
 @nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
@@ -383,7 +383,7 @@ def cover(session):
 def docs(session):
     """Build the docs for this library."""
 
-    session.install("-e", ".")
+    session.install(".")
     session.install(
         # We need to pin to specific versions of the `sphinxcontrib-*` packages
         # which still support sphinx 4.x.
@@ -416,7 +416,7 @@ def docs(session):
 def docfx(session):
     """Build the docfx yaml files for this library."""
 
-    session.install("-e", ".")
+    session.install(".")
     session.install(
         # We need to pin to specific versions of the `sphinxcontrib-*` packages
         # which still support sphinx 4.x.
@@ -472,7 +472,7 @@ def prerelease_deps(session, protobuf_implementation):
     """
 
     # Install all dependencies
-    session.install("-e", ".")
+    session.install(".")
 
     # Install dependencies for the unit test environment
     unit_deps_all = UNIT_TEST_STANDARD_DEPENDENCIES + UNIT_TEST_EXTERNAL_DEPENDENCIES
@@ -584,7 +584,7 @@ def core_deps_from_source(session, protobuf_implementation):
     """
 
     # Install all dependencies
-    session.install("-e", ".")
+    session.install(".")
 
     # Install dependencies for the unit test environment
     unit_deps_all = UNIT_TEST_STANDARD_DEPENDENCIES + UNIT_TEST_EXTERNAL_DEPENDENCIES

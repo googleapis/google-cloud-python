@@ -74,7 +74,7 @@ def unit(session):
         "proto-plus",
     )
     if os.path.exists("../google-api-core"):
-        session.install("-e", "../google-api-core")
+        session.install("../google-api-core")
     session.install("-e", ".")
     session.run(
         "py.test",
@@ -160,9 +160,14 @@ class FragTester:
             # Uninstall the PyPI version of google-api-core to prevent import path conflicts
             self.session.run("pip", "uninstall", "google-api-core", "-y")
             # Override google-api-core with the local version from source
-            self.session.install(
-                "-e", "../google-api-core", "--no-deps"
-            )
+            if os.path.exists("../google-api-core"):
+                self.session.install(
+                    "../google-api-core", "--no-deps"
+                )
+            else:
+                self.session.install(
+                    "google-api-core", "--no-deps"
+                )
 
             # Run the fragment's generated unit tests.
             # Don't bother parallelizing them: we already parallelize
@@ -258,7 +263,10 @@ def showcase_library(
     session.log("-" * 70)
 
     # Install gapic-generator-python
-    session.install("../google-api-core")
+    if os.path.exists("../google-api-core"):
+        session.install("../google-api-core")
+    else:
+        session.install("google-api-core")
     session.install("-e", ".")
 
     # Install grpcio-tools for protoc
@@ -398,7 +406,10 @@ def showcase_library(
         # Uninstall the PyPI version of google-api-core to prevent import path conflicts
         session.run("pip", "uninstall", "google-api-core", "-y")
         # Override google-api-core with the local version from source
-        session.install("../google-api-core", "--no-deps")
+        if os.path.exists("../google-api-core"):
+            session.install("../google-api-core", "--no-deps")
+        else:
+            session.install("google-api-core", "--no-deps")
 
         yield tmp_dir
 
