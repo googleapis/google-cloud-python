@@ -19,12 +19,11 @@ import uuid
 import pytest
 from google.api_core import retry
 from google.api_core.exceptions import ClientError, PermissionDenied
-from google.cloud.environment_vars import BIGTABLE_EMULATOR
-from google.type import date_pb2
-
 from google.cloud.bigtable.data._cross_sync import CrossSync
 from google.cloud.bigtable.data.execute_query.metadata import SqlType
 from google.cloud.bigtable.data.read_modify_write_rules import _MAX_INCREMENT_VALUE
+from google.cloud.environment_vars import BIGTABLE_EMULATOR
+from google.type import date_pb2
 
 from . import TEST_AGGREGATE_FAMILY, TEST_FAMILY, TEST_FAMILY_2, SystemTestRunner
 
@@ -68,7 +67,7 @@ class TempRowBuilderAsync:
         elif isinstance(value, int):
             value = value.to_bytes(8, byteorder="big", signed=True)
         request = {
-            "table_name": self.target.table_name,
+            **self.target._request_path,
             "row_key": row_key,
             "mutations": [
                 {
@@ -88,7 +87,7 @@ class TempRowBuilderAsync:
         self, row_key, *, family=TEST_AGGREGATE_FAMILY, qualifier=b"q", input=0
     ):
         request = {
-            "table_name": self.target.table_name,
+            **self.target._request_path,
             "row_key": row_key,
             "mutations": [
                 {
