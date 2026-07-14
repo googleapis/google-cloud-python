@@ -18,9 +18,9 @@ import time
 import uuid
 
 from google.api_core import datetime_helpers, exceptions
+from google.cloud.spanner_v1 import instance as instance_mod
 from test_utils import retry
 
-from google.cloud.spanner_v1 import instance as instance_mod
 from tests import _fixtures
 
 CREATE_INSTANCE_ENVVAR = "GOOGLE_CLOUD_TESTS_CREATE_SPANNER_INSTANCE"
