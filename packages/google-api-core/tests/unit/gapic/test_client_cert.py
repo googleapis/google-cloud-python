@@ -18,6 +18,14 @@ from unittest import mock
 
 import pytest
 
+# We need to skip this test module if grpc is not installed because importing
+# gapic_v1._client_cert will load gapic_v1/__init__, which unconditionally
+# imports gapic_v1.config, which imports grpc.
+try:
+    import grpc  # noqa: F401
+except ImportError:
+    pytest.skip("No GRPC", allow_module_level=True)
+
 from google.api_core.gapic_v1._client_cert import (
     _get_client_cert_source,
     _use_client_cert_effective,
@@ -60,12 +68,8 @@ def test_use_client_cert_effective_fallback():
                 _use_client_cert_effective()
 
 
-@mock.patch(
-    "google.auth.transport.mtls.has_default_client_cert_source", create=True
-)  # noqa: E501
-@mock.patch(
-    "google.auth.transport.mtls.default_client_cert_source", create=True
-)  # noqa: E501
+@mock.patch("google.auth.transport.mtls.has_default_client_cert_source", create=True)  # noqa: E501
+@mock.patch("google.auth.transport.mtls.default_client_cert_source", create=True)  # noqa: E501
 def test_get_client_cert_source(mock_default, mock_has_default):
     mock_default.return_value = b"default_cert"
     mock_has_default.return_value = True

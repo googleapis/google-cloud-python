@@ -14,6 +14,17 @@
 # limitations under the License.
 
 
+import pytest
+
+# We need to skip this test module if grpc is not installed because importing
+# gapic_v1._method_helpers will load gapic_v1/__init__, which unconditionally
+# imports gapic_v1.config, which imports grpc.
+try:
+    import grpc  # noqa: F401
+except ImportError:
+    pytest.skip("No GRPC", allow_module_level=True)
+
+
 from google.api_core.gapic_v1._method_helpers import _setup_request_id
 
 

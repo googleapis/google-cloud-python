@@ -18,14 +18,20 @@ from unittest import mock
 
 import pytest
 
+# We need to skip this test module if grpc is not installed because importing
+# gapic_v1._config_helpers will load gapic_v1/__init__, which unconditionally
+# imports gapic_v1.config, which imports grpc.
+try:
+    import grpc  # noqa: F401
+except ImportError:
+    pytest.skip("No GRPC", allow_module_level=True)
+
 from google.auth.exceptions import MutualTLSChannelError
 
 from google.api_core.gapic_v1._config_helpers import _read_environment_variables
 
 
-@mock.patch(
-    "google.api_core.gapic_v1._config_helpers._use_client_cert_effective"
-)  # noqa: E501
+@mock.patch("google.api_core.gapic_v1._config_helpers._use_client_cert_effective")  # noqa: E501
 @mock.patch.dict(os.environ, clear=True)
 def test_read_environment_variables(mock_effective):
     mock_effective.return_value = True
