@@ -46,6 +46,7 @@ class MockMetricTracer:
         self.record_attempt_completion = MagicMock()
         self.set_method = MagicMock()
         self.record_gfe_metrics = MagicMock()
+        self.record_afe_metrics = MagicMock()
         self.set_project = MagicMock()
         self.set_instance = MagicMock()
         self.set_database = MagicMock()
@@ -118,4 +119,5 @@ def test_intercept_with_tracer(interceptor, mock_tracer_ctx):
     mock_tracer_ctx.record_attempt_start.assert_called()
     mock_tracer_ctx.record_attempt_completion.assert_called_once()
     mock_tracer_ctx.record_gfe_metrics.assert_called_once()
+    mock_tracer_ctx.record_afe_metrics.assert_called_once()
     mock_invoked_method.assert_called_once_with("request", call_details)

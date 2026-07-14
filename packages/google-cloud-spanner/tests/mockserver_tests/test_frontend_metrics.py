@@ -34,7 +34,7 @@ from tests.mockserver_tests.mock_server_test_base import (
 )
 
 
-class TestGFEMetricsIntegration(MockServerTestBase):
+class TestFrontendMetricsIntegration(MockServerTestBase):
     def setUp(self):
         super().setUp()
         os.environ["SPANNER_DISABLE_BUILTIN_METRICS"] = "false"
@@ -61,13 +61,13 @@ class TestGFEMetricsIntegration(MockServerTestBase):
         def custom_initial_metadata(self):
             mocked = getattr(self, "_is_execute_streaming_sql_mock", False)
             if mocked:
-                return (("server-timing", "gfet4t7; dur=55"),)
+                return (("server-timing", "gfet4t7; dur=55, afe; dur=23"),)
             return orig_initial_metadata(self)
 
         def custom_trailing_metadata(self):
             mocked = getattr(self, "_is_execute_streaming_sql_mock", False)
             if mocked:
-                return (("server-timing", "gfet4t7; dur=55"),)
+                return (("server-timing", "gfet4t7; dur=55, afe; dur=23"),)
             return orig_trailing_metadata(self)
 
         def custom_call(self_callable, request, *args, **kwargs):
@@ -137,10 +137,15 @@ class TestGFEMetricsIntegration(MockServerTestBase):
                 for metric in sm.metrics
             }
 
-            self.assertIn("gfe_latency", metrics, f"Metrics: {list(metrics.keys())}")
-            gfe_metric = metrics["gfe_latency"]
+            self.assertIn("gfe_latencies", metrics, f"Metrics: {list(metrics.keys())}")
+            gfe_metric = metrics["gfe_latencies"]
             point = next(iter(gfe_metric.data.data_points))
             self.assertEqual(point.sum, 55)
+
+            self.assertIn("afe_latencies", metrics, f"Metrics: {list(metrics.keys())}")
+            afe_metric = metrics["afe_latencies"]
+            point = next(iter(afe_metric.data.data_points))
+            self.assertEqual(point.sum, 23)
 
         finally:
             pass
@@ -202,5 +207,12 @@ class TestGFEMetricsIntegration(MockServerTestBase):
             missing_metric = metrics["gfe_missing_header_count"]
             point = next(iter(missing_metric.data.data_points))
             self.assertGreaterEqual(point.value, 1)
+
+            self.assertIn(
+                "afe_missing_header_count", metrics, f"Metrics: {list(metrics.keys())}"
+            )
+            afe_missing_metric = metrics["afe_missing_header_count"]
+            afe_point = next(iter(afe_missing_metric.data.data_points))
+            self.assertGreaterEqual(afe_point.value, 1)
         finally:
             pass
