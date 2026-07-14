@@ -257,7 +257,7 @@ def showcase_library(
     session.log("-" * 70)
 
     # Install gapic-generator-python
-    session.install("-e", "../google-api-core")
+    session.install("../google-api-core")
     session.install("-e", ".")
 
     # Install grpcio-tools for protoc
@@ -397,9 +397,7 @@ def showcase_library(
         # Uninstall the PyPI version of google-api-core to prevent import path conflicts
         session.run("pip", "uninstall", "google-api-core", "-y")
         # Override google-api-core with the local version from source
-        session.install(
-            "-e", "../google-api-core", "--no-deps"
-        )
+        session.install("../google-api-core", "--no-deps")
 
         yield tmp_dir
 
