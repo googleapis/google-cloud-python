@@ -97,12 +97,6 @@ def modify_default_endpoint_template(client):
     return "test.{UNIVERSE_DOMAIN}" if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE) else client._DEFAULT_ENDPOINT_TEMPLATE
 
 
-@pytest.fixture(scope="module", autouse=True)
-def mock_mtls_env():
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
-        yield
-
-
 @pytest.fixture(autouse=True)
 def set_event_loop():
     try:
@@ -116,6 +110,18 @@ def set_event_loop():
         finally:
             loop.close()
             asyncio.set_event_loop(None)
+
+
+@pytest.fixture(scope="module", autouse=True)
+def mock_mtls_env():
+    with mock.patch.dict(
+        os.environ,
+        {
+            "GOOGLE_API_USE_CLIENT_CERTIFICATE": "false",
+            "CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE": "false",
+        },
+    ):
+        yield
 
 
 @pytest.mark.parametrize("error_code,cred_info_json,show_cred_info", [

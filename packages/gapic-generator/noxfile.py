@@ -91,6 +91,7 @@ def unit(session):
                 path.join("tests", "unit"),
             ]
         ),
+        env={"PYTHONPATH": "."},
     )
 
 
