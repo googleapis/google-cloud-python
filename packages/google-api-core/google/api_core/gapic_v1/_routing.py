@@ -94,9 +94,9 @@ def get_universe_domain(
     """Return the universe domain used by the client."""
     universe_domain = default_universe
     if client_universe_domain is not None:
-        universe_domain = client_universe_domain
+        universe_domain = client_universe_domain.strip()
     elif universe_domain_env is not None:
-        universe_domain = universe_domain_env
-    if len(universe_domain.strip()) == 0:
+        universe_domain = universe_domain_env.strip()
+    if not universe_domain:
         raise ValueError("Universe Domain cannot be an empty string.")
     return universe_domain
