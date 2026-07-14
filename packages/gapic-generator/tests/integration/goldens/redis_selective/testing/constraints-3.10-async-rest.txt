@@ -5,7 +5,7 @@
 # pinning their versions to their lower bounds.
 # For example, if setup.py has "google-cloud-foo >= 1.14.0, < 2.0.0",
 # then this file should have google-cloud-foo==1.14.0
-google-api-core @ git+https://github.com/googleapis/google-cloud-python.git@feat/gapic-centralization-api-core#egg=google-api-core&subdirectory=packages/google-api-core
+google-api-core
 google-auth==2.35.0
 grpcio==1.59.0
 proto-plus==1.26.1

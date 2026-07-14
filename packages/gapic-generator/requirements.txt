@@ -560,7 +560,7 @@ frozenlist==1.8.0 \
     # via
     #   aiohttp
     #   aiosignal
-google-api-core @ git+https://github.com/googleapis/google-cloud-python.git@feat/gapic-centralization-api-core#egg=google-api-core&subdirectory=packages/google-api-core
+google-api-core==2.25.0
     # via -r requirements.in
 google-auth==2.52.0 \
     --hash=sha256:01f30e1a9e3638698d89464f5e603ce29d18e1c0e63ec31ac570aba4e164aaf5 \

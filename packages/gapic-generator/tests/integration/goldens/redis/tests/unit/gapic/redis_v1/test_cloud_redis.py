@@ -114,6 +114,12 @@ def modify_default_endpoint_template(client):
     return "test.{UNIVERSE_DOMAIN}" if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE) else client._DEFAULT_ENDPOINT_TEMPLATE
 
 
+@pytest.fixture(scope="module", autouse=True)
+def mock_mtls_env():
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
+        yield
+
+
 @pytest.fixture(autouse=True)
 def set_event_loop():
     try:

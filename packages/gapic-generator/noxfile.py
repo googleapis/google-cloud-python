@@ -73,6 +73,7 @@ def unit(session):
         "grpcio-status",
         "proto-plus",
     )
+    session.install("-e", "../google-api-core")
     session.install("-e", ".")
     session.run(
         "py.test",
@@ -154,6 +155,13 @@ class FragTester:
                 )
                 self.session.install(tmp_dir, "-e", ".", "-qqq", "-r", constraints_path)
 
+            # Uninstall the PyPI version of google-api-core to prevent import path conflicts
+            self.session.run("pip", "uninstall", "google-api-core", "-y")
+            # Override google-api-core with the local version from source
+            self.session.install(
+                "-e", "../google-api-core", "--no-deps"
+            )
+
             # Run the fragment's generated unit tests.
             # Don't bother parallelizing them: we already parallelize
             # the fragments, and there usually aren't too many tests per fragment.
@@ -182,6 +190,7 @@ def fragment(session, use_ads_templates=False):
         "pytest-asyncio",
         "grpcio-tools",
     )
+    session.install("-e", "../google-api-core")
     session.install("-e", ".")
 
     # The specific failure is `Plugin output is unparseable`
@@ -246,6 +255,7 @@ def showcase_library(
     session.log("-" * 70)
 
     # Install gapic-generator-python
+    session.install("-e", "../google-api-core")
     session.install("-e", ".")
 
     # Install grpcio-tools for protoc
@@ -381,6 +391,13 @@ def showcase_library(
             # See https://github.com/googleapis/gapic-generator-python/issues/1788
             # Install the library without a constraints file.
             session.install("-e", tmp_dir)
+
+        # Uninstall the PyPI version of google-api-core to prevent import path conflicts
+        session.run("pip", "uninstall", "google-api-core", "-y")
+        # Override google-api-core with the local version from source
+        session.install(
+            "-e", "../google-api-core", "--no-deps"
+        )
 
         yield tmp_dir
 

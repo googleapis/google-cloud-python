@@ -1,5 +1,5 @@
 click
-google-api-core @ git+https://github.com/googleapis/google-cloud-python.git@feat/gapic-centralization-api-core#egg=google-api-core&subdirectory=packages/google-api-core
+google-api-core[grpc]>=2.25.0,<3.0.0
 googleapis-common-protos
 jinja2
 MarkupSafe

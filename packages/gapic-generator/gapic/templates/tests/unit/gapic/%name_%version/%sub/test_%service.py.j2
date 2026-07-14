@@ -156,6 +156,18 @@ def set_event_loop():
             asyncio.set_event_loop(None)
 
 
+@pytest.fixture(scope="module", autouse=True)
+def mock_mtls_env():
+    with mock.patch.dict(
+        os.environ,
+        {
+            "GOOGLE_API_USE_CLIENT_CERTIFICATE": "false",
+            "CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE": "false",
+        },
+    ):
+        yield
+
+
 
 
 

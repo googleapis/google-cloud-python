@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # This constraints file is required for unit tests.
 # List all library dependencies and extras in this file.
-google-api-core @ git+https://github.com/googleapis/google-cloud-python.git@feat/gapic-centralization-api-core#egg=google-api-core&subdirectory=packages/google-api-core
+google-api-core
 google-auth
 grpcio
 proto-plus

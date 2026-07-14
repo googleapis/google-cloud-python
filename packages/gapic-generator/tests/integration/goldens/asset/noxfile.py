@@ -265,6 +265,15 @@ def unit(session, protobuf_implementation):
     )
     install_unittest_dependencies(session, "-c", constraints_path)
 
+    # Override google-api-core with the local version from source if running in the monorepo
+    google_api_core_dir = next(
+        (str(p / "packages" / "google-api-core") for p in CURRENT_DIRECTORY.parents if (p / "packages" / "google-api-core").exists()),
+        None
+    )
+    if google_api_core_dir:
+        session.run("pip", "uninstall", "google-api-core", "-y")
+        session.install("-e", google_api_core_dir, "--no-deps")
+
     # Run py.test against the unit tests.
     session.run(
         "py.test",
@@ -564,7 +573,7 @@ def prerelease_deps(session, protobuf_implementation):
     )
 
 
-@nox.session(python=PREVIEW_PYTHON_VERSION)
+@nox.session(python=ALL_PYTHON)
 @nox.parametrize(
     "protobuf_implementation",
     ["python", "upb"],
