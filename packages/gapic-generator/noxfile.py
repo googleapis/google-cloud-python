@@ -73,7 +73,8 @@ def unit(session):
         "grpcio-status",
         "proto-plus",
     )
-    session.install("-e", "../google-api-core")
+    if os.path.exists("../google-api-core"):
+        session.install("-e", "../google-api-core")
     session.install("-e", ".")
     session.run(
         "py.test",
