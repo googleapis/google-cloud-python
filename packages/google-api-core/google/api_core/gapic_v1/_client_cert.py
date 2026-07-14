@@ -17,12 +17,12 @@
 """Helpers for client certificate handling and mTLS authentication."""
 
 import os
-from typing import Any, Optional
+from typing import Callable, Optional, Tuple
 
 from google.auth.transport import mtls  # type: ignore
 
 
-def use_client_cert_effective() -> bool:
+def _use_client_cert_effective() -> bool:
     """Returns whether client certificate should be used for mTLS if the
     google-auth version supports should_use_client_cert automatic mTLS
     enablement.
@@ -53,9 +53,10 @@ def use_client_cert_effective() -> bool:
         return use_client_cert_str == "true"
 
 
-def get_client_cert_source(
-    provided_cert_source: Optional[Any], use_cert_flag: bool
-) -> Optional[Any]:
+def _get_client_cert_source(
+    provided_cert_source: Optional[Callable[[], Tuple[bytes, bytes]]],
+    use_cert_flag: bool,
+) -> Optional[Callable[[], Tuple[bytes, bytes]]]:
     """Return the client cert source to be used by the client.
 
     Args:

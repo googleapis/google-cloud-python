@@ -18,10 +18,9 @@ from unittest import mock
 
 import pytest
 
-
 from google.api_core.gapic_v1._client_cert import (
-    get_client_cert_source,
-    use_client_cert_effective,
+    _get_client_cert_source,
+    _use_client_cert_effective,
 )
 
 
@@ -29,10 +28,10 @@ from google.api_core.gapic_v1._client_cert import (
 def test_use_client_cert_effective_with_google_auth(mock_method):
     # Test when google-auth supports the method
     mock_method.return_value = True
-    assert use_client_cert_effective() is True
+    assert _use_client_cert_effective() is True
 
     mock_method.return_value = False
-    assert use_client_cert_effective() is False
+    assert _use_client_cert_effective() is False
 
 
 @mock.patch.dict(os.environ, {}, clear=True)
@@ -42,23 +41,23 @@ def test_use_client_cert_effective_fallback():
         "google.api_core.gapic_v1._client_cert.hasattr", return_value=False
     ):
         # Default is false
-        assert use_client_cert_effective() is False
+        assert _use_client_cert_effective() is False
 
         env_true = {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}
         with mock.patch.dict(os.environ, env_true):
-            assert use_client_cert_effective() is True
+            assert _use_client_cert_effective() is True
 
         with mock.patch.dict(
             os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}
         ):
-            assert use_client_cert_effective() is False
+            assert _use_client_cert_effective() is False
 
         with mock.patch.dict(
             os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "invalid"}
         ):
             match_str = "must be either `true` or `false`"
             with pytest.raises(ValueError, match=match_str):
-                use_client_cert_effective()
+                _use_client_cert_effective()
 
 
 @mock.patch(
@@ -72,10 +71,10 @@ def test_get_client_cert_source(mock_default, mock_has_default):
     mock_has_default.return_value = True
 
     # When use_cert_flag is False, return None
-    assert get_client_cert_source(b"provided", False) is None
+    assert _get_client_cert_source(b"provided", False) is None
 
     # When provided_cert_source is given, return provided
-    assert get_client_cert_source(b"provided", True) == b"provided"  # noqa: E501
+    assert _get_client_cert_source(b"provided", True) == b"provided"  # noqa: E501
 
     # When no provided cert but default is available
-    assert get_client_cert_source(None, True) == b"default_cert"
+    assert _get_client_cert_source(None, True) == b"default_cert"

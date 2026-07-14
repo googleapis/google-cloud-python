@@ -14,7 +14,7 @@
 # limitations under the License.
 
 
-from google.api_core.gapic_v1._method_helpers import setup_request_id
+from google.api_core.gapic_v1._method_helpers import _setup_request_id
 
 
 def test_setup_request_id():
@@ -22,14 +22,14 @@ def test_setup_request_id():
 
     # test dict request
     req = {}
-    setup_request_id(req, "request_id", True)
+    _setup_request_id(req, "request_id", True)
     assert "request_id" in req
     uuid_str = req["request_id"]
     uuid.UUID(uuid_str)  # verify it is a valid UUID
 
     # test dict request when already set
     req = {"request_id": "existing"}
-    setup_request_id(req, "request_id", True)
+    _setup_request_id(req, "request_id", True)
     assert req["request_id"] == "existing"
 
     class DummyRequest:
@@ -43,12 +43,22 @@ def test_setup_request_id():
 
     # test object request proto3 optional true
     req_obj = DummyRequest()
-    setup_request_id(req_obj, "request_id", True)
+    _setup_request_id(req_obj, "request_id", True)
     assert req_obj.request_id != ""
     uuid.UUID(req_obj.request_id)
 
     # test object request proto3 optional false
     req_obj2 = DummyRequest()
-    setup_request_id(req_obj2, "request_id", False)
+    _setup_request_id(req_obj2, "request_id", False)
     assert req_obj2.request_id != ""
     uuid.UUID(req_obj2.request_id)
+
+    class CustomRequestWrapper:
+        def __init__(self):
+            self.request_id = ""
+
+    # test custom non-iterable object wrapper
+    req_obj3 = CustomRequestWrapper()
+    _setup_request_id(req_obj3, "request_id", True)
+    assert req_obj3.request_id != ""
+    uuid.UUID(req_obj3.request_id)
