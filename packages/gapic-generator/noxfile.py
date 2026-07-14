@@ -192,7 +192,8 @@ def fragment(session, use_ads_templates=False):
         "pytest-asyncio",
         "grpcio-tools",
     )
-    session.install("-e", "../google-api-core")
+    if os.path.exists("../google-api-core"):
+        session.install("-e", "../google-api-core")
     session.install("-e", ".")
 
     # The specific failure is `Plugin output is unparseable`
