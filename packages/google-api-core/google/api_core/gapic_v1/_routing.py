@@ -72,7 +72,7 @@ def get_api_endpoint(
     elif use_mtls_endpoint == "always" or (
         use_mtls_endpoint == "auto" and client_cert_source
     ):
-        if universe_domain != default_universe:
+        if universe_domain.lower() != default_universe.lower():
             raise MutualTLSChannelError(
                 f"mTLS is not supported in any universe other than "
                 f"{default_universe}."
