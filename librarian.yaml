@@ -1921,7 +1921,6 @@ libraries:
       - path: google/spanner/v1
       - path: google/spanner/admin/instance/v1
       - path: google/spanner/admin/database/v1
-    skip_generate: true
     keep:
       - docs/spanner_v1/batch.rst
       - docs/spanner_v1/client.rst
@@ -1934,6 +1933,7 @@ libraries:
       - docs/spanner_v1/table.rst
       - docs/spanner_v1/transaction.rst
       - tests/unit/gapic/conftest.py
+    skip_generate: true
     python:
       library_type: GAPIC_COMBO
       opt_args_by_api:
