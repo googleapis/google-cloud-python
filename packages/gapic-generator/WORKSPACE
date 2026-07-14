@@ -43,7 +43,6 @@ load("@rules_python//python:pip.bzl", "pip_parse")
 pip_parse(
     name = "gapic_generator_python_pip_deps",
     requirements_lock = "//:requirements.txt",
-    extra_pip_args = ["--index-url=https://pypi.org/simple"],
 )
 load("@gapic_generator_python_pip_deps//:requirements.bzl", "install_deps")
 
