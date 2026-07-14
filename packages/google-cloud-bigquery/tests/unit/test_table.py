@@ -5872,6 +5872,148 @@ class TestRowIterator(unittest.TestCase):
                 ]
                 self.assertEqual(len(deprecation_warnings), 1)
 
+    def test_to_dataframe_delegated_updates_user_agent(self):
+        import sys
+
+        db_dtypes = pytest.importorskip("db_dtypes")
+        pandas = pytest.importorskip("pandas")
+        mock_pandas_gbq = mock.Mock()
+        mock_pandas_gbq.pandas.from_row_iterator.return_value = mock.sentinel.dataframe
+        mock_pandas_gbq.__version__ = "1.0.0"
+
+        mock_client_info = mock.Mock()
+        mock_client_info.user_agent = "gl-python/3.10.0"
+
+        mock_client = _mock_client()
+        mock_client._connection = mock.Mock(_client_info=mock_client_info)
+
+        with mock.patch(
+            "google.cloud.bigquery._versions_helpers.PandasGBQVersions.is_delegation_supported",
+            new_callable=mock.PropertyMock,
+            return_value=True,
+        ):
+            with mock.patch(
+                "google.cloud.bigquery._versions_helpers.SUPPORTS_RANGE_PYARROW",
+                False,
+            ):
+                with mock.patch.dict(sys.modules, {"pandas_gbq": mock_pandas_gbq}):
+                    row_iterator = self._make_one_from_data(
+                        (("name", "STRING"),), (("foo",),)
+                    )
+                    row_iterator.client = mock_client
+                    df = row_iterator.to_dataframe(
+                        progress_bar_type="tqdm", timeout=5.0
+                    )
+                    self.assertEqual(
+                        mock_client_info.user_agent,
+                        "gl-python/3.10.0 pandas-gbq/1.0.0",
+                    )
+
+    def test_to_dataframe_delegated_does_not_duplicate_user_agent(self):
+        import sys
+
+        db_dtypes = pytest.importorskip("db_dtypes")
+        pandas = pytest.importorskip("pandas")
+        mock_pandas_gbq = mock.Mock()
+        mock_pandas_gbq.pandas.from_row_iterator.return_value = mock.sentinel.dataframe
+        mock_pandas_gbq.__version__ = "1.0.0"
+
+        mock_client_info = mock.Mock()
+        mock_client_info.user_agent = "gl-python/3.10.0 pandas-gbq/1.0.0"
+
+        mock_client = _mock_client()
+        mock_client._connection = mock.Mock(_client_info=mock_client_info)
+
+        with mock.patch(
+            "google.cloud.bigquery._versions_helpers.PandasGBQVersions.is_delegation_supported",
+            new_callable=mock.PropertyMock,
+            return_value=True,
+        ):
+            with mock.patch(
+                "google.cloud.bigquery._versions_helpers.SUPPORTS_RANGE_PYARROW",
+                False,
+            ):
+                with mock.patch.dict(sys.modules, {"pandas_gbq": mock_pandas_gbq}):
+                    row_iterator = self._make_one_from_data(
+                        (("name", "STRING"),), (("foo",),)
+                    )
+                    row_iterator.client = mock_client
+                    df = row_iterator.to_dataframe(
+                        progress_bar_type="tqdm", timeout=5.0
+                    )
+                    self.assertEqual(
+                        mock_client_info.user_agent,
+                        "gl-python/3.10.0 pandas-gbq/1.0.0",
+                    )
+
+    def test_to_dataframe_delegated_when_client_info_is_none(self):
+        import sys
+
+        db_dtypes = pytest.importorskip("db_dtypes")
+        pandas = pytest.importorskip("pandas")
+        mock_pandas_gbq = mock.Mock()
+        mock_pandas_gbq.pandas.from_row_iterator.return_value = mock.sentinel.dataframe
+        mock_pandas_gbq.__version__ = "1.0.0"
+
+        mock_client = _mock_client()
+        mock_client._connection = mock.Mock(_client_info=None)
+
+        with mock.patch(
+            "google.cloud.bigquery._versions_helpers.PandasGBQVersions.is_delegation_supported",
+            new_callable=mock.PropertyMock,
+            return_value=True,
+        ):
+            with mock.patch(
+                "google.cloud.bigquery._versions_helpers.SUPPORTS_RANGE_PYARROW",
+                False,
+            ):
+                with mock.patch.dict(sys.modules, {"pandas_gbq": mock_pandas_gbq}):
+                    row_iterator = self._make_one_from_data(
+                        (("name", "STRING"),), (("foo",),)
+                    )
+                    row_iterator.client = mock_client
+                    df = row_iterator.to_dataframe(
+                        progress_bar_type="tqdm", timeout=5.0
+                    )
+                    self.assertEqual(df, mock.sentinel.dataframe)
+
+    def test_to_dataframe_delegated_when_user_agent_is_none(self):
+        import sys
+
+        db_dtypes = pytest.importorskip("db_dtypes")
+        pandas = pytest.importorskip("pandas")
+        mock_pandas_gbq = mock.Mock()
+        mock_pandas_gbq.pandas.from_row_iterator.return_value = mock.sentinel.dataframe
+        mock_pandas_gbq.__version__ = "1.0.0"
+
+        mock_client_info = mock.Mock()
+        mock_client_info.user_agent = None
+
+        mock_client = _mock_client()
+        mock_client._connection = mock.Mock(_client_info=mock_client_info)
+
+        with mock.patch(
+            "google.cloud.bigquery._versions_helpers.PandasGBQVersions.is_delegation_supported",
+            new_callable=mock.PropertyMock,
+            return_value=True,
+        ):
+            with mock.patch(
+                "google.cloud.bigquery._versions_helpers.SUPPORTS_RANGE_PYARROW",
+                False,
+            ):
+                with mock.patch.dict(sys.modules, {"pandas_gbq": mock_pandas_gbq}):
+                    row_iterator = self._make_one_from_data(
+                        (("name", "STRING"),), (("foo",),)
+                    )
+                    row_iterator.client = mock_client
+                    df = row_iterator.to_dataframe(
+                        progress_bar_type="tqdm", timeout=5.0
+                    )
+                    self.assertEqual(
+                        mock_client_info.user_agent,
+                        "pandas-gbq/1.0.0",
+                    )
+
 
 class TestPartitionRange(unittest.TestCase):
     def _get_target_class(self):

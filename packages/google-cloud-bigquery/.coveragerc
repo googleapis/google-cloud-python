@@ -12,3 +12,5 @@ exclude_lines =
     pragma: (no cover|NO COVER)
     # Ignore debug-only repr
     def __repr__
+    except ImportError:
+    except ImportError as .*:

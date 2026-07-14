@@ -147,6 +147,8 @@ def test_context_with_default_credentials():
     """When Application Default Credentials are set, the context credentials
     will be created the first time it is called
     """
+    magics.context._credentials = None
+    magics.context._project = None
     assert magics.context._credentials is None
     assert magics.context._project is None
 
@@ -162,6 +164,16 @@ def test_context_with_default_credentials():
         assert magics.context.project == project
 
     assert default_mock.call_count == 2
+
+
+def test_context_fallback_when_bigquery_magics_none():
+    ctx = magics.Context()
+    credentials_mock = mock.create_autospec(
+        google.auth.credentials.Credentials, instance=True
+    )
+    with mock.patch("google.auth.default", return_value=(credentials_mock, "proj-123")):
+        assert ctx.credentials is credentials_mock
+        assert ctx.project == "proj-123"
 
 
 @pytest.mark.usefixtures("ipython_interactive")

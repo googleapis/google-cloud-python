@@ -18,14 +18,13 @@ import datetime
 import decimal
 import functools
 import gc
+import importlib.metadata as metadata
 import operator
 import queue
 import time
+import warnings
 from typing import Union
 from unittest import mock
-import warnings
-
-import importlib.metadata as metadata
 
 try:
     import pandas
@@ -45,13 +44,13 @@ except ImportError:
     geopandas = None
 
 import pytest
-
 from google import api_core
-
-from google.cloud.bigquery import exceptions
-from google.cloud.bigquery import _pyarrow_helpers
-from google.cloud.bigquery import _versions_helpers
-from google.cloud.bigquery import schema
+from google.cloud.bigquery import (
+    _pyarrow_helpers,
+    _versions_helpers,
+    exceptions,
+    schema,
+)
 from google.cloud.bigquery._pandas_helpers import determine_requested_streams
 
 pyarrow = _versions_helpers.PYARROW_VERSIONS.try_import()
@@ -1831,8 +1830,7 @@ def test__download_table_bqstorage(
     expected_call_count,
     expected_maxsize,
 ):
-    from google.cloud.bigquery import dataset
-    from google.cloud.bigquery import table
+    from google.cloud.bigquery import dataset, table
 
     queue_used = None  # A reference to the queue used by code under test.
 
@@ -1885,10 +1883,9 @@ def test__download_table_bqstorage_shuts_down_workers(
     the child threads are also stopped.
     """
     pytest.importorskip("google.cloud.bigquery_storage_v1")
-    from google.cloud.bigquery import dataset
-    from google.cloud.bigquery import table
     import google.cloud.bigquery_storage_v1.reader
     import google.cloud.bigquery_storage_v1.types
+    from google.cloud.bigquery import dataset, table
 
     monkeypatch.setattr(
         _versions_helpers.BQ_STORAGE_VERSIONS, "_installed_version", None
@@ -2211,9 +2208,9 @@ def test_determine_requested_streams_invalid_max_stream_count():
     bigquery_storage is None, reason="Requires google-cloud-bigquery-storage"
 )
 def test__download_table_bqstorage_w_timeout_error(module_under_test):
-    from google.cloud.bigquery import dataset
-    from google.cloud.bigquery import table
     from unittest import mock
+
+    from google.cloud.bigquery import dataset, table
 
     mock_bqstorage_client = mock.create_autospec(
         bigquery_storage.BigQueryReadClient, instance=True
@@ -2248,9 +2245,9 @@ def test__download_table_bqstorage_w_timeout_error(module_under_test):
     bigquery_storage is None, reason="Requires google-cloud-bigquery-storage"
 )
 def test__download_table_bqstorage_w_timeout_success(module_under_test):
-    from google.cloud.bigquery import dataset
-    from google.cloud.bigquery import table
     from unittest import mock
+
+    from google.cloud.bigquery import dataset, table
 
     mock_bqstorage_client = mock.create_autospec(
         bigquery_storage.BigQueryReadClient, instance=True
@@ -2409,3 +2406,38 @@ def test_download_arrow_bqstorage_passes_timeout_to_create_read_session(
     assert retry_policy is not None
     # Check if deadline is set correctly in the retry policy
     assert retry_policy._deadline == timeout
+
+
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+def test_dataframe_to_bq_schema_w_unused_schema_field(module_under_test):
+    with mock.patch.object(module_under_test, "pandas_gbq", None):
+        with pytest.raises(
+            ValueError, match="bq_schema contains fields not present in dataframe"
+        ):
+            module_under_test.dataframe_to_bq_schema(
+                pandas.DataFrame(), (schema.SchemaField("not_in_df", "STRING"),)
+            )
+
+
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+@pytest.mark.skipif(isinstance(pyarrow, mock.Mock), reason="Requires `pyarrow`")
+def test_get_schema_by_pyarrow_bignumeric(module_under_test):
+    series = pandas.Series([decimal.Decimal("1.12345678901")])
+    result = module_under_test._get_schema_by_pyarrow("col", series)
+    assert result is not None
+    assert result.field_type == "BIGNUMERIC"
+
+
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+@pytest.mark.skipif(isinstance(pyarrow, mock.Mock), reason="Requires `pyarrow`")
+def test_get_types_mapper_range_timestamp_mismatch(module_under_test):
+    if not hasattr(pandas, "ArrowDtype"):
+        return
+    range_ts = pandas.ArrowDtype(
+        pyarrow.struct(
+            [("start", pyarrow.timestamp("us")), ("end", pyarrow.timestamp("us"))]
+        )
+    )
+    mapper = module_under_test.default_types_mapper(range_timestamp_dtype=range_ts)
+    unmatched_struct = pyarrow.struct([("other", pyarrow.int64())])
+    assert mapper(unmatched_struct) is None

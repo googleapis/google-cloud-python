@@ -58,14 +58,14 @@ def test_try_import_raises_error_w_legacy_pyarrow():
             versions.try_import(raise_if_error=True)
 
 
-@pytest.mark.skipif(
-    pyarrow is not None,
-    reason="pyarrow is installed, but this test needs it not to be",
-)
 def test_try_import_raises_error_w_no_pyarrow():
+    import sys
+
     versions = _versions_helpers.PyarrowVersions()
-    with pytest.raises(exceptions.LegacyPyarrowError):
-        versions.try_import(raise_if_error=True)
+    with mock.patch.dict(sys.modules, {"pyarrow": None}):
+        assert versions.try_import(raise_if_error=False) is None
+        with pytest.raises(exceptions.LegacyPyarrowError):
+            versions.try_import(raise_if_error=True)
 
 
 @pytest.mark.skipif(pyarrow is None, reason="pyarrow is not installed")
@@ -121,17 +121,29 @@ def test_returns_none_with_legacy_bqstorage():
         assert bq_storage is None
 
 
-@pytest.mark.skipif(
-    bigquery_storage is not None,
-    reason="Tests behavior when `google-cloud-bigquery-storage` isn't installed",
-)
 def test_returns_none_with_bqstorage_uninstalled():
-    try:
-        bqstorage_versions = _versions_helpers.BQStorageVersions()
-        bq_storage = bqstorage_versions.try_import()
-    except exceptions.LegacyBigQueryStorageError:  # pragma: NO COVER
-        raise ("NotFound error raised when raise_if_error == False.")
-    assert bq_storage is None
+    import sys
+
+    from google import cloud
+
+    versions = _versions_helpers.BQStorageVersions()
+    with mock.patch.dict(sys.modules, {"google.cloud.bigquery_storage": None}):
+        with mock.patch.dict(cloud.__dict__):
+            cloud.__dict__.pop("bigquery_storage", None)
+            assert versions.try_import() is None
+
+
+def test_raises_error_with_bqstorage_uninstalled():
+    import sys
+
+    from google import cloud
+
+    versions = _versions_helpers.BQStorageVersions()
+    with mock.patch.dict(sys.modules, {"google.cloud.bigquery_storage": None}):
+        with mock.patch.dict(cloud.__dict__):
+            cloud.__dict__.pop("bigquery_storage", None)
+            with pytest.raises(exceptions.BigQueryStorageNotFoundError):
+                versions.try_import(raise_if_error=True)
 
 
 @pytest.mark.skipif(
@@ -219,14 +231,14 @@ def test_try_import_raises_error_w_legacy_pandas():
             versions.try_import(raise_if_error=True)
 
 
-@pytest.mark.skipif(
-    pandas is not None,
-    reason="pandas is installed, but this test needs it not to be",
-)
 def test_try_import_raises_error_w_no_pandas():
+    import sys
+
     versions = _versions_helpers.PandasVersions()
-    with pytest.raises(exceptions.LegacyPandasError):
-        versions.try_import(raise_if_error=True)
+    with mock.patch.dict(sys.modules, {"pandas": None}):
+        assert versions.try_import(raise_if_error=False) is None
+        with pytest.raises(exceptions.LegacyPandasError):
+            versions.try_import(raise_if_error=True)
 
 
 @pytest.mark.skipif(pandas is None, reason="pandas is not installed")
@@ -255,6 +267,7 @@ def test_installed_pandas_gbq_version_returns_cached():
 
 def test_installed_pandas_gbq_version_returns_parsed_version():
     import sys
+
     mock_pandas_gbq = mock.Mock()
     mock_pandas_gbq.__version__ = "1.2.3"
     versions = _versions_helpers.PandasGBQVersions()
@@ -268,6 +281,7 @@ def test_installed_pandas_gbq_version_returns_parsed_version():
 
 def test_installed_pandas_gbq_version_falls_back_on_import_error():
     import sys
+
     versions = _versions_helpers.PandasGBQVersions()
     with mock.patch.dict(sys.modules, {"pandas_gbq": None}):
         version = versions.installed_version
@@ -279,6 +293,7 @@ def test_installed_pandas_gbq_version_falls_back_on_import_error():
 
 def test_installed_pandas_gbq_version_falls_back_on_other_error():
     import sys
+
     # Simulate a corrupted package raising an error on import/property access
     class CorruptPandasGBQ:
         @property
@@ -302,6 +317,7 @@ def test_pandas_gbq_delegation_api_version_returns_cached():
 
 def test_pandas_gbq_delegation_api_version_returns_value():
     import sys
+
     mock_pandas_gbq = mock.Mock()
     mock_pandas_gbq._internal_delegation_api_version = 42
     versions = _versions_helpers.PandasGBQVersions()
@@ -313,6 +329,7 @@ def test_pandas_gbq_delegation_api_version_returns_value():
 
 def test_pandas_gbq_delegation_api_version_falls_back_on_import_error():
     import sys
+
     versions = _versions_helpers.PandasGBQVersions()
     with mock.patch.dict(sys.modules, {"pandas_gbq": None}):
         version = versions.delegation_api_version
@@ -322,6 +339,7 @@ def test_pandas_gbq_delegation_api_version_falls_back_on_import_error():
 
 def test_pandas_gbq_delegation_api_version_falls_back_on_other_error():
     import sys
+
     class CorruptPandasGBQ:
         @property
         def _internal_delegation_api_version(self):
