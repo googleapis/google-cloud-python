@@ -31,7 +31,8 @@ try:
 except ImportError:  # pragma: NO COVER
     pytest.skip("No GRPC", allow_module_level=True)
 
-from google.api_core import bidi, exceptions
+from google.api_core import bidi
+from google.api_core import exceptions
 
 
 class Test_RequestQueueGenerator(object):
@@ -194,7 +195,7 @@ class Test_Throttle(object):
         # (NOTE: not using assert all(...), b/c the coverage check would complain)
         for i, entry in enumerate(entries):
             if i != 3:
-                assert entry["reported_wait"] < 0.01
+                assert entry["reported_wait"] == 0.0
 
         # The delayed entry is expected to have been delayed for a significant
         # chunk of the full second, and the actual and reported delay times

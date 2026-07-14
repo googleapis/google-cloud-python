@@ -12,14 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from google.api_core.gapic_v1 import (
-    client_info,
-    config,
-    config_async,
-    method,
-    method_async,
-    routing_header,
-)
+from google.api_core.gapic_v1 import client_info
+from google.api_core.gapic_v1 import config
+from google.api_core.gapic_v1 import config_async
+from google.api_core.gapic_v1 import method
+from google.api_core.gapic_v1 import method_async
+from google.api_core.gapic_v1 import routing_header
 
 __all__ = [
     "client_info",
