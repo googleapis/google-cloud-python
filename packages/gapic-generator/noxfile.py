@@ -154,9 +154,10 @@ class FragTester:
                 )
                 self.session.install(tmp_dir, "-e", ".", "-qqq", "-r", constraints_path)
 
-            # Run the fragment's generated unit tests.
-            # Don't bother parallelizing them: we already parallelize
-            # the fragments, and there usually aren't too many tests per fragment.
+            env = os.environ.copy()
+            env["GOOGLE_API_USE_CLIENT_CERTIFICATE"] = "false"
+            env["CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE"] = "false"
+
             outputs.append(
                 self.session.run(
                     "py.test",
@@ -166,6 +167,7 @@ class FragTester:
                     "--cov-fail-under=100",
                     str(Path(tmp_dir) / "tests" / "unit"),
                     silent=True,
+                    env=env,
                 )
             )
 
@@ -487,6 +489,10 @@ def run_showcase_unit_tests(session, fail_under=100, rest_async_io_enabled=False
     # Freeze and print python environment package versions
     session.run("python", "-m", "pip", "freeze")
 
+    env = os.environ.copy()
+    env["GOOGLE_API_USE_CLIENT_CERTIFICATE"] = "false"
+    env["CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE"] = "false"
+
     # Run the tests.
     session.run(
         "py.test",
@@ -501,6 +507,7 @@ def run_showcase_unit_tests(session, fail_under=100, rest_async_io_enabled=False
                 path.join("tests", "unit"),
             ]
         ),
+        env=env,
     )
 
 
