@@ -105,6 +105,61 @@ case ${TEST_TYPE} in
             ;;
         esac
         ;;
+    import_profile)
+        if [ -f setup.py ] || [ -f pyproject.toml ]; then
+            echo "Creating temporary virtualenv for import profile..."
+            python3 -m venv .venv-profiler
+            source .venv-profiler/bin/activate
+            
+            PACKAGE_NAME=$(basename $(pwd))
+            PROFILER_TEMP_DIR=$(mktemp -d)
+            cp ../../scripts/import_profiler/profiler.py "${PROFILER_TEMP_DIR}/profiler.py"
+            PROFILER_SCRIPT="${PROFILER_TEMP_DIR}/profiler.py"
+            BASELINE_CSV="${PROFILER_TEMP_DIR}/baseline_${PACKAGE_NAME}.csv"
+            
+            if [ -n "${TARGET_BRANCH}" ]; then
+                # Try upstream first (for forks), then origin
+                BASELINE_COMMIT=$(git merge-base HEAD "upstream/${TARGET_BRANCH}" 2>/dev/null || \
+                                 git merge-base HEAD "origin/${TARGET_BRANCH}" 2>/dev/null || \
+                                 git merge-base HEAD "${TARGET_BRANCH}" 2>/dev/null || true)
+                if [ -n "${BASELINE_COMMIT}" ]; then
+                    echo "Checking out baseline commit ${BASELINE_COMMIT} in a temporary worktree..."
+                    REPO_PREFIX=$(git rev-parse --show-prefix)
+                    WORKTREE_DIR=$(mktemp -d)
+                    rmdir "${WORKTREE_DIR}"
+                    if git worktree add "${WORKTREE_DIR}" "${BASELINE_COMMIT}" 2>/dev/null; then
+                        (
+                            cd "${WORKTREE_DIR}/${REPO_PREFIX}"
+                            if [ -f setup.py ] || [ -f pyproject.toml ]; then
+                                pip install -e .
+                                python "${PROFILER_SCRIPT}" --package "${PACKAGE_NAME}" --iterations 11 --csv "${BASELINE_CSV}"
+                            fi
+                        )
+                        git worktree remove -f "${WORKTREE_DIR}"
+                    else
+                        echo "Failed to create git worktree for baseline. Skipping baseline generation."
+                    fi
+                else
+                    echo "Could not find baseline commit for ${TARGET_BRANCH:-main}. Skipping baseline generation."
+                fi
+            fi
+            
+            pip install -e .
+            
+            if [ -f "${BASELINE_CSV}" ]; then
+                python ${PROFILER_SCRIPT} --package ${PACKAGE_NAME} --iterations 11 --fail-threshold 5000 --diff-baseline "${BASELINE_CSV}" --diff-threshold 100
+            else
+                python ${PROFILER_SCRIPT} --package ${PACKAGE_NAME} --iterations 11 --fail-threshold 5000
+            fi
+            retval=$?
+            deactivate
+            rm -rf .venv-profiler
+            rm -rf "${PROFILER_TEMP_DIR}"
+        else
+            echo "Skipping import_profile as this does not appear to be a Python package (no setup.py or pyproject.toml)."
+            retval=0
+        fi
+        ;;
     *)
         nox -s ${TEST_TYPE}
         retval=$?
