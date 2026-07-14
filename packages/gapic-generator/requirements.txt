@@ -4,8 +4,7 @@
 #
 #    pip-compile --generate-hashes --output-file=requirements.txt requirements.in
 #
---index-url https://us-python.pkg.dev/artifact-foundry-prod/ah-3p-staging-python/simple/
---extra-index-url https://pypi.org/simple
+--index-url https://pypi.org/simple
 
 aiohappyeyeballs==2.7.1 \
     --hash=sha256:065665c041c42a5938ed220bdcd7230f22527fbec085e1853d2402c8a3615d9d \

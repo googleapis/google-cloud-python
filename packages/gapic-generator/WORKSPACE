@@ -1,10 +1,13 @@
 workspace(name = "gapic_generator_python")
 
-# Override google-api-core dependency with local packages/google-api-core directory
-# Must be defined before any load() statements.
-new_local_repository(
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
+# Override google-api-core dependency with git archive of packages/google-api-core directory to avoid local paths
+http_archive(
     name = "gapic_generator_python_pip_deps_google_api_core",
-    path = "../google-api-core",
+    urls = ["https://github.com/googleapis/google-cloud-python/archive/e0f3f85e0430e284c0cb50f0186f24c15e499707.tar.gz"],
+    sha256 = "bf184f6b26ed613ab0aec3453ece922e4adb5a4d4fd0a6db99ae5e0c9b371db4",
+    strip_prefix = "google-cloud-python-e0f3f85e0430e284c0cb50f0186f24c15e499707/packages/google-api-core",
     build_file_content = """
 py_library(
     name = "pkg",
@@ -23,7 +26,6 @@ py_library(
 )
 
 
-load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 _bazel_skylib_version = "1.4.0"
 
