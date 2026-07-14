@@ -16,6 +16,8 @@ permissions:
 env:
   TEST_ALL_PACKAGES: "false" # Set to "false" to only run tests for packages with a git diff
   ALL_PYTHON: "['3.9', '3.10', '3.11', '3.12', '3.13', '3.14', '3.15']"
+  # Force static compilation of libxml2 and libxslt for lxml packages
+  STATIC_DEPS: "true"
 
 jobs:
   # Dynamic package discovery job to calculate required matrix size automatically
@@ -100,6 +102,8 @@ jobs:
         # Can be removed once libcst releases a version with native Python 3.15 wheels
         # Follow https://github.com/Instagram/LibCST/issues/1445 for updates.
         PYO3_USE_ABI3_FORWARD_COMPATIBILITY: "1"
+        # Ensure sub-processes (such as Nox test runs) statically compile lxml dependencies
+        STATIC_DEPS: "true"
       run: |
         UNIQUE_BATCH_PACKAGES=$(python -c 'import sys; sys.path.append("ci"); import get_batches; print(get_batches.get_batch_slice(${{ matrix.batch-index }}))')
 
