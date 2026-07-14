@@ -85,6 +85,10 @@ jobs:
           curl --location https://github.com/google/protobuf/releases/download/v${PROTOC_VERSION}/protoc-${PROTOC_VERSION}-linux-x86_64.zip --output /usr/src/protoc/protoc.zip
           cd /usr/src/protoc/ && unzip protoc.zip
           sudo ln -s /usr/src/protoc/bin/protoc /usr/local/bin/protoc
+      - name: Configure Git Redirect
+        run: |
+          git config --global url."${{ github.workspace }}".insteadOf "https://github.com/googleapis/google-cloud-python"
+          git config --global url."${{ github.workspace }}".insteadOf "https://github.com/googleapis/google-cloud-python.git"
       - name: Run Nox
         env:
           GOOGLE_SDK_PYTHON_LOGGING_SCOPE: ${{ matrix.logging_scope }}
@@ -126,6 +130,10 @@ jobs:
           python-version: ${{ needs.python_config.outputs.latest_stable_python }}
       - name: Install System Deps
         run: sudo apt-get update && sudo apt-get install -y pandoc
+      - name: Configure Git Redirect
+        run: |
+          git config --global url."${{ github.workspace }}".insteadOf "https://github.com/googleapis/google-cloud-python"
+          git config --global url."${{ github.workspace }}".insteadOf "https://github.com/googleapis/google-cloud-python.git"
       - name: Run Goldens
         env:
           LATEST_STABLE_PYTHON: ${{ needs.python_config.outputs.latest_stable_python }}
@@ -201,6 +209,10 @@ jobs:
           curl --location https://github.com/google/protobuf/releases/download/v${PROTOC_VERSION}/protoc-${PROTOC_VERSION}-linux-x86_64.zip --output /usr/src/protoc/protoc.zip
           cd /usr/src/protoc/ && unzip protoc.zip
           sudo ln -s /usr/src/protoc/bin/protoc /usr/local/bin/protoc
+      - name: Configure Git Redirect
+        run: |
+          git config --global url."${{ github.workspace }}".insteadOf "https://github.com/googleapis/google-cloud-python"
+          git config --global url."${{ github.workspace }}".insteadOf "https://github.com/googleapis/google-cloud-python.git"
       - name: Run Tests
         run: |
           pip install nox
@@ -232,6 +244,10 @@ jobs:
           # Ensure CACHE_VERSION is defined in the mono-repo secrets!
           key: ${{ runner.os }}-bazel-20210105-${{ secrets.CACHE_VERSION }}
 
+      - name: Configure Git Redirect
+        run: |
+          git config --global url."${{ github.workspace }}".insteadOf "https://github.com/googleapis/google-cloud-python"
+          git config --global url."${{ github.workspace }}".insteadOf "https://github.com/googleapis/google-cloud-python.git"
       - name: Run Bazel Integration Tests
         run: |
           # We need to move into the package directory if the 

@@ -42,7 +42,8 @@ load("@rules_python//python:pip.bzl", "pip_parse")
 
 pip_parse(
     name = "gapic_generator_python_pip_deps",
-	requirements_lock = "//:requirements.txt",
+    requirements_lock = "//:requirements.txt",
+    extra_pip_args = ["--index-url=https://pypi.org/simple"],
 )
 load("@gapic_generator_python_pip_deps//:requirements.bzl", "install_deps")
 
@@ -123,3 +124,13 @@ switched_rules_by_language(
     gapic = True,
     grpc = True,
 )
+
+# BEGIN workaround
+load("@rules_python//python:repositories.bzl", "python_register_toolchains")
+
+python_register_toolchains(
+    name = "python311",
+    python_version = "3.11",
+)
+# END workaround
+

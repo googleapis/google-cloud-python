@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+
 from collections import OrderedDict
 from http import HTTPStatus
 import json
@@ -27,6 +28,9 @@ from google.cloud.asset_v1 import gapic_version as package_version
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
+from google.api_core.gapic_v1 import _client_cert
+from google.api_core.gapic_v1 import _config_helpers
+from google.api_core.gapic_v1 import _routing
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials             # type: ignore
 from google.auth.transport import mtls                            # type: ignore
@@ -111,28 +115,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         Returns:
             Optional[str]: converted mTLS api endpoint.
         """
-        if not api_endpoint:
-            return api_endpoint
-
-        mtls_endpoint_re = re.compile(
-            r"(?P<name>[^.]+)(?P<mtls>\.mtls)?(?P<sandbox>\.sandbox)?(?P<googledomain>\.googleapis\.com)?"
-        )
-
-        m = mtls_endpoint_re.match(api_endpoint)
-        if m is None:
-            # Could not parse api_endpoint; return as-is.
-            return api_endpoint
-
-        name, mtls, sandbox, googledomain = m.groups()
-        if mtls or not googledomain:
-            return api_endpoint
-
-        if sandbox:
-            return api_endpoint.replace(
-                "sandbox.googleapis.com", "mtls.sandbox.googleapis.com"
-            )
-
-        return api_endpoint.replace(".googleapis.com", ".mtls.googleapis.com")
+        return _routing.get_default_mtls_endpoint(api_endpoint)
 
     # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
     DEFAULT_ENDPOINT = "cloudasset.googleapis.com"
@@ -156,18 +139,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
             ValueError: (If using a version of google-auth without should_use_client_cert and
 	    GOOGLE_API_USE_CLIENT_CERTIFICATE is set to an unexpected value.)
         """
-        # check if google-auth version supports should_use_client_cert for automatic mTLS enablement
-        if hasattr(mtls, "should_use_client_cert"):  # pragma: NO COVER
-            return mtls.should_use_client_cert()
-        else: # pragma: NO COVER
-            # if unsupported, fallback to reading from env var
-            use_client_cert_str = os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false").lower()
-            if use_client_cert_str not in ("true", "false"):
-                raise ValueError(
-                    "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be"
-                    " either `true` or `false`"
-                )
-            return use_client_cert_str == "true"
+        return _client_cert.use_client_cert_effective()
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -423,12 +395,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
             google.auth.exceptions.MutualTLSChannelError: If GOOGLE_API_USE_MTLS_ENDPOINT
                 is not any of ["auto", "never", "always"].
         """
-        use_client_cert = AssetServiceClient._use_client_cert_effective()
-        use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto").lower()
-        universe_domain_env = os.getenv("GOOGLE_CLOUD_UNIVERSE_DOMAIN")
-        if use_mtls_endpoint not in ("auto", "never", "always"):
-            raise MutualTLSChannelError("Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`")
-        return use_client_cert, use_mtls_endpoint, universe_domain_env
+        return _config_helpers.read_environment_variables()
 
     @staticmethod
     def _get_client_cert_source(provided_cert_source, use_cert_flag):
@@ -441,13 +408,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         Returns:
             bytes or None: The client cert source to be used by the client.
         """
-        client_cert_source = None
-        if use_cert_flag:
-            if provided_cert_source:
-                client_cert_source = provided_cert_source
-            elif mtls.has_default_client_cert_source():
-                client_cert_source = mtls.default_client_cert_source()
-        return client_cert_source
+        return _client_cert.get_client_cert_source(provided_cert_source, use_cert_flag)
 
     @staticmethod
     def _get_api_endpoint(api_override, client_cert_source, universe_domain, use_mtls_endpoint) -> str:
@@ -464,16 +425,18 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         Returns:
             str: The API endpoint to be used by the client.
         """
-        if api_override is not None:
-            api_endpoint = api_override
-        elif use_mtls_endpoint == "always" or (use_mtls_endpoint == "auto" and client_cert_source):
-            _default_universe = AssetServiceClient._DEFAULT_UNIVERSE
-            if universe_domain != _default_universe:
-                raise MutualTLSChannelError(f"mTLS is not supported in any universe other than {_default_universe}.")
-            api_endpoint = AssetServiceClient.DEFAULT_MTLS_ENDPOINT
-        else:
-            api_endpoint = AssetServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=universe_domain)
-        return api_endpoint
+        return cast(
+            str,
+            _routing.get_api_endpoint(
+                api_override,
+                client_cert_source,
+                universe_domain,
+                use_mtls_endpoint,
+                AssetServiceClient._DEFAULT_UNIVERSE,
+                AssetServiceClient.DEFAULT_MTLS_ENDPOINT,
+                AssetServiceClient._DEFAULT_ENDPOINT_TEMPLATE,
+            ),
+        )
 
     @staticmethod
     def _get_universe_domain(client_universe_domain: Optional[str], universe_domain_env: Optional[str]) -> str:
@@ -489,14 +452,11 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         Raises:
             ValueError: If the universe domain is an empty string.
         """
-        universe_domain = AssetServiceClient._DEFAULT_UNIVERSE
-        if client_universe_domain is not None:
-            universe_domain = client_universe_domain
-        elif universe_domain_env is not None:
-            universe_domain = universe_domain_env
-        if len(universe_domain.strip()) == 0:
-            raise ValueError("Universe Domain cannot be an empty string.")
-        return universe_domain
+        return _routing.get_universe_domain(
+            client_universe_domain,
+            universe_domain_env,
+            AssetServiceClient._DEFAULT_UNIVERSE,
+        )
 
     def _validate_universe_domain(self):
         """Validates client's and credentials' universe domains are consistent.
