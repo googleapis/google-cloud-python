@@ -26,9 +26,6 @@ jobs:
       with:
         python-version: "3.15"
         allow-prereleases: true
-    - name: Upgrade pip, setuptools, and wheel
-      run: |
-        python -m pip install --upgrade setuptools pip wheel
     - name: Run import profiler
       env:
         BUILD_TYPE: presubmit
