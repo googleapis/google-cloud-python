@@ -297,3 +297,74 @@ def test_record_gfe_metrics(metrics_tracer):
     metrics_tracer.record_gfe_metrics([("other", "1")])
     assert mock_gfe_latency.record.call_count == 1
     assert mock_gfe_missing.add.call_count == 1
+
+
+def test_record_afe_latency(metrics_tracer):
+    mock_afe_latency = mock.create_autospec(Histogram, instance=True)
+    metrics_tracer._instrument_afe_latency = mock_afe_latency
+    metrics_tracer.gfe_enabled = True
+
+    metrics_tracer.record_afe_latency(100)
+    assert mock_afe_latency.record.call_count == 1
+    assert mock_afe_latency.record.call_args[1]["amount"] == 100
+    assert (
+        mock_afe_latency.record.call_args[1]["attributes"]
+        == metrics_tracer.client_attributes
+    )
+
+    metrics_tracer.enabled = False
+    metrics_tracer.record_afe_latency(200)
+    assert mock_afe_latency.record.call_count == 1
+    metrics_tracer.enabled = True
+
+
+def test_record_afe_missing_header_count(metrics_tracer):
+    mock_afe_missing = mock.create_autospec(Counter, instance=True)
+    metrics_tracer._instrument_afe_missing_header_count = mock_afe_missing
+    metrics_tracer.gfe_enabled = True
+
+    metrics_tracer.record_afe_missing_header_count()
+    assert mock_afe_missing.add.call_count == 1
+    assert mock_afe_missing.add.call_args[1]["amount"] == 1
+    assert (
+        mock_afe_missing.add.call_args[1]["attributes"]
+        == metrics_tracer.client_attributes
+    )
+
+    metrics_tracer.enabled = False
+    metrics_tracer.record_afe_missing_header_count()
+    assert mock_afe_missing.add.call_count == 1
+    metrics_tracer.enabled = True
+
+
+def test_extract_afe_latency():
+    # Valid trailing metadata list of tuples
+    metadata_list = [("server-timing", "afe; dur=123")]
+    assert MetricsTracer.extract_afe_latency(metadata_list) == 123
+
+    # Valid metadata dict
+    metadata_dict = {"server-timing": "afet4t7; dur=456"}
+    assert MetricsTracer.extract_afe_latency(metadata_dict) == 456
+
+    # Missing header
+    assert MetricsTracer.extract_afe_latency([("other-header", "val")]) is None
+    assert MetricsTracer.extract_afe_latency(None) is None
+
+
+def test_record_afe_metrics(metrics_tracer):
+    mock_afe_latency = mock.create_autospec(Histogram, instance=True)
+    mock_afe_missing = mock.create_autospec(Counter, instance=True)
+    metrics_tracer._instrument_afe_latency = mock_afe_latency
+    metrics_tracer._instrument_afe_missing_header_count = mock_afe_missing
+    metrics_tracer.gfe_enabled = True
+
+    # With header
+    metrics_tracer.record_afe_metrics([("server-timing", "afe; dur=88")])
+    assert mock_afe_latency.record.call_count == 1
+    assert mock_afe_latency.record.call_args[1]["amount"] == 88
+    assert mock_afe_missing.add.call_count == 0
+
+    # Without header
+    metrics_tracer.record_afe_metrics([("other", "1")])
+    assert mock_afe_latency.record.call_count == 1
+    assert mock_afe_missing.add.call_count == 1

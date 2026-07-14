@@ -22,6 +22,8 @@ from google.cloud.spanner_v1.metrics.constants import (
     METRIC_LABEL_KEY_CLIENT_UID,
     METRIC_LABEL_KEY_DATABASE,
     METRIC_LABEL_KEY_DIRECT_PATH_ENABLED,
+    METRIC_NAME_AFE_LATENCY,
+    METRIC_NAME_AFE_MISSING_HEADER_COUNT,
     METRIC_NAME_ATTEMPT_COUNT,
     METRIC_NAME_ATTEMPT_LATENCIES,
     METRIC_NAME_GFE_LATENCY,
@@ -57,6 +59,8 @@ class MetricsTracerFactory:
     _instrument_operation_counter: "Counter"
     _instrument_gfe_latency: "Histogram"
     _instrument_gfe_missing_header_count: "Counter"
+    _instrument_afe_latency: "Histogram"
+    _instrument_afe_missing_header_count: "Counter"
     _client_attributes: Dict[str, str]
 
     @property
@@ -274,6 +278,10 @@ class MetricsTracerFactory:
             instrument_gfe_missing_header_count=getattr(
                 self, "_instrument_gfe_missing_header_count", None
             ),
+            instrument_afe_latency=getattr(self, "_instrument_afe_latency", None),
+            instrument_afe_missing_header_count=getattr(
+                self, "_instrument_afe_missing_header_count", None
+            ),
         )
         return metrics_tracer
 
@@ -330,4 +338,16 @@ class MetricsTracerFactory:
             name=METRIC_NAME_GFE_MISSING_HEADER_COUNT,
             unit="1",
             description="GFE missing header count.",
+        )
+
+        self._instrument_afe_latency = meter.create_histogram(
+            name=METRIC_NAME_AFE_LATENCY,
+            unit="ms",
+            description="AFE Latency.",
+        )
+
+        self._instrument_afe_missing_header_count = meter.create_counter(
+            name=METRIC_NAME_AFE_MISSING_HEADER_COUNT,
+            unit="1",
+            description="AFE missing header count.",
         )

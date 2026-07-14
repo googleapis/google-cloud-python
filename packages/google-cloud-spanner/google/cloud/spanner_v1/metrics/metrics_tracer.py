@@ -185,6 +185,8 @@ class MetricsTracer:
     _instrument_operation_latency: "Histogram"
     _instrument_gfe_latency: "Histogram"
     _instrument_gfe_missing_header_count: "Counter"
+    _instrument_afe_latency: "Histogram"
+    _instrument_afe_missing_header_count: "Counter"
     current_op: MetricOpTracer
     enabled: bool
     gfe_enabled: bool
@@ -201,6 +203,8 @@ class MetricsTracer:
         gfe_enabled: bool = False,
         instrument_gfe_latency: Optional["Histogram"] = None,
         instrument_gfe_missing_header_count: Optional["Counter"] = None,
+        instrument_afe_latency: Optional["Histogram"] = None,
+        instrument_afe_missing_header_count: Optional["Counter"] = None,
     ):
         """
         Initialize a MetricsTracer instance with the given parameters.
@@ -219,6 +223,8 @@ class MetricsTracer:
             gfe_enabled (bool, optional): Indicates if GFE metrics are enabled. Defaults to False.
             instrument_gfe_latency (Histogram, optional): Instrument for measuring GFE latency.
             instrument_gfe_missing_header_count (Counter, optional): Instrument for counting missing GFE headers.
+            instrument_afe_latency (Histogram, optional): Instrument for measuring AFE latency.
+            instrument_afe_missing_header_count (Counter, optional): Instrument for counting missing AFE headers.
         """
         self.current_op = MetricOpTracer()
         self._client_attributes = client_attributes
@@ -228,6 +234,8 @@ class MetricsTracer:
         self._instrument_operation_counter = instrument_operation_counter
         self._instrument_gfe_latency = instrument_gfe_latency
         self._instrument_gfe_missing_header_count = instrument_gfe_missing_header_count
+        self._instrument_afe_latency = instrument_afe_latency
+        self._instrument_afe_missing_header_count = instrument_afe_missing_header_count
         self.enabled = enabled
         self.gfe_enabled = True
 
@@ -430,6 +438,37 @@ class MetricsTracer:
             amount=1, attributes=self.client_attributes
         )
 
+    def record_afe_latency(self, latency: int) -> None:
+        """
+        Records the AFE latency using the Histogram instrument.
+
+        Args:
+            latency (int): The latency duration to be recorded.
+        """
+        if (
+            not self.enabled
+            or not HAS_OPENTELEMETRY_INSTALLED
+            or not getattr(self, "_instrument_afe_latency", None)
+        ):
+            return
+        self._instrument_afe_latency.record(
+            amount=latency, attributes=self.client_attributes
+        )
+
+    def record_afe_missing_header_count(self) -> None:
+        """
+        Increments the counter for missing AFE headers.
+        """
+        if (
+            not self.enabled
+            or not HAS_OPENTELEMETRY_INSTALLED
+            or not getattr(self, "_instrument_afe_missing_header_count", None)
+        ):
+            return
+        self._instrument_afe_missing_header_count.add(
+            amount=1, attributes=self.client_attributes
+        )
+
     @staticmethod
     def extract_gfe_latency(metadata: Any) -> Optional[int]:
         """
@@ -485,6 +524,62 @@ class MetricsTracer:
             self.record_gfe_latency(latency)
         else:
             self.record_gfe_missing_header_count()
+
+    @staticmethod
+    def extract_afe_latency(metadata: Any) -> Optional[int]:
+        """
+        Extracts the AFE latency value (in milliseconds) from response metadata.
+        """
+        if not metadata:
+            return None
+
+        header_vals = []
+        if isinstance(metadata, dict):
+            for key, val in metadata.items():
+                if key and str(key).lower() in ("server-timing", "server_timing"):
+                    if isinstance(val, (list, tuple)):
+                        header_vals.extend(val)
+                    else:
+                        header_vals.append(val)
+        elif isinstance(metadata, (list, tuple)):
+            for item in metadata:
+                if isinstance(item, (list, tuple)) and len(item) == 2:
+                    key, val = item
+                    if key and str(key).lower() in ("server-timing", "server_timing"):
+                        if isinstance(val, (list, tuple)):
+                            header_vals.extend(val)
+                        else:
+                            header_vals.append(val)
+
+        for header_val in header_vals:
+            if not header_val:
+                continue
+            if isinstance(header_val, bytes):
+                try:
+                    header_val = header_val.decode("utf-8")
+                except Exception:
+                    header_val = str(header_val)
+            elif not isinstance(header_val, str):
+                header_val = str(header_val)
+            match = re.search(r"afe(?:t4t7)?;\s*dur=([0-9.]+)", header_val)
+            if match:
+                try:
+                    return int(float(match.group(1)))
+                except ValueError:
+                    pass
+        return None
+
+    def record_afe_metrics(self, metadata: Any) -> None:
+        """
+        Extracts and records AFE metrics from the RPC response metadata.
+        """
+        if not self.enabled or not HAS_OPENTELEMETRY_INSTALLED:
+            return
+        latency = self.extract_afe_latency(metadata)
+        if latency is not None:
+            self.record_afe_latency(latency)
+        else:
+            self.record_afe_missing_header_count()
 
     def _create_operation_otel_attributes(self) -> dict:
         """

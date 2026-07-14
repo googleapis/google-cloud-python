@@ -147,12 +147,8 @@ def _wrap_response(response: Any, tracer: Any) -> Any:
                     metadata.extend(response.initial_metadata() or [])
                 except Exception as e:
                     logger.warning(f"Failed to retrieve initial metadata: {e}")
-            if hasattr(response, "trailing_metadata"):
-                try:
-                    metadata.extend(response.trailing_metadata() or [])
-                except Exception as e:
-                    logger.warning(f"Failed to retrieve trailing metadata: {e}")
             tracer.record_gfe_metrics(metadata)
+            tracer.record_afe_metrics(metadata)
         except Exception as e:
             logger.warning(f"Failed to record metrics: {e}")
         return response
@@ -260,12 +256,8 @@ class _StreamingResponseWrapper:
                     metadata.extend(self._response.initial_metadata() or [])
                 except Exception as e:
                     logger.warning(f"Failed to retrieve initial metadata: {e}")
-            if hasattr(self._response, "trailing_metadata"):
-                try:
-                    metadata.extend(self._response.trailing_metadata() or [])
-                except Exception as e:
-                    logger.warning(f"Failed to retrieve trailing metadata: {e}")
             self._tracer.record_gfe_metrics(metadata)
+            self._tracer.record_afe_metrics(metadata)
         except Exception as e:
             logger.warning(f"Failed to record metrics: {e}")
 
@@ -341,15 +333,8 @@ class _AsyncUnaryResponseWrapper(grpc.aio.UnaryUnaryCall):
                     metadata.extend(res or [])
                 except Exception as e:
                     logger.warning(f"Failed to retrieve initial metadata: {e}")
-            if hasattr(self._response, "trailing_metadata"):
-                try:
-                    res = self._response.trailing_metadata()
-                    if inspect.isawaitable(res):
-                        res = await res
-                    metadata.extend(res or [])
-                except Exception as e:
-                    logger.warning(f"Failed to retrieve trailing metadata: {e}")
             self._tracer.record_gfe_metrics(metadata)
+            self._tracer.record_afe_metrics(metadata)
         except Exception as e:
             logger.warning(f"Failed to record metrics: {e}")
 
@@ -454,15 +439,8 @@ class _AsyncStreamingResponseWrapper(
                     metadata.extend(res or [])
                 except Exception as e:
                     logger.warning(f"Failed to retrieve initial metadata: {e}")
-            if hasattr(self._response, "trailing_metadata"):
-                try:
-                    res = self._response.trailing_metadata()
-                    if inspect.isawaitable(res):
-                        res = await res
-                    metadata.extend(res or [])
-                except Exception as e:
-                    logger.warning(f"Failed to retrieve trailing metadata: {e}")
             self._tracer.record_gfe_metrics(metadata)
+            self._tracer.record_afe_metrics(metadata)
         except Exception as e:
             logger.warning(f"Failed to record metrics: {e}")
 
