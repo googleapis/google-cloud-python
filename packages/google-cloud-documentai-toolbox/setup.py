@@ -58,7 +58,7 @@ setuptools.setup(
         "pandas[performance,gcp]>=2.0.0, <3.0.0; python_version < '3.15'",
         # pandas[performance] requires numba which does not have 3.15 support yet
         "pandas[gcp]>=2.0.0, <3.0.0;python_version>='3.15'",
-        "pyarrow>=15.0.0, <23.0.0",
+        "pyarrow>=15.0.0",
         "tabulate>=0.9.0, <1.0.0",
         "proto-plus>=1.22.3, <2.0.0",
         "proto-plus >= 1.25.0, <2.0.0; python_version>='3.13'",
