@@ -68,8 +68,12 @@ def test_use_client_cert_effective_fallback():
                 _use_client_cert_effective()
 
 
-@mock.patch("google.auth.transport.mtls.has_default_client_cert_source", create=True)  # noqa: E501
-@mock.patch("google.auth.transport.mtls.default_client_cert_source", create=True)  # noqa: E501
+@mock.patch(
+    "google.auth.transport.mtls.has_default_client_cert_source", create=True
+)  # noqa: E501
+@mock.patch(
+    "google.auth.transport.mtls.default_client_cert_source", create=True
+)  # noqa: E501
 def test_get_client_cert_source(mock_default, mock_has_default):
     mock_default.return_value = b"default_cert"
     mock_has_default.return_value = True

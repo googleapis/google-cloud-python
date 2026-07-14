@@ -152,7 +152,9 @@ def test_get_universe_domain():
     )
 
     # fallback to default
-    assert _get_universe_domain(None, None, "default.com") == "default.com"  # noqa: E501
+    assert (
+        _get_universe_domain(None, None, "default.com") == "default.com"
+    )  # noqa: E501
 
 
 def test_get_universe_domain_strip():

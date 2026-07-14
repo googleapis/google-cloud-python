@@ -31,7 +31,9 @@ from google.auth.exceptions import MutualTLSChannelError
 from google.api_core.gapic_v1._config_helpers import _read_environment_variables
 
 
-@mock.patch("google.api_core.gapic_v1._config_helpers._use_client_cert_effective")  # noqa: E501
+@mock.patch(
+    "google.api_core.gapic_v1._config_helpers._use_client_cert_effective"
+)  # noqa: E501
 @mock.patch.dict(os.environ, clear=True)
 def test_read_environment_variables(mock_effective):
     mock_effective.return_value = True
