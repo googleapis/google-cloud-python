@@ -807,20 +807,6 @@
         }
       ]
     },
-    "packages/google-cloud-bigtable": {
-      "component": "google-cloud-bigtable",
-      "extra-files": [
-        "google/cloud/bigtable/gapic_version.py",
-        "google/cloud/bigtable_admin/gapic_version.py",
-        "google/cloud/bigtable_admin_v2/gapic_version.py",
-        "google/cloud/bigtable_v2/gapic_version.py",
-        {
-          "jsonpath": "$.clientLibrary.version",
-          "path": "samples/generated_samples/snippet_metadata_google.bigtable.admin.v2.json",
-          "type": "json"
-        }
-      ]
-    },
     "packages/google-cloud-billing": {
       "component": "google-cloud-billing",
       "extra-files": [
@@ -2469,18 +2455,6 @@
         }
       ]
     },
-    "packages/google-cloud-pubsub": {
-      "component": "google-cloud-pubsub",
-      "extra-files": [
-        "google/pubsub/gapic_version.py",
-        "google/pubsub_v1/gapic_version.py",
-        {
-          "jsonpath": "$.clientLibrary.version",
-          "path": "samples/generated_samples/snippet_metadata_google.pubsub.v1.json",
-          "type": "json"
-        }
-      ]
-    },
     "packages/google-cloud-quotas": {
       "component": "google-cloud-quotas",
       "extra-files": [
@@ -2855,32 +2829,6 @@
       "extra-files": [
         "google/cloud/source_context/gapic_version.py",
         "google/cloud/source_context_v1/gapic_version.py"
-      ]
-    },
-    "packages/google-cloud-spanner": {
-      "component": "google-cloud-spanner",
-      "extra-files": [
-        "google/cloud/spanner/gapic_version.py",
-        "google/cloud/spanner_admin_database/gapic_version.py",
-        "google/cloud/spanner_admin_database_v1/gapic_version.py",
-        "google/cloud/spanner_admin_instance/gapic_version.py",
-        "google/cloud/spanner_admin_instance_v1/gapic_version.py",
-        "google/cloud/spanner_v1/gapic_version.py",
-        {
-          "jsonpath": "$.clientLibrary.version",
-          "path": "samples/generated_samples/snippet_metadata_google.spanner.admin.database.v1.json",
-          "type": "json"
-        },
-        {
-          "jsonpath": "$.clientLibrary.version",
-          "path": "samples/generated_samples/snippet_metadata_google.spanner.admin.instance.v1.json",
-          "type": "json"
-        },
-        {
-          "jsonpath": "$.clientLibrary.version",
-          "path": "samples/generated_samples/snippet_metadata_google.spanner.v1.json",
-          "type": "json"
-        }
       ]
     },
     "packages/google-cloud-speech": {
