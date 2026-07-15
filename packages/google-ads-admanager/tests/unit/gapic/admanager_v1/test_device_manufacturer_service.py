@@ -1669,6 +1669,9 @@ def test_list_device_manufacturers_rest_pager(transport: str = "rest"):
 
         pager = client.list_device_manufacturers(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(

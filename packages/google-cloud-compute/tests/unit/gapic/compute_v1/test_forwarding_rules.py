@@ -1431,6 +1431,9 @@ def test_aggregated_list_rest_pager(transport: str = "rest"):
 
         pager = client.aggregated_list(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         assert isinstance(pager.get("a"), compute.ForwardingRulesScopedList)
         assert pager.get("h") is None
 
@@ -1933,6 +1936,8 @@ def test_get_rest_required_fields(request_type=compute.GetForwardingRuleRequest)
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
     ).get._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("view",))
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -1992,7 +1997,7 @@ def test_get_rest_unset_required_fields():
 
     unset_fields = transport.get._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(())
+        set(("view",))
         & set(
             (
                 "forwardingRule",
@@ -2738,6 +2743,9 @@ def test_list_rest_pager(transport: str = "rest"):
         sample_request = {"project": "sample1", "region": "sample2"}
 
         pager = client.list(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -4697,6 +4705,7 @@ def test_insert_rest_call_success(request_type):
         "all_ports": True,
         "allow_global_access": True,
         "allow_psc_global_access": True,
+        "attached_extensions": [{"reference": "reference_value"}],
         "backend_service": "backend_service_value",
         "base_forwarding_rule": "base_forwarding_rule_value",
         "creation_timestamp": "creation_timestamp_value",
@@ -5129,6 +5138,7 @@ def test_patch_rest_call_success(request_type):
         "all_ports": True,
         "allow_global_access": True,
         "allow_psc_global_access": True,
+        "attached_extensions": [{"reference": "reference_value"}],
         "backend_service": "backend_service_value",
         "base_forwarding_rule": "base_forwarding_rule_value",
         "creation_timestamp": "creation_timestamp_value",

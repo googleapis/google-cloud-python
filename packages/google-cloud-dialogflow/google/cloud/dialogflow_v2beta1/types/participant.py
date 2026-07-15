@@ -3785,54 +3785,7 @@ class BidiStreamingAnalyzeContentRequest(proto.Message):
             virtual_agent_parameters (google.protobuf.struct_pb2.Struct):
                 Optional. Parameters to be passed to the
                 virtual agent.
-            tool_responses (google.cloud.dialogflow_v2beta1.types.BidiStreamingAnalyzeContentRequest.TurnInput.ToolResponses):
-                Optional. The tool responses from the client.
         """
-
-        class ToolResponse(proto.Message):
-            r"""The execution result of a specific tool from the client.
-
-            Attributes:
-                id (str):
-                    Required. The matching ID of the tool call
-                    the response is for.
-                tool (str):
-                    Required. The identifier of the tool that got
-                    executed.
-                response (google.protobuf.struct_pb2.Struct):
-                    Optional. The tool execution result in JSON
-                    object format.
-            """
-
-            id: str = proto.Field(
-                proto.STRING,
-                number=1,
-            )
-            tool: str = proto.Field(
-                proto.STRING,
-                number=2,
-            )
-            response: struct_pb2.Struct = proto.Field(
-                proto.MESSAGE,
-                number=3,
-                message=struct_pb2.Struct,
-            )
-
-        class ToolResponses(proto.Message):
-            r"""The tool responses from the client.
-
-            Attributes:
-                tool_responses (MutableSequence[google.cloud.dialogflow_v2beta1.types.BidiStreamingAnalyzeContentRequest.TurnInput.ToolResponse]):
-                    Optional. The list of tool responses.
-            """
-
-            tool_responses: MutableSequence[
-                "BidiStreamingAnalyzeContentRequest.TurnInput.ToolResponse"
-            ] = proto.RepeatedField(
-                proto.MESSAGE,
-                number=1,
-                message="BidiStreamingAnalyzeContentRequest.TurnInput.ToolResponse",
-            )
 
         text: str = proto.Field(
             proto.STRING,
@@ -3853,13 +3806,6 @@ class BidiStreamingAnalyzeContentRequest(proto.Message):
             proto.MESSAGE,
             number=4,
             message=struct_pb2.Struct,
-        )
-        tool_responses: "BidiStreamingAnalyzeContentRequest.TurnInput.ToolResponses" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=5,
-                message="BidiStreamingAnalyzeContentRequest.TurnInput.ToolResponses",
-            )
         )
 
     class Input(proto.Message):
@@ -3951,10 +3897,6 @@ class BidiStreamingAnalyzeContentResponse(proto.Message):
             Indicate that the turn is complete.
 
             This field is a member of `oneof`_ ``response``.
-        tool_calls (google.cloud.dialogflow_v2beta1.types.BidiStreamingAnalyzeContentResponse.ToolCalls):
-            The tool calls from the server.
-
-            This field is a member of `oneof`_ ``response``.
     """
 
     class BargeInSignal(proto.Message):
@@ -3962,49 +3904,6 @@ class BidiStreamingAnalyzeContentResponse(proto.Message):
 
     class TurnComplete(proto.Message):
         r"""Indicate that the turn is complete."""
-
-    class ToolCall(proto.Message):
-        r"""Request for the client to execute the specified tool.
-
-        Attributes:
-            id (str):
-                The unique identifier of the tool call.
-            tool (str):
-                The identifier of the tool to execute.
-            args (google.protobuf.struct_pb2.Struct):
-                The input parameters and values for the tool
-                in JSON object format.
-        """
-
-        id: str = proto.Field(
-            proto.STRING,
-            number=1,
-        )
-        tool: str = proto.Field(
-            proto.STRING,
-            number=2,
-        )
-        args: struct_pb2.Struct = proto.Field(
-            proto.MESSAGE,
-            number=3,
-            message=struct_pb2.Struct,
-        )
-
-    class ToolCalls(proto.Message):
-        r"""The tool calls from the server.
-
-        Attributes:
-            tool_calls (MutableSequence[google.cloud.dialogflow_v2beta1.types.BidiStreamingAnalyzeContentResponse.ToolCall]):
-                The list of tool calls.
-        """
-
-        tool_calls: MutableSequence["BidiStreamingAnalyzeContentResponse.ToolCall"] = (
-            proto.RepeatedField(
-                proto.MESSAGE,
-                number=1,
-                message="BidiStreamingAnalyzeContentResponse.ToolCall",
-            )
-        )
 
     recognition_result: session.StreamingRecognitionResult = proto.Field(
         proto.MESSAGE,
@@ -4029,12 +3928,6 @@ class BidiStreamingAnalyzeContentResponse(proto.Message):
         number=4,
         oneof="response",
         message=TurnComplete,
-    )
-    tool_calls: ToolCalls = proto.Field(
-        proto.MESSAGE,
-        number=5,
-        oneof="response",
-        message=ToolCalls,
     )
 
 

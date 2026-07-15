@@ -2503,6 +2503,9 @@ def test_list_rest_pager(transport: str = "rest"):
 
         pager = client.list(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, compute.InstanceTemplate) for i in results)
@@ -3055,6 +3058,7 @@ def test_insert_rest_call_success(request_type):
             ],
             "key_revocation_action_type": "key_revocation_action_type_value",
             "labels": {},
+            "local_ssd_encryption_mode": "local_ssd_encryption_mode_value",
             "machine_type": "machine_type_value",
             "metadata": {
                 "fingerprint": "fingerprint_value",
@@ -3084,6 +3088,7 @@ def test_insert_rest_call_success(request_type):
                             "subnetwork_range_name": "subnetwork_range_name_value",
                         }
                     ],
+                    "alias_ipv6_ranges": {},
                     "enable_vpc_scoped_dns": True,
                     "fingerprint": "fingerprint_value",
                     "igmp_query": "igmp_query_value",

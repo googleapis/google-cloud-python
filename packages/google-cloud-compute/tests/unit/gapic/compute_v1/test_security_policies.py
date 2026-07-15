@@ -1849,6 +1849,9 @@ def test_aggregated_list_rest_pager(transport: str = "rest"):
 
         pager = client.aggregated_list(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         assert isinstance(pager.get("a"), compute.SecurityPoliciesScopedList)
         assert pager.get("h") is None
 
@@ -3328,6 +3331,9 @@ def test_list_rest_pager(transport: str = "rest"):
         sample_request = {"project": "sample1"}
 
         pager = client.list(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -6349,7 +6355,11 @@ def test_insert_rest_call_success(request_type):
             }
         ],
         "creation_timestamp": "creation_timestamp_value",
-        "ddos_protection_config": {"ddos_protection": "ddos_protection_value"},
+        "ddos_protection_config": {
+            "ddos_adaptive_protection": "ddos_adaptive_protection_value",
+            "ddos_impacted_baseline_threshold": 0.33580000000000004,
+            "ddos_protection": "ddos_protection_value",
+        },
         "description": "description_value",
         "fingerprint": "fingerprint_value",
         "id": 205,
@@ -7049,7 +7059,11 @@ def test_patch_rest_call_success(request_type):
             }
         ],
         "creation_timestamp": "creation_timestamp_value",
-        "ddos_protection_config": {"ddos_protection": "ddos_protection_value"},
+        "ddos_protection_config": {
+            "ddos_adaptive_protection": "ddos_adaptive_protection_value",
+            "ddos_impacted_baseline_threshold": 0.33580000000000004,
+            "ddos_protection": "ddos_protection_value",
+        },
         "description": "description_value",
         "fingerprint": "fingerprint_value",
         "id": 205,

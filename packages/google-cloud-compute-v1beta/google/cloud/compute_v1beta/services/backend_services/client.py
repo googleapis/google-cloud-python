@@ -2659,8 +2659,11 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListUsablePager:
-        r"""Retrieves a list of all usable backend services in
-        the specified project.
+        r"""Retrieves a list of all usable backend services for
+        Application Load Balancers and Proxy Network Load
+        Balancers in the specified project. Backend services for
+        external and internal passthrough Network Load Balancers
+        are not included in the response.
 
         .. code-block:: python
 

@@ -1608,6 +1608,9 @@ def test_list_line_items_rest_pager(transport: str = "rest"):
 
         pager = client.list_line_items(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, line_item_messages.LineItem) for i in results)
