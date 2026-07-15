@@ -93,14 +93,36 @@ class TempRowBuilder:
 
     def delete_rows(self):
         if self.rows:
-            request = {
-                **self.target._request_path,
-                "entries": [
-                    {"row_key": row, "mutations": [{"delete_from_row": {}}]}
-                    for row in self.rows
-                ],
-            }
-            self.target.client._gapic_client.mutate_rows(request)
+            # Batch deletions to avoid exceeding mutation limits (100,000)
+            # 3 mutations per row means max ~33,000 rows per batch. Let's use 20,000.
+            batch_size = 20000
+            for i in range(0, len(self.rows), batch_size):
+                batch = self.rows[i : i + batch_size]
+                request = {
+                    **self.target._request_path,
+                    "entries": [
+                        {
+                            "row_key": row,
+                            "mutations": [
+                                {"delete_from_family": {"family_name": TEST_FAMILY}},
+                                {"delete_from_family": {"family_name": TEST_FAMILY_2}},
+                                {
+                                    "delete_from_family": {
+                                        "family_name": TEST_AGGREGATE_FAMILY
+                                    }
+                                },
+                            ],
+                        }
+                        for row in batch
+                    ],
+                }
+                # Consume the stream to ensure completion and avoid leaks
+                result_stream = self.target.client._gapic_client.mutate_rows(request)
+                for result in result_stream:
+                    for entry in result.entries:
+                        if entry.status.code != 0:
+                            print(f"Error deleting row: {entry.status.message}")
+            self.rows = []
 
     def retrieve_cell_value(self, target, row_key):
         """Helper to read an individual row"""
