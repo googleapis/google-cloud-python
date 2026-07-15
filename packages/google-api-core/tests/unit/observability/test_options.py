@@ -91,8 +91,6 @@ def test_set_test_env_override_clear_specific():
     assert _get_env_bool("TEST_B") is True
 
 
-
-
 def test_resolve_feature_flags_ga_enabled_via_env():
     """Verify that a GA feature is enabled if its environment variable is True."""
     # Setup: We pass a GA environment variable set to True
@@ -102,7 +100,7 @@ def test_resolve_feature_flags_ga_enabled_via_env():
     result = options.resolve_feature_flags(
         env_var="GOOGLE_SDK_PYTHON_TRACING_ENABLED",
         provider_key="tracer_provider",
-        client_options=None
+        client_options=None,
     )
 
     # Assertion
@@ -121,7 +119,7 @@ def test_resolve_feature_flags_exp_blocked_with_provider_fails_fast(gate_value):
         options.resolve_feature_flags(
             env_var="GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED",
             provider_key="tracer_provider",
-            client_options=client_options
+            client_options=client_options,
         )
 
 
@@ -133,7 +131,7 @@ def test_resolve_feature_flags_exp_enabled_with_provider():
     result = options.resolve_feature_flags(
         env_var="GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED",
         provider_key="tracer_provider",
-        client_options=client_options
+        client_options=client_options,
     )
     assert result is True
 
@@ -147,19 +145,21 @@ def test_resolve_feature_flags_ga_enabled_via_provider():
     result = options.resolve_feature_flags(
         env_var="GOOGLE_SDK_PYTHON_TRACING_ENABLED",
         provider_key="tracer_provider",
-        client_options=client_options
+        client_options=client_options,
     )
     assert result is True
 
 
-@pytest.mark.parametrize("env_val", [None, False], ids=["env_not_set", "env_explicit_false"])
+@pytest.mark.parametrize(
+    "env_val", [None, False], ids=["env_not_set", "env_explicit_false"]
+)
 def test_resolve_feature_flags_ga_fallback_to_false(env_val):
     """Verify that a GA feature returns False if no flags are present."""
     set_test_env_override("GOOGLE_SDK_PYTHON_TRACING_ENABLED", env_val)
     result = options.resolve_feature_flags(
         env_var="GOOGLE_SDK_PYTHON_TRACING_ENABLED",
         provider_key="tracer_provider",
-        client_options=None
+        client_options=None,
     )
     assert result is False
 
@@ -175,7 +175,7 @@ class _MockOptions:
         {"other_option": "value"},
         _MockOptions(),
     ],
-    ids=["dict_without_key", "object_without_key"]
+    ids=["dict_without_key", "object_without_key"],
 )
 def test_resolve_feature_flags_options_without_key(client_options):
     """Verify behavior when client_options is present but missing the provider key."""
@@ -183,6 +183,6 @@ def test_resolve_feature_flags_options_without_key(client_options):
     result = options.resolve_feature_flags(
         env_var="GOOGLE_SDK_PYTHON_TRACING_ENABLED",
         provider_key="tracer_provider",
-        client_options=client_options
+        client_options=client_options,
     )
     assert result is False

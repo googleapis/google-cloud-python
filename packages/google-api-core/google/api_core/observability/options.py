@@ -117,7 +117,6 @@ def resolve_feature_flags(
         ValueError: If a provider is passed for an experimental feature without opening the gate.
     """
 
-
     # Check for programmatic feature provider
     has_provider = _has_provider(client_options, provider_key)
 
