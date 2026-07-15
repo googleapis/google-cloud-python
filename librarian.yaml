@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 language: python
-version: v0.22.1-0.20260626155540-a0930f4b0f52
+version: v0.26.0
 repo: googleapis/google-cloud-python
 sources:
   googleapis:
@@ -635,6 +635,7 @@ libraries:
     apis:
       - path: google/bigtable/v2
       - path: google/bigtable/admin/v2
+    skip_generate: true
     python:
       library_type: GAPIC_COMBO
       opt_args_by_api:
