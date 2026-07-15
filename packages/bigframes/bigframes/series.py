@@ -195,6 +195,7 @@ class Series:
         else:
             if isinstance(dtype, str) and dtype.lower() == "json":
                 dtype = bigframes.dtypes.JSON_DTYPE
+
             pd_series = pandas.Series(
                 data=data,
                 index=index,  # type:ignore
@@ -244,7 +245,6 @@ class Series:
         return bigframes.core.indexers.LocSeriesIndexer(self)
 
     @property
-    @validations.requires_ordering()
     def iloc(self) -> bigframes.core.indexers.IlocSeriesIndexer:
         return bigframes.core.indexers.IlocSeriesIndexer(self)
 

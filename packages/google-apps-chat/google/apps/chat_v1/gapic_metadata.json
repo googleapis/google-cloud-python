@@ -90,6 +90,11 @@
                 "get_attachment"
               ]
             },
+            "GetAvailability": {
+              "methods": [
+                "get_availability"
+              ]
+            },
             "GetCustomEmoji": {
               "methods": [
                 "get_custom_emoji"
@@ -170,6 +175,21 @@
                 "list_spaces"
               ]
             },
+            "MarkAsActive": {
+              "methods": [
+                "mark_as_active"
+              ]
+            },
+            "MarkAsAway": {
+              "methods": [
+                "mark_as_away"
+              ]
+            },
+            "MarkAsDoNotDisturb": {
+              "methods": [
+                "mark_as_do_not_disturb"
+              ]
+            },
             "MoveSectionItem": {
               "methods": [
                 "move_section_item"
@@ -188,6 +208,11 @@
             "SetUpSpace": {
               "methods": [
                 "set_up_space"
+              ]
+            },
+            "UpdateAvailability": {
+              "methods": [
+                "update_availability"
               ]
             },
             "UpdateMembership": {
@@ -310,6 +335,11 @@
                 "get_attachment"
               ]
             },
+            "GetAvailability": {
+              "methods": [
+                "get_availability"
+              ]
+            },
             "GetCustomEmoji": {
               "methods": [
                 "get_custom_emoji"
@@ -390,6 +420,21 @@
                 "list_spaces"
               ]
             },
+            "MarkAsActive": {
+              "methods": [
+                "mark_as_active"
+              ]
+            },
+            "MarkAsAway": {
+              "methods": [
+                "mark_as_away"
+              ]
+            },
+            "MarkAsDoNotDisturb": {
+              "methods": [
+                "mark_as_do_not_disturb"
+              ]
+            },
             "MoveSectionItem": {
               "methods": [
                 "move_section_item"
@@ -408,6 +453,11 @@
             "SetUpSpace": {
               "methods": [
                 "set_up_space"
+              ]
+            },
+            "UpdateAvailability": {
+              "methods": [
+                "update_availability"
               ]
             },
             "UpdateMembership": {
@@ -530,6 +580,11 @@
                 "get_attachment"
               ]
             },
+            "GetAvailability": {
+              "methods": [
+                "get_availability"
+              ]
+            },
             "GetCustomEmoji": {
               "methods": [
                 "get_custom_emoji"
@@ -610,6 +665,21 @@
                 "list_spaces"
               ]
             },
+            "MarkAsActive": {
+              "methods": [
+                "mark_as_active"
+              ]
+            },
+            "MarkAsAway": {
+              "methods": [
+                "mark_as_away"
+              ]
+            },
+            "MarkAsDoNotDisturb": {
+              "methods": [
+                "mark_as_do_not_disturb"
+              ]
+            },
             "MoveSectionItem": {
               "methods": [
                 "move_section_item"
@@ -628,6 +698,11 @@
             "SetUpSpace": {
               "methods": [
                 "set_up_space"
+              ]
+            },
+            "UpdateAvailability": {
+              "methods": [
+                "update_availability"
               ]
             },
             "UpdateMembership": {

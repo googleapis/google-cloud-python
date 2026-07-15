@@ -1899,6 +1899,9 @@ def test_aggregated_list_rest_pager(transport: str = "rest"):
 
         pager = client.aggregated_list(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         assert isinstance(pager.get("a"), compute.InstanceGroupManagersScopedList)
         assert pager.get("h") is None
 
@@ -4987,6 +4990,9 @@ def test_list_rest_pager(transport: str = "rest"):
 
         pager = client.list(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, compute.InstanceGroupManager) for i in results)
@@ -5276,6 +5282,9 @@ def test_list_errors_rest_pager(transport: str = "rest"):
         }
 
         pager = client.list_errors(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -5575,6 +5584,9 @@ def test_list_managed_instances_rest_pager(transport: str = "rest"):
 
         pager = client.list_managed_instances(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, compute.ManagedInstance) for i in results)
@@ -5872,6 +5884,9 @@ def test_list_per_instance_configs_rest_pager(transport: str = "rest"):
         }
 
         pager = client.list_per_instance_configs(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6

@@ -1625,6 +1625,9 @@ def test_list_applications_rest_pager(transport: str = "rest"):
 
         pager = client.list_applications(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, application_messages.Application) for i in results)

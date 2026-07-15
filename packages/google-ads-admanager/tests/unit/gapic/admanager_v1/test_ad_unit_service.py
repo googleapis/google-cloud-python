@@ -1595,6 +1595,9 @@ def test_list_ad_units_rest_pager(transport: str = "rest"):
 
         pager = client.list_ad_units(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, ad_unit_messages.AdUnit) for i in results)
@@ -1858,6 +1861,9 @@ def test_list_ad_unit_sizes_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "networks/sample1"}
 
         pager = client.list_ad_unit_sizes(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6

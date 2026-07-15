@@ -1457,6 +1457,9 @@ def test_fetch_mcm_earnings_rest_pager(transport: str = "rest"):
 
         pager = client.fetch_mcm_earnings(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, mcm_earnings_messages.McmEarnings) for i in results)
