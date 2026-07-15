@@ -53,18 +53,6 @@
           "type": "json"
         }
       ]
-    },
-    "packages/google-cloud-pubsub": {
-      "component": "google-cloud-pubsub",
-      "extra-files": [
-        "google/pubsub/gapic_version.py",
-        "google/pubsub_v1/gapic_version.py",
-        {
-          "jsonpath": "$.clientLibrary.version",
-          "path": "samples/generated_samples/snippet_metadata_google.pubsub.v1.json",
-          "type": "json"
-        }
-      ]
     }
   },
   "release-type": "python-librarian",
