@@ -32,6 +32,7 @@ from bigframes.operations import (
     frequency_ops,
     generic_ops,
     numeric_ops,
+    remote_function_ops,
     string_ops,
 )
 from bigframes.session import execution_spec, executor, semi_executor
@@ -96,6 +97,7 @@ _COMPATIBLE_SCALAR_OPS = (
     string_ops.EndsWithOp,
     string_ops.StrContainsOp,
     string_ops.StrContainsRegexOp,
+    remote_function_ops.PythonUdfOp,
 )
 _COMPATIBLE_AGG_OPS = (
     agg_ops.SizeOp,

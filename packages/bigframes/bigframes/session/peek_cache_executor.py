@@ -93,6 +93,11 @@ class PeekCacheExecutor(executor.Executor):
         array_value: bigframes.core.ArrayValue,
         execution_spec: ex_spec.ExecutionSpec,
     ) -> executor.ExecuteResult:
+        from bigframes.session.productionize import _state as prod_state
+
+        if prod_state.active:
+            return self._target.execute(array_value, execution_spec)
+
         execution_spec = execution_spec.with_compute_options(bigframes.options.compute)
 
         enable_peek_cache = (
