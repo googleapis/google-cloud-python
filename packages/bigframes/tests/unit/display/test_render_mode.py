@@ -64,9 +64,11 @@ def test_repr_mimebundle_selection_logic():
 
         # Test fallback to static deferred repr when anywidget fails
         mock_anywidget.side_effect = Exception("Anywidget failed")
-        with bpd.option_context("display.repr_mode", "deferred"):
-            with pytest.warns(UserWarning, match="Anywidget mode is not available"):
-                bundle = bf_html.repr_mimebundle(mock_obj)
+        with (
+            bpd.option_context("display.repr_mode", "deferred"),
+            pytest.warns(UserWarning, match="Anywidget mode is not available"),
+        ):
+            bundle = bf_html.repr_mimebundle(mock_obj)
             assert bundle == {"text/plain": "deferred"}
             mock_deferred.assert_called_once()
 
