@@ -4122,6 +4122,7 @@ def test_insert_rest_call_success(request_type):
             ],
             "key_revocation_action_type": "key_revocation_action_type_value",
             "labels": {},
+            "local_ssd_encryption_mode": "local_ssd_encryption_mode_value",
             "machine_type": "machine_type_value",
             "metadata": {
                 "fingerprint": "fingerprint_value",

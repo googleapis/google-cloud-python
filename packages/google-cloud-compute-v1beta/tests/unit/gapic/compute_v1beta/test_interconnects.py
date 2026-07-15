@@ -4089,6 +4089,7 @@ def test_get_rest_call_success(request_type):
             creation_timestamp="creation_timestamp_value",
             customer_name="customer_name_value",
             description="description_value",
+            effective_location="effective_location_value",
             google_ip_address="google_ip_address_value",
             google_reference_id="google_reference_id_value",
             id=205,
@@ -4135,6 +4136,7 @@ def test_get_rest_call_success(request_type):
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.customer_name == "customer_name_value"
     assert response.description == "description_value"
+    assert response.effective_location == "effective_location_value"
     assert response.google_ip_address == "google_ip_address_value"
     assert response.google_reference_id == "google_reference_id_value"
     assert response.id == 205
@@ -4553,6 +4555,7 @@ def test_insert_rest_call_success(request_type):
         "creation_timestamp": "creation_timestamp_value",
         "customer_name": "customer_name_value",
         "description": "description_value",
+        "effective_location": "effective_location_value",
         "expected_outages": [
             {
                 "affected_circuits": [
@@ -5004,6 +5007,7 @@ def test_patch_rest_call_success(request_type):
         "creation_timestamp": "creation_timestamp_value",
         "customer_name": "customer_name_value",
         "description": "description_value",
+        "effective_location": "effective_location_value",
         "expected_outages": [
             {
                 "affected_circuits": [

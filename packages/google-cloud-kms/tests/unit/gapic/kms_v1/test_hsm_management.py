@@ -8185,6 +8185,10 @@ def test_create_single_tenant_hsm_instance_proposal_rest_call_success(request_ty
             "two_factor_public_key_pem": "two_factor_public_key_pem_value"
         },
         "refresh_single_tenant_hsm_instance": {},
+        "upgrade_key_trust": {
+            "name": "name_value",
+            "two_factor_public_key_pem": "two_factor_public_key_pem_value",
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency

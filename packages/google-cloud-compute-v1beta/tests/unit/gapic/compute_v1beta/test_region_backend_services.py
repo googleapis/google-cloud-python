@@ -5926,6 +5926,8 @@ def test_insert_rest_call_success(request_type):
         "locality_lb_policy": "locality_lb_policy_value",
         "log_config": {
             "enable": True,
+            "logging_http_request_headers": [{"header_name": "header_name_value"}],
+            "logging_http_response_headers": {},
             "optional_fields": ["optional_fields_value1", "optional_fields_value2"],
             "optional_mode": "optional_mode_value",
             "sample_rate": 0.1165,
@@ -6655,6 +6657,8 @@ def test_patch_rest_call_success(request_type):
         "locality_lb_policy": "locality_lb_policy_value",
         "log_config": {
             "enable": True,
+            "logging_http_request_headers": [{"header_name": "header_name_value"}],
+            "logging_http_response_headers": {},
             "optional_fields": ["optional_fields_value1", "optional_fields_value2"],
             "optional_mode": "optional_mode_value",
             "sample_rate": 0.1165,
@@ -7834,6 +7838,8 @@ def test_update_rest_call_success(request_type):
         "locality_lb_policy": "locality_lb_policy_value",
         "log_config": {
             "enable": True,
+            "logging_http_request_headers": [{"header_name": "header_name_value"}],
+            "logging_http_response_headers": {},
             "optional_fields": ["optional_fields_value1", "optional_fields_value2"],
             "optional_mode": "optional_mode_value",
             "sample_rate": 0.1165,

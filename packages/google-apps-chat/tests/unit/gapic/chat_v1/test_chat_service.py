@@ -69,6 +69,7 @@ from google.apps.chat_v1.types import (
     action_status,
     annotation,
     attachment,
+    audience,
     availability,
     contextual_addon,
     deletion_metadata,
@@ -29848,7 +29849,16 @@ def test_create_message_rest_call_success(request_type):
                 "joined_direct_human_user_count": 3185,
                 "joined_group_count": 1933,
             },
-            "access_settings": {"access_state": 1, "audience": "audience_value"},
+            "access_settings": {
+                "access_state": 1,
+                "audience": "audience_value",
+                "access_permission_settings": {
+                    "discover_space_setting": {
+                        "principals": [{"audience": {"name": "name_value"}}]
+                    },
+                    "join_space_setting": {},
+                },
+            },
             "customer": "customer_value",
             "space_uri": "space_uri_value",
             "predefined_permission_settings": 1,
@@ -31071,7 +31081,16 @@ def test_update_message_rest_call_success(request_type):
                 "joined_direct_human_user_count": 3185,
                 "joined_group_count": 1933,
             },
-            "access_settings": {"access_state": 1, "audience": "audience_value"},
+            "access_settings": {
+                "access_state": 1,
+                "audience": "audience_value",
+                "access_permission_settings": {
+                    "discover_space_setting": {
+                        "principals": [{"audience": {"name": "name_value"}}]
+                    },
+                    "join_space_setting": {},
+                },
+            },
             "customer": "customer_value",
             "space_uri": "space_uri_value",
             "predefined_permission_settings": 1,
@@ -32168,7 +32187,16 @@ def test_create_space_rest_call_success(request_type):
             "joined_direct_human_user_count": 3185,
             "joined_group_count": 1933,
         },
-        "access_settings": {"access_state": 1, "audience": "audience_value"},
+        "access_settings": {
+            "access_state": 1,
+            "audience": "audience_value",
+            "access_permission_settings": {
+                "discover_space_setting": {
+                    "principals": [{"audience": {"name": "name_value"}}]
+                },
+                "join_space_setting": {},
+            },
+        },
         "customer": "customer_value",
         "space_uri": "space_uri_value",
         "predefined_permission_settings": 1,
@@ -32585,7 +32613,16 @@ def test_update_space_rest_call_success(request_type):
             "joined_direct_human_user_count": 3185,
             "joined_group_count": 1933,
         },
-        "access_settings": {"access_state": 1, "audience": "audience_value"},
+        "access_settings": {
+            "access_state": 1,
+            "audience": "audience_value",
+            "access_permission_settings": {
+                "discover_space_setting": {
+                    "principals": [{"audience": {"name": "name_value"}}]
+                },
+                "join_space_setting": {},
+            },
+        },
         "customer": "customer_value",
         "space_uri": "space_uri_value",
         "predefined_permission_settings": 1,

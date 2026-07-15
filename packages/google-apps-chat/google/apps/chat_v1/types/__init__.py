@@ -36,6 +36,9 @@ from .attachment import (
     UploadAttachmentRequest,
     UploadAttachmentResponse,
 )
+from .audience import (
+    Audience,
+)
 from .availability import (
     Availability,
     CustomStatus,
@@ -208,6 +211,7 @@ __all__ = (
     "GetAttachmentRequest",
     "UploadAttachmentRequest",
     "UploadAttachmentResponse",
+    "Audience",
     "Availability",
     "CustomStatus",
     "DoNotDisturbMetadata",
