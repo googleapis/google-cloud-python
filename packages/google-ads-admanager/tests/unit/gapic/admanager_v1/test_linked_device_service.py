@@ -1640,6 +1640,9 @@ def test_list_linked_devices_rest_pager(transport: str = "rest"):
 
         pager = client.list_linked_devices(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, linked_device_messages.LinkedDevice) for i in results)

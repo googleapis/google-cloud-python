@@ -2636,6 +2636,9 @@ def test_list_patch_jobs_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, patch_jobs.PatchJob) for i in results)
@@ -2724,6 +2727,8 @@ async def test_list_patch_jobs_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -3179,6 +3184,9 @@ def test_list_patch_job_instance_details_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, patch_jobs.PatchJobInstanceDetails) for i in results)
@@ -3271,6 +3279,8 @@ async def test_list_patch_job_instance_details_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -4453,6 +4463,9 @@ def test_list_patch_deployments_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, patch_deployments.PatchDeployment) for i in results)
@@ -4545,6 +4558,8 @@ async def test_list_patch_deployments_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -6671,6 +6686,9 @@ def test_list_patch_jobs_rest_pager(transport: str = "rest"):
 
         pager = client.list_patch_jobs(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, patch_jobs.PatchJob) for i in results)
@@ -6937,6 +6955,9 @@ def test_list_patch_job_instance_details_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/patchJobs/sample2"}
 
         pager = client.list_patch_job_instance_details(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -7593,6 +7614,9 @@ def test_list_patch_deployments_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1"}
 
         pager = client.list_patch_deployments(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6

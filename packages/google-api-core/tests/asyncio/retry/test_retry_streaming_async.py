@@ -293,7 +293,7 @@ class TestAsyncStreamingRetry(Test_BaseRetry):
         generator = await retry_(self._generator_mock)(error_on=3)
         with pytest.raises(TypeError) as exc_info:
             await generator.asend("cannot send to fresh generator")
-            assert exc_info.match("can't send non-None value")
+        assert exc_info.match("can't send non-None value")
         await generator.aclose()
 
         # error thrown on 3
