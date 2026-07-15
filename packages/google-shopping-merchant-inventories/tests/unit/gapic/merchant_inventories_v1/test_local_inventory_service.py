@@ -3594,6 +3594,7 @@ def test_insert_local_inventory_rest_call_success(request_type):
             "pickup_method": 1,
             "pickup_sla": 1,
             "instore_product_location": "instore_product_location_value",
+            "local_shipping_label": "local_shipping_label_value",
             "loyalty_programs": [
                 {
                     "program_label": "program_label_value",
@@ -3604,6 +3605,9 @@ def test_insert_local_inventory_rest_call_success(request_type):
                     "member_price_effective_interval": {},
                     "shipping_label": "shipping_label_value",
                 }
+            ],
+            "custom_attributes": [
+                {"name": "name_value", "value": "value_value", "group_values": {}}
             ],
         },
     }
