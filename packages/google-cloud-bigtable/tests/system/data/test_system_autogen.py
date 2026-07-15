@@ -107,7 +107,11 @@ class TempRowBuilder:
                 }
                 stream = self.target.client._gapic_client.mutate_rows(request)
                 for response in stream:
-                    pass
+                    for entry in response.entries:
+                        if entry.status.code != 0:
+                            raise RuntimeError(
+                                f"Failed to delete row: {entry.status.message}"
+                            )
 
     def retrieve_cell_value(self, target, row_key):
         """Helper to read an individual row"""

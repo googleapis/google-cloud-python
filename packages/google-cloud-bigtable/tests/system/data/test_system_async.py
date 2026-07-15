@@ -126,7 +126,11 @@ class TempRowBuilderAsync:
                 # Await and consume the gRPC stream to guarantee execution
                 stream = await self.target.client._gapic_client.mutate_rows(request)
                 async for response in stream:
-                    pass
+                    for entry in response.entries:
+                        if entry.status.code != 0:
+                            raise RuntimeError(
+                                f"Failed to delete row: {entry.status.message}"
+                            )
 
     @CrossSync.convert
     async def retrieve_cell_value(self, target, row_key):
