@@ -113,8 +113,9 @@ class TempRowBuilderAsync:
             # serialization overhead. Keeping chunks at 5,000 ensures we stay safely
             # under 4MB and minimizes transient network timeouts on live connections.
             chunk_size = 5000
-            for i in range(0, len(self.rows), chunk_size):
-                chunk = self.rows[i : i + chunk_size]
+            rows_list = list(self.rows)
+            for i in range(0, len(rows_list), chunk_size):
+                chunk = rows_list[i : i + chunk_size]
                 request = {
                     **self.target._request_path,
                     "entries": [
