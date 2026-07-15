@@ -151,129 +151,131 @@ class PipelineDefinition:
         if not self.recorded_writes and not self.recorded_udfs:
             return ""
 
-        order, _ = self._build_dependency_graph()
-        statements = []
+        with self:
+            order, _ = self._build_dependency_graph()
+            statements = []
 
-        # 1. Add UDF definitions
-        for udf_ddl in self.recorded_udfs.values():
-            statements.append(udf_ddl + ";")
+            # 1. Add UDF definitions
+            for udf_ddl in self.recorded_udfs.values():
+                statements.append(udf_ddl + ";")
 
-        # 2. Add table creation statements
-        for table_name in order:
-            array_value, _ = self.recorded_writes[table_name]
-            # Compile to SQL using the session's executor
-            raw_sql = self.session._executor.to_sql(array_value, ordered=False)
-            statements.append(f"CREATE OR REPLACE TABLE `{table_name}` AS\n{raw_sql};")
+            # 2. Add table creation statements
+            for table_name in order:
+                array_value, _ = self.recorded_writes[table_name]
+                # Compile to SQL using the session's executor
+                raw_sql = self.session._executor.to_sql(array_value, ordered=False)
+                statements.append(f"CREATE OR REPLACE TABLE `{table_name}` AS\n{raw_sql};")
 
-        sql = "\n\n".join(statements)
+            sql = "\n\n".join(statements)
 
-        # Rewrite Ibis-generated parameter names to user-defined names
-        for ibis_name, user_name in self.recorded_params.items():
-            sql = re.sub(rf"(?<!\w)@{ibis_name}(?!\w)", f"@{user_name}", sql)
+            # Rewrite Ibis-generated parameter names to user-defined names
+            for ibis_name, user_name in self.recorded_params.items():
+                sql = re.sub(rf"(?<!\w)@{ibis_name}(?!\w)", f"@{user_name}", sql)
 
-        return sql
+            return sql
 
     def export_dataform(self, target_dir: str):
         """Exports the recorded pipeline as a local Dataform project in the target directory."""
         if not self.recorded_writes and not self.recorded_udfs:
             return
 
-        order, dependencies = self._build_dependency_graph()
+        with self:
+            order, dependencies = self._build_dependency_graph()
 
-        # Ensure the definitions directory exists
-        defs_dir = os.path.join(target_dir, "definitions")
-        os.makedirs(defs_dir, exist_ok=True)
+            # Ensure the definitions directory exists
+            defs_dir = os.path.join(target_dir, "definitions")
+            os.makedirs(defs_dir, exist_ok=True)
 
-        # 1. Export UDFs as Dataform operations
-        udf_mapping = {}  # Maps routine name -> udf_id
-        for routine_name, udf_ddl in self.recorded_udfs.items():
-            parts = routine_name.split(".")
-            udf_id = parts[-1]
-            udf_mapping[routine_name] = udf_id
+            # 1. Export UDFs as Dataform operations
+            udf_mapping = {}  # Maps routine name -> udf_id
+            for routine_name, udf_ddl in self.recorded_udfs.items():
+                parts = routine_name.split(".")
+                udf_id = parts[-1]
+                udf_mapping[routine_name] = udf_id
 
-            config_block = f'config {{\n  type: "operations",\n  name: "{udf_id}"\n}}\n'
-            file_path = os.path.join(defs_dir, f"{udf_id}.sqlx")
-            with open(file_path, "w", encoding="utf-8") as f:
-                f.write(config_block)
-                f.write("\n")
-                f.write(udf_ddl)
-                f.write("\n")
+                config_block = f'config {{\n  type: "operations",\n  name: "{udf_id}"\n}}\n'
+                file_path = os.path.join(defs_dir, f"{udf_id}.sqlx")
+                with open(file_path, "w", encoding="utf-8") as f:
+                    f.write(config_block)
+                    f.write("\n")
+                    f.write(udf_ddl)
+                    f.write("\n")
 
-        # 2. Export Tables
-        for table_name in order:
-            array_value, dest_spec = self.recorded_writes[table_name]
+            # 2. Export Tables
+            for table_name in order:
+                array_value, dest_spec = self.recorded_writes[table_name]
 
-            # Parse the table name
-            parts = table_name.split(".")
-            if len(parts) == 3:
-                project_id, dataset_id, table_id = parts[0], parts[1], parts[2]
-            elif len(parts) == 2:
-                project_id = self.session.bqclient.project
-                dataset_id, table_id = parts[0], parts[1]
-            else:
-                raise ValueError(f"Invalid recorded table name: {table_name}")
+                # Parse the table name
+                parts = table_name.split(".")
+                if len(parts) == 3:
+                    project_id, dataset_id, table_id = parts[0], parts[1], parts[2]
+                elif len(parts) == 2:
+                    project_id = self.session.bqclient.project
+                    dataset_id, table_id = parts[0], parts[1]
+                else:
+                    raise ValueError(f"Invalid recorded table name: {table_name}")
 
-            # Compile to SQL
-            sql = self.session._executor.to_sql(array_value, ordered=False)
+                # Compile to SQL
+                sql = self.session._executor.to_sql(array_value, ordered=False)
 
-            # Rewrite Ibis-generated parameter names to Dataform variables
-            for ibis_name, user_name in self.recorded_params.items():
-                sql = re.sub(
-                    rf"(?<!\w)@{ibis_name}(?!\w)",
-                    f"${{dataform.projectConfig.vars.{user_name}}}",
-                    sql,
-                )
+                # Rewrite Ibis-generated parameter names to Dataform variables
+                for ibis_name, user_name in self.recorded_params.items():
+                    sql = re.sub(
+                        rf"(?<!\w)@{ibis_name}(?!\w)",
+                        f"${{dataform.projectConfig.vars.{user_name}}}",
+                        sql,
+                    )
 
-            # Rewrite query parameters to Dataform project variables (e.g. from SQLGlot)
-            sql = _replace_parameter_refs(sql)
+                # Rewrite query parameters to Dataform project variables (e.g. from SQLGlot)
+                sql = _replace_parameter_refs(sql)
 
-            # Identify table dependencies and rewrite their references to ${ref("...")}
-            dep_table_ids = set()
-            for dep_table in dependencies[table_name]:
-                dep_parts = dep_table.split(".")
-                dep_project, dep_dataset, dep_table_id = (
-                    dep_parts[0],
-                    dep_parts[1],
-                    dep_parts[2],
-                )
+                # Identify table dependencies and rewrite their references to ${ref("...")}
+                dep_table_ids = set()
+                for dep_table in dependencies[table_name]:
+                    dep_parts = dep_table.split(".")
+                    dep_project, dep_dataset, dep_table_id = (
+                        dep_parts[0],
+                        dep_parts[1],
+                        dep_parts[2],
+                    )
 
-                # Replace the raw table reference in the SQL with the Dataform ref
-                sql = _replace_table_ref(sql, dep_project, dep_dataset, dep_table_id)
-                dep_table_ids.add(dep_table_id)
+                    # Replace the raw table reference in the SQL with the Dataform ref
+                    sql = _replace_table_ref(sql, dep_project, dep_dataset, dep_table_id)
+                    dep_table_ids.add(dep_table_id)
 
-            # Identify UDF dependencies by scanning the SQL for UDF routine names or IDs
-            for routine_name, udf_id in udf_mapping.items():
-                if routine_name.lower() in sql.lower() or udf_id.lower() in sql.lower():
-                    dep_table_ids.add(udf_id)
+                # Identify UDF dependencies by scanning the SQL for UDF routine names or IDs
+                for routine_name, udf_id in udf_mapping.items():
+                    if routine_name.lower() in sql.lower() or udf_id.lower() in sql.lower():
+                        dep_table_ids.add(udf_id)
 
-            # Generate the Dataform config block
-            df_type = "table"
-            if dest_spec.if_exists == "append":
-                df_type = "incremental"
-            elif dest_spec.if_exists == "fail":
+                # Generate the Dataform config block
                 df_type = "table"
+                if dest_spec.if_exists == "append":
+                    df_type = "incremental"
+                elif dest_spec.if_exists == "fail":
+                    df_type = "table"
 
-            config_parts = [f'  type: "{df_type}",', f'  name: "{table_id}",']
+                config_parts = [f'  type: "{df_type}",', f'  name: "{table_id}",']
 
-            if dep_table_ids:
-                deps_str = ", ".join(f'"{d}"' for d in sorted(list(dep_table_ids)))
-                config_parts.append(f"  dependencies: [{deps_str}],")
+                if dep_table_ids:
+                    deps_str = ", ".join(f'"{d}"' for d in sorted(list(dep_table_ids)))
+                    config_parts.append(f"  dependencies: [{deps_str}],")
 
-            if dest_spec.cluster_cols:
-                cols_str = ", ".join(f'"{c}"' for c in dest_spec.cluster_cols)
-                config_parts.append(
-                    f"  bigquery: {{\n    clustering: [{cols_str}]\n  }},"
-                )
+                if dest_spec.cluster_cols:
+                    cols_str = ", ".join(f'"{c}"' for c in dest_spec.cluster_cols)
+                    config_parts.append(
+                        f"  bigquery: {{\n    clustering: [{cols_str}]\n  }},"
+                    )
 
-            config_block = "config {\n" + "\n".join(config_parts) + "\n}\n"
+                config_block = "config {\n" + "\n".join(config_parts) + "\n}\n"
 
-            # Write the .sqlx file
-            file_path = os.path.join(defs_dir, f"{table_id}.sqlx")
-            with open(file_path, "w", encoding="utf-8") as f:
-                f.write(config_block)
-                f.write("\n")
-                f.write(sql)
-                f.write("\n")
+                # Write the .sqlx file
+                file_path = os.path.join(defs_dir, f"{table_id}.sqlx")
+                with open(file_path, "w", encoding="utf-8") as f:
+                    f.write(config_block)
+                    f.write("\n")
+                    f.write(sql)
+                    f.write("\n")
 
 
 def _find_read_tables(node: bigframes.core.nodes.BigFrameNode) -> Set[str]:
