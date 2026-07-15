@@ -5875,8 +5875,8 @@ class TestRowIterator(unittest.TestCase):
     def test_to_dataframe_delegated_updates_user_agent(self):
         import sys
 
-        db_dtypes = pytest.importorskip("db_dtypes")
-        pandas = pytest.importorskip("pandas")
+        pytest.importorskip("db_dtypes")
+        pytest.importorskip("pandas")
         mock_pandas_gbq = mock.Mock()
         mock_pandas_gbq.pandas.from_row_iterator.return_value = mock.sentinel.dataframe
         mock_pandas_gbq.__version__ = "1.0.0"
@@ -5904,6 +5904,7 @@ class TestRowIterator(unittest.TestCase):
                     df = row_iterator.to_dataframe(
                         progress_bar_type="tqdm", timeout=5.0
                     )
+                    self.assertEqual(df, mock.sentinel.dataframe)
                     self.assertEqual(
                         mock_client_info.user_agent,
                         "gl-python/3.10.0 pandas-gbq/1.0.0",
@@ -5912,8 +5913,8 @@ class TestRowIterator(unittest.TestCase):
     def test_to_dataframe_delegated_does_not_duplicate_user_agent(self):
         import sys
 
-        db_dtypes = pytest.importorskip("db_dtypes")
-        pandas = pytest.importorskip("pandas")
+        pytest.importorskip("db_dtypes")
+        pytest.importorskip("pandas")
         mock_pandas_gbq = mock.Mock()
         mock_pandas_gbq.pandas.from_row_iterator.return_value = mock.sentinel.dataframe
         mock_pandas_gbq.__version__ = "1.0.0"
@@ -5941,6 +5942,7 @@ class TestRowIterator(unittest.TestCase):
                     df = row_iterator.to_dataframe(
                         progress_bar_type="tqdm", timeout=5.0
                     )
+                    self.assertEqual(df, mock.sentinel.dataframe)
                     self.assertEqual(
                         mock_client_info.user_agent,
                         "gl-python/3.10.0 pandas-gbq/1.0.0",
@@ -5949,8 +5951,8 @@ class TestRowIterator(unittest.TestCase):
     def test_to_dataframe_delegated_when_client_info_is_none(self):
         import sys
 
-        db_dtypes = pytest.importorskip("db_dtypes")
-        pandas = pytest.importorskip("pandas")
+        pytest.importorskip("db_dtypes")
+        pytest.importorskip("pandas")
         mock_pandas_gbq = mock.Mock()
         mock_pandas_gbq.pandas.from_row_iterator.return_value = mock.sentinel.dataframe
         mock_pandas_gbq.__version__ = "1.0.0"
@@ -5980,8 +5982,8 @@ class TestRowIterator(unittest.TestCase):
     def test_to_dataframe_delegated_when_user_agent_is_none(self):
         import sys
 
-        db_dtypes = pytest.importorskip("db_dtypes")
-        pandas = pytest.importorskip("pandas")
+        pytest.importorskip("db_dtypes")
+        pytest.importorskip("pandas")
         mock_pandas_gbq = mock.Mock()
         mock_pandas_gbq.pandas.from_row_iterator.return_value = mock.sentinel.dataframe
         mock_pandas_gbq.__version__ = "1.0.0"
@@ -6009,6 +6011,7 @@ class TestRowIterator(unittest.TestCase):
                     df = row_iterator.to_dataframe(
                         progress_bar_type="tqdm", timeout=5.0
                     )
+                    self.assertEqual(df, mock.sentinel.dataframe)
                     self.assertEqual(
                         mock_client_info.user_agent,
                         "pandas-gbq/1.0.0",
