@@ -30,7 +30,7 @@ except ModuleNotFoundError:
 # For more information, see:
 # https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
 # Older Python versions safely ignore this variable.
-# NOTE: We statically define all modules here (including async ones) to ensure 
+# NOTE: We statically define all modules here (including async ones) to ensure
 # static analysis tools (mypy, pyright, Ruff) can easily parse them. If async
 # support is not present, the imports are ignored, making their presence safe.
 __lazy_modules__: Set[str] = {
@@ -65,8 +65,8 @@ from google.api_core.operations_v1.transports.rest import (  # noqa: E402
 
 if _has_async_rest:
     try:
-        # On Python 3.15+, PEP 0810 lazy loading means these imports will succeed 
-        # instantly (returning a lazy proxy). Any actual ImportErrors (e.g., due to 
+        # On Python 3.15+, PEP 0810 lazy loading means these imports will succeed
+        # instantly (returning a lazy proxy). Any actual ImportErrors (e.g., due to
         # missing aiohttp/auth dependencies) are deferred until the proxies are accessed.
         from google.api_core.operations_v1.transports.rest_asyncio import (  # noqa: E402, F401
             AsyncOperationsRestTransport,
