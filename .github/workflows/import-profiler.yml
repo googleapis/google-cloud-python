@@ -26,14 +26,13 @@ jobs:
       with:
         python-version: "3.15"
         allow-prereleases: true
-    - name: Upgrade pip, setuptools, and wheel
-      run: |
-        python -m pip install --upgrade setuptools pip wheel
     - name: Run import profiler
       env:
         BUILD_TYPE: presubmit
         TARGET_BRANCH: ${{ github.base_ref || github.event.merge_group.base_ref }}
         TEST_TYPE: import_profile
         PY_VERSION: "3.15"
+        # Workaround: Allows libcst to compile on Python 3.15+ while PyO3 catches up
+        PYO3_USE_ABI3_FORWARD_COMPATIBILITY: "1"
       run: |
         ci/run_conditional_tests.sh

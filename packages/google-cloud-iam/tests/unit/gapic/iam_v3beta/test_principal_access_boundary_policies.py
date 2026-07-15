@@ -3351,6 +3351,9 @@ def test_list_principal_access_boundary_policies_pager(transport_name: str = "gr
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -3449,6 +3452,8 @@ async def test_list_principal_access_boundary_policies_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -3928,6 +3933,9 @@ def test_search_principal_access_boundary_policy_bindings_pager(
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -4027,6 +4035,8 @@ async def test_search_principal_access_boundary_policy_bindings_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -5213,6 +5223,9 @@ def test_list_principal_access_boundary_policies_rest_pager(transport: str = "re
 
         pager = client.list_principal_access_boundary_policies(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -5504,6 +5517,9 @@ def test_search_principal_access_boundary_policy_bindings_rest_pager(
         pager = client.search_principal_access_boundary_policy_bindings(
             request=sample_request
         )
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6

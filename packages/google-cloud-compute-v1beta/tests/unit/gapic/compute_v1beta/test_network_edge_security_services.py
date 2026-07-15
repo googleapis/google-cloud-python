@@ -1503,6 +1503,9 @@ def test_aggregated_list_rest_pager(transport: str = "rest"):
 
         pager = client.aggregated_list(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         assert isinstance(pager.get("a"), compute.NetworkEdgeSecurityServicesScopedList)
         assert pager.get("h") is None
 
