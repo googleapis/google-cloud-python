@@ -454,6 +454,54 @@ if polars_installed:
             else:
                 return pl.any_horizontal(*(input.str.ends_with(pat) for pat in op.pat))
 
+        @compile_op.register(string_ops.CapitalizeOp)
+        def _(self, op: ops.ScalarOp, input: pl.Expr) -> pl.Expr:
+            assert isinstance(op, string_ops.CapitalizeOp)
+            return (
+                input.str.slice(0, 1).str.to_uppercase()
+                + input.str.slice(1).str.to_lowercase()
+            )
+
+        @compile_op.register(string_ops.IsAlnumOp)
+        def _(self, op: ops.ScalarOp, input: pl.Expr) -> pl.Expr:
+            assert isinstance(op, string_ops.IsAlnumOp)
+            return input.str.contains(r"^[a-zA-Z0-9]+$")
+
+        @compile_op.register(string_ops.IsAlphaOp)
+        def _(self, op: ops.ScalarOp, input: pl.Expr) -> pl.Expr:
+            assert isinstance(op, string_ops.IsAlphaOp)
+            return input.str.contains(r"^[a-zA-Z]+$")
+
+        @compile_op.register(string_ops.IsDigitOp)
+        def _(self, op: ops.ScalarOp, input: pl.Expr) -> pl.Expr:
+            assert isinstance(op, string_ops.IsDigitOp)
+            return input.str.contains(r"^[0-9]+$")
+
+        @compile_op.register(string_ops.IsSpaceOp)
+        def _(self, op: ops.ScalarOp, input: pl.Expr) -> pl.Expr:
+            assert isinstance(op, string_ops.IsSpaceOp)
+            return input.str.contains(r"^\s+$")
+
+        @compile_op.register(string_ops.IsDecimalOp)
+        def _(self, op: ops.ScalarOp, input: pl.Expr) -> pl.Expr:
+            assert isinstance(op, string_ops.IsDecimalOp)
+            return input.str.contains(r"^[0-9]+$")
+
+        @compile_op.register(string_ops.IsNumericOp)
+        def _(self, op: ops.ScalarOp, input: pl.Expr) -> pl.Expr:
+            assert isinstance(op, string_ops.IsNumericOp)
+            return input.str.contains(r"^[0-9]+$")
+
+        @compile_op.register(string_ops.IsLowerOp)
+        def _(self, op: ops.ScalarOp, input: pl.Expr) -> pl.Expr:
+            assert isinstance(op, string_ops.IsLowerOp)
+            return input.str.contains(r"[a-z]") & ~input.str.contains(r"[A-Z]")
+
+        @compile_op.register(string_ops.IsUpperOp)
+        def _(self, op: ops.ScalarOp, input: pl.Expr) -> pl.Expr:
+            assert isinstance(op, string_ops.IsUpperOp)
+            return input.str.contains(r"[A-Z]") & ~input.str.contains(r"[a-z]")
+
         @compile_op.register(freq_ops.FloorDtOp)
         def _(self, op: ops.ScalarOp, input: pl.Expr) -> pl.Expr:
             assert isinstance(op, freq_ops.FloorDtOp)

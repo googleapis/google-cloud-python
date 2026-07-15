@@ -547,6 +547,13 @@ def resolve_call(
             if fn in _CALLABLE_TO_OP:
                 op = _CALLABLE_TO_OP[fn]
                 return OpExpression(op, call.inputs)
+        elif isinstance(callable.input, PyObject) and isinstance(
+            callable.input.value, type
+        ):
+            fn = getattr(callable.input.value, attr, None)
+            if fn in python_op_maps.PYTHON_TO_BIGFRAMES:
+                op = python_op_maps.PYTHON_TO_BIGFRAMES[fn]
+                return OpExpression(op, call.inputs)
         else:
             # Method call on an expression (e.g. df.col.sum() or s.mean())
             try:
