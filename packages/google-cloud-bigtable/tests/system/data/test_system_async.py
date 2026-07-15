@@ -114,13 +114,27 @@ class TempRowBuilderAsync:
             # under 4MB and minimizes transient network timeouts on live connections.
             chunk_size = 5000
             rows_list = list(self.rows)
+
+            # Check if the test target is an Authorized View
+            is_authorized_view = "authorized_view_name" in self.target._request_path
+
+            if is_authorized_view:
+                # For Authorized Views, we cannot use delete_from_row because it attempts
+                # to delete families outside the view's scope. We must delete explicitly
+                # from the allowed families we wrote to.
+                mutations = [
+                    {"delete_from_family": {"family_name": TEST_FAMILY}},
+                    {"delete_from_family": {"family_name": TEST_AGGREGATE_FAMILY}},
+                ]
+            else:
+                mutations = [{"delete_from_row": {}}]
+
             for i in range(0, len(rows_list), chunk_size):
                 chunk = rows_list[i : i + chunk_size]
                 request = {
                     **self.target._request_path,
                     "entries": [
-                        {"row_key": row, "mutations": [{"delete_from_row": {}}]}
-                        for row in chunk
+                        {"row_key": row, "mutations": mutations} for row in chunk
                     ],
                 }
                 # Await and consume the gRPC stream to guarantee execution

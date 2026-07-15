@@ -96,13 +96,20 @@ class TempRowBuilder:
         if self.rows:
             chunk_size = 5000
             rows_list = list(self.rows)
+            is_authorized_view = "authorized_view_name" in self.target._request_path
+            if is_authorized_view:
+                mutations = [
+                    {"delete_from_family": {"family_name": TEST_FAMILY}},
+                    {"delete_from_family": {"family_name": TEST_AGGREGATE_FAMILY}},
+                ]
+            else:
+                mutations = [{"delete_from_row": {}}]
             for i in range(0, len(rows_list), chunk_size):
                 chunk = rows_list[i : i + chunk_size]
                 request = {
                     **self.target._request_path,
                     "entries": [
-                        {"row_key": row, "mutations": [{"delete_from_row": {}}]}
-                        for row in chunk
+                        {"row_key": row, "mutations": mutations} for row in chunk
                     ],
                 }
                 stream = self.target.client._gapic_client.mutate_rows(request)
