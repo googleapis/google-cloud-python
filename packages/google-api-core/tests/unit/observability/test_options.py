@@ -91,83 +91,98 @@ def test_set_test_env_override_clear_specific():
     assert _get_env_bool("TEST_B") is True
 
 
-def test_get_env_bool_with_dev_fallback_other_prefix(monkeypatch):
-    """Verify that environment variables without the 'GOOGLE_CLOUD_' prefix fall back directly.
 
-    This is important to ensure that generic or non-GCP environment variables
-    are handled correctly by the fallback logic without triggering GCP-specific
-    replacement logic.
-    """
-    monkeypatch.setenv("OTHER_PREFIX_VAR", "true")
-    assert options._get_env_bool_with_dev_fallback("OTHER_PREFIX_VAR") is True
+
+def test_resolve_feature_flags_ga_enabled_via_env():
+    """Verify that a GA feature is enabled if its environment variable is True."""
+    # Setup: We pass a GA environment variable set to True
+    set_test_env_override("GOOGLE_SDK_PYTHON_TRACING_ENABLED", True)
+
+    # Action
+    result = options.resolve_feature_flags(
+        env_var="GOOGLE_SDK_PYTHON_TRACING_ENABLED",
+        provider_key="tracer_provider",
+        client_options=None
+    )
+
+    # Assertion
+    assert result is True
+
+
+@pytest.mark.parametrize("gate_value", [None, False])
+def test_resolve_feature_flags_exp_blocked_with_provider_fails_fast(gate_value):
+    """Verify that passing a provider to an experimental feature without the gate raises ValueError."""
+    # Setup: Experimental env var is set to gate_value (None means not set)
+    set_test_env_override("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", gate_value)
+    client_options = {"tracer_provider": object()}
+
+    # Action & Assertion
+    with pytest.raises(ValueError, match="Experimental feature"):
+        options.resolve_feature_flags(
+            env_var="GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED",
+            provider_key="tracer_provider",
+            client_options=client_options
+        )
+
+
+def test_resolve_feature_flags_exp_enabled_with_provider():
+    """Verify that experimental feature is enabled if gate is True, even with provider."""
+    set_test_env_override("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", True)
+    client_options = {"tracer_provider": object()}
+
+    result = options.resolve_feature_flags(
+        env_var="GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED",
+        provider_key="tracer_provider",
+        client_options=client_options
+    )
+    assert result is True
+
+
+def test_resolve_feature_flags_ga_enabled_via_provider():
+    """Verify that a GA feature is enabled if a provider is passed, bypassing env var."""
+    # Env var is False, but provider is present
+    set_test_env_override("GOOGLE_SDK_PYTHON_TRACING_ENABLED", False)
+    client_options = {"tracer_provider": object()}
+
+    result = options.resolve_feature_flags(
+        env_var="GOOGLE_SDK_PYTHON_TRACING_ENABLED",
+        provider_key="tracer_provider",
+        client_options=client_options
+    )
+    assert result is True
+
+
+@pytest.mark.parametrize("env_val", [None, False], ids=["env_not_set", "env_explicit_false"])
+def test_resolve_feature_flags_ga_fallback_to_false(env_val):
+    """Verify that a GA feature returns False if no flags are present."""
+    set_test_env_override("GOOGLE_SDK_PYTHON_TRACING_ENABLED", env_val)
+    result = options.resolve_feature_flags(
+        env_var="GOOGLE_SDK_PYTHON_TRACING_ENABLED",
+        provider_key="tracer_provider",
+        client_options=None
+    )
+    assert result is False
+
+
+class _MockOptions:
+    def __init__(self):
+        self.other_option = "value"
 
 
 @pytest.mark.parametrize(
-    "feature_name, env_vars, client_options, default_val, expected",
+    "client_options",
     [
-        # Default fallback tests
-        ("tracing", {}, None, False, False),
-        # Default=True is ignored if blocked
-        ("tracing", {}, None, True, False),
-        # Global GA env var is ignored if experimental flag is missing
-        ("tracing", {"GOOGLE_SDK_PYTHON_TRACING_ENABLED": True}, None, False, False),
-        ("tracing", {"GOOGLE_SDK_PYTHON_TRACING_ENABLED": False}, None, True, False),
-        # Experimental fallback
-        (
-            "tracing",
-            {"GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED": True},
-            None,
-            False,
-            True,
-        ),
-        (
-            "tracing",
-            {"GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED": False},
-            None,
-            True,
-            False,
-        ),
-        # Programmatic boolean flags are NOT supported in client_options
-        # (should default/fallback to False)
-        (
-            "tracing",
-            {"GOOGLE_SDK_PYTHON_TRACING_ENABLED": False},
-            {"enable_metrics": True},
-            False,
-            False,
-        ),
-        (
-            "tracing",
-            {"GOOGLE_SDK_PYTHON_TRACING_ENABLED": False},
-            {"enable_tracing": True},
-            False,
-            False,
-        ),
+        {"other_option": "value"},
+        _MockOptions(),
     ],
+    ids=["dict_without_key", "object_without_key"]
 )
-def test_resolve_feature_flags(
-    feature_name, env_vars, client_options, default_val, expected
-):
-    # Setup environment variables using our test overrides
-    for k, v in env_vars.items():
-        set_test_env_override(k, v)
-
+def test_resolve_feature_flags_options_without_key(client_options):
+    """Verify behavior when client_options is present but missing the provider key."""
+    # GA Path: should fall through to env var / fallback
     result = options.resolve_feature_flags(
-        feature_name, client_options=client_options, default=default_val
+        env_var="GOOGLE_SDK_PYTHON_TRACING_ENABLED",
+        provider_key="tracer_provider",
+        client_options=client_options
     )
-    assert result is expected
-
-
-def test_resolve_feature_flags_invalid_signal():
-    with pytest.raises(ValueError, match="Only 'tracing' is supported"):
-        options.resolve_feature_flags("metrics")
-
-
-def test_resolve_feature_flags_experimental_gate_blocks_provider():
-    """Verify that programmatic provider is blocked for experimental features without env var."""
-    # Assume 'tracing' is experimental for this test.
-    # We pass tracer_provider but do NOT set GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED
-    client_options = {"tracer_provider": object()}
-
-    with pytest.raises(ValueError, match="Experimental feature"):
-        options.resolve_feature_flags("tracing", client_options=client_options)
+    assert result is False
