@@ -35,6 +35,11 @@
                 "export_backup"
               ]
             },
+            "FinishMigration": {
+              "methods": [
+                "finish_migration"
+              ]
+            },
             "GetBackup": {
               "methods": [
                 "get_backup"
@@ -78,6 +83,11 @@
             "RescheduleMaintenance": {
               "methods": [
                 "reschedule_maintenance"
+              ]
+            },
+            "StartMigration": {
+              "methods": [
+                "start_migration"
               ]
             },
             "UpdateInstance": {
@@ -115,6 +125,11 @@
                 "export_backup"
               ]
             },
+            "FinishMigration": {
+              "methods": [
+                "finish_migration"
+              ]
+            },
             "GetBackup": {
               "methods": [
                 "get_backup"
@@ -158,6 +173,11 @@
             "RescheduleMaintenance": {
               "methods": [
                 "reschedule_maintenance"
+              ]
+            },
+            "StartMigration": {
+              "methods": [
+                "start_migration"
               ]
             },
             "UpdateInstance": {
@@ -195,6 +215,11 @@
                 "export_backup"
               ]
             },
+            "FinishMigration": {
+              "methods": [
+                "finish_migration"
+              ]
+            },
             "GetBackup": {
               "methods": [
                 "get_backup"
@@ -238,6 +263,11 @@
             "RescheduleMaintenance": {
               "methods": [
                 "reschedule_maintenance"
+              ]
+            },
+            "StartMigration": {
+              "methods": [
+                "start_migration"
               ]
             },
             "UpdateInstance": {

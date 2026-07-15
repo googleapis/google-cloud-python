@@ -1644,6 +1644,9 @@ def test_list_mobile_carriers_rest_pager(transport: str = "rest"):
 
         pager = client.list_mobile_carriers(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(

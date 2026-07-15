@@ -154,7 +154,7 @@ Code Volume (Deterministic):
 {_format_stats("Physical RSS RAM (MB)", rss_memories, p50_rss, p90_rss, p99_rss, ".4f")}"""
     print(final_output.strip())
 
-def run_master(iterations, target_module, cpu=0, csv_path=None, clear_cache=True):
+def run_master(iterations, target_module, cpu=0, csv_path=None, clear_cache=True, fail_threshold=None, diff_baseline=None, diff_threshold=None):
     """Orchestrates the benchmark."""
     if iterations < 1:
         raise ValueError("Number of iterations must be at least 1.")
@@ -191,6 +191,7 @@ def run_master(iterations, target_module, cpu=0, csv_path=None, clear_cache=True
             times.append(data["time_ms"])
             memories.append(data["peak_ram_mb"])
             rss_memories.append(data["rss_ram_mb"])
+            print(f"Iteration {i+1}/{iterations} completed in {data['time_ms']:.2f} ms")
             if i > 0 and loaded_modules_val != data["loaded_modules"]:
                 print(f"WARNING: Non-deterministic import behavior! Iteration {i+1} loaded {data['loaded_modules']} modules (expected {loaded_modules_val}).", file=sys.stderr)
             if i > 0 and loaded_lines_val != data["loaded_lines"]:
@@ -207,6 +208,13 @@ def run_master(iterations, target_module, cpu=0, csv_path=None, clear_cache=True
             print(f"Error in worker process:\n{e.stderr}", file=sys.stderr)
             raise e
         
+    if iterations > 1:
+        times = times[1:]
+        memories = memories[1:]
+        rss_memories = rss_memories[1:]
+        iterations -= 1
+        print("Discarded the first iteration as a cache burn-in run.")
+
     # Write CSV if requested
     if csv_path:
         with open(csv_path, "w", newline="", encoding="utf-8") as f:
@@ -228,6 +236,68 @@ def run_master(iterations, target_module, cpu=0, csv_path=None, clear_cache=True
         memories, p50_mem, p90_mem, p99_mem,
         rss_memories, p50_rss, p90_rss, p99_rss
     )
+
+    exit_code = 0
+    final_messages = []
+
+    baseline_p50 = None
+    if diff_baseline:
+        if os.path.exists(diff_baseline):
+            baseline_times = []
+            with open(diff_baseline, "r", encoding="utf-8") as f:
+                reader = csv.reader(f)
+                next(reader) # skip header
+                for row in reader:
+                    baseline_times.append(float(row[1]))
+            if baseline_times:
+                baseline_p50, _, _ = _calculate_percentiles(baseline_times)
+            
+            if baseline_p50 is not None:
+                diff = p50_time - baseline_p50
+                
+                diff_msg = (
+                    f"--- Diff vs Baseline ---\n"
+                    f"Baseline Median: {baseline_p50:.2f} ms\n"
+                    f"Current Median:  {p50_time:.2f} ms\n"
+                    f"Difference:      {diff:+.2f} ms"
+                )
+                final_messages.append(diff_msg)
+                
+                relative_diff_threshold = 0.15 * baseline_p50
+                if diff > diff_threshold and diff > relative_diff_threshold:
+                    final_messages.append(
+                        f"FAILURE: Import time regression of {diff:.2f} ms exceeds both the absolute threshold ({diff_threshold} ms) "
+                        f"and the relative threshold ({relative_diff_threshold:.2f} ms, 15% of baseline Median)."
+                    )
+                    exit_code = 1
+                else:
+                    if diff > diff_threshold:
+                        final_messages.append(f"SUCCESS: Import time regression of {diff:.2f} ms exceeds absolute threshold ({diff_threshold} ms) but is within relative threshold ({relative_diff_threshold:.2f} ms, 15%).")
+                    else:
+                        final_messages.append("SUCCESS: Import time diff is within acceptable thresholds.")
+        else:
+            final_messages.append(f"WARNING: Baseline CSV {diff_baseline} not found. Skipping diff check.")
+
+    if fail_threshold is not None:
+        if p50_time > fail_threshold:
+            if baseline_p50 is not None and baseline_p50 > fail_threshold:
+                final_messages.append(f"WARNING: Median import time ({p50_time:.2f} ms) exceeds the absolute failure threshold ({fail_threshold} ms), but the baseline ({baseline_p50:.2f} ms) also exceeded it. Bypassing absolute backstop failure.")
+            else:
+                final_messages.append(f"FAILURE: Median import time ({p50_time:.2f} ms) exceeds the failure threshold ({fail_threshold} ms).")
+                exit_code = 1
+        else:
+            final_messages.append(f"SUCCESS: Median import time ({p50_time:.2f} ms) is within the failure threshold ({fail_threshold} ms).")
+
+    if final_messages:
+        print("\n" + "\n".join(final_messages))
+        
+    if exit_code == 0:
+        print("\nSession import_profiler was successful.")
+        sys.exit(0)
+    else:
+        print("\nSession import_profiler failed.")
+        sys.exit(1)
+
 
 def run_trace(target_module):
     """Generates importtime trace log and writes it to a file."""
@@ -307,8 +377,59 @@ if __name__ == "__main__":
             raise argparse.ArgumentTypeError(f"'{module_name}' is not a valid Python module identifier.")
         return module_name
 
+    def find_module_from_package(pkg):
+        import importlib.metadata
+        import importlib.util
+
+        # 1. Try to use importlib.metadata.files (works for standard installations from PyPI/wheels)
+        try:
+            files = importlib.metadata.files(pkg)
+            if files:
+                init_files = [str(f) for f in files if str(f).endswith('__init__.py') and '__pycache__' not in str(f) and not str(f).startswith('tests/')]
+                if init_files:
+                    from pathlib import Path
+                    shortest_init = min(init_files, key=lambda p: len(Path(p).parts))
+                    parts = Path(shortest_init).parent.parts
+                    mod = '.'.join(parts)
+                    if importlib.util.find_spec(mod):
+                        return mod
+        except Exception:
+            pass
+
+        # 2. Try setuptools.find_namespace_packages() in current directory (works for editable installs in source trees)
+        try:
+            import setuptools
+            import os
+            if os.path.exists('setup.py') or os.path.exists('pyproject.toml'):
+                pkgs = setuptools.find_namespace_packages(where='.')
+                for p in sorted(pkgs, key=len):
+                    if p in ("google", "google.cloud") or p.startswith("tests"):
+                        continue
+                    path = p.replace('.', os.sep)
+                    if os.path.isfile(os.path.join(path, '__init__.py')):
+                        if importlib.util.find_spec(p):
+                            return p
+        except Exception:
+            pass
+
+        # 3. Fallback to basic string manipulation heuristics
+        candidates = [
+            pkg.replace('-', '.'),
+            '.'.join(pkg.split('-')[:-1]) + '_' + pkg.split('-')[-1] if '-' in pkg else pkg,
+            pkg.replace('-', '_')
+        ]
+        for mod in candidates:
+            try:
+                if importlib.util.find_spec(mod):
+                    return mod
+            except Exception:
+                pass
+        return candidates[0]
+
     parser = argparse.ArgumentParser(description="Python SDK Import Profiler")
-    parser.add_argument("--module", type=validate_module_name, default="google.cloud.compute_v1", help="Target module to profile")
+    group = parser.add_mutually_exclusive_group(required=True)
+    group.add_argument("--module", type=validate_module_name, help="Target module to profile")
+    group.add_argument("--package", help="Target package name to profile (auto-detects module)")
     parser.add_argument("--iterations", type=int, default=50, help="Number of iterations")
     default_cpu = 0 if sys.platform.startswith("linux") else NO_CPU_PINNING
     parser.add_argument("--cpu", type=int, default=default_cpu, help="CPU core to pin to (or -1 for no pinning)")
@@ -317,20 +438,27 @@ if __name__ == "__main__":
     parser.add_argument("--cprofile", action="store_true", help="Run cProfile")
     parser.add_argument("--mprofile", action="store_true", help="Run tracemalloc memory snapshot")
     parser.add_argument("--keep-pycache", action="store_true", help="Preserve __pycache__ and allow bytecode execution (Default: False, script automatically sweeps __pycache__ for true cold-starts)")
+    parser.add_argument("--fail-threshold", type=float, help="Fail the profiling if the Median time exceeds this threshold (in ms).")
+    parser.add_argument("--diff-baseline", help="Path to a baseline CSV file to compare against.")
+    parser.add_argument("--diff-threshold", type=float, default=100.0, help="Fail if Median time exceeds baseline Median by this many ms.")
     parser.add_argument("--worker", action="store_true", help=argparse.SUPPRESS)
     
     args = parser.parse_args()
     
+    target_module = args.module
+    if args.package:
+        target_module = find_module_from_package(args.package)
+    
     if args.worker:
-        run_worker(args.module)
+        run_worker(target_module)
     elif args.trace:
         if not args.keep_pycache: clean_bytecode()
-        run_trace(args.module)
+        run_trace(target_module)
     elif args.cprofile:
         if not args.keep_pycache: clean_bytecode()
-        run_cprofile(args.module)
+        run_cprofile(target_module)
     elif args.mprofile:
         if not args.keep_pycache: clean_bytecode()
-        run_mprofile(args.module)
+        run_mprofile(target_module)
     else:
-        run_master(args.iterations, args.module, args.cpu, args.csv, not args.keep_pycache)
+        run_master(args.iterations, target_module, args.cpu, args.csv, not args.keep_pycache, args.fail_threshold, args.diff_baseline, args.diff_threshold)

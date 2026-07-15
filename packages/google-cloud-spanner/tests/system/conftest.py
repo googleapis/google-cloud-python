@@ -217,6 +217,8 @@ def shared_instance(
         instance = spanner_client.instance(shared_instance_id)
         instance.reload()
 
+    _helpers.cleanup_stale_databases(instance)
+
     yield instance
 
     if _helpers.CREATE_INSTANCE:

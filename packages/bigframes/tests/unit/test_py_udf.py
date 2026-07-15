@@ -18,9 +18,11 @@ from typing import Generator
 import numpy as np
 import pandas as pd
 import pandas.testing
+import pyarrow as pa
 import pytest
 
 import bigframes
+import bigframes.core.global_session
 import bigframes.pandas as bpd
 from bigframes.testing.utils import (
     assert_frame_equal,
@@ -37,7 +39,7 @@ DATA_DIR = CURRENT_DIR.parent / "data"
 
 @pytest.fixture(scope="module", autouse=True)
 def session() -> Generator[bigframes.Session, None, None]:
-    import bigframes.core.global_session
+    # import inline to allow polars importorskip to happen first
     from bigframes.testing import polars_session
 
     with bpd.option_context("experiments.enable_python_transpiler", True):
@@ -451,3 +453,119 @@ def test_local_series_apply_w_compare_chain(scalars_df_index, scalars_pandas_df_
     pd_result = scalars_pandas_df_index["int64_col"].dropna().apply(compare_chain)
 
     assert_series_equal(bf_result, pd_result, check_dtype=False)
+
+
+def test_dataframe_apply_axis_1_with_integer_subscript(
+    scalars_df_index, scalars_pandas_df_index
+):
+    columns = ["int64_too", "int64_col"]
+    bf_df = scalars_df_index[columns].rename(columns={"int64_too": 0, "int64_col": 1})
+    pd_df = scalars_pandas_df_index[columns].rename(
+        columns={"int64_too": 0, "int64_col": 1}
+    )
+
+    def foo(input):
+        return input[0] + input[1]
+
+    bf_result = bf_df.apply(foo, axis=1).to_pandas()
+    pd_result = pd_df.apply(foo, axis=1).astype("Int64")
+
+    assert_series_equal(bf_result, pd_result)
+
+
+def test_dataframe_apply_axis_1_with_invalid_subscript_raises(
+    scalars_df_index,
+):
+    columns = ["int64_too", "int64_col"]
+
+    def foo_invalid_label(input):
+        return input["non_existent_column"]
+
+    with pytest.raises(KeyError, match="non_existent_column"):
+        scalars_df_index[columns].apply(foo_invalid_label, axis=1)
+
+
+def test_series_map_with_struct_subscript(session):
+    # Struct setup
+    struct_pa_type = pa.struct([("str_field", pa.string()), ("int_field", pa.int64())])
+    pd_struct_series = pd.Series(
+        pa.array([{"str_field": "hello", "int_field": 1}], struct_pa_type),
+        dtype=pd.ArrowDtype(struct_pa_type),
+    )
+    bf_struct_series = bpd.Series(pd_struct_series, session=session)
+
+    # Struct subscripting in UDF
+    def get_struct_val(x):
+        return x["str_field"]
+
+    bf_struct_res = bf_struct_series.map(get_struct_val).to_pandas()
+    pd_struct_res: pd.Series = pd_struct_series.map(get_struct_val)
+    assert_series_equal(bf_struct_res, pd_struct_res, check_dtype=False)
+
+
+def test_series_map_with_array_subscript(session):
+    # Array setup
+    array_pa_type = pa.list_(pa.int64())
+    pd_array_series = pd.Series(
+        pa.array([[10, 20]], array_pa_type),
+        dtype=pd.ArrowDtype(array_pa_type),
+    )
+    bf_array_series = bpd.Series(pd_array_series, session=session)
+
+    # Array subscripting in UDF
+    def get_array_val(x):
+        return x[1]
+
+    bf_array_res = bf_array_series.map(get_array_val).to_pandas()
+    pd_array_res: pd.Series = pd_array_series.map(get_array_val)
+    assert_series_equal(bf_array_res, pd_array_res, check_dtype=False)
+
+
+def test_series_map_with_string_subscript(session):
+    # String setup
+    pd_string_series = pd.Series(["hello", "world"])
+    bf_string_series = bpd.Series(pd_string_series, session=session)
+
+    # String subscripting in UDF
+    def get_string_val(x):
+        return x[1]
+
+    bf_string_res = bf_string_series.map(get_string_val).to_pandas()
+    pd_string_res = pd_string_series.map(get_string_val)  # type: ignore
+    assert_series_equal(bf_string_res, pd_string_res, check_dtype=False)
+
+
+def test_dataframe_apply_axis_1_with_dynamic_subscript_raises(
+    scalars_df_index,
+):
+    columns = ["int64_too", "int64_col"]
+
+    def foo_dynamic(input):
+        return input[input[0]]
+
+    with pytest.raises(
+        NotImplementedError, match="Dynamic column lookup is not supported"
+    ):
+        scalars_df_index[columns].apply(foo_dynamic, axis=1)
+
+
+def test_dataframe_apply_axis_1_with_dynamic_array_subscript(session):
+    array_pa_type = pa.list_(pa.int64())
+    pd_df = pd.DataFrame(
+        {
+            "array_col": pd.Series(
+                pa.array([[10, 20], [30, 40, 50], [60]], array_pa_type),
+                dtype=pd.ArrowDtype(array_pa_type),
+            ),
+            "index_col": pd.Series([1, 2, 0], dtype="Int64"),
+        }
+    )
+    bf_df = bpd.DataFrame(pd_df, session=session)
+
+    def foo(row):
+        return row["array_col"][row["index_col"]]
+
+    bf_result = bf_df.apply(foo, axis=1).to_pandas()
+    pd_result = pd_df.apply(foo, axis=1).astype("Int64")
+
+    assert_series_equal(bf_result, pd_result)

@@ -231,6 +231,16 @@ class SecretManagerServiceTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.enable_managed_rotation: gapic_v1.method.wrap_method(
+                self.enable_managed_rotation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.rotate_secret: gapic_v1.method.wrap_method(
+                self.rotate_secret,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_location: gapic_v1.method.wrap_method(
                 self.get_location,
                 default_timeout=None,
@@ -392,6 +402,24 @@ class SecretManagerServiceTransport(abc.ABC):
             iam_policy_pb2.TestIamPermissionsResponse,
             Awaitable[iam_policy_pb2.TestIamPermissionsResponse],
         ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def enable_managed_rotation(
+        self,
+    ) -> Callable[
+        [service.EnableManagedRotationRequest],
+        Union[resources.SecretVersion, Awaitable[resources.SecretVersion]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def rotate_secret(
+        self,
+    ) -> Callable[
+        [service.RotateSecretRequest],
+        Union[resources.SecretVersion, Awaitable[resources.SecretVersion]],
     ]:
         raise NotImplementedError()
 

@@ -1700,6 +1700,9 @@ def test_list_custom_targeting_values_rest_pager(transport: str = "rest"):
 
         pager = client.list_custom_targeting_values(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(

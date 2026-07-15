@@ -31,6 +31,7 @@ _BINARY_OP_MAP = {
     "//": operator.floordiv,
     "%": operator.mod,
     "**": operator.pow,
+    "[]": operator.getitem,
 }
 
 _COMPARE_OP_MAP = {
@@ -508,6 +509,18 @@ def _compile_bytecode_to_py_expr(func: Callable) -> expression.Expression:
                         )
                     )
 
+                case "BINARY_SUBSCR":
+                    if len(stack) < 2:
+                        raise ValueError("Stack has < 2 elements")
+                    key = stack.pop()
+                    container = stack.pop()
+                    stack.append(
+                        py_exprs.Call(
+                            py_exprs.PyObject(operator.getitem),
+                            (container, key),
+                        )
+                    )
+
                 case name if name in _OLD_BINARY_OP_MAP:
                     if len(stack) < 2:
                         raise ValueError("Stack has < 2 elements")
@@ -575,17 +588,28 @@ def _compile_bytecode_to_py_expr(func: Callable) -> expression.Expression:
                     if len(stack) < num_args:
                         raise ValueError(f"Stack has fewer than {num_args} elements")
                     args = [stack.pop() for _ in range(num_args)][::-1]
-                    if len(stack) >= 2 and stack[-2] == _NULL:
-                        stack[-1], stack[-2] = stack[-2], stack[-1]
-                    if stack and stack[-1] == _NULL:
-                        stack.pop()
-                    elif (
-                        stack
-                        and stack[-1] != _NULL
-                        and isinstance(stack[-1], expression.Expression)
-                    ):
-                        self_arg = stack.pop()
-                        args = [self_arg] + args
+
+                    is_method_call = False
+                    if opname == "CALL" or opname == "CALL_METHOD":
+                        if len(stack) >= 2 and stack[-2] == _NULL:
+                            stack[-1], stack[-2] = stack[-2], stack[-1]
+                        if stack and stack[-1] == _NULL:
+                            stack.pop()
+                            is_method_call = False
+                        else:
+                            is_method_call = True
+                    elif opname == "CALL_FUNCTION":
+                        is_method_call = False
+
+                    if is_method_call:
+                        if (
+                            stack
+                            and stack[-1] != _NULL
+                            and isinstance(stack[-1], expression.Expression)
+                        ):
+                            self_arg = stack.pop()
+                            args = [self_arg] + args
+
                     if not stack:
                         raise ValueError("Stack is empty")
                     callable_expr = stack.pop()

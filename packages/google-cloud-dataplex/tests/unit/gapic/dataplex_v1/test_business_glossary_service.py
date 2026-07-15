@@ -3153,6 +3153,9 @@ def test_list_glossaries_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, business_glossary.Glossary) for i in results)
@@ -3241,6 +3244,8 @@ async def test_list_glossaries_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -5146,6 +5151,9 @@ def test_list_glossary_categories_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, business_glossary.GlossaryCategory) for i in results)
@@ -5238,6 +5246,8 @@ async def test_list_glossary_categories_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -7132,6 +7142,9 @@ def test_list_glossary_terms_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, business_glossary.GlossaryTerm) for i in results)
@@ -7224,6 +7237,8 @@ async def test_list_glossary_terms_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -8302,6 +8317,9 @@ def test_list_glossaries_rest_pager(transport: str = "rest"):
 
         pager = client.list_glossaries(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, business_glossary.Glossary) for i in results)
@@ -9348,6 +9366,9 @@ def test_list_glossary_categories_rest_pager(transport: str = "rest"):
 
         pager = client.list_glossary_categories(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, business_glossary.GlossaryCategory) for i in results)
@@ -10383,6 +10404,9 @@ def test_list_glossary_terms_rest_pager(transport: str = "rest"):
         }
 
         pager = client.list_glossary_terms(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6

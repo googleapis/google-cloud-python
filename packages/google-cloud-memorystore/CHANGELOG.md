@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-memorystore/#history
 
+## [0.5.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-memorystore-v0.5.1...google-cloud-memorystore-v0.5.2) (2026-07-13)
+
+
+### Features
+
+* update googleapis and regenerate ([#17678](https://github.com/googleapis/google-cloud-python/issues/17678)) ([670917c](https://github.com/googleapis/google-cloud-python/commit/670917c9cff5b93983bb75790170716e917b72bb))
+
 ## [0.5.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-memorystore-v0.5.0...google-cloud-memorystore-v0.5.1) (2026-06-22)
 
 

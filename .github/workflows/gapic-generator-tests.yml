@@ -5,13 +5,8 @@ name: Gapic Generator Specialized Tests
 
 on:
   pull_request:
-    paths:
-      - 'packages/gapic-generator/**'
-      - '.github/workflows/gapic-generator-tests.yml'
   push:
     branches: [main]
-    paths:
-      - 'packages/gapic-generator/**'
 
 concurrency:
   group: gapic-gen-${{ github.head_ref || github.run_id }}
@@ -30,11 +25,8 @@ env:
   PYO3_USE_ABI3_FORWARD_COMPATIBILITY: "1"
 
 jobs:
+  # Check if the gapic-generator was changed. If so, execute specialized tests
   check_changes:
-    # We use a job-level 'if' with dorny/paths-filter because GitHub's top-level 
-    # 'on: pull_request: paths' can be bypassed during repository-wide migrations 
-    # or structural changes. This ensures these specialized (and heavy) matrix 
-    # jobs stay silent on PRs that do not touch the generator.
     runs-on: ubuntu-latest
     outputs:
       run_generator: ${{ steps.filter.outputs.generator }}
@@ -59,7 +51,7 @@ jobs:
       all_python: ${{ env.ALL_PYTHON }}
       latest_stable_python: ${{ env.LATEST_STABLE_PYTHON }}
       prerelease_python: ${{ env.PRERELEASE_PYTHON }}
-      trimmed_python: $${{ env.TRIMMED_PYTHON }}
+      trimmed_python: ${{ env.TRIMMED_PYTHON }}
     steps:
       - run: echo "Initializing config for gapic-generator"
 
@@ -232,7 +224,6 @@ jobs:
       - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
         with:
           persist-credentials: false
-      
       - name: Cache Bazel files
         id: cache-bazel
         uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5
@@ -247,3 +238,27 @@ jobs:
           # WORKSPACE file is located there.
           cd packages/gapic-generator
           bazelisk test //tests/integration/... --test_output=errors
+
+  # Final job to simplify branch protection rules.
+  # This job will be reported as 'Success' if all its dependencies either 
+  # pass or are skipped due to path filtering.
+  status:
+    needs: [check_changes, python_config, showcase-unit, showcase-mypy, goldens, goldens-prerelease, fragment-snippet, integration]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check all jobs for failure
+        env:
+          NEEDS_JSON: ${{ toJson(needs) }}
+        run: |
+          # 1. Print a human-readable list of each dependency job and its final status.
+          echo "Job Results:"
+          echo "$NEEDS_JSON" | jq -r 'to_entries[] | "  - \(.key): \(.value.result)"'
+
+          # 2. Evaluate if any job actually failed or was cancelled.
+          if echo "$NEEDS_JSON" | jq -e 'to_entries[].value | select(.result == "failure" or .result == "cancelled")' >/dev/null; then
+            echo "Error: One or more required jobs failed or were cancelled."
+            exit 1
+          fi
+          echo "All checks passed or were successfully skipped."
+

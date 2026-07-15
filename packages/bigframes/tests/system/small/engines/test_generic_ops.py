@@ -515,3 +515,21 @@ def test_engines_isin_op_nested_filter(
     arr = scalars_array_value.filter(filter_clause)
 
     assert_equivalence_execution(arr.node, REFERENCE_ENGINE, engine)
+
+
+@pytest.mark.parametrize("engine", ["polars", "bq", "bq-sqlglot"], indirect=True)
+def test_engines_getitem_ops(arrays_array_value: array_value.ArrayValue, engine):
+    arr, _ = arrays_array_value.compute_values(
+        [
+            ops.GetItemOp(0).as_expr(expression.deref("float_list_col")),
+            ops.DynamicGetItemOp().as_expr(
+                expression.deref("float_list_col"), expression.const(0)
+            ),
+            ops.GetItemOp(0).as_expr(expression.deref("string_list_col")),
+            ops.DynamicGetItemOp().as_expr(
+                expression.deref("string_list_col"), expression.const(0)
+            ),
+        ]
+    )
+
+    assert_equivalence_execution(arr.node, REFERENCE_ENGINE, engine)

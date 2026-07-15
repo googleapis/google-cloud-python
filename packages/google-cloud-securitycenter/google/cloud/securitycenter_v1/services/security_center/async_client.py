@@ -58,6 +58,9 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.cloud.securitycenter_v1.services.security_center import pagers
 from google.cloud.securitycenter_v1.types import (
     access,
+    agent,
+    agent_anomaly,
+    agent_session,
     application,
     attack_exposure,
     attack_path,

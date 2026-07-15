@@ -10,6 +10,7 @@ from io import BytesIO
 # python additional imports
 import google_crc32c
 import pytest
+from google.api_core import exceptions
 from google.api_core.exceptions import FailedPrecondition, NotFound, OutOfRange
 
 # current library imports
@@ -1044,5 +1045,70 @@ def test_mrd_checksum_unfinalized_appendable_skipped(
         del writer
         gc.collect()
         blobs_to_delete.append(storage_client.bucket(_ZONAL_BUCKET).blob(object_name))
+
+    event_loop.run_until_complete(_run())
+
+
+def test_finalize_with_correct_checksum(
+    storage_client,
+    blobs_to_delete,
+    event_loop,
+    grpc_client_direct,
+):
+    object_name = f"appendable_checksum_success_{uuid.uuid4()}"
+    object_data = b"Hello, appendable object with correct checksum!"
+    object_checksum = google_crc32c.value(object_data)
+
+    async def _run():
+        writer = AsyncAppendableObjectWriter(
+            grpc_client_direct, _ZONAL_BUCKET, object_name
+        )
+        await writer.open()
+        await writer.append(object_data)
+        object_metadata = await writer.finalize(full_object_checksum=object_checksum)
+
+        assert object_metadata.size == len(object_data)
+        assert int(object_metadata.checksums.crc32c) == object_checksum
+
+        # clean up
+        blobs_to_delete.append(storage_client.bucket(_ZONAL_BUCKET).blob(object_name))
+        del writer
+        gc.collect()
+
+    event_loop.run_until_complete(_run())
+
+
+def test_finalize_with_incorrect_checksum_fails(
+    storage_client,
+    blobs_to_delete,
+    event_loop,
+    grpc_client_direct,
+):
+    object_name = f"appendable_checksum_fail_{uuid.uuid4()}"
+    object_data = b"Hello, appendable object with incorrect checksum!"
+    object_checksum = google_crc32c.value(object_data)
+    incorrect_checksum = object_checksum + 1
+
+    async def _run():
+        writer = AsyncAppendableObjectWriter(
+            grpc_client_direct, _ZONAL_BUCKET, object_name
+        )
+        await writer.open()
+        await writer.append(object_data)
+
+        # Finalization should fail with an exception due to mismatch
+        with pytest.raises(exceptions.InvalidArgument) as excinfo:
+            await writer.finalize(full_object_checksum=incorrect_checksum)
+
+        # Assert that the error relates to checksum verification/mismatch
+        error_msg = str(excinfo.value).lower()
+        assert (
+            "crc32c" in error_msg or "checksum" in error_msg or "mismatch" in error_msg
+        )
+
+        # clean up
+        blobs_to_delete.append(storage_client.bucket(_ZONAL_BUCKET).blob(object_name))
+        del writer
+        gc.collect()
 
     event_loop.run_until_complete(_run())
