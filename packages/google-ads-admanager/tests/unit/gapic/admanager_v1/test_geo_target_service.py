@@ -1608,6 +1608,9 @@ def test_list_geo_targets_rest_pager(transport: str = "rest"):
 
         pager = client.list_geo_targets(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, geo_target_messages.GeoTarget) for i in results)
