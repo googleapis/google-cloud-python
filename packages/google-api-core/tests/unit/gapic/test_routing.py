@@ -17,14 +17,6 @@ from unittest import mock
 
 import pytest
 
-# We need to skip this test module if grpc is not installed because importing
-# gapic_v1._routing will load gapic_v1/__init__, which unconditionally
-# imports gapic_v1.config, which imports grpc.
-try:
-    import grpc  # noqa: F401
-except ImportError:
-    pytest.skip("No GRPC", allow_module_level=True)
-
 from google.auth.exceptions import MutualTLSChannelError
 
 from google.api_core.gapic_v1._routing import (
