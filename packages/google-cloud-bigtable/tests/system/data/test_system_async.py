@@ -19,11 +19,12 @@ import uuid
 import pytest
 from google.api_core import retry
 from google.api_core.exceptions import ClientError, PermissionDenied
+from google.cloud.environment_vars import BIGTABLE_EMULATOR
+from google.type import date_pb2
+
 from google.cloud.bigtable.data._cross_sync import CrossSync
 from google.cloud.bigtable.data.execute_query.metadata import SqlType
 from google.cloud.bigtable.data.read_modify_write_rules import _MAX_INCREMENT_VALUE
-from google.cloud.environment_vars import BIGTABLE_EMULATOR
-from google.type import date_pb2
 
 from . import TEST_AGGREGATE_FAMILY, TEST_FAMILY, TEST_FAMILY_2, SystemTestRunner
 
@@ -125,7 +126,6 @@ class TempRowBuilderAsync:
                 stream = await self.target.client._gapic_client.mutate_rows(request)
                 async for response in stream:
                     pass
-
 
     @CrossSync.convert
     async def retrieve_cell_value(self, target, row_key):
