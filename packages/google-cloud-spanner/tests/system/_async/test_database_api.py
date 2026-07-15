@@ -88,6 +88,93 @@ async def test_db_batch_insert_then_db_snapshot_read(shared_database):
 
 
 @pytest.mark.asyncio
+async def test_db_batch_send_and_ack(not_emulator, spanner_client, database_dialect, instance_config):
+    import uuid
+    from google.cloud.spanner_admin_instance_v1.types import spanner_instance_admin
+    from google.cloud.spanner_admin_database_v1 import DatabaseDialect
+    from google.api_core.exceptions import MethodNotImplemented, GoogleAPIError
+
+    instance_id = f"test-instance-{uuid.uuid4().hex[:8]}"
+    db_name = f"test-db-{uuid.uuid4().hex[:8]}"
+    queue_name = f"test_queue_{uuid.uuid4().hex[:8]}"
+
+    config_name = instance_config.name
+    request = spanner_instance_admin.CreateInstanceRequest(
+        parent=spanner_client.project_name,
+        instance_id=instance_id,
+        instance=spanner_instance_admin.Instance(
+            config=config_name,
+            display_name=instance_id,
+            node_count=1,
+            edition=spanner_instance_admin.Instance.Edition.ENTERPRISE,
+        ),
+    )
+    print(f"instance creation request: {request}")
+    operation = await spanner_client.instance_admin_api.create_instance(request=request)
+    operation.result(600)
+
+    test_instance = spanner_client.instance(instance_id, configuration_name=config_name)
+
+    try:
+        test_database = await test_instance.database(db_name, database_dialect=database_dialect)
+        operation = await test_database.create()
+        operation.result(300)
+        print("Database created successfully!")
+
+        try:
+            # 3. Create the Queue
+            if database_dialect == DatabaseDialect.POSTGRESQL:
+                queue_ddl = f"""CREATE QUEUE {queue_name} (
+                    id bigint NOT NULL,
+                    "Payload" varchar NOT NULL,
+                    PRIMARY KEY (id)
+                )"""
+            else:
+                queue_ddl = f"""CREATE QUEUE {queue_name} (
+                    Id INT64 NOT NULL,
+                    Payload STRING(MAX) NOT NULL
+                ) PRIMARY KEY (Id)"""
+
+            try:
+                operation = await test_database.update_ddl([queue_ddl])
+                await operation.result(600)
+            except MethodNotImplemented as e:
+                print(f"MethodNotImplemented. Skipping test because Queues are not implemented yet: {e}")
+                return
+            except GoogleAPIError as e:
+                if getattr(e, 'code', None) == 501 or (getattr(e, 'grpc_status_code', None) and e.grpc_status_code.name == 'UNIMPLEMENTED') or "UNIMPLEMENTED" in str(e):
+                    print(f"Skipping test because Queues are not implemented yet: {e}")
+                    return
+                raise
+            print("Queue created successfully.")
+
+            # 4. Run mutations
+            print("Sending message to queue...")
+            async with test_database.batch() as batch:
+                batch.send(
+                    queue=queue_name,
+                    key=(2,),
+                    payload="Hello, Queues!",
+                )
+            print("Send successful.")
+                
+            print("Acking message in queue...")
+            async with test_database.batch() as batch:
+                batch.ack(
+                    queue=queue_name,
+                    key=(2,),
+                )
+            print("Ack successful.")
+
+        finally:
+            print("Dropping database...")
+            await test_database.drop()
+    finally:
+        print("Dropping instance...")
+        await test_instance.delete()
+
+
+@pytest.mark.asyncio
 async def test_db_run_in_transaction_then_snapshot_execute_sql(shared_database):
     await shared_database.reload()
     sd = _sample_data

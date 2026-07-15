@@ -23,9 +23,12 @@ from typing import List, Optional
 
 from google.api_core.exceptions import InternalServerError
 
+from google.cloud._helpers import _datetime_to_pb_timestamp
 from google.cloud.spanner_v1._helpers import (
     AtomicCounter,
     _check_rst_stream_error,
+    _make_value_pb,
+    _make_list_value_pb,
     _make_list_value_pbs,
     _merge_client_context,
     _merge_request_options,
@@ -141,6 +144,55 @@ class _BatchBase(_SessionWrapper):
         :param keyset: Keys/ranges identifying rows to delete."""
         delete = Mutation.Delete(table=table, key_set=keyset._to_pb())
         self._mutations.append(Mutation(delete=delete))
+
+    def send(self, queue, key, payload=None, deliver_time=None):
+        """Send a message to a Cloud Spanner queue.
+
+        :type queue: str
+        :param queue: Name of the queue to which the message will be sent.
+
+        :type key: list
+        :param key: The primary key of the message to be sent.
+
+        :type payload: object
+        :param payload: (Optional) The payload of the message.
+
+        :type deliver_time: :class:`datetime.datetime`
+        :param deliver_time: (Optional) The time at which Spanner will begin attempting to deliver the message.
+        """
+        send_kwargs = {
+            "queue": queue,
+            "key": _make_list_value_pb(key)
+        }
+        if payload is not None:
+            send_kwargs["payload"] = _make_value_pb(payload)
+        if deliver_time is not None:
+            send_kwargs["deliver_time"] = _datetime_to_pb_timestamp(deliver_time)
+            
+        send = Mutation.Send(**send_kwargs)
+        self._mutations.append(Mutation(send=send))
+
+    def ack(self, queue, key, ignore_not_found=None):
+        """Acknowledge a message in a Cloud Spanner queue.
+
+        :type queue: str
+        :param queue: Name of the queue where the message to be acked is stored.
+
+        :type key: list
+        :param key: The primary key of the message to be acked.
+
+        :type ignore_not_found: bool
+        :param ignore_not_found: (Optional) Whether to ignore if the message does not exist.
+        """
+        ack_kwargs = {
+            "queue": queue,
+            "key": _make_list_value_pb(key)
+        }
+        if ignore_not_found is not None:
+            ack_kwargs["ignore_not_found"] = ignore_not_found
+            
+        ack = Mutation.Ack(**ack_kwargs)
+        self._mutations.append(Mutation(ack=ack))
 
 
 class Batch(_BatchBase):

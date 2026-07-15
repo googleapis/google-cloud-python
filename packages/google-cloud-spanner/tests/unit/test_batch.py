@@ -182,6 +182,40 @@ class Test_BatchBase(_BaseTest):
         for found, expected in zip(key_set_pb.keys, keys):
             self.assertEqual([int(value) for value in found], expected)
 
+    def test_send(self):
+        queue = "TestQueue"
+        key = [2]
+        payload = "Hello, Queues!"
+        session = _Session()
+        base = self._make_one(session)
+
+        base.send(queue, key=key, payload=payload)
+
+        self.assertEqual(len(base._mutations), 1)
+        mutation = base._mutations[0]
+        self.assertIsInstance(mutation, Mutation)
+        send = mutation.send
+        self.assertIsInstance(send, Mutation.Send)
+        self.assertEqual(send.queue, queue)
+        self.assertEqual(send.payload, payload)
+        self._compare_values([send.key], [key])
+
+    def test_ack(self):
+        queue = "TestQueue"
+        key = [2]
+        session = _Session()
+        base = self._make_one(session)
+
+        base.ack(queue, key=key)
+
+        self.assertEqual(len(base._mutations), 1)
+        mutation = base._mutations[0]
+        self.assertIsInstance(mutation, Mutation)
+        ack = mutation.ack
+        self.assertIsInstance(ack, Mutation.Ack)
+        self.assertEqual(ack.queue, queue)
+        self._compare_values([ack.key], [key])
+
 
 class TestBatch(_BaseTest, OpenTelemetryBase):
     def _getTargetClass(self):
