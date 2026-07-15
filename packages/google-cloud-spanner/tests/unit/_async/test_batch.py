@@ -43,6 +43,15 @@ class Test_BatchBase(unittest.IsolatedAsyncioTestCase):
     def _make_one(self, *args, **kwargs):
         return self._getTargetClass()(*args, **kwargs)
 
+    def _compare_values(self, result, source):
+        for found, expected in zip(result, source):
+            self.assertEqual(len(found), len(expected))
+            for found_cell, expected_cell in zip(found, expected):
+                if isinstance(expected_cell, int):
+                    self.assertEqual(int(found_cell), expected_cell)
+                else:
+                    self.assertEqual(found_cell, expected_cell)
+
     def test_ctor(self):
         session = mock.Mock()
         base = self._make_one(session)
@@ -84,6 +93,28 @@ class Test_BatchBase(unittest.IsolatedAsyncioTestCase):
         base.delete(TABLE_NAME, keyset=keyset)
         self.assertEqual(len(base._mutations), 1)
         self.assertEqual(base._mutations[0].delete.table, TABLE_NAME)
+
+    def test_send(self):
+        queue = "TestQueue"
+        key = [2]
+        payload = "Hello, Queues!"
+        session = mock.Mock()
+        base = self._make_one(session)
+        base.send(queue=queue, key=key, payload=payload)
+        self.assertEqual(len(base._mutations), 1)
+        self.assertEqual(base._mutations[0].send.queue, queue)
+        self.assertEqual(base._mutations[0].send.payload, payload)
+        self._compare_values([base._mutations[0].send.key], [key])
+
+    def test_ack(self):
+        queue = "TestQueue"
+        key = [2]
+        session = mock.Mock()
+        base = self._make_one(session)
+        base.ack(queue=queue, key=key)
+        self.assertEqual(len(base._mutations), 1)
+        self.assertEqual(base._mutations[0].ack.queue, queue)
+        self._compare_values([base._mutations[0].ack.key], [key])
 
 
 class TestBatch(unittest.IsolatedAsyncioTestCase):
