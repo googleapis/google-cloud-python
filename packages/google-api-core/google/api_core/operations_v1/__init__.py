@@ -30,11 +30,16 @@ except ModuleNotFoundError:
 # For more information, see:
 # https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
 # Older Python versions safely ignore this variable.
+# NOTE: We statically define all modules here (including async ones) to ensure 
+# static analysis tools (mypy, pyright, Ruff) can easily parse them. If async
+# support is not present, the imports are ignored, making their presence safe.
 __lazy_modules__: Set[str] = {
     "google.api_core.operations_v1.abstract_operations_client",
     "google.api_core.operations_v1.operations_async_client",
     "google.api_core.operations_v1.operations_client",
     "google.api_core.operations_v1.transports.rest",
+    "google.api_core.operations_v1.transports.rest_asyncio",
+    "google.api_core.operations_v1.operations_rest_client_async",
 }
 
 __all__ = [
