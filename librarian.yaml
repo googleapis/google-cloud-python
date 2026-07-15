@@ -1683,7 +1683,7 @@ libraries:
     python:
       default_version: v1
   - name: google-cloud-pubsub
-    version: 2.39.0
+    version: 0.1.0
     apis:
       - path: google/pubsub/v1
     skip_generate: true
