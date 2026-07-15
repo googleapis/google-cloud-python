@@ -49,13 +49,6 @@ __all__ = [
     "OperationsRestTransport",
 ]
 
-if _has_async_rest:
-    __lazy_modules__.update(
-        {
-            "google.api_core.operations_v1.transports.rest_asyncio",
-            "google.api_core.operations_v1.operations_rest_client_async",
-        }
-    )
 
 from google.api_core.operations_v1.abstract_operations_client import (  # noqa: E402
     AbstractOperationsClient,
