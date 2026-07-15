@@ -110,6 +110,7 @@ case ${TEST_TYPE} in
             echo "Creating temporary virtualenv for import profile..."
             python3 -m venv .venv-profiler
             source .venv-profiler/bin/activate
+            python -m pip install --upgrade pip setuptools
             
             PACKAGE_NAME=$(basename $(pwd))
             PROFILER_TEMP_DIR=$(mktemp -d)
