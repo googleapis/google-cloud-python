@@ -72,62 +72,79 @@ def _get_env_bool(name: str) -> Optional[bool]:
         return None
 
 
-def _get_env_bool_with_dev_fallback(name: str) -> Optional[bool]:
-    """Retrieve the boolean value of an environment variable, checking experimental fallbacks first."""
-    if name.startswith("GOOGLE_SDK_"):
-        exp_name = name.replace("GOOGLE_SDK_", "GOOGLE_SDK_EXPERIMENTAL_", 1)
-        val = _get_env_bool(exp_name)
-        if val is not None:
-            return val
-    return _get_env_bool(name)
+def _has_provider(
+    client_options: Optional[Union[Dict[str, Any], Any]], provider_key: str
+) -> bool:
+    """Checks if a specific provider key is present and not None in client_options."""
+    if client_options is None:
+        return False
+
+    options_dict = (
+        client_options
+        if isinstance(client_options, dict)
+        else getattr(client_options, "__dict__", {})
+    )
+    return options_dict.get(provider_key) is not None
 
 
 def resolve_feature_flags(
-    feature_name: str,
+    env_var: str,
+    provider_key: str,
     client_options: Optional[Union[Dict[str, Any], Any]] = None,
-    default: bool = False,
 ) -> bool:
-    """Determines if a telemetry signal is enabled.
+    """Determines if a feature is enabled based on environment variables and client options.
 
-    Resolves settings in the following order of precedence:
-    1. Programmatic overrides in client_options (checks tracer_provider)
-    2. Language-wide Environment Variable: GOOGLE_SDK_PYTHON_TRACING_ENABLED
-       (natively checks for a variant with an "EXPERIMENTAL" token first)
-    3. Default fallback
+    Behavior depends on whether the `env_var` name contains "EXPERIMENTAL":
+
+    - **Experimental Path** (env_var contains "EXPERIMENTAL"):
+      Strict gating. Requires the environment variable to be explicitly 'true'.
+      If a programmatic provider is passed but the environment variable is not 'true',
+      raises ValueError (Fail Fast).
+
+    - **GA Path** (env_var does not contain "EXPERIMENTAL"):
+      Standard precedence. Enabled if a programmatic provider is passed,
+      otherwise falls back to the environment variable value.
 
     Args:
-        feature_name: The feature name: must be 'tracing'.
+        env_var: The name of the environment variable controlling this feature.
+        provider_key: The key in client_options/attributes for the programmatic provider.
         client_options: A dictionary or object containing client configuration.
-        default: Fallback boolean if no options or env variables match.
 
     Returns:
-        bool: True if the signal is resolved to enabled, False otherwise.
+        bool: True if the feature is resolved to enabled, False otherwise.
+
+    Raises:
+        ValueError: If a provider is passed for an experimental feature without opening the gate.
     """
-    if feature_name != "tracing":
-        raise ValueError(
-            f"Invalid feature_name: {feature_name!r}. Only 'tracing' is supported at this time."
-        )
 
-    # 1. Experimental Gate
-    exp_var = "GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED"
-    exp_val = _get_env_bool(exp_var)
 
-    has_provider = False
-    if client_options is not None:
-        options_dict = (
-            client_options
-            if isinstance(client_options, dict)
-            else getattr(client_options, "__dict__", {})
-        )
-        if options_dict.get("tracer_provider") is not None:
-            has_provider = True
+    # Check for programmatic feature provider
+    has_provider = _has_provider(client_options, provider_key)
 
-    if exp_val is not True:
-        if has_provider:
+    # Read environment variable
+    env_var_setting = _get_env_bool(env_var)
+
+    # EXPERIMENTAL PATH:
+    # Resolution Hierarchy:
+    #   1. EXPERIMENTAL Gate
+    #   2. Fail Fast if Provider present but EXPERIMENTAL Gate is closed
+    if "EXPERIMENTAL" in env_var:
+        # Fail Fast if provider present but gate is closed
+        if env_var_setting is not True and has_provider:
             raise ValueError(
-                f"Experimental feature {feature_name!r} requires {exp_var} to be set to 'true' to use programmatic providers."
+                f"Experimental feature requires {env_var} to be set to 'true' to use programmatic providers."
             )
-        return False # Blocked
 
-    # If we are here, exp_val IS True.
-    return True
+        return bool(env_var_setting)
+
+    # GENERAL AVAILABILITY PATH:
+    # Resolution Hierarchy:
+    #   1. Programmatic Provider
+    #   2. Environment Variable
+
+    # Check Programmatic Provider
+    if has_provider:
+        return True
+
+    # Check Environment Variable
+    return bool(env_var_setting)
