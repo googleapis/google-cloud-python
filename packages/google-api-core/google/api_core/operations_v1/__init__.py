@@ -17,9 +17,12 @@
 import importlib.util
 from typing import Set
 
-_has_async_rest = (
-    importlib.util.find_spec("google.auth.aio.transport.sessions") is not None
-)
+try:
+    _has_async_rest = (
+        importlib.util.find_spec("google.auth.aio.transport.sessions") is not None
+    )
+except ModuleNotFoundError:
+    _has_async_rest = False
 
 # PEP 0810: Explicit Lazy Imports
 # Python 3.15+ natively intercepts and defers these imports.
