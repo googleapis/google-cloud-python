@@ -22,6 +22,7 @@ import hashlib
 import json
 import logging
 import sys
+import threading
 from typing import Any, Dict, Mapping, Optional, Union
 import urllib
 
@@ -534,3 +535,82 @@ def response_log(logger: logging.Logger, response: Any) -> None:
     if is_logging_enabled(logger):
         json_response = _parse_response(response)
         _response_log_base(logger, json_response)
+
+
+class LazyBasesMeta(type):
+    """Metaclass that allows dynamic lazy resolution of class bases.
+
+    This metaclass avoids eager loading of heavy dependencies during import
+    time by allowing classes to inherit from a dummy class initially.
+    The real base classes are dynamically resolved and swapped in when the
+    class is first instantiated, subclassed, or has its attributes inspected.
+    """
+
+    _lock = threading.RLock()
+
+    def __new__(mcls, name, bases, attrs):
+        # Automatically resolve lazy bases of any base classes at subclass definition time.
+        for base in bases:
+            if isinstance(base, LazyBasesMeta):
+                type(base)._resolve_bases(base)
+
+        cls = super(LazyBasesMeta, mcls).__new__(mcls, name, bases, attrs)
+        type.__setattr__(cls, "_lazy_bases_resolved", False)
+        return cls
+
+    def __call__(cls, *args, **kwargs):
+        type(cls)._resolve_bases(cls)
+        return super(LazyBasesMeta, cls).__call__(*args, **kwargs)
+
+    def __getattribute__(cls, name):
+        if name not in (
+            "_lazy_bases_resolved",
+            "_resolve_bases",
+            "_perform_resolve_bases",
+        ):
+            type(cls)._resolve_bases(cls)
+        return super(LazyBasesMeta, cls).__getattribute__(name)
+
+    def _resolve_bases(cls):
+        try:
+            resolved = type.__getattribute__(cls, "_lazy_bases_resolved")
+        except AttributeError:
+            resolved = False
+
+        if not resolved:
+            if not hasattr(LazyBasesMeta, "_local"):
+                LazyBasesMeta._local = threading.local()
+            if not hasattr(LazyBasesMeta._local, "resolving"):
+                LazyBasesMeta._local.resolving = set()
+
+            cls_id = id(cls)
+            if cls_id in LazyBasesMeta._local.resolving:
+                return
+
+            with type(cls)._lock:
+                try:
+                    resolved = type.__getattribute__(cls, "_lazy_bases_resolved")
+                except AttributeError:
+                    resolved = False
+
+                if not resolved:
+                    LazyBasesMeta._local.resolving.add(cls_id)
+                    try:
+                        type(cls)._perform_resolve_bases(cls)
+                        type.__setattr__(cls, "_lazy_bases_resolved", True)
+                    finally:
+                        LazyBasesMeta._local.resolving.remove(cls_id)
+
+    def _perform_resolve_bases(cls):
+        pass
+
+
+class HeapDummy(object):
+    """A heap-allocated dummy class.
+
+    This class serves as a safe initial base class for classes using LazyBasesMeta.
+    Inheriting from HeapDummy instead of built-in `object` ensures that Python's
+    memory layout check passes when we swap bases to another heap-allocated class.
+    """
+
+    pass

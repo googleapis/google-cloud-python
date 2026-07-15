@@ -18,6 +18,7 @@ from __future__ import absolute_import
 
 import http.client as http_client
 import logging
+from typing import Set, TYPE_CHECKING
 import warnings
 
 # Certifi is Mozilla's certificate bundle. Urllib3 needs a certificate bundle
@@ -50,16 +51,47 @@ except ImportError as caught_exc:  # pragma: NO COVER
     ) from caught_exc
 
 
-from google.auth import _helpers
-from google.auth import exceptions
-from google.auth import transport
+from google.auth import _helpers, exceptions, transport
 from google.auth.transport import _mtls_helper
 from google.oauth2 import service_account
 
-if version.parse(urllib3.__version__) >= version.parse("2.0.0"):  # pragma: NO COVER
-    RequestMethods = urllib3._request_methods.RequestMethods  # type: ignore
-else:  # pragma: NO COVER
-    RequestMethods = urllib3.request.RequestMethods  # type: ignore
+if TYPE_CHECKING:
+    try:
+        from urllib3._request_methods import RequestMethods as _HttpBase
+    except ImportError:
+        try:
+            from urllib3.request import RequestMethods as _HttpBase  # type: ignore
+        except ImportError:
+            _HttpBase = object  # type: ignore
+else:
+    _HttpBase = _helpers.HeapDummy
+
+
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__: Set[str] = {
+    "urllib3",
+    "urllib3.exceptions",
+    "certifi",
+    "packaging",
+    "packaging.version",
+}
+
+
+class _LazyBasesMeta(_helpers.LazyBasesMeta):
+    def _perform_resolve_bases(cls):
+        current_bases = type.__getattribute__(cls, "__bases__")
+        if current_bases == (_helpers.HeapDummy,):
+            if version.parse(urllib3.__version__) >= version.parse("2.0.0"):
+                request_methods_class = urllib3._request_methods.RequestMethods  # type: ignore
+            else:
+                request_methods_class = urllib3.request.RequestMethods  # type: ignore
+            cls.__bases__ = (request_methods_class,)
+
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -176,8 +208,9 @@ def _make_mutual_tls_http(cert, key):
     Raises:
         google.auth.exceptions.MutualTLSChannelError: If the cert or key is invalid.
     """
-    import certifi
     import ssl
+
+    import certifi
 
     ctx = urllib3.util.ssl_.create_urllib3_context()
     ctx.load_verify_locations(cafile=certifi.where())
@@ -203,7 +236,7 @@ def _make_mutual_tls_http(cert, key):
     return http
 
 
-class AuthorizedHttp(RequestMethods):  # type: ignore
+class AuthorizedHttp(_HttpBase, metaclass=_LazyBasesMeta):
     """A urllib3 HTTP class with credentials.
 
     This class is used to perform requests to API endpoints that require
