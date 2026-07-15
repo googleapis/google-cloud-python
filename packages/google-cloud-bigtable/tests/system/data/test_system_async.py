@@ -107,14 +107,26 @@ class TempRowBuilderAsync:
     @CrossSync.convert
     async def delete_rows(self):
         if self.rows:
-            request = {
-                "table_name": self.target.table_name,
-                "entries": [
-                    {"row_key": row, "mutations": [{"delete_from_row": {}}]}
-                    for row in self.rows
-                ],
-            }
-            await self.target.client._gapic_client.mutate_rows(request)
+            # Chunk deletions to 5,000 rows. While Bigtable officially supports up to
+            # 100,000 mutations per MutateRows RPC, sending massive batches may hit
+            # the default gRPC 4MB client payload size limit due to metadata
+            # serialization overhead. Keeping chunks at 5,000 ensures we stay safely
+            # under 4MB and minimizes transient network timeouts on live connections.
+            chunk_size = 5000
+            for i in range(0, len(self.rows), chunk_size):
+                chunk = self.rows[i : i + chunk_size]
+                request = {
+                    **self.target._request_path,
+                    "entries": [
+                        {"row_key": row, "mutations": [{"delete_from_row": {}}]}
+                        for row in chunk
+                    ],
+                }
+                # Await and consume the gRPC stream to guarantee execution
+                stream = await self.target.client._gapic_client.mutate_rows(request)
+                async for response in stream:
+                    pass
+
 
     @CrossSync.convert
     async def retrieve_cell_value(self, target, row_key):

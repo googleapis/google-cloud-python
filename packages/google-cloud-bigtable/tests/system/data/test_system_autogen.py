@@ -94,14 +94,19 @@ class TempRowBuilder:
 
     def delete_rows(self):
         if self.rows:
-            request = {
-                "table_name": self.target.table_name,
-                "entries": [
-                    {"row_key": row, "mutations": [{"delete_from_row": {}}]}
-                    for row in self.rows
-                ],
-            }
-            self.target.client._gapic_client.mutate_rows(request)
+            chunk_size = 5000
+            for i in range(0, len(self.rows), chunk_size):
+                chunk = self.rows[i : i + chunk_size]
+                request = {
+                    **self.target._request_path,
+                    "entries": [
+                        {"row_key": row, "mutations": [{"delete_from_row": {}}]}
+                        for row in chunk
+                    ],
+                }
+                stream = self.target.client._gapic_client.mutate_rows(request)
+                for response in stream:
+                    pass
 
     def retrieve_cell_value(self, target, row_key):
         """Helper to read an individual row"""
