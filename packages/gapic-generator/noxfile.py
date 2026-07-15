@@ -476,6 +476,16 @@ def showcase_mtls(
         )
 
 
+# TODO(Phase 3): Remove showcase_pqc once grpcio >= 1.83.0 is enforced by default in google-api-core.
+@nox.session(python=NEWEST_PYTHON)
+def showcase_pqc(session):
+    """Run the Showcase PQC verification test suite against grpcio 1.83+."""
+    with showcase_library(session):
+        session.install("pytest", "pytest-asyncio", "pyopenssl")
+        session.install("--pre", "--upgrade", "grpcio>=1.83.0rc0", "grpcio-status>=1.83.0rc0")
+        session.run("py.test", "--quiet", "--mtls", "-s", *(session.posargs or ["tests/system/test_pqc.py"]))
+
+
 def run_showcase_unit_tests(session, fail_under=100, rest_async_io_enabled=False):
     session.install(
         "coverage",
