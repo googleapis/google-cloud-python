@@ -66,12 +66,24 @@ from google.api_core import path_template
         # Encoding / Metacharacters in positional and named params
         ["/v1/*", ["..?$httpMethod=DELETE#"], {}, "/v1/..%3F%24httpMethod%3DDELETE%23"],
         ["/v1/**", ["path/../with/?and#"], {}, "/v1/path/../with/%3Fand%23"],
-        ["/v1/{name}", [], {"name": "..?$httpMethod=DELETE#"}, "/v1/..%3F%24httpMethod%3DDELETE%23"],
-        ["/v1/{name=**}", [], {"name": "path/../with/?and#"}, "/v1/path/../with/%3Fand%23"],
+        [
+            "/v1/{name}",
+            [],
+            {"name": "..?$httpMethod=DELETE#"},
+            "/v1/..%3F%24httpMethod%3DDELETE%23",
+        ],
+        [
+            "/v1/{name=**}",
+            [],
+            {"name": "path/../with/?and#"},
+            "/v1/path/../with/%3Fand%23",
+        ],
         [
             "/v3/{session=projects/*/locations/*/agents/*/sessions/*}:detectIntent",
             [],
-            {"session": "projects/cx/locations/global/agents/a1/sessions/..?$httpMethod=DELETE#"},
+            {
+                "session": "projects/cx/locations/global/agents/a1/sessions/..?$httpMethod=DELETE#"
+            },
             "/v3/projects/cx/locations/global/agents/a1/sessions/..%3F%24httpMethod%3DDELETE%23:detectIntent",
         ],
     ],
@@ -661,3 +673,100 @@ def helper_test_transcode(http_options_list, expected_result_list):
     if expected_result_list[2]:
         expected_result["body"] = expected_result_list[2]
     return (http_options, expected_result)
+
+
+def test_path_traversal_dots_validation_star():
+    # 1. Dots in values matched to *
+    # Single-segment positional variable * with exactly '.' or '..'
+    with pytest.raises(
+        ValueError, match="Invalid value \\. for positional variable\\."
+    ):
+        path_template.expand("/v1/*", ".")
+    with pytest.raises(
+        ValueError, match="Invalid value \\.\\. for positional variable\\."
+    ):
+        path_template.expand("/v1/*", "..")
+
+    # Named variable matching * with exactly '.' or '..'
+    with pytest.raises(ValueError, match="Invalid value \\.\\. for region\\."):
+        path_template.expand(
+            "/compute/v1/projects/{project}/regions/{region}/addresses",
+            project="my-project",
+            region="..",
+        )
+
+    # Sub-template named variable where a segment matching * is exactly '.' or '..'
+    with pytest.raises(
+        ValueError,
+        match="Invalid value projects/my-project/locations/\\.\\. for parent\\.",
+    ):
+        path_template.expand(
+            "/v2/{parent=projects/*/locations/*}/content:inspect",
+            parent="projects/my-project/locations/..",
+        )
+    with pytest.raises(
+        ValueError,
+        match="Invalid value projects/my-project/locations/\\. for parent\\.",
+    ):
+        path_template.expand(
+            "/v2/{parent=projects/*/locations/*}/content:inspect",
+            parent="projects/my-project/locations/.",
+        )
+
+
+def test_path_traversal_dots_validation_double_star():
+    # 2. Dots in values matched to **
+    # Valid cases: leftover_segments > 0
+    # leftover_segments == 1
+    assert (
+        path_template.expand(
+            "/v3/{name=projects/*/monitoredResourceDescriptors/**}",
+            name="projects/my-project/monitoredResourceDescriptors/instance/my-instance/..",
+        )
+        == "/v3/projects/my-project/monitoredResourceDescriptors/instance/my-instance/.."
+    )
+
+    assert (
+        path_template.expand(
+            "/v3/{name=projects/*/monitoredResourceDescriptors/**}",
+            name="projects/my-project/monitoredResourceDescriptors/instance/my-instance/.",
+        )
+        == "/v3/projects/my-project/monitoredResourceDescriptors/instance/my-instance/."
+    )
+
+    assert (
+        path_template.expand(
+            "/v3/{name=projects/*/monitoredResourceDescriptors/**}",
+            name="projects/my-project/monitoredResourceDescriptors/a/b/c/d/e/../../../..",
+        )
+        == "/v3/projects/my-project/monitoredResourceDescriptors/a/b/c/d/e/../../../.."
+    )
+
+    # Invalid cases: resulting path traversal consumes whole value or overflows left
+    invalid_cases = [
+        "projects/my-project/monitoredResourceDescriptors/.",
+        "projects/my-project/monitoredResourceDescriptors/instance/my-instance/../..",
+        "projects/my-project/monitoredResourceDescriptors/instance/../my-instance/..",
+        "projects/my-project/monitoredResourceDescriptors/..",
+        "projects/my-project/monitoredResourceDescriptors/instance/../..",
+        "projects/my-project/monitoredResourceDescriptors/a/b/../../../c/d/e/..",
+    ]
+    for case in invalid_cases:
+        with pytest.raises(ValueError, match="Invalid value .* for name\\."):
+            path_template.expand(
+                "/v3/{name=projects/*/monitoredResourceDescriptors/**}", name=case
+            )
+
+
+def test_percent_encoding_unreserved_characters():
+    # 3. Values for all variable parts should be percent-encoded except for [-_.~/0-9a-zA-Z] characters.
+    # We should keep [-_.~/0-9a-zA-Z] safe for both single-star and double-star
+    result = path_template.expand("/v1/{name}", name="abc-._~")
+    assert result == "/v1/abc-._~"
+
+    result = path_template.expand("/v1/{name=**}", name="abc-._~/")
+    assert result == "/v1/abc-._~/"
+
+    # Other characters like '$', '?', '=', '#', ' ' should be encoded
+    result = path_template.expand("/v1/{name}", name="a$b?c=d#e f")
+    assert result == "/v1/a%24b%3Fc%3Dd%23e%20f"
