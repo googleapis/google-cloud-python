@@ -659,34 +659,35 @@ class Message(metaclass=MessageMeta):
                     mapping,
                 )
             )
-
         params = {}
         # Update the mapping to address any values that need to be
         # coerced.
         marshal = self._meta.marshal
-        for key, value in mapping.items():
-            (key, pb_type) = self._get_pb_type_from_key(key)
-            if pb_type is None:
-                if ignore_unknown_fields:
-                    continue
-
-                raise ValueError(
-                    "Unknown field for {}: {}".format(self.__class__.__name__, key)
-                )
-
-            pb_value = marshal.to_proto(pb_type, value)
-
-            if pb_value is not None:
-                params[key] = pb_value
-
-        # Create the internal protocol buffer.
         try:
+            for key, value in mapping.items():
+                (key, pb_type) = self._get_pb_type_from_key(key)
+                if pb_type is None:
+                    if ignore_unknown_fields:
+                        continue
+
+                    raise ValueError(
+                        "Unknown field for {}: {}".format(self.__class__.__name__, key)
+                    )
+
+                pb_value = marshal.to_proto(pb_type, value)
+
+                if pb_value is not None:
+                    params[key] = pb_value
+
+            # Create the internal protocol buffer.
             super().__setattr__("_pb", self._meta.pb(**params))
-        except TypeError as ex:
+        except TypeError as e:
             raise TypeError(
-                f"Failed to initialize {self.__class__.__name__} due to invalid type "
-                f"or structure in parameters. Underlying error: {ex}"
-            ) from ex
+                "Failed to initialize {}. Underlying error: {}".format(
+                    self.__class__.__name__, e
+                )
+            ) from e
+
 
     def _get_pb_type_from_key(self, key):
         """Given a key, return the corresponding pb_type.
@@ -858,22 +859,24 @@ class Message(metaclass=MessageMeta):
                 "Unknown field for {}: {}".format(self.__class__.__name__, key)
             )
 
-        pb_value = marshal.to_proto(pb_type, value)
+        try:
+            pb_value = marshal.to_proto(pb_type, value)
 
-        # Clear the existing field.
-        # This is the only way to successfully write nested falsy values,
-        # because otherwise MergeFrom will no-op on them.
-        self._pb.ClearField(key)
+            # Clear the existing field.
+            # This is the only way to successfully write nested falsy values,
+            # because otherwise MergeFrom will no-op on them.
+            self._pb.ClearField(key)
 
-        # Merge in the value being set.
-        if pb_value is not None:
-            try:
+            # Merge in the value being set.
+            if pb_value is not None:
                 self._pb.MergeFrom(self._meta.pb(**{key: pb_value}))
-            except TypeError as ex:
-                raise TypeError(
-                    f"Failed to set field '{key}' on {self.__class__.__name__} with value {value!r}. "
-                    f"Underlying error: {ex}"
-                ) from ex
+        except TypeError as e:
+            raise TypeError(
+                "Failed to set field '{}' on {} to value {}. Underlying error: {}".format(
+                    key, self.__class__.__name__, value, e
+                )
+            ) from e
+
 
 
     def __getstate__(self):
