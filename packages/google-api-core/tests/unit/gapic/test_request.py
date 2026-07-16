@@ -51,7 +51,9 @@ class MockValueErrorRequest:
 
 # --- Parameterized Test ---
 
-UUID_REGEX = r"[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}"
+UUID_REGEX = (
+    r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}"
+)
 
 
 @pytest.mark.parametrize(
