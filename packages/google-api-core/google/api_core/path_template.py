@@ -102,7 +102,7 @@ def _validate_multi_segment_value(val: str) -> bool:
         unseen_segments -= 1
         if segment == "..":
             leftover_segments -= 1
-        elif segment != ".":
+        elif segment not in (".", ""):
             leftover_segments += 1
 
         if leftover_segments < 0:

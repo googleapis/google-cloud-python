@@ -760,6 +760,7 @@ def test_path_traversal_dots_validation_double_star_valid(name_val, expected_pat
         "projects/my-project/monitoredResourceDescriptors/..",
         "projects/my-project/monitoredResourceDescriptors/instance/../..",
         "projects/my-project/monitoredResourceDescriptors/a/b/../../../c/d/e/..",
+        "projects/my-project/monitoredResourceDescriptors/instance//..",
     ],
 )
 def test_path_traversal_dots_validation_double_star_invalid(name_val):
