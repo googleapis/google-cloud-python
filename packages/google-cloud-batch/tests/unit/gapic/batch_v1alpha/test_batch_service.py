@@ -9896,6 +9896,7 @@ def test_create_job_rest_call_success(request_type):
                                 "network": "network_value",
                                 "subnetwork": "subnetwork_value",
                                 "no_external_ip_address": True,
+                                "nic_type": 1,
                             }
                         ]
                     },
@@ -9904,6 +9905,7 @@ def test_create_job_rest_call_success(request_type):
                         "max_distance": 1264,
                     },
                     "tags": ["tags_value1", "tags_value2"],
+                    "instance_flexibility_policy": {"instance_selections": {}},
                 },
                 "labels": {},
                 "task_environments": {},
@@ -10667,6 +10669,7 @@ def test_update_job_rest_call_success(request_type):
                                 "network": "network_value",
                                 "subnetwork": "subnetwork_value",
                                 "no_external_ip_address": True,
+                                "nic_type": 1,
                             }
                         ]
                     },
@@ -10675,6 +10678,7 @@ def test_update_job_rest_call_success(request_type):
                         "max_distance": 1264,
                     },
                     "tags": ["tags_value1", "tags_value2"],
+                    "instance_flexibility_policy": {"instance_selections": {}},
                 },
                 "labels": {},
                 "task_environments": {},

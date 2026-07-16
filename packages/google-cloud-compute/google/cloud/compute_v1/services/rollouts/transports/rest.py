@@ -72,6 +72,14 @@ class RolloutsRestInterceptor:
 
     .. code-block:: python
         class MyCustomRolloutsInterceptor(RolloutsRestInterceptor):
+            def pre_advance(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_advance(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_cancel(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -104,11 +112,71 @@ class RolloutsRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_pause(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_pause(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_resume(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_resume(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
         transport = RolloutsRestTransport(interceptor=MyCustomRolloutsInterceptor())
         client = RolloutsClient(transport=transport)
 
 
     """
+
+    def pre_advance(
+        self,
+        request: compute.AdvanceRolloutRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.AdvanceRolloutRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Pre-rpc interceptor for advance
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Rollouts server.
+        """
+        return request, metadata
+
+    def post_advance(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for advance
+
+        DEPRECATED. Please use the `post_advance_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Rollouts server but before
+        it is returned to user code. This `post_advance` interceptor runs
+        before the `post_advance_with_metadata` interceptor.
+        """
+        return response
+
+    def post_advance_with_metadata(
+        self,
+        response: compute.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for advance
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Rollouts server but before it is returned to user code.
+
+        We recommend only using this `post_advance_with_metadata`
+        interceptor in new development instead of the `post_advance` interceptor.
+        When both interceptors are used, this `post_advance_with_metadata` interceptor runs after the
+        `post_advance` interceptor. The (possibly modified) response returned by
+        `post_advance` will be passed to
+        `post_advance_with_metadata`.
+        """
+        return response, metadata
 
     def pre_cancel(
         self,
@@ -288,6 +356,94 @@ class RolloutsRestInterceptor:
         """
         return response, metadata
 
+    def pre_pause(
+        self,
+        request: compute.PauseRolloutRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.PauseRolloutRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Pre-rpc interceptor for pause
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Rollouts server.
+        """
+        return request, metadata
+
+    def post_pause(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for pause
+
+        DEPRECATED. Please use the `post_pause_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Rollouts server but before
+        it is returned to user code. This `post_pause` interceptor runs
+        before the `post_pause_with_metadata` interceptor.
+        """
+        return response
+
+    def post_pause_with_metadata(
+        self,
+        response: compute.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for pause
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Rollouts server but before it is returned to user code.
+
+        We recommend only using this `post_pause_with_metadata`
+        interceptor in new development instead of the `post_pause` interceptor.
+        When both interceptors are used, this `post_pause_with_metadata` interceptor runs after the
+        `post_pause` interceptor. The (possibly modified) response returned by
+        `post_pause` will be passed to
+        `post_pause_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_resume(
+        self,
+        request: compute.ResumeRolloutRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.ResumeRolloutRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Pre-rpc interceptor for resume
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Rollouts server.
+        """
+        return request, metadata
+
+    def post_resume(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for resume
+
+        DEPRECATED. Please use the `post_resume_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Rollouts server but before
+        it is returned to user code. This `post_resume` interceptor runs
+        before the `post_resume_with_metadata` interceptor.
+        """
+        return response
+
+    def post_resume_with_metadata(
+        self,
+        response: compute.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for resume
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Rollouts server but before it is returned to user code.
+
+        We recommend only using this `post_resume_with_metadata`
+        interceptor in new development instead of the `post_resume` interceptor.
+        When both interceptors are used, this `post_resume_with_metadata` interceptor runs after the
+        `post_resume` interceptor. The (possibly modified) response returned by
+        `post_resume` will be passed to
+        `post_resume_with_metadata`.
+        """
+        return response, metadata
+
 
 @dataclasses.dataclass
 class RolloutsRestStub:
@@ -385,6 +541,180 @@ class RolloutsRestTransport(_BaseRolloutsRestTransport):
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or RolloutsRestInterceptor()
         self._prep_wrapped_messages(client_info)
+
+    class _Advance(_BaseRolloutsRestTransport._BaseAdvance, RolloutsRestStub):
+        def __hash__(self):
+            return hash("RolloutsRestTransport.Advance")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: compute.AdvanceRolloutRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> compute.Operation:
+            r"""Call the advance method over HTTP.
+
+            Args:
+                request (~.compute.AdvanceRolloutRequest):
+                    The request object. A request message for
+                Rollouts.Advance. See the method
+                description for details.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.compute.Operation:
+                    Represents an Operation resource.
+
+                Google Compute Engine has three Operation resources:
+
+                - `Global </compute/docs/reference/rest/v1/globalOperations>`__
+                - `Regional </compute/docs/reference/rest/v1/regionOperations>`__
+                - `Zonal </compute/docs/reference/rest/v1/zoneOperations>`__
+
+                You can use an operation resource to manage asynchronous
+                API requests. For more information, readHandling API
+                responses.
+
+                Operations can be global, regional or zonal.
+
+                ::
+
+                   - For global operations, use the `globalOperations`
+                   resource.
+                   - For regional operations, use the
+                   `regionOperations` resource.
+                   - For zonal operations, use
+                   the `zoneOperations` resource.
+
+                For more information, read Global, Regional, and Zonal
+                Resources.
+
+                Note that completed Operation resources have a limited
+                retention period.
+
+            """
+
+            http_options = _BaseRolloutsRestTransport._BaseAdvance._get_http_options()
+
+            request, metadata = self._interceptor.pre_advance(request, metadata)
+            transcoded_request = (
+                _BaseRolloutsRestTransport._BaseAdvance._get_transcoded_request(
+                    http_options, request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseRolloutsRestTransport._BaseAdvance._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.RolloutsClient.Advance",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.Rollouts",
+                        "rpcName": "Advance",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = RolloutsRestTransport._Advance._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_advance(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_advance_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.RolloutsClient.advance",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.Rollouts",
+                        "rpcName": "Advance",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
 
     class _Cancel(_BaseRolloutsRestTransport._BaseCancel, RolloutsRestStub):
         def __hash__(self):
@@ -1023,6 +1353,357 @@ class RolloutsRestTransport(_BaseRolloutsRestTransport):
                 )
             return resp
 
+    class _Pause(_BaseRolloutsRestTransport._BasePause, RolloutsRestStub):
+        def __hash__(self):
+            return hash("RolloutsRestTransport.Pause")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: compute.PauseRolloutRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> compute.Operation:
+            r"""Call the pause method over HTTP.
+
+            Args:
+                request (~.compute.PauseRolloutRequest):
+                    The request object. A request message for Rollouts.Pause.
+                See the method description for details.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.compute.Operation:
+                    Represents an Operation resource.
+
+                Google Compute Engine has three Operation resources:
+
+                - `Global </compute/docs/reference/rest/v1/globalOperations>`__
+                - `Regional </compute/docs/reference/rest/v1/regionOperations>`__
+                - `Zonal </compute/docs/reference/rest/v1/zoneOperations>`__
+
+                You can use an operation resource to manage asynchronous
+                API requests. For more information, readHandling API
+                responses.
+
+                Operations can be global, regional or zonal.
+
+                ::
+
+                   - For global operations, use the `globalOperations`
+                   resource.
+                   - For regional operations, use the
+                   `regionOperations` resource.
+                   - For zonal operations, use
+                   the `zoneOperations` resource.
+
+                For more information, read Global, Regional, and Zonal
+                Resources.
+
+                Note that completed Operation resources have a limited
+                retention period.
+
+            """
+
+            http_options = _BaseRolloutsRestTransport._BasePause._get_http_options()
+
+            request, metadata = self._interceptor.pre_pause(request, metadata)
+            transcoded_request = (
+                _BaseRolloutsRestTransport._BasePause._get_transcoded_request(
+                    http_options, request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = _BaseRolloutsRestTransport._BasePause._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.RolloutsClient.Pause",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.Rollouts",
+                        "rpcName": "Pause",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = RolloutsRestTransport._Pause._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_pause(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_pause_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.RolloutsClient.pause",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.Rollouts",
+                        "rpcName": "Pause",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _Resume(_BaseRolloutsRestTransport._BaseResume, RolloutsRestStub):
+        def __hash__(self):
+            return hash("RolloutsRestTransport.Resume")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: compute.ResumeRolloutRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> compute.Operation:
+            r"""Call the resume method over HTTP.
+
+            Args:
+                request (~.compute.ResumeRolloutRequest):
+                    The request object. A request message for
+                Rollouts.Resume. See the method
+                description for details.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.compute.Operation:
+                    Represents an Operation resource.
+
+                Google Compute Engine has three Operation resources:
+
+                - `Global </compute/docs/reference/rest/v1/globalOperations>`__
+                - `Regional </compute/docs/reference/rest/v1/regionOperations>`__
+                - `Zonal </compute/docs/reference/rest/v1/zoneOperations>`__
+
+                You can use an operation resource to manage asynchronous
+                API requests. For more information, readHandling API
+                responses.
+
+                Operations can be global, regional or zonal.
+
+                ::
+
+                   - For global operations, use the `globalOperations`
+                   resource.
+                   - For regional operations, use the
+                   `regionOperations` resource.
+                   - For zonal operations, use
+                   the `zoneOperations` resource.
+
+                For more information, read Global, Regional, and Zonal
+                Resources.
+
+                Note that completed Operation resources have a limited
+                retention period.
+
+            """
+
+            http_options = _BaseRolloutsRestTransport._BaseResume._get_http_options()
+
+            request, metadata = self._interceptor.pre_resume(request, metadata)
+            transcoded_request = (
+                _BaseRolloutsRestTransport._BaseResume._get_transcoded_request(
+                    http_options, request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseRolloutsRestTransport._BaseResume._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.RolloutsClient.Resume",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.Rollouts",
+                        "rpcName": "Resume",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = RolloutsRestTransport._Resume._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_resume(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_resume_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.RolloutsClient.resume",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.Rollouts",
+                        "rpcName": "Resume",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    @property
+    def advance(self) -> Callable[[compute.AdvanceRolloutRequest], compute.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._Advance(self._session, self._host, self._interceptor)  # type: ignore
+
     @property
     def cancel(self) -> Callable[[compute.CancelRolloutRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
@@ -1048,6 +1729,18 @@ class RolloutsRestTransport(_BaseRolloutsRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._List(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def pause(self) -> Callable[[compute.PauseRolloutRequest], compute.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._Pause(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def resume(self) -> Callable[[compute.ResumeRolloutRequest], compute.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._Resume(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def kind(self) -> str:

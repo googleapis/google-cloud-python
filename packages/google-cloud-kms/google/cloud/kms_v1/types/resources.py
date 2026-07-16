@@ -382,6 +382,9 @@ class CryptoKey(proto.Message):
                 [GetPublicKey][google.cloud.kms.v1.KeyManagementService.GetPublicKey]
                 and
                 [Decapsulate][google.cloud.kms.v1.KeyManagementService.Decapsulate].
+            AES_WRAPPING (11):
+                [CryptoKeys][google.cloud.kms.v1.CryptoKey] with this
+                purpose may be used for AES key
         """
 
         CRYPTO_KEY_PURPOSE_UNSPECIFIED = 0
@@ -391,6 +394,7 @@ class CryptoKey(proto.Message):
         RAW_ENCRYPT_DECRYPT = 7
         MAC = 9
         KEY_ENCAPSULATION = 10
+        AES_WRAPPING = 11
 
     name: str = proto.Field(
         proto.STRING,
@@ -679,6 +683,23 @@ class CryptoKeyVersion(proto.Message):
             Output only. Whether or not this key version is eligible for
             reimport, by being specified as a target in
             [ImportCryptoKeyVersionRequest.crypto_key_version][google.cloud.kms.v1.ImportCryptoKeyVersionRequest.crypto_key_version].
+        trusted_wrapping_enabled (bool):
+            Immutable. Field indicating that the key may be wrapped by a
+            trusted key. This field can be set for all key purposes
+            except
+            [ENCRYPT_DECRYPT][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT],
+            and is only valid for keys with protection level
+            [HSM_SINGLE_TENANT][google.cloud.kms.v1.ProtectionLevel.HSM_SINGLE_TENANT].
+            This field can only be set at creation or import time via
+            [CreateCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.CreateCryptoKeyVersion],
+            or
+            [ImportCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.ImportCryptoKeyVersion].
+        hsm_trusted (bool):
+            Output only. Field indicating that the key wrapping key is
+            trusted. This field is only valid for key purpose
+            [AES_256_WRAPPING][CryptoKey.CryptoKeyPurpose.AES_256_WRAPPING],
+            and protection level
+            [HSM_SINGLE_TENANT][google.cloud.kms.v1.ProtectionLevel.HSM_SINGLE_TENANT].
     """
 
     class CryptoKeyVersionAlgorithm(proto.Enum):
@@ -865,6 +886,9 @@ class CryptoKeyVersion(proto.Message):
                 Signature Algorithm, at security level 5.
                 Randomized version supporting
                 externally-computed message representatives.
+            AES_256_KWP (73):
+                AES key wrap with zero padding algorithm (RFC 5649). Can
+                only be used by keys with purpose AES_WRAPPING.
         """
 
         CRYPTO_KEY_VERSION_ALGORITHM_UNSPECIFIED = 0
@@ -914,6 +938,7 @@ class CryptoKeyVersion(proto.Message):
         PQ_SIGN_ML_DSA_44_EXTERNAL_MU = 70
         PQ_SIGN_ML_DSA_65_EXTERNAL_MU = 67
         PQ_SIGN_ML_DSA_87_EXTERNAL_MU = 71
+        AES_256_KWP = 73
 
     class CryptoKeyVersionState(proto.Enum):
         r"""The state of a
@@ -1093,6 +1118,14 @@ class CryptoKeyVersion(proto.Message):
     reimport_eligible: bool = proto.Field(
         proto.BOOL,
         number=18,
+    )
+    trusted_wrapping_enabled: bool = proto.Field(
+        proto.BOOL,
+        number=21,
+    )
+    hsm_trusted: bool = proto.Field(
+        proto.BOOL,
+        number=23,
     )
 
 

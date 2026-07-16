@@ -45,6 +45,7 @@ from .types.attachment import (
     UploadAttachmentRequest,
     UploadAttachmentResponse,
 )
+from .types.audience import Audience
 from .types.availability import (
     Availability,
     CustomStatus,
@@ -271,6 +272,7 @@ __all__ = (
     "AttachedGif",
     "Attachment",
     "AttachmentDataRef",
+    "Audience",
     "Availability",
     "CalendarEventLinkData",
     "CardWithId",

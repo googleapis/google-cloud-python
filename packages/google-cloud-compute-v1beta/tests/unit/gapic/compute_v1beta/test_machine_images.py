@@ -4089,6 +4089,7 @@ def test_insert_rest_call_success(request_type):
             ],
             "key_revocation_action_type": "key_revocation_action_type_value",
             "labels": {},
+            "local_ssd_encryption_mode": "local_ssd_encryption_mode_value",
             "machine_type": "machine_type_value",
             "metadata": {
                 "fingerprint": "fingerprint_value",
@@ -4214,7 +4215,11 @@ def test_insert_rest_call_success(request_type):
         "labels": {},
         "machine_image_encryption_key": {},
         "name": "name_value",
-        "params": {"resource_manager_tags": {}},
+        "params": {
+            "excluded_disks": ["excluded_disks_value1", "excluded_disks_value2"],
+            "included_disks": ["included_disks_value1", "included_disks_value2"],
+            "resource_manager_tags": {},
+        },
         "satisfies_pzi": True,
         "satisfies_pzs": True,
         "saved_disks": [

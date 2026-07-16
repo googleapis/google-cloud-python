@@ -1663,6 +1663,8 @@ def test_get_rest_required_fields(request_type=compute.GetGlobalForwardingRuleRe
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
     ).get._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("view",))
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -1720,7 +1722,7 @@ def test_get_rest_unset_required_fields():
 
     unset_fields = transport.get._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(())
+        set(("view",))
         & set(
             (
                 "forwardingRule",
@@ -4178,6 +4180,7 @@ def test_insert_rest_call_success(request_type):
         "all_ports": True,
         "allow_global_access": True,
         "allow_psc_global_access": True,
+        "attached_extensions": [{"reference": "reference_value"}],
         "backend_service": "backend_service_value",
         "base_forwarding_rule": "base_forwarding_rule_value",
         "creation_timestamp": "creation_timestamp_value",
@@ -4604,6 +4607,7 @@ def test_patch_rest_call_success(request_type):
         "all_ports": True,
         "allow_global_access": True,
         "allow_psc_global_access": True,
+        "attached_extensions": [{"reference": "reference_value"}],
         "backend_service": "backend_service_value",
         "base_forwarding_rule": "base_forwarding_rule_value",
         "creation_timestamp": "creation_timestamp_value",
