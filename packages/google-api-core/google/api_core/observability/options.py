@@ -17,6 +17,7 @@
 """Observability environment variable and client options resolution helpers."""
 
 import os
+import warnings
 from typing import Any, Dict, Optional, Union
 
 # Allowed truthy and falsy patterns for environment variables
@@ -68,7 +69,8 @@ def _get_env_bool(name: str) -> Optional[bool]:
         return None
     try:
         return _strtobool(val)
-    except ValueError:
+    except ValueError as e:
+        warnings.warn(f"Ignored invalid value for {name}: {e}", RuntimeWarning)
         return None
 
 
