@@ -164,6 +164,18 @@ def test__get_api_endpoint():
         == "mTLS is not supported in any universe other than googleapis.com."
     )
 
+    with pytest.raises(ValueError) as excinfo:
+        get_api_endpoint(
+            None,
+            mock_client_cert_source,
+            default_universe,
+            "always",
+            MockClient._DEFAULT_UNIVERSE,
+            None,
+            MockClient._DEFAULT_ENDPOINT_TEMPLATE,
+        )
+    assert str(excinfo.value) == "mTLS endpoint is not available."
+
 
 def test__get_universe_domain():
     client_universe_domain = "foo.com"
