@@ -46,6 +46,7 @@ from .types.service import (
     DeleteSecretRequest,
     DestroySecretVersionRequest,
     DisableSecretVersionRequest,
+    EnableManagedRotationRequest,
     EnableSecretVersionRequest,
     GetSecretRequest,
     GetSecretVersionRequest,
@@ -53,6 +54,7 @@ from .types.service import (
     ListSecretsResponse,
     ListSecretVersionsRequest,
     ListSecretVersionsResponse,
+    RotateSecretRequest,
     UpdateSecretRequest,
 )
 
@@ -150,6 +152,7 @@ __all__ = (
     "DeleteSecretRequest",
     "DestroySecretVersionRequest",
     "DisableSecretVersionRequest",
+    "EnableManagedRotationRequest",
     "EnableSecretVersionRequest",
     "GetSecretRequest",
     "GetSecretVersionRequest",
@@ -159,6 +162,7 @@ __all__ = (
     "ListSecretsResponse",
     "Replication",
     "ReplicationStatus",
+    "RotateSecretRequest",
     "Rotation",
     "Secret",
     "SecretManagerServiceClient",

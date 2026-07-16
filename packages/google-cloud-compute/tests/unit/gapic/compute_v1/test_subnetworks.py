@@ -5999,6 +5999,8 @@ def test_insert_rest_call_success(request_type):
         "secondary_ip_ranges": [
             {
                 "ip_cidr_range": "ip_cidr_range_value",
+                "ip_collection": "ip_collection_value",
+                "ip_version": "ip_version_value",
                 "range_name": "range_name_value",
                 "reserved_internal_range": "reserved_internal_range_value",
             }
@@ -6571,6 +6573,8 @@ def test_patch_rest_call_success(request_type):
         "secondary_ip_ranges": [
             {
                 "ip_cidr_range": "ip_cidr_range_value",
+                "ip_collection": "ip_collection_value",
+                "ip_version": "ip_version_value",
                 "range_name": "range_name_value",
                 "reserved_internal_range": "reserved_internal_range_value",
             }

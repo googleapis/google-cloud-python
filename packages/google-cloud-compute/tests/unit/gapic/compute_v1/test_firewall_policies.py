@@ -6931,12 +6931,17 @@ def test_add_rule_rest_call_success(request_type):
         "rule_name": "rule_name_value",
         "rule_tuple_count": 1737,
         "security_profile_group": "security_profile_group_value",
+        "target_forwarding_rules": [
+            "target_forwarding_rules_value1",
+            "target_forwarding_rules_value2",
+        ],
         "target_resources": ["target_resources_value1", "target_resources_value2"],
         "target_secure_tags": {},
         "target_service_accounts": [
             "target_service_accounts_value1",
             "target_service_accounts_value2",
         ],
+        "target_type": "target_type_value",
         "tls_inspect": True,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
@@ -7970,8 +7975,10 @@ def test_get_rule_rest_call_success(request_type):
             rule_name="rule_name_value",
             rule_tuple_count=1737,
             security_profile_group="security_profile_group_value",
+            target_forwarding_rules=["target_forwarding_rules_value"],
             target_resources=["target_resources_value"],
             target_service_accounts=["target_service_accounts_value"],
+            target_type="target_type_value",
             tls_inspect=True,
         )
 
@@ -7999,8 +8006,10 @@ def test_get_rule_rest_call_success(request_type):
     assert response.rule_name == "rule_name_value"
     assert response.rule_tuple_count == 1737
     assert response.security_profile_group == "security_profile_group_value"
+    assert response.target_forwarding_rules == ["target_forwarding_rules_value"]
     assert response.target_resources == ["target_resources_value"]
     assert response.target_service_accounts == ["target_service_accounts_value"]
+    assert response.target_type == "target_type_value"
     assert response.tls_inspect is True
 
 
@@ -8180,6 +8189,10 @@ def test_insert_rest_call_success(request_type):
                 "rule_name": "rule_name_value",
                 "rule_tuple_count": 1737,
                 "security_profile_group": "security_profile_group_value",
+                "target_forwarding_rules": [
+                    "target_forwarding_rules_value1",
+                    "target_forwarding_rules_value2",
+                ],
                 "target_resources": [
                     "target_resources_value1",
                     "target_resources_value2",
@@ -8189,6 +8202,7 @@ def test_insert_rest_call_success(request_type):
                     "target_service_accounts_value1",
                     "target_service_accounts_value2",
                 ],
+                "target_type": "target_type_value",
                 "tls_inspect": True,
             }
         ],
@@ -8954,6 +8968,10 @@ def test_patch_rest_call_success(request_type):
                 "rule_name": "rule_name_value",
                 "rule_tuple_count": 1737,
                 "security_profile_group": "security_profile_group_value",
+                "target_forwarding_rules": [
+                    "target_forwarding_rules_value1",
+                    "target_forwarding_rules_value2",
+                ],
                 "target_resources": [
                     "target_resources_value1",
                     "target_resources_value2",
@@ -8963,6 +8981,7 @@ def test_patch_rest_call_success(request_type):
                     "target_service_accounts_value1",
                     "target_service_accounts_value2",
                 ],
+                "target_type": "target_type_value",
                 "tls_inspect": True,
             }
         ],
@@ -9268,12 +9287,17 @@ def test_patch_rule_rest_call_success(request_type):
         "rule_name": "rule_name_value",
         "rule_tuple_count": 1737,
         "security_profile_group": "security_profile_group_value",
+        "target_forwarding_rules": [
+            "target_forwarding_rules_value1",
+            "target_forwarding_rules_value2",
+        ],
         "target_resources": ["target_resources_value1", "target_resources_value2"],
         "target_secure_tags": {},
         "target_service_accounts": [
             "target_service_accounts_value1",
             "target_service_accounts_value2",
         ],
+        "target_type": "target_type_value",
         "tls_inspect": True,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.

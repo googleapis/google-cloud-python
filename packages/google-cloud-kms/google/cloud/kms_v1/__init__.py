@@ -118,6 +118,8 @@ from .types.service import (
     Digest,
     EncryptRequest,
     EncryptResponse,
+    ExportTrustedKeyWrappedCryptoKeyVersionRequest,
+    ExportTrustedKeyWrappedCryptoKeyVersionResponse,
     GenerateRandomBytesRequest,
     GenerateRandomBytesResponse,
     GetCryptoKeyRequest,
@@ -127,6 +129,7 @@ from .types.service import (
     GetPublicKeyRequest,
     GetRetiredResourceRequest,
     ImportCryptoKeyVersionRequest,
+    ImportTrustedKeyWrappedCryptoKeyVersionRequest,
     ListCryptoKeysRequest,
     ListCryptoKeysResponse,
     ListCryptoKeyVersionsRequest,
@@ -288,6 +291,8 @@ __all__ = (
     "ExecuteSingleTenantHsmInstanceProposalMetadata",
     "ExecuteSingleTenantHsmInstanceProposalRequest",
     "ExecuteSingleTenantHsmInstanceProposalResponse",
+    "ExportTrustedKeyWrappedCryptoKeyVersionRequest",
+    "ExportTrustedKeyWrappedCryptoKeyVersionResponse",
     "ExternalProtectionLevelOptions",
     "GenerateRandomBytesRequest",
     "GenerateRandomBytesResponse",
@@ -306,6 +311,7 @@ __all__ = (
     "HsmManagementClient",
     "ImportCryptoKeyVersionRequest",
     "ImportJob",
+    "ImportTrustedKeyWrappedCryptoKeyVersionRequest",
     "KeyAccessJustificationsPolicy",
     "KeyHandle",
     "KeyManagementServiceClient",
@@ -355,4 +361,3 @@ __all__ = (
     "VerifyConnectivityRequest",
     "VerifyConnectivityResponse",
 )
-# Trigger CI check
