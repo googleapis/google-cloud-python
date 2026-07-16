@@ -17,9 +17,8 @@ import unittest.mock as mock
 from unittest.mock import AsyncMock, MagicMock
 
 import pytest
-from google.api_core import exceptions
-from google.rpc import status_pb2
 
+from google.api_core import exceptions
 from google.cloud._storage_v2.types import storage as storage_type
 from google.cloud._storage_v2.types.storage import BidiWriteObjectRedirectedError
 from google.cloud.storage import Blob
@@ -29,6 +28,7 @@ from google.cloud.storage.asyncio.async_appendable_object_writer import (
     AsyncAppendableObjectWriter,
     _is_write_retryable,
 )
+from google.rpc import status_pb2
 
 # Constants
 BUCKET = "test-bucket"
@@ -560,7 +560,9 @@ class TestAsyncAppendableObjectWriter:
 
         checksum = 12345678
         await writer.close(finalize_on_close=True, full_object_checksum=checksum)
-        writer.finalize.assert_awaited_once_with(full_object_checksum=checksum)
+        writer.finalize.assert_awaited_once_with(
+            full_object_checksum=checksum, retry_policy=None
+        )
 
     @pytest.mark.asyncio
     async def test_close_with_checksum_without_finalize_raises(
@@ -625,3 +627,134 @@ class TestAsyncAppendableObjectWriter:
         # Assert stream was closed and local state reset despite exception
         mock_appendable_writer["mock_stream"].close.assert_awaited()
         assert not writer._is_stream_open
+
+    @pytest.mark.asyncio
+    async def test_finalize_retry_on_transient_error(self, mock_appendable_writer):
+        writer = self._make_one(mock_appendable_writer["mock_client"])
+        writer._is_stream_open = True
+        writer.write_obj_stream = mock_appendable_writer["mock_stream"]
+
+        resource = storage_type.Object(size=999)
+        mock_appendable_writer["mock_stream"].recv.side_effect = [
+            exceptions.InternalServerError("500 Transient Error"),
+            storage_type.BidiWriteObjectResponse(resource=resource),
+        ]
+
+        res = await writer.finalize()
+
+        assert res == resource
+        assert writer.persisted_size == 999
+        assert mock_appendable_writer["mock_stream"].send.await_count == 2
+        assert not writer._is_stream_open
+
+    @pytest.mark.asyncio
+    async def test_finalize_custom_retry_policy(self, mock_appendable_writer):
+        from google.api_core.retry_async import AsyncRetry
+
+        writer = self._make_one(mock_appendable_writer["mock_client"])
+        writer._is_stream_open = True
+        writer.write_obj_stream = mock_appendable_writer["mock_stream"]
+
+        custom_policy = AsyncRetry(
+            predicate=lambda exc: isinstance(exc, exceptions.InternalServerError)
+        )
+        resource = storage_type.Object(size=999)
+        mock_appendable_writer[
+            "mock_stream"
+        ].recv.return_value = storage_type.BidiWriteObjectResponse(resource=resource)
+
+        res = await writer.finalize(retry_policy=custom_policy)
+        assert res == resource
+
+    @pytest.mark.asyncio
+    async def test_close_with_finalize_and_custom_retry_policy(
+        self, mock_appendable_writer
+    ):
+        from google.api_core.retry_async import AsyncRetry
+
+        writer = self._make_one(mock_appendable_writer["mock_client"])
+        writer._is_stream_open = True
+        writer.finalize = AsyncMock()
+
+        custom_policy = AsyncRetry(predicate=lambda exc: False)
+        await writer.close(finalize_on_close=True, retry_policy=custom_policy)
+        writer.finalize.assert_awaited_once_with(
+            full_object_checksum=None,
+            retry_policy=custom_policy,
+        )
+
+    @pytest.mark.asyncio
+    async def test_close_retry_on_transient_error(self, mock_appendable_writer):
+        writer = self._make_one(mock_appendable_writer["mock_client"])
+        writer._is_stream_open = True
+        writer.write_obj_stream = mock_appendable_writer["mock_stream"]
+
+        resource = storage_type.Object(size=999)
+        mock_appendable_writer["mock_stream"].recv.side_effect = [
+            exceptions.InternalServerError("500 Transient Error"),
+            storage_type.BidiWriteObjectResponse(resource=resource),
+        ]
+
+        res = await writer.close(finalize_on_close=True)
+
+        assert res == resource
+        assert writer.persisted_size == 999
+        assert mock_appendable_writer["mock_stream"].send.await_count == 2
+        assert not writer._is_stream_open
+
+    @pytest.mark.asyncio
+    async def test_finalize_retry_on_redirect_error(self, mock_appendable_writer):
+        writer = self._make_one(mock_appendable_writer["mock_client"])
+        writer._is_stream_open = True
+        writer.write_obj_stream = mock_appendable_writer["mock_stream"]
+
+        redirect = BidiWriteObjectRedirectedError(
+            routing_token="rt1",
+            write_handle=storage_type.BidiWriteHandle(handle=b"h1"),
+        )
+        exc = exceptions.Aborted("aborted", errors=[redirect])
+
+        resource = storage_type.Object(size=999)
+        mock_appendable_writer["mock_stream"].recv.side_effect = [
+            exc,
+            storage_type.BidiWriteObjectResponse(resource=resource),
+        ]
+
+        writer.open = mock.AsyncMock()
+
+        res = await writer.finalize()
+
+        assert res == resource
+        assert writer.persisted_size == 999
+        assert mock_appendable_writer["mock_stream"].send.await_count == 2
+        assert writer._routing_token == "rt1"
+        assert writer.write_handle.handle == b"h1"
+        writer.open.assert_awaited_once()
+
+    @pytest.mark.asyncio
+    async def test_close_retry_on_redirect_error(self, mock_appendable_writer):
+        writer = self._make_one(mock_appendable_writer["mock_client"])
+        writer._is_stream_open = True
+        writer.write_obj_stream = mock_appendable_writer["mock_stream"]
+
+        redirect = BidiWriteObjectRedirectedError(
+            routing_token="rt2",
+            write_handle=storage_type.BidiWriteHandle(handle=b"h2"),
+        )
+        exc = exceptions.Aborted("aborted", errors=[redirect])
+
+        mock_appendable_writer["mock_stream"].close.side_effect = [
+            exc,
+            None,
+        ]
+
+        writer.open = mock.AsyncMock()
+        writer.persisted_size = 999
+
+        res = await writer.close()
+
+        assert res == 999
+        assert mock_appendable_writer["mock_stream"].close.await_count == 2
+        assert writer._routing_token == "rt2"
+        assert writer.write_handle.handle == b"h2"
+        writer.open.assert_awaited_once()
