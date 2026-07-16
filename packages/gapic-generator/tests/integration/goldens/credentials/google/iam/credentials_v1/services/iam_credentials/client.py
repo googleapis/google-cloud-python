@@ -28,9 +28,9 @@ from google.iam.credentials_v1 import gapic_version as package_version
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
-from google.api_core.gapic_v1 import _client_cert
-from google.api_core.gapic_v1 import _config_helpers
-from google.api_core.gapic_v1 import _routing
+from google.api_core.gapic_v1 import client_cert
+from google.api_core.gapic_v1 import config_helpers
+from google.api_core.gapic_v1 import routing
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials             # type: ignore
 from google.auth.transport import mtls                            # type: ignore
@@ -118,7 +118,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
         Returns:
             Optional[str]: converted mTLS api endpoint.
         """
-        return _routing.get_default_mtls_endpoint(api_endpoint)
+        return routing.get_default_mtls_endpoint(api_endpoint)
 
     # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
     DEFAULT_ENDPOINT = "iamcredentials.googleapis.com"
@@ -142,7 +142,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
             ValueError: (If using a version of google-auth without should_use_client_cert and
 	    GOOGLE_API_USE_CLIENT_CERTIFICATE is set to an unexpected value.)
         """
-        return _client_cert.use_client_cert_effective()
+        return client_cert.use_client_cert_effective()
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -332,7 +332,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
             google.auth.exceptions.MutualTLSChannelError: If GOOGLE_API_USE_MTLS_ENDPOINT
                 is not any of ["auto", "never", "always"].
         """
-        return _config_helpers.read_environment_variables()
+        return config_helpers.read_environment_variables()
 
     @staticmethod
     def _get_client_cert_source(provided_cert_source, use_cert_flag):
@@ -345,7 +345,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
         Returns:
             bytes or None: The client cert source to be used by the client.
         """
-        return _client_cert.get_client_cert_source(provided_cert_source, use_cert_flag)
+        return client_cert.get_client_cert_source(provided_cert_source, use_cert_flag)
 
     @staticmethod
     def _get_api_endpoint(api_override, client_cert_source, universe_domain, use_mtls_endpoint) -> str:
@@ -364,7 +364,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
         """
         return cast(
             str,
-            _routing.get_api_endpoint(
+            routing.get_api_endpoint(
                 api_override,
                 client_cert_source,
                 universe_domain,
@@ -389,7 +389,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
         Raises:
             ValueError: If the universe domain is an empty string.
         """
-        return _routing.get_universe_domain(
+        return routing.get_universe_domain(
             client_universe_domain,
             universe_domain_env,
             IAMCredentialsClient._DEFAULT_UNIVERSE,

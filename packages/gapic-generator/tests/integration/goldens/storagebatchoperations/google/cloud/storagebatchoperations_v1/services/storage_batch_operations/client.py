@@ -21,7 +21,7 @@ import logging as std_logging
 import os
 import re
 from typing import Dict, Callable, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union, cast
-from google.api_core.gapic_v1 import _method_helpers
+from google.api_core.gapic_v1 import method_helpers
 import warnings
 
 from google.cloud.storagebatchoperations_v1 import gapic_version as package_version
@@ -29,9 +29,9 @@ from google.cloud.storagebatchoperations_v1 import gapic_version as package_vers
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
-from google.api_core.gapic_v1 import _client_cert
-from google.api_core.gapic_v1 import _config_helpers
-from google.api_core.gapic_v1 import _routing
+from google.api_core.gapic_v1 import client_cert
+from google.api_core.gapic_v1 import config_helpers
+from google.api_core.gapic_v1 import routing
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials             # type: ignore
 from google.auth.transport import mtls                            # type: ignore
@@ -119,7 +119,7 @@ class StorageBatchOperationsClient(metaclass=StorageBatchOperationsClientMeta):
         Returns:
             Optional[str]: converted mTLS api endpoint.
         """
-        return _routing.get_default_mtls_endpoint(api_endpoint)
+        return routing.get_default_mtls_endpoint(api_endpoint)
 
     # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
     DEFAULT_ENDPOINT = "storagebatchoperations.googleapis.com"
@@ -143,7 +143,7 @@ class StorageBatchOperationsClient(metaclass=StorageBatchOperationsClientMeta):
             ValueError: (If using a version of google-auth without should_use_client_cert and
 	    GOOGLE_API_USE_CLIENT_CERTIFICATE is set to an unexpected value.)
         """
-        return _client_cert.use_client_cert_effective()
+        return client_cert.use_client_cert_effective()
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -355,7 +355,7 @@ class StorageBatchOperationsClient(metaclass=StorageBatchOperationsClientMeta):
             google.auth.exceptions.MutualTLSChannelError: If GOOGLE_API_USE_MTLS_ENDPOINT
                 is not any of ["auto", "never", "always"].
         """
-        return _config_helpers.read_environment_variables()
+        return config_helpers.read_environment_variables()
 
     @staticmethod
     def _get_client_cert_source(provided_cert_source, use_cert_flag):
@@ -368,7 +368,7 @@ class StorageBatchOperationsClient(metaclass=StorageBatchOperationsClientMeta):
         Returns:
             bytes or None: The client cert source to be used by the client.
         """
-        return _client_cert.get_client_cert_source(provided_cert_source, use_cert_flag)
+        return client_cert.get_client_cert_source(provided_cert_source, use_cert_flag)
 
     @staticmethod
     def _get_api_endpoint(api_override, client_cert_source, universe_domain, use_mtls_endpoint) -> str:
@@ -387,7 +387,7 @@ class StorageBatchOperationsClient(metaclass=StorageBatchOperationsClientMeta):
         """
         return cast(
             str,
-            _routing.get_api_endpoint(
+            routing.get_api_endpoint(
                 api_override,
                 client_cert_source,
                 universe_domain,
@@ -412,7 +412,7 @@ class StorageBatchOperationsClient(metaclass=StorageBatchOperationsClientMeta):
         Raises:
             ValueError: If the universe domain is an empty string.
         """
-        return _routing.get_universe_domain(
+        return routing.get_universe_domain(
             client_universe_domain,
             universe_domain_env,
             StorageBatchOperationsClient._DEFAULT_UNIVERSE,
@@ -440,7 +440,7 @@ class StorageBatchOperationsClient(metaclass=StorageBatchOperationsClientMeta):
             field_name (str): The name of the field to populate.
             is_proto3_optional (bool): Whether the field is proto3 optional.
         """
-        _method_helpers.setup_request_id(request, field_name, is_proto3_optional)
+        method_helpers.setup_request_id(request, field_name, is_proto3_optional)
 
     def _add_cred_info_for_auth_errors(
         self,
