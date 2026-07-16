@@ -15,105 +15,98 @@
 
 import re
 
+import pytest
+
 from google.api_core.gapic_v1.request import setup_request_id
 
 
-def test_setup_request_id():
-    class MockRequest:
-        def __init__(self, **kwargs):
-            for k, v in kwargs.items():
-                setattr(self, k, v)
+# --- Mock Request Helper Classes ---
 
-        def __contains__(self, key):
-            return hasattr(self, key)
 
-    class MockProtoRequest:
-        def __init__(self, **kwargs):
-            for k, v in kwargs.items():
-                setattr(self, k, v)
+class MockRequest:
+    def __init__(self, **kwargs):
+        for k, v in kwargs.items():
+            setattr(self, k, v)
 
-        def HasField(self, key):
-            return hasattr(self, key)
+    def __contains__(self, key):
+        return hasattr(self, key)
 
-    # Test with proto3 optional field not in request
-    request = MockRequest()
-    setup_request_id(request, "request_id", True)
-    assert re.match(
-        r"[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}",
-        request.request_id,
+
+class MockProtoRequest:
+    def __init__(self, **kwargs):
+        for k, v in kwargs.items():
+            setattr(self, k, v)
+
+    def HasField(self, key):
+        return hasattr(self, key)
+
+
+class MockValueErrorRequest:
+    def HasField(self, key):
+        raise ValueError("Mismatched field")
+
+    def __contains__(self, key):
+        return hasattr(self, key)
+
+
+# --- Parameterized Test ---
+
+UUID_REGEX = r"[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}"
+
+
+@pytest.mark.parametrize(
+    "request_obj, is_proto3_optional, expected",
+    [
+        # MockRequest cases
+        (MockRequest(), True, "uuid"),
+        (MockRequest(request_id="already_set"), True, "already_set"),
+        (MockRequest(request_id=""), False, "uuid"),
+        (MockRequest(request_id="already_set"), False, "already_set"),
+        # MockProtoRequest cases
+        (MockProtoRequest(), True, "uuid"),
+        (MockProtoRequest(request_id="already_set"), True, "already_set"),
+        # ValueError case
+        (MockValueErrorRequest(), True, "uuid"),
+        # Dict cases
+        ({}, True, "uuid"),
+        ({"request_id": "already_set"}, True, "already_set"),
+        ({"request_id": ""}, False, "uuid"),
+        ({"request_id": "already_set"}, False, "already_set"),
+        # None case
+        (None, True, "none"),
+    ],
+    ids=[
+        "proto3_optional_not_in_request",
+        "proto3_optional_already_in_request",
+        "non_proto3_optional_empty",
+        "non_proto3_optional_already_set",
+        "proto3_optional_not_in_request_proto",
+        "proto3_optional_already_in_request_proto",
+        "value_error_fallback",
+        "dict_proto3_optional_not_in_request",
+        "dict_proto3_optional_already_in_request",
+        "dict_non_proto3_optional_empty",
+        "dict_non_proto3_optional_already_set",
+        "none_request",
+    ],
+)
+def test_setup_request_id(request_obj, is_proto3_optional, expected):
+    # Act
+    setup_request_id(request_obj, "request_id", is_proto3_optional)
+
+    # Assert
+    if expected == "none":
+        assert request_obj is None
+        return
+
+    # Extract the resulting value depending on container type
+    value = (
+        request_obj["request_id"]
+        if isinstance(request_obj, dict)
+        else request_obj.request_id
     )
 
-    # Test with proto3 optional field already in request
-    request = MockRequest(request_id="already_set")
-    setup_request_id(request, "request_id", True)
-    assert request.request_id == "already_set"
-
-    # Test with non-proto3 optional field empty
-    request = MockRequest(request_id="")
-    setup_request_id(request, "request_id", False)
-    assert re.match(
-        r"[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}",
-        request.request_id,
-    )
-
-    # Test with non-proto3 optional field already set
-    request = MockRequest(request_id="already_set")
-    setup_request_id(request, "request_id", False)
-    assert request.request_id == "already_set"
-
-    # Test with proto3 optional field not in request (MockProtoRequest)
-    request = MockProtoRequest()
-    setup_request_id(request, "request_id", True)
-    assert re.match(
-        r"[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}",
-        request.request_id,
-    )
-
-    # Test with proto3 optional field already in request (MockProtoRequest)
-    request = MockProtoRequest(request_id="already_set")
-    setup_request_id(request, "request_id", True)
-    assert request.request_id == "already_set"
-
-    # Test with ValueError
-    class MockValueErrorRequest:
-        def HasField(self, key):
-            raise ValueError("Mismatched field")
-
-        def __contains__(self, key):
-            return hasattr(self, key)
-
-    request = MockValueErrorRequest()
-    setup_request_id(request, "request_id", True)
-    assert re.match(
-        r"[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}",
-        request.request_id,
-    )
-
-    # Test with dict and proto3 optional field not in request
-    request = {}
-    setup_request_id(request, "request_id", True)
-    assert re.match(
-        r"[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}",
-        request["request_id"],
-    )
-
-    # Test with dict and proto3 optional field already in request
-    request = {"request_id": "already_set"}
-    setup_request_id(request, "request_id", True)
-    assert request["request_id"] == "already_set"
-
-    # Test with dict and non-proto3 optional field empty
-    request = {"request_id": ""}
-    setup_request_id(request, "request_id", False)
-    assert re.match(
-        r"[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}",
-        request["request_id"],
-    )
-
-    # Test with dict and non-proto3 optional field already set
-    request = {"request_id": "already_set"}
-    setup_request_id(request, "request_id", False)
-    assert request["request_id"] == "already_set"
-
-    # Test with None request (should handle gracefully without raising exception)
-    setup_request_id(None, "request_id", True)
+    if expected == "uuid":
+        assert re.match(UUID_REGEX, value)
+    else:
+        assert value == expected
