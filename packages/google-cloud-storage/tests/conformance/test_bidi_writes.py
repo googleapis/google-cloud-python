@@ -6,10 +6,10 @@ import uuid
 import grpc
 import pytest
 import requests
+
 from google.api_core import client_options, exceptions
 from google.api_core.retry_async import AsyncRetry
 from google.auth import credentials as auth_credentials
-
 from google.cloud import _storage_v2 as storage_v2
 from google.cloud.storage.asyncio.async_appendable_object_writer import (
     AsyncAppendableObjectWriter,
@@ -136,7 +136,8 @@ async def run_test_scenario(
                 CONTENT, metadata=fault_injection_metadata, retry_policy=policy_to_pass
             )
             # await writer.finalize()
-            await writer.close(finalize_on_close=True)
+            f_o_c = scenario.get("finalize_on_close", True)
+            await writer.close(finalize_on_close=f_o_c, retry_policy=policy_to_pass)
 
             # If an exception was expected, this line should not be reached.
             if scenario["expected_error"] is not None:
@@ -144,16 +145,18 @@ async def run_test_scenario(
                     f"Expected exception {scenario['expected_error']} was not raised."
                 )
 
-            # 4. Verify the object content.
-            read_request = storage_v2.ReadObjectRequest(
-                bucket=f"projects/_/buckets/{bucket_name}",
-                object=object_name,
-            )
-            read_stream = await gapic_client.read_object(request=read_request)
-            data = b""
-            async for chunk in read_stream:
-                data += chunk.checksummed_data.content
-            assert data == CONTENT
+            # 4. Verify the object content if applicable.
+            if not scenario.get("skip_verification"):
+                read_request = storage_v2.ReadObjectRequest(
+                    bucket=f"projects/_/buckets/{bucket_name}",
+                    object=object_name,
+                )
+                read_stream = await gapic_client.read_object(request=read_request)
+                data = b""
+                async for chunk in read_stream:
+                    data += chunk.checksummed_data.content
+                assert data == CONTENT
+
             if scenario["expected_error"] is None:
                 # Scenarios like 503, 500, smarter resumption, and redirects
                 # SHOULD trigger at least one retry attempt.
@@ -234,6 +237,26 @@ async def test_bidi_writes(testbench):
             "method": "storage.objects.insert",
             "instruction": "redirect-send-handle-and-token-tokenval",
             "expected_error": None,
+        },
+        {
+            "name": "Retry exactly on finalize/close (Redirect Error)",
+            "method": "storage.objects.insert",
+            "instruction": "redirect-send-handle-and-token-mytoken-on-finish-write",
+            "expected_error": None,
+        },
+        {
+            "name": "Retry exactly on finalize/close (503)",
+            "method": "storage.objects.insert",
+            "instruction": "return-503-on-finish-write",
+            "expected_error": None,
+        },
+        {
+            "name": "Retry exactly on close (finalize_on_close=False) (503)",
+            "method": "storage.objects.insert",
+            "instruction": "return-503-on-half-close",
+            "expected_error": None,
+            "finalize_on_close": False,
+            "skip_verification": True,
         },
     ]
 
