@@ -1377,6 +1377,7 @@ def test_get_product(request_type, transport: str = "grpc"):
             feed_label="feed_label_value",
             data_source="data_source_value",
             version_number=1518,
+            archived=True,
         )
         response = client.get_product(request)
 
@@ -1396,6 +1397,7 @@ def test_get_product(request_type, transport: str = "grpc"):
     assert response.feed_label == "feed_label_value"
     assert response.data_source == "data_source_value"
     assert response.version_number == 1518
+    assert response.archived is True
 
 
 def test_get_product_non_empty_request_with_auto_populated_field():
@@ -1535,6 +1537,7 @@ async def test_get_product_async(request_type, transport: str = "grpc_asyncio"):
                 feed_label="feed_label_value",
                 data_source="data_source_value",
                 version_number=1518,
+                archived=True,
             )
         )
         response = await client.get_product(request)
@@ -1555,6 +1558,7 @@ async def test_get_product_async(request_type, transport: str = "grpc_asyncio"):
     assert response.feed_label == "feed_label_value"
     assert response.data_source == "data_source_value"
     assert response.version_number == 1518
+    assert response.archived is True
 
 
 def test_get_product_field_headers():
@@ -2828,6 +2832,7 @@ async def test_get_product_empty_call_grpc_asyncio():
                 feed_label="feed_label_value",
                 data_source="data_source_value",
                 version_number=1518,
+                archived=True,
             )
         )
         await client.get_product(request=None)
@@ -2924,6 +2929,7 @@ def test_get_product_rest_call_success(request_type):
             feed_label="feed_label_value",
             data_source="data_source_value",
             version_number=1518,
+            archived=True,
         )
 
         # Wrap the value into a proper Response obj
@@ -2948,6 +2954,7 @@ def test_get_product_rest_call_success(request_type):
     assert response.feed_label == "feed_label_value"
     assert response.data_source == "data_source_value"
     assert response.version_number == 1518
+    assert response.archived is True
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])

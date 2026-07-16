@@ -3756,6 +3756,19 @@ def test_insert_rest_call_success(request_type):
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
         "id": 205,
+        "instances": [
+            {
+                "fingerprint": "fingerprint_value",
+                "name": "name_value",
+                "preserved_state": {
+                    "disks": {},
+                    "external_i_ps": {},
+                    "internal_i_ps": {},
+                    "metadata": {},
+                },
+                "status": "status_value",
+            }
+        ],
         "kind": "kind_value",
         "name": "name_value",
         "region": "region_value",

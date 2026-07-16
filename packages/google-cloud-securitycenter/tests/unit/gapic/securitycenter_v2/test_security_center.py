@@ -75,6 +75,9 @@ from google.cloud.securitycenter_v2.services.security_center import (
 from google.cloud.securitycenter_v2.types import (
     access,
     affected_resources,
+    agent,
+    agent_anomaly,
+    agent_session,
     ai_model,
     application,
     attack_exposure,
@@ -29559,6 +29562,21 @@ def test_create_finding_rest_call_success(request_type):
             ],
             "pipelines": [{"name": "name_value", "display_name": "display_name_value"}],
         },
+        "agent": {"id": "id_value", "display_name": "display_name_value"},
+        "agent_sessions": [{"session_id": "session_id_value"}],
+        "agent_anomaly": {
+            "confidence_score": 0.1673,
+            "detector_references": [
+                {
+                    "severity": 1,
+                    "detector_id": "detector_id_value",
+                    "display_name": "display_name_value",
+                    "explanation": "explanation_value",
+                    "recommendation": "recommendation_value",
+                }
+            ],
+            "invocation_references": [{"invocation_id": "invocation_id_value"}],
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -34691,6 +34709,21 @@ def test_update_finding_rest_call_success(request_type):
                 }
             ],
             "pipelines": [{"name": "name_value", "display_name": "display_name_value"}],
+        },
+        "agent": {"id": "id_value", "display_name": "display_name_value"},
+        "agent_sessions": [{"session_id": "session_id_value"}],
+        "agent_anomaly": {
+            "confidence_score": 0.1673,
+            "detector_references": [
+                {
+                    "severity": 1,
+                    "detector_id": "detector_id_value",
+                    "display_name": "display_name_value",
+                    "explanation": "explanation_value",
+                    "recommendation": "recommendation_value",
+                }
+            ],
+            "invocation_references": [{"invocation_id": "invocation_id_value"}],
         },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
