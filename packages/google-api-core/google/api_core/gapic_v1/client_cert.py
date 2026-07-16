@@ -77,4 +77,3 @@ def get_client_cert_source(
         ):
             client_cert_source = mtls.default_client_cert_source()
     return client_cert_source
-

@@ -38,9 +38,7 @@ def test_use_client_cert_effective_with_google_auth(mock_method):
 @mock.patch.dict(os.environ, {}, clear=True)
 def test_use_client_cert_effective_fallback():
     # We must patch hasattr to simulate google-auth lacking the method
-    with mock.patch(
-        "google.api_core.gapic_v1.client_cert.hasattr", return_value=False
-    ):
+    with mock.patch("google.api_core.gapic_v1.client_cert.hasattr", return_value=False):
         # Default is false
         assert use_client_cert_effective() is False
 
