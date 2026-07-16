@@ -37,7 +37,7 @@ except ImportError:
 
 bigquery_storage = pytest.importorskip("google.cloud.bigquery_storage")
 IPython = pytest.importorskip("IPython")
-interactiveshell = pytest.importorskip("IPython.terminal.interactiveshell")
+interactiveshell = pytest.importorskip("IPython.core.interactiveshell")
 tools = pytest.importorskip("IPython.testing.tools")
 io = pytest.importorskip("IPython.utils.io")
 pandas = pytest.importorskip("pandas")
@@ -58,8 +58,7 @@ def use_local_magics_context(monkeypatch):
 @pytest.fixture(scope="session")
 def ipython():
     config = tools.default_config()
-    config.TerminalInteractiveShell.simple_prompt = True
-    shell = interactiveshell.TerminalInteractiveShell.instance(config=config)
+    shell = interactiveshell.InteractiveShell.instance(config=config)
     return shell
 
 
