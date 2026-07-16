@@ -2832,6 +2832,7 @@ def test_get_rest_call_success(request_type):
             description="description_value",
             id=205,
             kind="kind_value",
+            load_balancing_scheme="load_balancing_scheme_value",
             name="name_value",
             proxy_bind=True,
             proxy_header="proxy_header_value",
@@ -2858,6 +2859,7 @@ def test_get_rest_call_success(request_type):
     assert response.description == "description_value"
     assert response.id == 205
     assert response.kind == "kind_value"
+    assert response.load_balancing_scheme == "load_balancing_scheme_value"
     assert response.name == "name_value"
     assert response.proxy_bind is True
     assert response.proxy_header == "proxy_header_value"
@@ -2975,6 +2977,7 @@ def test_insert_rest_call_success(request_type):
         "description": "description_value",
         "id": 205,
         "kind": "kind_value",
+        "load_balancing_scheme": "load_balancing_scheme_value",
         "name": "name_value",
         "proxy_bind": True,
         "proxy_header": "proxy_header_value",

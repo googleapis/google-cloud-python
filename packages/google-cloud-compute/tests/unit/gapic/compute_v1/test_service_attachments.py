@@ -4339,6 +4339,7 @@ def test_get_rest_call_success(request_type):
             id=205,
             kind="kind_value",
             name="name_value",
+            nat_ips_per_endpoint=2132,
             nat_subnets=["nat_subnets_value"],
             producer_forwarding_rule="producer_forwarding_rule_value",
             propagated_connection_limit=2868,
@@ -4372,6 +4373,7 @@ def test_get_rest_call_success(request_type):
     assert response.id == 205
     assert response.kind == "kind_value"
     assert response.name == "name_value"
+    assert response.nat_ips_per_endpoint == 2132
     assert response.nat_subnets == ["nat_subnets_value"]
     assert response.producer_forwarding_rule == "producer_forwarding_rule_value"
     assert response.propagated_connection_limit == 2868
@@ -4652,6 +4654,7 @@ def test_insert_rest_call_success(request_type):
         "kind": "kind_value",
         "metadata": {},
         "name": "name_value",
+        "nat_ips_per_endpoint": 2132,
         "nat_subnets": ["nat_subnets_value1", "nat_subnets_value2"],
         "producer_forwarding_rule": "producer_forwarding_rule_value",
         "propagated_connection_limit": 2868,
@@ -5082,6 +5085,7 @@ def test_patch_rest_call_success(request_type):
         "kind": "kind_value",
         "metadata": {},
         "name": "name_value",
+        "nat_ips_per_endpoint": 2132,
         "nat_subnets": ["nat_subnets_value1", "nat_subnets_value2"],
         "producer_forwarding_rule": "producer_forwarding_rule_value",
         "propagated_connection_limit": 2868,

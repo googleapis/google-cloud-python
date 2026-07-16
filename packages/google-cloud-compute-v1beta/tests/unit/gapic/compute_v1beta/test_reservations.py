@@ -5501,6 +5501,7 @@ def test_insert_rest_call_success(request_type):
         "scheduling_type": "scheduling_type_value",
         "self_link": "self_link_value",
         "share_settings": {
+            "folder_map": {},
             "project_map": {},
             "projects": ["projects_value1", "projects_value2"],
             "share_type": "share_type_value",
@@ -6942,6 +6943,7 @@ def test_update_rest_call_success(request_type):
         "scheduling_type": "scheduling_type_value",
         "self_link": "self_link_value",
         "share_settings": {
+            "folder_map": {},
             "project_map": {},
             "projects": ["projects_value1", "projects_value2"],
             "share_type": "share_type_value",

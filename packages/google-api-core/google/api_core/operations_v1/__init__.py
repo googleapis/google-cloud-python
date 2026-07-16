@@ -14,27 +14,68 @@
 
 """Package for interacting with the google.longrunning.operations meta-API."""
 
-from google.api_core.operations_v1.abstract_operations_client import AbstractOperationsClient
-from google.api_core.operations_v1.operations_async_client import OperationsAsyncClient
-from google.api_core.operations_v1.operations_client import OperationsClient
-from google.api_core.operations_v1.transports.rest import OperationsRestTransport
+import importlib.util
+from typing import Set
+
+try:
+    _has_async_rest = (
+        importlib.util.find_spec("google.auth.aio.transport.sessions") is not None
+    )
+except ModuleNotFoundError:
+    _has_async_rest = False
+
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+# NOTE: We statically define all modules here (including async ones) to ensure
+# static analysis tools (mypy, pyright, Ruff) can easily parse them. If async
+# support is not present, the imports are ignored, making their presence safe.
+__lazy_modules__: Set[str] = {
+    "google.api_core.operations_v1.abstract_operations_client",
+    "google.api_core.operations_v1.operations_async_client",
+    "google.api_core.operations_v1.operations_client",
+    "google.api_core.operations_v1.transports.rest",
+    "google.api_core.operations_v1.transports.rest_asyncio",
+    "google.api_core.operations_v1.operations_rest_client_async",
+}
 
 __all__ = [
     "AbstractOperationsClient",
     "OperationsAsyncClient",
     "OperationsClient",
-    "OperationsRestTransport"
+    "OperationsRestTransport",
 ]
 
-try:
-    from google.api_core.operations_v1.transports.rest_asyncio import (
-        AsyncOperationsRestTransport,
-    )
-    from google.api_core.operations_v1.operations_rest_client_async import AsyncOperationsRestClient
 
-    __all__ += ["AsyncOperationsRestClient", "AsyncOperationsRestTransport"]
-except ImportError:
-    # This import requires the `async_rest` extra.
-    # Don't raise an exception if `AsyncOperationsRestTransport` cannot be imported
-    # as other transports are still available.
-    pass
+from google.api_core.operations_v1.abstract_operations_client import (  # noqa: E402
+    AbstractOperationsClient,
+)
+from google.api_core.operations_v1.operations_async_client import (  # noqa: E402
+    OperationsAsyncClient,
+)
+from google.api_core.operations_v1.operations_client import (  # noqa: E402
+    OperationsClient,
+)
+from google.api_core.operations_v1.transports.rest import (  # noqa: E402
+    OperationsRestTransport,
+)
+
+if _has_async_rest:
+    try:
+        # On Python 3.15+, PEP 0810 lazy loading means these imports will succeed
+        # instantly (returning a lazy proxy). Any actual ImportErrors (e.g., due to
+        # missing aiohttp/auth dependencies) are deferred until the proxies are accessed.
+        from google.api_core.operations_v1.transports.rest_asyncio import (  # noqa: E402, F401
+            AsyncOperationsRestTransport,
+        )
+        from google.api_core.operations_v1.operations_rest_client_async import (  # noqa: E402, F401
+            AsyncOperationsRestClient,
+        )
+
+        __all__.extend(["AsyncOperationsRestClient", "AsyncOperationsRestTransport"])
+    except ImportError:
+        # Fallback for older python/environments when importlib find_spec succeeds but actual import fails
+        pass

@@ -25,6 +25,9 @@ from importlib import metadata
 
 from .services.security_center import SecurityCenterAsyncClient, SecurityCenterClient
 from .types.access import Access, Geolocation, ServiceAccountDelegationInfo
+from .types.agent import Agent
+from .types.agent_anomaly import AgentAnomaly, DetectorReference, InvocationReference
+from .types.agent_session import AgentSession
 from .types.application import Application
 from .types.asset import Asset
 from .types.attack_exposure import AttackExposure
@@ -284,6 +287,9 @@ __all__ = (
     "SecurityCenterAsyncClient",
     "Access",
     "AdaptiveProtection",
+    "Agent",
+    "AgentAnomaly",
+    "AgentSession",
     "Application",
     "Asset",
     "Attack",
@@ -328,6 +334,7 @@ __all__ = (
     "DeleteNotificationConfigRequest",
     "DeleteResourceValueConfigRequest",
     "DeleteSecurityHealthAnalyticsCustomModuleRequest",
+    "DetectorReference",
     "EffectiveEventThreatDetectionCustomModule",
     "EffectiveSecurityHealthAnalyticsCustomModule",
     "EnvironmentVariable",
@@ -361,6 +368,7 @@ __all__ = (
     "IamBinding",
     "Indicator",
     "InfoType",
+    "InvocationReference",
     "KernelRootkit",
     "Kubernetes",
     "Label",

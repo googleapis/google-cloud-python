@@ -13642,6 +13642,7 @@ def test_apply_updates_to_instances_rest_call_success(request_type):
     }
     request_init["instance_group_managers_apply_updates_request_resource"] = {
         "all_instances": True,
+        "allowed_actions": ["allowed_actions_value1", "allowed_actions_value2"],
         "instances": ["instances_value1", "instances_value2"],
         "minimal_action": "minimal_action_value",
         "most_disruptive_allowed_action": "most_disruptive_allowed_action_value",
@@ -15520,6 +15521,7 @@ def test_insert_rest_call_success(request_type):
             "recreating": 1060,
             "refreshing": 1069,
             "restarting": 1091,
+            "restarting_in_place": 2013,
             "resuming": 874,
             "starting": 876,
             "stopping": 884,
@@ -15651,6 +15653,7 @@ def test_insert_rest_call_success(request_type):
         "target_stopped_size": 2047,
         "target_suspended_size": 2251,
         "update_policy": {
+            "allowed_actions": ["allowed_actions_value1", "allowed_actions_value2"],
             "instance_redistribution_type": "instance_redistribution_type_value",
             "max_surge": {"calculated": 1042, "fixed": 528, "percent": 753},
             "max_unavailable": {},
@@ -16517,6 +16520,7 @@ def test_patch_rest_call_success(request_type):
             "recreating": 1060,
             "refreshing": 1069,
             "restarting": 1091,
+            "restarting_in_place": 2013,
             "resuming": 874,
             "starting": 876,
             "stopping": 884,
@@ -16648,6 +16652,7 @@ def test_patch_rest_call_success(request_type):
         "target_stopped_size": 2047,
         "target_suspended_size": 2251,
         "update_policy": {
+            "allowed_actions": ["allowed_actions_value1", "allowed_actions_value2"],
             "instance_redistribution_type": "instance_redistribution_type_value",
             "max_surge": {"calculated": 1042, "fixed": 528, "percent": 753},
             "max_unavailable": {},
@@ -20012,6 +20017,7 @@ def test_update_rest_call_success(request_type):
             "recreating": 1060,
             "refreshing": 1069,
             "restarting": 1091,
+            "restarting_in_place": 2013,
             "resuming": 874,
             "starting": 876,
             "stopping": 884,
@@ -20143,6 +20149,7 @@ def test_update_rest_call_success(request_type):
         "target_stopped_size": 2047,
         "target_suspended_size": 2251,
         "update_policy": {
+            "allowed_actions": ["allowed_actions_value1", "allowed_actions_value2"],
             "instance_redistribution_type": "instance_redistribution_type_value",
             "max_surge": {"calculated": 1042, "fixed": 528, "percent": 753},
             "max_unavailable": {},

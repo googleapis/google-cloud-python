@@ -10202,6 +10202,7 @@ def test_insert_rest_call_success(request_type):
             {
                 "auto_network_tier": "auto_network_tier_value",
                 "drain_nat_ips": ["drain_nat_ips_value1", "drain_nat_ips_value2"],
+                "effective_tcp_time_wait_timeout_sec": 3705,
                 "enable_dynamic_port_allocation": True,
                 "enable_endpoint_independent_mapping": True,
                 "endpoint_types": ["endpoint_types_value1", "endpoint_types_value2"],
@@ -11115,6 +11116,7 @@ def test_patch_rest_call_success(request_type):
             {
                 "auto_network_tier": "auto_network_tier_value",
                 "drain_nat_ips": ["drain_nat_ips_value1", "drain_nat_ips_value2"],
+                "effective_tcp_time_wait_timeout_sec": 3705,
                 "enable_dynamic_port_allocation": True,
                 "enable_endpoint_independent_mapping": True,
                 "endpoint_types": ["endpoint_types_value1", "endpoint_types_value2"],
@@ -11994,6 +11996,7 @@ def test_preview_rest_call_success(request_type):
             {
                 "auto_network_tier": "auto_network_tier_value",
                 "drain_nat_ips": ["drain_nat_ips_value1", "drain_nat_ips_value2"],
+                "effective_tcp_time_wait_timeout_sec": 3705,
                 "enable_dynamic_port_allocation": True,
                 "enable_endpoint_independent_mapping": True,
                 "endpoint_types": ["endpoint_types_value1", "endpoint_types_value2"],
@@ -12526,6 +12529,7 @@ def test_update_rest_call_success(request_type):
             {
                 "auto_network_tier": "auto_network_tier_value",
                 "drain_nat_ips": ["drain_nat_ips_value1", "drain_nat_ips_value2"],
+                "effective_tcp_time_wait_timeout_sec": 3705,
                 "enable_dynamic_port_allocation": True,
                 "enable_endpoint_independent_mapping": True,
                 "endpoint_types": ["endpoint_types_value1", "endpoint_types_value2"],

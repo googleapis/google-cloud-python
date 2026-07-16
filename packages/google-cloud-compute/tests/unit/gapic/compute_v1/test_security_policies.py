@@ -6355,7 +6355,11 @@ def test_insert_rest_call_success(request_type):
             }
         ],
         "creation_timestamp": "creation_timestamp_value",
-        "ddos_protection_config": {"ddos_protection": "ddos_protection_value"},
+        "ddos_protection_config": {
+            "ddos_adaptive_protection": "ddos_adaptive_protection_value",
+            "ddos_impacted_baseline_threshold": 0.33580000000000004,
+            "ddos_protection": "ddos_protection_value",
+        },
         "description": "description_value",
         "fingerprint": "fingerprint_value",
         "id": 205,
@@ -7055,7 +7059,11 @@ def test_patch_rest_call_success(request_type):
             }
         ],
         "creation_timestamp": "creation_timestamp_value",
-        "ddos_protection_config": {"ddos_protection": "ddos_protection_value"},
+        "ddos_protection_config": {
+            "ddos_adaptive_protection": "ddos_adaptive_protection_value",
+            "ddos_impacted_baseline_threshold": 0.33580000000000004,
+            "ddos_protection": "ddos_protection_value",
+        },
         "description": "description_value",
         "fingerprint": "fingerprint_value",
         "id": 205,
