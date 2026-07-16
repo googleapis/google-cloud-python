@@ -105,6 +105,7 @@ def _validate_multi_segment_value(val):
     return leftover_segments > 0
 
 
+@functools.lru_cache(maxsize=1024)
 def _build_capture_pattern(template_str):
     """Build a regex pattern to capture wildcard matches from a template.
 
@@ -159,7 +160,8 @@ def _build_capture_pattern(template_str):
     parts.append(re.escape(literal))
 
     pattern = "".join(parts)
-    return pattern, wildcard_types
+    # Convert wildcard_types to a tuple to ensure the return value is fully hashable and robust
+    return pattern, tuple(wildcard_types)
 
 
 def _validate_value_against_template(val, template_str, property_name=None):
@@ -183,12 +185,20 @@ def _validate_value_against_template(val, template_str, property_name=None):
         ValueError: If a wildcard within the value violates path traversal rules.
     """
     if template_str is None or template_str == "*":
-        pattern, wildcard_types = r"^([^/]+)$", ["*"]
-    elif template_str == "**":
-        pattern, wildcard_types = r"^(.+)$", ["**"]
-    else:
-        pattern_body, wildcard_types = _build_capture_pattern(template_str)
-        pattern = "^" + pattern_body + "$"
+        if val in (".", ".."):
+            name_str = property_name if property_name else "positional variable"
+            raise ValueError("Invalid value {} for {}.".format(val, name_str))
+        return
+
+    if template_str == "**":
+        if not _validate_multi_segment_value(val):
+            name_str = property_name if property_name else "positional variable"
+            raise ValueError("Invalid value {} for {}.".format(val, name_str))
+        return
+
+    # Sub-template case: use cached capture pattern and regex match
+    pattern_body, wildcard_types = _build_capture_pattern(template_str)
+    pattern = "^" + pattern_body + "$"
 
     m = re.match(pattern, val)
     if m is not None:
