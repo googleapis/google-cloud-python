@@ -36,7 +36,7 @@ from google.api_core import extended_operation
 {% endif %}
 from google.api_core import gapic_v1
 {% if has_auto_populated_fields.value %}
-from google.api_core.gapic_v1 import method_helpers
+from google.api_core.gapic_v1 import request
 {% endif %}
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials             # type: ignore
@@ -471,7 +471,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
             field_name (str): The name of the field to populate.
             is_proto3_optional (bool): Whether the field is proto3 optional.
         """
-        method_helpers.setup_request_id(request, field_name, is_proto3_optional)
+        request.setup_request_id(request, field_name, is_proto3_optional)
     {% endif %}
 
     def _add_cred_info_for_auth_errors(
