@@ -400,7 +400,7 @@ class EchoMetadataClientGrpcAsyncInterceptor(
     async def intercept_unary_unary(self, continuation, client_call_details, request):
         await self._add_request_metadata(client_call_details)
         response = await continuation(client_call_details, request)
-        metadata = [(k, str(v)) for k, v in await response.trailing_metadata()]
+        metadata = [(k, str(v)) for k, v in await response.initial_metadata()] + [(k, str(v)) for k, v in await response.trailing_metadata()]
         self.response_metadata = metadata
         return response
 
@@ -449,7 +449,7 @@ def intercepted_echo_grpc(use_mtls, use_tls):
 
 
 @pytest_asyncio.fixture
-async def intercepted_echo_grpc_async():
+async def intercepted_echo_grpc_async(use_mtls, use_tls):
     # The interceptor adds 'showcase-trailer' client metadata. Showcase server
     # echoes any metadata with key 'showcase-trailer', so the same metadata
     # should appear as trailing metadata in the response.
@@ -458,8 +458,12 @@ async def intercepted_echo_grpc_async():
         "intercepted",
     )
     host = "localhost:7469"
-    channel = grpc.aio.insecure_channel(host, interceptors=[interceptor])
-    # intercept_channel = grpc.aio.intercept_channel(channel, interceptor)
+    if use_mtls:
+        channel = grpc.aio.secure_channel(host, ssl_credentials, interceptors=[interceptor])
+    elif use_tls:
+        channel = grpc.aio.secure_channel(host, tls_credentials, interceptors=[interceptor])
+    else:
+        channel = grpc.aio.insecure_channel(host, interceptors=[interceptor])
     transport = EchoAsyncClient.get_transport_class("grpc_asyncio")(
         credentials=ga_credentials.AnonymousCredentials(),
         channel=channel,

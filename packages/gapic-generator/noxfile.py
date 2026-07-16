@@ -457,7 +457,7 @@ def showcase_mtls(
     """Run the Showcase mtls test suite."""
 
     with showcase_library(session, templates=templates, other_opts=other_opts):
-        session.install("pytest", "pytest-asyncio", "pyopenssl")
+        session.install("pytest", "pytest-asyncio")
         test_directory = Path("tests", "system")
         ignore_file = env.get("IGNORE_FILE")
         pytest_command = [
@@ -486,9 +486,9 @@ def showcase_pqc(
 ):
     """Run the Showcase PQC verification test suite against grpcio 1.83+ over standard TLS."""
     with showcase_library(session, templates=templates, other_opts=other_opts):
-        session.install("pytest", "pytest-asyncio", "pyopenssl")
+        session.install("pytest", "pytest-asyncio")
         session.install("--pre", "--upgrade", "grpcio>=1.83.0rc0", "grpcio-status>=1.83.0rc0")
-        session.run("py.test", "--quiet", "--tls", "-s", *(session.posargs or ["tests/system/test_pqc.py"]), env=env)
+        session.run("py.test", "--quiet", "--tls", *(session.posargs or ["tests/system/test_pqc.py"]), env=env)
 
 
 def run_showcase_unit_tests(session, fail_under=100, rest_async_io_enabled=False):
