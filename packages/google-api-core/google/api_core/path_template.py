@@ -63,8 +63,8 @@ _SINGLE_SEGMENT_PATTERN = r"([^/]+)"
 _MULTI_SEGMENT_PATTERN = r"(.+)"
 
 
-def _validate_multi_segment_value(val):
-    """Validate a multi-segment wildcard value for path traversal vulnerabilities.
+def _validate_multi_segment_value(val: str) -> bool:
+    """Validate a multi-segment wildcard value.
 
     This function implements the dot and double-dot traversal validation rule
     for values matching '**'. It splits the value by '/' into segments and
@@ -78,6 +78,14 @@ def _validate_multi_segment_value(val):
       meaning it would traverse out of the multi-segment value boundaries.
     - No segments remain after executing all path traversal commands (leftover
       segment count is 0), meaning the entire value is consumed.
+
+    Examples:
+        >>> _validate_multi_segment_value("instance/my-instance")
+        True
+        >>> _validate_multi_segment_value("instance/my-instance/..")
+        True
+        >>> _validate_multi_segment_value("instance/../..")
+        False
 
     Args:
         val (str): The value matched to the '**' wildcard to validate.
@@ -106,7 +114,7 @@ def _validate_multi_segment_value(val):
 
 
 @functools.lru_cache(maxsize=1024)
-def _build_capture_pattern(template_str):
+def _build_capture_pattern(template_str: str) -> tuple[str, tuple[str, ...]]:
     """Build a regex pattern to capture wildcard matches from a template.
 
     This function parses a template string containing positional/named
@@ -164,7 +172,9 @@ def _build_capture_pattern(template_str):
     return pattern, tuple(wildcard_types)
 
 
-def _validate_value_against_template(val, template_str, property_name=None):
+def _validate_value_against_template(
+    val: str, template_str: str | None, property_name: str | None = None
+) -> None:
     """Validate a variable's value against its template structure.
 
     This function extracts substrings matching individual wildcards in the
@@ -174,6 +184,16 @@ def _validate_value_against_template(val, template_str, property_name=None):
     - Multi-segment matches ('**') are checked using _validate_multi_segment_value
       to ensure path traversal commands do not consume the entire value or
       escape the starting boundaries of the matched parameter.
+
+    Examples:
+        >>> _validate_value_against_template("us-central1", None, "region")
+        None
+        >>> _validate_value_against_template("..", None, "region")
+        ValueError("Invalid value .. for region.")
+        >>> _validate_value_against_template(
+        ...     "projects/my-proj/locations/.", "projects/*/locations/*", "parent"
+        ... )
+        ValueError("Invalid value projects/my-proj/locations/. for parent.")
 
     Args:
         val (str): The raw string value to validate.

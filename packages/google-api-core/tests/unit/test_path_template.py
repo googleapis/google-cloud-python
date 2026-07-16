@@ -681,17 +681,13 @@ def helper_test_transcode(http_options_list, expected_result_list):
         # Positional * with . or ..
         [
             "/v1/*",
-            [
-                ".",
-            ],
+            ["."],
             {},
             "Invalid value \\. for positional variable\\.",
         ],
         [
             "/v1/*",
-            [
-                "..",
-            ],
+            [".."],
             {},
             "Invalid value \\.\\. for positional variable\\.",
         ],
