@@ -278,6 +278,14 @@ libraries:
     python:
       metadata_name_override: advisorynotifications
       default_version: v1
+  - name: google-cloud-agentidentity
+    version: 0.0.0
+    apis:
+      - path: google/cloud/agentidentity/v1
+      - path: google/cloud/agentidentity/v1beta
+    copyright_year: "2026"
+    python:
+      default_version: v1
   - name: google-cloud-agentidentitycredentials
     version: 0.1.0
     apis:

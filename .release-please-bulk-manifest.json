@@ -24,6 +24,7 @@
   "packages/google-cloud-access-approval": "1.20.0",
   "packages/google-cloud-access-context-manager": "0.6.0",
   "packages/google-cloud-advisorynotifications": "0.7.0",
+  "packages/google-cloud-agentidentity": "0.0.0",
   "packages/google-cloud-agentidentitycredentials": "0.1.0",
   "packages/google-cloud-agentregistry": "0.1.0",
   "packages/google-cloud-alloydb": "0.11.0",
