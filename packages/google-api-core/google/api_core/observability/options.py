@@ -81,12 +81,10 @@ def _has_provider(
     if client_options is None:
         return False
 
-    options_dict = (
-        client_options
-        if isinstance(client_options, dict)
-        else getattr(client_options, "__dict__", {})
-    )
-    return options_dict.get(provider_key) is not None
+    if isinstance(client_options, dict):
+        return client_options.get(provider_key) is not None
+
+    return getattr(client_options, provider_key, None) is not None
 
 
 def resolve_feature_flags(
