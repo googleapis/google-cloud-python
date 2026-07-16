@@ -52,7 +52,7 @@ echo "=========================="
 run_package_test() {
   local package_name=$1
   local package_path="packages/${package_name}"
-  
+
   # Declare local overrides to prevent bleeding into the next loop iteration
   local PROJECT_ID
   local GOOGLE_APPLICATION_CREDENTIALS
@@ -111,10 +111,57 @@ run_package_test() {
   local res=$?
   set -e
   popd > /dev/null
-  
+
   rm -rf "${gcloud_config_dir}"
   return $res
 }
+
+reap_parallel_results() {
+  local retval=0
+  local failed_count=0
+  local passed_count=0
+
+  if [ -z "$LOG_DIR" ]; then
+    echo "Error: LOG_DIR is not set."
+    return 1
+  fi
+
+  for failed in "$LOG_DIR"/*.failed; do
+    if [ -f "$failed" ]; then
+      failed_count=$((failed_count + 1))
+    fi
+  done
+
+  local total_tested=${#PACKAGES_TO_TEST[@]}
+  passed_count=$((total_tested - failed_count))
+
+  echo ""
+  echo "=================================================="
+  echo "               TEST RUN SUMMARY                   "
+  echo "=================================================="
+  echo "Total tested: $total_tested"
+  echo "Passed:       $passed_count"
+  echo "Failed:       $failed_count"
+  echo "=================================================="
+
+  if [ "$failed_count" -gt 0 ]; then
+    echo ""
+    echo "!!! DETAILED LOGS FOR FAILED PACKAGES !!!"
+    for failed in "$LOG_DIR"/*.failed; do
+      if [ -f "$failed" ]; then
+        local pkg=$(basename "$failed" .failed)
+        echo "--------------------------------------------------"
+        echo "LOGS FOR: $pkg"
+        echo "--------------------------------------------------"
+        cat "$LOG_DIR/$pkg.log"
+        echo ""
+      fi
+    done
+    retval=1
+  fi
+  return $retval
+}
+
 
 # A file for running system tests
 system_test_script="${PROJECT_ROOT}/.kokoro/system-single.sh"
@@ -181,11 +228,6 @@ done
 
 # Parallel Execution Logic
 MAX_JOBS=${MAX_JOBS:-4}
-active_jobs=0
-declare -A job_pids
-declare -A job_pkgs
-failed_packages=()
-passed_packages=()
 
 # Temporary directory for clean log segregation
 LOG_DIR=$(mktemp -d -t test-logs-XXXXXX)
@@ -202,83 +244,10 @@ echo "Starting parallel test execution for ${#PACKAGES_TO_TEST[@]} packages"
 echo "Concurrency limit: ${MAX_JOBS}"
 echo "=================================================="
 
-for pkg in "${PACKAGES_TO_TEST[@]}"; do
-  # Maintain concurrency limit
-  while [ "$active_jobs" -ge "$MAX_JOBS" ]; do
-    for pid in "${!job_pids[@]}"; do
-      if ! kill -0 "$pid" 2>/dev/null; then
-        wait "$pid" && status=0 || status=$?
-        finished_pkg=${job_pkgs[$pid]}
-        if [ "$status" -eq 0 ]; then
-          echo "✔ [SUCCESS] ${finished_pkg}"
-          passed_packages+=("$finished_pkg")
-        else
-          echo "✘ [FAILURE] ${finished_pkg} (Exit Code: ${status})"
-          failed_packages+=("$finished_pkg")
-        fi
-        unset "job_pids[$pid]"
-        unset "job_pkgs[$pid]"
-        active_jobs=$((active_jobs - 1))
-      fi
-    done
-    sleep 0.1
-  done
+export LOG_DIR
+export -f run_package_test
+export system_test_script PROJECT_ROOT KOKORO_GFILE_DIR
 
-  safe_pkg_name=$(echo "$pkg" | tr '/' '_')
-  log_file="${LOG_DIR}/${safe_pkg_name}.log"
+printf '%s\n' "${PACKAGES_TO_TEST[@]}" | xargs -P "$MAX_JOBS" -I {} bash -c 'run_package_test "{}" > "$LOG_DIR/{}.log" 2>&1 || touch "$LOG_DIR/{}.failed"'
 
-  echo "Spawning tests for ${pkg}..."
-  run_package_test "$pkg" > "$log_file" 2>&1 &
-  pid=$!
-  job_pids["$pid"]=$pid
-  job_pkgs["$pid"]=$pkg
-  active_jobs=$((active_jobs + 1))
-done
-
-# Reap remaining processes
-while [ "$active_jobs" -gt 0 ]; do
-  for pid in "${!job_pids[@]}"; do
-    if ! kill -0 "$pid" 2>/dev/null; then
-      wait "$pid" && status=0 || status=$?
-      finished_pkg=${job_pkgs[$pid]}
-      if [ "$status" -eq 0 ]; then
-        echo "✔ [SUCCESS] ${finished_pkg}"
-        passed_packages+=("$finished_pkg")
-      else
-        echo "✘ [FAILURE] ${finished_pkg} (Exit Code: ${status})"
-        failed_packages+=("$finished_pkg")
-      fi
-      unset "job_pids[$pid]"
-      unset "job_pkgs[$pid]"
-      active_jobs=$((active_jobs - 1))
-    fi
-  done
-  sleep 0.1
-done
-
-echo ""
-echo "=================================================="
-echo "               TEST RUN SUMMARY                   "
-echo "=================================================="
-echo "Total tested: ${#PACKAGES_TO_TEST[@]}"
-echo "Passed:       ${#passed_packages[@]}"
-echo "Failed:       ${#failed_packages[@]}"
-echo "=================================================="
-
-if [ ${#failed_packages[@]} -gt 0 ]; then
-  echo ""
-  echo "!!! DETAILED LOGS FOR FAILED PACKAGES !!!"
-  for pkg in "${failed_packages[@]}"; do
-    safe_pkg_name=$(echo "$pkg" | tr '/' '_')
-    log_file="${LOG_DIR}/${safe_pkg_name}.log"
-    echo "--------------------------------------------------"
-    echo "LOGS FOR: ${pkg}"
-    echo "--------------------------------------------------"
-    [ -f "$log_file" ] && cat "$log_file"
-    echo ""
-  done
-  exit 1
-fi
-
-echo "All tests passed successfully!"
-exit 0
+reap_parallel_results || RETVAL=1
