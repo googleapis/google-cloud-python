@@ -186,10 +186,6 @@ for path in `find 'packages' \
   package_name=${package_name%%/*}
   package_path="packages/${package_name}"
 
-  if [[ "$package_name" == "sqlalchemy-bigquery" ]]; then
-      echo "Skipping sqlalchemy-bigquery for diagnostics."
-      continue
-  fi
 
   # Determine if we should skip based on git diff
   # We always check for changes in these specific versioning/config files
