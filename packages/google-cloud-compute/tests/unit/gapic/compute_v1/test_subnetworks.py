@@ -1395,6 +1395,9 @@ def test_aggregated_list_rest_pager(transport: str = "rest"):
 
         pager = client.aggregated_list(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         assert isinstance(pager.get("a"), compute.SubnetworksScopedList)
         assert pager.get("h") is None
 
@@ -3354,6 +3357,9 @@ def test_list_rest_pager(transport: str = "rest"):
 
         pager = client.list(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, compute.Subnetwork) for i in results)
@@ -3617,6 +3623,9 @@ def test_list_usable_rest_pager(transport: str = "rest"):
         sample_request = {"project": "sample1"}
 
         pager = client.list_usable(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -5990,6 +5999,8 @@ def test_insert_rest_call_success(request_type):
         "secondary_ip_ranges": [
             {
                 "ip_cidr_range": "ip_cidr_range_value",
+                "ip_collection": "ip_collection_value",
+                "ip_version": "ip_version_value",
                 "range_name": "range_name_value",
                 "reserved_internal_range": "reserved_internal_range_value",
             }
@@ -6562,6 +6573,8 @@ def test_patch_rest_call_success(request_type):
         "secondary_ip_ranges": [
             {
                 "ip_cidr_range": "ip_cidr_range_value",
+                "ip_collection": "ip_collection_value",
+                "ip_version": "ip_version_value",
                 "range_name": "range_name_value",
                 "reserved_internal_range": "reserved_internal_range_value",
             }

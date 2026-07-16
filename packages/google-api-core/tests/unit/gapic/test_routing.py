@@ -17,14 +17,9 @@ from unittest import mock
 
 import pytest
 
-try:
-    import grpc  # noqa: F401
-except ImportError:
-    pytest.skip("No GRPC", allow_module_level=True)
-
 from google.auth.exceptions import MutualTLSChannelError
 
-from google.api_core.gapic_v1._routing import (
+from google.api_core.gapic_v1.routing import (
     get_api_endpoint,
     get_default_mtls_endpoint,
     get_universe_domain,
@@ -122,6 +117,20 @@ def test_get_api_endpoint_mtls_universe_mismatch():
         )
 
 
+def test_get_api_endpoint_mtls_case_insensitive():
+    # mTLS universe check should be case insensitive
+    endpoint = get_api_endpoint(
+        api_override=None,
+        client_cert_source=mock.Mock(),
+        universe_domain="GOOGLEAPIS.COM",
+        use_mtls_endpoint="auto",
+        default_universe="googleapis.com",
+        default_mtls_endpoint="foo.mtls.googleapis.com",
+        default_endpoint_template="foo.{UNIVERSE_DOMAIN}",
+    )
+    assert endpoint == "foo.mtls.googleapis.com"
+
+
 def test_get_universe_domain():
     # client_universe_domain takes precedence
     assert (
@@ -138,9 +147,19 @@ def test_get_universe_domain():
     assert get_universe_domain(None, None, "default.com") == "default.com"  # noqa: E501
 
 
+def test_get_universe_domain_strip():
+    # check that whitespace is stripped
+    assert (
+        get_universe_domain("  client.com  ", "env.com", "default.com") == "client.com"
+    )
+    assert get_universe_domain(None, "  env.com  ", "default.com") == "env.com"
+
+
 def test_get_universe_domain_empty():
     with pytest.raises(ValueError, match="cannot be an empty string"):
         get_universe_domain("", None, "default.com")
+    with pytest.raises(ValueError, match="cannot be an empty string"):
+        get_universe_domain("   ", None, "default.com")
 
 
 def test_get_api_endpoint_none_template():

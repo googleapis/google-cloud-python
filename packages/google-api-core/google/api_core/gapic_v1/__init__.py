@@ -12,22 +12,59 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from google.api_core.gapic_v1 import client_info
-from google.api_core.gapic_v1 import routing_header
+import importlib.util
+from typing import Set
 
+_has_grpc = importlib.util.find_spec("grpc") is not None
+
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__: Set[str] = {
+    "google.api_core.gapic_v1.client_info",
+    "google.api_core.gapic_v1.client_cert",
+    "google.api_core.gapic_v1.config_helpers",
+    "google.api_core.gapic_v1.method_helpers",
+    "google.api_core.gapic_v1.routing",
+    "google.api_core.gapic_v1.routing_header",
+}
 __all__ = [
     "client_info",
+    "client_cert",
+    "config_helpers",
+    "method_helpers",
+    "routing",
     "routing_header",
 ]
 
-try:
-    import grpc  # noqa: F401
+if _has_grpc:
+    __lazy_modules__.update(
+        {
+            "google.api_core.gapic_v1.config",
+            "google.api_core.gapic_v1.config_async",
+            "google.api_core.gapic_v1.method",
+            "google.api_core.gapic_v1.method_async",
+        }
+    )
 
-    from google.api_core.gapic_v1 import config  # noqa: F401
-    from google.api_core.gapic_v1 import config_async  # noqa: F401
-    from google.api_core.gapic_v1 import method  # noqa: F401
-    from google.api_core.gapic_v1 import method_async  # noqa: F401
+from google.api_core.gapic_v1 import (  # noqa: E402
+    client_cert,
+    client_info,
+    config_helpers,
+    method_helpers,
+    routing,
+    routing_header,
+)
+
+if _has_grpc:
+    from google.api_core.gapic_v1 import (  # noqa: F401
+        config,
+        config_async,
+        method,
+        method_async,
+    )
 
     __all__.extend(["config", "config_async", "method", "method_async"])
-except ImportError:  # pragma: NO COVER
-    pass

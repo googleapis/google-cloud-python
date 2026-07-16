@@ -14,7 +14,7 @@
 # limitations under the License.
 
 
-from google.api_core.gapic_v1._method_helpers import setup_request_id
+from google.api_core.gapic_v1.method_helpers import setup_request_id
 
 
 def test_setup_request_id():
@@ -52,3 +52,13 @@ def test_setup_request_id():
     setup_request_id(req_obj2, "request_id", False)
     assert req_obj2.request_id != ""
     uuid.UUID(req_obj2.request_id)
+
+    class CustomRequestWrapper:
+        def __init__(self):
+            self.request_id = ""
+
+    # test custom non-iterable object wrapper
+    req_obj3 = CustomRequestWrapper()
+    setup_request_id(req_obj3, "request_id", True)
+    assert req_obj3.request_id != ""
+    uuid.UUID(req_obj3.request_id)

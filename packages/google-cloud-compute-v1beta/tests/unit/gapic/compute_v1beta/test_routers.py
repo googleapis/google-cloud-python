@@ -1371,6 +1371,9 @@ def test_aggregated_list_rest_pager(transport: str = "rest"):
 
         pager = client.aggregated_list(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         assert isinstance(pager.get("a"), compute.RoutersScopedList)
         assert pager.get("h") is None
 
@@ -3585,6 +3588,9 @@ def test_get_nat_mapping_info_rest_pager(transport: str = "rest"):
 
         pager = client.get_nat_mapping_info(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, compute.VmEndpointNatMappings) for i in results)
@@ -4674,6 +4680,9 @@ def test_list_rest_pager(transport: str = "rest"):
 
         pager = client.list(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, compute.Router) for i in results)
@@ -4970,6 +4979,9 @@ def test_list_bgp_routes_rest_pager(transport: str = "rest"):
 
         pager = client.list_bgp_routes(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, compute.BgpRoute) for i in results)
@@ -5255,6 +5267,9 @@ def test_list_named_sets_rest_pager(transport: str = "rest"):
         }
 
         pager = client.list_named_sets(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -5545,6 +5560,9 @@ def test_list_route_policies_rest_pager(transport: str = "rest"):
         }
 
         pager = client.list_route_policies(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -10184,6 +10202,7 @@ def test_insert_rest_call_success(request_type):
             {
                 "auto_network_tier": "auto_network_tier_value",
                 "drain_nat_ips": ["drain_nat_ips_value1", "drain_nat_ips_value2"],
+                "effective_tcp_time_wait_timeout_sec": 3705,
                 "enable_dynamic_port_allocation": True,
                 "enable_endpoint_independent_mapping": True,
                 "endpoint_types": ["endpoint_types_value1", "endpoint_types_value2"],
@@ -11097,6 +11116,7 @@ def test_patch_rest_call_success(request_type):
             {
                 "auto_network_tier": "auto_network_tier_value",
                 "drain_nat_ips": ["drain_nat_ips_value1", "drain_nat_ips_value2"],
+                "effective_tcp_time_wait_timeout_sec": 3705,
                 "enable_dynamic_port_allocation": True,
                 "enable_endpoint_independent_mapping": True,
                 "endpoint_types": ["endpoint_types_value1", "endpoint_types_value2"],
@@ -11976,6 +11996,7 @@ def test_preview_rest_call_success(request_type):
             {
                 "auto_network_tier": "auto_network_tier_value",
                 "drain_nat_ips": ["drain_nat_ips_value1", "drain_nat_ips_value2"],
+                "effective_tcp_time_wait_timeout_sec": 3705,
                 "enable_dynamic_port_allocation": True,
                 "enable_endpoint_independent_mapping": True,
                 "endpoint_types": ["endpoint_types_value1", "endpoint_types_value2"],
@@ -12508,6 +12529,7 @@ def test_update_rest_call_success(request_type):
             {
                 "auto_network_tier": "auto_network_tier_value",
                 "drain_nat_ips": ["drain_nat_ips_value1", "drain_nat_ips_value2"],
+                "effective_tcp_time_wait_timeout_sec": 3705,
                 "enable_dynamic_port_allocation": True,
                 "enable_endpoint_independent_mapping": True,
                 "endpoint_types": ["endpoint_types_value1", "endpoint_types_value2"],

@@ -45,11 +45,13 @@ def test_navigation_to_invalid_page_resets_to_valid_page_without_deadlock():
     mock_df._block = mock_block
 
     # We mock _initial_load to avoid complex setup
-    with mock.patch.object(TableWidget, "_initial_load"):
-        with bigframes.option_context(
+    with (
+        mock.patch.object(TableWidget, "_initial_load"),
+        bigframes.option_context(
             "display.render_mode", "anywidget", "display.max_rows", 10
-        ):
-            widget = TableWidget(mock_df)
+        ),
+    ):
+        widget = TableWidget(mock_df)
 
     # Simulate "loaded data but unknown total rows" state
     widget.page_size = 10
@@ -179,11 +181,11 @@ def test_page_size_change_resets_sort(mock_df):
 
 def test_cell_execution_count_propagation(mock_df):
     """Test that the captured cell_execution_count is propagated to to_pandas_batches."""
-    with mock.patch(
-        "bigframes.core.utils.get_ipython_execution_count", return_value=42
+    with (
+        mock.patch("bigframes.core.utils.get_ipython_execution_count", return_value=42),
+        bigframes.option_context("display.render_mode", "anywidget"),
     ):
-        with bigframes.option_context("display.render_mode", "anywidget"):
-            widget = TableWidget(mock_df)
+        widget = TableWidget(mock_df)
 
     assert widget._cell_execution_count == 42
 
@@ -274,19 +276,23 @@ def mock_deferred_df():
 
 
 def test_init_raises_if_anywidget_not_installed():
-    with mock.patch("bigframes.display.anywidget._ANYWIDGET_INSTALLED", False):
-        with pytest.raises(ImportError):
-            from bigframes.display.anywidget import TableWidget
+    with (
+        mock.patch("bigframes.display.anywidget._ANYWIDGET_INSTALLED", False),
+        pytest.raises(ImportError),
+    ):
+        from bigframes.display.anywidget import TableWidget
 
-            TableWidget(mock.Mock())
+        TableWidget(mock.Mock())
 
 
 def test_init_initializes_attributes(mock_df_deferred):
     from bigframes.display.anywidget import TableWidget
 
-    with bigframes.option_context("display.render_mode", "anywidget"):
-        with mock.patch.object(TableWidget, "_initial_load"):
-            widget = TableWidget(mock_df_deferred)
+    with (
+        bigframes.option_context("display.render_mode", "anywidget"),
+        mock.patch.object(TableWidget, "_initial_load"),
+    ):
+        widget = TableWidget(mock_df_deferred)
 
     assert widget._dataframe is mock_df_deferred
     assert widget.page == 0
@@ -328,19 +334,21 @@ def test_validate_page_clamping(mock_df_deferred):
 def test_validate_page_size(mock_df_deferred):
     from bigframes.display.anywidget import TableWidget
 
-    with bigframes.option_context("display.render_mode", "anywidget"):
-        with mock.patch.object(TableWidget, "_initial_load"):
-            widget = TableWidget(mock_df_deferred)
+    with (
+        bigframes.option_context("display.render_mode", "anywidget"),
+        mock.patch.object(TableWidget, "_initial_load"),
+    ):
+        widget = TableWidget(mock_df_deferred)
 
-            widget.page_size = 50
-            assert widget.page_size == 50
+        widget.page_size = 50
+        assert widget.page_size == 50
 
-            original_size = widget.page_size
-            widget.page_size = -5
-            assert widget.page_size == original_size
+        original_size = widget.page_size
+        widget.page_size = -5
+        assert widget.page_size == original_size
 
-            widget.page_size = 10000
-            assert widget.page_size == 1000
+        widget.page_size = 10000
+        assert widget.page_size == 1000
 
 
 def test_page_size_change_resets_page_and_sort(mock_df_deferred):
@@ -373,14 +381,16 @@ def test_page_size_change_resets_batches(mock_df_deferred):
 def test_sort_change_resets_batches(mock_df_deferred):
     from bigframes.display.anywidget import TableWidget
 
-    with bigframes.option_context("display.render_mode", "anywidget"):
-        with mock.patch.object(TableWidget, "_initial_load"):
-            widget = TableWidget(mock_df_deferred)
-            widget._initial_load_complete = True
+    with (
+        bigframes.option_context("display.render_mode", "anywidget"),
+        mock.patch.object(TableWidget, "_initial_load"),
+    ):
+        widget = TableWidget(mock_df_deferred)
+        widget._initial_load_complete = True
 
-            mock_df_deferred.to_pandas_batches.reset_mock()
+        mock_df_deferred.to_pandas_batches.reset_mock()
 
-            widget.sort_context = [{"column": "B", "ascending": False}]
+        widget.sort_context = [{"column": "B", "ascending": False}]
 
     assert mock_df_deferred.to_pandas_batches.call_count >= 1
 
@@ -510,22 +520,24 @@ def test_deferred_mode_execution_in_colab(mock_deferred_df, mock_df_deferred):
     batches.total_rows = 1
     mock_df_deferred.to_pandas_batches.return_value = batches
 
-    with mock.patch.dict(sys.modules, {"google.colab": mock.MagicMock()}):
-        with bigframes.option_context("display.render_mode", "anywidget"):
-            widget = TableWidget(mock_deferred_df)
-            widget.is_deferred_mode = True
+    with (
+        mock.patch.dict(sys.modules, {"google.colab": mock.MagicMock()}),
+        bigframes.option_context("display.render_mode", "anywidget"),
+    ):
+        widget = TableWidget(mock_deferred_df)
+        widget.is_deferred_mode = True
 
-            widget.start_execution = True
+        widget.start_execution = True
 
-            thread = getattr(widget, "_execution_thread", None)
-            if thread is not None:
-                thread.join(timeout=5)
+        thread = getattr(widget, "_execution_thread", None)
+        if thread is not None:
+            thread.join(timeout=5)
 
-            assert widget.is_deferred_mode is True
-            assert widget.table_html == ""
+        assert widget.is_deferred_mode is True
+        assert widget.table_html == ""
 
-            # Simulate frontend ping callback
-            widget.ping = 1
+        # Simulate frontend ping callback
+        widget.ping = 1
 
-            assert widget.is_deferred_mode is False
-            assert widget.table_html != ""
+        assert widget.is_deferred_mode is False
+        assert widget.table_html != ""

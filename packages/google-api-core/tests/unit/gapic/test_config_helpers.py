@@ -18,18 +18,13 @@ from unittest import mock
 
 import pytest
 
-try:
-    import grpc  # noqa: F401
-except ImportError:
-    pytest.skip("No GRPC", allow_module_level=True)
-
 from google.auth.exceptions import MutualTLSChannelError
 
-from google.api_core.gapic_v1._config_helpers import read_environment_variables
+from google.api_core.gapic_v1.config_helpers import read_environment_variables
 
 
 @mock.patch(
-    "google.api_core.gapic_v1._config_helpers.use_client_cert_effective"
+    "google.api_core.gapic_v1.config_helpers.use_client_cert_effective"
 )  # noqa: E501
 @mock.patch.dict(os.environ, clear=True)
 def test_read_environment_variables(mock_effective):
