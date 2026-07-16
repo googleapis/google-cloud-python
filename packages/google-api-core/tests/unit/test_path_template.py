@@ -675,98 +675,117 @@ def helper_test_transcode(http_options_list, expected_result_list):
     return (http_options, expected_result)
 
 
-def test_path_traversal_dots_validation_star():
-    # 1. Dots in values matched to *
-    # Single-segment positional variable * with exactly '.' or '..'
-    with pytest.raises(
-        ValueError, match="Invalid value \\. for positional variable\\."
-    ):
-        path_template.expand("/v1/*", ".")
-    with pytest.raises(
-        ValueError, match="Invalid value \\.\\. for positional variable\\."
-    ):
-        path_template.expand("/v1/*", "..")
-
-    # Named variable matching * with exactly '.' or '..'
-    with pytest.raises(ValueError, match="Invalid value \\.\\. for region\\."):
-        path_template.expand(
+@pytest.mark.parametrize(
+    "tmpl, args, kwargs, expected_err_match",
+    [
+        # Positional * with . or ..
+        [
+            "/v1/*",
+            [
+                ".",
+            ],
+            {},
+            "Invalid value \\. for positional variable\\.",
+        ],
+        [
+            "/v1/*",
+            [
+                "..",
+            ],
+            {},
+            "Invalid value \\.\\. for positional variable\\.",
+        ],
+        # Named matching * with . or ..
+        [
             "/compute/v1/projects/{project}/regions/{region}/addresses",
-            project="my-project",
-            region="..",
-        )
-
-    # Sub-template named variable where a segment matching * is exactly '.' or '..'
-    with pytest.raises(
-        ValueError,
-        match="Invalid value projects/my-project/locations/\\.\\. for parent\\.",
-    ):
-        path_template.expand(
+            [],
+            {"project": "my-project", "region": ".."},
+            "Invalid value \\.\\. for region\\.",
+        ],
+        [
+            "/compute/v1/projects/{project}/regions/{region}/addresses",
+            [],
+            {"project": "my-project", "region": "."},
+            "Invalid value \\. for region\\.",
+        ],
+        # Sub-template named matching * with . or ..
+        [
             "/v2/{parent=projects/*/locations/*}/content:inspect",
-            parent="projects/my-project/locations/..",
-        )
-    with pytest.raises(
-        ValueError,
-        match="Invalid value projects/my-project/locations/\\. for parent\\.",
-    ):
-        path_template.expand(
+            [],
+            {"parent": "projects/my-project/locations/.."},
+            "Invalid value projects/my-project/locations/\\.\\. for parent\\.",
+        ],
+        [
             "/v2/{parent=projects/*/locations/*}/content:inspect",
-            parent="projects/my-project/locations/.",
-        )
+            [],
+            {"parent": "projects/my-project/locations/."},
+            "Invalid value projects/my-project/locations/\\. for parent\\.",
+        ],
+    ],
+)
+def test_path_traversal_dots_validation_star(tmpl, args, kwargs, expected_err_match):
+    with pytest.raises(ValueError, match=expected_err_match):
+        path_template.expand(tmpl, *args, **kwargs)
 
 
-def test_path_traversal_dots_validation_double_star():
-    # 2. Dots in values matched to **
-    # Valid cases: leftover_segments > 0
-    # leftover_segments == 1
+@pytest.mark.parametrize(
+    "name_val, expected_path",
+    [
+        (
+            "projects/my-project/monitoredResourceDescriptors/instance/my-instance/..",
+            "/v3/projects/my-project/monitoredResourceDescriptors/instance/my-instance/..",
+        ),
+        (
+            "projects/my-project/monitoredResourceDescriptors/instance/my-instance/.",
+            "/v3/projects/my-project/monitoredResourceDescriptors/instance/my-instance/.",
+        ),
+        (
+            "projects/my-project/monitoredResourceDescriptors/a/b/c/d/e/../../../..",
+            "/v3/projects/my-project/monitoredResourceDescriptors/a/b/c/d/e/../../../..",
+        ),
+    ],
+)
+def test_path_traversal_dots_validation_double_star_valid(name_val, expected_path):
     assert (
         path_template.expand(
             "/v3/{name=projects/*/monitoredResourceDescriptors/**}",
-            name="projects/my-project/monitoredResourceDescriptors/instance/my-instance/..",
+            name=name_val,
         )
-        == "/v3/projects/my-project/monitoredResourceDescriptors/instance/my-instance/.."
+        == expected_path
     )
 
-    assert (
-        path_template.expand(
-            "/v3/{name=projects/*/monitoredResourceDescriptors/**}",
-            name="projects/my-project/monitoredResourceDescriptors/instance/my-instance/.",
-        )
-        == "/v3/projects/my-project/monitoredResourceDescriptors/instance/my-instance/."
-    )
 
-    assert (
-        path_template.expand(
-            "/v3/{name=projects/*/monitoredResourceDescriptors/**}",
-            name="projects/my-project/monitoredResourceDescriptors/a/b/c/d/e/../../../..",
-        )
-        == "/v3/projects/my-project/monitoredResourceDescriptors/a/b/c/d/e/../../../.."
-    )
-
-    # Invalid cases: resulting path traversal consumes whole value or overflows left
-    invalid_cases = [
+@pytest.mark.parametrize(
+    "name_val",
+    [
         "projects/my-project/monitoredResourceDescriptors/.",
         "projects/my-project/monitoredResourceDescriptors/instance/my-instance/../..",
         "projects/my-project/monitoredResourceDescriptors/instance/../my-instance/..",
         "projects/my-project/monitoredResourceDescriptors/..",
         "projects/my-project/monitoredResourceDescriptors/instance/../..",
         "projects/my-project/monitoredResourceDescriptors/a/b/../../../c/d/e/..",
-    ]
-    for case in invalid_cases:
-        with pytest.raises(ValueError, match="Invalid value .* for name\\."):
-            path_template.expand(
-                "/v3/{name=projects/*/monitoredResourceDescriptors/**}", name=case
-            )
+    ],
+)
+def test_path_traversal_dots_validation_double_star_invalid(name_val):
+    with pytest.raises(ValueError, match="Invalid value .* for name\\."):
+        path_template.expand(
+            "/v3/{name=projects/*/monitoredResourceDescriptors/**}",
+            name=name_val,
+        )
 
 
-def test_percent_encoding_unreserved_characters():
-    # 3. Values for all variable parts should be percent-encoded except for [-_.~/0-9a-zA-Z] characters.
-    # We should keep [-_.~/0-9a-zA-Z] safe for both single-star and double-star
-    result = path_template.expand("/v1/{name}", name="abc-._~")
-    assert result == "/v1/abc-._~"
-
-    result = path_template.expand("/v1/{name=**}", name="abc-._~/")
-    assert result == "/v1/abc-._~/"
-
-    # Other characters like '$', '?', '=', '#', ' ' should be encoded
-    result = path_template.expand("/v1/{name}", name="a$b?c=d#e f")
-    assert result == "/v1/a%24b%3Fc%3Dd%23e%20f"
+@pytest.mark.parametrize(
+    "tmpl, kwargs, expected_result",
+    [
+        ["/v1/{name}", {"name": "abc-._~"}, "/v1/abc-._~"],
+        ["/v1/{name=**}", {"name": "abc-._~/"}, "/v1/abc-._~/"],
+        ["/v1/{name}", {"name": "a/b"}, "/v1/a/b"],
+        ["/v1/{name}", {"name": "a$b?c=d#e f"}, "/v1/a%24b%3Fc%3Dd%23e%20f"],
+    ],
+)
+def test_percent_encoding_unreserved_characters(tmpl, kwargs, expected_result):
+    result = path_template.expand(tmpl, **kwargs)
+    assert result == expected_result
+    # For single-segment with '/', validate should fail because '/' is preserved
+    if "/" in kwargs.get("name", "") and tmpl == "/v1/{name}":
+        assert not path_template.validate(tmpl, result)
