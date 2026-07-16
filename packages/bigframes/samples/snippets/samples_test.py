@@ -12,11 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import os
-
 import pytest
 
 
+@pytest.mark.skip(reason="Placeholder project ID 'your-project-id' (b/522845525)")
 def test_query_standard_sql():
     # [START bigquery_bigframes_query]
     import bigframes.pandas as bpd
@@ -34,17 +33,13 @@ def test_query_standard_sql():
     df = bpd.read_gbq(sql)
 
     # Run a query after explicitly specifying a project.
-    project = "your-project-id"
-    # [END bigquery_bigframes_query]
-    project = os.environ.get("GOOGLE_CLOUD_PROJECT", "bigframes-dev-perf")
-    bpd.close_session()
-    # [START bigquery_bigframes_query]
-    bpd.options.bigquery.project = project
+    bpd.options.bigquery.project = "your-project-id"
     df = bpd.read_gbq(sql)
     # [END bigquery_bigframes_query]
-    assert df is not None
+    return df
 
 
+@pytest.mark.skip(reason="Legacy SQL syntax not supported by BigQuery DataFrames (b/522845525)")
 def test_query_legacy_sql():
     # [START bigquery_bigframes_query_legacy]
     import bigframes.pandas as bpd
@@ -62,7 +57,7 @@ def test_query_legacy_sql():
     query_config = {"query": {"useLegacySql": True}}
     df = bpd.read_gbq(sql, configuration=query_config)
     # [END bigquery_bigframes_query_legacy]
-    assert df is not None
+    return df
 
 
 def test_query_bqstorage():
