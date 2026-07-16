@@ -19,7 +19,6 @@ import os
 import pytest
 import pytest_asyncio
 from requests.adapters import HTTPAdapter
-from urllib3.poolmanager import PoolManager
 
 from typing import Sequence, Tuple
 
@@ -473,14 +472,9 @@ async def intercepted_echo_grpc_async(use_mtls, use_tls):
 
 class HostNameIgnoringAdapter(HTTPAdapter):
     """Custom HTTPAdapter that disables hostname verification for local self-signed certs."""
-    def init_poolmanager(self, connections, maxsize, block=False, **pool_kwargs):
-        self.poolmanager = PoolManager(
-            num_pools=connections,
-            maxsize=maxsize,
-            block=block,
-            assert_hostname=False,
-            **pool_kwargs
-        )
+    def cert_verify(self, conn, url, verify, cert):
+        super().cert_verify(conn, url, verify, cert)
+        conn.assert_hostname = False
 
 
 @pytest.fixture
