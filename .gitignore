@@ -72,3 +72,4 @@ bazel-bin
 bazel-gapic-generator
 bazel-out
 bazel-testlogs
+packages/gapic-generator/api-common-protos/

@@ -247,9 +247,9 @@ def install_unittest_dependencies(session, *constraints):
         extras = []
 
     if extras:
-        session.install("-e", f".[{','.join(extras)}]", *constraints)
+        session.install(f".[{','.join(extras)}]", *constraints)
     else:
-        session.install("-e", ".", *constraints)
+        session.install(".", *constraints)
 
 
 @nox.session(python=ALL_PYTHON)
@@ -264,6 +264,15 @@ def unit(session, protobuf_implementation):
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
     )
     install_unittest_dependencies(session, "-c", constraints_path)
+
+    # Override google-api-core with the local version from source if running in the monorepo
+    google_api_core_dir = next(
+        (str(p / "packages" / "google-api-core") for p in CURRENT_DIRECTORY.parents if (p / "packages" / "google-api-core").exists()),
+        None
+    )
+    if google_api_core_dir:
+        session.run("pip", "uninstall", "google-api-core", "-y")
+        session.install("-e", google_api_core_dir, "--no-deps")
 
     # Run py.test against the unit tests.
     session.run(
@@ -309,9 +318,9 @@ def install_systemtest_dependencies(session, *constraints):
         extras = []
 
     if extras:
-        session.install("-e", f".[{','.join(extras)}]", *constraints)
+        session.install(f".[{','.join(extras)}]", *constraints)
     else:
-        session.install("-e", ".", *constraints)
+        session.install(".", *constraints)
 
 
 @nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
@@ -374,7 +383,7 @@ def cover(session):
 def docs(session):
     """Build the docs for this library."""
 
-    session.install("-e", ".")
+    session.install(".")
     session.install(
         # We need to pin to specific versions of the `sphinxcontrib-*` packages
         # which still support sphinx 4.x.
@@ -407,7 +416,7 @@ def docs(session):
 def docfx(session):
     """Build the docfx yaml files for this library."""
 
-    session.install("-e", ".")
+    session.install(".")
     session.install(
         # We need to pin to specific versions of the `sphinxcontrib-*` packages
         # which still support sphinx 4.x.
@@ -463,7 +472,7 @@ def prerelease_deps(session, protobuf_implementation):
     """
 
     # Install all dependencies
-    session.install("-e", ".")
+    session.install(".")
 
     # Install dependencies for the unit test environment
     unit_deps_all = UNIT_TEST_STANDARD_DEPENDENCIES + UNIT_TEST_EXTERNAL_DEPENDENCIES
@@ -564,7 +573,7 @@ def prerelease_deps(session, protobuf_implementation):
     )
 
 
-@nox.session(python=PREVIEW_PYTHON_VERSION)
+@nox.session(python=ALL_PYTHON)
 @nox.parametrize(
     "protobuf_implementation",
     ["python", "upb"],
@@ -575,7 +584,7 @@ def core_deps_from_source(session, protobuf_implementation):
     """
 
     # Install all dependencies
-    session.install("-e", ".")
+    session.install(".")
 
     # Install dependencies for the unit test environment
     unit_deps_all = UNIT_TEST_STANDARD_DEPENDENCIES + UNIT_TEST_EXTERNAL_DEPENDENCIES

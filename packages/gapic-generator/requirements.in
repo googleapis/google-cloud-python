@@ -1,5 +1,5 @@
 click
-google-api-core
+google-api-core[grpc]>=2.25.0,<3.0.0
 googleapis-common-protos
 jinja2
 MarkupSafe

@@ -2,6 +2,31 @@ workspace(name = "gapic_generator_python")
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
+# Override google-api-core dependency with git archive of packages/google-api-core directory to avoid local paths
+http_archive(
+    name = "gapic_generator_python_pip_deps_google_api_core",
+    urls = ["https://github.com/googleapis/google-cloud-python/archive/e0f3f85e0430e284c0cb50f0186f24c15e499707.tar.gz"],
+    sha256 = "bf184f6b26ed613ab0aec3453ece922e4adb5a4d4fd0a6db99ae5e0c9b371db4",
+    strip_prefix = "google-cloud-python-e0f3f85e0430e284c0cb50f0186f24c15e499707/packages/google-api-core",
+    build_file_content = """
+py_library(
+    name = "pkg",
+    srcs = glob(["google/**/*.py"]),
+    imports = ["."],
+    visibility = ["//visibility:public"],
+    deps = [
+        "@gapic_generator_python_pip_deps_googleapis_common_protos//:pkg",
+        "@gapic_generator_python_pip_deps_protobuf//:pkg",
+        "@gapic_generator_python_pip_deps_proto_plus//:pkg",
+        "@gapic_generator_python_pip_deps_google_auth//:pkg",
+        "@gapic_generator_python_pip_deps_requests//:pkg",
+    ],
+)
+""",
+)
+
+
+
 _bazel_skylib_version = "1.4.0"
 
 _bazel_skylib_sha256 = "f24ab666394232f834f74d19e2ff142b0af17466ea0c69a3f4c276ee75f6efce"
@@ -42,11 +67,12 @@ load("@rules_python//python:pip.bzl", "pip_parse")
 
 pip_parse(
     name = "gapic_generator_python_pip_deps",
-	requirements_lock = "//:requirements.txt",
+    requirements_lock = "//:requirements.txt",
 )
 load("@gapic_generator_python_pip_deps//:requirements.bzl", "install_deps")
 
 install_deps()
+
 #
 # Import gapic-generator-python specific dependencies
 #
@@ -123,3 +149,13 @@ switched_rules_by_language(
     gapic = True,
     grpc = True,
 )
+
+# BEGIN workaround
+load("@rules_python//python:repositories.bzl", "python_register_toolchains")
+
+python_register_toolchains(
+    name = "python311",
+    python_version = "3.11",
+    ignore_root_user_error = True,
+)
+# END workaround

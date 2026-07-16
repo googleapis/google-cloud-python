@@ -73,6 +73,8 @@ def unit(session):
         "grpcio-status",
         "proto-plus",
     )
+    if os.path.exists("../google-api-core"):
+        session.install("../google-api-core")
     session.install("-e", ".")
     session.run(
         "py.test",
@@ -89,6 +91,7 @@ def unit(session):
                 path.join("tests", "unit"),
             ]
         ),
+        env={"PYTHONPATH": "."},
     )
 
 
@@ -154,6 +157,18 @@ class FragTester:
                 )
                 self.session.install(tmp_dir, "-e", ".", "-qqq", "-r", constraints_path)
 
+            # Uninstall the PyPI version of google-api-core to prevent import path conflicts
+            self.session.run("pip", "uninstall", "google-api-core", "-y")
+            # Override google-api-core with the local version from source
+            if os.path.exists("../google-api-core"):
+                self.session.install(
+                    "../google-api-core", "--no-deps"
+                )
+            else:
+                self.session.install(
+                    "google-api-core", "--no-deps"
+                )
+
             # Run the fragment's generated unit tests.
             # Don't bother parallelizing them: we already parallelize
             # the fragments, and there usually aren't too many tests per fragment.
@@ -182,6 +197,8 @@ def fragment(session, use_ads_templates=False):
         "pytest-asyncio",
         "grpcio-tools",
     )
+    if os.path.exists("../google-api-core"):
+        session.install("../google-api-core")
     session.install("-e", ".")
 
     # The specific failure is `Plugin output is unparseable`
@@ -246,6 +263,10 @@ def showcase_library(
     session.log("-" * 70)
 
     # Install gapic-generator-python
+    if os.path.exists("../google-api-core"):
+        session.install("../google-api-core")
+    else:
+        session.install("google-api-core")
     session.install("-e", ".")
 
     # Install grpcio-tools for protoc
@@ -381,6 +402,14 @@ def showcase_library(
             # See https://github.com/googleapis/gapic-generator-python/issues/1788
             # Install the library without a constraints file.
             session.install("-e", tmp_dir)
+
+        # Uninstall the PyPI version of google-api-core to prevent import path conflicts
+        session.run("pip", "uninstall", "google-api-core", "-y")
+        # Override google-api-core with the local version from source
+        if os.path.exists("../google-api-core"):
+            session.install("../google-api-core", "--no-deps")
+        else:
+            session.install("google-api-core", "--no-deps")
 
         yield tmp_dir
 
