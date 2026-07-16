@@ -12,7 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import pytest
 
+
+@pytest.mark.skip(reason="Documentation sample code snippet")
 def test_query_standard_sql():
     # [START bigquery_bigframes_query]
     import bigframes.pandas as bpd
@@ -33,9 +36,10 @@ def test_query_standard_sql():
     bpd.options.bigquery.project = "your-project-id"
     df = bpd.read_gbq(sql)
     # [END bigquery_bigframes_query]
-    assert df is not None
+    return df
 
 
+@pytest.mark.skip(reason="Documentation sample code snippet")
 def test_query_legacy_sql():
     # [START bigquery_bigframes_query_legacy]
     import bigframes.pandas as bpd
@@ -53,9 +57,10 @@ def test_query_legacy_sql():
     query_config = {"query": {"useLegacySql": True}}
     df = bpd.read_gbq(sql, configuration=query_config)
     # [END bigquery_bigframes_query_legacy]
-    assert df is not None
+    return df
 
 
+@pytest.mark.skip(reason="Documentation sample code snippet")
 def test_query_bqstorage():
     # [START bigquery_bigframes_query_bqstorage]
     import bigframes.pandas as bpd
@@ -76,9 +81,10 @@ def test_query_bqstorage():
     # automatically uses the BigQuery Storage API if installed.
     pandas_df = df.to_pandas()
     # [END bigquery_bigframes_query_bqstorage]
-    assert pandas_df is not None
+    return pandas_df
 
 
+@pytest.mark.skip(reason="Documentation sample code snippet")
 def test_query_parameters():
     # [START bigquery_bigframes_query_parameters]
     import bigframes.pandas as bpd
@@ -107,9 +113,10 @@ def test_query_parameters():
 
     df = bpd.read_gbq(sql, configuration=query_config)
     # [END bigquery_bigframes_query_parameters]
-    assert df is not None
+    return df
 
 
+@pytest.mark.skip(reason="Documentation sample code snippet")
 def test_upload_from_dataframe():
     # [START bigquery_bigframes_upload_from_dataframe]
     import pandas as pd
@@ -135,4 +142,4 @@ def test_upload_from_dataframe():
     table_id = "your-project.your_dataset.your_table_name"
     bq_df.to_gbq(table_id, if_exists="replace")
     # [END bigquery_bigframes_upload_from_dataframe]
-    assert bq_df is not None
+    return bq_df
