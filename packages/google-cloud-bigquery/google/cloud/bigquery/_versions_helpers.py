@@ -257,32 +257,30 @@ class PandasGBQVersions:
     @property
     def installed_version(self) -> packaging.version.Version:
         """Return the parsed version of pandas-gbq"""
-        if self._installed_version is None:
-            try:
-                import pandas_gbq  # type: ignore
+        if self._installed_version is not None:
+            return self._installed_version
 
-                self._installed_version = packaging.version.parse(
-                    getattr(pandas_gbq, "__version__", "0.0.0")
-                )
-            except Exception:
-                self._installed_version = packaging.version.parse("0.0.0")
+        try:
+            import pandas_gbq  # type: ignore
 
-        return self._installed_version
+            return packaging.version.parse(
+                getattr(pandas_gbq, "__version__", "0.0.0")
+            )
+        except Exception:
+            return packaging.version.parse("0.0.0")
 
     @property
     def delegation_api_version(self) -> int:
         """Return the delegation API version of pandas-gbq if installed, otherwise 0."""
-        if self._delegation_api_version is None:
-            try:
-                import pandas_gbq  # type: ignore
+        if self._delegation_api_version is not None:
+            return self._delegation_api_version
 
-                self._delegation_api_version = getattr(
-                    pandas_gbq, "_internal_delegation_api_version", 0
-                )
-            except Exception:
-                self._delegation_api_version = 0
+        try:
+            import pandas_gbq  # type: ignore
 
-        return self._delegation_api_version
+            return int(getattr(pandas_gbq, "_internal_delegation_api_version", 0))
+        except Exception:
+            return 0
 
     @property
     def is_delegation_supported(self) -> bool:
