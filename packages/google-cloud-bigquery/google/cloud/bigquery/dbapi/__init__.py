@@ -21,32 +21,34 @@ for Google BigQuery.
    https://www.python.org/dev/peps/pep-0249/
 """
 
-from google.cloud.bigquery.dbapi.connection import connect
-from google.cloud.bigquery.dbapi.connection import Connection
+from google.cloud.bigquery.dbapi.connection import Connection, connect
 from google.cloud.bigquery.dbapi.cursor import Cursor
-from google.cloud.bigquery.dbapi.exceptions import Warning
-from google.cloud.bigquery.dbapi.exceptions import Error
-from google.cloud.bigquery.dbapi.exceptions import InterfaceError
-from google.cloud.bigquery.dbapi.exceptions import DatabaseError
-from google.cloud.bigquery.dbapi.exceptions import DataError
-from google.cloud.bigquery.dbapi.exceptions import OperationalError
-from google.cloud.bigquery.dbapi.exceptions import IntegrityError
-from google.cloud.bigquery.dbapi.exceptions import InternalError
-from google.cloud.bigquery.dbapi.exceptions import ProgrammingError
-from google.cloud.bigquery.dbapi.exceptions import NotSupportedError
-from google.cloud.bigquery.dbapi.types import Binary
-from google.cloud.bigquery.dbapi.types import Date
-from google.cloud.bigquery.dbapi.types import DateFromTicks
-from google.cloud.bigquery.dbapi.types import Time
-from google.cloud.bigquery.dbapi.types import TimeFromTicks
-from google.cloud.bigquery.dbapi.types import Timestamp
-from google.cloud.bigquery.dbapi.types import TimestampFromTicks
-from google.cloud.bigquery.dbapi.types import BINARY
-from google.cloud.bigquery.dbapi.types import DATETIME
-from google.cloud.bigquery.dbapi.types import NUMBER
-from google.cloud.bigquery.dbapi.types import ROWID
-from google.cloud.bigquery.dbapi.types import STRING
-
+from google.cloud.bigquery.dbapi.exceptions import (
+    DatabaseError,
+    DataError,
+    Error,
+    IntegrityError,
+    InterfaceError,
+    InternalError,
+    NotSupportedError,
+    OperationalError,
+    ProgrammingError,
+    Warning,
+)
+from google.cloud.bigquery.dbapi.types import (
+    BINARY,
+    DATETIME,
+    NUMBER,
+    ROWID,
+    STRING,
+    Binary,
+    Date,
+    DateFromTicks,
+    Time,
+    TimeFromTicks,
+    Timestamp,
+    TimestampFromTicks,
+)
 
 apilevel = "2.0"
 

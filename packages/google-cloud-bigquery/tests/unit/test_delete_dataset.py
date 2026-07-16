@@ -12,10 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .helpers import make_connection, make_client, dataset_polymorphic
 import google.api_core.exceptions
-from google.cloud.bigquery.retry import DEFAULT_TIMEOUT
 import pytest
+from google.cloud.bigquery.retry import DEFAULT_TIMEOUT
+
+from .helpers import dataset_polymorphic, make_client, make_connection
 
 
 @dataset_polymorphic

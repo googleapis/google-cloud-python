@@ -11,14 +11,13 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+import concurrent.futures
 from unittest import mock
 
-import concurrent.futures
 import freezegun
-from google.api_core import exceptions
 import google.api_core.retry
 import pytest
-
+from google.api_core import exceptions
 from google.cloud.bigquery.client import _MIN_GET_QUERY_RESULTS_TIMEOUT
 from google.cloud.bigquery.job import QueryJob
 from google.cloud.bigquery.retry import DEFAULT_GET_JOB_TIMEOUT
@@ -26,7 +25,6 @@ from google.cloud.bigquery.table import RowIterator
 
 from ..helpers import make_connection
 from .helpers import _make_client
-
 
 PROJECT = "test-project"
 JOB_ID = "test-job-id"

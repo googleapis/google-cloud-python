@@ -16,8 +16,8 @@ import datetime
 from unittest import mock
 
 import pytest
-
 from google.cloud.bigquery.retry import DEFAULT_TIMEOUT
+
 from .helpers import make_connection
 
 
@@ -25,12 +25,14 @@ from .helpers import make_connection
     "extra,query", [({}, {}), (dict(page_size=42), dict(maxResults=42))]
 )
 def test_list_jobs_defaults(client, PROJECT, DS_ID, extra, query):
-    from google.cloud.bigquery.job import CopyJob
-    from google.cloud.bigquery.job import CreateDisposition
-    from google.cloud.bigquery.job import ExtractJob
-    from google.cloud.bigquery.job import LoadJob
-    from google.cloud.bigquery.job import QueryJob
-    from google.cloud.bigquery.job import WriteDisposition
+    from google.cloud.bigquery.job import (
+        CopyJob,
+        CreateDisposition,
+        ExtractJob,
+        LoadJob,
+        QueryJob,
+        WriteDisposition,
+    )
 
     SOURCE_TABLE = "source_table"
     DESTINATION_TABLE = "destination_table"

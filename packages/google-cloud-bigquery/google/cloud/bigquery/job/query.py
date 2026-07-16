@@ -21,42 +21,39 @@ import time
 import typing
 from typing import Any, Dict, Iterable, List, Optional, Union
 
+import requests
 from google.api_core import exceptions
 from google.api_core import retry as retries
-import requests
-
-from google.cloud.bigquery.dataset import Dataset
-from google.cloud.bigquery.dataset import DatasetListItem
-from google.cloud.bigquery.dataset import DatasetReference
-from google.cloud.bigquery.encryption_configuration import EncryptionConfiguration
-from google.cloud.bigquery.enums import KeyResultStatementKind, DefaultPandasDTypes
-from google.cloud.bigquery.external_config import ExternalConfig
 from google.cloud.bigquery import _helpers
+from google.cloud.bigquery._tqdm_helpers import wait_for_query
+from google.cloud.bigquery.dataset import Dataset, DatasetListItem, DatasetReference
+from google.cloud.bigquery.encryption_configuration import EncryptionConfiguration
+from google.cloud.bigquery.enums import DefaultPandasDTypes, KeyResultStatementKind
+from google.cloud.bigquery.external_config import ExternalConfig
+from google.cloud.bigquery.job.base import _AsyncJob, _JobConfig, _JobReference
 from google.cloud.bigquery.query import (
-    _query_param_from_api_repr,
     ArrayQueryParameter,
     ConnectionProperty,
     ScalarQueryParameter,
     StructQueryParameter,
     UDFResource,
+    _query_param_from_api_repr,
 )
 from google.cloud.bigquery.retry import (
-    DEFAULT_RETRY,
     DEFAULT_JOB_RETRY,
+    DEFAULT_RETRY,
     POLLING_DEFAULT_VALUE,
 )
 from google.cloud.bigquery.routine import RoutineReference
 from google.cloud.bigquery.schema import SchemaField
-from google.cloud.bigquery.table import _EmptyRowIterator
-from google.cloud.bigquery.table import RangePartitioning
-from google.cloud.bigquery.table import _table_arg_to_table_ref
-from google.cloud.bigquery.table import TableReference, PropertyGraphReference
-from google.cloud.bigquery.table import TimePartitioning
-from google.cloud.bigquery._tqdm_helpers import wait_for_query
-
-from google.cloud.bigquery.job.base import _AsyncJob
-from google.cloud.bigquery.job.base import _JobConfig
-from google.cloud.bigquery.job.base import _JobReference
+from google.cloud.bigquery.table import (
+    PropertyGraphReference,
+    RangePartitioning,
+    TableReference,
+    TimePartitioning,
+    _EmptyRowIterator,
+    _table_arg_to_table_ref,
+)
 
 try:
     import pandas  # type: ignore
@@ -66,8 +63,8 @@ except ImportError:
 if typing.TYPE_CHECKING:  # pragma: NO COVER
     # Assumption: type checks are only used by library developers and CI environments
     # that have all optional dependencies installed, thus no conditional imports.
-    import pandas  # type: ignore
     import geopandas  # type: ignore
+    import pandas  # type: ignore
     import pyarrow  # type: ignore
     from google.cloud import bigquery_storage
     from google.cloud.bigquery.client import Client

@@ -14,9 +14,8 @@
 
 import freezegun
 import google.api_core.exceptions
-from google.api_core import retry as retries
 import pytest
-
+from google.api_core import retry as retries
 from google.cloud.bigquery import _job_helpers
 
 from . import helpers

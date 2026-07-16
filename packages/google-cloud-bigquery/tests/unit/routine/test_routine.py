@@ -15,9 +15,8 @@
 
 import datetime
 
-import pytest
-
 import google.cloud._helpers
+import pytest
 from google.cloud import bigquery
 
 
@@ -54,8 +53,7 @@ def test_ctor_w_string(target_class):
 
 
 def test_ctor_w_properties(target_class):
-    from google.cloud.bigquery.routine import RoutineArgument
-    from google.cloud.bigquery.routine import RoutineReference
+    from google.cloud.bigquery.routine import RoutineArgument, RoutineReference
 
     routine_id = "my-proj.my_dset.my_routine"
     arguments = [
@@ -140,8 +138,7 @@ def test_ctor_invalid_external_runtime_options(target_class):
 
 
 def test_from_api_repr(target_class):
-    from google.cloud.bigquery.routine import RoutineArgument
-    from google.cloud.bigquery.routine import RoutineReference
+    from google.cloud.bigquery.routine import RoutineArgument, RoutineReference
 
     creation_time = datetime.datetime(
         2010, 5, 19, 16, 0, 0, tzinfo=google.cloud._helpers.UTC
@@ -232,9 +229,11 @@ def test_from_api_repr(target_class):
 
 
 def test_from_api_repr_tvf_function(target_class):
-    from google.cloud.bigquery.routine import RoutineArgument
-    from google.cloud.bigquery.routine import RoutineReference
-    from google.cloud.bigquery.routine import RoutineType
+    from google.cloud.bigquery.routine import (
+        RoutineArgument,
+        RoutineReference,
+        RoutineType,
+    )
 
     StandardSqlDataType = bigquery.standard_sql.StandardSqlDataType
     StandardSqlField = bigquery.standard_sql.StandardSqlField

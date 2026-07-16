@@ -716,8 +716,7 @@ class TestLoadJobConfig(_Base):
         object_under_test.range_partitioning.range_.interval == 10
 
     def test_range_partitioning_setter(self):
-        from google.cloud.bigquery.table import PartitionRange
-        from google.cloud.bigquery.table import RangePartitioning
+        from google.cloud.bigquery.table import PartitionRange, RangePartitioning
 
         object_under_test = self._get_target_class()()
         object_under_test.range_partitioning = RangePartitioning(
@@ -743,8 +742,7 @@ class TestLoadJobConfig(_Base):
         self.assertIsNone(config.time_partitioning)
 
     def test_time_partitioning_hit(self):
-        from google.cloud.bigquery.table import TimePartitioning
-        from google.cloud.bigquery.table import TimePartitioningType
+        from google.cloud.bigquery.table import TimePartitioning, TimePartitioningType
 
         field = "creation_date"
         year_ms = 86400 * 1000 * 365
@@ -769,8 +767,7 @@ class TestLoadJobConfig(_Base):
         assert "TimePartitioning.require_partition_filter" in str(warning)
 
     def test_time_partitioning_setter(self):
-        from google.cloud.bigquery.table import TimePartitioning
-        from google.cloud.bigquery.table import TimePartitioningType
+        from google.cloud.bigquery.table import TimePartitioning, TimePartitioningType
 
         field = "creation_date"
         year_ms = 86400 * 1000 * 365
@@ -1102,10 +1099,9 @@ class TestLoadJobConfig(_Base):
             SourceFormat,
             WriteDisposition,
         )
+        from google.cloud.bigquery.job.load import ColumnNameCharacterMap
         from google.cloud.bigquery.schema import SchemaField
         from google.cloud.bigquery.table import TimePartitioning, TimePartitioningType
-
-        from google.cloud.bigquery.job.load import ColumnNameCharacterMap
 
         config = LoadJobConfig.from_api_repr(self.RESOURCE)
 
@@ -1137,16 +1133,16 @@ class TestLoadJobConfig(_Base):
         self.assertEqual(config.timestamp_target_precision, [6, 12])
 
     def test_to_api_repr(self):
+        from google.cloud.bigquery.format_options import ParquetOptions
         from google.cloud.bigquery.job import (
             CreateDisposition,
             LoadJobConfig,
             SourceFormat,
             WriteDisposition,
         )
+        from google.cloud.bigquery.job.load import ColumnNameCharacterMap
         from google.cloud.bigquery.schema import SchemaField
         from google.cloud.bigquery.table import TimePartitioning, TimePartitioningType
-        from google.cloud.bigquery.format_options import ParquetOptions
-        from google.cloud.bigquery.job.load import ColumnNameCharacterMap
 
         config = LoadJobConfig()
         config.allow_jagged_rows = True

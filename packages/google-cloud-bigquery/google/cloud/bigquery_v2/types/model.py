@@ -14,14 +14,16 @@
 # limitations under the License.
 #
 import proto  # type: ignore
-
-from google.cloud.bigquery_v2.types import encryption_config
+from google.cloud.bigquery_v2.types import (
+    encryption_config,
+    standard_sql,
+    table_reference,
+)
 from google.cloud.bigquery_v2.types import model_reference as gcb_model_reference
-from google.cloud.bigquery_v2.types import standard_sql
-from google.cloud.bigquery_v2.types import table_reference
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.protobuf import wrappers_pb2  # type: ignore
-
+from google.protobuf import (
+    timestamp_pb2,  # type: ignore
+    wrappers_pb2,  # type: ignore
+)
 
 __protobuf__ = proto.module(
     package="google.cloud.bigquery.v2",

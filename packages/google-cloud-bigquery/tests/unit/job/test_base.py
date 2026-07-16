@@ -17,16 +17,12 @@ import http
 import unittest
 from unittest import mock
 
-from google.api_core.future import polling
 import pytest
-
+from google.api_core.future import polling
 from google.cloud.bigquery.retry import DEFAULT_GET_JOB_TIMEOUT
 
 from ..helpers import make_connection
-
-from .helpers import _make_client
-from .helpers import _make_retriable_exception
-from .helpers import _make_job_resource
+from .helpers import _make_client, _make_job_resource, _make_retriable_exception
 
 
 class Test__error_result_to_exception(unittest.TestCase):
@@ -327,6 +323,7 @@ class Test_AsyncJob(unittest.TestCase):
     @staticmethod
     def _datetime_and_millis():
         import datetime
+
         from google.cloud._helpers import _millis
 
         now = datetime.datetime.now(datetime.timezone.utc).replace(
@@ -645,8 +642,8 @@ class Test_AsyncJob(unittest.TestCase):
         self.assertEqual(job._properties, expected)
 
     def test_exists_defaults_miss(self):
-        from google.cloud.exceptions import NotFound
         from google.cloud.bigquery.retry import DEFAULT_RETRY
+        from google.cloud.exceptions import NotFound
 
         job = self._set_properties_job()
         job._properties["jobReference"]["location"] = self.LOCATION
@@ -719,7 +716,7 @@ class Test_AsyncJob(unittest.TestCase):
         )
 
     def test_reload_defaults(self):
-        from google.cloud.bigquery.retry import DEFAULT_RETRY, DEFAULT_GET_JOB_TIMEOUT
+        from google.cloud.bigquery.retry import DEFAULT_GET_JOB_TIMEOUT, DEFAULT_RETRY
 
         resource = {
             "jobReference": {

@@ -12,8 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .helpers import _Base
 import datetime
+
+from .helpers import _Base
 
 
 class TestBiEngineStats:

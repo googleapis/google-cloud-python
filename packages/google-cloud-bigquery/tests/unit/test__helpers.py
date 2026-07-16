@@ -16,13 +16,13 @@ import datetime
 import decimal
 import json
 import os
-import warnings
-import pytest
-import packaging
 import unittest
+import warnings
 from unittest import mock
 
 import google.api_core
+import packaging
+import pytest
 from google.cloud.bigquery._helpers import _isinstance_or_raise
 
 
@@ -50,8 +50,8 @@ class Test_get_client_universe(unittest.TestCase):
         self.assertEqual("googleapis.com", _get_client_universe(options))
 
     def test_with_client_options(self):
-        from google.cloud.bigquery._helpers import _get_client_universe
         from google.api_core import client_options
+        from google.cloud.bigquery._helpers import _get_client_universe
 
         options = client_options.from_dict({"universe_domain": "foo.com"})
         self.assertEqual("foo.com", _get_client_universe(options))
@@ -71,8 +71,8 @@ class Test_get_client_universe(unittest.TestCase):
 
     @mock.patch.dict(os.environ, {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": "foo.com"})
     def test_with_environ_and_empty_options(self):
-        from google.cloud.bigquery._helpers import _get_client_universe
         from google.api_core import client_options
+        from google.cloud.bigquery._helpers import _get_client_universe
 
         options = client_options.from_dict({})
         self.assertEqual("foo.com", _get_client_universe(options))
@@ -93,6 +93,7 @@ class Test_validate_universe(unittest.TestCase):
 
     def test_with_no_universe_creds(self):
         from google.cloud.bigquery._helpers import _validate_universe
+
         from .helpers import make_creds
 
         creds = make_creds(None)
@@ -101,6 +102,7 @@ class Test_validate_universe(unittest.TestCase):
 
     def test_with_matched_universe_creds(self):
         from google.cloud.bigquery._helpers import _validate_universe
+
         from .helpers import make_creds
 
         creds = make_creds("googleapis.com")
@@ -109,6 +111,7 @@ class Test_validate_universe(unittest.TestCase):
 
     def test_with_mismatched_universe_creds(self):
         from google.cloud.bigquery._helpers import _validate_universe
+
         from .helpers import make_creds
 
         creds = make_creds("foo.com")
@@ -1146,8 +1149,9 @@ def _field_isinstance_patcher():
 
 def test_decimal_as_float_api_repr():
     """Make sure decimals get converted to float."""
-    import google.cloud.bigquery.query
     from decimal import Decimal
+
+    import google.cloud.bigquery.query
 
     param = google.cloud.bigquery.query.ScalarQueryParameter(
         "x", "FLOAT64", Decimal(42)

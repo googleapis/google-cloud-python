@@ -12,13 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from collections import namedtuple
-from collections import OrderedDict
+import enum
 import itertools
 import re
-
-import enum
-
+from collections import OrderedDict, namedtuple
 
 Token = namedtuple("Token", ("type_", "lexeme", "pos"))
 StateTransition = namedtuple("StateTransition", ("new_state", "total_offset"))

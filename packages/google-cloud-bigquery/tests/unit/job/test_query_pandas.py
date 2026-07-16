@@ -18,16 +18,15 @@ import json
 from unittest import mock
 
 import pytest
-
-from ..helpers import make_connection
-from .helpers import _make_client
-from .helpers import _make_job_resource
 from google.cloud.bigquery.enums import DefaultPandasDTypes
 
+from ..helpers import make_connection
+from .helpers import _make_client, _make_job_resource
+
 try:
-    from google.cloud import bigquery_storage
     import google.cloud.bigquery_storage_v1.reader
     import google.cloud.bigquery_storage_v1.services.big_query_read.client
+    from google.cloud import bigquery_storage
 except (ImportError, AttributeError):
     bigquery_storage = None
 
@@ -312,9 +311,9 @@ def test_to_arrow_max_results_no_progress_bar():
 @mock.patch("google.cloud.bigquery._tqdm_helpers.tqdm")
 def test_to_arrow_w_tqdm_w_query_plan(tqdm_mock):
     from google.cloud.bigquery import table
+    from google.cloud.bigquery._tqdm_helpers import _PROGRESS_BAR_UPDATE_INTERVAL
     from google.cloud.bigquery.job import QueryJob as target_class
     from google.cloud.bigquery.schema import SchemaField
-    from google.cloud.bigquery._tqdm_helpers import _PROGRESS_BAR_UPDATE_INTERVAL
 
     begun_resource = _make_job_resource(job_type="query")
     rows = [
@@ -369,9 +368,9 @@ def test_to_arrow_w_tqdm_w_query_plan(tqdm_mock):
 @mock.patch("google.cloud.bigquery._tqdm_helpers.tqdm")
 def test_to_arrow_w_tqdm_w_pending_status(tqdm_mock):
     from google.cloud.bigquery import table
+    from google.cloud.bigquery._tqdm_helpers import _PROGRESS_BAR_UPDATE_INTERVAL
     from google.cloud.bigquery.job import QueryJob as target_class
     from google.cloud.bigquery.schema import SchemaField
-    from google.cloud.bigquery._tqdm_helpers import _PROGRESS_BAR_UPDATE_INTERVAL
 
     begun_resource = _make_job_resource(job_type="query")
     rows = [
@@ -783,9 +782,9 @@ def test_to_dataframe_with_progress_bar(tqdm_mock):
 @mock.patch("google.cloud.bigquery._tqdm_helpers.tqdm")
 def test_to_dataframe_w_tqdm_pending(tqdm_mock):
     from google.cloud.bigquery import table
+    from google.cloud.bigquery._tqdm_helpers import _PROGRESS_BAR_UPDATE_INTERVAL
     from google.cloud.bigquery.job import QueryJob as target_class
     from google.cloud.bigquery.schema import SchemaField
-    from google.cloud.bigquery._tqdm_helpers import _PROGRESS_BAR_UPDATE_INTERVAL
 
     begun_resource = _make_job_resource(job_type="query")
     schema = [
@@ -838,9 +837,9 @@ def test_to_dataframe_w_tqdm_pending(tqdm_mock):
 @mock.patch("google.cloud.bigquery._tqdm_helpers.tqdm")
 def test_to_dataframe_w_tqdm(tqdm_mock):
     from google.cloud.bigquery import table
+    from google.cloud.bigquery._tqdm_helpers import _PROGRESS_BAR_UPDATE_INTERVAL
     from google.cloud.bigquery.job import QueryJob as target_class
     from google.cloud.bigquery.schema import SchemaField
-    from google.cloud.bigquery._tqdm_helpers import _PROGRESS_BAR_UPDATE_INTERVAL
 
     begun_resource = _make_job_resource(job_type="query")
     schema = [
@@ -898,9 +897,9 @@ def test_to_dataframe_w_tqdm(tqdm_mock):
 @mock.patch("google.cloud.bigquery._tqdm_helpers.tqdm")
 def test_to_dataframe_w_tqdm_max_results(tqdm_mock):
     from google.cloud.bigquery import table
+    from google.cloud.bigquery._tqdm_helpers import _PROGRESS_BAR_UPDATE_INTERVAL
     from google.cloud.bigquery.job import QueryJob as target_class
     from google.cloud.bigquery.schema import SchemaField
-    from google.cloud.bigquery._tqdm_helpers import _PROGRESS_BAR_UPDATE_INTERVAL
 
     begun_resource = _make_job_resource(job_type="query")
     schema = [

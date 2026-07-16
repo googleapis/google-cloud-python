@@ -12,18 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from unittest import mock
 import email
 import http.client
 import io
 import json
+from unittest import mock
 
 import pytest
-
 from google.cloud.bigquery.table import TableReference
 
 from .helpers import make_connection
-
 
 PROJECT = "test-project"
 TABLE_REF = TableReference.from_string(f"{PROJECT}.test_dataset.test_table")
@@ -113,13 +111,13 @@ def _mock_transport(status_code, headers, content=b""):
 
 
 def _initiate_resumable_upload_helper(num_retries=None, mtls=False):
+    from google.cloud.bigquery.client import (
+        _DEFAULT_CHUNKSIZE,
+        _GENERIC_CONTENT_TYPE,
+        _get_upload_headers,
+    )
+    from google.cloud.bigquery.job import LoadJob, LoadJobConfig, SourceFormat
     from google.resumable_media.requests import ResumableUpload
-    from google.cloud.bigquery.client import _DEFAULT_CHUNKSIZE
-    from google.cloud.bigquery.client import _GENERIC_CONTENT_TYPE
-    from google.cloud.bigquery.client import _get_upload_headers
-    from google.cloud.bigquery.job import LoadJob
-    from google.cloud.bigquery.job import LoadJobConfig
-    from google.cloud.bigquery.job import SourceFormat
 
     # Create mocks to be checked for doing transport.
     resumable_url = "http://test.invalid?upload_id=hey-you"
@@ -198,9 +196,7 @@ def _do_multipart_upload_success_helper(
     get_boundary, num_retries=None, project=None, mtls=False
 ):
     from google.cloud.bigquery.client import _get_upload_headers
-    from google.cloud.bigquery.job import LoadJob
-    from google.cloud.bigquery.job import LoadJobConfig
-    from google.cloud.bigquery.job import SourceFormat
+    from google.cloud.bigquery.job import LoadJob, LoadJobConfig, SourceFormat
 
     fake_transport = _mock_transport(http.client.OK, {})
     client = _make_client(_http=fake_transport)

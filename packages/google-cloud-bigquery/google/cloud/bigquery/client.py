@@ -54,8 +54,8 @@ from google.api_core import retry as retries
 from google.api_core.iam import Policy
 from google.cloud import exceptions  # pytype: disable=import-error
 from google.cloud.client import (
-    ClientWithProject,  # type: ignore  # pytype: disable=import-error
-)
+    ClientWithProject,
+)  # type: ignore  # pytype: disable=import-error
 from google.resumable_media.requests import (
     MultipartUpload,  # type: ignore
     ResumableUpload,

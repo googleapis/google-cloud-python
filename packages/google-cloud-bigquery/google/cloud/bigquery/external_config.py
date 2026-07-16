@@ -25,14 +25,15 @@ import copy
 import typing
 from typing import Any, Dict, FrozenSet, Iterable, Optional, Union
 
-from google.cloud.bigquery._helpers import _to_bytes
-from google.cloud.bigquery._helpers import _bytes_to_json
-from google.cloud.bigquery._helpers import _int_or_none
-from google.cloud.bigquery._helpers import _str_or_none
-from google.cloud.bigquery import _helpers
+from google.cloud.bigquery import _helpers, schema
+from google.cloud.bigquery._helpers import (
+    _bytes_to_json,
+    _int_or_none,
+    _str_or_none,
+    _to_bytes,
+)
 from google.cloud.bigquery.enums import SourceColumnMatch
 from google.cloud.bigquery.format_options import AvroOptions, ParquetOptions
-from google.cloud.bigquery import schema
 from google.cloud.bigquery.schema import SchemaField
 
 

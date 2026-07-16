@@ -6841,10 +6841,10 @@ class TestClient(unittest.TestCase):
             client.insert_rows_json(table, ROW)
 
     def test_insert_rows_json_w_ssl_error(self):
+        import requests.exceptions
         from google.cloud.bigquery.dataset import DatasetReference
         from google.cloud.bigquery.schema import SchemaField
         from google.cloud.bigquery.table import Table
-        import requests.exceptions
 
         PROJECT = "PROJECT"
         DS_ID = "DS_ID"

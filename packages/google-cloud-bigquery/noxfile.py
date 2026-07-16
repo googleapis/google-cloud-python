@@ -597,7 +597,7 @@ def format(session: nox.sessions.Session) -> None:
     to format code to uniform standard.
     """
     session.install(BLACK_VERSION, ISORT_VERSION)
-    python_files = [path for path in os.listdir(".") if path.endswith(".py")]
+    python_files = ["google", "tests", "setup.py", "noxfile.py"]
 
     # Use the --fss option to sort imports using strict alphabetical order.
     # See https://pycqa.github.io/isort/docs/configuration/options.html#force-sort-within-sections

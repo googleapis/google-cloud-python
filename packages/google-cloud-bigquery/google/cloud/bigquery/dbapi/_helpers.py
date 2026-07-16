@@ -13,18 +13,17 @@
 #  limitations under the License.
 
 
-from collections import abc as collections_abc
 import datetime
 import decimal
 import functools
 import numbers
 import re
 import typing
+from collections import abc as collections_abc
 
 from google.cloud import bigquery
-from google.cloud.bigquery import table, query
+from google.cloud.bigquery import query, table
 from google.cloud.bigquery.dbapi import exceptions
-
 
 _NUMERIC_SERVER_MIN = decimal.Decimal("-9.9999999999999999999999999999999999999E+28")
 _NUMERIC_SERVER_MAX = decimal.Decimal("9.9999999999999999999999999999999999999E+28")

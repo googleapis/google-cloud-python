@@ -103,8 +103,7 @@ class TestQueryJobConfig(_Base):
         object_under_test.range_partitioning.range_.interval == 10
 
     def test_range_partitioning_setter(self):
-        from google.cloud.bigquery.table import PartitionRange
-        from google.cloud.bigquery.table import RangePartitioning
+        from google.cloud.bigquery.table import PartitionRange, RangePartitioning
 
         object_under_test = self._get_target_class()()
         object_under_test.range_partitioning = RangePartitioning(
@@ -295,8 +294,7 @@ class TestQueryJobConfig(_Base):
         self.assertIsNone(config.script_options)
 
     def test_to_api_repr_with_script_options(self):
-        from google.cloud.bigquery import KeyResultStatementKind
-        from google.cloud.bigquery import ScriptOptions
+        from google.cloud.bigquery import KeyResultStatementKind, ScriptOptions
 
         config = self._make_one()
         config.script_options = ScriptOptions(
@@ -317,8 +315,7 @@ class TestQueryJobConfig(_Base):
         )
 
     def test_from_api_repr_with_script_options(self):
-        from google.cloud.bigquery import KeyResultStatementKind
-        from google.cloud.bigquery import ScriptOptions
+        from google.cloud.bigquery import KeyResultStatementKind, ScriptOptions
 
         resource = {
             "query": {

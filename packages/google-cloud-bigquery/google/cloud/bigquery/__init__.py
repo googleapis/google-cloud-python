@@ -34,89 +34,99 @@ from google.cloud.bigquery import version as bigquery_version
 
 __version__ = bigquery_version.__version__
 
-from google.cloud.bigquery.client import Client
-from google.cloud.bigquery.dataset import AccessEntry
-from google.cloud.bigquery.dataset import Dataset
-from google.cloud.bigquery.dataset import DatasetReference
 from google.cloud.bigquery import enums
-from google.cloud.bigquery.enums import AutoRowIDs
-from google.cloud.bigquery.enums import DecimalTargetType
-from google.cloud.bigquery.enums import KeyResultStatementKind
-from google.cloud.bigquery.enums import SqlTypeNames
-from google.cloud.bigquery.enums import StandardSqlTypeNames
-from google.cloud.bigquery.exceptions import LegacyBigQueryStorageError
-from google.cloud.bigquery.exceptions import LegacyPandasError
-from google.cloud.bigquery.exceptions import LegacyPyarrowError
-from google.cloud.bigquery.external_config import ExternalConfig
-from google.cloud.bigquery.external_config import BigtableOptions
-from google.cloud.bigquery.external_config import BigtableColumnFamily
-from google.cloud.bigquery.external_config import BigtableColumn
-from google.cloud.bigquery.external_config import CSVOptions
-from google.cloud.bigquery.external_config import GoogleSheetsOptions
-from google.cloud.bigquery.external_config import ExternalSourceFormat
-from google.cloud.bigquery.external_config import HivePartitioningOptions
-from google.cloud.bigquery.format_options import AvroOptions
-from google.cloud.bigquery.format_options import ParquetOptions
-from google.cloud.bigquery.job.base import SessionInfo
-from google.cloud.bigquery.job import Compression
-from google.cloud.bigquery.job import CopyJob
-from google.cloud.bigquery.job import CopyJobConfig
-from google.cloud.bigquery.job import CreateDisposition
-from google.cloud.bigquery.job import DestinationFormat
-from google.cloud.bigquery.job import DmlStats
-from google.cloud.bigquery.job import Encoding
-from google.cloud.bigquery.job import ExtractJob
-from google.cloud.bigquery.job import ExtractJobConfig
-from google.cloud.bigquery.job import LoadJob
-from google.cloud.bigquery.job import LoadJobConfig
-from google.cloud.bigquery.job import OperationType
-from google.cloud.bigquery.job import QueryJob
-from google.cloud.bigquery.job import QueryJobConfig
-from google.cloud.bigquery.job import QueryPriority
-from google.cloud.bigquery.job import SchemaUpdateOption
-from google.cloud.bigquery.job import ScriptOptions
-from google.cloud.bigquery.job import SourceFormat
-from google.cloud.bigquery.job import UnknownJob
-from google.cloud.bigquery.job import TransactionInfo
-from google.cloud.bigquery.job import WriteDisposition
-from google.cloud.bigquery.model import Model
-from google.cloud.bigquery.model import ModelReference
-from google.cloud.bigquery.query import ArrayQueryParameter
-from google.cloud.bigquery.query import ArrayQueryParameterType
-from google.cloud.bigquery.query import ConnectionProperty
-from google.cloud.bigquery.query import ScalarQueryParameter
-from google.cloud.bigquery.query import ScalarQueryParameterType
-from google.cloud.bigquery.query import RangeQueryParameter
-from google.cloud.bigquery.query import RangeQueryParameterType
-from google.cloud.bigquery.query import SqlParameterScalarTypes
-from google.cloud.bigquery.query import StructQueryParameter
-from google.cloud.bigquery.query import StructQueryParameterType
-from google.cloud.bigquery.query import UDFResource
-from google.cloud.bigquery.retry import DEFAULT_RETRY
-from google.cloud.bigquery.routine import DeterminismLevel
-from google.cloud.bigquery.routine import Routine
-from google.cloud.bigquery.routine import RoutineArgument
-from google.cloud.bigquery.routine import RoutineReference
-from google.cloud.bigquery.routine import RoutineType
-from google.cloud.bigquery.routine import RemoteFunctionOptions
-from google.cloud.bigquery.routine import ExternalRuntimeOptions
-from google.cloud.bigquery.schema import PolicyTagList
-from google.cloud.bigquery.schema import SchemaField
-from google.cloud.bigquery.schema import FieldElementType
-from google.cloud.bigquery.standard_sql import StandardSqlDataType
-from google.cloud.bigquery.standard_sql import StandardSqlField
-from google.cloud.bigquery.standard_sql import StandardSqlStructType
-from google.cloud.bigquery.standard_sql import StandardSqlTableType
-from google.cloud.bigquery.table import PartitionRange
-from google.cloud.bigquery.table import RangePartitioning
-from google.cloud.bigquery.table import Row
-from google.cloud.bigquery.table import SnapshotDefinition
-from google.cloud.bigquery.table import CloneDefinition
-from google.cloud.bigquery.table import Table
-from google.cloud.bigquery.table import TableReference
-from google.cloud.bigquery.table import TimePartitioningType
-from google.cloud.bigquery.table import TimePartitioning
+from google.cloud.bigquery.client import Client
+from google.cloud.bigquery.dataset import AccessEntry, Dataset, DatasetReference
 from google.cloud.bigquery.encryption_configuration import EncryptionConfiguration
+from google.cloud.bigquery.enums import (
+    AutoRowIDs,
+    DecimalTargetType,
+    KeyResultStatementKind,
+    SqlTypeNames,
+    StandardSqlTypeNames,
+)
+from google.cloud.bigquery.exceptions import (
+    LegacyBigQueryStorageError,
+    LegacyPandasError,
+    LegacyPyarrowError,
+)
+from google.cloud.bigquery.external_config import (
+    BigtableColumn,
+    BigtableColumnFamily,
+    BigtableOptions,
+    CSVOptions,
+    ExternalConfig,
+    ExternalSourceFormat,
+    GoogleSheetsOptions,
+    HivePartitioningOptions,
+)
+from google.cloud.bigquery.format_options import AvroOptions, ParquetOptions
+from google.cloud.bigquery.job import (
+    Compression,
+    CopyJob,
+    CopyJobConfig,
+    CreateDisposition,
+    DestinationFormat,
+    DmlStats,
+    Encoding,
+    ExtractJob,
+    ExtractJobConfig,
+    LoadJob,
+    LoadJobConfig,
+    OperationType,
+    QueryJob,
+    QueryJobConfig,
+    QueryPriority,
+    SchemaUpdateOption,
+    ScriptOptions,
+    SourceFormat,
+    TransactionInfo,
+    UnknownJob,
+    WriteDisposition,
+)
+from google.cloud.bigquery.job.base import SessionInfo
+from google.cloud.bigquery.model import Model, ModelReference
+from google.cloud.bigquery.query import (
+    ArrayQueryParameter,
+    ArrayQueryParameterType,
+    ConnectionProperty,
+    RangeQueryParameter,
+    RangeQueryParameterType,
+    ScalarQueryParameter,
+    ScalarQueryParameterType,
+    SqlParameterScalarTypes,
+    StructQueryParameter,
+    StructQueryParameterType,
+    UDFResource,
+)
+from google.cloud.bigquery.retry import DEFAULT_RETRY
+from google.cloud.bigquery.routine import (
+    DeterminismLevel,
+    ExternalRuntimeOptions,
+    RemoteFunctionOptions,
+    Routine,
+    RoutineArgument,
+    RoutineReference,
+    RoutineType,
+)
+from google.cloud.bigquery.schema import FieldElementType, PolicyTagList, SchemaField
+from google.cloud.bigquery.standard_sql import (
+    StandardSqlDataType,
+    StandardSqlField,
+    StandardSqlStructType,
+    StandardSqlTableType,
+)
+from google.cloud.bigquery.table import (
+    CloneDefinition,
+    PartitionRange,
+    RangePartitioning,
+    Row,
+    SnapshotDefinition,
+    Table,
+    TableReference,
+    TimePartitioning,
+    TimePartitioningType,
+)
 
 try:
     import bigquery_magics  # type: ignore

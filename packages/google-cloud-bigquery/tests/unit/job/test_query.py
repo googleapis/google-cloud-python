@@ -20,18 +20,15 @@ import textwrap
 import types
 from unittest import mock
 
-import requests
-
-from google.cloud.bigquery.client import _LIST_ROWS_FROM_QUERY_RESULTS_FIELDS
 import google.cloud.bigquery._job_helpers
 import google.cloud.bigquery.query
+import requests
+from google.cloud.bigquery.client import _LIST_ROWS_FROM_QUERY_RESULTS_FIELDS
 from google.cloud.bigquery.retry import DEFAULT_GET_JOB_TIMEOUT
 from google.cloud.bigquery.table import _EmptyRowIterator
 
 from ..helpers import make_connection
-
-from .helpers import _Base
-from .helpers import _make_client
+from .helpers import _Base, _make_client
 
 
 class TestQueryJob(_Base):
@@ -340,9 +337,11 @@ class TestQueryJob(_Base):
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_from_api_repr_w_properties(self):
-        from google.cloud.bigquery.job import CreateDisposition
-        from google.cloud.bigquery.job import SchemaUpdateOption
-        from google.cloud.bigquery.job import WriteDisposition
+        from google.cloud.bigquery.job import (
+            CreateDisposition,
+            SchemaUpdateOption,
+            WriteDisposition,
+        )
 
         client = _make_client(project=self.PROJECT)
         RESOURCE = self._make_resource()
@@ -372,8 +371,7 @@ class TestQueryJob(_Base):
 
     def test_query_plan(self):
         from google.cloud._helpers import _RFC3339_MICROS
-        from google.cloud.bigquery.job import QueryPlanEntry
-        from google.cloud.bigquery.job import QueryPlanEntryStep
+        from google.cloud.bigquery.job import QueryPlanEntry, QueryPlanEntryStep
 
         plan_entries = [
             {
@@ -760,9 +758,11 @@ class TestQueryJob(_Base):
         self.assertEqual(job.timeline[0].slot_millis, 101)
 
     def test_undeclared_query_parameters(self):
-        from google.cloud.bigquery.query import ArrayQueryParameter
-        from google.cloud.bigquery.query import ScalarQueryParameter
-        from google.cloud.bigquery.query import StructQueryParameter
+        from google.cloud.bigquery.query import (
+            ArrayQueryParameter,
+            ScalarQueryParameter,
+            StructQueryParameter,
+        )
 
         undeclared = [
             {
@@ -1856,11 +1856,13 @@ class TestQueryJob(_Base):
 
     def test_begin_w_alternate_client(self):
         from google.cloud.bigquery.dataset import DatasetReference
-        from google.cloud.bigquery.job import CreateDisposition
-        from google.cloud.bigquery.job import QueryJobConfig
-        from google.cloud.bigquery.job import QueryPriority
-        from google.cloud.bigquery.job import SchemaUpdateOption
-        from google.cloud.bigquery.job import WriteDisposition
+        from google.cloud.bigquery.job import (
+            CreateDisposition,
+            QueryJobConfig,
+            QueryPriority,
+            SchemaUpdateOption,
+            WriteDisposition,
+        )
 
         PATH = "/projects/%s/jobs" % (self.PROJECT,)
         TABLE = "TABLE"
@@ -2084,10 +2086,12 @@ class TestQueryJob(_Base):
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_begin_w_table_defs(self):
+        from google.cloud.bigquery.external_config import (
+            BigtableColumn,
+            BigtableColumnFamily,
+            ExternalConfig,
+        )
         from google.cloud.bigquery.job import QueryJobConfig
-        from google.cloud.bigquery.external_config import ExternalConfig
-        from google.cloud.bigquery.external_config import BigtableColumn
-        from google.cloud.bigquery.external_config import BigtableColumnFamily
 
         PATH = "/projects/%s/jobs" % (self.PROJECT,)
         RESOURCE = self._make_resource()
