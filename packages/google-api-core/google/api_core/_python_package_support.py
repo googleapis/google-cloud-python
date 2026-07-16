@@ -35,7 +35,7 @@ DependencyConstraint = namedtuple(
 _PACKAGE_DEPENDENCY_WARNINGS = [
     DependencyConstraint(
         "google.protobuf",
-        minimum_fully_supported_version="4.25.8",
+        minimum_fully_supported_version="6.33.5",
         recommended_version="6.x",
     )
 ]
@@ -50,7 +50,7 @@ UNKNOWN_VERSION_STRING = "--"
 def parse_version_to_tuple(version_string: str) -> ParsedVersion:
     """Safely converts a semantic version string to a comparable tuple of integers.
 
-    Example: "4.25.8" -> (4, 25, 8)
+    Example: "6.33.5" -> (6, 33, 5)
     Ignores non-numeric parts and handles common version formats.
 
     Args:

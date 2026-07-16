@@ -401,7 +401,7 @@ prompt_toolkit==3.0.51
 propcache==0.3.2
 prophet==1.1.7
 proto-plus==1.26.1
-protobuf==5.29.5
+protobuf==6.33.5
 psutil==5.9.5
 psycopg2==2.9.10
 psygnal==0.14.0

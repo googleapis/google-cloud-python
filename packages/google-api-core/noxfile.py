@@ -297,14 +297,13 @@ def default(
 
 @nox.session(python=ALL_PYTHON)
 @nox.parametrize(
-    ["install_grpc", "install_async_rest", "python_versions", "legacy_proto"],
+    ["install_grpc", "install_async_rest", "python_versions"],
     [
-        (True, False, None, None),  # Run unit tests with grpcio installed
-        (False, False, None, None),  # Run unit tests without grpcio installed
+        (True, False, None),  # Run unit tests with grpcio installed
+        (False, False, None),  # Run unit tests without grpcio installed
         (
             True,
             True,
-            None,
             None,
         ),  # Run unit tests with grpcio and async rest installed
         # TODO: Remove once we stop support for protobuf 4.x.
@@ -312,35 +311,21 @@ def default(
             True,
             False,
             ["3.10", "3.11"],
-            4,
         ),  # Run proto4 tests with grpcio/grpcio-gcp installed
     ],
 )
 def unit(
-    session, install_grpc, install_async_rest, python_versions=None, legacy_proto=None
+    session, install_grpc, install_async_rest, python_versions=None
 ):
     """Run the unit test suite with the given configuration parameters.
 
     If `python_versions` is provided, the test suite only runs when the Python version (xx.yy) is
     one of the values in `python_versions`.
-
-    If `legacy_proto` is provided, this test suite will explicitly install the proto library at
-    that major version. Only a few values are supported at any one time; the intent is to test
-    deprecated but noyet abandoned versions.
     """
 
     if python_versions and session.python not in python_versions:
         session.log(f"Skipping session for Python {session.python}")
         session.skip()
-
-    match legacy_proto:
-        case 4:
-            # Pin protobuf to a 4.x version to ensure coverage for the legacy code path.
-            session.install("protobuf>=4.25.8,<5.0.0")
-        case None | False:
-            pass
-        case _:
-            assert False, f"Unknown legacy_proto: {legacy_proto}"
 
     default(
         session=session,

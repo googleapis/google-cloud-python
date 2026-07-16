@@ -95,7 +95,7 @@ pluggy==1.6.0
 prompt_toolkit==3.0.52
 propcache==0.4.1
 proto-plus==1.27.1
-protobuf==4.25.8
+protobuf==6.33.5
 psygnal==0.15.1
 ptyprocess==0.7.0
 pure_eval==0.2.3
