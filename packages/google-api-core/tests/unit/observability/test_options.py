@@ -107,11 +107,11 @@ def test_resolve_feature_flags_ga_enabled_via_env():
     assert result is True
 
 
-@pytest.mark.parametrize("gate_value", [None, False])
-def test_resolve_feature_flags_exp_blocked_with_provider_fails_fast(gate_value):
-    """Verify that passing a provider to an experimental feature without the gate raises ValueError."""
-    # Setup: Experimental env var is set to gate_value (None means not set)
-    set_test_env_override("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", gate_value)
+@pytest.mark.parametrize("exp_env_state", [None, False], ids=["missing", "disabled"])
+def test_resolve_feature_flags_exp_blocked_with_provider_fails_fast(exp_env_state):
+    """Verify that passing a provider to an experimental feature raises ValueError if the experimental environment variable is disabled or missing."""
+    # Setup: Experimental env var is set to exp_env_state (None means not set)
+    set_test_env_override("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", exp_env_state)
     client_options = {"tracer_provider": object()}
 
     # Action & Assertion
@@ -124,7 +124,7 @@ def test_resolve_feature_flags_exp_blocked_with_provider_fails_fast(gate_value):
 
 
 def test_resolve_feature_flags_exp_enabled_with_provider():
-    """Verify that experimental feature is enabled if gate is True, even with provider."""
+    """Verify that experimental feature is enabled if the experimental environment variable is enabled and a provider is provided."""
     set_test_env_override("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", True)
     client_options = {"tracer_provider": object()}
 
@@ -137,7 +137,7 @@ def test_resolve_feature_flags_exp_enabled_with_provider():
 
 
 def test_resolve_feature_flags_ga_enabled_via_provider():
-    """Verify that a GA feature is enabled if a provider is passed, bypassing env var."""
+    """Verify that a GA feature is enabled if a provider is provided, ignoring the environment variable."""
     # Env var is False, but provider is present
     set_test_env_override("GOOGLE_SDK_PYTHON_TRACING_ENABLED", False)
     client_options = {"tracer_provider": object()}
@@ -154,7 +154,7 @@ def test_resolve_feature_flags_ga_enabled_via_provider():
     "env_val", [None, False], ids=["env_not_set", "env_explicit_false"]
 )
 def test_resolve_feature_flags_ga_fallback_to_false(env_val):
-    """Verify that a GA feature returns False if no flags are present."""
+    """Verify that a GA feature is disabled if neither a provider is provided nor the environment variable is enabled."""
     set_test_env_override("GOOGLE_SDK_PYTHON_TRACING_ENABLED", env_val)
     result = options.resolve_feature_flags(
         env_var="GOOGLE_SDK_PYTHON_TRACING_ENABLED",

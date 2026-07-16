@@ -97,7 +97,7 @@ def resolve_feature_flags(
     Behavior depends on whether the `env_var` name contains "EXPERIMENTAL":
 
     - **Experimental Path** (env_var contains "EXPERIMENTAL"):
-      Strict gating. Requires the environment variable to be explicitly 'true'.
+      Strict control. Requires the environment variable to be explicitly 'true'.
       If a programmatic provider is passed but the environment variable is not 'true',
       raises ValueError (Fail Fast).
 
@@ -114,7 +114,7 @@ def resolve_feature_flags(
         bool: True if the feature is resolved to enabled, False otherwise.
 
     Raises:
-        ValueError: If a provider is passed for an experimental feature without opening the gate.
+        ValueError: If a provider is provided for an experimental feature without enabling the experimental environment variable.
     """
 
     # Check for programmatic feature provider
@@ -125,10 +125,10 @@ def resolve_feature_flags(
 
     # EXPERIMENTAL PATH:
     # Resolution Hierarchy:
-    #   1. EXPERIMENTAL Gate
-    #   2. Fail Fast if Provider present but EXPERIMENTAL Gate is closed
+    #   1. EXPERIMENTAL Environment Variable
+    #   2. Fail Fast if Provider present but EXPERIMENTAL Environment Variable is not enabled
     if "EXPERIMENTAL" in env_var:
-        # Fail Fast if provider present but gate is closed
+        # Fail Fast if provider present but experimental environment variable is not enabled
         if env_var_setting is not True and has_provider:
             raise ValueError(
                 f"Experimental feature requires {env_var} to be set to 'true' to use programmatic providers."
