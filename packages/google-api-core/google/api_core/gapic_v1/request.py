@@ -34,6 +34,13 @@ def setup_request_id(
 ) -> None:
     """Populate a UUID4 field in the request if it is not already set.
 
+    This helper is used to ensure request idempotency by automatically
+    generating a unique identifier (such as `request_id`) for requests
+    that support it. If a request is retried, the same identifier can be
+    sent on subsequent retries, allowing the server to recognize the retried
+    request and prevent duplicate processing (e.g., creating duplicate
+    resources).
+
     Args:
         request (Union[google.protobuf.message.Message, dict]): The
             request object.
