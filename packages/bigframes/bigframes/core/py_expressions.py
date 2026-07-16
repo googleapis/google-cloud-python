@@ -431,7 +431,11 @@ def resolve_py_exprs(
 
     def resolve_expr_if_call(expr: Expression) -> Expression:
         if isinstance(expr, Call):
-            return resolve_call(expr, window_spec=window_spec)
+            return resolve_call(
+                expr,
+                window_spec=window_spec,
+                col_series_args=col_series_args,
+            )
         return expr
 
     def resolve_attrs(expr: Expression) -> Expression:
@@ -534,13 +538,30 @@ def _resolve_getitem(
 
 
 def resolve_call(
-    call: Call, window_spec: window_specs.WindowSpec | None = None
+    call: Call,
+    window_spec: window_specs.WindowSpec | None = None,
+    col_series_args: Mapping[str, str] | None = None,
 ) -> Expression:
     callable = call.callable
     if isinstance(callable, GetAttr):
         attr = callable.attr
         if isinstance(callable.input, Module):
             fn = getattr(callable.input.module, attr)
+            if col_series_args is not None and fn in agg_ops._CALLABLE_TO_AGG_OP:
+                agg_op = agg_ops._CALLABLE_TO_AGG_OP[fn]
+                if isinstance(agg_op, agg_ops.UnaryAggregateOp):
+                    agg_expr: agg_exprs.Aggregation = agg_exprs.UnaryAggregation(
+                        agg_op, call.inputs[0]
+                    )
+                    if window_spec is not None:
+                        return agg_exprs.WindowExpression(agg_expr, window_spec)
+                    return agg_expr
+                elif isinstance(agg_op, agg_ops.NullaryAggregateOp):
+                    agg_expr = agg_exprs.NullaryAggregation(agg_op)
+                    if window_spec is not None:
+                        return agg_exprs.WindowExpression(agg_expr, window_spec)
+                    return agg_expr
+
             if fn in python_op_maps.PYTHON_TO_BIGFRAMES:
                 op = python_op_maps.PYTHON_TO_BIGFRAMES[fn]
                 return OpExpression(op, call.inputs)
@@ -580,6 +601,20 @@ def resolve_call(
                     return OpExpression(method_op, (callable.input,))
 
     elif isinstance(callable, PyObject):
+        fn = callable.value
+        if col_series_args is not None and fn in agg_ops._CALLABLE_TO_AGG_OP:
+            agg_op = agg_ops._CALLABLE_TO_AGG_OP[fn]
+            if isinstance(agg_op, agg_ops.UnaryAggregateOp):
+                agg_expr = agg_exprs.UnaryAggregation(agg_op, call.inputs[0])
+                if window_spec is not None:
+                    return agg_exprs.WindowExpression(agg_expr, window_spec)
+                return agg_expr
+            elif isinstance(agg_op, agg_ops.NullaryAggregateOp):
+                agg_expr = agg_exprs.NullaryAggregation(agg_op)
+                if window_spec is not None:
+                    return agg_exprs.WindowExpression(agg_expr, window_spec)
+                return agg_expr
+
         if callable.value == operator.getitem:
             return GetItem(call.inputs[0], call.inputs[1])
         if isinstance(callable.value, ScalarOp):

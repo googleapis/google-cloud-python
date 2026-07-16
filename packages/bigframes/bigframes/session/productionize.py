@@ -164,7 +164,9 @@ class PipelineDefinition:
                 array_value, _ = self.recorded_writes[table_name]
                 # Compile to SQL using the session's executor
                 raw_sql = self.session._executor.to_sql(array_value, ordered=False)
-                statements.append(f"CREATE OR REPLACE TABLE `{table_name}` AS\n{raw_sql};")
+                statements.append(
+                    f"CREATE OR REPLACE TABLE `{table_name}` AS\n{raw_sql};"
+                )
 
             sql = "\n\n".join(statements)
 
@@ -193,7 +195,9 @@ class PipelineDefinition:
                 udf_id = parts[-1]
                 udf_mapping[routine_name] = udf_id
 
-                config_block = f'config {{\n  type: "operations",\n  name: "{udf_id}"\n}}\n'
+                config_block = (
+                    f'config {{\n  type: "operations",\n  name: "{udf_id}"\n}}\n'
+                )
                 file_path = os.path.join(defs_dir, f"{udf_id}.sqlx")
                 with open(file_path, "w", encoding="utf-8") as f:
                     f.write(config_block)
@@ -240,12 +244,17 @@ class PipelineDefinition:
                     )
 
                     # Replace the raw table reference in the SQL with the Dataform ref
-                    sql = _replace_table_ref(sql, dep_project, dep_dataset, dep_table_id)
+                    sql = _replace_table_ref(
+                        sql, dep_project, dep_dataset, dep_table_id
+                    )
                     dep_table_ids.add(dep_table_id)
 
                 # Identify UDF dependencies by scanning the SQL for UDF routine names or IDs
                 for routine_name, udf_id in udf_mapping.items():
-                    if routine_name.lower() in sql.lower() or udf_id.lower() in sql.lower():
+                    if (
+                        routine_name.lower() in sql.lower()
+                        or udf_id.lower() in sql.lower()
+                    ):
                         dep_table_ids.add(udf_id)
 
                 # Generate the Dataform config block

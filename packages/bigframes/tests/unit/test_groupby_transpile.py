@@ -14,6 +14,7 @@
 
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
 import pytest
 from pandas.testing import assert_frame_equal, assert_series_equal
@@ -195,6 +196,88 @@ def test_dataframe_groupby_transform_transpile(
         pd_df[["int64_col", "int64_too", "bool_col"]]
         .groupby("bool_col")
         .transform(custom_transform)
+    )
+
+    assert_frame_equal(bf_result, pd_result, check_dtype=False)
+
+
+def test_dataframe_groupby_agg_named_transpile(
+    scalars_df_index, scalars_pandas_df_index
+):
+    def custom_agg1(s):
+        return s.sum() - s.mean()
+
+    def custom_agg2(s):
+        return s.max() - s.min()
+
+    bf_df = scalars_df_index.dropna(subset=["int64_col", "int64_too", "bool_col"])
+    pd_df = scalars_pandas_df_index.dropna(
+        subset=["int64_col", "int64_too", "bool_col"]
+    )
+
+    bf_result = (
+        bf_df.groupby("bool_col")
+        .agg(
+            res1=("int64_col", custom_agg1),
+            res2=("int64_too", custom_agg2),
+        )
+        .to_pandas()
+    )
+    pd_result = pd_df.groupby("bool_col").agg(
+        res1=("int64_col", custom_agg1),
+        res2=("int64_too", custom_agg2),
+    )
+
+    assert_frame_equal(bf_result, pd_result, check_dtype=False)
+
+
+def test_dataframe_groupby_agg_numpy_transpile(
+    scalars_df_index, scalars_pandas_df_index
+):
+    def custom_agg1(s):
+        return np.sum(s) - np.mean(s)
+
+    def custom_agg2(s):
+        return np.max(s) - np.min(s)
+
+    bf_df = scalars_df_index.dropna(subset=["int64_col", "int64_too", "bool_col"])
+    pd_df = scalars_pandas_df_index.dropna(
+        subset=["int64_col", "int64_too", "bool_col"]
+    )
+
+    bf_result = (
+        bf_df.groupby("bool_col")
+        .agg(
+            res1=("int64_col", custom_agg1),
+            res2=("int64_too", custom_agg2),
+        )
+        .to_pandas()
+    )
+    pd_result = pd_df.groupby("bool_col").agg(
+        res1=("int64_col", custom_agg1),
+        res2=("int64_too", custom_agg2),
+    )
+
+    assert_frame_equal(bf_result, pd_result, check_dtype=False)
+
+
+def test_dataframe_groupby_transform_numpy_transpile(
+    scalars_df_index, scalars_pandas_df_index
+):
+    def custom_transform(s):
+        return s - np.mean(s)
+
+    bf_df = scalars_df_index.dropna(subset=["int64_col", "bool_col"])
+    pd_df = scalars_pandas_df_index.dropna(subset=["int64_col", "bool_col"])
+
+    bf_result = (
+        bf_df[["int64_col", "bool_col"]]
+        .groupby("bool_col")
+        .transform(custom_transform)
+        .to_pandas()
+    )
+    pd_result = (
+        pd_df[["int64_col", "bool_col"]].groupby("bool_col").transform(custom_transform)
     )
 
     assert_frame_equal(bf_result, pd_result, check_dtype=False)

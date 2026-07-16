@@ -725,7 +725,11 @@ class DataFrameGroupBy:
             if not isinstance(v, tuple) or (len(v) != 2):
                 raise TypeError("kwargs values must be 2-tuples of column, aggfunc")
             col_id = self._resolve_label(v[0])
-            aggregations.append(aggs.agg(col_id, agg_ops.lookup_agg_func(v[1])[0]))
+            if block_transforms.is_transpiler_eligible(v[1]):
+                expr, _ = block_transforms.compile_column_udf(self._block, v[1], col_id)
+                aggregations.append(expr)
+            else:
+                aggregations.append(aggs.agg(col_id, agg_ops.lookup_agg_func(v[1])[0]))
             column_labels.append(k)
         agg_block = self._block.aggregate(
             by_column_ids=self._by_col_ids,
