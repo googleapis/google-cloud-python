@@ -22,7 +22,7 @@ from typing import Callable, Optional, Tuple
 from google.auth.transport import mtls  # type: ignore
 
 
-def _use_client_cert_effective() -> bool:
+def use_client_cert_effective() -> bool:
     """Returns whether client certificate should be used for mTLS if the
     google-auth version supports should_use_client_cert automatic mTLS
     enablement.
@@ -53,7 +53,7 @@ def _use_client_cert_effective() -> bool:
         return use_client_cert_str == "true"
 
 
-def _get_client_cert_source(
+def get_client_cert_source(
     provided_cert_source: Optional[Callable[[], Tuple[bytes, bytes]]],
     use_cert_flag: bool,
 ) -> Optional[Callable[[], Tuple[bytes, bytes]]]:
@@ -77,3 +77,4 @@ def _get_client_cert_source(
         ):
             client_cert_source = mtls.default_client_cert_source()
     return client_cert_source
+

@@ -21,10 +21,10 @@ from typing import Optional, Tuple
 
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 
-from google.api_core.gapic_v1._client_cert import _use_client_cert_effective
+from google.api_core.gapic_v1.client_cert import use_client_cert_effective
 
 
-def _read_environment_variables() -> Tuple[bool, str, Optional[str]]:
+def read_environment_variables() -> Tuple[bool, str, Optional[str]]:
     """Returns the environment variables used by the client.
 
     Returns:
@@ -39,7 +39,7 @@ def _read_environment_variables() -> Tuple[bool, str, Optional[str]]:
             GOOGLE_API_USE_MTLS_ENDPOINT is not any of
             ["auto", "never", "always"].
     """
-    use_client_cert = _use_client_cert_effective()
+    use_client_cert = use_client_cert_effective()
     use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto").lower()
     universe_domain_env = os.getenv("GOOGLE_CLOUD_UNIVERSE_DOMAIN")
     if use_mtls_endpoint not in ("auto", "never", "always"):

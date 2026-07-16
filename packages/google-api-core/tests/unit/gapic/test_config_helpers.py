@@ -20,11 +20,11 @@ import pytest
 
 from google.auth.exceptions import MutualTLSChannelError
 
-from google.api_core.gapic_v1._config_helpers import _read_environment_variables
+from google.api_core.gapic_v1.config_helpers import read_environment_variables
 
 
 @mock.patch(
-    "google.api_core.gapic_v1._config_helpers._use_client_cert_effective"
+    "google.api_core.gapic_v1.config_helpers.use_client_cert_effective"
 )  # noqa: E501
 @mock.patch.dict(os.environ, clear=True)
 def test_read_environment_variables(mock_effective):
@@ -32,7 +32,7 @@ def test_read_environment_variables(mock_effective):
     os.environ["GOOGLE_API_USE_MTLS_ENDPOINT"] = "always"
     os.environ["GOOGLE_CLOUD_UNIVERSE_DOMAIN"] = "custom.com"
 
-    cert, mtls, domain = _read_environment_variables()
+    cert, mtls, domain = read_environment_variables()
     assert cert is True
     assert mtls == "always"
     assert domain == "custom.com"
@@ -44,4 +44,4 @@ def test_read_environment_variables_invalid_mtls():
     with pytest.raises(
         MutualTLSChannelError, match="must be `never`, `auto` or `always`"
     ):
-        _read_environment_variables()
+        read_environment_variables()

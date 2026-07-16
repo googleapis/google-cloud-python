@@ -20,7 +20,7 @@ import uuid
 from typing import Any
 
 
-def _setup_request_id(request: Any, field_name: str, is_proto3_optional: bool) -> None:
+def setup_request_id(request: Any, field_name: str, is_proto3_optional: bool) -> None:
     """Populate a UUID4 field in the request if it is not already set.
 
     Args:
