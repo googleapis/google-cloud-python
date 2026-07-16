@@ -500,3 +500,36 @@ def test_dir():
 
 def test_dir_message_base():
     assert set(dir(proto.Message)) == set(dir(type))
+
+
+def test_invalid_initialization_type_error():
+    """Verify that bad types passed to __init__ raise a descriptive TypeError."""
+    class UserProfile(proto.Message):
+        username = proto.Field(proto.STRING, number=1)
+        age = proto.Field(proto.INT32, number=2)
+
+    with pytest.raises(TypeError) as excinfo:
+        # Passing a list where a string is expected
+        UserProfile(username=["not", "a", "string"])
+
+    error_msg = str(excinfo.value)
+    assert "Failed to initialize UserProfile" in error_msg
+    assert "Underlying error" in error_msg
+    assert isinstance(excinfo.value.__cause__, TypeError)
+
+
+def test_invalid_assignment_type_error():
+    """Verify that bad types assigned via __setattr__ raise a descriptive TypeError."""
+    class UserProfile(proto.Message):
+        username = proto.Field(proto.STRING, number=1)
+        age = proto.Field(proto.INT32, number=2)
+    profile = UserProfile()
+
+    with pytest.raises(TypeError) as excinfo:
+        # Assigning a dictionary where an integer is expected
+        profile.age = {"invalid": "type"}
+
+    error_msg = str(excinfo.value)
+    assert "Failed to set field 'age' on UserProfile" in error_msg
+    assert "{'invalid': 'type'}" in error_msg
+    assert isinstance(excinfo.value.__cause__, TypeError)
