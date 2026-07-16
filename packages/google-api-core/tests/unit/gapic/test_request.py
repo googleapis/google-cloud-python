@@ -14,7 +14,8 @@
 # limitations under the License.
 
 import re
-from google.api_core.gapic_v1.method_helpers import setup_request_id
+
+from google.api_core.gapic_v1.request import setup_request_id
 
 
 def test_setup_request_id():

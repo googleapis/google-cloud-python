@@ -14,10 +14,16 @@
 # limitations under the License.
 #
 
-"""Helpers for method requests."""
+"""Helpers for preparing and structuring API requests.
+
+This module provides utilities to preprocess request parameters and objects
+before invoking API methods, such as automatically generating request IDs
+if they are not already set.
+"""
 
 import uuid
 from typing import Union
+
 import google.protobuf.message
 
 
