@@ -709,6 +709,62 @@ class BigtableDataClientAsync(ClientWithProject):
         )
 
     @CrossSync.convert(
+        replace_symbols={"MaterializedViewAsync": "MaterializedView"},
+        docstring_format_vars={
+            "LOOP_MESSAGE": (
+                "Must be created within an async context (running event loop)",
+                "",
+            ),
+            "RAISE_NO_LOOP": (
+                "RuntimeError: if called outside of an async context (no running event loop)",
+                "None",
+            ),
+        },
+    )
+    def get_materialized_view(
+        self, instance_id: str, materialized_view_id: str, *args, **kwargs
+    ) -> MaterializedViewAsync:
+        """
+        Returns a materialized view instance for making read requests. All arguments are passed
+        directly to the MaterializedViewAsync constructor.
+
+        {LOOP_MESSAGE}
+
+        Args:
+            instance_id: The Bigtable instance ID to associate with this client.
+                instance_id is combined with the client's project to fully
+                specify the instance
+            materialized_view_id: The id for the materialized view to use for requests
+            app_profile_id: The app profile to associate with requests.
+                https://cloud.google.com/bigtable/docs/app-profiles
+            default_read_rows_operation_timeout: The default timeout for read rows
+                operations, in seconds. If not set, defaults to 600 seconds (10 minutes)
+            default_read_rows_attempt_timeout: The default timeout for individual
+                read rows rpc requests, in seconds. If not set, defaults to 20 seconds
+            default_operation_timeout: The default timeout for all other operations, in
+                seconds. If not set, defaults to 60 seconds
+            default_attempt_timeout: The default timeout for all other individual rpc
+                requests, in seconds. If not set, defaults to 20 seconds
+            default_read_rows_retryable_errors: a list of errors that will be retried
+                if encountered during read_rows and related operations.
+                Defaults to 4 (DeadlineExceeded), 14 (ServiceUnavailable), and 10 (Aborted)
+            default_retryable_errors: a list of errors that will be retried if
+                encountered during all other operations.
+                Defaults to 4 (DeadlineExceeded) and 14 (ServiceUnavailable)
+        Returns:
+            MaterializedViewAsync: a materialized view instance for making read requests
+        Raises:
+            {RAISE_NO_LOOP}
+        """
+        return CrossSync.MaterializedView(
+            self,
+            instance_id,
+            materialized_view_id,
+            *args,
+            **kwargs,
+        )
+
+    @CrossSync.convert(
         replace_symbols={"ExecuteQueryIteratorAsync": "ExecuteQueryIterator"}
     )
     async def execute_query(
@@ -928,7 +984,7 @@ class _DataApiTargetAsync(abc.ABC):
     """
     Abstract class containing API surface for BigtableDataClient. Should not be created directly
 
-    Can be instantiated as a Table or an AuthorizedView
+    Can be instantiated as a Table, an AuthorizedView, or a MaterializedView
     """
 
     @CrossSync.convert(
@@ -948,7 +1004,6 @@ class _DataApiTargetAsync(abc.ABC):
         self,
         client: BigtableDataClientAsync,
         instance_id: str,
-        table_id: str,
         app_profile_id: str | None = None,
         *,
         default_read_rows_operation_timeout: float = 600,
@@ -973,7 +1028,7 @@ class _DataApiTargetAsync(abc.ABC):
         ),
     ):
         """
-        Initialize a Table instance
+        Initialize a data API target instance
 
         {LOOP_MESSAGE}
 
@@ -981,8 +1036,6 @@ class _DataApiTargetAsync(abc.ABC):
             instance_id: The Bigtable instance ID to associate with this client.
                 instance_id is combined with the client's project to fully
                 specify the instance
-            table_id: The ID of the table. table_id is combined with the
-                instance_id and the client's project to fully specify the table
             app_profile_id: The app profile to associate with requests.
                 https://cloud.google.com/bigtable/docs/app-profiles
             default_read_rows_operation_timeout: The default timeout for read rows
@@ -1009,8 +1062,6 @@ class _DataApiTargetAsync(abc.ABC):
         Raises:
             {RAISE_NO_LOOP}
         """
-        # NOTE: any changes to the signature of this method should also be reflected
-        # in client.get_table()
         # validate timeouts
         _validate_timeouts(
             default_operation_timeout, default_attempt_timeout, allow_none=True
@@ -1030,10 +1081,6 @@ class _DataApiTargetAsync(abc.ABC):
         self.instance_id = instance_id
         self.instance_name = self.client._gapic_client.instance_path(
             self.client.project, instance_id
-        )
-        self.table_id = table_id
-        self.table_name = self.client._gapic_client.table_path(
-            self.client.project, instance_id, table_id
         )
         self.app_profile_id: str | None = app_profile_id
 
@@ -1081,7 +1128,11 @@ class _DataApiTargetAsync(abc.ABC):
     @abc.abstractmethod
     def _request_path(self) -> dict[str, str]:
         """
-        Used to populate table_name or authorized_view_name for rpc requests, depending on the subclass
+        Used to populate table_name, authorized_view_name, or materialized_view_name
+        for rpc requests, depending on the subclass
+
+        The returned key must be a valid field on each request proto it is passed to;
+        mutation requests only accept table_name and authorized_view_name
 
         Unimplemented in base class
         """
@@ -1852,6 +1903,73 @@ class TableAsync(_DataApiTargetAsync):
     each call
     """
 
+    @CrossSync.convert(
+        replace_symbols={"BigtableDataClientAsync": "BigtableDataClient"},
+        docstring_format_vars={
+            "LOOP_MESSAGE": (
+                "Must be created within an async context (running event loop)",
+                "",
+            ),
+            "RAISE_NO_LOOP": (
+                "RuntimeError: if called outside of an async context (no running event loop)",
+                "None",
+            ),
+        },
+    )
+    def __init__(
+        self,
+        client: BigtableDataClientAsync,
+        instance_id: str,
+        table_id: str,
+        app_profile_id: str | None = None,
+        **kwargs,
+    ):
+        """
+        Initialize a Table instance
+
+        {LOOP_MESSAGE}
+
+        Args:
+            instance_id: The Bigtable instance ID to associate with this client.
+                instance_id is combined with the client's project to fully
+                specify the instance
+            table_id: The ID of the table. table_id is combined with the
+                instance_id and the client's project to fully specify the table
+            app_profile_id: The app profile to associate with requests.
+                https://cloud.google.com/bigtable/docs/app-profiles
+            default_read_rows_operation_timeout: The default timeout for read rows
+                operations, in seconds. If not set, defaults to 600 seconds (10 minutes)
+            default_read_rows_attempt_timeout: The default timeout for individual
+                read rows rpc requests, in seconds. If not set, defaults to 20 seconds
+            default_mutate_rows_operation_timeout: The default timeout for mutate rows
+                operations, in seconds. If not set, defaults to 600 seconds (10 minutes)
+            default_mutate_rows_attempt_timeout: The default timeout for individual
+                mutate rows rpc requests, in seconds. If not set, defaults to 60 seconds
+            default_operation_timeout: The default timeout for all other operations, in
+                seconds. If not set, defaults to 60 seconds
+            default_attempt_timeout: The default timeout for all other individual rpc
+                requests, in seconds. If not set, defaults to 20 seconds
+            default_read_rows_retryable_errors: a list of errors that will be retried
+                if encountered during read_rows and related operations.
+                Defaults to 4 (DeadlineExceeded), 14 (ServiceUnavailable), and 10 (Aborted)
+            default_mutate_rows_retryable_errors: a list of errors that will be retried
+                if encountered during mutate_rows and related operations.
+                Defaults to 4 (DeadlineExceeded) and 14 (ServiceUnavailable)
+            default_retryable_errors: a list of errors that will be retried if
+                encountered during all other operations.
+                Defaults to 4 (DeadlineExceeded) and 14 (ServiceUnavailable)
+        Raises:
+            {RAISE_NO_LOOP}
+        """
+        # NOTE: any changes to the signature of this method should also be reflected
+        # in client.get_table()
+        # build paths before super().__init__, which registers this instance with the client
+        self.table_id = table_id
+        self.table_name = client._gapic_client.table_path(
+            client.project, instance_id, table_id
+        )
+        super().__init__(client, instance_id, app_profile_id, **kwargs)
+
     @property
     def _request_path(self) -> dict[str, str]:
         return {"table_name": self.table_name}
@@ -1932,12 +2050,145 @@ class AuthorizedViewAsync(_DataApiTargetAsync):
         Raises:
             {RAISE_NO_LOOP}
         """
-        super().__init__(client, instance_id, table_id, app_profile_id, **kwargs)
-        self.authorized_view_id = authorized_view_id
-        self.authorized_view_name: str = self.client._gapic_client.authorized_view_path(
-            self.client.project, instance_id, table_id, authorized_view_id
+        # build paths before super().__init__, which registers this instance with the client
+        self.table_id = table_id
+        self.table_name = client._gapic_client.table_path(
+            client.project, instance_id, table_id
         )
+        self.authorized_view_id = authorized_view_id
+        self.authorized_view_name: str = client._gapic_client.authorized_view_path(
+            client.project, instance_id, table_id, authorized_view_id
+        )
+        super().__init__(client, instance_id, app_profile_id, **kwargs)
 
     @property
     def _request_path(self) -> dict[str, str]:
         return {"authorized_view_name": self.authorized_view_name}
+
+
+@CrossSync.convert_class(
+    sync_name="MaterializedView",
+    add_mapping_for_name="MaterializedView",
+    replace_symbols={"_DataApiTargetAsync": "_DataApiTarget"},
+)
+class MaterializedViewAsync(_DataApiTargetAsync):
+    """
+    Provides read access to a materialized view of a table.
+
+    A materialized view is a pre-computed, read-only view over a table, defined
+    by a SQL query. Materialized views support read operations only; mutation
+    methods raise NotImplementedError.
+
+    MaterializedView object maintains materialized_view_id and app_profile_id context,
+    and passes them with each call
+    """
+
+    @CrossSync.convert(
+        replace_symbols={"BigtableDataClientAsync": "BigtableDataClient"},
+        docstring_format_vars={
+            "LOOP_MESSAGE": (
+                "Must be created within an async context (running event loop)",
+                "",
+            ),
+            "RAISE_NO_LOOP": (
+                "RuntimeError: if called outside of an async context (no running event loop)",
+                "None",
+            ),
+        },
+    )
+    def __init__(
+        self,
+        client: BigtableDataClientAsync,
+        instance_id: str,
+        materialized_view_id: str,
+        app_profile_id: str | None = None,
+        **kwargs,
+    ):
+        """
+        Initialize a MaterializedView instance
+
+        {LOOP_MESSAGE}
+
+        Args:
+            instance_id: The Bigtable instance ID to associate with this client.
+                instance_id is combined with the client's project to fully
+                specify the instance
+            materialized_view_id: The id for the materialized view to use for requests
+            app_profile_id: The app profile to associate with requests.
+                https://cloud.google.com/bigtable/docs/app-profiles
+            default_read_rows_operation_timeout: The default timeout for read rows
+                operations, in seconds. If not set, defaults to 600 seconds (10 minutes)
+            default_read_rows_attempt_timeout: The default timeout for individual
+                read rows rpc requests, in seconds. If not set, defaults to 20 seconds
+            default_operation_timeout: The default timeout for all other operations, in
+                seconds. If not set, defaults to 60 seconds
+            default_attempt_timeout: The default timeout for all other individual rpc
+                requests, in seconds. If not set, defaults to 20 seconds
+            default_read_rows_retryable_errors: a list of errors that will be retried
+                if encountered during read_rows and related operations.
+                Defaults to 4 (DeadlineExceeded), 14 (ServiceUnavailable), and 10 (Aborted)
+            default_retryable_errors: a list of errors that will be retried if
+                encountered during all other operations.
+                Defaults to 4 (DeadlineExceeded) and 14 (ServiceUnavailable)
+        Raises:
+            {RAISE_NO_LOOP}
+        """
+        # build paths before super().__init__, which registers this instance with the client
+        self.materialized_view_id = materialized_view_id
+        self.materialized_view_name: str = client._gapic_client.materialized_view_path(
+            client.project, instance_id, materialized_view_id
+        )
+        super().__init__(client, instance_id, app_profile_id, **kwargs)
+
+    @property
+    def _request_path(self) -> dict[str, str]:
+        return {"materialized_view_name": self.materialized_view_name}
+
+    def mutations_batcher(self, *args, **kwargs):
+        """
+        Mutations are not supported for materialized views
+
+        Raises:
+            NotImplementedError: always; materialized views are read-only
+        """
+        raise NotImplementedError("Mutations are not supported for materialized views")
+
+    @CrossSync.convert
+    async def mutate_row(self, *args, **kwargs):
+        """
+        Mutations are not supported for materialized views
+
+        Raises:
+            NotImplementedError: always; materialized views are read-only
+        """
+        raise NotImplementedError("Mutations are not supported for materialized views")
+
+    @CrossSync.convert
+    async def bulk_mutate_rows(self, *args, **kwargs):
+        """
+        Mutations are not supported for materialized views
+
+        Raises:
+            NotImplementedError: always; materialized views are read-only
+        """
+        raise NotImplementedError("Mutations are not supported for materialized views")
+
+    @CrossSync.convert
+    async def check_and_mutate_row(self, *args, **kwargs):
+        """
+        Mutations are not supported for materialized views
+
+        Raises:
+            NotImplementedError: always; materialized views are read-only
+        """
+        raise NotImplementedError("Mutations are not supported for materialized views")
+
+    @CrossSync.convert
+    async def read_modify_write_row(self, *args, **kwargs):
+        """
+        Mutations are not supported for materialized views
+
+        Raises:
+            NotImplementedError: always; materialized views are read-only
+        """
+        raise NotImplementedError("Mutations are not supported for materialized views")
