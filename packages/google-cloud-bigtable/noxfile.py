@@ -33,6 +33,7 @@ ALL_PYTHON = [
     "3.12",
     "3.13",
     "3.14",
+    "3.15",
 ]
 
 UNIT_TEST_STANDARD_DEPENDENCIES = [
@@ -220,6 +221,11 @@ def install_unittest_dependencies(session, *constraints):
 )
 def unit(session, protobuf_implementation):
     # Install all test dependencies, then install this package in-place.
+
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/17741):
+    # Remove once `google-crc32c` wheels are published for 3.15
+    if session.python == "3.15":
+        session.skip("Skipping 3.15 until wheels are available for google-crc32c.")
 
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
