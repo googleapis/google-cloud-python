@@ -58,7 +58,7 @@ default:
     library_type: GAPIC_AUTO
 libraries:
   - name: bigframes
-    version: 2.45.0
+    version: 2.46.0
     python:
       library_type: INTEGRATION
   - name: bigquery-magics
