@@ -15,7 +15,7 @@
 import pytest
 
 
-@pytest.mark.skip(reason="Documentation sample code snippet")
+@pytest.mark.skip(reason="Documentation sample code snippet (b/522845525)")
 def test_query_standard_sql():
     # [START bigquery_bigframes_query]
     import bigframes.pandas as bpd
@@ -39,7 +39,7 @@ def test_query_standard_sql():
     return df
 
 
-@pytest.mark.skip(reason="Documentation sample code snippet")
+@pytest.mark.skip(reason="Documentation sample code snippet (b/522845525)")
 def test_query_legacy_sql():
     # [START bigquery_bigframes_query_legacy]
     import bigframes.pandas as bpd
@@ -60,7 +60,7 @@ def test_query_legacy_sql():
     return df
 
 
-@pytest.mark.skip(reason="Documentation sample code snippet")
+@pytest.mark.skip(reason="Documentation sample code snippet (b/522845525)")
 def test_query_bqstorage():
     # [START bigquery_bigframes_query_bqstorage]
     import bigframes.pandas as bpd
@@ -84,7 +84,7 @@ def test_query_bqstorage():
     return pandas_df
 
 
-@pytest.mark.skip(reason="Documentation sample code snippet")
+@pytest.mark.skip(reason="Documentation sample code snippet (b/522845525)")
 def test_query_parameters():
     # [START bigquery_bigframes_query_parameters]
     import bigframes.pandas as bpd
@@ -116,7 +116,7 @@ def test_query_parameters():
     return df
 
 
-@pytest.mark.skip(reason="Documentation sample code snippet")
+@pytest.mark.skip(reason="Documentation sample code snippet (b/522845525)")
 def test_upload_from_dataframe():
     # [START bigquery_bigframes_upload_from_dataframe]
     import pandas as pd
