@@ -416,11 +416,15 @@ def _get_cert_config_path(certificate_config_path=None, include_context_aware=Tr
         The absolute path of the certificate config file, and None if the file does not exist.
     """
 
+    source = "function argument"
     is_explicit = True
     if certificate_config_path is None:
         env_path = environ.get(environment_vars.GOOGLE_API_CERTIFICATE_CONFIG, None)
         if env_path is not None and env_path != "":
             certificate_config_path = env_path
+            source = (
+                f"environment variable {environment_vars.GOOGLE_API_CERTIFICATE_CONFIG}"
+            )
         else:
             env_path = environ.get(
                 environment_vars.CLOUDSDK_CONTEXT_AWARE_CERTIFICATE_CONFIG_FILE_PATH,
@@ -428,6 +432,7 @@ def _get_cert_config_path(certificate_config_path=None, include_context_aware=Tr
             )
             if include_context_aware and env_path is not None and env_path != "":
                 certificate_config_path = env_path
+                source = f"environment variable {environment_vars.CLOUDSDK_CONTEXT_AWARE_CERTIFICATE_CONFIG_FILE_PATH}"
             else:
                 certificate_config_path = CERTIFICATE_CONFIGURATION_DEFAULT_PATH
                 is_explicit = False
@@ -436,7 +441,8 @@ def _get_cert_config_path(certificate_config_path=None, include_context_aware=Tr
     if not path.exists(certificate_config_path):
         if is_explicit:
             _LOGGER.debug(
-                "Certificate configuration file at %s does not exist",
+                "Certificate configuration file explicitly specified via %s at %s does not exist",
+                source,
                 certificate_config_path,
             )
         return None
