@@ -37,6 +37,8 @@ from google.cloud.spanner_v1._helpers import (
     _augment_errors_with_request_id,
     _metadata_with_request_id,
     _metadata_with_request_id_and_req_id,
+    _make_value_pb,
+    _make_list_value_pb,
 )
 from google.cloud.spanner_v1.batch import Batch, MutationGroups, _BatchBase
 from google.cloud.spanner_v1.keyset import KeySet
@@ -197,8 +199,8 @@ class Test_BatchBase(_BaseTest):
         send = mutation.send
         self.assertIsInstance(send, Mutation.Send)
         self.assertEqual(send.queue, queue)
-        self.assertEqual(send.payload, payload)
-        self._compare_values([send.key], [key])
+        self.assertEqual(send._pb.payload, _make_value_pb(payload))
+        self.assertEqual(send._pb.key, _make_list_value_pb(key))
 
     def test_ack(self):
         queue = "TestQueue"
@@ -214,7 +216,7 @@ class Test_BatchBase(_BaseTest):
         ack = mutation.ack
         self.assertIsInstance(ack, Mutation.Ack)
         self.assertEqual(ack.queue, queue)
-        self._compare_values([ack.key], [key])
+        self.assertEqual(ack._pb.key, _make_list_value_pb(key))
 
 
 class TestBatch(_BaseTest, OpenTelemetryBase):
