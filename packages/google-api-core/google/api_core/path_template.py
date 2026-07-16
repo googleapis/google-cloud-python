@@ -172,25 +172,31 @@ def _build_capture_pattern(template_str: str) -> tuple[str, tuple[str, ...]]:
     return pattern, tuple(wildcard_types)
 
 
-def _validate_value_against_template(
+def _extract_and_validate_wildcards(
     val: str, template_str: str | None, property_name: str | None = None
 ) -> None:
-    """Validate a variable's value against its template structure.
+    """Extract and validate wildcard variables against path traversal rules.
 
-    This function extracts substrings matching individual wildcards in the
-    variable's template structure and enforces safety constraints:
+    This function attempts to structurally match the variable's value against
+    its template. If the value structurally matches, it extracts the substrings
+    corresponding to the individual wildcards and enforces safety constraints:
     - Single-segment matches ('*') must not be exactly '.' or '..' because
       this breaks the URI routing contract and leads to path traversal.
     - Multi-segment matches ('**') are checked using _validate_multi_segment_value
       to ensure path traversal commands do not consume the entire value or
       escape the starting boundaries of the matched parameter.
 
+    If the value does not structurally match the template, this function allows
+    it to pass through without error. This delegates the rejection of the malformed
+    string to the standard routing mechanisms (like `validate()`) to ensure that
+    `additional_bindings` are evaluated correctly.
+
     Examples:
-        >>> _validate_value_against_template("us-central1", None, "region")
+        >>> _extract_and_validate_wildcards("us-central1", None, "region")
         None
-        >>> _validate_value_against_template("..", None, "region")
+        >>> _extract_and_validate_wildcards("..", None, "region")
         ValueError("Invalid value .. for region.")
-        >>> _validate_value_against_template(
+        >>> _extract_and_validate_wildcards(
         ...     "projects/my-proj/locations/.", "projects/*/locations/*", "parent"
         ... )
         ValueError("Invalid value projects/my-proj/locations/. for parent.")
@@ -202,7 +208,7 @@ def _validate_value_against_template(
             to construct descriptive error messages.
 
     Raises:
-        ValueError: If a wildcard within the value violates path traversal rules.
+        ValueError: If a wildcard within a structurally valid value violates path traversal rules.
     """
     if template_str is None or template_str == "*":
         if val in (".", ".."):
@@ -258,7 +264,7 @@ def _expand_variable_match(positional_vars, named_vars, match):
     if name is not None:
         try:
             val = str(named_vars[name])
-            _validate_value_against_template(val, template, name)
+            _extract_and_validate_wildcards(val, template, name)
             return urllib.parse.quote(val, safe="/")
         except KeyError:
             raise ValueError(
@@ -268,7 +274,7 @@ def _expand_variable_match(positional_vars, named_vars, match):
     elif positional is not None:
         try:
             val = str(positional_vars.pop(0))
-            _validate_value_against_template(val, positional, None)
+            _extract_and_validate_wildcards(val, positional, None)
             return urllib.parse.quote(val, safe="/")
         except IndexError:
             raise ValueError(
