@@ -64,6 +64,10 @@ run_package_test() {
   local gcloud_config_dir=$(mktemp -d -t "gcloud-config-${package_name}-XXXXXX")
   local CLOUDSDK_CONFIG="${gcloud_config_dir}"
 
+  # 🪤 TRAP: Ensure cleanup of THIS specific temp dir on exit of this subshell
+  trap 'rm -rf "$gcloud_config_dir"' EXIT
+
+
   echo "------------------------------------------------------------"
   echo "Configuring environment for: ${package_name}"
   echo "------------------------------------------------------------"
@@ -101,8 +105,10 @@ run_package_test() {
   export PROJECT_ID GOOGLE_APPLICATION_CREDENTIALS NOX_FILE NOX_SESSION CLOUDSDK_CONFIG
   export GOOGLE_CLOUD_PROJECT="${PROJECT_ID}"
 
-  gcloud auth activate-service-account --key-file="$GOOGLE_APPLICATION_CREDENTIALS"
-  gcloud config set project "$PROJECT_ID"
+  # 🛡️ Explicit check: Fail early if auth fails
+  gcloud auth activate-service-account --key-file="$GOOGLE_APPLICATION_CREDENTIALS" || return 1
+  export CLOUDSDK_CORE_PROJECT="${PROJECT_ID}"
+
 
   # Run the actual test
   pushd "${package_path}" > /dev/null
@@ -112,7 +118,6 @@ run_package_test() {
   set -e
   popd > /dev/null
 
-  rm -rf "${gcloud_config_dir}"
   return $res
 }
 
