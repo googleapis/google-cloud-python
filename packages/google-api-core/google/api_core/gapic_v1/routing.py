@@ -16,15 +16,9 @@
 
 """Helpers for routing and endpoint resolution."""
 
-import re
 from typing import Any, Optional
 
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
-
-_MTLS_ENDPOINT_RE = re.compile(
-    r"(?P<name>[^.]+)(?P<mtls>\.mtls)?(?P<sandbox>\.sandbox)?"
-    r"(?P<googledomain>\.googleapis\.com)?"
-)
 
 
 def get_default_mtls_endpoint(api_endpoint: Optional[str]) -> Optional[str]:
@@ -37,24 +31,18 @@ def get_default_mtls_endpoint(api_endpoint: Optional[str]) -> Optional[str]:
     Returns:
         Optional[str]: converted mTLS api endpoint.
     """
-    if not api_endpoint:
+    if not api_endpoint or ".mtls." in api_endpoint:
         return api_endpoint
 
-    m = _MTLS_ENDPOINT_RE.match(api_endpoint)
-    if m is None:
-        # Could not parse api_endpoint; return as-is.
-        return api_endpoint
+    if api_endpoint.endswith(".sandbox.googleapis.com"):
+        # len(".sandbox.googleapis.com") == 23
+        return api_endpoint[:-23] + ".mtls.sandbox.googleapis.com"
 
-    name, mtls_group, sandbox, googledomain = m.groups()
-    if mtls_group or not googledomain:
-        return api_endpoint
+    if api_endpoint.endswith(".googleapis.com"):
+        # len(".googleapis.com") == 15
+        return api_endpoint[:-15] + ".mtls.googleapis.com"
 
-    if sandbox:
-        return api_endpoint.replace(
-            "sandbox.googleapis.com", "mtls.sandbox.googleapis.com"
-        )
-
-    return api_endpoint.replace(".googleapis.com", ".mtls.googleapis.com")
+    return api_endpoint
 
 
 def get_api_endpoint(
