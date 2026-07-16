@@ -36,7 +36,7 @@ from google.api_core import extended_operation
 {% endif %}
 from google.api_core import gapic_v1
 {% if has_auto_populated_fields.value %}
-from google.api_core.gapic_v1 import request
+from google.api_core.gapic_v1.request import setup_request_id
 {% endif %}
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials             # type: ignore
@@ -461,18 +461,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
         # NOTE (b/349488459): universe validation is disabled until further notice.
         return True
 
-    {% if has_auto_populated_fields.value %}
-    @staticmethod
-    def _setup_request_id(request, field_name: str, is_proto3_optional: bool):
-        """Populate a UUID4 field in the request if it is not already set.
 
-        Args:
-            request (Union[google.protobuf.message.Message, dict]): The request object.
-            field_name (str): The name of the field to populate.
-            is_proto3_optional (bool): Whether the field is proto3 optional.
-        """
-        request.setup_request_id(request, field_name, is_proto3_optional)
-    {% endif %}
 
     def _add_cred_info_for_auth_errors(
         self,

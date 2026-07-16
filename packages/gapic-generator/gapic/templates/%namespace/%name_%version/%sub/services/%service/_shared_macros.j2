@@ -28,11 +28,7 @@
 {% if method_settings is not none %}
 {% for auto_populated_field in method_settings.auto_populated_fields %}
     {% set is_proto3_optional = method.input.fields[auto_populated_field].proto3_optional %}
-    {% if is_async %}
-        self._client._setup_request_id(request, '{{ auto_populated_field }}', {{ is_proto3_optional }})
-    {% else %}
-        self._setup_request_id(request, '{{ auto_populated_field }}', {{ is_proto3_optional }})
-    {% endif %}
+        setup_request_id(request, '{{ auto_populated_field }}', {{ is_proto3_optional }})
 {% endfor %}
 {% endif %}{# if method_settings is not none #}
 {% endwith %}{# method_settings #}

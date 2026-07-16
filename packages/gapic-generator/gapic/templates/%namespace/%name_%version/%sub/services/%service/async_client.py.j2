@@ -4,6 +4,14 @@
 {% import "%namespace/%name_%version/%sub/services/%service/_client_macros.j2" as macros %}
 {% import "%namespace/%name_%version/%sub/services/%service/_shared_macros.j2" as shared_macros %}
 
+{% set has_auto_populated_fields = namespace(value=false) %}
+{% for method in service.methods.values() %}
+  {% set method_settings = api.all_method_settings.get(method.meta.address.proto) %}
+  {% if method_settings and method_settings.auto_populated_fields %}
+    {% set has_auto_populated_fields.value = true %}
+  {% endif %}
+{% endfor %}
+
 import logging as std_logging
 from collections import OrderedDict
 import re
@@ -18,6 +26,9 @@ from {{package_path}} import gapic_version as package_version
 from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
+{% if has_auto_populated_fields.value %}
+from google.api_core.gapic_v1.request import setup_request_id
+{% endif %}
 from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials   # type: ignore
 from google.oauth2 import service_account              # type: ignore
