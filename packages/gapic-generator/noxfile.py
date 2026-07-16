@@ -823,6 +823,7 @@ def system(session):
     # Check the value of `RUN_SYSTEM_TESTS` env var. It defaults to true.
     if os.environ.get("RUN_SYSTEM_TESTS", "true") == "false":
         session.skip("RUN_SYSTEM_TESTS is set to false, skipping")
+    session.install("pypandoc_binary")
     showcase(session)
 
 
