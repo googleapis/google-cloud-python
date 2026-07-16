@@ -496,8 +496,9 @@ def _cell_magic(line, query):
         raise rebranded_error from exc
     except lap.exceptions.ParseError as exc:
         rebranded_error = ValueError(
-            "Unrecognized input, are option values correct? "
-            "Error details: {}".format(exc.args[0])
+            "Unrecognized input, are option values correct? Error details: {}".format(
+                exc.args[0]
+            )
         )
         raise rebranded_error from exc
 

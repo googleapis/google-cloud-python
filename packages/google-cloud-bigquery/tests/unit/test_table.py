@@ -376,9 +376,7 @@ class TestTableReference(unittest.TestCase):
     def test___repr__(self):
         dataset = DatasetReference("project1", "dataset1")
         table1 = self._make_one(dataset, "table1")
-        expected = (
-            "TableReference(DatasetReference('project1', 'dataset1'), " "'table1')"
-        )
+        expected = "TableReference(DatasetReference('project1', 'dataset1'), 'table1')"
         self.assertEqual(repr(table1), expected)
 
     def test___str__(self):
@@ -1831,9 +1829,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         dataset = DatasetReference("project1", "dataset1")
         table1 = self._make_one(TableReference(dataset, "table1"))
         expected = (
-            "Table(TableReference("
-            "DatasetReference('project1', 'dataset1'), "
-            "'table1'))"
+            "Table(TableReference(DatasetReference('project1', 'dataset1'), 'table1'))"
         )
         self.assertEqual(repr(table1), expected)
 
@@ -2873,7 +2869,8 @@ class TestRowIterator(unittest.TestCase):
 
     def test__should_use_bqstorage_returns_false_if_page_token_set(self):
         iterator = self._make_one(
-            page_token="abc", first_page_response=None  # not cached
+            page_token="abc",
+            first_page_response=None,  # not cached
         )
         result = iterator._should_use_bqstorage(
             bqstorage_client=None, create_bqstorage_client=True
@@ -2882,7 +2879,8 @@ class TestRowIterator(unittest.TestCase):
 
     def test__should_use_bqstorage_returns_false_if_max_results_set(self):
         iterator = self._make_one(
-            max_results=10, first_page_response=None  # not cached
+            max_results=10,
+            first_page_response=None,  # not cached
         )
         result = iterator._should_use_bqstorage(
             bqstorage_client=None, create_bqstorage_client=True
@@ -5599,8 +5597,7 @@ class TestRowIterator(unittest.TestCase):
         with self.assertRaisesRegex(
             TypeError,
             re.escape(
-                "There must be at least one GEOGRAPHY column"
-                " to create a GeoDataFrame"
+                "There must be at least one GEOGRAPHY column to create a GeoDataFrame"
             ),
         ):
             row_iterator.to_geodataframe(create_bqstorage_client=False)

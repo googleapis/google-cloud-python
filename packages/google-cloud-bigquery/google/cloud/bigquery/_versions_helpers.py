@@ -263,9 +263,7 @@ class PandasGBQVersions:
         try:
             import pandas_gbq  # type: ignore
 
-            return packaging.version.parse(
-                getattr(pandas_gbq, "__version__", "0.0.0")
-            )
+            return packaging.version.parse(getattr(pandas_gbq, "__version__", "0.0.0"))
         except Exception:
             return packaging.version.parse("0.0.0")
 

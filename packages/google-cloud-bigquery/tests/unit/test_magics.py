@@ -686,9 +686,11 @@ def test_bigquery_magic_with_bqstorage_from_argument(
         google.cloud.bigquery.job.QueryJob, instance=True
     )
     query_job_mock.to_dataframe.return_value = result
-    with run_query_patch as run_query_mock, (
-        bqstorage_client_patch
-    ), warnings.catch_warnings(record=True) as warned:
+    with (
+        run_query_patch as run_query_mock,
+        bqstorage_client_patch,
+        warnings.catch_warnings(record=True) as warned,
+    ):
         run_query_mock.return_value = query_job_mock
 
         return_value = ip.run_cell_magic("bigquery", "--use_bqstorage_api", sql)
@@ -854,11 +856,12 @@ def test_bigquery_magic_w_max_results_query_job_results_fails(monkeypatch):
     )
     query_job_mock.result.side_effect = [[], OSError]
 
-    with pytest.raises(
-        OSError
-    ), client_query_patch as client_query_mock, (
-        default_patch
-    ), close_transports_patch as close_transports:
+    with (
+        pytest.raises(OSError),
+        client_query_patch as client_query_mock,
+        default_patch,
+        close_transports_patch as close_transports,
+    ):
         client_query_mock.return_value = query_job_mock
         ip.run_cell_magic("bigquery", "--max_results=5", sql)
 
@@ -1977,9 +1980,10 @@ def test_bigquery_magic_nonexisting_query_variable(monkeypatch):
     ip.user_ns.pop("custom_query", None)  # Make sure the variable does NOT exist.
     cell_body = "$custom_query"  # Referring to a non-existing variable name.
 
-    with pytest.raises(
-        NameError, match=r".*custom_query does not exist.*"
-    ), run_query_patch as run_query_mock:
+    with (
+        pytest.raises(NameError, match=r".*custom_query does not exist.*"),
+        run_query_patch as run_query_mock,
+    ):
         ip.run_cell_magic("bigquery", "", cell_body)
 
     run_query_mock.assert_not_called()
@@ -2000,9 +2004,10 @@ def test_bigquery_magic_empty_query_variable_name(monkeypatch):
     )
     cell_body = "$"  # Not referring to any variable (name omitted).
 
-    with pytest.raises(
-        NameError, match=r"(?i).*missing query variable name.*"
-    ), run_query_patch as run_query_mock:
+    with (
+        pytest.raises(NameError, match=r"(?i).*missing query variable name.*"),
+        run_query_patch as run_query_mock,
+    ):
         ip.run_cell_magic("bigquery", "", cell_body)
 
     run_query_mock.assert_not_called()
@@ -2028,9 +2033,10 @@ def test_bigquery_magic_query_variable_non_string(ipython_ns_cleanup, monkeypatc
     ip.user_ns["custom_query"] = object()
     cell_body = "$custom_query"  # Referring to a non-string variable.
 
-    with pytest.raises(
-        TypeError, match=r".*must be a string or a bytes-like.*"
-    ), run_query_patch as run_query_mock:
+    with (
+        pytest.raises(TypeError, match=r".*must be a string or a bytes-like.*"),
+        run_query_patch as run_query_mock,
+    ):
         ip.run_cell_magic("bigquery", "", cell_body)
 
     run_query_mock.assert_not_called()
@@ -2195,9 +2201,11 @@ def test_bigquery_magic_create_dataset_fails(monkeypatch):
         autospec=True,
     )
 
-    with pytest.raises(
-        OSError
-    ), create_dataset_if_necessary_patch, close_transports_patch as close_transports:
+    with (
+        pytest.raises(OSError),
+        create_dataset_if_necessary_patch,
+        close_transports_patch as close_transports,
+    ):
         ip.run_cell_magic(
             "bigquery",
             "--destination_table dataset_id.table_id",
