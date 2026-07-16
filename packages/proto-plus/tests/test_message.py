@@ -504,6 +504,7 @@ def test_dir_message_base():
 
 def test_invalid_initialization_type_error():
     """Verify that bad types passed to __init__ raise a descriptive TypeError."""
+
     class UserProfile(proto.Message):
         username = proto.Field(proto.STRING, number=1)
         age = proto.Field(proto.INT32, number=2)
@@ -520,9 +521,11 @@ def test_invalid_initialization_type_error():
 
 def test_invalid_assignment_type_error():
     """Verify that bad types assigned via __setattr__ raise a descriptive TypeError."""
+
     class UserProfile(proto.Message):
         username = proto.Field(proto.STRING, number=1)
         age = proto.Field(proto.INT32, number=2)
+
     profile = UserProfile()
 
     with pytest.raises(TypeError) as excinfo:

@@ -688,7 +688,6 @@ class Message(metaclass=MessageMeta):
                 )
             ) from e
 
-
     def _get_pb_type_from_key(self, key):
         """Given a key, return the corresponding pb_type.
 
@@ -876,8 +875,6 @@ class Message(metaclass=MessageMeta):
                     key, self.__class__.__name__, value, e
                 )
             ) from e
-
-
 
     def __getstate__(self):
         """Serialize for pickling."""
