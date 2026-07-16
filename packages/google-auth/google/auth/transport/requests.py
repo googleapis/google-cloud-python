@@ -18,29 +18,62 @@ from __future__ import absolute_import
 
 import functools
 import http.client as http_client
+import importlib.util
 import logging
 import numbers
 import time
-from typing import Optional
+from typing import Optional, Set, TYPE_CHECKING
 
-try:
-    import requests
-except ImportError as caught_exc:  # pragma: NO COVER
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__: Set[str] = {
+    "requests",
+    "requests.adapters",
+    "requests.exceptions",
+    "requests.packages",
+    "requests.packages.urllib3",
+    "requests.packages.urllib3.util",
+    "requests.packages.urllib3.util.ssl_",
+}
+
+
+if importlib.util.find_spec("requests") is None:
     raise ImportError(
-        "The requests library is not installed from please install the requests package to use the requests transport."
-    ) from caught_exc
+        "The requests library is not installed, please install the requests package to use the requests transport."
+    )
+
+import requests
 import requests.adapters  # pylint: disable=ungrouped-imports
 import requests.exceptions  # pylint: disable=ungrouped-imports
-from requests.packages.urllib3.util.ssl_ import (  # type: ignore
-    create_urllib3_context,
-)  # pylint: disable=ungrouped-imports
 
-from google.auth import _helpers
-from google.auth import exceptions
-from google.auth import transport
+
+from google.auth import _helpers, exceptions, transport
 from google.auth.transport import _mtls_helper
 import google.auth.transport._mtls_helper
 from google.oauth2 import service_account
+
+if TYPE_CHECKING:
+    _HTTPAdapterBase = requests.adapters.HTTPAdapter
+    _SessionBase = requests.Session
+else:
+    _HTTPAdapterBase = _helpers.HeapDummy
+    _SessionBase = _helpers.HeapDummy
+
+
+class _LazyBasesMeta(_helpers.LazyBasesMeta):
+    def _perform_resolve_bases(cls):
+        current_bases = type.__getattribute__(cls, "__bases__")
+        if current_bases == (_helpers.HeapDummy,):
+            cls_name = type.__getattribute__(cls, "__name__")
+            if cls_name in ("_MutualTlsAdapter", "_MutualTlsOffloadAdapter"):
+                cls.__bases__ = (requests.adapters.HTTPAdapter,)
+            elif cls_name == "AuthorizedSession":
+                cls.__bases__ = (requests.Session,)
+
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -84,9 +117,11 @@ class TimeoutGuard(object):
             :class:`requests.exceptions.Timeout`.
     """
 
-    def __init__(self, timeout, timeout_error_type=requests.exceptions.Timeout):
+    def __init__(self, timeout, timeout_error_type=None):
         self._timeout = timeout
         self.remaining_timeout = timeout
+        if timeout_error_type is None:
+            timeout_error_type = requests.exceptions.Timeout
         self._timeout_error_type = timeout_error_type
 
     def __enter__(self):
@@ -161,7 +196,7 @@ class Request(transport.Request):
         body=None,
         headers=None,
         timeout=_DEFAULT_TIMEOUT,
-        **kwargs
+        **kwargs,
     ):
         """Make an HTTP request using requests.
 
@@ -195,7 +230,7 @@ class Request(transport.Request):
             raise new_exc from caught_exc
 
 
-class _MutualTlsAdapter(requests.adapters.HTTPAdapter):
+class _MutualTlsAdapter(_HTTPAdapterBase, metaclass=_LazyBasesMeta):
     """
     A TransportAdapter that enables mutual TLS.
 
@@ -209,8 +244,12 @@ class _MutualTlsAdapter(requests.adapters.HTTPAdapter):
     """
 
     def __init__(self, cert, key):
-        import certifi
         import ssl
+
+        from google.auth.transport.requests import (
+            create_urllib3_context,
+        )
+        import certifi
 
         ctx_poolmanager = create_urllib3_context()
         ctx_poolmanager.load_verify_locations(cafile=certifi.where())
@@ -261,7 +300,7 @@ class _MutualTlsAdapter(requests.adapters.HTTPAdapter):
         return super(_MutualTlsAdapter, self).proxy_manager_for(*args, **kwargs)
 
 
-class _MutualTlsOffloadAdapter(requests.adapters.HTTPAdapter):
+class _MutualTlsOffloadAdapter(_HTTPAdapterBase, metaclass=_LazyBasesMeta):
     """
     A TransportAdapter that enables mutual TLS and offloads the client side
     signing operation to the signing library.
@@ -284,7 +323,11 @@ class _MutualTlsOffloadAdapter(requests.adapters.HTTPAdapter):
     """
 
     def __init__(self, enterprise_cert_file_path):
+        from google.auth.transport.requests import (
+            create_urllib3_context,
+        )
         import certifi
+
         from google.auth.transport import _custom_tls_signer
 
         self.signer = _custom_tls_signer.CustomTlsSigner(enterprise_cert_file_path)
@@ -311,7 +354,7 @@ class _MutualTlsOffloadAdapter(requests.adapters.HTTPAdapter):
         return super(_MutualTlsOffloadAdapter, self).proxy_manager_for(*args, **kwargs)
 
 
-class AuthorizedSession(requests.Session):
+class AuthorizedSession(_SessionBase, metaclass=_LazyBasesMeta):
     """A Requests Session class with credentials.
 
     This class is used to perform requests to API endpoints that require
@@ -504,7 +547,7 @@ class AuthorizedSession(requests.Session):
         headers=None,
         max_allowed_time=None,
         timeout=_DEFAULT_TIMEOUT,
-        **kwargs
+        **kwargs,
     ):
         """Implementation of Requests' request.
 
@@ -566,7 +609,7 @@ class AuthorizedSession(requests.Session):
                 data=data,
                 headers=request_headers,
                 timeout=timeout,
-                **kwargs
+                **kwargs,
             )
         remaining_time = guard.remaining_timeout
 
@@ -638,7 +681,7 @@ class AuthorizedSession(requests.Session):
                 max_allowed_time=remaining_time,
                 timeout=timeout,
                 _credential_refresh_attempt=_credential_refresh_attempt + 1,
-                **kwargs
+                **kwargs,
             )
 
         return response
@@ -652,3 +695,13 @@ class AuthorizedSession(requests.Session):
         if self._auth_request_session is not None:
             self._auth_request_session.close()
         super(AuthorizedSession, self).close()
+
+
+def __getattr__(name):
+    if name == "create_urllib3_context":
+        from requests.packages.urllib3.util.ssl_ import (  # type: ignore
+            create_urllib3_context,
+        )
+
+        return create_urllib3_context
+    raise AttributeError(f"module {__name__} has no attribute {name}")
