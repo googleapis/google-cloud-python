@@ -28,6 +28,7 @@ from google.cloud.storagebatchoperations_v1 import gapic_version as package_vers
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
+from google.api_core.gapic_v1 import method_helpers
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials             # type: ignore
 from google.auth.transport import mtls                            # type: ignore
@@ -480,26 +481,7 @@ class StorageBatchOperationsClient(metaclass=StorageBatchOperationsClientMeta):
             field_name (str): The name of the field to populate.
             is_proto3_optional (bool): Whether the field is proto3 optional.
         """
-        if isinstance(request, dict):
-            if is_proto3_optional:
-                if field_name not in request:
-                    request[field_name] = str(uuid.uuid4())
-            elif not request.get(field_name):
-                request[field_name] = str(uuid.uuid4())
-            return
-
-        if is_proto3_optional:
-            try:
-                # Pure protobuf messages
-                if not request.HasField(field_name):
-                    setattr(request, field_name, str(uuid.uuid4()))
-            except (AttributeError, ValueError):
-                # Proto-plus messages or other objects
-                if field_name not in request:
-                    setattr(request, field_name, str(uuid.uuid4()))
-        else:
-            if not getattr(request, field_name):
-                setattr(request, field_name, str(uuid.uuid4()))
+        method_helpers.setup_request_id(request, field_name, is_proto3_optional)
 
     def _add_cred_info_for_auth_errors(
         self,

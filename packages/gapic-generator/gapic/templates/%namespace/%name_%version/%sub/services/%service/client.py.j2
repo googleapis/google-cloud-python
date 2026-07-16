@@ -6,6 +6,14 @@
 {% import "%namespace/%name_%version/%sub/services/%service/_client_macros.j2" as macros %}
 {% import "%namespace/%name_%version/%sub/services/%service/_shared_macros.j2" as shared_macros %}
 
+{% set has_auto_populated_fields = namespace(value=false) %}
+{% for method in service.methods.values() %}
+  {% set method_settings = api.all_method_settings.get(method.meta.address.proto) %}
+  {% if method_settings and method_settings.auto_populated_fields %}
+    {% set has_auto_populated_fields.value = true %}
+  {% endif %}
+{% endfor %}
+
 from collections import OrderedDict
 {% if service.any_extended_operations_methods %}
 import functools
@@ -16,9 +24,6 @@ import logging as std_logging
 import os
 import re
 from typing import Dict, Callable, Mapping, MutableMapping, MutableSequence, Optional, {% if service.any_server_streaming %}Iterable, {% endif %}{% if service.any_client_streaming %}Iterator, {% endif %}Sequence, Tuple, Type, Union, cast
-{% if api.all_method_settings.values()|map(attribute="auto_populated_fields", default=[])|select|list %}
-import uuid
-{% endif %}
 import warnings
 
 {% set package_path = api.naming.module_namespace|join('.') + "." + api.naming.versioned_module_name %}
@@ -30,6 +35,9 @@ from google.api_core import exceptions as core_exceptions
 from google.api_core import extended_operation
 {% endif %}
 from google.api_core import gapic_v1
+{% if has_auto_populated_fields.value %}
+from google.api_core.gapic_v1 import method_helpers
+{% endif %}
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials             # type: ignore
 from google.auth.transport import mtls                            # type: ignore
@@ -453,7 +461,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
         # NOTE (b/349488459): universe validation is disabled until further notice.
         return True
 
-    {% if api.all_method_settings.values()|map(attribute="auto_populated_fields", default=[])|select|list %}
+    {% if has_auto_populated_fields.value %}
     @staticmethod
     def _setup_request_id(request, field_name: str, is_proto3_optional: bool):
         """Populate a UUID4 field in the request if it is not already set.
@@ -463,26 +471,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
             field_name (str): The name of the field to populate.
             is_proto3_optional (bool): Whether the field is proto3 optional.
         """
-        if isinstance(request, dict):
-            if is_proto3_optional:
-                if field_name not in request:
-                    request[field_name] = str(uuid.uuid4())
-            elif not request.get(field_name):
-                request[field_name] = str(uuid.uuid4())
-            return
-
-        if is_proto3_optional:
-            try:
-                # Pure protobuf messages
-                if not request.HasField(field_name):
-                    setattr(request, field_name, str(uuid.uuid4()))
-            except (AttributeError, ValueError):
-                # Proto-plus messages or other objects
-                if field_name not in request:
-                    setattr(request, field_name, str(uuid.uuid4()))
-        else:
-            if not getattr(request, field_name):
-                setattr(request, field_name, str(uuid.uuid4()))
+        method_helpers.setup_request_id(request, field_name, is_proto3_optional)
     {% endif %}
 
     def _add_cred_info_for_auth_errors(
