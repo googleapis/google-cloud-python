@@ -114,7 +114,7 @@ def _validate_multi_segment_value(val: str) -> bool:
 
 
 @functools.lru_cache(maxsize=1024)
-def _build_capture_pattern(template_str: str) -> tuple[str, tuple[str, ...]]:
+def _build_capture_pattern(template_str: str) -> tuple[re.Pattern, tuple[str, ...]]:
     """Build a regex pattern to capture wildcard matches from a template.
 
     This function parses a template string containing positional/named
@@ -126,7 +126,7 @@ def _build_capture_pattern(template_str: str) -> tuple[str, tuple[str, ...]]:
         template_str (str): The template string (e.g. "projects/*/locations/*").
 
     Returns:
-        tuple[str, list[str]]: A tuple containing:
+        tuple[re.Pattern, tuple[str, ...]]: A tuple containing:
             - The compiled regex pattern string with capture groups.
             - A list of wildcard type strings ('*' or '**') in matching order.
     """
@@ -153,7 +153,7 @@ def _build_capture_pattern(template_str: str) -> tuple[str, tuple[str, ...]]:
             else:
                 sub_pattern, sub_types = _build_capture_pattern(template)
                 wildcard_types.extend(sub_types)
-                return sub_pattern
+                return sub_pattern.pattern
         return match.group(0)
 
     parts = []
@@ -168,8 +168,7 @@ def _build_capture_pattern(template_str: str) -> tuple[str, tuple[str, ...]]:
     parts.append(re.escape(literal))
 
     pattern = "".join(parts)
-    # Convert wildcard_types to a tuple to ensure the return value is fully hashable and robust
-    return pattern, tuple(wildcard_types)
+    return re.compile(pattern), tuple(wildcard_types)
 
 
 def _extract_and_validate_wildcards(
@@ -223,10 +222,9 @@ def _extract_and_validate_wildcards(
         return
 
     # Sub-template case: use cached capture pattern and regex match
-    pattern_body, wildcard_types = _build_capture_pattern(template_str)
-    pattern = "^" + pattern_body + "$"
+    pattern, wildcard_types = _build_capture_pattern(template_str)
 
-    m = re.match(pattern, val)
+    m = pattern.fullmatch(val)
     if m is not None:
         for i, wildcard_type in enumerate(wildcard_types):
             captured_val = m.group(i + 1)
