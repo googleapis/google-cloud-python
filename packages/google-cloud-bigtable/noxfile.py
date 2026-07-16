@@ -33,6 +33,7 @@ ALL_PYTHON = [
     "3.12",
     "3.13",
     "3.14",
+    "3.15",
 ]
 
 UNIT_TEST_STANDARD_DEPENDENCIES = [
@@ -223,6 +224,9 @@ def unit(session, protobuf_implementation):
     py_version = tuple([int(v) for v in session.python.split(".")])
     if protobuf_implementation == "cpp" and py_version >= (3, 11):
         session.skip("cpp implementation is not supported in python 3.11+")
+
+    if session.python == "3.15":
+        session.skip("Skipping 3.15 until wheels are available for google-crc32c.")
 
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"

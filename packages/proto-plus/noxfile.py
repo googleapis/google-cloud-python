@@ -36,6 +36,7 @@ PYTHON_VERSIONS = [
     "3.12",
     "3.13",
     "3.14",
+    "3.15",
 ]
 
 # Error if a python version is missing
@@ -47,14 +48,9 @@ nox.options.error_on_missing_interpreters = True
 def unit(session, implementation):
     """Run the unit test suite."""
 
-    # TODO(https://github.com/googleapis/gapic-generator-python/issues/2388):
-    # Remove this check once support for Protobuf 3.x is dropped.
-    if implementation == "cpp" and session.python in (
-        "3.11",
-        "3.12",
-        "3.13",
-        "3.14",
-    ):
+    # Install all test dependencies, then install this package in-place.
+    py_version = tuple([int(v) for v in session.python.split(".")])
+    if implementation == "cpp" and py_version >= (3, 11):
         session.skip("cpp implementation is not supported in python 3.11+")
 
     constraints_path = str(

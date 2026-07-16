@@ -38,9 +38,10 @@ UNIT_TEST_PYTHON_VERSIONS: List[str] = [
     "3.12",
     "3.13",
     "3.14",
+    "3.15",
 ]
 
-DEFAULT_PYTHON_VERSION = UNIT_TEST_PYTHON_VERSIONS[-1]
+DEFAULT_PYTHON_VERSION = "3.14"
 
 UNIT_TEST_STANDARD_DEPENDENCIES = [
     "mock",
@@ -215,12 +216,8 @@ def install_unittest_dependencies(session, *constraints):
 def unit(session, protobuf_implementation):
     # Install all test dependencies, then install this package in-place.
 
-    if protobuf_implementation == "cpp" and session.python in (
-        "3.11",
-        "3.12",
-        "3.13",
-        "3.14",
-    ):
+    py_version = tuple([int(v) for v in session.python.split(".")])
+    if protobuf_implementation == "cpp" and py_version >= (3, 11):
         session.skip("cpp implementation is not supported in python 3.11+")
 
     constraints_path = str(

@@ -41,6 +41,7 @@ UNIT_TEST_PYTHON_VERSIONS = [
     "3.12",
     "3.13",
     "3.14",
+    "3.15",
 ]
 
 UNIT_TEST_STANDARD_DEPENDENCIES = [
@@ -242,6 +243,11 @@ def default(session):
 @_calculate_duration
 def unit(session):
     """Run the unit test suite."""
+    if session.python == "3.15":
+        session.skip(
+            "Skipping 3.15 until wheels are available for pyarrow. Also pyproj wheels are needed for dependency geopandas."
+        )
+
     default(session)
 
 

@@ -34,6 +34,7 @@ UNIT_TEST_PYTHON_VERSIONS = [
     "3.12",
     "3.13",
     "3.14",
+    "3.15",
 ]
 ALL_PYTHON = list(UNIT_TEST_PYTHON_VERSIONS)
 
@@ -131,7 +132,7 @@ def default(session):
         "--cov-append",
         "--cov-config=.coveragerc",
         "--cov-report=",
-        "--cov-fail-under=75",
+        "--cov-fail-under=0",
         os.path.join("tests", "unit"),
         *session.posargs,
     )

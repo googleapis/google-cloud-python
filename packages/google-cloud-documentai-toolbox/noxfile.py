@@ -41,6 +41,7 @@ UNIT_TEST_PYTHON_VERSIONS: List[str] = [
     "3.12",
     "3.13",
     "3.14",
+    "3.15",
 ]
 
 UNIT_TEST_STANDARD_DEPENDENCIES = [
@@ -188,6 +189,10 @@ def install_unittest_dependencies(session, *constraints):
 )
 def unit(session, protobuf_implementation):
     # Install all test dependencies, then install this package in-place.
+    if session.python == "3.15":
+        session.skip(
+            "Skipping 3.15 until wheels are available for 1. numba (from dependency pandas[performance]) 2. lxml (from dependency pikepdf) 3. pyarrow."
+        )
 
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"

@@ -42,6 +42,7 @@ UNIT_TEST_PYTHON_VERSIONS: List[str] = [
     "3.12",
     "3.13",
     "3.14",
+    "3.15",
 ]
 
 UNIT_TEST_STANDARD_DEPENDENCIES = [
@@ -291,6 +292,8 @@ def prerelease(session, tests_path):
 @nox.parametrize("test_type", ["unit", "compliance"])
 def unit(session, test_type):
     """Run the unit test suite."""
+    if session.python == "3.15":
+        session.skip("Skipping 3.15 until wheels are available for pyarrow.")
 
     # Compliance tests only run on the latest Python version
     if test_type == "compliance" and session.python != DEFAULT_PYTHON_VERSION:
