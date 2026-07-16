@@ -136,6 +136,30 @@ def test_resolve_feature_flags_exp_enabled_with_provider():
     assert result is True
 
 
+def test_resolve_feature_flags_exp_enabled_without_provider():
+    """Verify that experimental feature is enabled if the experimental environment variable is enabled and NO provider is provided."""
+    set_test_env_override("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", True)
+
+    result = options.resolve_feature_flags(
+        env_var="GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED",
+        provider_key="tracer_provider",
+        client_options=None,
+    )
+    assert result is True
+
+
+def test_resolve_feature_flags_exp_disabled_without_provider():
+    """Verify that experimental feature is disabled if the experimental environment variable is disabled and NO provider is provided."""
+    set_test_env_override("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", False)
+
+    result = options.resolve_feature_flags(
+        env_var="GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED",
+        provider_key="tracer_provider",
+        client_options=None,
+    )
+    assert result is False
+
+
 def test_resolve_feature_flags_ga_enabled_via_provider():
     """Verify that a GA feature is enabled if a provider is provided, ignoring the environment variable."""
     # Env var is False, but provider is present
