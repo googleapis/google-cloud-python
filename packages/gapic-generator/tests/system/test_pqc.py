@@ -19,9 +19,9 @@ from google import showcase
 
 
 @pytest.fixture
-def run_pqc_test(use_mtls):
-    if not use_mtls:
-        pytest.skip("PQC integration test requires mTLS (--mtls flag) to be enabled.")
+def run_pqc_test(use_tls):
+    if not use_tls:
+        pytest.skip("PQC integration test requires TLS (--tls or --mtls flag) to be enabled.")
 
 
 def _verify_pqc_negotiated_group(client, interceptor, transport_name):

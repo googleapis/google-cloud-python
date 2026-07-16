@@ -116,14 +116,17 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
 
 
 base_dir = os.path.dirname(__file__)
-with open(os.path.join(base_dir, "../cert/mtls.crt"), "rb") as fh:
+CERT_PATH = os.path.join(base_dir, "../cert/mtls.crt")
+KEY_PATH = os.path.join(base_dir, "../cert/mtls.key")
+with open(CERT_PATH, "rb") as fh:
     cert = fh.read()
-with open(os.path.join(base_dir, "../cert/mtls.key"), "rb") as fh:
+with open(KEY_PATH, "rb") as fh:
     key = fh.read()
 
 ssl_credentials = grpc.ssl_channel_credentials(
     root_certificates=cert, certificate_chain=cert, private_key=key
 )
+tls_credentials = grpc.ssl_channel_credentials(root_certificates=cert)
 
 
 def callback():
@@ -137,6 +140,9 @@ client_options.client_cert_source = callback
 def pytest_addoption(parser):
     parser.addoption(
         "--mtls", action="store_true", help="Run system test with mutual TLS channel"
+    )
+    parser.addoption(
+        "--tls", action="store_true", help="Run system test with standard one-way TLS channel"
     )
 
 
@@ -189,6 +195,11 @@ def construct_client(
 @pytest.fixture
 def use_mtls(request):
     return request.config.getoption("--mtls")
+
+
+@pytest.fixture
+def use_tls(request):
+    return request.config.getoption("--tls")
 
 
 @pytest.fixture
@@ -414,7 +425,7 @@ class EchoMetadataClientGrpcAsyncInterceptor(
 
 
 @pytest.fixture
-def intercepted_echo_grpc(use_mtls):
+def intercepted_echo_grpc(use_mtls, use_tls):
     # The interceptor adds 'showcase-trailer' client metadata. Showcase server
     # echoes any metadata with key 'showcase-trailer', so the same metadata
     # should appear as trailing metadata in the response.
@@ -423,11 +434,12 @@ def intercepted_echo_grpc(use_mtls):
         "intercepted",
     )
     host = "localhost:7469"
-    channel = (
-        grpc.secure_channel(host, ssl_credentials)
-        if use_mtls
-        else grpc.insecure_channel(host)
-    )
+    if use_mtls:
+        channel = grpc.secure_channel(host, ssl_credentials)
+    elif use_tls:
+        channel = grpc.secure_channel(host, tls_credentials)
+    else:
+        channel = grpc.insecure_channel(host)
     intercept_channel = grpc.intercept_channel(channel, interceptor)
     transport = EchoClient.get_transport_class("grpc")(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -468,31 +480,29 @@ class HostNameIgnoringAdapter(HTTPAdapter):
 
 
 @pytest.fixture
-def intercepted_echo_rest(use_mtls):
+def intercepted_echo_rest(use_mtls, use_tls):
     transport_name = "rest"
     transport_cls = EchoClient.get_transport_class(transport_name)
     interceptor = EchoMetadataClientRestInterceptor()
 
-    url_scheme = "https" if use_mtls else "http"
+    url_scheme = "https" if (use_mtls or use_tls) else "http"
     transport = transport_cls(
         credentials=ga_credentials.AnonymousCredentials(),
         host="localhost:7469",
         url_scheme=url_scheme,
         interceptor=interceptor,
     )
-    if use_mtls:
-        base_dir = os.path.dirname(__file__)
-        cert_path = os.path.join(base_dir, "../cert/mtls.crt")
-        key_path = os.path.join(base_dir, "../cert/mtls.key")
-        transport._session.verify = cert_path
-        transport._session.cert = (cert_path, key_path)
+    if use_mtls or use_tls:
+        transport._session.verify = CERT_PATH
         transport._session.mount("https://", HostNameIgnoringAdapter())
+    if use_mtls:
+        transport._session.cert = (CERT_PATH, KEY_PATH)
 
     return EchoClient(transport=transport), interceptor
 
 
 @pytest.fixture
-def intercepted_echo_rest_async(use_mtls):
+def intercepted_echo_rest_async():
     if not HAS_ASYNC_REST_ECHO_TRANSPORT:
         pytest.skip("Skipping test with async rest.")
 
@@ -500,19 +510,11 @@ def intercepted_echo_rest_async(use_mtls):
     transport_cls = EchoAsyncClient.get_transport_class(transport_name)
     interceptor = EchoMetadataClientRestAsyncInterceptor()
 
-    url_scheme = "https" if use_mtls else "http"
     transport = transport_cls(
         credentials=async_anonymous_credentials(),
         host="localhost:7469",
-        url_scheme=url_scheme,
+        url_scheme="http",
         interceptor=interceptor,
     )
-    if use_mtls:
-        base_dir = os.path.dirname(__file__)
-        cert_path = os.path.join(base_dir, "../cert/mtls.crt")
-        key_path = os.path.join(base_dir, "../cert/mtls.key")
-        transport._session.verify = cert_path
-        transport._session.cert = (cert_path, key_path)
-        transport._session.mount("https://", HostNameIgnoringAdapter())
 
     return EchoAsyncClient(transport=transport), interceptor
