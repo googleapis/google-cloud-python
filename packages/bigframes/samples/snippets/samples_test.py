@@ -12,10 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import os
+
 import pytest
 
 
-@pytest.mark.skip(reason="Documentation sample code snippet (b/522845525)")
 def test_query_standard_sql():
     # [START bigquery_bigframes_query]
     import bigframes.pandas as bpd
@@ -33,13 +34,17 @@ def test_query_standard_sql():
     df = bpd.read_gbq(sql)
 
     # Run a query after explicitly specifying a project.
-    bpd.options.bigquery.project = "your-project-id"
+    project = "your-project-id"
+    # [END bigquery_bigframes_query]
+    project = os.environ.get("GOOGLE_CLOUD_PROJECT", "bigframes-dev-perf")
+    bpd.close_session()
+    # [START bigquery_bigframes_query]
+    bpd.options.bigquery.project = project
     df = bpd.read_gbq(sql)
     # [END bigquery_bigframes_query]
-    return df
+    assert df is not None
 
 
-@pytest.mark.skip(reason="Documentation sample code snippet (b/522845525)")
 def test_query_legacy_sql():
     # [START bigquery_bigframes_query_legacy]
     import bigframes.pandas as bpd
@@ -57,10 +62,9 @@ def test_query_legacy_sql():
     query_config = {"query": {"useLegacySql": True}}
     df = bpd.read_gbq(sql, configuration=query_config)
     # [END bigquery_bigframes_query_legacy]
-    return df
+    assert df is not None
 
 
-@pytest.mark.skip(reason="Documentation sample code snippet (b/522845525)")
 def test_query_bqstorage():
     # [START bigquery_bigframes_query_bqstorage]
     import bigframes.pandas as bpd
@@ -81,10 +85,9 @@ def test_query_bqstorage():
     # automatically uses the BigQuery Storage API if installed.
     pandas_df = df.to_pandas()
     # [END bigquery_bigframes_query_bqstorage]
-    return pandas_df
+    assert pandas_df is not None
 
 
-@pytest.mark.skip(reason="Documentation sample code snippet (b/522845525)")
 def test_query_parameters():
     # [START bigquery_bigframes_query_parameters]
     import bigframes.pandas as bpd
@@ -113,10 +116,10 @@ def test_query_parameters():
 
     df = bpd.read_gbq(sql, configuration=query_config)
     # [END bigquery_bigframes_query_parameters]
-    return df
+    assert df is not None
 
 
-@pytest.mark.skip(reason="Documentation sample code snippet (b/522845525)")
+@pytest.mark.skip(reason="Requires a writable table destination (b/522845525)")
 def test_upload_from_dataframe():
     # [START bigquery_bigframes_upload_from_dataframe]
     import pandas as pd
