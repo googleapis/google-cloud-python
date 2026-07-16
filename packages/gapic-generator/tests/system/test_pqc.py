@@ -30,13 +30,10 @@ def _verify_pqc_negotiated_group(client, interceptor, transport_name):
     assert response.content == "Verify PQC connection."
 
     # Extract negotiated group and supported groups from response headers
-    negotiated_group = None
-    supported_groups = None
-    for key, value in interceptor.response_metadata:
-        if key.lower() == "x-showcase-tls-group":
-            negotiated_group = value
-        elif key.lower() == "x-showcase-tls-client-supported-groups":
-            supported_groups = value
+    response_metadata = getattr(interceptor, "response_metadata", []) or []
+    headers = {key.lower(): value for key, value in response_metadata}
+    negotiated_group = headers.get("x-showcase-tls-group")
+    supported_groups = headers.get("x-showcase-tls-client-supported-groups")
 
     assert negotiated_group is not None, "Failed: Showcase server did not return negotiated TLS group header."
     assert supported_groups is not None, "Failed: Showcase server did not return client advertised supported groups."

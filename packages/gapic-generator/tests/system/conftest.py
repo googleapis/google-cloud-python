@@ -115,10 +115,10 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
         )
 
 
-dir = os.path.dirname(__file__)
-with open(os.path.join(dir, "../cert/mtls.crt"), "rb") as fh:
+base_dir = os.path.dirname(__file__)
+with open(os.path.join(base_dir, "../cert/mtls.crt"), "rb") as fh:
     cert = fh.read()
-with open(os.path.join(dir, "../cert/mtls.key"), "rb") as fh:
+with open(os.path.join(base_dir, "../cert/mtls.key"), "rb") as fh:
     key = fh.read()
 
 ssl_credentials = grpc.ssl_channel_credentials(
@@ -481,9 +481,9 @@ def intercepted_echo_rest(use_mtls):
         interceptor=interceptor,
     )
     if use_mtls:
-        dir = os.path.dirname(__file__)
-        cert_path = os.path.join(dir, "../cert/mtls.crt")
-        key_path = os.path.join(dir, "../cert/mtls.key")
+        base_dir = os.path.dirname(__file__)
+        cert_path = os.path.join(base_dir, "../cert/mtls.crt")
+        key_path = os.path.join(base_dir, "../cert/mtls.key")
         transport._session.verify = cert_path
         transport._session.cert = (cert_path, key_path)
         transport._session.mount("https://", HostNameIgnoringAdapter())
@@ -508,9 +508,9 @@ def intercepted_echo_rest_async(use_mtls):
         interceptor=interceptor,
     )
     if use_mtls:
-        dir = os.path.dirname(__file__)
-        cert_path = os.path.join(dir, "../cert/mtls.crt")
-        key_path = os.path.join(dir, "../cert/mtls.key")
+        base_dir = os.path.dirname(__file__)
+        cert_path = os.path.join(base_dir, "../cert/mtls.crt")
+        key_path = os.path.join(base_dir, "../cert/mtls.key")
         transport._session.verify = cert_path
         transport._session.cert = (cert_path, key_path)
         transport._session.mount("https://", HostNameIgnoringAdapter())
