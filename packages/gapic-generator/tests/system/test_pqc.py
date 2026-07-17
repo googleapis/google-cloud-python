@@ -18,10 +18,10 @@ import pytest
 from google import showcase
 
 
-@pytest.fixture
-def run_pqc_test(use_tls):
+@pytest.fixture(autouse=True)
+def require_tls(use_tls):
     if not use_tls:
-        pytest.skip("PQC integration test requires TLS (--tls or --mtls flag) to be enabled.")
+        pytest.skip("PQC integration test requires standard TLS (--tls flag) to be enabled.")
 
 
 def _verify_pqc_metadata(interceptor, transport_name):
@@ -40,7 +40,7 @@ def _verify_pqc_metadata(interceptor, transport_name):
     ), f"Failed: {transport_name} Connection is NOT PQC-compliant! Negotiated: {negotiated_group}"
 
 
-def test_pqc_grpc(run_pqc_test, intercepted_echo_grpc):
+def test_pqc_grpc(intercepted_echo_grpc):
     """Verifies that the gRPC client library negotiates PQC (X25519MLKEM768) with Showcase server."""
     # TODO(https://github.com/googleapis/google-cloud-python/issues/17752):
     # Remove this check once grpcio >= 1.83.0 is enforced across all client libraries.
@@ -55,7 +55,7 @@ def test_pqc_grpc(run_pqc_test, intercepted_echo_grpc):
     _verify_pqc_metadata(interceptor, "grpc")
 
 
-def test_pqc_rest(run_pqc_test, intercepted_echo_rest):
+def test_pqc_rest(intercepted_echo_rest):
     """Verifies that the REST client library negotiates PQC (X25519MLKEM768) with Showcase server."""
     client, interceptor = intercepted_echo_rest
     response = client.echo(request=showcase.EchoRequest(content="Verify PQC connection."))
@@ -64,20 +64,20 @@ def test_pqc_rest(run_pqc_test, intercepted_echo_rest):
 
 
 @pytest.mark.asyncio
-async def test_pqc_grpc_async(run_pqc_test, intercepted_echo_grpc_async):
+async def test_pqc_grpc_async(intercepted_echo_grpc_async):
     """Verifies that the async gRPC client library negotiates PQC (X25519MLKEM768) with Showcase server."""
     # TODO(https://github.com/googleapis/google-cloud-python/issues/17752):
     # Remove this check once grpcio >= 1.83.0 is enforced across all client libraries.
     if Version(grpc.__version__) < Version("1.83.0rc0"):
-        # TODO(https://github.com/googleapis/google-cloud-python/issues/17751): 
+        # TODO(https://github.com/googleapis/google-cloud-python/issues/17751):
         # Update the version in the check above to `1.83.0` once released.
-        pytest.skip(f"gRPC PQC negotiation requires grpcio >= 1.83.0 (current: {grpc.__version__})")
+        pytest.skip(
+            f"gRPC PQC negotiation requires grpcio >= 1.83.0 (current: {grpc.__version__})"
+        )
 
     client, interceptor = intercepted_echo_grpc_async
-    response = await client.echo(request=showcase.EchoRequest(content="Verify PQC connection."))
+    response = await client.echo(
+        request=showcase.EchoRequest(content="Verify PQC connection.")
+    )
     assert response.content == "Verify PQC connection."
     _verify_pqc_metadata(interceptor, "grpc_asyncio")
-
-
-
-

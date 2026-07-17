@@ -424,7 +424,7 @@ class EchoMetadataClientGrpcAsyncInterceptor(
 
 
 @pytest.fixture
-def intercepted_echo_grpc(use_mtls, use_tls):
+def intercepted_echo_grpc(use_tls):
     # The interceptor adds 'showcase-trailer' client metadata. Showcase server
     # echoes any metadata with key 'showcase-trailer', so the same metadata
     # should appear as trailing metadata in the response.
@@ -433,12 +433,11 @@ def intercepted_echo_grpc(use_mtls, use_tls):
         "intercepted",
     )
     host = "localhost:7469"
-    if use_mtls:
-        channel = grpc.secure_channel(host, ssl_credentials)
-    elif use_tls:
-        channel = grpc.secure_channel(host, tls_credentials)
-    else:
-        channel = grpc.insecure_channel(host)
+    channel = (
+        grpc.secure_channel(host, tls_credentials)
+        if use_tls
+        else grpc.insecure_channel(host)
+    )
     intercept_channel = grpc.intercept_channel(channel, interceptor)
     transport = EchoClient.get_transport_class("grpc")(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -448,7 +447,7 @@ def intercepted_echo_grpc(use_mtls, use_tls):
 
 
 @pytest_asyncio.fixture
-async def intercepted_echo_grpc_async(use_mtls, use_tls):
+async def intercepted_echo_grpc_async(use_tls):
     # The interceptor adds 'showcase-trailer' client metadata. Showcase server
     # echoes any metadata with key 'showcase-trailer', so the same metadata
     # should appear as trailing metadata in the response.
@@ -457,12 +456,11 @@ async def intercepted_echo_grpc_async(use_mtls, use_tls):
         "intercepted",
     )
     host = "localhost:7469"
-    if use_mtls:
-        channel = grpc.aio.secure_channel(host, ssl_credentials, interceptors=[interceptor])
-    elif use_tls:
-        channel = grpc.aio.secure_channel(host, tls_credentials, interceptors=[interceptor])
-    else:
-        channel = grpc.aio.insecure_channel(host, interceptors=[interceptor])
+    channel = (
+        grpc.aio.secure_channel(host, tls_credentials, interceptors=[interceptor])
+        if use_tls
+        else grpc.aio.insecure_channel(host, interceptors=[interceptor])
+    )
     transport = EchoAsyncClient.get_transport_class("grpc_asyncio")(
         credentials=ga_credentials.AnonymousCredentials(),
         channel=channel,
@@ -478,23 +476,21 @@ class HostNameIgnoringAdapter(HTTPAdapter):
 
 
 @pytest.fixture
-def intercepted_echo_rest(use_mtls, use_tls):
+def intercepted_echo_rest(use_tls):
     transport_name = "rest"
     transport_cls = EchoClient.get_transport_class(transport_name)
     interceptor = EchoMetadataClientRestInterceptor()
 
-    url_scheme = "https" if (use_mtls or use_tls) else "http"
+    url_scheme = "https" if use_tls else "http"
     transport = transport_cls(
         credentials=ga_credentials.AnonymousCredentials(),
         host="localhost:7469",
         url_scheme=url_scheme,
         interceptor=interceptor,
     )
-    if use_mtls or use_tls:
+    if use_tls:
         transport._session.verify = CERT_PATH
         transport._session.mount("https://", HostNameIgnoringAdapter())
-    if use_mtls:
-        transport._session.cert = (CERT_PATH, KEY_PATH)
 
     return EchoClient(transport=transport), interceptor
 
