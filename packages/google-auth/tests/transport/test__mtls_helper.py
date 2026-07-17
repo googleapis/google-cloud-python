@@ -588,10 +588,16 @@ class TestGetCertConfigPath(object):
         returned_path = _mtls_helper._get_cert_config_path(config_path)
         assert returned_path == config_path
 
-    def test_override_does_not_exist(self):
+    @mock.patch("google.auth.transport._mtls_helper._LOGGER.debug")
+    def test_override_does_not_exist(self, mock_debug):
         config_path = "fake/file/path"
         returned_path = _mtls_helper._get_cert_config_path(config_path)
         assert returned_path is None
+        mock_debug.assert_called_once_with(
+            "Certificate configuration file explicitly specified via %s at %s does not exist",
+            "function argument",
+            "fake/file/path",
+        )
 
     @mock.patch.dict(
         os.environ,
@@ -878,7 +884,6 @@ class TestCheckUseClientCert(object):
     @mock.patch.dict(os.environ, {}, clear=True)
     @mock.patch("os.path.exists", autospec=True)
     def test_no_env_vars_set(self, mock_exists, mock_open):
-        _mtls_helper._has_logged_mtls_warning = False
         mock_exists.return_value = False
         mock_open.side_effect = FileNotFoundError()
         assert _mtls_helper.check_use_client_cert() is False

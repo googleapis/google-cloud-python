@@ -51,6 +51,23 @@ def test_has_default_client_cert_source_with_context_aware_metadata(
     mock_check.assert_any_call(_mtls_helper.CONTEXT_AWARE_METADATA_PATH)
 
 
+@mock.patch("google.auth.transport._mtls_helper._get_cert_config_path")
+@mock.patch("google.auth.transport._mtls_helper._check_config_path")
+def test_has_default_client_cert_source_without_context_aware(
+    mock_check, mock_get_cert
+):
+    """
+    Tests that if include_context_aware is False, it skips checking CONTEXT_AWARE_METADATA_PATH.
+    """
+    mock_get_cert.return_value = None
+
+    result = mtls.has_default_client_cert_source(include_context_aware=False)
+
+    assert result is False
+    mock_get_cert.assert_called_once_with(include_context_aware=False)
+    mock_check.assert_not_called()
+
+
 @mock.patch("google.auth.transport._mtls_helper._check_config_path")
 @mock.patch("google.auth.transport._mtls_helper._get_cert_config_path")
 def test_has_default_client_cert_source_falls_back(mock_get_cert, mock_check):

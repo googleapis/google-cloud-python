@@ -139,7 +139,8 @@ def should_use_client_cert():
     bool value will be returned
     If GOOGLE_API_USE_CLIENT_CERTIFICATE is unset, the value will be inferred by
     reading a file pointed at by GOOGLE_API_CERTIFICATE_CONFIG or
-    CLOUDSDK_CONTEXT_AWARE_CERTIFICATE_CONFIG_FILE_PATH, and verifying it
+    CLOUDSDK_CONTEXT_AWARE_CERTIFICATE_CONFIG_FILE_PATH, or the default path
+    like ~/.config/gcloud/certificate_config.json, and verifying it
     contains a "workload" section. If so, the function will return True,
     otherwise False.
 
