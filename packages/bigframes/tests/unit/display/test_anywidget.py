@@ -16,6 +16,7 @@ import signal
 import unittest.mock as mock
 
 import pandas as pd
+import pyarrow as pa
 import pytest
 
 import bigframes
@@ -24,11 +25,10 @@ import bigframes
 pytest.importorskip("anywidget")
 pytest.importorskip("traitlets")
 
-from bigframes.core.blocks import Block
-from bigframes.dataframe import DataFrame
+import bigframes.dataframe
+import bigframes.dtypes
+import bigframes.series
 from bigframes.display.anywidget import TableWidget
-from bigframes.dtypes import JSON_DTYPE, STRING_DTYPE, struct_type
-from bigframes.operations import SqlScalarOp
 
 
 def test_navigation_to_invalid_page_resets_to_valid_page_without_deadlock():
@@ -45,11 +45,13 @@ def test_navigation_to_invalid_page_resets_to_valid_page_without_deadlock():
     mock_df._block = mock_block
 
     # We mock _initial_load to avoid complex setup
-    with mock.patch.object(TableWidget, "_initial_load"):
-        with bigframes.option_context(
+    with (
+        mock.patch.object(TableWidget, "_initial_load"),
+        bigframes.option_context(
             "display.render_mode", "anywidget", "display.max_rows", 10
-        ):
-            widget = TableWidget(mock_df)
+        ),
+    ):
+        widget = TableWidget(mock_df)
 
     # Simulate "loaded data but unknown total rows" state
     widget.page_size = 10
@@ -179,11 +181,11 @@ def test_page_size_change_resets_sort(mock_df):
 
 def test_cell_execution_count_propagation(mock_df):
     """Test that the captured cell_execution_count is propagated to to_pandas_batches."""
-    with mock.patch(
-        "bigframes.core.utils.get_ipython_execution_count", return_value=42
+    with (
+        mock.patch("bigframes.core.utils.get_ipython_execution_count", return_value=42),
+        bigframes.option_context("display.render_mode", "anywidget"),
     ):
-        with bigframes.option_context("display.render_mode", "anywidget"):
-            widget = TableWidget(mock_df)
+        widget = TableWidget(mock_df)
 
     assert widget._cell_execution_count == 42
 
@@ -193,57 +195,349 @@ def test_cell_execution_count_propagation(mock_df):
     )
 
 
-def test_json_column_converted_to_string_for_display():
-    mock_block = mock.Mock(spec=Block)
-    mock_block.column_labels = pd.Index(["col_json"])
-    mock_block.value_columns = ["col_json"]
-
-    df = DataFrame(mock_block)
-    df._block = mock_block
-
-    mock_series = mock.Mock()
-    mock_series.dtype = JSON_DTYPE
-
-    with mock.patch.object(DataFrame, "__getitem__", return_value=mock_series):
-        with mock.patch.object(DataFrame, "assign") as mock_assign:
-            df._prepare_display_df()
-
-            mock_assign.assert_called_once()
-            _, kwargs = mock_assign.call_args
-            assert "col_json" in kwargs
-
-            mock_series._apply_unary_op.assert_called_once()
-            call_arg = mock_series._apply_unary_op.call_args[0][0]
-            assert isinstance(call_arg, SqlScalarOp)
-            assert call_arg._output_type == STRING_DTYPE
-            assert call_arg.sql_template == "TO_JSON_STRING({0})"
-
-
-def test_struct_column_with_nested_json_converted_to_string_for_display():
-    nested_struct_dtype = struct_type(
-        [("field1", STRING_DTYPE), ("field2", JSON_DTYPE)]
+def test_json_column_converted_to_string_for_display(polars_session):
+    series = bigframes.series.Series(
+        ['{"a": 1}', '{"b": 2}'],
+        dtype=bigframes.dtypes.JSON_DTYPE,
+        session=polars_session,
     )
+    df = series.to_frame("col_json")
 
-    mock_block = mock.Mock(spec=Block)
-    mock_block.column_labels = pd.Index(["col_struct"])
-    mock_block.value_columns = ["col_struct"]
+    result = df._prepare_display_df()
 
-    df = DataFrame(mock_block)
-    df._block = mock_block
+    assert result["col_json"].dtype == bigframes.dtypes.STRING_DTYPE
 
-    mock_series = mock.Mock()
-    mock_series.dtype = nested_struct_dtype
 
-    with mock.patch.object(DataFrame, "__getitem__", return_value=mock_series):
-        with mock.patch.object(DataFrame, "assign") as mock_assign:
-            df._prepare_display_df()
+def test_struct_column_with_nested_json_converted_to_string_for_display(
+    polars_session,
+):
+    if not hasattr(pa, "json_"):
+        pytest.skip(reason=f"pyarrow=={pa.__version__} does not support json_")
 
-            mock_assign.assert_called_once()
-            _, kwargs = mock_assign.call_args
-            assert "col_struct" in kwargs
+    # Arrange
+    json_type = pa.json_(storage_type=pa.utf8())
+    json_data = pa.array(['{"a": 1}'], type=json_type)
+    string_data = pa.array(["hello"], type=pa.string())
+    struct_data = pa.StructArray.from_arrays(
+        [string_data, json_data], names=["field1", "field2"]
+    )
+    nested_data = pa.table([struct_data], names=["nested"])
+    df = polars_session.read_arrow(nested_data)
+    exploded = df["nested"].struct.explode()
+    # Ensure that we are actually using the JSON dtype in this test.
+    assert exploded["field2"].dtype == bigframes.dtypes.JSON_DTYPE
 
-            mock_series._apply_unary_op.assert_called_once()
-            call_arg = mock_series._apply_unary_op.call_args[0][0]
-            assert isinstance(call_arg, SqlScalarOp)
-            assert call_arg._output_type == STRING_DTYPE
-            assert call_arg.sql_template == "TO_JSON_STRING({0})"
+    # Act
+    result = df._prepare_display_df()
+
+    # Assert
+    assert result["nested"].dtype == bigframes.dtypes.STRING_DTYPE
+
+
+@pytest.fixture
+def mock_df_deferred():
+    with mock.patch("bigframes.display.anywidget._ANYWIDGET_INSTALLED", True):
+        df = mock.Mock(spec=bigframes.dataframe.DataFrame)
+        df.shape = (100, 4)
+        df.columns = ["A", "B", "C", "D"]
+        df.dtypes = {
+            "A": bigframes.dtypes.INT_DTYPE,
+            "B": bigframes.dtypes.STRING_DTYPE,
+            "C": bigframes.dtypes.FLOAT_DTYPE,
+            "D": bigframes.dtypes.BOOL_DTYPE,
+        }
+
+        df.to_pandas_batches.return_value = iter(
+            [pd.DataFrame({"A": [1], "B": ["a"], "C": [1.0], "D": [True]})]
+        )
+
+        df.sort_values.return_value = df
+
+        df._block = mock.Mock()
+        df._block.has_index = False
+        df._prepare_display_df.return_value = df
+
+        yield df
+
+
+@pytest.fixture
+def mock_deferred_df():
+    from bigframes.session.deferred import DeferredBigQueryDataFrame
+
+    with mock.patch("bigframes.display.anywidget._ANYWIDGET_INSTALLED", True):
+        # We create a mock that subclasses DeferredBigQueryDataFrame so isinstance passes
+        class MockDeferredBigQueryDataFrame(DeferredBigQueryDataFrame):
+            def __init__(self):
+                pass
+
+        df = mock.MagicMock(spec=MockDeferredBigQueryDataFrame)
+        df.__class__ = DeferredBigQueryDataFrame  # type: ignore[assignment]
+        yield df
+
+
+def test_init_raises_if_anywidget_not_installed():
+    with (
+        mock.patch("bigframes.display.anywidget._ANYWIDGET_INSTALLED", False),
+        pytest.raises(ImportError),
+    ):
+        from bigframes.display.anywidget import TableWidget
+
+        TableWidget(mock.Mock())
+
+
+def test_init_initializes_attributes(mock_df_deferred):
+    from bigframes.display.anywidget import TableWidget
+
+    with (
+        bigframes.option_context("display.render_mode", "anywidget"),
+        mock.patch.object(TableWidget, "_initial_load"),
+    ):
+        widget = TableWidget(mock_df_deferred)
+
+    assert widget._dataframe is mock_df_deferred
+    assert widget.page == 0
+    assert widget.page_size > 0
+    assert widget.orderable_columns == [
+        "A",
+        "B",
+        "C",
+        "D",
+    ]
+
+
+def test_init_calls_initial_load(mock_df_deferred):
+    from bigframes.display.anywidget import TableWidget
+
+    with mock.patch.object(TableWidget, "_initial_load") as mock_load:
+        TableWidget(mock_df_deferred)
+        mock_load.assert_called_once()
+
+
+def test_validate_page_clamping(mock_df_deferred):
+    from bigframes.display.anywidget import TableWidget
+
+    with mock.patch.object(TableWidget, "_initial_load"):
+        widget = TableWidget(mock_df_deferred)
+        widget.row_count = 100
+        widget.page_size = 10
+
+        widget.page = 5
+        assert widget.page == 5
+
+        with pytest.raises(ValueError):
+            widget.page = -1
+
+        widget.page = 100
+        assert widget.page == 9
+
+
+def test_validate_page_size(mock_df_deferred):
+    from bigframes.display.anywidget import TableWidget
+
+    with (
+        bigframes.option_context("display.render_mode", "anywidget"),
+        mock.patch.object(TableWidget, "_initial_load"),
+    ):
+        widget = TableWidget(mock_df_deferred)
+
+        widget.page_size = 50
+        assert widget.page_size == 50
+
+        original_size = widget.page_size
+        widget.page_size = -5
+        assert widget.page_size == original_size
+
+        widget.page_size = 10000
+        assert widget.page_size == 1000
+
+
+def test_page_size_change_resets_page_and_sort(mock_df_deferred):
+    from bigframes.display.anywidget import TableWidget
+
+    with mock.patch.object(TableWidget, "_initial_load"):
+        widget = TableWidget(mock_df_deferred)
+        widget._initial_load_complete = True
+        widget.page = 5
+        widget.sort_context = [{"column": "A", "ascending": True}]
+
+        widget.page_size = 20
+
+        assert widget.page == 0
+        assert widget.sort_context == []
+
+
+def test_page_size_change_resets_batches(mock_df_deferred):
+    from bigframes.display.anywidget import TableWidget
+
+    with mock.patch.object(TableWidget, "_initial_load"):
+        widget = TableWidget(mock_df_deferred)
+        widget._initial_load_complete = True
+
+        widget.page_size = 50
+
+    mock_df_deferred.to_pandas_batches.assert_called()
+
+
+def test_sort_change_resets_batches(mock_df_deferred):
+    from bigframes.display.anywidget import TableWidget
+
+    with (
+        bigframes.option_context("display.render_mode", "anywidget"),
+        mock.patch.object(TableWidget, "_initial_load"),
+    ):
+        widget = TableWidget(mock_df_deferred)
+        widget._initial_load_complete = True
+
+        mock_df_deferred.to_pandas_batches.reset_mock()
+
+        widget.sort_context = [{"column": "B", "ascending": False}]
+
+    assert mock_df_deferred.to_pandas_batches.call_count >= 1
+
+
+def test_deferred_mode_initialization(mock_deferred_df):
+    from bigframes.display.anywidget import TableWidget
+
+    with mock.patch.object(TableWidget, "_initial_load") as mock_load:
+        widget = TableWidget(mock_deferred_df)
+
+        assert widget.is_deferred_mode is True
+        mock_load.assert_not_called()
+
+
+def test_deferred_mode_execution(mock_deferred_df, mock_df_deferred):
+    from bigframes.display.anywidget import TableWidget
+
+    mock_deferred_df.execute.return_value = mock_df_deferred
+
+    widget = TableWidget(mock_deferred_df)
+
+    assert widget.is_deferred_mode is True
+
+    import bigframes
+
+    with bigframes.option_context(
+        "display.render_mode", bigframes.options.display.render_mode
+    ):
+        widget.start_execution = True
+
+    thread = getattr(widget, "_execution_thread", None)
+    if thread is not None:
+        thread.join(timeout=5)
+
+    mock_deferred_df.execute.assert_called_once()
+    mock_df_deferred.to_pandas_batches.assert_called_once()
+    assert widget.is_deferred_mode is False
+
+
+def test_deferred_mode_execution_updates_table_html(mock_deferred_df, mock_df_deferred):
+    from bigframes.display.anywidget import TableWidget
+
+    mock_deferred_df.execute.return_value = mock_df_deferred
+
+    batches = mock.MagicMock()
+    batch_df = pd.DataFrame({"A": [1], "B": ["a"], "C": [1.0], "D": [True]})
+    batches.__iter__.return_value = iter([batch_df])
+    batches.total_rows = 1
+    mock_df_deferred.to_pandas_batches.return_value = batches
+
+    with bigframes.option_context("display.render_mode", "anywidget"):
+        widget = TableWidget(mock_deferred_df)
+        widget.is_deferred_mode = True
+        widget._deferred_dataframe = mock_deferred_df
+        assert widget.table_html == ""
+
+        widget.start_execution = True
+        thread = getattr(widget, "_execution_thread", None)
+        if thread is not None:
+            thread.join(timeout=5)
+
+        assert widget.is_deferred_mode is False
+        assert widget.table_html != ""
+        assert "table" in widget.table_html
+
+
+def test_deferred_mode_execution_error(mock_deferred_df):
+    from bigframes.display.anywidget import TableWidget
+
+    mock_deferred_df.execute.side_effect = RuntimeError("Query Failed")
+
+    with mock.patch.object(TableWidget, "_initial_load"):
+        widget = TableWidget(mock_deferred_df)
+
+        import bigframes
+
+        with bigframes.option_context(
+            "display.render_mode", bigframes.options.display.render_mode
+        ):
+            widget.start_execution = True
+
+        thread = getattr(widget, "_execution_thread", None)
+        if thread is not None:
+            thread.join(timeout=5)
+
+        assert widget.is_deferred_mode is True
+        assert widget._error_message == "Query Failed"
+
+
+def test_deferred_mode_execution_does_not_reset_page_on_navigation(
+    mock_deferred_df, mock_df_deferred
+):
+    from bigframes.display.anywidget import TableWidget
+
+    mock_deferred_df.execute.return_value = mock_df_deferred
+
+    batches = mock.MagicMock()
+    batch_df = pd.DataFrame({"A": [1], "B": ["a"], "C": [1.0], "D": [True]})
+    batches.__iter__.return_value = iter([batch_df])
+    batches.total_rows = 50
+    mock_df_deferred.to_pandas_batches.return_value = batches
+
+    with bigframes.option_context("display.render_mode", "anywidget"):
+        widget = TableWidget(mock_deferred_df)
+        widget.page_size = 10
+        widget.start_execution = True
+
+        thread = getattr(widget, "_execution_thread", None)
+        if thread is not None:
+            thread.join(timeout=5)
+
+        assert widget.page == 0
+        widget.page = 1
+        assert widget.page == 1
+
+
+def test_deferred_mode_execution_in_colab(mock_deferred_df, mock_df_deferred):
+    import sys
+
+    from bigframes.display.anywidget import TableWidget
+
+    mock_deferred_df.execute.return_value = mock_df_deferred
+
+    batches = mock.MagicMock()
+    batch_df = pd.DataFrame({"A": [1], "B": ["a"], "C": [1.0], "D": [True]})
+    batches.__iter__.return_value = iter([batch_df])
+    batches.total_rows = 1
+    mock_df_deferred.to_pandas_batches.return_value = batches
+
+    with (
+        mock.patch.dict(sys.modules, {"google.colab": mock.MagicMock()}),
+        bigframes.option_context("display.render_mode", "anywidget"),
+    ):
+        widget = TableWidget(mock_deferred_df)
+        widget.is_deferred_mode = True
+
+        widget.start_execution = True
+
+        thread = getattr(widget, "_execution_thread", None)
+        if thread is not None:
+            thread.join(timeout=5)
+
+        assert widget.is_deferred_mode is True
+        assert widget.table_html == ""
+
+        # Simulate frontend ping callback
+        widget.ping = 1
+
+        assert widget.is_deferred_mode is False
+        assert widget.table_html != ""

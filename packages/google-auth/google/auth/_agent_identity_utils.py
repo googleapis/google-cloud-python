@@ -16,15 +16,14 @@
 
 import base64
 import hashlib
-import logging
 import os
 import re
+import stat
 import time
 from urllib.parse import quote, urlparse
+import warnings
 
 from google.auth import environment_vars, exceptions
-
-_LOGGER = logging.getLogger(__name__)
 
 CRYPTOGRAPHY_NOT_FOUND_ERROR = (
     "The cryptography library is required for certificate-based authentication."
@@ -58,8 +57,20 @@ _POLLING_INTERVALS = ([_FAST_POLL_INTERVAL] * _FAST_POLL_CYCLES) + (
 
 
 def _is_certificate_file_ready(path):
-    """Checks if a file exists and is not empty."""
-    return path and os.path.exists(path) and os.path.getsize(path) > 0
+    """Checks if a file exists, is a regular file, and is not empty."""
+    if not path:
+        return False
+    try:
+        # Check if the path points to a regular file and is not empty.
+        # stat.S_ISREG is used instead of os.path.isfile to avoid swallowing
+        # PermissionError exceptions, which the caller needs to propagate.
+        st = os.stat(path)
+        return stat.S_ISREG(st.st_mode) and st.st_size > 0
+    except PermissionError:
+        # Propagate PermissionError to let caller handle it (fail-fast or fallback)
+        raise
+    except OSError:
+        return False
 
 
 def get_agent_identity_certificate_path():
@@ -141,13 +152,17 @@ def get_agent_identity_certificate_path():
 
             # Log a warning on the first failed attempt to load the certificate file
             if not has_logged_cert_warning:
-                _LOGGER.warning(
-                    "Certificate file not ready at %s. Retrying until startup timeout (up to %s seconds total)...",
-                    target_path,
-                    _TOTAL_TIMEOUT,
+                warnings.warn(
+                    f"Certificate file not ready at {target_path}. Retrying until startup timeout (up to {_TOTAL_TIMEOUT} seconds total)..."
                 )
                 has_logged_cert_warning = True
 
+        except PermissionError as e:
+            warnings.warn(
+                f"Permission denied when accessing certificate config or certificate file: {e}. "
+                "Token binding protection cannot be enabled. Falling back to unbound tokens."
+            )
+            return None
         except (IOError, ValueError, KeyError) as e:
             if cert_config_path and os.path.exists(cert_config_path):
                 # If the file exists but has invalid JSON or is unreadable,
@@ -155,12 +170,10 @@ def get_agent_identity_certificate_path():
                 return None
 
             if not has_logged_config_warning and cert_config_path:
-                _LOGGER.warning(
-                    "Certificate config file not found or incomplete: %s (from %s "
-                    "environment variable). Retrying until startup timeout (up to %s seconds total)...",
-                    e,
-                    environment_vars.GOOGLE_API_CERTIFICATE_CONFIG,
-                    _TOTAL_TIMEOUT,
+                warnings.warn(
+                    f"Certificate config file not found or incomplete: {e} (from "
+                    f"{environment_vars.GOOGLE_API_CERTIFICATE_CONFIG} environment variable). "
+                    f"Retrying until startup timeout (up to {_TOTAL_TIMEOUT} seconds total)..."
                 )
                 has_logged_config_warning = True
             pass
@@ -201,12 +214,26 @@ def get_and_parse_agent_identity_certificate():
     if is_opted_out:
         return None
 
+    # Respect explicit opt-out of mTLS / client certs
+    from google.auth.transport import _mtls_helper
+
+    env_override = _mtls_helper._check_use_client_cert_env()
+    if env_override is False:
+        return None
+
     cert_path = get_agent_identity_certificate_path()
     if not cert_path:
         return None
 
-    with open(cert_path, "rb") as cert_file:
-        cert_bytes = cert_file.read()
+    try:
+        with open(cert_path, "rb") as cert_file:
+            cert_bytes = cert_file.read()
+    except PermissionError as e:
+        warnings.warn(
+            f"Failed to read agent identity certificate file at {cert_path}: {e}. "
+            "Token binding protection cannot be enabled. Falling back to unbound tokens."
+        )
+        return None
 
     return parse_certificate(cert_bytes)
 
@@ -312,7 +339,17 @@ def should_request_bound_token(cert):
         ).lower()
         == "true"
     )
-    return is_agent_cert and is_opted_in
+    if not (is_agent_cert and is_opted_in):
+        return False
+
+    # Respect explicit opt-out of mTLS / client certs
+    from google.auth.transport import _mtls_helper
+
+    env_override = _mtls_helper._check_use_client_cert_env()
+    if env_override is False:
+        return False
+
+    return True
 
 
 def get_cached_cert_fingerprint(cached_cert):

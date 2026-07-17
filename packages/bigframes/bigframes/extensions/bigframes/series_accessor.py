@@ -20,41 +20,68 @@ from __future__ import annotations
 
 from typing import Optional, TypeVar, cast
 
-import bigframes.extensions.core.series_accessor as core_accessor
-import bigframes.series
-import bigframes.session
+from bigframes import dataframe, series, session
 from bigframes.core.logging import log_adapter
+from bigframes.extensions.core import series_accessor as core_accessor
 
-S = TypeVar("S", bound="bigframes.series.Series")
+T = TypeVar("T", bound="dataframe.DataFrame")
+S = TypeVar("S", bound="series.Series")
 
 
 @log_adapter.class_logger
-class BigframesBigQuerySeriesAccessor(core_accessor.BigQuerySeriesAccessor[S]):
+class BigframesBigQuerySeriesAccessor(core_accessor.BigQuerySeriesAccessor[T, S]):
     def __init__(self, bf_obj: S):
         super().__init__(bf_obj)
 
     def _bf_from_series(
-        self, session: Optional[bigframes.session.Session] = None
-    ) -> bigframes.series.Series:
+        self, session: Optional[session.Session] = None
+    ) -> series.Series:
         return self._obj
 
-    def _to_series(self, bf_series: bigframes.series.Series) -> S:
+    def _to_dataframe(self, bf_df: dataframe.DataFrame) -> T:
+        return cast(T, bf_df)
+
+    def _to_series(self, bf_series: series.Series) -> S:
         return cast(S, bf_series)
 
     @property
-    def aead(self) -> BigframesAeadSeriesAccessor[S]:
+    def ai(self) -> BigframesAiSeriesAccessor[T, S]:
+        return BigframesAiSeriesAccessor(self._obj)
+
+    @property
+    def aead(self) -> BigframesAeadSeriesAccessor[T, S]:
         return BigframesAeadSeriesAccessor(self._obj)
 
 
 @log_adapter.class_logger
-class BigframesAeadSeriesAccessor(core_accessor.AeadSeriesAccessor[S]):
+class BigframesAiSeriesAccessor(core_accessor.AiSeriesAccessor[T, S]):
     def __init__(self, bf_obj: S):
         super().__init__(bf_obj)
 
     def _bf_from_series(
-        self, session: Optional[bigframes.session.Session] = None
-    ) -> bigframes.series.Series:
+        self, session: Optional[session.Session] = None
+    ) -> series.Series:
         return self._obj
 
-    def _to_series(self, bf_series: bigframes.series.Series) -> S:
+    def _to_dataframe(self, bf_df: dataframe.DataFrame) -> T:
+        return cast(T, bf_df)
+
+    def _to_series(self, bf_series: series.Series) -> S:
+        return cast(S, bf_series)
+
+
+@log_adapter.class_logger
+class BigframesAeadSeriesAccessor(core_accessor.AeadSeriesAccessor[T, S]):
+    def __init__(self, bf_obj: S):
+        super().__init__(bf_obj)
+
+    def _bf_from_series(
+        self, session: Optional[session.Session] = None
+    ) -> series.Series:
+        return self._obj
+
+    def _to_dataframe(self, bf_df: dataframe.DataFrame) -> T:
+        return cast(T, bf_df)
+
+    def _to_series(self, bf_series: series.Series) -> S:
         return cast(S, bf_series)

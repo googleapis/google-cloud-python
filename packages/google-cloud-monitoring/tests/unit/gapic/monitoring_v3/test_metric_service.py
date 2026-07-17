@@ -1717,6 +1717,9 @@ def test_list_monitored_resource_descriptors_pager(transport_name: str = "grpc")
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -1812,6 +1815,8 @@ async def test_list_monitored_resource_descriptors_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -2633,6 +2638,9 @@ def test_list_metric_descriptors_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, metric_pb2.MetricDescriptor) for i in results)
@@ -2725,6 +2733,8 @@ async def test_list_metric_descriptors_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -4292,6 +4302,9 @@ def test_list_time_series_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, gm_metric.TimeSeries) for i in results)
@@ -4380,6 +4393,8 @@ async def test_list_time_series_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)

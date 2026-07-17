@@ -3374,6 +3374,9 @@ def test_list_rest_pager(transport: str = "rest"):
 
         pager = client.list(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, compute.Network) for i in results)
@@ -3656,6 +3659,9 @@ def test_list_peering_routes_rest_pager(transport: str = "rest"):
         sample_request = {"project": "sample1", "network": "sample2"}
 
         pager = client.list_peering_routes(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6

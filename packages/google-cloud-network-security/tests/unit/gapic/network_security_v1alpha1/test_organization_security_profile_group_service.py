@@ -1908,6 +1908,9 @@ def test_list_security_profile_groups_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -2002,6 +2005,8 @@ async def test_list_security_profile_groups_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -3932,6 +3937,9 @@ def test_list_security_profiles_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -4026,6 +4034,8 @@ async def test_list_security_profiles_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -5881,6 +5891,9 @@ def test_list_security_profile_groups_rest_pager(transport: str = "rest"):
 
         pager = client.list_security_profile_groups(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -6945,6 +6958,9 @@ def test_list_security_profiles_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "organizations/sample1/locations/sample2"}
 
         pager = client.list_security_profiles(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6

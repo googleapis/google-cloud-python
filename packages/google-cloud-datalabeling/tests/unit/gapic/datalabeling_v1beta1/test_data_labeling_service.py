@@ -2436,6 +2436,9 @@ def test_list_datasets_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, dataset.Dataset) for i in results)
@@ -2524,6 +2527,8 @@ async def test_list_datasets_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -4324,6 +4329,9 @@ def test_list_data_items_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, dataset.DataItem) for i in results)
@@ -4412,6 +4420,8 @@ async def test_list_data_items_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -5254,6 +5264,9 @@ def test_list_annotated_datasets_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, dataset.AnnotatedDataset) for i in results)
@@ -5346,6 +5359,8 @@ async def test_list_annotated_datasets_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -7447,6 +7462,9 @@ def test_list_examples_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, dataset.Example) for i in results)
@@ -7535,6 +7553,8 @@ async def test_list_examples_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -8732,6 +8752,9 @@ def test_list_annotation_spec_sets_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -8826,6 +8849,8 @@ async def test_list_annotation_spec_sets_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -10317,6 +10342,9 @@ def test_list_instructions_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, instruction.Instruction) for i in results)
@@ -10409,6 +10437,8 @@ async def test_list_instructions_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -11539,6 +11569,9 @@ def test_search_evaluations_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, evaluation.Evaluation) for i in results)
@@ -11631,6 +11664,8 @@ async def test_search_evaluations_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -12086,6 +12121,9 @@ def test_search_example_comparisons_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -12184,6 +12222,8 @@ async def test_search_example_comparisons_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -14772,6 +14812,9 @@ def test_list_evaluation_jobs_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, evaluation_job.EvaluationJob) for i in results)
@@ -14864,6 +14907,8 @@ async def test_list_evaluation_jobs_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)

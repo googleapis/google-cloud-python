@@ -22,6 +22,28 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+"google.cloud.eventarc_v1.services.eventarc",
+"google.cloud.eventarc_v1.types.channel",
+"google.cloud.eventarc_v1.types.channel_connection",
+"google.cloud.eventarc_v1.types.discovery",
+"google.cloud.eventarc_v1.types.enrollment",
+"google.cloud.eventarc_v1.types.eventarc",
+"google.cloud.eventarc_v1.types.google_api_source",
+"google.cloud.eventarc_v1.types.google_channel_config",
+"google.cloud.eventarc_v1.types.logging_config",
+"google.cloud.eventarc_v1.types.message_bus",
+"google.cloud.eventarc_v1.types.network_config",
+"google.cloud.eventarc_v1.types.pipeline",
+"google.cloud.eventarc_v1.types.trigger",
+}
+
 
 from .services.eventarc import EventarcClient
 from .services.eventarc import EventarcAsyncClient

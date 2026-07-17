@@ -4019,25 +4019,28 @@ def test_timestamp_astype_string(session):
 
 @pytest.mark.parametrize("errors", ["raise", "null"])
 def test_float_astype_json(errors, session):
-    data = ["1.25", "2500000000", None, "-12323.24"]
+    data = ["1.25", "2500000000.1", None, "-12323.24"]
     bf_series = series.Series(data, dtype=dtypes.FLOAT_DTYPE, session=session)
 
     bf_result = bf_series.astype(dtypes.JSON_DTYPE, errors=errors)
     assert bf_result.dtype == dtypes.JSON_DTYPE
+    bf_result_pandas = bf_result.to_pandas()
 
-    expected_result = pd.Series(data, dtype=dtypes.JSON_DTYPE)
+    expected_data = [float(x) if x is not None else None for x in data]
+    expected_result = pd.Series(expected_data, dtype=dtypes.JSON_DTYPE)
     expected_result.index = expected_result.index.astype("Int64")
-    bigframes.testing.utils.assert_series_equal(bf_result.to_pandas(), expected_result)
+    bigframes.testing.utils.assert_series_equal(bf_result_pandas, expected_result)
 
 
 def test_float_astype_json_str(session):
-    data = ["1.25", "2500000000", None, "-12323.24"]
+    data = ["1.25", "2500000000.1", None, "-12323.24"]
     bf_series = series.Series(data, dtype=dtypes.FLOAT_DTYPE, session=session)
 
     bf_result = bf_series.astype("json")
     assert bf_result.dtype == dtypes.JSON_DTYPE
 
-    expected_result = pd.Series(data, dtype=dtypes.JSON_DTYPE)
+    expected_data = [float(x) if x is not None else None for x in data]
+    expected_result = pd.Series(expected_data, dtype=dtypes.JSON_DTYPE)
     expected_result.index = expected_result.index.astype("Int64")
     bigframes.testing.utils.assert_series_equal(bf_result.to_pandas(), expected_result)
 

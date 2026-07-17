@@ -1,65 +1,48 @@
 # TableWidgetAngular
 
+This project is the Angular-based interactive Table Widget frontend for BigQuery DataFrames (``bigframes``). It is integrated into the Python backend using ``anywidget``.
+
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.9.
 
-## Development server
+## Getting Started
 
-To start a local development server, run:
+Ensure you have [Node.js](https://nodejs.org/) installed.
 
+1. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+2. Start the local development server:
+   ```bash
+   npm run start
+   ```
+   Navigate to `http://localhost:4200/`. The application will automatically reload when you modify the source files under `src/`.
+
+## Development & Code Scaffolding
+
+To generate a new component, directive, or service:
 ```bash
-npm start
-# or
-npx ng serve
-```
-
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-npx ng generate component component-name
+ng generate component component-name
 ```
 
 For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
 ```bash
-npx ng generate --help
+ng generate --help
 ```
 
-## Building
+## Running Tests
 
-To build the project run:
-
-```bash
-npm run build
-# or
-npx ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
+To execute unit tests:
 ```bash
 npm run test
-# or
-npx ng test
 ```
 
-## Running end-to-end tests
+## Packaging for Python
 
-For end-to-end (e2e) testing, run:
-
+Before testing the widget inside a Jupyter notebook or committing changes, compile the Angular app and bundle it so that the Python backend can load it:
 ```bash
-npx ng e2e
+npm run build:widget
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+This command compiles the project in production mode and then triggers `bundle.js` (via `esbuild`) to bundle the browser artifacts into a single unified ES module file at `../table_widget_angular.js`.

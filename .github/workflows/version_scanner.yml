@@ -18,10 +18,12 @@ jobs:
     name: Version Scan
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+        with:
+          persist-credentials: false
       
       - name: Set up Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
         with:
           python-version: '3.14'
           
@@ -35,11 +37,11 @@ jobs:
           # Uses -o to output a detailed, raw CSV to a file
           # Uses --stdout to print a slim, easier to parse summary to the GitHub Actions UI
           # Uses --soft-fail to temporarily limit causing CI/CD failures during the migration to full operation. 
-          python scripts/version_scanner/version_scanner.py -d python -v 3.7 --stdout -o version_scanner_output.csv --soft-fail
+          python scripts/version_scanner/version_scanner.py --matrix-file scripts/version_scanner/matrix.yaml --package-file scripts/version_scanner/example-list-non-generated-packages.txt --stdout -o version_scanner_output.csv --soft-fail
           
       - name: Upload CSV Results
         if: always()
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
           name: version-scanner-results
           path: version_scanner_output.csv

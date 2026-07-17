@@ -1809,6 +1809,9 @@ def test_list_connectivity_tests_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, connectivity_test.ConnectivityTest) for i in results)
@@ -1901,6 +1904,8 @@ async def test_list_connectivity_tests_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -3919,6 +3924,9 @@ def test_list_connectivity_tests_rest_pager(transport: str = "rest"):
 
         pager = client.list_connectivity_tests(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, connectivity_test.ConnectivityTest) for i in results)
@@ -5600,12 +5608,14 @@ def test_create_connectivity_test_rest_call_success(request_type):
             "redis_instance": "redis_instance_value",
             "redis_cluster": "redis_cluster_value",
             "gke_pod": "gke_pod_value",
+            "dms_private_connection": "dms_private_connection_value",
             "cloud_function": {"uri": "uri_value"},
             "app_engine_version": {"uri": "uri_value"},
             "cloud_run_revision": {
                 "uri": "uri_value",
                 "service_uri": "service_uri_value",
             },
+            "cloud_run_job": "cloud_run_job_value",
             "network": "network_value",
             "network_type": 1,
             "project_id": "project_id_value",
@@ -5910,6 +5920,11 @@ def test_create_connectivity_test_rest_call_success(request_type):
                                 "location": "location_value",
                                 "service_uri": "service_uri_value",
                             },
+                            "cloud_run_job": {
+                                "display_name": "display_name_value",
+                                "uri": "uri_value",
+                                "location": "location_value",
+                            },
                             "nat": {
                                 "type_": 1,
                                 "protocol": "protocol_value",
@@ -5956,6 +5971,7 @@ def test_create_connectivity_test_rest_call_success(request_type):
                             "ngfw_packet_inspection": {
                                 "security_profile_group_uri": "security_profile_group_uri_value"
                             },
+                            "dms_private_connection": {"uri": "uri_value"},
                         }
                     ],
                     "forward_trace_id": 1679,
@@ -6212,12 +6228,14 @@ def test_update_connectivity_test_rest_call_success(request_type):
             "redis_instance": "redis_instance_value",
             "redis_cluster": "redis_cluster_value",
             "gke_pod": "gke_pod_value",
+            "dms_private_connection": "dms_private_connection_value",
             "cloud_function": {"uri": "uri_value"},
             "app_engine_version": {"uri": "uri_value"},
             "cloud_run_revision": {
                 "uri": "uri_value",
                 "service_uri": "service_uri_value",
             },
+            "cloud_run_job": "cloud_run_job_value",
             "network": "network_value",
             "network_type": 1,
             "project_id": "project_id_value",
@@ -6522,6 +6540,11 @@ def test_update_connectivity_test_rest_call_success(request_type):
                                 "location": "location_value",
                                 "service_uri": "service_uri_value",
                             },
+                            "cloud_run_job": {
+                                "display_name": "display_name_value",
+                                "uri": "uri_value",
+                                "location": "location_value",
+                            },
                             "nat": {
                                 "type_": 1,
                                 "protocol": "protocol_value",
@@ -6568,6 +6591,7 @@ def test_update_connectivity_test_rest_call_success(request_type):
                             "ngfw_packet_inspection": {
                                 "security_profile_group_uri": "security_profile_group_uri_value"
                             },
+                            "dms_private_connection": {"uri": "uri_value"},
                         }
                     ],
                     "forward_trace_id": 1679,

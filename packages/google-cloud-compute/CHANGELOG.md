@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-compute/#history
 
+## [1.50.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-compute-v1.49.0...google-cloud-compute-v1.50.0) (2026-07-16)
+
+
+### Features
+
+* update googleapis and regenerate ([#17725](https://github.com/googleapis/google-cloud-python/issues/17725)) ([35e16da](https://github.com/googleapis/google-cloud-python/commit/35e16daf25480d66e9fc3443fe485ae2b0241ae3))
+
+## [1.49.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-compute-v1.48.0...google-cloud-compute-v1.49.0) (2026-06-25)
+
+
+### Features
+
+* regenerate google-cloud-compute ([#17576](https://github.com/googleapis/google-cloud-python/issues/17576)) ([140d86f](https://github.com/googleapis/google-cloud-python/commit/140d86fe6181a4d6f831df8cdc7d86facf8ebe00))
+
 ## [1.48.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-compute-v1.47.0...google-cloud-compute-v1.48.0) (2026-06-02)
 
 

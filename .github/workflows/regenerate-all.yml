@@ -18,9 +18,11 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+        with:
+          persist-credentials: false
 
-      - uses: googleapis/librarian@main
+      - uses: googleapis/librarian@main # zizmor: ignore[unpinned-uses]
         with:
           protoc-version: "25.3"
           protoc-checksum: "5ec3474ca09df0511bb2ca66b5ca091fa8943c30aa26285f225d0b1ba60b5665b3419be4cd2322decbb55464039ca0a0405a47e86bcc11491589405d615d280e"
@@ -43,44 +45,28 @@ jobs:
         run: |
           PATH=$PATH:/tmp/pandoc/bin
           librarian generate -all -v
-          git diff --exit-code
 
-      - name: Create issue on diff
-        if: failure()
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Check for generated code changes
         run: |
           if [ -n "$(git status --porcelain)" ]; then
-            TITLE="Regeneration check found diff"
-            RUN_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-            DIFF_STAT=$(git diff --stat)
-            BODY="The post-submit [regeneration check]($RUN_URL) found a diff.
-
-            Diff summary:
-            \`\`\`
-            $DIFF_STAT
-            \`\`\`"
-
-            EXISTING_ISSUE=$(gh issue list --state open --search "in:title \"$TITLE\"" --json number --jq '.[0].number')
-            if [ -z "$EXISTING_ISSUE" ]; then
-              gh issue create --title "$TITLE" --body "$BODY"
-            else
-              echo "Issue #$EXISTING_ISSUE already exists, adding a comment."
-              gh issue comment "$EXISTING_ISSUE" --body "Another failure with diff occurred: $RUN_URL"
-            fi
+            git status
+            echo "==================== GIT DIFF ===================="
+            git diff
+            echo "=================================================="
+            echo "Regeneration produced code changes! Please run 'librarian generate -all -v' to update the generated files."
+            exit 1
           fi
-      - name: Create issue on generation failure
-        if: failure()
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          TITLE="Regeneration failed"
-          RUN_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-          BODY="The post-submit [regeneration check]($RUN_URL) failed."
-          EXISTING_ISSUE=$(gh issue list --state open --search "in:title \"$TITLE\"" --json number --jq '.[0].number')
-          if [ -z "$EXISTING_ISSUE" ]; then
-            gh issue create --title "$TITLE" --body "$BODY"
-          else
-            echo "Issue #$EXISTING_ISSUE already exists, adding a comment."
-            gh issue comment "$EXISTING_ISSUE" --body "Another regeneration failure occurred: $RUN_URL"
-          fi
+
+      - name: Create issue if previous step fails
+        if: ${{ failure() }}
+        uses: googleapis/librarian/.github/actions/create-issue-on-failure@main # zizmor: ignore[unpinned-uses]
+        with:
+          title: "Regeneration failed"
+          body: |
+            The post-submit [regeneration check](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) failed.
+
+            Please investigate the failure. To keep the `main` branch healthy, please consider **reverting the triggering change** first. 
+            
+            You can identify the cause from the workflow logs:
+            - If the step 'Check for generated code changes' failed, there are pending code changes that need to be committed.
+            - If the step 'Regenerate' failed, the generation script itself encountered an error.

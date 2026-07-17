@@ -25,6 +25,9 @@ from importlib import metadata
 
 from .services.security_center import SecurityCenterAsyncClient, SecurityCenterClient
 from .types.access import Access, Geolocation, ServiceAccountDelegationInfo
+from .types.agent import Agent
+from .types.agent_anomaly import AgentAnomaly, DetectorReference, InvocationReference
+from .types.agent_session import AgentSession
 from .types.application import Application
 from .types.asset import Asset
 from .types.attack_exposure import AttackExposure
@@ -222,7 +225,7 @@ else:  # pragma: NO COVER
 
         def parse_version_to_tuple(version_string: str):
             """Safely converts a semantic version string to a comparable tuple of integers.
-            Example: "4.25.8" -> (4, 25, 8)
+            Example: "6.33.5" -> (6, 33, 5)
             Ignores non-numeric parts and handles common version formats.
             Args:
                 version_string: Version string in the format "x.y.z" or "x.y.z<suffix>"
@@ -251,9 +254,9 @@ else:  # pragma: NO COVER
                 return (None, "--")
 
         _dependency_package = "google.protobuf"
-        _next_supported_version = "4.25.8"
-        _next_supported_version_tuple = (4, 25, 8)
-        _recommendation = " (we recommend 6.x)"
+        _next_supported_version = "6.33.5"
+        _next_supported_version_tuple = (6, 33, 5)
+        _recommendation = " (we recommend 7.x)"
         (_version_used, _version_used_string) = _get_version(_dependency_package)
         if _version_used and _version_used < _next_supported_version_tuple:
             warnings.warn(
@@ -284,6 +287,9 @@ __all__ = (
     "SecurityCenterAsyncClient",
     "Access",
     "AdaptiveProtection",
+    "Agent",
+    "AgentAnomaly",
+    "AgentSession",
     "Application",
     "Asset",
     "Attack",
@@ -328,6 +334,7 @@ __all__ = (
     "DeleteNotificationConfigRequest",
     "DeleteResourceValueConfigRequest",
     "DeleteSecurityHealthAnalyticsCustomModuleRequest",
+    "DetectorReference",
     "EffectiveEventThreatDetectionCustomModule",
     "EffectiveSecurityHealthAnalyticsCustomModule",
     "EnvironmentVariable",
@@ -361,6 +368,7 @@ __all__ = (
     "IamBinding",
     "Indicator",
     "InfoType",
+    "InvocationReference",
     "KernelRootkit",
     "Kubernetes",
     "Label",

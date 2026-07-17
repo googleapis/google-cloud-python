@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import datetime
+import logging
 from unittest import mock
 
 import pytest  # type: ignore
@@ -22,6 +23,23 @@ from google.auth import _helpers
 from google.auth import _regional_access_boundary_utils
 from google.auth import credentials
 from google.oauth2 import credentials as oauth2_credentials
+
+
+@pytest.fixture
+def rab_caplog(caplog):
+    """Fixture to configure logging capture and ensure propagation for RAB utilities."""
+
+    caplog.set_level(
+        logging.DEBUG, logger="google.auth._regional_access_boundary_utils"
+    )
+
+    google_logger = logging.getLogger("google")
+    original_propagate = google_logger.propagate
+    google_logger.propagate = True
+    try:
+        yield caplog
+    finally:
+        google_logger.propagate = original_propagate
 
 
 class CredentialsImpl(credentials.CredentialsWithRegionalAccessBoundary):
@@ -379,7 +397,7 @@ class TestCredentialsWithRegionalAccessBoundary(object):
         assert rab_manager._data.cooldown_expiry is None
 
     @mock.patch.object(CredentialsImpl, "_lookup_regional_access_boundary")
-    def test_lookup_regional_access_boundary_failure(self, mock_lookup_rab):
+    def test_lookup_regional_access_boundary_failure(self, mock_lookup_rab, rab_caplog):
         creds = CredentialsImpl()
         request = mock.Mock()
         rab_manager = _regional_access_boundary_utils._RegionalAccessBoundaryManager()
@@ -395,6 +413,13 @@ class TestCredentialsWithRegionalAccessBoundary(object):
         assert rab_manager._data.encoded_locations is None
         assert rab_manager._data.expiry is None
         assert rab_manager._data.cooldown_expiry is not None
+
+        # RAB failures should be logged at DEBUG level.
+        assert any(
+            t[1] == logging.DEBUG
+            and "Regional Access Boundary lookup failed. Entering cooldown." in t[2]
+            for t in rab_caplog.record_tuples
+        )
 
     def test_lookup_regional_access_boundary_null_url(self):
         creds = oauth2_credentials.Credentials(token="token")
@@ -441,7 +466,9 @@ class TestCredentialsWithRegionalAccessBoundary(object):
         assert rab_manager._data.cooldown_expiry is None
 
     @mock.patch("google.auth._helpers.utcnow")
-    def test_regional_access_boundary_refresh_thread_run_failure(self, mock_utcnow):
+    def test_regional_access_boundary_refresh_thread_run_failure(
+        self, mock_utcnow, rab_caplog
+    ):
         mock_now = datetime.datetime(2025, 1, 1, 12, 0, 0)
         mock_utcnow.return_value = mock_now
 
@@ -465,6 +492,19 @@ class TestCredentialsWithRegionalAccessBoundary(object):
         expected_cooldown_expiry = mock_now + initial_cooldown
         assert rab_manager._data.cooldown_expiry == expected_cooldown_expiry
         assert rab_manager._data.cooldown_duration == initial_cooldown * 2
+
+        # RAB failures should be logged at DEBUG level.
+        assert any(
+            t[1] == logging.DEBUG
+            and "Asynchronous Regional Access Boundary lookup raised an exception"
+            in t[2]
+            for t in rab_caplog.record_tuples
+        )
+        assert any(
+            t[1] == logging.DEBUG
+            and "Regional Access Boundary lookup failed. Entering cooldown." in t[2]
+            for t in rab_caplog.record_tuples
+        )
 
     @mock.patch("google.auth._helpers.utcnow")
     def test_regional_access_boundary_refresh_thread_run_failure_hard_expiry(

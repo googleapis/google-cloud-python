@@ -1803,6 +1803,9 @@ def test_list_conversation_profiles_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -1897,6 +1900,8 @@ async def test_list_conversation_profiles_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -4420,6 +4425,9 @@ def test_list_conversation_profiles_rest_pager(transport: str = "rest"):
 
         pager = client.list_conversation_profiles(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -6427,6 +6435,8 @@ def test_create_conversation_profile_rest_call_success(request_type):
                                 {"category": 1, "sensitivity_level": 1}
                             ]
                         },
+                        "suggestion_trigger_event": 1,
+                        "disable_query_search_context": True,
                         "suggestion_trigger_settings": {
                             "no_smalltalk": True,
                             "only_end_user": True,
@@ -6500,6 +6510,18 @@ def test_create_conversation_profile_rest_call_success(request_type):
             "use_timeout_based_endpointing": True,
         },
         "language_code": "language_code_value",
+        "sip_config": {
+            "create_conversation_on_the_fly": True,
+            "inactive_start": True,
+            "max_audio_recording_duration": {},
+            "allow_virtual_agent_interaction": True,
+            "keep_conversation_running": True,
+            "copy_inbound_call_leg_headers": [
+                "copy_inbound_call_leg_headers_value1",
+                "copy_inbound_call_leg_headers_value2",
+            ],
+            "ignore_reinvite_media_direction": True,
+        },
         "time_zone": "time_zone_value",
         "security_settings": "security_settings_value",
         "tts_config": {
@@ -6771,6 +6793,8 @@ def test_update_conversation_profile_rest_call_success(request_type):
                                 {"category": 1, "sensitivity_level": 1}
                             ]
                         },
+                        "suggestion_trigger_event": 1,
+                        "disable_query_search_context": True,
                         "suggestion_trigger_settings": {
                             "no_smalltalk": True,
                             "only_end_user": True,
@@ -6844,6 +6868,18 @@ def test_update_conversation_profile_rest_call_success(request_type):
             "use_timeout_based_endpointing": True,
         },
         "language_code": "language_code_value",
+        "sip_config": {
+            "create_conversation_on_the_fly": True,
+            "inactive_start": True,
+            "max_audio_recording_duration": {},
+            "allow_virtual_agent_interaction": True,
+            "keep_conversation_running": True,
+            "copy_inbound_call_leg_headers": [
+                "copy_inbound_call_leg_headers_value1",
+                "copy_inbound_call_leg_headers_value2",
+            ],
+            "ignore_reinvite_media_direction": True,
+        },
         "time_zone": "time_zone_value",
         "security_settings": "security_settings_value",
         "tts_config": {

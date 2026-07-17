@@ -39,12 +39,12 @@ Or asynchronously using callbacks and :meth:`Operation.add_done_callback`:
 import functools
 import threading
 
-from google.api_core import exceptions
-from google.api_core import protobuf_helpers
-from google.api_core.future import polling
 from google.longrunning import operations_pb2
 from google.protobuf import json_format
 from google.rpc import code_pb2
+
+from google.api_core import exceptions, protobuf_helpers
+from google.api_core.future import polling
 
 
 class Operation(polling.PollingFuture):

@@ -2790,6 +2790,9 @@ def test_list_entry_types_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, catalog.EntryType) for i in results)
@@ -2878,6 +2881,8 @@ async def test_list_entry_types_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -4748,6 +4753,9 @@ def test_list_aspect_types_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, catalog.AspectType) for i in results)
@@ -4840,6 +4848,8 @@ async def test_list_aspect_types_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -6714,6 +6724,9 @@ def test_list_entry_groups_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, catalog.EntryGroup) for i in results)
@@ -6806,6 +6819,8 @@ async def test_list_entry_groups_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -8602,6 +8617,9 @@ def test_list_entries_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, catalog.Entry) for i in results)
@@ -8690,6 +8708,8 @@ async def test_list_entries_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -9978,6 +9998,9 @@ def test_search_entries_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, catalog.SearchEntriesResult) for i in results)
@@ -10066,6 +10089,8 @@ async def test_search_entries_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -11220,6 +11245,9 @@ def test_list_metadata_jobs_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, catalog.MetadataJob) for i in results)
@@ -11312,6 +11340,8 @@ async def test_list_metadata_jobs_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -13046,6 +13076,9 @@ def test_lookup_entry_links_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, catalog.EntryLink) for i in results)
@@ -13138,6 +13171,8 @@ async def test_lookup_entry_links_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -14879,6 +14914,9 @@ def test_list_metadata_feeds_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, catalog.MetadataFeed) for i in results)
@@ -14971,6 +15009,8 @@ async def test_list_metadata_feeds_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -16578,6 +16618,9 @@ def test_list_entry_types_rest_pager(transport: str = "rest"):
 
         pager = client.list_entry_types(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, catalog.EntryType) for i in results)
@@ -17622,6 +17665,9 @@ def test_list_aspect_types_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/locations/sample2"}
 
         pager = client.list_aspect_types(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -18671,6 +18717,9 @@ def test_list_entry_groups_rest_pager(transport: str = "rest"):
 
         pager = client.list_entry_groups(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, catalog.EntryGroup) for i in results)
@@ -19691,6 +19740,9 @@ def test_list_entries_rest_pager(transport: str = "rest"):
 
         pager = client.list_entries(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, catalog.Entry) for i in results)
@@ -20448,6 +20500,9 @@ def test_search_entries_rest_pager(transport: str = "rest"):
 
         pager = client.search_entries(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, catalog.SearchEntriesResult) for i in results)
@@ -21097,6 +21152,9 @@ def test_list_metadata_jobs_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/locations/sample2"}
 
         pager = client.list_metadata_jobs(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -22090,6 +22148,9 @@ def test_lookup_entry_links_rest_pager(transport: str = "rest"):
 
         pager = client.lookup_entry_links(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, catalog.EntryLink) for i in results)
@@ -23048,6 +23109,9 @@ def test_list_metadata_feeds_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/locations/sample2"}
 
         pager = client.list_metadata_feeds(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6

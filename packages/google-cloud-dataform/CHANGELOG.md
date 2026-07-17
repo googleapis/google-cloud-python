@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-dataform/#history
 
+## [0.11.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataform-v0.11.1...google-cloud-dataform-v0.11.2) (2026-07-07)
+
+
+### Features
+
+* update googleapis and regenerate ([#17635](https://github.com/googleapis/google-cloud-python/issues/17635)) ([9638879](https://github.com/googleapis/google-cloud-python/commit/96388796440b226440f885c04ce565782b1d9190))
+
+## [0.11.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataform-v0.11.0...google-cloud-dataform-v0.11.1) (2026-06-25)
+
+
+### Features
+
+* update googleapis and regenerate ([#17554](https://github.com/googleapis/google-cloud-python/issues/17554)) ([03d0574](https://github.com/googleapis/google-cloud-python/commit/03d0574da8485e918f16e90666928f5c7b7f1c92))
+
 ## [0.11.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataform-v0.10.0...google-cloud-dataform-v0.11.0) (2026-06-02)
 
 

@@ -26,6 +26,7 @@ import bigframes.dataframe
 import bigframes.session.execution_spec
 import bigframes.session.executor
 import bigframes.session.metrics
+from bigframes.functions import _utils, function, udf_def
 
 
 # Does not support to_sql, dry_run, peek, cached
@@ -110,6 +111,29 @@ class TestSession(bigframes.session.Session):
             return bf_df.index
 
         return bf_df
+
+    def udf(
+        self,
+        *,
+        input_types=None,
+        output_type=None,
+        **kwargs,
+    ):
+        def wrapper(func):
+            udf_sig = _utils.get_func_signature(
+                func,
+                input_types,
+                output_type,
+            )
+
+            code_def = udf_def.CodeDef.from_func(func)
+            udf_definition = udf_def.PythonUdf(
+                signature=udf_sig,
+                code=code_def,
+            )
+            return function.UdfRoutine(func=func, _udf_def=udf_definition)
+
+        return wrapper
 
     @property
     def bqclient(self):

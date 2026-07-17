@@ -1789,6 +1789,9 @@ def test_list_local_inventories_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, localinventory.LocalInventory) for i in results)
@@ -1881,6 +1884,8 @@ async def test_list_local_inventories_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -2792,6 +2797,9 @@ def test_list_local_inventories_rest_pager(transport: str = "rest"):
 
         pager = client.list_local_inventories(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, localinventory.LocalInventory) for i in results)
@@ -3586,6 +3594,7 @@ def test_insert_local_inventory_rest_call_success(request_type):
             "pickup_method": 1,
             "pickup_sla": 1,
             "instore_product_location": "instore_product_location_value",
+            "local_shipping_label": "local_shipping_label_value",
             "loyalty_programs": [
                 {
                     "program_label": "program_label_value",
@@ -3596,6 +3605,9 @@ def test_insert_local_inventory_rest_call_success(request_type):
                     "member_price_effective_interval": {},
                     "shipping_label": "shipping_label_value",
                 }
+            ],
+            "custom_attributes": [
+                {"name": "name_value", "value": "value_value", "group_values": {}}
             ],
         },
     }

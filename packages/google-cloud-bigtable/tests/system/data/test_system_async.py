@@ -68,7 +68,7 @@ class TempRowBuilderAsync:
         elif isinstance(value, int):
             value = value.to_bytes(8, byteorder="big", signed=True)
         request = {
-            "table_name": self.target.table_name,
+            **self.target._request_path,
             "row_key": row_key,
             "mutations": [
                 {
@@ -88,7 +88,7 @@ class TempRowBuilderAsync:
         self, row_key, *, family=TEST_AGGREGATE_FAMILY, qualifier=b"q", input=0
     ):
         request = {
-            "table_name": self.target.table_name,
+            **self.target._request_path,
             "row_key": row_key,
             "mutations": [
                 {
@@ -107,14 +107,44 @@ class TempRowBuilderAsync:
     @CrossSync.convert
     async def delete_rows(self):
         if self.rows:
-            request = {
-                "table_name": self.target.table_name,
-                "entries": [
-                    {"row_key": row, "mutations": [{"delete_from_row": {}}]}
-                    for row in self.rows
-                ],
-            }
-            await self.target.client._gapic_client.mutate_rows(request)
+            # Chunk deletions to 5,000 rows. While Bigtable officially supports up to
+            # 100,000 mutations per MutateRows RPC, sending massive batches may hit
+            # the default gRPC 4MB client payload size limit due to metadata
+            # serialization overhead. Keeping chunks at 5,000 ensures we stay safely
+            # under 4MB and minimizes transient network timeouts on live connections.
+            chunk_size = 5000
+            rows_list = list(self.rows)
+
+            # Check if the test target is an Authorized View
+            is_authorized_view = "authorized_view_name" in self.target._request_path
+
+            if is_authorized_view:
+                # For Authorized Views, we cannot use delete_from_row because it attempts
+                # to delete families outside the view's scope. We must delete explicitly
+                # from the allowed families we wrote to.
+                mutations = [
+                    {"delete_from_family": {"family_name": TEST_FAMILY}},
+                    {"delete_from_family": {"family_name": TEST_AGGREGATE_FAMILY}},
+                ]
+            else:
+                mutations = [{"delete_from_row": {}}]
+
+            for i in range(0, len(rows_list), chunk_size):
+                chunk = rows_list[i : i + chunk_size]
+                request = {
+                    **self.target._request_path,
+                    "entries": [
+                        {"row_key": row, "mutations": mutations} for row in chunk
+                    ],
+                }
+                # Await and consume the gRPC stream to guarantee execution
+                stream = await self.target.client._gapic_client.mutate_rows(request)
+                async for response in stream:
+                    for entry in response.entries:
+                        if entry.status.code != 0:
+                            raise RuntimeError(
+                                f"Failed to delete row: {entry.status.message}"
+                            )
 
     @CrossSync.convert
     async def retrieve_cell_value(self, target, row_key):
@@ -1148,6 +1178,41 @@ class TestSystemAsync(SystemTestRunner):
         row_list = await target.read_rows(query)
         assert len(row_list) == bool(expect_match), (
             f"row {type(cell_value)}({cell_value}) not found with {type(filter_input)}({filter_input}) filter"
+        )
+
+    @pytest.mark.usefixtures("target")
+    @CrossSync.Retry(
+        predicate=retry.if_exception_type(ClientError), initial=1, maximum=5
+    )
+    @pytest.mark.parametrize(
+        "cell_value,mask,expect_match",
+        [
+            (b"\x01\x02\x03", b"\x01\x02\x03", True),
+            (b"\x01\x02\x03", b"\x01\x00\x00", True),
+            (b"\x00\x02\x03", b"\x01\x00\x00", False),
+        ],
+    )
+    @pytest.mark.skipif(
+        bool(os.environ.get(BIGTABLE_EMULATOR)),
+        reason="value_bitmask_filter not supported by emulator",
+    )
+    @CrossSync.pytest
+    async def test_value_bitmask_filter(
+        self, target, temp_rows, cell_value, mask, expect_match
+    ):
+        """
+        ValueBitmaskFilter matches cells where (value & mask) == mask.
+        Make sure inputs are properly interpreted by the server.
+        """
+        from google.cloud.bigtable.data import ReadRowsQuery
+        from google.cloud.bigtable.data.row_filters import ValueBitmaskFilter
+
+        f = ValueBitmaskFilter(mask)
+        await temp_rows.add_row(b"row_key_1", value=cell_value)
+        query = ReadRowsQuery(row_keys=[b"row_key_1"], row_filter=f)
+        row_list = await target.read_rows(query)
+        assert len(row_list) == bool(expect_match), (
+            f"row {cell_value!r} not matched as {expect_match} with {mask!r} bitmask filter"
         )
 
     @pytest.mark.skipif(

@@ -2367,6 +2367,9 @@ def test_list_generators_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, generator.Generator) for i in results)
@@ -2455,6 +2458,8 @@ async def test_list_generators_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -3782,6 +3787,9 @@ def test_list_generators_rest_pager(transport: str = "rest"):
 
         pager = client.list_generators(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, generator.Generator) for i in results)
@@ -4692,7 +4700,14 @@ def test_create_generator_rest_call_success(request_type):
         "ces_tool_specs": [
             {"ces_tool": "ces_tool_value", "confirmation_requirement": 1}
         ],
-        "ces_app_specs": [{"ces_app": "ces_app_value", "confirmation_requirement": 1}],
+        "ces_app_specs": [
+            {
+                "ces_app": "ces_app_value",
+                "confirmation_requirement": 1,
+                "proactive_enabled": True,
+                "reactive_enabled": True,
+            }
+        ],
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -5414,7 +5429,14 @@ def test_update_generator_rest_call_success(request_type):
         "ces_tool_specs": [
             {"ces_tool": "ces_tool_value", "confirmation_requirement": 1}
         ],
-        "ces_app_specs": [{"ces_app": "ces_app_value", "confirmation_requirement": 1}],
+        "ces_app_specs": [
+            {
+                "ces_app": "ces_app_value",
+                "confirmation_requirement": 1,
+                "proactive_enabled": True,
+                "reactive_enabled": True,
+            }
+        ],
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency

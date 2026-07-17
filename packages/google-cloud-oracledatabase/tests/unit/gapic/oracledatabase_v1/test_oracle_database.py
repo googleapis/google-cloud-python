@@ -1798,6 +1798,9 @@ def test_list_cloud_exadata_infrastructures_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -1892,6 +1895,8 @@ async def test_list_cloud_exadata_infrastructures_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -3039,6 +3044,374 @@ async def test_delete_cloud_exadata_infrastructure_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
+        exadata_infra.ConfigureExascaleCloudExadataInfrastructureRequest(),
+        {},
+    ],
+)
+def test_configure_exascale_cloud_exadata_infrastructure(
+    request_type, transport: str = "grpc"
+):
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.configure_exascale_cloud_exadata_infrastructure),
+        "__call__",
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.configure_exascale_cloud_exadata_infrastructure(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = exadata_infra.ConfigureExascaleCloudExadataInfrastructureRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_configure_exascale_cloud_exadata_infrastructure_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = exadata_infra.ConfigureExascaleCloudExadataInfrastructureRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.configure_exascale_cloud_exadata_infrastructure),
+        "__call__",
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.configure_exascale_cloud_exadata_infrastructure(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = exadata_infra.ConfigureExascaleCloudExadataInfrastructureRequest(
+            name="name_value",
+        )
+        assert args[0] == request_msg
+
+
+def test_configure_exascale_cloud_exadata_infrastructure_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = OracleDatabaseClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.configure_exascale_cloud_exadata_infrastructure
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.configure_exascale_cloud_exadata_infrastructure
+        ] = mock_rpc
+        request = {}
+        client.configure_exascale_cloud_exadata_infrastructure(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.configure_exascale_cloud_exadata_infrastructure(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_configure_exascale_cloud_exadata_infrastructure_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = OracleDatabaseAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.configure_exascale_cloud_exadata_infrastructure
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.configure_exascale_cloud_exadata_infrastructure
+        ] = mock_rpc
+
+        request = {}
+        await client.configure_exascale_cloud_exadata_infrastructure(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        await client.configure_exascale_cloud_exadata_infrastructure(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        exadata_infra.ConfigureExascaleCloudExadataInfrastructureRequest(),
+        {},
+    ],
+)
+async def test_configure_exascale_cloud_exadata_infrastructure_async(
+    request_type, transport: str = "grpc_asyncio"
+):
+    client = OracleDatabaseAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.configure_exascale_cloud_exadata_infrastructure),
+        "__call__",
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.configure_exascale_cloud_exadata_infrastructure(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = exadata_infra.ConfigureExascaleCloudExadataInfrastructureRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_configure_exascale_cloud_exadata_infrastructure_field_headers():
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = exadata_infra.ConfigureExascaleCloudExadataInfrastructureRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.configure_exascale_cloud_exadata_infrastructure),
+        "__call__",
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.configure_exascale_cloud_exadata_infrastructure(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_configure_exascale_cloud_exadata_infrastructure_field_headers_async():
+    client = OracleDatabaseAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = exadata_infra.ConfigureExascaleCloudExadataInfrastructureRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.configure_exascale_cloud_exadata_infrastructure),
+        "__call__",
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.configure_exascale_cloud_exadata_infrastructure(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_configure_exascale_cloud_exadata_infrastructure_flattened():
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.configure_exascale_cloud_exadata_infrastructure),
+        "__call__",
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.configure_exascale_cloud_exadata_infrastructure(
+            name="name_value",
+            total_storage_size_gb=2234,
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].total_storage_size_gb
+        mock_val = 2234
+        assert arg == mock_val
+
+
+def test_configure_exascale_cloud_exadata_infrastructure_flattened_error():
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.configure_exascale_cloud_exadata_infrastructure(
+            exadata_infra.ConfigureExascaleCloudExadataInfrastructureRequest(),
+            name="name_value",
+            total_storage_size_gb=2234,
+        )
+
+
+@pytest.mark.asyncio
+async def test_configure_exascale_cloud_exadata_infrastructure_flattened_async():
+    client = OracleDatabaseAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.configure_exascale_cloud_exadata_infrastructure),
+        "__call__",
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.configure_exascale_cloud_exadata_infrastructure(
+            name="name_value",
+            total_storage_size_gb=2234,
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].total_storage_size_gb
+        mock_val = 2234
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_configure_exascale_cloud_exadata_infrastructure_flattened_error_async():
+    client = OracleDatabaseAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.configure_exascale_cloud_exadata_infrastructure(
+            exadata_infra.ConfigureExascaleCloudExadataInfrastructureRequest(),
+            name="name_value",
+            total_storage_size_gb=2234,
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         oracledatabase.ListCloudVmClustersRequest(),
         {},
     ],
@@ -3440,6 +3813,9 @@ def test_list_cloud_vm_clusters_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, vm_cluster.CloudVmCluster) for i in results)
@@ -3532,6 +3908,8 @@ async def test_list_cloud_vm_clusters_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -3620,6 +3998,7 @@ def test_get_cloud_vm_cluster(request_type, transport: str = "grpc"):
             odb_network="odb_network_value",
             odb_subnet="odb_subnet_value",
             backup_odb_subnet="backup_odb_subnet_value",
+            exascale_db_storage_vault="exascale_db_storage_vault_value",
         )
         response = client.get_cloud_vm_cluster(request)
 
@@ -3641,6 +4020,7 @@ def test_get_cloud_vm_cluster(request_type, transport: str = "grpc"):
     assert response.odb_network == "odb_network_value"
     assert response.odb_subnet == "odb_subnet_value"
     assert response.backup_odb_subnet == "backup_odb_subnet_value"
+    assert response.exascale_db_storage_vault == "exascale_db_storage_vault_value"
 
 
 def test_get_cloud_vm_cluster_non_empty_request_with_auto_populated_field():
@@ -3792,6 +4172,7 @@ async def test_get_cloud_vm_cluster_async(
                 odb_network="odb_network_value",
                 odb_subnet="odb_subnet_value",
                 backup_odb_subnet="backup_odb_subnet_value",
+                exascale_db_storage_vault="exascale_db_storage_vault_value",
             )
         )
         response = await client.get_cloud_vm_cluster(request)
@@ -3814,6 +4195,7 @@ async def test_get_cloud_vm_cluster_async(
     assert response.odb_network == "odb_network_value"
     assert response.odb_subnet == "odb_subnet_value"
     assert response.backup_odb_subnet == "backup_odb_subnet_value"
+    assert response.exascale_db_storage_vault == "exascale_db_storage_vault_value"
 
 
 def test_get_cloud_vm_cluster_field_headers():
@@ -5080,6 +5462,9 @@ def test_list_entitlements_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, entitlement.Entitlement) for i in results)
@@ -5172,6 +5557,8 @@ async def test_list_entitlements_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -5602,6 +5989,9 @@ def test_list_db_servers_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, db_server.DbServer) for i in results)
@@ -5690,6 +6080,8 @@ async def test_list_db_servers_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -6118,6 +6510,9 @@ def test_list_db_nodes_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, db_node.DbNode) for i in results)
@@ -6206,6 +6601,8 @@ async def test_list_db_nodes_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -6638,6 +7035,9 @@ def test_list_gi_versions_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, gi_version.GiVersion) for i in results)
@@ -6726,6 +7126,8 @@ async def test_list_gi_versions_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -7176,6 +7578,9 @@ def test_list_minor_versions_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, minor_version.MinorVersion) for i in results)
@@ -7268,6 +7673,8 @@ async def test_list_minor_versions_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -7723,6 +8130,9 @@ def test_list_db_system_shapes_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, db_system_shape.DbSystemShape) for i in results)
@@ -7815,6 +8225,8 @@ async def test_list_db_system_shapes_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -8278,6 +8690,9 @@ def test_list_autonomous_databases_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -8372,6 +8787,8 @@ async def test_list_autonomous_databases_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -11057,6 +11474,9 @@ def test_list_autonomous_db_versions_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -11151,6 +11571,8 @@ async def test_list_autonomous_db_versions_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -11610,6 +12032,9 @@ def test_list_autonomous_database_character_sets_pager(transport_name: str = "gr
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -11707,6 +12132,8 @@ async def test_list_autonomous_database_character_sets_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -12171,6 +12598,9 @@ def test_list_autonomous_database_backups_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -12266,6 +12696,8 @@ async def test_list_autonomous_database_backups_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -14496,6 +14928,9 @@ def test_list_odb_networks_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, odb_network.OdbNetwork) for i in results)
@@ -14588,6 +15023,8 @@ async def test_list_odb_networks_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -16082,6 +16519,9 @@ def test_list_odb_subnets_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, odb_subnet.OdbSubnet) for i in results)
@@ -16170,6 +16610,8 @@ async def test_list_odb_subnets_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -17675,6 +18117,9 @@ def test_list_exadb_vm_clusters_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, exadb_vm_cluster.ExadbVmCluster) for i in results)
@@ -17767,6 +18212,8 @@ async def test_list_exadb_vm_clusters_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -20040,6 +20487,9 @@ def test_list_exascale_db_storage_vaults_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -20135,6 +20585,8 @@ async def test_list_exascale_db_storage_vaults_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -20222,6 +20674,7 @@ def test_get_exascale_db_storage_vault(request_type, transport: str = "grpc"):
             display_name="display_name_value",
             gcp_oracle_zone="gcp_oracle_zone_value",
             entitlement_id="entitlement_id_value",
+            exadata_infrastructure="exadata_infrastructure_value",
         )
         response = client.get_exascale_db_storage_vault(request)
 
@@ -20237,6 +20690,7 @@ def test_get_exascale_db_storage_vault(request_type, transport: str = "grpc"):
     assert response.display_name == "display_name_value"
     assert response.gcp_oracle_zone == "gcp_oracle_zone_value"
     assert response.entitlement_id == "entitlement_id_value"
+    assert response.exadata_infrastructure == "exadata_infrastructure_value"
 
 
 def test_get_exascale_db_storage_vault_non_empty_request_with_auto_populated_field():
@@ -20383,6 +20837,7 @@ async def test_get_exascale_db_storage_vault_async(
                 display_name="display_name_value",
                 gcp_oracle_zone="gcp_oracle_zone_value",
                 entitlement_id="entitlement_id_value",
+                exadata_infrastructure="exadata_infrastructure_value",
             )
         )
         response = await client.get_exascale_db_storage_vault(request)
@@ -20399,6 +20854,7 @@ async def test_get_exascale_db_storage_vault_async(
     assert response.display_name == "display_name_value"
     assert response.gcp_oracle_zone == "gcp_oracle_zone_value"
     assert response.entitlement_id == "entitlement_id_value"
+    assert response.exadata_infrastructure == "exadata_infrastructure_value"
 
 
 def test_get_exascale_db_storage_vault_field_headers():
@@ -21698,6 +22154,9 @@ def test_list_db_system_initial_storage_sizes_pager(transport_name: str = "grpc"
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -21793,6 +22252,8 @@ async def test_list_db_system_initial_storage_sizes_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -22230,6 +22691,9 @@ def test_list_databases_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, database.Database) for i in results)
@@ -22318,6 +22782,8 @@ async def test_list_databases_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -23169,6 +23635,9 @@ def test_list_pluggable_databases_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, pluggable_database.PluggableDatabase) for i in results)
@@ -23261,6 +23730,8 @@ async def test_list_pluggable_databases_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -24050,6 +24521,9 @@ def test_list_db_systems_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, db_system.DbSystem) for i in results)
@@ -24138,6 +24612,8 @@ async def test_list_db_systems_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -25625,6 +26101,9 @@ def test_list_goldengate_deployments_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -25719,6 +26198,8 @@ async def test_list_goldengate_deployments_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -27979,6 +28460,9 @@ def test_list_goldengate_connections_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -28073,6 +28557,8 @@ async def test_list_goldengate_connections_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -29226,361 +29712,6 @@ async def test_delete_goldengate_connection_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        goldengate_deployment_version.GetGoldengateDeploymentVersionRequest(),
-        {},
-    ],
-)
-def test_get_goldengate_deployment_version(request_type, transport: str = "grpc"):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_deployment_version), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = goldengate_deployment_version.GoldengateDeploymentVersion(
-            name="name_value",
-            ocid="ocid_value",
-        )
-        response = client.get_goldengate_deployment_version(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        request = goldengate_deployment_version.GetGoldengateDeploymentVersionRequest()
-        assert args[0] == request
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(
-        response, goldengate_deployment_version.GoldengateDeploymentVersion
-    )
-    assert response.name == "name_value"
-    assert response.ocid == "ocid_value"
-
-
-def test_get_goldengate_deployment_version_non_empty_request_with_auto_populated_field():
-    # This test is a coverage failsafe to make sure that UUID4 fields are
-    # automatically populated, according to AIP-4235, with non-empty requests.
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Populate all string fields in the request which are not UUID4
-    # since we want to check that UUID4 are populated automatically
-    # if they meet the requirements of AIP 4235.
-    request = goldengate_deployment_version.GetGoldengateDeploymentVersionRequest(
-        name="name_value",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_deployment_version), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_goldengate_deployment_version(request=request)
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        request_msg = (
-            goldengate_deployment_version.GetGoldengateDeploymentVersionRequest(
-                name="name_value",
-            )
-        )
-        assert args[0] == request_msg
-
-
-def test_get_goldengate_deployment_version_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = OracleDatabaseClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="grpc",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._transport.get_goldengate_deployment_version
-            in client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.get_goldengate_deployment_version
-        ] = mock_rpc
-        request = {}
-        client.get_goldengate_deployment_version(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        client.get_goldengate_deployment_version(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-@pytest.mark.asyncio
-async def test_get_goldengate_deployment_version_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
-        client = OracleDatabaseAsyncClient(
-            credentials=async_anonymous_credentials(),
-            transport=transport,
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._client._transport.get_goldengate_deployment_version
-            in client._client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.AsyncMock()
-        mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.get_goldengate_deployment_version
-        ] = mock_rpc
-
-        request = {}
-        await client.get_goldengate_deployment_version(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        await client.get_goldengate_deployment_version(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-@pytest.mark.asyncio
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        goldengate_deployment_version.GetGoldengateDeploymentVersionRequest(),
-        {},
-    ],
-)
-async def test_get_goldengate_deployment_version_async(
-    request_type, transport: str = "grpc_asyncio"
-):
-    client = OracleDatabaseAsyncClient(
-        credentials=async_anonymous_credentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_deployment_version), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            goldengate_deployment_version.GoldengateDeploymentVersion(
-                name="name_value",
-                ocid="ocid_value",
-            )
-        )
-        response = await client.get_goldengate_deployment_version(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        request = goldengate_deployment_version.GetGoldengateDeploymentVersionRequest()
-        assert args[0] == request
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(
-        response, goldengate_deployment_version.GoldengateDeploymentVersion
-    )
-    assert response.name == "name_value"
-    assert response.ocid == "ocid_value"
-
-
-def test_get_goldengate_deployment_version_field_headers():
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = goldengate_deployment_version.GetGoldengateDeploymentVersionRequest()
-
-    request.name = "name_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_deployment_version), "__call__"
-    ) as call:
-        call.return_value = goldengate_deployment_version.GoldengateDeploymentVersion()
-        client.get_goldengate_deployment_version(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "name=name_value",
-    ) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_get_goldengate_deployment_version_field_headers_async():
-    client = OracleDatabaseAsyncClient(
-        credentials=async_anonymous_credentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = goldengate_deployment_version.GetGoldengateDeploymentVersionRequest()
-
-    request.name = "name_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_deployment_version), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            goldengate_deployment_version.GoldengateDeploymentVersion()
-        )
-        await client.get_goldengate_deployment_version(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "name=name_value",
-    ) in kw["metadata"]
-
-
-def test_get_goldengate_deployment_version_flattened():
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_deployment_version), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = goldengate_deployment_version.GoldengateDeploymentVersion()
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.get_goldengate_deployment_version(
-            name="name_value",
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].name
-        mock_val = "name_value"
-        assert arg == mock_val
-
-
-def test_get_goldengate_deployment_version_flattened_error():
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.get_goldengate_deployment_version(
-            goldengate_deployment_version.GetGoldengateDeploymentVersionRequest(),
-            name="name_value",
-        )
-
-
-@pytest.mark.asyncio
-async def test_get_goldengate_deployment_version_flattened_async():
-    client = OracleDatabaseAsyncClient(
-        credentials=async_anonymous_credentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_deployment_version), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = goldengate_deployment_version.GoldengateDeploymentVersion()
-
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            goldengate_deployment_version.GoldengateDeploymentVersion()
-        )
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        response = await client.get_goldengate_deployment_version(
-            name="name_value",
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].name
-        mock_val = "name_value"
-        assert arg == mock_val
-
-
-@pytest.mark.asyncio
-async def test_get_goldengate_deployment_version_flattened_error_async():
-    client = OracleDatabaseAsyncClient(
-        credentials=async_anonymous_credentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        await client.get_goldengate_deployment_version(
-            goldengate_deployment_version.GetGoldengateDeploymentVersionRequest(),
-            name="name_value",
-        )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
         goldengate_deployment_version.ListGoldengateDeploymentVersionsRequest(),
         {},
     ],
@@ -29998,6 +30129,9 @@ def test_list_goldengate_deployment_versions_pager(transport_name: str = "grpc")
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -30093,6 +30227,8 @@ async def test_list_goldengate_deployment_versions_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -30151,403 +30287,6 @@ async def test_list_goldengate_deployment_versions_async_pages():
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        goldengate_deployment_type.GetGoldengateDeploymentTypeRequest(),
-        {},
-    ],
-)
-def test_get_goldengate_deployment_type(request_type, transport: str = "grpc"):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_deployment_type), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = goldengate_deployment_type.GoldengateDeploymentType(
-            name="name_value",
-            deployment_type=goldengate_deployment_type.GoldengateDeploymentType.DeploymentType.OGG,
-            category=goldengate_deployment_type.GoldengateDeploymentType.DeploymentCategory.DATA_REPLICATION_CATEGORY,
-            connection_types=["connection_types_value"],
-            display_name="display_name_value",
-            ogg_version="ogg_version_value",
-            source_technologies=["source_technologies_value"],
-            supported_capabilities=["supported_capabilities_value"],
-            supported_technologies_url="supported_technologies_url_value",
-            target_technologies=["target_technologies_value"],
-            default_username="default_username_value",
-        )
-        response = client.get_goldengate_deployment_type(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        request = goldengate_deployment_type.GetGoldengateDeploymentTypeRequest()
-        assert args[0] == request
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, goldengate_deployment_type.GoldengateDeploymentType)
-    assert response.name == "name_value"
-    assert (
-        response.deployment_type
-        == goldengate_deployment_type.GoldengateDeploymentType.DeploymentType.OGG
-    )
-    assert (
-        response.category
-        == goldengate_deployment_type.GoldengateDeploymentType.DeploymentCategory.DATA_REPLICATION_CATEGORY
-    )
-    assert response.connection_types == ["connection_types_value"]
-    assert response.display_name == "display_name_value"
-    assert response.ogg_version == "ogg_version_value"
-    assert response.source_technologies == ["source_technologies_value"]
-    assert response.supported_capabilities == ["supported_capabilities_value"]
-    assert response.supported_technologies_url == "supported_technologies_url_value"
-    assert response.target_technologies == ["target_technologies_value"]
-    assert response.default_username == "default_username_value"
-
-
-def test_get_goldengate_deployment_type_non_empty_request_with_auto_populated_field():
-    # This test is a coverage failsafe to make sure that UUID4 fields are
-    # automatically populated, according to AIP-4235, with non-empty requests.
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Populate all string fields in the request which are not UUID4
-    # since we want to check that UUID4 are populated automatically
-    # if they meet the requirements of AIP 4235.
-    request = goldengate_deployment_type.GetGoldengateDeploymentTypeRequest(
-        name="name_value",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_deployment_type), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_goldengate_deployment_type(request=request)
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        request_msg = goldengate_deployment_type.GetGoldengateDeploymentTypeRequest(
-            name="name_value",
-        )
-        assert args[0] == request_msg
-
-
-def test_get_goldengate_deployment_type_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = OracleDatabaseClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="grpc",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._transport.get_goldengate_deployment_type
-            in client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.get_goldengate_deployment_type
-        ] = mock_rpc
-        request = {}
-        client.get_goldengate_deployment_type(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        client.get_goldengate_deployment_type(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-@pytest.mark.asyncio
-async def test_get_goldengate_deployment_type_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
-        client = OracleDatabaseAsyncClient(
-            credentials=async_anonymous_credentials(),
-            transport=transport,
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._client._transport.get_goldengate_deployment_type
-            in client._client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.AsyncMock()
-        mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.get_goldengate_deployment_type
-        ] = mock_rpc
-
-        request = {}
-        await client.get_goldengate_deployment_type(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        await client.get_goldengate_deployment_type(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-@pytest.mark.asyncio
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        goldengate_deployment_type.GetGoldengateDeploymentTypeRequest(),
-        {},
-    ],
-)
-async def test_get_goldengate_deployment_type_async(
-    request_type, transport: str = "grpc_asyncio"
-):
-    client = OracleDatabaseAsyncClient(
-        credentials=async_anonymous_credentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_deployment_type), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            goldengate_deployment_type.GoldengateDeploymentType(
-                name="name_value",
-                deployment_type=goldengate_deployment_type.GoldengateDeploymentType.DeploymentType.OGG,
-                category=goldengate_deployment_type.GoldengateDeploymentType.DeploymentCategory.DATA_REPLICATION_CATEGORY,
-                connection_types=["connection_types_value"],
-                display_name="display_name_value",
-                ogg_version="ogg_version_value",
-                source_technologies=["source_technologies_value"],
-                supported_capabilities=["supported_capabilities_value"],
-                supported_technologies_url="supported_technologies_url_value",
-                target_technologies=["target_technologies_value"],
-                default_username="default_username_value",
-            )
-        )
-        response = await client.get_goldengate_deployment_type(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        request = goldengate_deployment_type.GetGoldengateDeploymentTypeRequest()
-        assert args[0] == request
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, goldengate_deployment_type.GoldengateDeploymentType)
-    assert response.name == "name_value"
-    assert (
-        response.deployment_type
-        == goldengate_deployment_type.GoldengateDeploymentType.DeploymentType.OGG
-    )
-    assert (
-        response.category
-        == goldengate_deployment_type.GoldengateDeploymentType.DeploymentCategory.DATA_REPLICATION_CATEGORY
-    )
-    assert response.connection_types == ["connection_types_value"]
-    assert response.display_name == "display_name_value"
-    assert response.ogg_version == "ogg_version_value"
-    assert response.source_technologies == ["source_technologies_value"]
-    assert response.supported_capabilities == ["supported_capabilities_value"]
-    assert response.supported_technologies_url == "supported_technologies_url_value"
-    assert response.target_technologies == ["target_technologies_value"]
-    assert response.default_username == "default_username_value"
-
-
-def test_get_goldengate_deployment_type_field_headers():
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = goldengate_deployment_type.GetGoldengateDeploymentTypeRequest()
-
-    request.name = "name_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_deployment_type), "__call__"
-    ) as call:
-        call.return_value = goldengate_deployment_type.GoldengateDeploymentType()
-        client.get_goldengate_deployment_type(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "name=name_value",
-    ) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_get_goldengate_deployment_type_field_headers_async():
-    client = OracleDatabaseAsyncClient(
-        credentials=async_anonymous_credentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = goldengate_deployment_type.GetGoldengateDeploymentTypeRequest()
-
-    request.name = "name_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_deployment_type), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            goldengate_deployment_type.GoldengateDeploymentType()
-        )
-        await client.get_goldengate_deployment_type(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "name=name_value",
-    ) in kw["metadata"]
-
-
-def test_get_goldengate_deployment_type_flattened():
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_deployment_type), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = goldengate_deployment_type.GoldengateDeploymentType()
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.get_goldengate_deployment_type(
-            name="name_value",
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].name
-        mock_val = "name_value"
-        assert arg == mock_val
-
-
-def test_get_goldengate_deployment_type_flattened_error():
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.get_goldengate_deployment_type(
-            goldengate_deployment_type.GetGoldengateDeploymentTypeRequest(),
-            name="name_value",
-        )
-
-
-@pytest.mark.asyncio
-async def test_get_goldengate_deployment_type_flattened_async():
-    client = OracleDatabaseAsyncClient(
-        credentials=async_anonymous_credentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_deployment_type), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = goldengate_deployment_type.GoldengateDeploymentType()
-
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            goldengate_deployment_type.GoldengateDeploymentType()
-        )
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        response = await client.get_goldengate_deployment_type(
-            name="name_value",
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].name
-        mock_val = "name_value"
-        assert arg == mock_val
-
-
-@pytest.mark.asyncio
-async def test_get_goldengate_deployment_type_flattened_error_async():
-    client = OracleDatabaseAsyncClient(
-        credentials=async_anonymous_credentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        await client.get_goldengate_deployment_type(
-            goldengate_deployment_type.GetGoldengateDeploymentTypeRequest(),
-            name="name_value",
-        )
 
 
 @pytest.mark.parametrize(
@@ -30966,6 +30705,9 @@ def test_list_goldengate_deployment_types_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -31061,6 +30803,8 @@ async def test_list_goldengate_deployment_types_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -31119,421 +30863,6 @@ async def test_list_goldengate_deployment_types_async_pages():
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        goldengate_deployment_environment.GetGoldengateDeploymentEnvironmentRequest(),
-        {},
-    ],
-)
-def test_get_goldengate_deployment_environment(request_type, transport: str = "grpc"):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_deployment_environment), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = goldengate_deployment_environment.GoldengateDeploymentEnvironment(
-            name="name_value",
-            category=goldengate_deployment_environment.GoldengateDeploymentEnvironment.DeploymentCategory.DATA_REPLICATION_CATEGORY,
-            display_name="display_name_value",
-            default_cpu_core_count=2332,
-            environment_type=goldengate_deployment_environment.GoldengateDeploymentEnvironment.DeploymentEnvironmentType.PRODUCTION,
-            auto_scaling_enabled=True,
-            max_cpu_core_count=1917,
-            memory_gb_per_cpu_core=2326,
-            min_cpu_core_count=1915,
-            network_bandwidth_gbps_per_cpu_core=3710,
-            storage_usage_limit_gb_per_cpu_core=3684,
-        )
-        response = client.get_goldengate_deployment_environment(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        request = goldengate_deployment_environment.GetGoldengateDeploymentEnvironmentRequest()
-        assert args[0] == request
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(
-        response, goldengate_deployment_environment.GoldengateDeploymentEnvironment
-    )
-    assert response.name == "name_value"
-    assert (
-        response.category
-        == goldengate_deployment_environment.GoldengateDeploymentEnvironment.DeploymentCategory.DATA_REPLICATION_CATEGORY
-    )
-    assert response.display_name == "display_name_value"
-    assert response.default_cpu_core_count == 2332
-    assert (
-        response.environment_type
-        == goldengate_deployment_environment.GoldengateDeploymentEnvironment.DeploymentEnvironmentType.PRODUCTION
-    )
-    assert response.auto_scaling_enabled is True
-    assert response.max_cpu_core_count == 1917
-    assert response.memory_gb_per_cpu_core == 2326
-    assert response.min_cpu_core_count == 1915
-    assert response.network_bandwidth_gbps_per_cpu_core == 3710
-    assert response.storage_usage_limit_gb_per_cpu_core == 3684
-
-
-def test_get_goldengate_deployment_environment_non_empty_request_with_auto_populated_field():
-    # This test is a coverage failsafe to make sure that UUID4 fields are
-    # automatically populated, according to AIP-4235, with non-empty requests.
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Populate all string fields in the request which are not UUID4
-    # since we want to check that UUID4 are populated automatically
-    # if they meet the requirements of AIP 4235.
-    request = (
-        goldengate_deployment_environment.GetGoldengateDeploymentEnvironmentRequest(
-            name="name_value",
-        )
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_deployment_environment), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_goldengate_deployment_environment(request=request)
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        request_msg = (
-            goldengate_deployment_environment.GetGoldengateDeploymentEnvironmentRequest(
-                name="name_value",
-            )
-        )
-        assert args[0] == request_msg
-
-
-def test_get_goldengate_deployment_environment_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = OracleDatabaseClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="grpc",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._transport.get_goldengate_deployment_environment
-            in client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.get_goldengate_deployment_environment
-        ] = mock_rpc
-        request = {}
-        client.get_goldengate_deployment_environment(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        client.get_goldengate_deployment_environment(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-@pytest.mark.asyncio
-async def test_get_goldengate_deployment_environment_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
-        client = OracleDatabaseAsyncClient(
-            credentials=async_anonymous_credentials(),
-            transport=transport,
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._client._transport.get_goldengate_deployment_environment
-            in client._client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.AsyncMock()
-        mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.get_goldengate_deployment_environment
-        ] = mock_rpc
-
-        request = {}
-        await client.get_goldengate_deployment_environment(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        await client.get_goldengate_deployment_environment(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-@pytest.mark.asyncio
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        goldengate_deployment_environment.GetGoldengateDeploymentEnvironmentRequest(),
-        {},
-    ],
-)
-async def test_get_goldengate_deployment_environment_async(
-    request_type, transport: str = "grpc_asyncio"
-):
-    client = OracleDatabaseAsyncClient(
-        credentials=async_anonymous_credentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_deployment_environment), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            goldengate_deployment_environment.GoldengateDeploymentEnvironment(
-                name="name_value",
-                category=goldengate_deployment_environment.GoldengateDeploymentEnvironment.DeploymentCategory.DATA_REPLICATION_CATEGORY,
-                display_name="display_name_value",
-                default_cpu_core_count=2332,
-                environment_type=goldengate_deployment_environment.GoldengateDeploymentEnvironment.DeploymentEnvironmentType.PRODUCTION,
-                auto_scaling_enabled=True,
-                max_cpu_core_count=1917,
-                memory_gb_per_cpu_core=2326,
-                min_cpu_core_count=1915,
-                network_bandwidth_gbps_per_cpu_core=3710,
-                storage_usage_limit_gb_per_cpu_core=3684,
-            )
-        )
-        response = await client.get_goldengate_deployment_environment(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        request = goldengate_deployment_environment.GetGoldengateDeploymentEnvironmentRequest()
-        assert args[0] == request
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(
-        response, goldengate_deployment_environment.GoldengateDeploymentEnvironment
-    )
-    assert response.name == "name_value"
-    assert (
-        response.category
-        == goldengate_deployment_environment.GoldengateDeploymentEnvironment.DeploymentCategory.DATA_REPLICATION_CATEGORY
-    )
-    assert response.display_name == "display_name_value"
-    assert response.default_cpu_core_count == 2332
-    assert (
-        response.environment_type
-        == goldengate_deployment_environment.GoldengateDeploymentEnvironment.DeploymentEnvironmentType.PRODUCTION
-    )
-    assert response.auto_scaling_enabled is True
-    assert response.max_cpu_core_count == 1917
-    assert response.memory_gb_per_cpu_core == 2326
-    assert response.min_cpu_core_count == 1915
-    assert response.network_bandwidth_gbps_per_cpu_core == 3710
-    assert response.storage_usage_limit_gb_per_cpu_core == 3684
-
-
-def test_get_goldengate_deployment_environment_field_headers():
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = (
-        goldengate_deployment_environment.GetGoldengateDeploymentEnvironmentRequest()
-    )
-
-    request.name = "name_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_deployment_environment), "__call__"
-    ) as call:
-        call.return_value = (
-            goldengate_deployment_environment.GoldengateDeploymentEnvironment()
-        )
-        client.get_goldengate_deployment_environment(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "name=name_value",
-    ) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_get_goldengate_deployment_environment_field_headers_async():
-    client = OracleDatabaseAsyncClient(
-        credentials=async_anonymous_credentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = (
-        goldengate_deployment_environment.GetGoldengateDeploymentEnvironmentRequest()
-    )
-
-    request.name = "name_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_deployment_environment), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            goldengate_deployment_environment.GoldengateDeploymentEnvironment()
-        )
-        await client.get_goldengate_deployment_environment(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "name=name_value",
-    ) in kw["metadata"]
-
-
-def test_get_goldengate_deployment_environment_flattened():
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_deployment_environment), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = (
-            goldengate_deployment_environment.GoldengateDeploymentEnvironment()
-        )
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.get_goldengate_deployment_environment(
-            name="name_value",
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].name
-        mock_val = "name_value"
-        assert arg == mock_val
-
-
-def test_get_goldengate_deployment_environment_flattened_error():
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.get_goldengate_deployment_environment(
-            goldengate_deployment_environment.GetGoldengateDeploymentEnvironmentRequest(),
-            name="name_value",
-        )
-
-
-@pytest.mark.asyncio
-async def test_get_goldengate_deployment_environment_flattened_async():
-    client = OracleDatabaseAsyncClient(
-        credentials=async_anonymous_credentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_deployment_environment), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = (
-            goldengate_deployment_environment.GoldengateDeploymentEnvironment()
-        )
-
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            goldengate_deployment_environment.GoldengateDeploymentEnvironment()
-        )
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        response = await client.get_goldengate_deployment_environment(
-            name="name_value",
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].name
-        mock_val = "name_value"
-        assert arg == mock_val
-
-
-@pytest.mark.asyncio
-async def test_get_goldengate_deployment_environment_flattened_error_async():
-    client = OracleDatabaseAsyncClient(
-        credentials=async_anonymous_credentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        await client.get_goldengate_deployment_environment(
-            goldengate_deployment_environment.GetGoldengateDeploymentEnvironmentRequest(),
-            name="name_value",
-        )
 
 
 @pytest.mark.parametrize(
@@ -31946,6 +31275,9 @@ def test_list_goldengate_deployment_environments_pager(transport_name: str = "gr
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -32043,6 +31375,8 @@ async def test_list_goldengate_deployment_environments_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -32103,365 +31437,6 @@ async def test_list_goldengate_deployment_environments_async_pages():
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        goldengate_connection_type.GetGoldengateConnectionTypeRequest(),
-        {},
-    ],
-)
-def test_get_goldengate_connection_type(request_type, transport: str = "grpc"):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_connection_type), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = goldengate_connection_type.GoldengateConnectionType(
-            name="name_value",
-            connection_type=goldengate_connection_type.GoldengateConnectionType.ConnectionType.GOLDENGATE,
-            technology_types=["technology_types_value"],
-        )
-        response = client.get_goldengate_connection_type(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        request = goldengate_connection_type.GetGoldengateConnectionTypeRequest()
-        assert args[0] == request
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, goldengate_connection_type.GoldengateConnectionType)
-    assert response.name == "name_value"
-    assert (
-        response.connection_type
-        == goldengate_connection_type.GoldengateConnectionType.ConnectionType.GOLDENGATE
-    )
-    assert response.technology_types == ["technology_types_value"]
-
-
-def test_get_goldengate_connection_type_non_empty_request_with_auto_populated_field():
-    # This test is a coverage failsafe to make sure that UUID4 fields are
-    # automatically populated, according to AIP-4235, with non-empty requests.
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Populate all string fields in the request which are not UUID4
-    # since we want to check that UUID4 are populated automatically
-    # if they meet the requirements of AIP 4235.
-    request = goldengate_connection_type.GetGoldengateConnectionTypeRequest(
-        name="name_value",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_connection_type), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_goldengate_connection_type(request=request)
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        request_msg = goldengate_connection_type.GetGoldengateConnectionTypeRequest(
-            name="name_value",
-        )
-        assert args[0] == request_msg
-
-
-def test_get_goldengate_connection_type_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = OracleDatabaseClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="grpc",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._transport.get_goldengate_connection_type
-            in client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.get_goldengate_connection_type
-        ] = mock_rpc
-        request = {}
-        client.get_goldengate_connection_type(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        client.get_goldengate_connection_type(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-@pytest.mark.asyncio
-async def test_get_goldengate_connection_type_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
-        client = OracleDatabaseAsyncClient(
-            credentials=async_anonymous_credentials(),
-            transport=transport,
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._client._transport.get_goldengate_connection_type
-            in client._client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.AsyncMock()
-        mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.get_goldengate_connection_type
-        ] = mock_rpc
-
-        request = {}
-        await client.get_goldengate_connection_type(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        await client.get_goldengate_connection_type(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-@pytest.mark.asyncio
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        goldengate_connection_type.GetGoldengateConnectionTypeRequest(),
-        {},
-    ],
-)
-async def test_get_goldengate_connection_type_async(
-    request_type, transport: str = "grpc_asyncio"
-):
-    client = OracleDatabaseAsyncClient(
-        credentials=async_anonymous_credentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_connection_type), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            goldengate_connection_type.GoldengateConnectionType(
-                name="name_value",
-                connection_type=goldengate_connection_type.GoldengateConnectionType.ConnectionType.GOLDENGATE,
-                technology_types=["technology_types_value"],
-            )
-        )
-        response = await client.get_goldengate_connection_type(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        request = goldengate_connection_type.GetGoldengateConnectionTypeRequest()
-        assert args[0] == request
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, goldengate_connection_type.GoldengateConnectionType)
-    assert response.name == "name_value"
-    assert (
-        response.connection_type
-        == goldengate_connection_type.GoldengateConnectionType.ConnectionType.GOLDENGATE
-    )
-    assert response.technology_types == ["technology_types_value"]
-
-
-def test_get_goldengate_connection_type_field_headers():
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = goldengate_connection_type.GetGoldengateConnectionTypeRequest()
-
-    request.name = "name_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_connection_type), "__call__"
-    ) as call:
-        call.return_value = goldengate_connection_type.GoldengateConnectionType()
-        client.get_goldengate_connection_type(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "name=name_value",
-    ) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_get_goldengate_connection_type_field_headers_async():
-    client = OracleDatabaseAsyncClient(
-        credentials=async_anonymous_credentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = goldengate_connection_type.GetGoldengateConnectionTypeRequest()
-
-    request.name = "name_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_connection_type), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            goldengate_connection_type.GoldengateConnectionType()
-        )
-        await client.get_goldengate_connection_type(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "name=name_value",
-    ) in kw["metadata"]
-
-
-def test_get_goldengate_connection_type_flattened():
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_connection_type), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = goldengate_connection_type.GoldengateConnectionType()
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.get_goldengate_connection_type(
-            name="name_value",
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].name
-        mock_val = "name_value"
-        assert arg == mock_val
-
-
-def test_get_goldengate_connection_type_flattened_error():
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.get_goldengate_connection_type(
-            goldengate_connection_type.GetGoldengateConnectionTypeRequest(),
-            name="name_value",
-        )
-
-
-@pytest.mark.asyncio
-async def test_get_goldengate_connection_type_flattened_async():
-    client = OracleDatabaseAsyncClient(
-        credentials=async_anonymous_credentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_connection_type), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = goldengate_connection_type.GoldengateConnectionType()
-
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            goldengate_connection_type.GoldengateConnectionType()
-        )
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        response = await client.get_goldengate_connection_type(
-            name="name_value",
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].name
-        mock_val = "name_value"
-        assert arg == mock_val
-
-
-@pytest.mark.asyncio
-async def test_get_goldengate_connection_type_flattened_error_async():
-    client = OracleDatabaseAsyncClient(
-        credentials=async_anonymous_credentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        await client.get_goldengate_connection_type(
-            goldengate_connection_type.GetGoldengateConnectionTypeRequest(),
-            name="name_value",
-        )
 
 
 @pytest.mark.parametrize(
@@ -32878,6 +31853,9 @@ def test_list_goldengate_connection_types_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -32973,6 +31951,8 @@ async def test_list_goldengate_connection_types_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -33412,6 +32392,9 @@ def test_list_db_versions_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, db_version.DbVersion) for i in results)
@@ -33500,6 +32483,8 @@ async def test_list_db_versions_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -33955,6 +32940,9 @@ def test_list_database_character_sets_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -34049,6 +33037,8 @@ async def test_list_database_character_sets_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -34525,6 +33515,9 @@ def test_list_goldengate_connection_assignments_pager(transport_name: str = "grp
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -34622,6 +33615,8 @@ async def test_list_goldengate_connection_assignments_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -36431,6 +35426,9 @@ def test_list_cloud_exadata_infrastructures_rest_pager(transport: str = "rest"):
 
         pager = client.list_cloud_exadata_infrastructures(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -37071,6 +36069,213 @@ def test_delete_cloud_exadata_infrastructure_rest_flattened_error(
         )
 
 
+def test_configure_exascale_cloud_exadata_infrastructure_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = OracleDatabaseClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.configure_exascale_cloud_exadata_infrastructure
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.configure_exascale_cloud_exadata_infrastructure
+        ] = mock_rpc
+
+        request = {}
+        client.configure_exascale_cloud_exadata_infrastructure(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.configure_exascale_cloud_exadata_infrastructure(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_configure_exascale_cloud_exadata_infrastructure_rest_required_fields(
+    request_type=exadata_infra.ConfigureExascaleCloudExadataInfrastructureRequest,
+):
+    transport_class = transports.OracleDatabaseRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request_init["total_storage_size_gb"] = 0
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).configure_exascale_cloud_exadata_infrastructure._get_unset_required_fields(
+        jsonified_request
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+    jsonified_request["totalStorageSizeGb"] = 2234
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).configure_exascale_cloud_exadata_infrastructure._get_unset_required_fields(
+        jsonified_request
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+    assert "totalStorageSizeGb" in jsonified_request
+    assert jsonified_request["totalStorageSizeGb"] == 2234
+
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.configure_exascale_cloud_exadata_infrastructure(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert sorted(expected_params) == sorted(actual_params)
+
+
+def test_configure_exascale_cloud_exadata_infrastructure_rest_unset_required_fields():
+    transport = transports.OracleDatabaseRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.configure_exascale_cloud_exadata_infrastructure._get_unset_required_fields(
+        {}
+    )
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "name",
+                "totalStorageSizeGb",
+            )
+        )
+    )
+
+
+def test_configure_exascale_cloud_exadata_infrastructure_rest_flattened():
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/cloudExadataInfrastructures/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+            total_storage_size_gb=2234,
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.configure_exascale_cloud_exadata_infrastructure(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/cloudExadataInfrastructures/*}:configureExascale"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_configure_exascale_cloud_exadata_infrastructure_rest_flattened_error(
+    transport: str = "rest",
+):
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.configure_exascale_cloud_exadata_infrastructure(
+            exadata_infra.ConfigureExascaleCloudExadataInfrastructureRequest(),
+            name="name_value",
+            total_storage_size_gb=2234,
+        )
+
+
 def test_list_cloud_vm_clusters_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -37324,6 +36529,9 @@ def test_list_cloud_vm_clusters_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/locations/sample2"}
 
         pager = client.list_cloud_vm_clusters(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -38187,6 +37395,9 @@ def test_list_entitlements_rest_pager(transport: str = "rest"):
 
         pager = client.list_entitlements(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, entitlement.Entitlement) for i in results)
@@ -38446,6 +37657,9 @@ def test_list_db_servers_rest_pager(transport: str = "rest"):
         }
 
         pager = client.list_db_servers(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -38707,6 +37921,9 @@ def test_list_db_nodes_rest_pager(transport: str = "rest"):
 
         pager = client.list_db_nodes(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, db_node.DbNode) for i in results)
@@ -38965,6 +38182,9 @@ def test_list_gi_versions_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/locations/sample2"}
 
         pager = client.list_gi_versions(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -39232,6 +38452,9 @@ def test_list_minor_versions_rest_pager(transport: str = "rest"):
 
         pager = client.list_minor_versions(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, minor_version.MinorVersion) for i in results)
@@ -39494,6 +38717,9 @@ def test_list_db_system_shapes_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/locations/sample2"}
 
         pager = client.list_db_system_shapes(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -39761,6 +38987,9 @@ def test_list_autonomous_databases_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/locations/sample2"}
 
         pager = client.list_autonomous_databases(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -41236,6 +40465,9 @@ def test_list_autonomous_db_versions_rest_pager(transport: str = "rest"):
 
         pager = client.list_autonomous_db_versions(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -41516,6 +40748,9 @@ def test_list_autonomous_database_character_sets_rest_pager(transport: str = "re
 
         pager = client.list_autonomous_database_character_sets(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -41792,6 +41027,9 @@ def test_list_autonomous_database_backups_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/locations/sample2"}
 
         pager = client.list_autonomous_database_backups(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -42991,6 +42229,9 @@ def test_list_odb_networks_rest_pager(transport: str = "rest"):
 
         pager = client.list_odb_networks(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, odb_network.OdbNetwork) for i in results)
@@ -43840,6 +43081,9 @@ def test_list_odb_subnets_rest_pager(transport: str = "rest"):
 
         pager = client.list_odb_subnets(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, odb_subnet.OdbSubnet) for i in results)
@@ -44687,6 +43931,9 @@ def test_list_exadb_vm_clusters_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/locations/sample2"}
 
         pager = client.list_exadb_vm_clusters(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -45959,6 +45206,9 @@ def test_list_exascale_db_storage_vaults_rest_pager(transport: str = "rest"):
 
         pager = client.list_exascale_db_storage_vaults(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -46852,6 +46102,9 @@ def test_list_db_system_initial_storage_sizes_rest_pager(transport: str = "rest"
 
         pager = client.list_db_system_initial_storage_sizes(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -47111,6 +46364,9 @@ def test_list_databases_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/locations/sample2"}
 
         pager = client.list_databases(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -47557,6 +46813,9 @@ def test_list_pluggable_databases_rest_pager(transport: str = "rest"):
 
         pager = client.list_pluggable_databases(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, pluggable_database.PluggableDatabase) for i in results)
@@ -47998,6 +47257,9 @@ def test_list_db_systems_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/locations/sample2"}
 
         pager = client.list_db_systems(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -48844,6 +48106,9 @@ def test_list_goldengate_deployments_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/locations/sample2"}
 
         pager = client.list_goldengate_deployments(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -50088,6 +49353,9 @@ def test_list_goldengate_connections_rest_pager(transport: str = "rest"):
 
         pager = client.list_goldengate_connections(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -50700,199 +49968,6 @@ def test_delete_goldengate_connection_rest_flattened_error(transport: str = "res
         )
 
 
-def test_get_goldengate_deployment_version_rest_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = OracleDatabaseClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="rest",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._transport.get_goldengate_deployment_version
-            in client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.get_goldengate_deployment_version
-        ] = mock_rpc
-
-        request = {}
-        client.get_goldengate_deployment_version(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        client.get_goldengate_deployment_version(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-def test_get_goldengate_deployment_version_rest_required_fields(
-    request_type=goldengate_deployment_version.GetGoldengateDeploymentVersionRequest,
-):
-    transport_class = transports.OracleDatabaseRestTransport
-
-    request_init = {}
-    request_init["name"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_goldengate_deployment_version._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_goldengate_deployment_version._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "name" in jsonified_request
-    assert jsonified_request["name"] == "name_value"
-
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = goldengate_deployment_version.GoldengateDeploymentVersion()
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "get",
-                "query_params": pb_request,
-            }
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-
-            # Convert return value to protobuf type
-            return_value = goldengate_deployment_version.GoldengateDeploymentVersion.pb(
-                return_value
-            )
-            json_return_value = json_format.MessageToJson(return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-
-            response = client.get_goldengate_deployment_version(request)
-
-            expected_params = [("$alt", "json;enum-encoding=int")]
-            actual_params = req.call_args.kwargs["params"]
-            assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_get_goldengate_deployment_version_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = (
-        transport.get_goldengate_deployment_version._get_unset_required_fields({})
-    )
-    assert set(unset_fields) == (set(()) & set(("name",)))
-
-
-def test_get_goldengate_deployment_version_rest_flattened():
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = goldengate_deployment_version.GoldengateDeploymentVersion()
-
-        # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/goldengateDeploymentVersions/sample3"
-        }
-
-        # get truthy value for each flattened field
-        mock_args = dict(
-            name="name_value",
-        )
-        mock_args.update(sample_request)
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = goldengate_deployment_version.GoldengateDeploymentVersion.pb(
-            return_value
-        )
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-
-        client.get_goldengate_deployment_version(**mock_args)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(req.mock_calls) == 1
-        _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{name=projects/*/locations/*/goldengateDeploymentVersions/*}"
-            % client.transport._host,
-            args[1],
-        )
-
-
-def test_get_goldengate_deployment_version_rest_flattened_error(
-    transport: str = "rest",
-):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.get_goldengate_deployment_version(
-            goldengate_deployment_version.GetGoldengateDeploymentVersionRequest(),
-            name="name_value",
-        )
-
-
 def test_list_goldengate_deployment_versions_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -51164,6 +50239,9 @@ def test_list_goldengate_deployment_versions_rest_pager(transport: str = "rest")
 
         pager = client.list_goldengate_deployment_versions(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -51176,197 +50254,6 @@ def test_list_goldengate_deployment_versions_rest_pager(transport: str = "rest")
         )
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-def test_get_goldengate_deployment_type_rest_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = OracleDatabaseClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="rest",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._transport.get_goldengate_deployment_type
-            in client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.get_goldengate_deployment_type
-        ] = mock_rpc
-
-        request = {}
-        client.get_goldengate_deployment_type(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        client.get_goldengate_deployment_type(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-def test_get_goldengate_deployment_type_rest_required_fields(
-    request_type=goldengate_deployment_type.GetGoldengateDeploymentTypeRequest,
-):
-    transport_class = transports.OracleDatabaseRestTransport
-
-    request_init = {}
-    request_init["name"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_goldengate_deployment_type._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_goldengate_deployment_type._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "name" in jsonified_request
-    assert jsonified_request["name"] == "name_value"
-
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = goldengate_deployment_type.GoldengateDeploymentType()
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "get",
-                "query_params": pb_request,
-            }
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-
-            # Convert return value to protobuf type
-            return_value = goldengate_deployment_type.GoldengateDeploymentType.pb(
-                return_value
-            )
-            json_return_value = json_format.MessageToJson(return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-
-            response = client.get_goldengate_deployment_type(request)
-
-            expected_params = [("$alt", "json;enum-encoding=int")]
-            actual_params = req.call_args.kwargs["params"]
-            assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_get_goldengate_deployment_type_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.get_goldengate_deployment_type._get_unset_required_fields(
-        {}
-    )
-    assert set(unset_fields) == (set(()) & set(("name",)))
-
-
-def test_get_goldengate_deployment_type_rest_flattened():
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = goldengate_deployment_type.GoldengateDeploymentType()
-
-        # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/goldengateDeploymentTypes/sample3"
-        }
-
-        # get truthy value for each flattened field
-        mock_args = dict(
-            name="name_value",
-        )
-        mock_args.update(sample_request)
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = goldengate_deployment_type.GoldengateDeploymentType.pb(
-            return_value
-        )
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-
-        client.get_goldengate_deployment_type(**mock_args)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(req.mock_calls) == 1
-        _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{name=projects/*/locations/*/goldengateDeploymentTypes/*}"
-            % client.transport._host,
-            args[1],
-        )
-
-
-def test_get_goldengate_deployment_type_rest_flattened_error(transport: str = "rest"):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.get_goldengate_deployment_type(
-            goldengate_deployment_type.GetGoldengateDeploymentTypeRequest(),
-            name="name_value",
-        )
 
 
 def test_list_goldengate_deployment_types_rest_use_cached_wrapped_rpc():
@@ -51638,6 +50525,9 @@ def test_list_goldengate_deployment_types_rest_pager(transport: str = "rest"):
 
         pager = client.list_goldengate_deployment_types(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -51650,209 +50540,6 @@ def test_list_goldengate_deployment_types_rest_pager(transport: str = "rest"):
         )
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-def test_get_goldengate_deployment_environment_rest_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = OracleDatabaseClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="rest",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._transport.get_goldengate_deployment_environment
-            in client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.get_goldengate_deployment_environment
-        ] = mock_rpc
-
-        request = {}
-        client.get_goldengate_deployment_environment(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        client.get_goldengate_deployment_environment(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-def test_get_goldengate_deployment_environment_rest_required_fields(
-    request_type=goldengate_deployment_environment.GetGoldengateDeploymentEnvironmentRequest,
-):
-    transport_class = transports.OracleDatabaseRestTransport
-
-    request_init = {}
-    request_init["name"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_goldengate_deployment_environment._get_unset_required_fields(
-        jsonified_request
-    )
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_goldengate_deployment_environment._get_unset_required_fields(
-        jsonified_request
-    )
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "name" in jsonified_request
-    assert jsonified_request["name"] == "name_value"
-
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = goldengate_deployment_environment.GoldengateDeploymentEnvironment()
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "get",
-                "query_params": pb_request,
-            }
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-
-            # Convert return value to protobuf type
-            return_value = (
-                goldengate_deployment_environment.GoldengateDeploymentEnvironment.pb(
-                    return_value
-                )
-            )
-            json_return_value = json_format.MessageToJson(return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-
-            response = client.get_goldengate_deployment_environment(request)
-
-            expected_params = [("$alt", "json;enum-encoding=int")]
-            actual_params = req.call_args.kwargs["params"]
-            assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_get_goldengate_deployment_environment_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = (
-        transport.get_goldengate_deployment_environment._get_unset_required_fields({})
-    )
-    assert set(unset_fields) == (set(()) & set(("name",)))
-
-
-def test_get_goldengate_deployment_environment_rest_flattened():
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = (
-            goldengate_deployment_environment.GoldengateDeploymentEnvironment()
-        )
-
-        # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/goldengateDeploymentEnvironments/sample3"
-        }
-
-        # get truthy value for each flattened field
-        mock_args = dict(
-            name="name_value",
-        )
-        mock_args.update(sample_request)
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = (
-            goldengate_deployment_environment.GoldengateDeploymentEnvironment.pb(
-                return_value
-            )
-        )
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-
-        client.get_goldengate_deployment_environment(**mock_args)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(req.mock_calls) == 1
-        _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{name=projects/*/locations/*/goldengateDeploymentEnvironments/*}"
-            % client.transport._host,
-            args[1],
-        )
-
-
-def test_get_goldengate_deployment_environment_rest_flattened_error(
-    transport: str = "rest",
-):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.get_goldengate_deployment_environment(
-            goldengate_deployment_environment.GetGoldengateDeploymentEnvironmentRequest(),
-            name="name_value",
-        )
 
 
 def test_list_goldengate_deployment_environments_rest_use_cached_wrapped_rpc():
@@ -52124,6 +50811,9 @@ def test_list_goldengate_deployment_environments_rest_pager(transport: str = "re
 
         pager = client.list_goldengate_deployment_environments(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -52138,197 +50828,6 @@ def test_list_goldengate_deployment_environments_rest_pager(transport: str = "re
         )
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-def test_get_goldengate_connection_type_rest_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = OracleDatabaseClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="rest",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._transport.get_goldengate_connection_type
-            in client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.get_goldengate_connection_type
-        ] = mock_rpc
-
-        request = {}
-        client.get_goldengate_connection_type(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        client.get_goldengate_connection_type(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-def test_get_goldengate_connection_type_rest_required_fields(
-    request_type=goldengate_connection_type.GetGoldengateConnectionTypeRequest,
-):
-    transport_class = transports.OracleDatabaseRestTransport
-
-    request_init = {}
-    request_init["name"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_goldengate_connection_type._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_goldengate_connection_type._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "name" in jsonified_request
-    assert jsonified_request["name"] == "name_value"
-
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = goldengate_connection_type.GoldengateConnectionType()
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "get",
-                "query_params": pb_request,
-            }
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-
-            # Convert return value to protobuf type
-            return_value = goldengate_connection_type.GoldengateConnectionType.pb(
-                return_value
-            )
-            json_return_value = json_format.MessageToJson(return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-
-            response = client.get_goldengate_connection_type(request)
-
-            expected_params = [("$alt", "json;enum-encoding=int")]
-            actual_params = req.call_args.kwargs["params"]
-            assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_get_goldengate_connection_type_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.get_goldengate_connection_type._get_unset_required_fields(
-        {}
-    )
-    assert set(unset_fields) == (set(()) & set(("name",)))
-
-
-def test_get_goldengate_connection_type_rest_flattened():
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = goldengate_connection_type.GoldengateConnectionType()
-
-        # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/goldengateConnectionTypes/sample3"
-        }
-
-        # get truthy value for each flattened field
-        mock_args = dict(
-            name="name_value",
-        )
-        mock_args.update(sample_request)
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = goldengate_connection_type.GoldengateConnectionType.pb(
-            return_value
-        )
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-
-        client.get_goldengate_connection_type(**mock_args)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(req.mock_calls) == 1
-        _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{name=projects/*/locations/*/goldengateConnectionTypes/*}"
-            % client.transport._host,
-            args[1],
-        )
-
-
-def test_get_goldengate_connection_type_rest_flattened_error(transport: str = "rest"):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.get_goldengate_connection_type(
-            goldengate_connection_type.GetGoldengateConnectionTypeRequest(),
-            name="name_value",
-        )
 
 
 def test_list_goldengate_connection_types_rest_use_cached_wrapped_rpc():
@@ -52598,6 +51097,9 @@ def test_list_goldengate_connection_types_rest_pager(transport: str = "rest"):
 
         pager = client.list_goldengate_connection_types(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -52859,6 +51361,9 @@ def test_list_db_versions_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/locations/sample2"}
 
         pager = client.list_db_versions(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -53127,6 +51632,9 @@ def test_list_database_character_sets_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/locations/sample2"}
 
         pager = client.list_database_character_sets(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -53411,6 +51919,9 @@ def test_list_goldengate_connection_assignments_rest_pager(transport: str = "res
         sample_request = {"parent": "projects/sample1/locations/sample2"}
 
         pager = client.list_goldengate_connection_assignments(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -54451,6 +52962,29 @@ def test_delete_cloud_exadata_infrastructure_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.DeleteCloudExadataInfrastructureRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_configure_exascale_cloud_exadata_infrastructure_empty_call_grpc():
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.configure_exascale_cloud_exadata_infrastructure),
+        "__call__",
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.configure_exascale_cloud_exadata_infrastructure(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = exadata_infra.ConfigureExascaleCloudExadataInfrastructureRequest()
         assert args[0] == request_msg
 
 
@@ -55804,30 +54338,6 @@ def test_delete_goldengate_connection_empty_call_grpc():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_get_goldengate_deployment_version_empty_call_grpc():
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_deployment_version), "__call__"
-    ) as call:
-        call.return_value = goldengate_deployment_version.GoldengateDeploymentVersion()
-        client.get_goldengate_deployment_version(request=None)
-
-        # Establish that the underlying stub method was called.
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        request_msg = (
-            goldengate_deployment_version.GetGoldengateDeploymentVersionRequest()
-        )
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
 def test_list_goldengate_deployment_versions_empty_call_grpc():
     client = OracleDatabaseClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -55849,28 +54359,6 @@ def test_list_goldengate_deployment_versions_empty_call_grpc():
         request_msg = (
             goldengate_deployment_version.ListGoldengateDeploymentVersionsRequest()
         )
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-def test_get_goldengate_deployment_type_empty_call_grpc():
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_deployment_type), "__call__"
-    ) as call:
-        call.return_value = goldengate_deployment_type.GoldengateDeploymentType()
-        client.get_goldengate_deployment_type(request=None)
-
-        # Establish that the underlying stub method was called.
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        request_msg = goldengate_deployment_type.GetGoldengateDeploymentTypeRequest()
         assert args[0] == request_msg
 
 
@@ -55900,30 +54388,6 @@ def test_list_goldengate_deployment_types_empty_call_grpc():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_get_goldengate_deployment_environment_empty_call_grpc():
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_deployment_environment), "__call__"
-    ) as call:
-        call.return_value = (
-            goldengate_deployment_environment.GoldengateDeploymentEnvironment()
-        )
-        client.get_goldengate_deployment_environment(request=None)
-
-        # Establish that the underlying stub method was called.
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        request_msg = goldengate_deployment_environment.GetGoldengateDeploymentEnvironmentRequest()
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
 def test_list_goldengate_deployment_environments_empty_call_grpc():
     client = OracleDatabaseClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -55941,28 +54405,6 @@ def test_list_goldengate_deployment_environments_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = goldengate_deployment_environment.ListGoldengateDeploymentEnvironmentsRequest()
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-def test_get_goldengate_connection_type_empty_call_grpc():
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_connection_type), "__call__"
-    ) as call:
-        call.return_value = goldengate_connection_type.GoldengateConnectionType()
-        client.get_goldengate_connection_type(request=None)
-
-        # Establish that the underlying stub method was called.
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        request_msg = goldengate_connection_type.GetGoldengateConnectionTypeRequest()
         assert args[0] == request_msg
 
 
@@ -56277,6 +54719,33 @@ async def test_delete_cloud_exadata_infrastructure_empty_call_grpc_asyncio():
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
+async def test_configure_exascale_cloud_exadata_infrastructure_empty_call_grpc_asyncio():
+    client = OracleDatabaseAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.configure_exascale_cloud_exadata_infrastructure),
+        "__call__",
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.configure_exascale_cloud_exadata_infrastructure(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = exadata_infra.ConfigureExascaleCloudExadataInfrastructureRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
 async def test_list_cloud_vm_clusters_empty_call_grpc_asyncio():
     client = OracleDatabaseAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -56329,6 +54798,7 @@ async def test_get_cloud_vm_cluster_empty_call_grpc_asyncio():
                 odb_network="odb_network_value",
                 odb_subnet="odb_subnet_value",
                 backup_odb_subnet="backup_odb_subnet_value",
+                exascale_db_storage_vault="exascale_db_storage_vault_value",
             )
         )
         await client.get_cloud_vm_cluster(request=None)
@@ -57405,6 +55875,7 @@ async def test_get_exascale_db_storage_vault_empty_call_grpc_asyncio():
                 display_name="display_name_value",
                 gcp_oracle_zone="gcp_oracle_zone_value",
                 entitlement_id="entitlement_id_value",
+                exadata_infrastructure="exadata_infrastructure_value",
             )
         )
         await client.get_exascale_db_storage_vault(request=None)
@@ -58015,37 +56486,6 @@ async def test_delete_goldengate_connection_empty_call_grpc_asyncio():
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_get_goldengate_deployment_version_empty_call_grpc_asyncio():
-    client = OracleDatabaseAsyncClient(
-        credentials=async_anonymous_credentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_deployment_version), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            goldengate_deployment_version.GoldengateDeploymentVersion(
-                name="name_value",
-                ocid="ocid_value",
-            )
-        )
-        await client.get_goldengate_deployment_version(request=None)
-
-        # Establish that the underlying stub method was called.
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        request_msg = (
-            goldengate_deployment_version.GetGoldengateDeploymentVersionRequest()
-        )
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-@pytest.mark.asyncio
 async def test_list_goldengate_deployment_versions_empty_call_grpc_asyncio():
     client = OracleDatabaseAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -58071,44 +56511,6 @@ async def test_list_goldengate_deployment_versions_empty_call_grpc_asyncio():
         request_msg = (
             goldengate_deployment_version.ListGoldengateDeploymentVersionsRequest()
         )
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-@pytest.mark.asyncio
-async def test_get_goldengate_deployment_type_empty_call_grpc_asyncio():
-    client = OracleDatabaseAsyncClient(
-        credentials=async_anonymous_credentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_deployment_type), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            goldengate_deployment_type.GoldengateDeploymentType(
-                name="name_value",
-                deployment_type=goldengate_deployment_type.GoldengateDeploymentType.DeploymentType.OGG,
-                category=goldengate_deployment_type.GoldengateDeploymentType.DeploymentCategory.DATA_REPLICATION_CATEGORY,
-                connection_types=["connection_types_value"],
-                display_name="display_name_value",
-                ogg_version="ogg_version_value",
-                source_technologies=["source_technologies_value"],
-                supported_capabilities=["supported_capabilities_value"],
-                supported_technologies_url="supported_technologies_url_value",
-                target_technologies=["target_technologies_value"],
-                default_username="default_username_value",
-            )
-        )
-        await client.get_goldengate_deployment_type(request=None)
-
-        # Establish that the underlying stub method was called.
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        request_msg = goldengate_deployment_type.GetGoldengateDeploymentTypeRequest()
         assert args[0] == request_msg
 
 
@@ -58144,44 +56546,6 @@ async def test_list_goldengate_deployment_types_empty_call_grpc_asyncio():
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_get_goldengate_deployment_environment_empty_call_grpc_asyncio():
-    client = OracleDatabaseAsyncClient(
-        credentials=async_anonymous_credentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_deployment_environment), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            goldengate_deployment_environment.GoldengateDeploymentEnvironment(
-                name="name_value",
-                category=goldengate_deployment_environment.GoldengateDeploymentEnvironment.DeploymentCategory.DATA_REPLICATION_CATEGORY,
-                display_name="display_name_value",
-                default_cpu_core_count=2332,
-                environment_type=goldengate_deployment_environment.GoldengateDeploymentEnvironment.DeploymentEnvironmentType.PRODUCTION,
-                auto_scaling_enabled=True,
-                max_cpu_core_count=1917,
-                memory_gb_per_cpu_core=2326,
-                min_cpu_core_count=1915,
-                network_bandwidth_gbps_per_cpu_core=3710,
-                storage_usage_limit_gb_per_cpu_core=3684,
-            )
-        )
-        await client.get_goldengate_deployment_environment(request=None)
-
-        # Establish that the underlying stub method was called.
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        request_msg = goldengate_deployment_environment.GetGoldengateDeploymentEnvironmentRequest()
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-@pytest.mark.asyncio
 async def test_list_goldengate_deployment_environments_empty_call_grpc_asyncio():
     client = OracleDatabaseAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -58205,36 +56569,6 @@ async def test_list_goldengate_deployment_environments_empty_call_grpc_asyncio()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = goldengate_deployment_environment.ListGoldengateDeploymentEnvironmentsRequest()
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-@pytest.mark.asyncio
-async def test_get_goldengate_connection_type_empty_call_grpc_asyncio():
-    client = OracleDatabaseAsyncClient(
-        credentials=async_anonymous_credentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_connection_type), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            goldengate_connection_type.GoldengateConnectionType(
-                name="name_value",
-                connection_type=goldengate_connection_type.GoldengateConnectionType.ConnectionType.GOLDENGATE,
-                technology_types=["technology_types_value"],
-            )
-        )
-        await client.get_goldengate_connection_type(request=None)
-
-        # Establish that the underlying stub method was called.
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        request_msg = goldengate_connection_type.GetGoldengateConnectionTypeRequest()
         assert args[0] == request_msg
 
 
@@ -58847,6 +57181,10 @@ def test_create_cloud_exadata_infrastructure_rest_call_success(request_type):
             "compute_model": 1,
             "database_server_type": "database_server_type_value",
             "storage_server_type": "storage_server_type_value",
+            "exascale_config": {
+                "total_storage_size_gb": 2234,
+                "available_storage_size_gb": 2615,
+            },
         },
         "labels": {},
         "create_time": {},
@@ -59144,6 +57482,144 @@ def test_delete_cloud_exadata_infrastructure_rest_interceptors(null_interceptor)
         post_with_metadata.assert_called_once()
 
 
+def test_configure_exascale_cloud_exadata_infrastructure_rest_bad_request(
+    request_type=exadata_infra.ConfigureExascaleCloudExadataInfrastructureRequest,
+):
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/cloudExadataInfrastructures/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.configure_exascale_cloud_exadata_infrastructure(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        exadata_infra.ConfigureExascaleCloudExadataInfrastructureRequest,
+        dict,
+    ],
+)
+def test_configure_exascale_cloud_exadata_infrastructure_rest_call_success(
+    request_type,
+):
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/cloudExadataInfrastructures/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.configure_exascale_cloud_exadata_infrastructure(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_configure_exascale_cloud_exadata_infrastructure_rest_interceptors(
+    null_interceptor,
+):
+    transport = transports.OracleDatabaseRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.OracleDatabaseRestInterceptor(),
+    )
+    client = OracleDatabaseClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "post_configure_exascale_cloud_exadata_infrastructure",
+        ) as post,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "post_configure_exascale_cloud_exadata_infrastructure_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "pre_configure_exascale_cloud_exadata_infrastructure",
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = (
+            exadata_infra.ConfigureExascaleCloudExadataInfrastructureRequest.pb(
+                exadata_infra.ConfigureExascaleCloudExadataInfrastructureRequest()
+            )
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = exadata_infra.ConfigureExascaleCloudExadataInfrastructureRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
+
+        client.configure_exascale_cloud_exadata_infrastructure(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
 def test_list_cloud_vm_clusters_rest_bad_request(
     request_type=oracledatabase.ListCloudVmClustersRequest,
 ):
@@ -59342,6 +57818,7 @@ def test_get_cloud_vm_cluster_rest_call_success(request_type):
             odb_network="odb_network_value",
             odb_subnet="odb_subnet_value",
             backup_odb_subnet="backup_odb_subnet_value",
+            exascale_db_storage_vault="exascale_db_storage_vault_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -59368,6 +57845,7 @@ def test_get_cloud_vm_cluster_rest_call_success(request_type):
     assert response.odb_network == "odb_network_value"
     assert response.odb_subnet == "odb_subnet_value"
     assert response.backup_odb_subnet == "backup_odb_subnet_value"
+    assert response.exascale_db_storage_vault == "exascale_db_storage_vault_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -59517,6 +57995,7 @@ def test_create_cloud_vm_cluster_rest_call_success(request_type):
             "dns_listener_ip": "dns_listener_ip_value",
             "cluster_name": "cluster_name_value",
             "compute_model": 1,
+            "storage_management_type": 1,
         },
         "labels": {},
         "create_time": {"seconds": 751, "nanos": 543},
@@ -59531,6 +58010,7 @@ def test_create_cloud_vm_cluster_rest_call_success(request_type):
             "service_agent_email": "service_agent_email_value",
             "connection_state": 1,
         },
+        "exascale_db_storage_vault": "exascale_db_storage_vault_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -65547,6 +64027,7 @@ def test_get_exascale_db_storage_vault_rest_call_success(request_type):
             display_name="display_name_value",
             gcp_oracle_zone="gcp_oracle_zone_value",
             entitlement_id="entitlement_id_value",
+            exadata_infrastructure="exadata_infrastructure_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -65567,6 +64048,7 @@ def test_get_exascale_db_storage_vault_rest_call_success(request_type):
     assert response.display_name == "display_name_value"
     assert response.gcp_oracle_zone == "gcp_oracle_zone_value"
     assert response.entitlement_id == "entitlement_id_value"
+    assert response.exadata_infrastructure == "exadata_infrastructure_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -65704,6 +64186,7 @@ def test_create_exascale_db_storage_vault_rest_call_success(request_type):
         "create_time": {"seconds": 751, "nanos": 543},
         "entitlement_id": "entitlement_id_value",
         "labels": {},
+        "exadata_infrastructure": "exadata_infrastructure_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -69371,158 +67854,6 @@ def test_delete_goldengate_connection_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_get_goldengate_deployment_version_rest_bad_request(
-    request_type=goldengate_deployment_version.GetGoldengateDeploymentVersionRequest,
-):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/goldengateDeploymentVersions/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with (
-        mock.patch.object(Session, "request") as req,
-        pytest.raises(core_exceptions.BadRequest),
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = mock.Mock()
-        json_return_value = ""
-        response_value.json = mock.Mock(return_value={})
-        response_value.status_code = 400
-        response_value.request = mock.Mock()
-        req.return_value = response_value
-        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        client.get_goldengate_deployment_version(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        goldengate_deployment_version.GetGoldengateDeploymentVersionRequest,
-        dict,
-    ],
-)
-def test_get_goldengate_deployment_version_rest_call_success(request_type):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/goldengateDeploymentVersions/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = goldengate_deployment_version.GoldengateDeploymentVersion(
-            name="name_value",
-            ocid="ocid_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = mock.Mock()
-        response_value.status_code = 200
-
-        # Convert return value to protobuf type
-        return_value = goldengate_deployment_version.GoldengateDeploymentVersion.pb(
-            return_value
-        )
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value.content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        response = client.get_goldengate_deployment_version(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(
-        response, goldengate_deployment_version.GoldengateDeploymentVersion
-    )
-    assert response.name == "name_value"
-    assert response.ocid == "ocid_value"
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_goldengate_deployment_version_rest_interceptors(null_interceptor):
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.OracleDatabaseRestInterceptor(),
-    )
-    client = OracleDatabaseClient(transport=transport)
-
-    with (
-        mock.patch.object(type(client.transport._session), "request") as req,
-        mock.patch.object(path_template, "transcode") as transcode,
-        mock.patch.object(
-            transports.OracleDatabaseRestInterceptor,
-            "post_get_goldengate_deployment_version",
-        ) as post,
-        mock.patch.object(
-            transports.OracleDatabaseRestInterceptor,
-            "post_get_goldengate_deployment_version_with_metadata",
-        ) as post_with_metadata,
-        mock.patch.object(
-            transports.OracleDatabaseRestInterceptor,
-            "pre_get_goldengate_deployment_version",
-        ) as pre,
-    ):
-        pre.assert_not_called()
-        post.assert_not_called()
-        post_with_metadata.assert_not_called()
-        pb_message = (
-            goldengate_deployment_version.GetGoldengateDeploymentVersionRequest.pb(
-                goldengate_deployment_version.GetGoldengateDeploymentVersionRequest()
-            )
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = (
-            goldengate_deployment_version.GoldengateDeploymentVersion.to_json(
-                goldengate_deployment_version.GoldengateDeploymentVersion()
-            )
-        )
-        req.return_value.content = return_value
-
-        request = goldengate_deployment_version.GetGoldengateDeploymentVersionRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = goldengate_deployment_version.GoldengateDeploymentVersion()
-        post_with_metadata.return_value = (
-            goldengate_deployment_version.GoldengateDeploymentVersion(),
-            metadata,
-        )
-
-        client.get_goldengate_deployment_version(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-        post_with_metadata.assert_called_once()
-
-
 def test_list_goldengate_deployment_versions_rest_bad_request(
     request_type=goldengate_deployment_version.ListGoldengateDeploymentVersionsRequest,
 ):
@@ -69663,176 +67994,6 @@ def test_list_goldengate_deployment_versions_rest_interceptors(null_interceptor)
         )
 
         client.list_goldengate_deployment_versions(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-        post_with_metadata.assert_called_once()
-
-
-def test_get_goldengate_deployment_type_rest_bad_request(
-    request_type=goldengate_deployment_type.GetGoldengateDeploymentTypeRequest,
-):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/goldengateDeploymentTypes/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with (
-        mock.patch.object(Session, "request") as req,
-        pytest.raises(core_exceptions.BadRequest),
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = mock.Mock()
-        json_return_value = ""
-        response_value.json = mock.Mock(return_value={})
-        response_value.status_code = 400
-        response_value.request = mock.Mock()
-        req.return_value = response_value
-        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        client.get_goldengate_deployment_type(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        goldengate_deployment_type.GetGoldengateDeploymentTypeRequest,
-        dict,
-    ],
-)
-def test_get_goldengate_deployment_type_rest_call_success(request_type):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/goldengateDeploymentTypes/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = goldengate_deployment_type.GoldengateDeploymentType(
-            name="name_value",
-            deployment_type=goldengate_deployment_type.GoldengateDeploymentType.DeploymentType.OGG,
-            category=goldengate_deployment_type.GoldengateDeploymentType.DeploymentCategory.DATA_REPLICATION_CATEGORY,
-            connection_types=["connection_types_value"],
-            display_name="display_name_value",
-            ogg_version="ogg_version_value",
-            source_technologies=["source_technologies_value"],
-            supported_capabilities=["supported_capabilities_value"],
-            supported_technologies_url="supported_technologies_url_value",
-            target_technologies=["target_technologies_value"],
-            default_username="default_username_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = mock.Mock()
-        response_value.status_code = 200
-
-        # Convert return value to protobuf type
-        return_value = goldengate_deployment_type.GoldengateDeploymentType.pb(
-            return_value
-        )
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value.content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        response = client.get_goldengate_deployment_type(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, goldengate_deployment_type.GoldengateDeploymentType)
-    assert response.name == "name_value"
-    assert (
-        response.deployment_type
-        == goldengate_deployment_type.GoldengateDeploymentType.DeploymentType.OGG
-    )
-    assert (
-        response.category
-        == goldengate_deployment_type.GoldengateDeploymentType.DeploymentCategory.DATA_REPLICATION_CATEGORY
-    )
-    assert response.connection_types == ["connection_types_value"]
-    assert response.display_name == "display_name_value"
-    assert response.ogg_version == "ogg_version_value"
-    assert response.source_technologies == ["source_technologies_value"]
-    assert response.supported_capabilities == ["supported_capabilities_value"]
-    assert response.supported_technologies_url == "supported_technologies_url_value"
-    assert response.target_technologies == ["target_technologies_value"]
-    assert response.default_username == "default_username_value"
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_goldengate_deployment_type_rest_interceptors(null_interceptor):
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.OracleDatabaseRestInterceptor(),
-    )
-    client = OracleDatabaseClient(transport=transport)
-
-    with (
-        mock.patch.object(type(client.transport._session), "request") as req,
-        mock.patch.object(path_template, "transcode") as transcode,
-        mock.patch.object(
-            transports.OracleDatabaseRestInterceptor,
-            "post_get_goldengate_deployment_type",
-        ) as post,
-        mock.patch.object(
-            transports.OracleDatabaseRestInterceptor,
-            "post_get_goldengate_deployment_type_with_metadata",
-        ) as post_with_metadata,
-        mock.patch.object(
-            transports.OracleDatabaseRestInterceptor,
-            "pre_get_goldengate_deployment_type",
-        ) as pre,
-    ):
-        pre.assert_not_called()
-        post.assert_not_called()
-        post_with_metadata.assert_not_called()
-        pb_message = goldengate_deployment_type.GetGoldengateDeploymentTypeRequest.pb(
-            goldengate_deployment_type.GetGoldengateDeploymentTypeRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = goldengate_deployment_type.GoldengateDeploymentType.to_json(
-            goldengate_deployment_type.GoldengateDeploymentType()
-        )
-        req.return_value.content = return_value
-
-        request = goldengate_deployment_type.GetGoldengateDeploymentTypeRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = goldengate_deployment_type.GoldengateDeploymentType()
-        post_with_metadata.return_value = (
-            goldengate_deployment_type.GoldengateDeploymentType(),
-            metadata,
-        )
-
-        client.get_goldengate_deployment_type(
             request,
             metadata=[
                 ("key", "val"),
@@ -69993,184 +68154,6 @@ def test_list_goldengate_deployment_types_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_get_goldengate_deployment_environment_rest_bad_request(
-    request_type=goldengate_deployment_environment.GetGoldengateDeploymentEnvironmentRequest,
-):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/goldengateDeploymentEnvironments/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with (
-        mock.patch.object(Session, "request") as req,
-        pytest.raises(core_exceptions.BadRequest),
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = mock.Mock()
-        json_return_value = ""
-        response_value.json = mock.Mock(return_value={})
-        response_value.status_code = 400
-        response_value.request = mock.Mock()
-        req.return_value = response_value
-        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        client.get_goldengate_deployment_environment(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        goldengate_deployment_environment.GetGoldengateDeploymentEnvironmentRequest,
-        dict,
-    ],
-)
-def test_get_goldengate_deployment_environment_rest_call_success(request_type):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/goldengateDeploymentEnvironments/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = goldengate_deployment_environment.GoldengateDeploymentEnvironment(
-            name="name_value",
-            category=goldengate_deployment_environment.GoldengateDeploymentEnvironment.DeploymentCategory.DATA_REPLICATION_CATEGORY,
-            display_name="display_name_value",
-            default_cpu_core_count=2332,
-            environment_type=goldengate_deployment_environment.GoldengateDeploymentEnvironment.DeploymentEnvironmentType.PRODUCTION,
-            auto_scaling_enabled=True,
-            max_cpu_core_count=1917,
-            memory_gb_per_cpu_core=2326,
-            min_cpu_core_count=1915,
-            network_bandwidth_gbps_per_cpu_core=3710,
-            storage_usage_limit_gb_per_cpu_core=3684,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = mock.Mock()
-        response_value.status_code = 200
-
-        # Convert return value to protobuf type
-        return_value = (
-            goldengate_deployment_environment.GoldengateDeploymentEnvironment.pb(
-                return_value
-            )
-        )
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value.content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        response = client.get_goldengate_deployment_environment(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(
-        response, goldengate_deployment_environment.GoldengateDeploymentEnvironment
-    )
-    assert response.name == "name_value"
-    assert (
-        response.category
-        == goldengate_deployment_environment.GoldengateDeploymentEnvironment.DeploymentCategory.DATA_REPLICATION_CATEGORY
-    )
-    assert response.display_name == "display_name_value"
-    assert response.default_cpu_core_count == 2332
-    assert (
-        response.environment_type
-        == goldengate_deployment_environment.GoldengateDeploymentEnvironment.DeploymentEnvironmentType.PRODUCTION
-    )
-    assert response.auto_scaling_enabled is True
-    assert response.max_cpu_core_count == 1917
-    assert response.memory_gb_per_cpu_core == 2326
-    assert response.min_cpu_core_count == 1915
-    assert response.network_bandwidth_gbps_per_cpu_core == 3710
-    assert response.storage_usage_limit_gb_per_cpu_core == 3684
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_goldengate_deployment_environment_rest_interceptors(null_interceptor):
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.OracleDatabaseRestInterceptor(),
-    )
-    client = OracleDatabaseClient(transport=transport)
-
-    with (
-        mock.patch.object(type(client.transport._session), "request") as req,
-        mock.patch.object(path_template, "transcode") as transcode,
-        mock.patch.object(
-            transports.OracleDatabaseRestInterceptor,
-            "post_get_goldengate_deployment_environment",
-        ) as post,
-        mock.patch.object(
-            transports.OracleDatabaseRestInterceptor,
-            "post_get_goldengate_deployment_environment_with_metadata",
-        ) as post_with_metadata,
-        mock.patch.object(
-            transports.OracleDatabaseRestInterceptor,
-            "pre_get_goldengate_deployment_environment",
-        ) as pre,
-    ):
-        pre.assert_not_called()
-        post.assert_not_called()
-        post_with_metadata.assert_not_called()
-        pb_message = goldengate_deployment_environment.GetGoldengateDeploymentEnvironmentRequest.pb(
-            goldengate_deployment_environment.GetGoldengateDeploymentEnvironmentRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = (
-            goldengate_deployment_environment.GoldengateDeploymentEnvironment.to_json(
-                goldengate_deployment_environment.GoldengateDeploymentEnvironment()
-            )
-        )
-        req.return_value.content = return_value
-
-        request = goldengate_deployment_environment.GetGoldengateDeploymentEnvironmentRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = (
-            goldengate_deployment_environment.GoldengateDeploymentEnvironment()
-        )
-        post_with_metadata.return_value = (
-            goldengate_deployment_environment.GoldengateDeploymentEnvironment(),
-            metadata,
-        )
-
-        client.get_goldengate_deployment_environment(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-        post_with_metadata.assert_called_once()
-
-
 def test_list_goldengate_deployment_environments_rest_bad_request(
     request_type=goldengate_deployment_environment.ListGoldengateDeploymentEnvironmentsRequest,
 ):
@@ -70301,157 +68284,6 @@ def test_list_goldengate_deployment_environments_rest_interceptors(null_intercep
         )
 
         client.list_goldengate_deployment_environments(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-        post_with_metadata.assert_called_once()
-
-
-def test_get_goldengate_connection_type_rest_bad_request(
-    request_type=goldengate_connection_type.GetGoldengateConnectionTypeRequest,
-):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/goldengateConnectionTypes/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with (
-        mock.patch.object(Session, "request") as req,
-        pytest.raises(core_exceptions.BadRequest),
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = mock.Mock()
-        json_return_value = ""
-        response_value.json = mock.Mock(return_value={})
-        response_value.status_code = 400
-        response_value.request = mock.Mock()
-        req.return_value = response_value
-        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        client.get_goldengate_connection_type(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        goldengate_connection_type.GetGoldengateConnectionTypeRequest,
-        dict,
-    ],
-)
-def test_get_goldengate_connection_type_rest_call_success(request_type):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/goldengateConnectionTypes/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = goldengate_connection_type.GoldengateConnectionType(
-            name="name_value",
-            connection_type=goldengate_connection_type.GoldengateConnectionType.ConnectionType.GOLDENGATE,
-            technology_types=["technology_types_value"],
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = mock.Mock()
-        response_value.status_code = 200
-
-        # Convert return value to protobuf type
-        return_value = goldengate_connection_type.GoldengateConnectionType.pb(
-            return_value
-        )
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value.content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        response = client.get_goldengate_connection_type(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, goldengate_connection_type.GoldengateConnectionType)
-    assert response.name == "name_value"
-    assert (
-        response.connection_type
-        == goldengate_connection_type.GoldengateConnectionType.ConnectionType.GOLDENGATE
-    )
-    assert response.technology_types == ["technology_types_value"]
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_goldengate_connection_type_rest_interceptors(null_interceptor):
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.OracleDatabaseRestInterceptor(),
-    )
-    client = OracleDatabaseClient(transport=transport)
-
-    with (
-        mock.patch.object(type(client.transport._session), "request") as req,
-        mock.patch.object(path_template, "transcode") as transcode,
-        mock.patch.object(
-            transports.OracleDatabaseRestInterceptor,
-            "post_get_goldengate_connection_type",
-        ) as post,
-        mock.patch.object(
-            transports.OracleDatabaseRestInterceptor,
-            "post_get_goldengate_connection_type_with_metadata",
-        ) as post_with_metadata,
-        mock.patch.object(
-            transports.OracleDatabaseRestInterceptor,
-            "pre_get_goldengate_connection_type",
-        ) as pre,
-    ):
-        pre.assert_not_called()
-        post.assert_not_called()
-        post_with_metadata.assert_not_called()
-        pb_message = goldengate_connection_type.GetGoldengateConnectionTypeRequest.pb(
-            goldengate_connection_type.GetGoldengateConnectionTypeRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = goldengate_connection_type.GoldengateConnectionType.to_json(
-            goldengate_connection_type.GoldengateConnectionType()
-        )
-        req.return_value.content = return_value
-
-        request = goldengate_connection_type.GetGoldengateConnectionTypeRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = goldengate_connection_type.GoldengateConnectionType()
-        post_with_metadata.return_value = (
-            goldengate_connection_type.GoldengateConnectionType(),
-            metadata,
-        )
-
-        client.get_goldengate_connection_type(
             request,
             metadata=[
                 ("key", "val"),
@@ -72152,6 +69984,28 @@ def test_delete_cloud_exadata_infrastructure_empty_call_rest():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
+def test_configure_exascale_cloud_exadata_infrastructure_empty_call_rest():
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.configure_exascale_cloud_exadata_infrastructure),
+        "__call__",
+    ) as call:
+        client.configure_exascale_cloud_exadata_infrastructure(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = exadata_infra.ConfigureExascaleCloudExadataInfrastructureRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 def test_list_cloud_vm_clusters_empty_call_rest():
     client = OracleDatabaseClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -73434,29 +71288,6 @@ def test_delete_goldengate_connection_empty_call_rest():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_get_goldengate_deployment_version_empty_call_rest():
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_deployment_version), "__call__"
-    ) as call:
-        client.get_goldengate_deployment_version(request=None)
-
-        # Establish that the underlying stub method was called.
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        request_msg = (
-            goldengate_deployment_version.GetGoldengateDeploymentVersionRequest()
-        )
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
 def test_list_goldengate_deployment_versions_empty_call_rest():
     client = OracleDatabaseClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -73475,27 +71306,6 @@ def test_list_goldengate_deployment_versions_empty_call_rest():
         request_msg = (
             goldengate_deployment_version.ListGoldengateDeploymentVersionsRequest()
         )
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-def test_get_goldengate_deployment_type_empty_call_rest():
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_deployment_type), "__call__"
-    ) as call:
-        client.get_goldengate_deployment_type(request=None)
-
-        # Establish that the underlying stub method was called.
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        request_msg = goldengate_deployment_type.GetGoldengateDeploymentTypeRequest()
         assert args[0] == request_msg
 
 
@@ -73522,27 +71332,6 @@ def test_list_goldengate_deployment_types_empty_call_rest():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_get_goldengate_deployment_environment_empty_call_rest():
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_deployment_environment), "__call__"
-    ) as call:
-        client.get_goldengate_deployment_environment(request=None)
-
-        # Establish that the underlying stub method was called.
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        request_msg = goldengate_deployment_environment.GetGoldengateDeploymentEnvironmentRequest()
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
 def test_list_goldengate_deployment_environments_empty_call_rest():
     client = OracleDatabaseClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -73559,27 +71348,6 @@ def test_list_goldengate_deployment_environments_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = goldengate_deployment_environment.ListGoldengateDeploymentEnvironmentsRequest()
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-def test_get_goldengate_connection_type_empty_call_rest():
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_connection_type), "__call__"
-    ) as call:
-        client.get_goldengate_connection_type(request=None)
-
-        # Establish that the underlying stub method was called.
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        request_msg = goldengate_connection_type.GetGoldengateConnectionTypeRequest()
         assert args[0] == request_msg
 
 
@@ -73807,6 +71575,7 @@ def test_oracle_database_base_transport():
         "get_cloud_exadata_infrastructure",
         "create_cloud_exadata_infrastructure",
         "delete_cloud_exadata_infrastructure",
+        "configure_exascale_cloud_exadata_infrastructure",
         "list_cloud_vm_clusters",
         "get_cloud_vm_cluster",
         "create_cloud_vm_cluster",
@@ -73869,13 +71638,9 @@ def test_oracle_database_base_transport():
         "get_goldengate_connection",
         "create_goldengate_connection",
         "delete_goldengate_connection",
-        "get_goldengate_deployment_version",
         "list_goldengate_deployment_versions",
-        "get_goldengate_deployment_type",
         "list_goldengate_deployment_types",
-        "get_goldengate_deployment_environment",
         "list_goldengate_deployment_environments",
-        "get_goldengate_connection_type",
         "list_goldengate_connection_types",
         "list_db_versions",
         "list_database_character_sets",
@@ -74172,6 +71937,13 @@ def test_oracle_database_client_transport_session_collision(transport_name):
     session1 = client1.transport.delete_cloud_exadata_infrastructure._session
     session2 = client2.transport.delete_cloud_exadata_infrastructure._session
     assert session1 != session2
+    session1 = (
+        client1.transport.configure_exascale_cloud_exadata_infrastructure._session
+    )
+    session2 = (
+        client2.transport.configure_exascale_cloud_exadata_infrastructure._session
+    )
+    assert session1 != session2
     session1 = client1.transport.list_cloud_vm_clusters._session
     session2 = client2.transport.list_cloud_vm_clusters._session
     assert session1 != session2
@@ -74358,26 +72130,14 @@ def test_oracle_database_client_transport_session_collision(transport_name):
     session1 = client1.transport.delete_goldengate_connection._session
     session2 = client2.transport.delete_goldengate_connection._session
     assert session1 != session2
-    session1 = client1.transport.get_goldengate_deployment_version._session
-    session2 = client2.transport.get_goldengate_deployment_version._session
-    assert session1 != session2
     session1 = client1.transport.list_goldengate_deployment_versions._session
     session2 = client2.transport.list_goldengate_deployment_versions._session
-    assert session1 != session2
-    session1 = client1.transport.get_goldengate_deployment_type._session
-    session2 = client2.transport.get_goldengate_deployment_type._session
     assert session1 != session2
     session1 = client1.transport.list_goldengate_deployment_types._session
     session2 = client2.transport.list_goldengate_deployment_types._session
     assert session1 != session2
-    session1 = client1.transport.get_goldengate_deployment_environment._session
-    session2 = client2.transport.get_goldengate_deployment_environment._session
-    assert session1 != session2
     session1 = client1.transport.list_goldengate_deployment_environments._session
     session2 = client2.transport.list_goldengate_deployment_environments._session
-    assert session1 != session2
-    session1 = client1.transport.get_goldengate_connection_type._session
-    session2 = client2.transport.get_goldengate_connection_type._session
     assert session1 != session2
     session1 = client1.transport.list_goldengate_connection_types._session
     session2 = client2.transport.list_goldengate_connection_types._session

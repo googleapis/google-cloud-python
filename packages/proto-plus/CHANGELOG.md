@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/proto-plus/#history
 
+## [1.28.1](https://github.com/googleapis/google-cloud-python/compare/proto-plus-v1.28.0...proto-plus-v1.28.1) (2026-07-07)
+
+
+### Bug Fixes
+
+* **tests:** add --cov-append to gapic-generator and proto-plus to preserve monorepo coverage ([#17603](https://github.com/googleapis/google-cloud-python/issues/17603)) ([2ddcf4d](https://github.com/googleapis/google-cloud-python/commit/2ddcf4dfc711771b284797569f7f8a2de902ade8))
+
 ## [1.28.0](https://github.com/googleapis/google-cloud-python/compare/proto-plus-v1.27.2...proto-plus-v1.28.0) (2026-05-06)
 
 ## [1.27.2](https://github.com/googleapis/google-cloud-python/compare/proto-plus-v1.27.1...proto-plus-v1.27.2) (2026-03-26)

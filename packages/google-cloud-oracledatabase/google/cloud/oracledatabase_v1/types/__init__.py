@@ -103,6 +103,8 @@ from .entitlement import (
 from .exadata_infra import (
     CloudExadataInfrastructure,
     CloudExadataInfrastructureProperties,
+    ConfigureExascaleCloudExadataInfrastructureRequest,
+    ExascaleConfig,
     MaintenanceWindow,
 )
 from .exadb_vm_cluster import (
@@ -185,7 +187,6 @@ from .goldengate_connection_assignment import (
     TestGoldengateConnectionAssignmentResponse,
 )
 from .goldengate_connection_type import (
-    GetGoldengateConnectionTypeRequest,
     GoldengateConnectionType,
     ListGoldengateConnectionTypesRequest,
     ListGoldengateConnectionTypesResponse,
@@ -211,19 +212,16 @@ from .goldengate_deployment import (
     StopGoldengateDeploymentRequest,
 )
 from .goldengate_deployment_environment import (
-    GetGoldengateDeploymentEnvironmentRequest,
     GoldengateDeploymentEnvironment,
     ListGoldengateDeploymentEnvironmentsRequest,
     ListGoldengateDeploymentEnvironmentsResponse,
 )
 from .goldengate_deployment_type import (
-    GetGoldengateDeploymentTypeRequest,
     GoldengateDeploymentType,
     ListGoldengateDeploymentTypesRequest,
     ListGoldengateDeploymentTypesResponse,
 )
 from .goldengate_deployment_version import (
-    GetGoldengateDeploymentVersionRequest,
     GoldengateDeploymentVersion,
     GoldengateDeploymentVersionProperties,
     ListGoldengateDeploymentVersionsRequest,
@@ -381,6 +379,8 @@ __all__ = (
     "Entitlement",
     "CloudExadataInfrastructure",
     "CloudExadataInfrastructureProperties",
+    "ConfigureExascaleCloudExadataInfrastructureRequest",
+    "ExascaleConfig",
     "MaintenanceWindow",
     "ExadbVmCluster",
     "ExadbVmClusterProperties",
@@ -451,7 +451,6 @@ __all__ = (
     "TestConnectionAssignmentError",
     "TestGoldengateConnectionAssignmentRequest",
     "TestGoldengateConnectionAssignmentResponse",
-    "GetGoldengateConnectionTypeRequest",
     "GoldengateConnectionType",
     "ListGoldengateConnectionTypesRequest",
     "ListGoldengateConnectionTypesResponse",
@@ -473,15 +472,12 @@ __all__ = (
     "ListGoldengateDeploymentsResponse",
     "StartGoldengateDeploymentRequest",
     "StopGoldengateDeploymentRequest",
-    "GetGoldengateDeploymentEnvironmentRequest",
     "GoldengateDeploymentEnvironment",
     "ListGoldengateDeploymentEnvironmentsRequest",
     "ListGoldengateDeploymentEnvironmentsResponse",
-    "GetGoldengateDeploymentTypeRequest",
     "GoldengateDeploymentType",
     "ListGoldengateDeploymentTypesRequest",
     "ListGoldengateDeploymentTypesResponse",
-    "GetGoldengateDeploymentVersionRequest",
     "GoldengateDeploymentVersion",
     "GoldengateDeploymentVersionProperties",
     "ListGoldengateDeploymentVersionsRequest",

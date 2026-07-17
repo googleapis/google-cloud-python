@@ -23,7 +23,6 @@ __protobuf__ = proto.module(
     package="google.cloud.oracledatabase.v1",
     manifest={
         "GoldengateConnectionType",
-        "GetGoldengateConnectionTypeRequest",
         "ListGoldengateConnectionTypesRequest",
         "ListGoldengateConnectionTypesResponse",
     },
@@ -169,21 +168,6 @@ class GoldengateConnectionType(proto.Message):
     technology_types: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
-    )
-
-
-class GetGoldengateConnectionTypeRequest(proto.Message):
-    r"""Message for getting a GoldengateConnectionType.
-
-    Attributes:
-        name (str):
-            Required. Name of the resource in the format:
-            projects/{project}/locations/{location}/goldengateConnectionTypes/{goldengate_connection_type}
-    """
-
-    name: str = proto.Field(
-        proto.STRING,
-        number=1,
     )
 
 

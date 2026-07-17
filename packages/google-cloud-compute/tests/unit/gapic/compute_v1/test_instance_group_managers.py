@@ -1899,6 +1899,9 @@ def test_aggregated_list_rest_pager(transport: str = "rest"):
 
         pager = client.aggregated_list(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         assert isinstance(pager.get("a"), compute.InstanceGroupManagersScopedList)
         assert pager.get("h") is None
 
@@ -2870,7 +2873,12 @@ def test_delete_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials()
     ).delete._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("request_id",))
+    assert not set(unset_fields) - set(
+        (
+            "no_graceful_shutdown",
+            "request_id",
+        )
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -2930,7 +2938,12 @@ def test_delete_rest_unset_required_fields():
 
     unset_fields = transport.delete._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("requestId",))
+        set(
+            (
+                "noGracefulShutdown",
+                "requestId",
+            )
+        )
         & set(
             (
                 "instanceGroupManager",
@@ -3079,7 +3092,12 @@ def test_delete_unary_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials()
     ).delete._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("request_id",))
+    assert not set(unset_fields) - set(
+        (
+            "no_graceful_shutdown",
+            "request_id",
+        )
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -3139,7 +3157,12 @@ def test_delete_unary_rest_unset_required_fields():
 
     unset_fields = transport.delete._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("requestId",))
+        set(
+            (
+                "noGracefulShutdown",
+                "requestId",
+            )
+        )
         & set(
             (
                 "instanceGroupManager",
@@ -3290,7 +3313,12 @@ def test_delete_instances_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials()
     ).delete_instances._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("request_id",))
+    assert not set(unset_fields) - set(
+        (
+            "no_graceful_shutdown",
+            "request_id",
+        )
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -3351,7 +3379,12 @@ def test_delete_instances_rest_unset_required_fields():
 
     unset_fields = transport.delete_instances._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("requestId",))
+        set(
+            (
+                "noGracefulShutdown",
+                "requestId",
+            )
+        )
         & set(
             (
                 "instanceGroupManager",
@@ -3509,7 +3542,12 @@ def test_delete_instances_unary_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials()
     ).delete_instances._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("request_id",))
+    assert not set(unset_fields) - set(
+        (
+            "no_graceful_shutdown",
+            "request_id",
+        )
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -3570,7 +3608,12 @@ def test_delete_instances_unary_rest_unset_required_fields():
 
     unset_fields = transport.delete_instances._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("requestId",))
+        set(
+            (
+                "noGracefulShutdown",
+                "requestId",
+            )
+        )
         & set(
             (
                 "instanceGroupManager",
@@ -4987,6 +5030,9 @@ def test_list_rest_pager(transport: str = "rest"):
 
         pager = client.list(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, compute.InstanceGroupManager) for i in results)
@@ -5276,6 +5322,9 @@ def test_list_errors_rest_pager(transport: str = "rest"):
         }
 
         pager = client.list_errors(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -5575,6 +5624,9 @@ def test_list_managed_instances_rest_pager(transport: str = "rest"):
 
         pager = client.list_managed_instances(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, compute.ManagedInstance) for i in results)
@@ -5872,6 +5924,9 @@ def test_list_per_instance_configs_rest_pager(transport: str = "rest"):
         }
 
         pager = client.list_per_instance_configs(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -6860,7 +6915,12 @@ def test_recreate_instances_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials()
     ).recreate_instances._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("request_id",))
+    assert not set(unset_fields) - set(
+        (
+            "no_graceful_shutdown",
+            "request_id",
+        )
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -6921,7 +6981,12 @@ def test_recreate_instances_rest_unset_required_fields():
 
     unset_fields = transport.recreate_instances._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("requestId",))
+        set(
+            (
+                "noGracefulShutdown",
+                "requestId",
+            )
+        )
         & set(
             (
                 "instanceGroupManager",
@@ -7081,7 +7146,12 @@ def test_recreate_instances_unary_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials()
     ).recreate_instances._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("request_id",))
+    assert not set(unset_fields) - set(
+        (
+            "no_graceful_shutdown",
+            "request_id",
+        )
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -7142,7 +7212,12 @@ def test_recreate_instances_unary_rest_unset_required_fields():
 
     unset_fields = transport.recreate_instances._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("requestId",))
+        set(
+            (
+                "noGracefulShutdown",
+                "requestId",
+            )
+        )
         & set(
             (
                 "instanceGroupManager",
@@ -9520,7 +9595,12 @@ def test_stop_instances_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials()
     ).stop_instances._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("request_id",))
+    assert not set(unset_fields) - set(
+        (
+            "no_graceful_shutdown",
+            "request_id",
+        )
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -9581,7 +9661,12 @@ def test_stop_instances_rest_unset_required_fields():
 
     unset_fields = transport.stop_instances._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("requestId",))
+        set(
+            (
+                "noGracefulShutdown",
+                "requestId",
+            )
+        )
         & set(
             (
                 "instanceGroupManager",
@@ -9737,7 +9822,12 @@ def test_stop_instances_unary_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials()
     ).stop_instances._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("request_id",))
+    assert not set(unset_fields) - set(
+        (
+            "no_graceful_shutdown",
+            "request_id",
+        )
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -9798,7 +9888,12 @@ def test_stop_instances_unary_rest_unset_required_fields():
 
     unset_fields = transport.stop_instances._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("requestId",))
+        set(
+            (
+                "noGracefulShutdown",
+                "requestId",
+            )
+        )
         & set(
             (
                 "instanceGroupManager",
@@ -12784,6 +12879,7 @@ def test_insert_rest_call_success(request_type):
             "default_action_on_failure": "default_action_on_failure_value",
             "force_update_on_repair": "force_update_on_repair_value",
             "on_failed_health_check": "on_failed_health_check_value",
+            "on_repair": {"allow_changing_zone": "allow_changing_zone_value"},
         },
         "instance_template": "instance_template_value",
         "kind": "kind_value",
@@ -13767,6 +13863,7 @@ def test_patch_rest_call_success(request_type):
             "default_action_on_failure": "default_action_on_failure_value",
             "force_update_on_repair": "force_update_on_repair_value",
             "on_failed_health_check": "on_failed_health_check_value",
+            "on_repair": {"allow_changing_zone": "allow_changing_zone_value"},
         },
         "instance_template": "instance_template_value",
         "kind": "kind_value",

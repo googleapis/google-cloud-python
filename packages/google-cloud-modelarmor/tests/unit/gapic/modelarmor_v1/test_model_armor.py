@@ -1667,6 +1667,9 @@ def test_list_templates_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, service.Template) for i in results)
@@ -1755,6 +1758,8 @@ async def test_list_templates_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -4899,6 +4904,9 @@ def test_list_templates_rest_pager(transport: str = "rest"):
 
         pager = client.list_templates(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, service.Template) for i in results)
@@ -7239,6 +7247,7 @@ def test_create_template_rest_call_success(request_type):
             "log_sanitize_operations": True,
             "enforcement_type": 1,
             "multi_language_detection": {"enable_multi_language_detection": True},
+            "modalities": [1],
         },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
@@ -7470,6 +7479,7 @@ def test_update_template_rest_call_success(request_type):
             "log_sanitize_operations": True,
             "enforcement_type": 1,
             "multi_language_detection": {"enable_multi_language_detection": True},
+            "modalities": [1],
         },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.

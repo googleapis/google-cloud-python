@@ -45,6 +45,17 @@ from .types.attachment import (
     UploadAttachmentRequest,
     UploadAttachmentResponse,
 )
+from .types.audience import Audience
+from .types.availability import (
+    Availability,
+    CustomStatus,
+    DoNotDisturbMetadata,
+    GetAvailabilityRequest,
+    MarkAsActiveRequest,
+    MarkAsAwayRequest,
+    MarkAsDoNotDisturbRequest,
+    UpdateAvailabilityRequest,
+)
 from .types.contextual_addon import ContextualAddOnMarkup
 from .types.deletion_metadata import DeletionMetadata
 from .types.event_payload import (
@@ -193,7 +204,7 @@ else:  # pragma: NO COVER
 
         def parse_version_to_tuple(version_string: str):
             """Safely converts a semantic version string to a comparable tuple of integers.
-            Example: "4.25.8" -> (4, 25, 8)
+            Example: "6.33.5" -> (6, 33, 5)
             Ignores non-numeric parts and handles common version formats.
             Args:
                 version_string: Version string in the format "x.y.z" or "x.y.z<suffix>"
@@ -222,9 +233,9 @@ else:  # pragma: NO COVER
                 return (None, "--")
 
         _dependency_package = "google.protobuf"
-        _next_supported_version = "4.25.8"
-        _next_supported_version_tuple = (4, 25, 8)
-        _recommendation = " (we recommend 6.x)"
+        _next_supported_version = "6.33.5"
+        _next_supported_version_tuple = (6, 33, 5)
+        _recommendation = " (we recommend 7.x)"
         (_version_used, _version_used_string) = _get_version(_dependency_package)
         if _version_used and _version_used < _next_supported_version_tuple:
             warnings.warn(
@@ -261,6 +272,8 @@ __all__ = (
     "AttachedGif",
     "Attachment",
     "AttachmentDataRef",
+    "Audience",
+    "Availability",
     "CalendarEventLinkData",
     "CardWithId",
     "ChatServiceClient",
@@ -277,6 +290,7 @@ __all__ = (
     "CreateSpaceRequest",
     "CustomEmoji",
     "CustomEmojiMetadata",
+    "CustomStatus",
     "DeleteCustomEmojiRequest",
     "DeleteMembershipRequest",
     "DeleteMessageRequest",
@@ -286,6 +300,7 @@ __all__ = (
     "DeletionMetadata",
     "Dialog",
     "DialogAction",
+    "DoNotDisturbMetadata",
     "DriveDataRef",
     "DriveLinkData",
     "Emoji",
@@ -295,6 +310,7 @@ __all__ = (
     "FindGroupChatsResponse",
     "ForwardedMetadata",
     "GetAttachmentRequest",
+    "GetAvailabilityRequest",
     "GetCustomEmojiRequest",
     "GetMembershipRequest",
     "GetMessageRequest",
@@ -321,6 +337,9 @@ __all__ = (
     "ListSpaceEventsResponse",
     "ListSpacesRequest",
     "ListSpacesResponse",
+    "MarkAsActiveRequest",
+    "MarkAsAwayRequest",
+    "MarkAsDoNotDisturbRequest",
     "MatchedUrl",
     "MeetSpaceLinkData",
     "Membership",
@@ -365,6 +384,7 @@ __all__ = (
     "SpaceView",
     "Thread",
     "ThreadReadState",
+    "UpdateAvailabilityRequest",
     "UpdateMembershipRequest",
     "UpdateMessageRequest",
     "UpdateSectionRequest",

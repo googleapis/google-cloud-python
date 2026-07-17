@@ -20,11 +20,60 @@ Scans a repository for references to specific dependency versions.
 import argparse
 import csv
 import datetime
+import fnmatch
 import os
 import re
 import sys
-from typing import Dict, List, Tuple, Any
+from typing import Dict, List, Tuple, Any, Optional
 import yaml
+
+
+def _safe_read_file(
+    file_path: str, 
+    required: bool = True, 
+    description: str = "file",
+    silent_missing: bool = False
+) -> Optional[str]:
+    """
+    Safely reads file content and handles common file errors.
+    
+    Args:
+        file_path: Path to the file.
+        required: If True, exits the program with code 1 on read failure.
+                  If False, prints a warning (or ignores) and returns None.
+        description: Description of the file type for error logging.
+        silent_missing: If True, silently ignores FileNotFoundError (returns None).
+        
+    Returns:
+        The file content string, or None if reading failed/was ignored.
+    """
+    try:
+        with open(file_path, 'r', encoding='utf-8') as f:
+            return f.read()
+    except FileNotFoundError:
+        if silent_missing:
+            return None
+        if required:
+            print(f"Error: {description.capitalize()} not found: {file_path}", file=sys.stderr)
+            sys.exit(1)
+        else:
+            print(f"Warning: {description.capitalize()} not found: {file_path}", file=sys.stderr)
+            return None
+    except PermissionError:
+        if required:
+            print(f"Error: Permission denied reading {description}: {file_path}", file=sys.stderr)
+            sys.exit(1)
+        else:
+            print(f"Warning: Permission denied reading {description}: {file_path}", file=sys.stderr)
+            return None
+    except (IOError, ValueError) as e:
+        if required:
+            print(f"Error reading {description} {file_path}: {e}", file=sys.stderr)
+            sys.exit(1)
+        else:
+            print(f"Warning: Error reading {description} {file_path}: {e}", file=sys.stderr)
+            return None
+
 
 class ConfigManager:
     """
@@ -106,15 +155,9 @@ class ConfigManager:
         
     def load_config(self) -> List[Dict[str, str]]:
         """Load and resolve rules from config."""
+        content = _safe_read_file(self.config_path, required=True, description="config file")
         try:
-            with open(self.config_path, 'r', encoding='utf-8') as f:
-                config = yaml.safe_load(f)
-        except FileNotFoundError:
-            print(f"Error: Config file not found: {self.config_path}", file=sys.stderr)
-            sys.exit(1)
-        except PermissionError:
-            print(f"Error: Permission denied reading config file: {self.config_path}", file=sys.stderr)
-            sys.exit(1)
+            config = yaml.safe_load(content)
         except yaml.YAMLError as e:
             print(f"Error parsing config file: {e}", file=sys.stderr)
             sys.exit(1)
@@ -137,7 +180,9 @@ class ConfigManager:
                     resolved_pattern = template.strip().format(**self.variables)
                     resolved_rules.append({
                         "name": name,
-                        "pattern": resolved_pattern
+                        "pattern": resolved_pattern,
+                        "dependency": self.dependency,
+                        "version": self.version
                     })
                 except KeyError as e:
                     print(f"Warning: Missing variable for interpolation in rule {name}: {e}", file=sys.stderr)
@@ -169,16 +214,23 @@ def scan_file(file_path: str, compiled_rules: List[Dict[str, re.Pattern]]) -> Li
                 if "version-scanner: ignore-next-line" in line:
                     skip_next = True
                     continue
-                if "version-scanner: ignore" in line:
+                if "version-scanner: ignore" in line and "version-scanner: ignore-rule" not in line and "version-scanner: ignore-next-line" not in line:
                     continue
                 for rule in compiled_rules:
                     match = rule["pattern"].search(line)
                     if match:
+                        version = rule.get("version")
+                        if version:
+                            pragma_pattern = rf"version-scanner\s*:\s*ignore-rule\s*=\s*{re.escape(str(rule['name']))}\s*:\s*{re.escape(str(version))}"
+                            if re.search(pragma_pattern, line, re.IGNORECASE):
+                                continue
                         results.append({
                             "rule_name": rule["name"],
                             "line_number": line_num,
                             "matched_string": match.group(0).strip(),
-                            "context_line": line.strip()
+                            "context_line": line.strip(),
+                            "dependency": rule.get("dependency", ""),
+                            "version": rule.get("version", "")
                         })
     except IOError as e:
         print(f"Warning: Could not read file {file_path}: {e}", file=sys.stderr)
@@ -326,14 +378,12 @@ def load_ignore_file(file_path: str) -> List[str]:
     Read ignore paths from a file.
     """
     ignore_dirs = []
-    try:
-        with open(file_path, 'r', encoding='utf-8') as f:
-            for line in f:
-                line = line.strip()
-                if line and not line.startswith('#'):
-                    ignore_dirs.append(line)
-    except FileNotFoundError:
-        pass
+    content = _safe_read_file(file_path, required=False, silent_missing=True)
+    if content:
+        for line in content.splitlines():
+            line = line.strip()
+            if line and not line.startswith('#'):
+                ignore_dirs.append(line)
     return ignore_dirs
 
 
@@ -445,30 +495,79 @@ def read_package_file(file_path: str) -> List[str]:
         A list of package paths.
     """
     packages = []
-    try:
-        with open(file_path, 'r', encoding='utf-8') as f:
-            for line in f:
-                line = line.strip()
-                if line and not line.startswith('#'):
-                    packages.append(line)
-    except FileNotFoundError:
-        print(f"Error: Package file not found: {file_path}", file=sys.stderr)
-        sys.exit(1)
-    except PermissionError:
-        print(f"Error: Permission denied reading package file: {file_path}", file=sys.stderr)
-        sys.exit(1)
-    except IOError as e:
-        print(f"Error reading package file: {e}", file=sys.stderr)
-        sys.exit(1)
+    content = _safe_read_file(file_path, required=True, description="package file")
+    if content:
+        for line in content.splitlines():
+            line = line.strip()
+            if line and not line.startswith('#'):
+                packages.append(line)
     return packages
+
+
+def _preprocess_ignore_patterns(ignore_patterns: List[str]) -> List[Tuple[str, str]]:
+    """Preprocesses ignore patterns into a classified list for faster matching.
+
+    Args:
+        ignore_patterns: A list of raw ignore patterns from .scannerignore.
+
+    Returns:
+        A list of tuples (type, pattern) where type is 'anchored', 'subpath', or 'filename'.
+    """
+    if not ignore_patterns:
+        return []
+    
+    preprocessed = []
+    for pattern in ignore_patterns:
+        pattern_lower = pattern.lower()
+        if '/' in pattern:
+            if pattern_lower.startswith('/'):
+                preprocessed.append(('anchored', pattern_lower[1:]))
+            else:
+                preprocessed.append(('subpath', pattern_lower))
+        else:
+            preprocessed.append(('filename', pattern_lower))
+    return preprocessed
+
+
+def _should_ignore(rel_path: str, name: str, preprocessed_patterns: List[Tuple[str, str]]) -> bool:
+    """Check if a file or directory matches any of the ignore patterns.
+    
+    Directories and files can be ignored by providing an ignore pattern in the 
+    .scannerignore file.
+
+    Args:
+        rel_path: The relative path of the file or directory from the scan root.
+        name: The name of the file or directory (basename).
+        preprocessed_patterns: A list of preprocessed ignore patterns.
+        
+    Returns:
+        True if the file or directory should be ignored, False otherwise.
+    """
+    if not preprocessed_patterns:
+        return False
+    name_lower = name.lower()
+    rel_path_norm = rel_path.replace(os.sep, '/').lower()
+    
+    for p_type, p_val in preprocessed_patterns:
+        if p_type == 'anchored':
+            if fnmatch.fnmatchcase(rel_path_norm, p_val):
+                return True
+        elif p_type == 'subpath':
+            if fnmatch.fnmatchcase(rel_path_norm, p_val) or fnmatch.fnmatchcase(rel_path_norm, f"*/{p_val}"):
+                return True
+        elif p_type == 'filename':
+            if fnmatch.fnmatchcase(name_lower, p_val):
+                return True
+    return False
 
 
 def scan_repository(
     root_path: str,
-    rules: List[Dict[str, str]],
+    rules: List[Dict[str, Any]],
     target_packages: List[str] = None,
     ignore_dirs: List[str] = None,
-    version_string: str = None
+    version_string: str = None,
+    targets: List[Tuple[str, str]] = None
 ) -> List[Dict[str, Any]]:
     """
     Scans the repository directory tree applying resolved regex patterns to files.
@@ -487,38 +586,59 @@ def scan_repository(
                          performs a full recursive scan of the repository.
         ignore_dirs: Optional list of directory names or glob-like files to ignore (case-insensitive).
         version_string: Optional target version string (e.g. "3.7") to scan for in filenames.
+        targets: Optional list of (dependency, version) tuples.
         
     Returns:
-        A list of dictionaries detailing each match: 'file_path', 'repo_path',
-        'package_name', 'rule_name', 'line_number', 'matched_string', 'context_line'.
+        A list of dictionaries detailing each match.
     """
-    ignore_lower = {i.lower() for i in ignore_dirs} if ignore_dirs else set()
     results = []
     
+    filename_targets = []
+    if targets:
+        filename_targets = targets
+    elif version_string:
+        dep = rules[0].get("dependency") if rules else None
+        filename_targets = [(dep, version_string)]
+        
     # Compile patterns once here
     compiled_rules = []
     for rule in rules:
         try:
             compiled_rules.append({
                 "name": rule["name"],
-                "pattern": re.compile(rule["pattern"], re.IGNORECASE)
+                "pattern": re.compile(rule["pattern"], re.IGNORECASE),
+                "dependency": rule.get("dependency", ""),
+                "version": rule.get("version", "")
             })
         except re.error as e:
             print(f"Error compiling regex for rule {rule['name']}: {e}", file=sys.stderr)
             continue
             
+    # Preprocess ignore patterns once
+    preprocessed_ignores = _preprocess_ignore_patterns(ignore_dirs)
+
     print(f"\nScanning repository: {root_path}")
     if target_packages:
         print(f"Filtering for packages: {target_packages}")
         
     for root, dirs, files in os.walk(root_path):
+        rel_root = os.path.relpath(root, root_path)
+        
+        # Helper to construct relative path for ignore matching
+        def get_rel_path(name):
+            return name if rel_root == "." else os.path.join(rel_root, name)
+            
         # Prune ignore directories (case-insensitive)
-        dirs[:] = [d for d in dirs if d.lower() not in ignore_lower]
+        dirs[:] = [
+            d for d in dirs 
+            if not _should_ignore(get_rel_path(d), d, preprocessed_ignores)
+        ]
         
         # Filter ignore files (case-insensitive)
-        files = [f for f in files if f.lower() not in ignore_lower]
-        
-        rel_root = os.path.relpath(root, root_path)
+        files = [
+            f for f in files 
+            if not _should_ignore(get_rel_path(f), f, preprocessed_ignores)
+        ]
         
         # Layout-agnostic generic subdirectory filtering
         if target_packages:
@@ -541,13 +661,16 @@ def scan_repository(
             matches = scan_file(file_path, compiled_rules)
             
             # Add filename match if applicable
-            if version_string and version_string in file:
-                matches.append({
-                    "rule_name": "filename_match",
-                    "line_number": 0,
-                    "matched_string": version_string,
-                    "context_line": f"Filename contains {version_string}"
-                })
+            for dep, ver in filename_targets:
+                if ver and ver in file:
+                    matches.append({
+                        "rule_name": "filename_match",
+                        "line_number": 0,
+                        "matched_string": ver,
+                        "context_line": f"Filename contains {ver}",
+                        "dependency": dep or "",
+                        "version": ver
+                    })
             
             # Compute display path and package name
             rel_file_path = os.path.relpath(file_path, root_path)
@@ -576,9 +699,44 @@ def scan_repository(
     return results
 
 
+def parse_matrix_file(file_path: str) -> List[Tuple[str, str]]:
+    """
+    Parses a YAML matrix file into a list of (dependency, version) tuples.
+    """
+    content = _safe_read_file(file_path, required=True, description="matrix file")
+    try:
+        raw_matrix = yaml.safe_load(content)
+    except Exception as e:
+        print(f"Error parsing matrix YAML mapping: {e}", file=sys.stderr)
+        sys.exit(1)
+        
+    if not isinstance(raw_matrix, dict):
+        print("Error: Matrix file content must resolve to a YAML mapping", file=sys.stderr)
+        sys.exit(1)
+        
+    targets = []
+    for dep, versions in raw_matrix.items():
+        if isinstance(versions, list):
+            for v in versions:
+                if v is None or isinstance(v, (dict, list)):
+                    print(f"Error: Invalid version '{v}' for dependency '{dep}'", file=sys.stderr)
+                    sys.exit(1)
+                if not isinstance(v, str):
+                    print(f"Error: Version '{v}' for dependency '{dep}' must be specified as a quoted string to prevent YAML parsing issues (e.g., 3.10 parsed as 3.1).", file=sys.stderr)
+                    sys.exit(1)
+                targets.append((str(dep), v))
+        elif isinstance(versions, str):
+            targets.append((str(dep), versions))
+        else:
+            print(f"Error: Invalid version '{versions}' for dependency '{dep}'. Versions must be specified as quoted strings.", file=sys.stderr)
+            sys.exit(1)
+            
+    return targets
+
+
 def main():
     script_dir = os.path.dirname(os.path.abspath(__file__))
-    default_config = os.path.join(script_dir, "regex_config.yaml")
+    default_config = os.path.join(script_dir, "regex_pattern_config.yaml")
     
     parser = argparse.ArgumentParser(
         description="Scan repository for references to specific dependency versions."
@@ -586,14 +744,17 @@ def main():
     
     parser.add_argument(
         "-d", "--dependency",
-        required=True,
         help="Name of the dependency (e.g., python, protobuf)"
     )
     
     parser.add_argument(
         "-v", "--version",
-        required=True,
         help="Specific version to search for (e.g., 3.7, 4.25.8)"
+    )
+    
+    parser.add_argument(
+        "-m", "--matrix-file",
+        help="Path to a YAML file containing target dependencies and versions."
     )
     
     parser.add_argument(
@@ -619,7 +780,7 @@ def main():
     parser.add_argument(
         "--config",
         default=default_config,
-        help="Path to the regex configuration file (defaults to scripts/version_scanner/regex_config.yaml)"
+        help="Path to the regex configuration file (defaults to scripts/version_scanner/regex_pattern_config.yaml)"
     )
     
     parser.add_argument(
@@ -659,6 +820,25 @@ def main():
     
     args = parser.parse_args()
     
+    # Validation of required inputs
+    has_matrix_file = bool(args.matrix_file)
+    if has_matrix_file:
+        if args.dependency or args.version:
+            parser.error("Cannot specify -d/--dependency or -v/--version when using -m/--matrix-file")
+    else:
+        if not (args.dependency and args.version):
+            parser.error("Must specify both -d/--dependency and -v/--version when not using -m/--matrix-file")
+        
+    targets = []
+    if has_matrix_file:
+        targets = parse_matrix_file(args.matrix_file)
+    else:
+        targets = [(args.dependency, args.version)]
+        
+    if not targets:
+        print("Error: No targets resolved to scan.", file=sys.stderr)
+        sys.exit(1)
+        
     # Resolve target packages if filtering is requested
     target_packages = []
     if args.package:
@@ -670,7 +850,12 @@ def main():
     elif args.package_file:
         target_packages = read_package_file(args.package_file)
         
-    print(f"Starting scan for dependency: {args.dependency} version: {args.version}")
+    if has_matrix_file:
+        print("Starting scan for multiple targets:")
+        for dep, ver in targets:
+            print(f"  - {dep}: {ver}")
+    else:
+        print(f"Starting scan for dependency: {args.dependency} version: {args.version}")
     print(f"Root path: {args.path}")
     print("Targets to scan:")
     if target_packages:
@@ -681,8 +866,10 @@ def main():
     print(f"Using config: {args.config}")
     
     # Load and resolve rules
-    config_manager = ConfigManager(args.config, args.dependency, args.version)
-    rules = config_manager.load_config()
+    rules = []
+    for dep, ver in targets:
+        config_manager = ConfigManager(args.config, dep, ver)
+        rules.extend(config_manager.load_config())
     
 
 
@@ -695,7 +882,14 @@ def main():
         print(f"Loaded {len(ignore_dirs)} ignore patterns from {ignore_file_path}")
         
     # Scan repository
-    all_matches = scan_repository(args.path, rules, target_packages, ignore_dirs, version_string=args.version)
+    all_matches = scan_repository(
+        args.path,
+        rules,
+        target_packages,
+        ignore_dirs,
+        version_string=(None if has_matrix_file else args.version),
+        targets=targets
+    )
     
     print(f"\nFound {len(all_matches)} matches.")
     display_matches = all_matches if args.stdout else all_matches[:10]
@@ -717,7 +911,11 @@ def main():
         script_dir = os.path.dirname(os.path.abspath(__file__))
         results_dir = os.path.join(script_dir, "results")
         os.makedirs(results_dir, exist_ok=True)
-        output_path = os.path.join(results_dir, f"{args.dependency}-{args.version}-{timestamp}.csv")
+        if has_matrix_file:
+            base_name = os.path.splitext(os.path.basename(args.matrix_file))[0]
+            output_path = os.path.join(results_dir, f"{base_name}-{timestamp}.csv")
+        else:
+            output_path = os.path.join(results_dir, f"{args.dependency}-{args.version}-{timestamp}.csv")
         
     write_csv_report(output_path, all_matches)
     

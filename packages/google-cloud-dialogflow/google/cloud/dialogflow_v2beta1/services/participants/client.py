@@ -1716,8 +1716,14 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
                    1. If the input was set to streaming audio, the first
                       one or more messages contain recognition_result.
                       Each recognition_result represents a more complete
-                      transcript of what the user said. The last
-                      recognition_result has is_final set to true.
+                      transcript of what the user said. When a user
+                      speaks multiple sentences, the API will emit
+                      multiple messages where is_final = true. Each time
+                      the system detects a distinct pause or completed
+                      thought, it locks in that segment, marks it
+                      is_final = true, and then immediately starts a new
+                      recognition cycle for the next sentence on the
+                      same stream.
 
                    2. In virtual agent stage: if
                       enable_partial_automated_agent_reply is true, the

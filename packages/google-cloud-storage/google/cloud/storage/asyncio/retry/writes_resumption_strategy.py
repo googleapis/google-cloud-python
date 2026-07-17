@@ -44,6 +44,7 @@ class _WriteState:
         chunk_size: int,
         user_buffer: IO[bytes],
         flush_interval: int,
+        enable_checksum: bool = True,
     ):
         self.chunk_size = chunk_size
         self.user_buffer = user_buffer
@@ -59,6 +60,7 @@ class _WriteState:
         self.write_handle: Union[bytes, storage_type.BidiWriteHandle, None] = None
         self.routing_token: Optional[str] = None
         self.is_finalized: bool = False
+        self.enable_checksum: bool = enable_checksum
 
 
 class _WriteResumptionStrategy(_BaseResumptionStrategy):
@@ -84,7 +86,8 @@ class _WriteResumptionStrategy(_BaseResumptionStrategy):
                 break
 
             checksummed_data = storage_type.ChecksummedData(content=chunk)
-            checksummed_data.crc32c = google_crc32c.value(chunk)
+            if write_state.enable_checksum:
+                checksummed_data.crc32c = google_crc32c.value(chunk)
 
             request = storage_type.BidiWriteObjectRequest(
                 write_offset=write_state.bytes_sent,

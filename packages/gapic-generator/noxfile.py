@@ -49,9 +49,10 @@ ALL_PYTHON = (
     "3.12",
     "3.13",
     "3.14",
+    "3.15",
 )
 
-NEWEST_PYTHON = ALL_PYTHON[-1]
+NEWEST_PYTHON = ALL_PYTHON[-2]
 
 
 @nox.session(python=ALL_PYTHON)
@@ -78,9 +79,10 @@ def unit(session):
                 "-vv",
                 "-n=auto",
                 "--cov=gapic",
+                "--cov-append",
                 "--cov-config=.coveragerc",
                 "--cov-report=term",
-                "--cov-fail-under=100",
+                "--cov-fail-under=0",
                 path.join("tests", "unit"),
             ]
         ),

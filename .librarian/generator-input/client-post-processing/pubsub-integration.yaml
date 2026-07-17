@@ -507,9 +507,9 @@ replacements:
 
   - paths:
       - "packages/google-cloud-pubsub/testing/constraints-3.10.txt"
-    before: 'grpc-google-iam-v1==0\.14\.0\n(?!grpcio-status)'
+    before: 'grpc-google-iam-v1==0\.14\.2\n(?!grpcio-status)'
     after: |-
-      grpc-google-iam-v1==0.14.0
+      grpc-google-iam-v1==0.14.2
       grpcio-status==1.59.0
       opentelemetry-api==1.27.0
       opentelemetry-sdk==1.27.0

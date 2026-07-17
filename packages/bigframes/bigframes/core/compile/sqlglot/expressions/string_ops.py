@@ -256,11 +256,6 @@ def _(expr: TypedExpr, op: ops.StringSplitOp) -> sge.Expression:
     return sge.Split(this=expr.expr, expression=sge.convert(op.pat))
 
 
-@register_unary_op(ops.StrGetOp, pass_op=True)
-def _(expr: TypedExpr, op: ops.StrGetOp) -> sge.Expression:
-    return string_index(expr, op.i)
-
-
 @register_unary_op(ops.StrSliceOp, pass_op=True)
 def _(expr: TypedExpr, op: ops.StrSliceOp) -> sge.Expression:
     return string_slice(expr, op.start, op.end)
