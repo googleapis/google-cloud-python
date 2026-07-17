@@ -15,17 +15,18 @@
 #
 from typing import Optional, Sequence, Tuple, Union
 
+from google.longrunning import operations_pb2
+
 from google.api_core import client_options as client_options_lib  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core.operations_v1 import pagers_async as pagers
+from google.api_core.operations_v1.abstract_operations_base_client import (
+    AbstractOperationsBaseClient,
+)
 from google.api_core.operations_v1.transports.base import (
     DEFAULT_CLIENT_INFO,
     OperationsTransport,
 )
-from google.api_core.operations_v1.abstract_operations_base_client import (
-    AbstractOperationsBaseClient,
-)
-from google.longrunning import operations_pb2
 
 try:
     from google.auth.aio import credentials as ga_credentials  # type: ignore
