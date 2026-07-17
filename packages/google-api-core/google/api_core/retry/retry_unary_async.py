@@ -66,14 +66,14 @@ from typing import (
 )
 
 # for backwards compatibility, expose helpers in this module
-from google.api_core.retry.retry_base import (
+from google.api_core.retry.retry_base import (  # noqa: F401
     RetryFailureReason,
     _BaseRetry,
     _retry_error_helper,
     build_retry_error,
     exponential_sleep_generator,
-    if_exception_type,  # noqa
-    if_transient_error,  # noqa
+    if_exception_type,
+    if_transient_error,
 )
 
 if TYPE_CHECKING:

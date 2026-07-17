@@ -19,9 +19,9 @@ from google.auth import exceptions as auth_exceptions  # noqa: F401
 # The following imports are for backwards compatibility with https://github.com/googleapis/python-api-core/blob/4d7d2edee2c108d43deb151e6e0fdceb56b73275/google/api_core/retry.py
 #
 # TODO: Revert these imports on the next major version release (https://github.com/googleapis/python-api-core/issues/576)
-from google.api_core import (
-    datetime_helpers,  # noqa: F401
-    exceptions,  # noqa: F401
+from google.api_core import (  # noqa: F401
+    datetime_helpers,
+    exceptions,
 )
 
 from .retry_base import (
