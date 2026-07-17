@@ -25,11 +25,11 @@ in Google APIs for `resource names`_.
 
 from __future__ import unicode_literals
 
-from collections import deque
 import copy
 import functools
 import re
 import urllib.parse
+from collections import deque
 
 # Regular expression for extracting variable parts from a path template.
 # The variables can be expressed as:
@@ -240,7 +240,7 @@ def _extract_and_validate_wildcards(
                 if not _validate_multi_segment_value(captured_val):
                     raise err
     else:
-        # For values that don't match the pattern, ensure the value doesn't 
+        # For values that don't match the pattern, ensure the value doesn't
         # resolve to 0 segments (e.g. "projects/..").
         if val and not _validate_multi_segment_value(val):
             raise err
