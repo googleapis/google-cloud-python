@@ -216,6 +216,8 @@ def _extract_and_validate_wildcards(
     if template_str is None or template_str == "*":
         # Single-segment templates (None or "*") cannot match exactly "." or ".."
         # and cannot have multi-segment paths resolving to 0 segments.
+        #
+        # Empty strings pose no traversal security risk here.
         if val and not _validate_multi_segment_value(val):
             raise err
     elif template_str == "**":
