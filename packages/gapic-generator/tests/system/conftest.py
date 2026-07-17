@@ -198,7 +198,7 @@ def use_mtls(request):
 
 @pytest.fixture
 def use_tls(request):
-    return request.config.getoption("--tls")
+    return request.config.getoption("--tls") or request.config.getoption("--mtls")
 
 
 @pytest.fixture
