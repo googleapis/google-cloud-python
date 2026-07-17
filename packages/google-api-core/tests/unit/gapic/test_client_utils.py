@@ -17,13 +17,12 @@ from unittest import mock
 
 import pytest
 
-from google.auth.exceptions import MutualTLSChannelError
-
 from google.api_core.gapic_v1.client_utils import (
     get_api_endpoint,
     get_default_mtls_endpoint,
     get_universe_domain,
 )
+from google.auth.exceptions import MutualTLSChannelError
 
 
 class MockClient:
@@ -40,10 +39,7 @@ def test_get_default_mtls_endpoint():
         == "foo.mtls.sandbox.googleapis.com"
     )
     # Test case-insensitivity
-    assert (
-        get_default_mtls_endpoint("foo.GoogleAPIs.com")
-        == "foo.mtls.googleapis.com"
-    )
+    assert get_default_mtls_endpoint("foo.GoogleAPIs.com") == "foo.mtls.googleapis.com"
     assert (
         get_default_mtls_endpoint("foo.Sandbox.GoogleAPIs.com")
         == "foo.mtls.sandbox.googleapis.com"
