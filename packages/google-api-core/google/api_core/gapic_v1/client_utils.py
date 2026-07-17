@@ -26,6 +26,8 @@ def get_default_mtls_endpoint(api_endpoint: Optional[str]) -> Optional[str]:
 
     Convert "*.sandbox.googleapis.com" and "*.googleapis.com" to
     "*.mtls.sandbox.googleapis.com" and "*.mtls.googleapis.com" respectively.
+    Other URLs (including those that do not match these domain suffixes or
+    already contain '.mtls.') are passed through as-is.
 
     Args:
         api_endpoint (Optional[str]): the api endpoint to convert.
@@ -36,14 +38,19 @@ def get_default_mtls_endpoint(api_endpoint: Optional[str]) -> Optional[str]:
     if not api_endpoint or ".mtls." in api_endpoint.lower():
         return api_endpoint
 
-    lowered_endpoint = api_endpoint.lower()
-    if lowered_endpoint.endswith(".sandbox.googleapis.com"):
-        # len(".sandbox.googleapis.com") == 23
-        return api_endpoint[:-23] + ".mtls.sandbox.googleapis.com"
+    # Handle optional port suffix (e.g. ":443")
+    parts = api_endpoint.split(":")
+    host = parts[0]
+    port = ":" + parts[1] if len(parts) > 1 else ""
 
-    if lowered_endpoint.endswith(".googleapis.com"):
+    lowered_host = host.lower()
+    if lowered_host.endswith(".sandbox.googleapis.com"):
+        # len(".sandbox.googleapis.com") == 23
+        return host[:-23] + ".mtls.sandbox.googleapis.com" + port
+
+    if lowered_host.endswith(".googleapis.com"):
         # len(".googleapis.com") == 15
-        return api_endpoint[:-15] + ".mtls.googleapis.com"
+        return host[:-15] + ".mtls.googleapis.com" + port
 
     return api_endpoint
 

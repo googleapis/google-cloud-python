@@ -45,12 +45,32 @@ def test_get_default_mtls_endpoint():
         == "foo.mtls.sandbox.googleapis.com"
     )
 
+    # Test valid API endpoints with ports
+    assert (
+        get_default_mtls_endpoint("foo.googleapis.com:443")
+        == "foo.mtls.googleapis.com:443"
+    )
+    assert (
+        get_default_mtls_endpoint("foo.sandbox.googleapis.com:443")
+        == "foo.mtls.sandbox.googleapis.com:443"
+    )
+    # Test case-insensitivity with ports
+    assert (
+        get_default_mtls_endpoint("foo.GoogleAPIs.com:443")
+        == "foo.mtls.googleapis.com:443"
+    )
+    assert (
+        get_default_mtls_endpoint("foo.Sandbox.GoogleAPIs.com:443")
+        == "foo.mtls.sandbox.googleapis.com:443"
+    )
+
     # Test endpoints that shouldn't be converted
     assert (
         get_default_mtls_endpoint("foo.mtls.googleapis.com")
         == "foo.mtls.googleapis.com"
     )
     assert get_default_mtls_endpoint("foo.com") == "foo.com"
+    assert get_default_mtls_endpoint("foo.com:8080") == "foo.com:8080"
 
     # Test empty/None endpoints
     assert get_default_mtls_endpoint("") == ""
