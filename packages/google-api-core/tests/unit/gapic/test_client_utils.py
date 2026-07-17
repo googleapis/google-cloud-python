@@ -19,7 +19,7 @@ import pytest
 
 from google.auth.exceptions import MutualTLSChannelError
 
-from google.api_core.gapic_v1.routing import (
+from google.api_core.gapic_v1.client_utils import (
     get_api_endpoint,
     get_default_mtls_endpoint,
     get_universe_domain,

@@ -14,7 +14,7 @@
 # limitations under the License.
 #
 
-"""Helpers for routing and endpoint resolution."""
+"""Helpers for client setup and configuration."""
 
 from typing import Any, Optional
 
