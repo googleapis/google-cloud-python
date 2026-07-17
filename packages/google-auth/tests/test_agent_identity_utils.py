@@ -274,6 +274,64 @@ class TestAgentIdentityUtils:
         assert mock_sleep.call_count == len(_agent_identity_utils._POLLING_INTERVALS)
 
     @mock.patch("time.sleep")
+    @mock.patch("google.auth._agent_identity_utils._is_certificate_file_ready")
+    def test_get_agent_identity_certificate_path_retry_success(
+        self, mock_is_ready, mock_sleep, tmpdir, monkeypatch
+    ):
+        monkeypatch.setattr(
+            "google.auth._agent_identity_utils._WELL_KNOWN_CERT_PATH",
+            str(tmpdir.join("certificates.pem")),
+        )
+        cert_path_str = str(tmpdir.join("cert.pem"))
+        config_path = tmpdir.join("config.json")
+        config_path.write(
+            json.dumps({"cert_configs": {"workload": {"cert_path": cert_path_str}}})
+        )
+        monkeypatch.setenv(
+            environment_vars.GOOGLE_API_CERTIFICATE_CONFIG, str(config_path)
+        )
+
+        # First attempt: file missing/not ready. Second attempt: succeeds.
+        mock_is_ready.side_effect = [False, True]
+
+        result = _agent_identity_utils.get_agent_identity_certificate_path()
+
+        assert result == cert_path_str
+        assert mock_sleep.call_count == 1
+        assert mock_is_ready.call_count == 2
+
+    @mock.patch("time.sleep")
+    @mock.patch("google.auth._agent_identity_utils._is_certificate_file_ready")
+    def test_get_agent_identity_certificate_path_config_retry_success(
+        self, mock_is_ready, mock_sleep, tmpdir, monkeypatch
+    ):
+        monkeypatch.setattr(
+            "google.auth._agent_identity_utils._WELL_KNOWN_CERT_PATH",
+            str(tmpdir.join("certificates.pem")),
+        )
+        cert_path_str = str(tmpdir.join("cert.pem"))
+        config_path = tmpdir.join("config.json")
+        monkeypatch.setenv(
+            environment_vars.GOOGLE_API_CERTIFICATE_CONFIG, str(config_path)
+        )
+
+        mock_is_ready.return_value = True
+
+        def write_config(*args, **kwargs):
+            config_path.write(
+                json.dumps({"cert_configs": {"workload": {"cert_path": cert_path_str}}})
+            )
+
+        # First attempt: config file missing. Sleep side effect creates it.
+        mock_sleep.side_effect = write_config
+
+        result = _agent_identity_utils.get_agent_identity_certificate_path()
+
+        assert result == cert_path_str
+        assert mock_sleep.call_count == 1
+        assert mock_is_ready.call_count == 1
+
+    @mock.patch("time.sleep")
     @mock.patch("google.auth._agent_identity_utils.os.path.exists")
     def test_get_agent_identity_certificate_path_failure(
         self, mock_exists, mock_sleep, tmpdir, monkeypatch
