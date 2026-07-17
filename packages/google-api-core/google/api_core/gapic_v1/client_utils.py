@@ -16,7 +16,7 @@
 
 """Helpers for client setup and configuration."""
 
-from typing import Any, Optional
+from typing import Callable, Optional, Tuple
 
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 
@@ -50,7 +50,7 @@ def get_default_mtls_endpoint(api_endpoint: Optional[str]) -> Optional[str]:
 
 def get_api_endpoint(
     api_override: Optional[str],
-    client_cert_source: Optional[Any],
+    client_cert_source: Optional[Callable[[], Tuple[bytes, bytes]]],
     universe_domain: str,
     use_mtls_endpoint: str,
     default_universe: str,
@@ -62,7 +62,8 @@ def get_api_endpoint(
     Args:
         api_override (Optional[str]): The API endpoint override. If specified,
             this is always returned.
-        client_cert_source (Optional[Any]): The client certificate source used by the client.
+        client_cert_source (Optional[Callable[[], Tuple[bytes, bytes]]]): The client
+            certificate source used by the client.
         universe_domain (str): The universe domain used by the client.
         use_mtls_endpoint (str): How to use the mTLS endpoint. Possible values
             are "always", "auto", or "never".

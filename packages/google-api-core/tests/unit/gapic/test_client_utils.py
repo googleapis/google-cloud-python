@@ -57,129 +57,136 @@ def test_get_default_mtls_endpoint():
     assert get_default_mtls_endpoint(None) is None
 
 
-def test__get_api_endpoint():
-    api_override = "foo.com"
-    mock_client_cert_source = mock.Mock()
-    default_universe = MockClient._DEFAULT_UNIVERSE
-    default_endpoint = MockClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-        UNIVERSE_DOMAIN=default_universe
-    )
-    mock_universe = "bar.com"
-    mock_endpoint = MockClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-        UNIVERSE_DOMAIN=mock_universe
-    )
-
-    assert (
-        get_api_endpoint(
-            api_override,
-            mock_client_cert_source,
-            default_universe,
+@pytest.mark.parametrize(
+    "api_override,client_cert_source,universe_domain,use_mtls_endpoint,default_universe,default_mtls_endpoint,default_endpoint_template,expected",
+    [
+        (
+            "foo.com",
+            mock.Mock(),
+            "googleapis.com",
             "always",
-            MockClient._DEFAULT_UNIVERSE,
-            MockClient.DEFAULT_MTLS_ENDPOINT,
-            MockClient._DEFAULT_ENDPOINT_TEMPLATE,
-        )
-        == api_override
-    )
-    assert (
-        get_api_endpoint(
+            "googleapis.com",
+            "foo.mtls.googleapis.com",
+            "foo.{UNIVERSE_DOMAIN}",
+            "foo.com",
+        ),
+        (
             None,
-            mock_client_cert_source,
-            default_universe,
+            mock.Mock(),
+            "googleapis.com",
             "auto",
-            MockClient._DEFAULT_UNIVERSE,
-            MockClient.DEFAULT_MTLS_ENDPOINT,
-            MockClient._DEFAULT_ENDPOINT_TEMPLATE,
-        )
-        == MockClient.DEFAULT_MTLS_ENDPOINT
-    )
-    assert (
-        get_api_endpoint(
+            "googleapis.com",
+            "foo.mtls.googleapis.com",
+            "foo.{UNIVERSE_DOMAIN}",
+            "foo.mtls.googleapis.com",
+        ),
+        (
             None,
             None,
-            default_universe,
+            "googleapis.com",
             "auto",
-            MockClient._DEFAULT_UNIVERSE,
-            MockClient.DEFAULT_MTLS_ENDPOINT,
-            MockClient._DEFAULT_ENDPOINT_TEMPLATE,
-        )
-        == default_endpoint
-    )
-    assert (
-        get_api_endpoint(
+            "googleapis.com",
+            "foo.mtls.googleapis.com",
+            "foo.{UNIVERSE_DOMAIN}",
+            "foo.googleapis.com",
+        ),
+        (
             None,
             None,
-            default_universe,
+            "googleapis.com",
             "always",
-            MockClient._DEFAULT_UNIVERSE,
-            MockClient.DEFAULT_MTLS_ENDPOINT,
-            MockClient._DEFAULT_ENDPOINT_TEMPLATE,
-        )
-        == MockClient.DEFAULT_MTLS_ENDPOINT
-    )
-    assert (
-        get_api_endpoint(
+            "googleapis.com",
+            "foo.mtls.googleapis.com",
+            "foo.{UNIVERSE_DOMAIN}",
+            "foo.mtls.googleapis.com",
+        ),
+        (
             None,
-            mock_client_cert_source,
-            default_universe,
+            mock.Mock(),
+            "googleapis.com",
             "always",
-            MockClient._DEFAULT_UNIVERSE,
-            MockClient.DEFAULT_MTLS_ENDPOINT,
-            MockClient._DEFAULT_ENDPOINT_TEMPLATE,
-        )
-        == MockClient.DEFAULT_MTLS_ENDPOINT
-    )
-    assert (
-        get_api_endpoint(
+            "googleapis.com",
+            "foo.mtls.googleapis.com",
+            "foo.{UNIVERSE_DOMAIN}",
+            "foo.mtls.googleapis.com",
+        ),
+        (
             None,
             None,
-            mock_universe,
+            "bar.com",
             "never",
-            MockClient._DEFAULT_UNIVERSE,
-            MockClient.DEFAULT_MTLS_ENDPOINT,
-            MockClient._DEFAULT_ENDPOINT_TEMPLATE,
-        )
-        == mock_endpoint
-    )
-    assert (
-        get_api_endpoint(
+            "googleapis.com",
+            "foo.mtls.googleapis.com",
+            "foo.{UNIVERSE_DOMAIN}",
+            "foo.bar.com",
+        ),
+        (
             None,
             None,
-            default_universe,
+            "googleapis.com",
             "never",
-            MockClient._DEFAULT_UNIVERSE,
-            MockClient.DEFAULT_MTLS_ENDPOINT,
-            MockClient._DEFAULT_ENDPOINT_TEMPLATE,
-        )
-        == default_endpoint
-    )
-
-    with pytest.raises(MutualTLSChannelError) as excinfo:
-        get_api_endpoint(
+            "googleapis.com",
+            "foo.mtls.googleapis.com",
+            "foo.{UNIVERSE_DOMAIN}",
+            "foo.googleapis.com",
+        ),
+        (
             None,
-            mock_client_cert_source,
-            mock_universe,
+            mock.Mock(),
+            "bar.com",
             "auto",
-            MockClient._DEFAULT_UNIVERSE,
-            MockClient.DEFAULT_MTLS_ENDPOINT,
-            MockClient._DEFAULT_ENDPOINT_TEMPLATE,
-        )
-    assert (
-        str(excinfo.value)
-        == "mTLS is not supported in any universe other than googleapis.com."
-    )
-
-    with pytest.raises(ValueError) as excinfo:
-        get_api_endpoint(
+            "googleapis.com",
+            "foo.mtls.googleapis.com",
+            "foo.{UNIVERSE_DOMAIN}",
+            MutualTLSChannelError,
+        ),
+        (
             None,
-            mock_client_cert_source,
-            default_universe,
+            mock.Mock(),
+            "googleapis.com",
             "always",
-            MockClient._DEFAULT_UNIVERSE,
+            "googleapis.com",
             None,
-            MockClient._DEFAULT_ENDPOINT_TEMPLATE,
+            "foo.{UNIVERSE_DOMAIN}",
+            ValueError,
+        ),
+    ],
+)
+def test_get_api_endpoint(
+    api_override,
+    client_cert_source,
+    universe_domain,
+    use_mtls_endpoint,
+    default_universe,
+    default_mtls_endpoint,
+    default_endpoint_template,
+    expected,
+):
+    if isinstance(expected, type) and issubclass(expected, Exception):
+        with pytest.raises(expected):
+            get_api_endpoint(
+                api_override,
+                client_cert_source,
+                universe_domain,
+                use_mtls_endpoint,
+                default_universe,
+                default_mtls_endpoint,
+                default_endpoint_template,
+            )
+    else:
+        assert (
+            get_api_endpoint(
+                api_override,
+                client_cert_source,
+                universe_domain,
+                use_mtls_endpoint,
+                default_universe,
+                default_mtls_endpoint,
+                default_endpoint_template,
+            )
+            == expected
         )
-    assert str(excinfo.value) == "mTLS endpoint is not available."
+
 
 
 def test__get_universe_domain():
