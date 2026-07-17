@@ -1373,6 +1373,9 @@ def test_aggregated_list_rest_pager(transport: str = "rest"):
 
         pager = client.aggregated_list(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         assert isinstance(pager.get("a"), compute.UrlMapsScopedList)
         assert pager.get("h") is None
 
@@ -3031,6 +3034,9 @@ def test_list_rest_pager(transport: str = "rest"):
         sample_request = {"project": "sample1"}
 
         pager = client.list(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -4883,6 +4889,9 @@ def test_insert_rest_call_success(request_type):
                 "abort": {"http_status": 1219, "percentage": 0.10540000000000001},
                 "delay": {"fixed_delay": {}, "percentage": 0.10540000000000001},
             },
+            "image_optimization_policy": {
+                "query_parameter_interpretation": "query_parameter_interpretation_value"
+            },
             "max_stream_duration": {},
             "request_mirror_policy": {
                 "backend_service": "backend_service_value",
@@ -4901,6 +4910,10 @@ def test_insert_rest_call_success(request_type):
                 "host_rewrite": "host_rewrite_value",
                 "path_prefix_rewrite": "path_prefix_rewrite_value",
                 "path_template_rewrite": "path_template_rewrite_value",
+                "regex_rewrite": {
+                    "path_pattern": "path_pattern_value",
+                    "path_substitution": "path_substitution_value",
+                },
             },
             "weighted_backend_services": [
                 {
@@ -5719,6 +5732,9 @@ def test_patch_rest_call_success(request_type):
                 "abort": {"http_status": 1219, "percentage": 0.10540000000000001},
                 "delay": {"fixed_delay": {}, "percentage": 0.10540000000000001},
             },
+            "image_optimization_policy": {
+                "query_parameter_interpretation": "query_parameter_interpretation_value"
+            },
             "max_stream_duration": {},
             "request_mirror_policy": {
                 "backend_service": "backend_service_value",
@@ -5737,6 +5753,10 @@ def test_patch_rest_call_success(request_type):
                 "host_rewrite": "host_rewrite_value",
                 "path_prefix_rewrite": "path_prefix_rewrite_value",
                 "path_template_rewrite": "path_template_rewrite_value",
+                "regex_rewrite": {
+                    "path_pattern": "path_pattern_value",
+                    "path_substitution": "path_substitution_value",
+                },
             },
             "weighted_backend_services": [
                 {
@@ -6387,6 +6407,9 @@ def test_update_rest_call_success(request_type):
                 "abort": {"http_status": 1219, "percentage": 0.10540000000000001},
                 "delay": {"fixed_delay": {}, "percentage": 0.10540000000000001},
             },
+            "image_optimization_policy": {
+                "query_parameter_interpretation": "query_parameter_interpretation_value"
+            },
             "max_stream_duration": {},
             "request_mirror_policy": {
                 "backend_service": "backend_service_value",
@@ -6405,6 +6428,10 @@ def test_update_rest_call_success(request_type):
                 "host_rewrite": "host_rewrite_value",
                 "path_prefix_rewrite": "path_prefix_rewrite_value",
                 "path_template_rewrite": "path_template_rewrite_value",
+                "regex_rewrite": {
+                    "path_pattern": "path_pattern_value",
+                    "path_substitution": "path_substitution_value",
+                },
             },
             "weighted_backend_services": [
                 {
@@ -6855,6 +6882,9 @@ def test_validate_rest_call_success(request_type):
                     "abort": {"http_status": 1219, "percentage": 0.10540000000000001},
                     "delay": {"fixed_delay": {}, "percentage": 0.10540000000000001},
                 },
+                "image_optimization_policy": {
+                    "query_parameter_interpretation": "query_parameter_interpretation_value"
+                },
                 "max_stream_duration": {},
                 "request_mirror_policy": {
                     "backend_service": "backend_service_value",
@@ -6873,6 +6903,10 @@ def test_validate_rest_call_success(request_type):
                     "host_rewrite": "host_rewrite_value",
                     "path_prefix_rewrite": "path_prefix_rewrite_value",
                     "path_template_rewrite": "path_template_rewrite_value",
+                    "regex_rewrite": {
+                        "path_pattern": "path_pattern_value",
+                        "path_substitution": "path_substitution_value",
+                    },
                 },
                 "weighted_backend_services": [
                     {

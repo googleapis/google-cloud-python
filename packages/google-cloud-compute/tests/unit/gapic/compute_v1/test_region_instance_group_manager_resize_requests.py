@@ -3070,6 +3070,9 @@ def test_list_rest_pager(transport: str = "rest"):
 
         pager = client.list(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -3753,6 +3756,19 @@ def test_insert_rest_call_success(request_type):
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
         "id": 205,
+        "instances": [
+            {
+                "fingerprint": "fingerprint_value",
+                "name": "name_value",
+                "preserved_state": {
+                    "disks": {},
+                    "external_i_ps": {},
+                    "internal_i_ps": {},
+                    "metadata": {},
+                },
+                "status": "status_value",
+            }
+        ],
         "kind": "kind_value",
         "name": "name_value",
         "region": "region_value",

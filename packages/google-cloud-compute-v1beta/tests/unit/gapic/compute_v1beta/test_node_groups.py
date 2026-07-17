@@ -1821,6 +1821,9 @@ def test_aggregated_list_rest_pager(transport: str = "rest"):
 
         pager = client.aggregated_list(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         assert isinstance(pager.get("a"), compute.NodeGroupsScopedList)
         assert pager.get("h") is None
 
@@ -3811,6 +3814,9 @@ def test_list_rest_pager(transport: str = "rest"):
 
         pager = client.list(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, compute.NodeGroup) for i in results)
@@ -4096,6 +4102,9 @@ def test_list_nodes_rest_pager(transport: str = "rest"):
         }
 
         pager = client.list_nodes(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -7518,6 +7527,7 @@ def test_insert_rest_call_success(request_type):
         "node_template": "node_template_value",
         "self_link": "self_link_value",
         "share_settings": {
+            "folder_map": {},
             "project_map": {},
             "projects": ["projects_value1", "projects_value2"],
             "share_type": "share_type_value",
@@ -8043,6 +8053,7 @@ def test_patch_rest_call_success(request_type):
         "node_template": "node_template_value",
         "self_link": "self_link_value",
         "share_settings": {
+            "folder_map": {},
             "project_map": {},
             "projects": ["projects_value1", "projects_value2"],
             "share_type": "share_type_value",

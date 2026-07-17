@@ -310,7 +310,7 @@ class TestBatch(_BaseTest, OpenTelemetryBase):
 
         # Assertion: Ensure that calling batch.commit() raises Aborted
         with self.assertRaises(Aborted) as context:
-            batch.commit(timeout_secs=0.1, default_retry_delay=0)
+            batch.commit(timeout_secs=1.0, default_retry_delay=0)
 
         # Verify exception includes request_id attribute
         self.assertIn("409 Transaction was aborted", str(context.exception))

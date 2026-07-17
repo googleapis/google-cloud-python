@@ -1651,6 +1651,9 @@ def test_list_private_auctions_rest_pager(transport: str = "rest"):
 
         pager = client.list_private_auctions(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(

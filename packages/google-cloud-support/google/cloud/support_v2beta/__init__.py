@@ -30,6 +30,10 @@ from .services.case_attachment_service import (
 from .services.case_service import CaseServiceAsyncClient, CaseServiceClient
 from .services.comment_service import CommentServiceAsyncClient, CommentServiceClient
 from .services.feed_service import FeedServiceAsyncClient, FeedServiceClient
+from .services.support_event_subscription_service import (
+    SupportEventSubscriptionServiceAsyncClient,
+    SupportEventSubscriptionServiceClient,
+)
 from .types.actor import Actor
 from .types.attachment import Attachment
 from .types.attachment_service import (
@@ -63,6 +67,16 @@ from .types.email_message import EmailMessage
 from .types.escalation import Escalation
 from .types.feed_item import FeedItem
 from .types.feed_service import ShowFeedRequest, ShowFeedResponse
+from .types.support_event_subscription import SupportEventSubscription
+from .types.support_event_subscription_service import (
+    CreateSupportEventSubscriptionRequest,
+    DeleteSupportEventSubscriptionRequest,
+    GetSupportEventSubscriptionRequest,
+    ListSupportEventSubscriptionsRequest,
+    ListSupportEventSubscriptionsResponse,
+    UndeleteSupportEventSubscriptionRequest,
+    UpdateSupportEventSubscriptionRequest,
+)
 
 if hasattr(api_core, "check_python_version") and hasattr(
     api_core, "check_dependency_versions"
@@ -152,6 +166,7 @@ __all__ = (
     "CaseServiceAsyncClient",
     "CommentServiceAsyncClient",
     "FeedServiceAsyncClient",
+    "SupportEventSubscriptionServiceAsyncClient",
     "Actor",
     "Attachment",
     "Case",
@@ -163,6 +178,8 @@ __all__ = (
     "CommentServiceClient",
     "CreateCaseRequest",
     "CreateCommentRequest",
+    "CreateSupportEventSubscriptionRequest",
+    "DeleteSupportEventSubscriptionRequest",
     "EmailMessage",
     "EscalateCaseRequest",
     "Escalation",
@@ -171,12 +188,15 @@ __all__ = (
     "GetAttachmentRequest",
     "GetCaseRequest",
     "GetCommentRequest",
+    "GetSupportEventSubscriptionRequest",
     "ListAttachmentsRequest",
     "ListAttachmentsResponse",
     "ListCasesRequest",
     "ListCasesResponse",
     "ListCommentsRequest",
     "ListCommentsResponse",
+    "ListSupportEventSubscriptionsRequest",
+    "ListSupportEventSubscriptionsResponse",
     "Product",
     "ProductLine",
     "SearchCaseClassificationsRequest",
@@ -185,6 +205,10 @@ __all__ = (
     "SearchCasesResponse",
     "ShowFeedRequest",
     "ShowFeedResponse",
+    "SupportEventSubscription",
+    "SupportEventSubscriptionServiceClient",
     "TextContent",
+    "UndeleteSupportEventSubscriptionRequest",
     "UpdateCaseRequest",
+    "UpdateSupportEventSubscriptionRequest",
 )

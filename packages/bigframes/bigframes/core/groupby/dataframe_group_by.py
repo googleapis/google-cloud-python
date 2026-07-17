@@ -24,6 +24,7 @@ import numpy
 import pandas as pd
 
 import bigframes.core.block_transforms as block_ops
+import bigframes.core.block_transforms as block_transforms
 import bigframes.core.blocks as blocks
 import bigframes.core.ordering as order
 import bigframes.core.utils as utils
@@ -580,11 +581,43 @@ class DataFrameGroupBy:
         else:
             return self._agg_named(**kwargs)
 
+    def transform(self, func, *args, **kwargs) -> df.DataFrame:
+        if block_transforms.is_transpiler_eligible(func):
+            window_spec = window_specs.unbound(grouping_keys=tuple(self._by_col_ids))
+            target_cols, labels = self._aggregated_columns()
+            exprs = []
+            for col_id in target_cols:
+                expr, _ = block_transforms.compile_column_udf(
+                    self._block,
+                    func,
+                    col_id,
+                    args=args,
+                    kwargs=kwargs,
+                    window_spec=window_spec,
+                )
+                exprs.append(expr)
+
+            block = self._block.project_block_exprs(
+                exprs,
+                labels=labels,
+                drop=True,
+            )
+            return df.DataFrame(block)
+
+        raise NotImplementedError(
+            "DataFrameGroupBy.transform is only supported when experiments.enable_python_transpiler is True and a transpiler-compatible python function is provided."
+        )
+
     def _agg_func(self, func) -> df.DataFrame:
         ids, labels = self._aggregated_columns()
-        aggregations = [
-            aggs.agg(col_id, agg_ops.lookup_agg_func(func)[0]) for col_id in ids
-        ]
+        aggregations = []
+        for col_id in ids:
+            if block_transforms.is_transpiler_eligible(func):
+                expr, _ = block_transforms.compile_column_udf(self._block, func, col_id)
+                aggregations.append(expr)
+            else:
+                aggregations.append(aggs.agg(col_id, agg_ops.lookup_agg_func(func)[0]))
+
         agg_block = self._block.aggregate(
             by_column_ids=self._by_col_ids,
             aggregations=aggregations,
@@ -595,7 +628,7 @@ class DataFrameGroupBy:
         return dataframe if self._as_index else self._convert_index(dataframe)
 
     def _agg_dict(self, func: typing.Mapping) -> df.DataFrame:
-        aggregations: typing.List[agg_expressions.Aggregation] = []
+        aggregations: typing.List[ex.Expression] = []
         column_labels = []
         function_labels = []
 
@@ -607,10 +640,18 @@ class DataFrameGroupBy:
                 funcs_for_id if utils.is_list_like(funcs_for_id) else [funcs_for_id]
             )
             for f in func_list:
-                f_op, f_label = agg_ops.lookup_agg_func(f)
-                aggregations.append(aggs.agg(col_id, f_op))
-                column_labels.append(label)
-                function_labels.append(f_label)
+                if block_transforms.is_transpiler_eligible(f):
+                    expr, name = block_transforms.compile_column_udf(
+                        self._block, f, col_id
+                    )
+                    aggregations.append(expr)
+                    column_labels.append(label)
+                    function_labels.append(name)
+                else:
+                    f_op, f_label = agg_ops.lookup_agg_func(f)
+                    aggregations.append(aggs.agg(col_id, f_op))
+                    column_labels.append(label)
+                    function_labels.append(f_label)
         agg_block = self._block.aggregate(
             by_column_ids=self._by_col_ids,
             aggregations=aggregations,
@@ -630,23 +671,34 @@ class DataFrameGroupBy:
 
     def _agg_list(self, func: typing.Sequence) -> df.DataFrame:
         ids, labels = self._aggregated_columns()
-        aggregations = [
-            aggs.agg(col_id, agg_ops.lookup_agg_func(f)[0])
-            for col_id in ids
-            for f in func
-        ]
+        aggregations = []
+        fn_labels = []
+
+        for f in func:
+            if block_transforms.is_transpiler_eligible(f):
+                fn_labels.append(getattr(f, "__name__", "<lambda>"))
+            else:
+                fn_labels.append(agg_ops.lookup_agg_func(f)[1])
+
+        for col_id in ids:
+            for f in func:
+                if block_transforms.is_transpiler_eligible(f):
+                    expr, _ = block_transforms.compile_column_udf(
+                        self._block, f, col_id
+                    )
+                    aggregations.append(expr)
+                else:
+                    aggregations.append(aggs.agg(col_id, agg_ops.lookup_agg_func(f)[0]))
 
         if self._block.column_labels.nlevels > 1:
-            # Restructure MultiIndex for proper format: (idx1, idx2, func)
-            # rather than ((idx1, idx2), func).
             column_labels = [
-                tuple(label) + (agg_ops.lookup_agg_func(f)[1],)
+                tuple(label) + (fn_lbl,)
                 for label in labels.to_frame(index=False).to_numpy()
-                for f in func
+                for fn_lbl in fn_labels
             ]
         else:  # Single-level index
             column_labels = [
-                (label, agg_ops.lookup_agg_func(f)[1]) for label in labels for f in func
+                (label, fn_lbl) for label in labels for fn_lbl in fn_labels
             ]
 
         agg_block = self._block.aggregate(

@@ -75,6 +75,9 @@ from google.cloud.securitycenter_v2.services.security_center import (
 from google.cloud.securitycenter_v2.types import (
     access,
     affected_resources,
+    agent,
+    agent_anomaly,
+    agent_session,
     ai_model,
     application,
     attack_exposure,
@@ -8359,6 +8362,9 @@ def test_group_findings_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, securitycenter_service.GroupResult) for i in results)
@@ -8447,6 +8453,8 @@ async def test_group_findings_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -8895,6 +8903,9 @@ def test_list_attack_paths_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, attack_path.AttackPath) for i in results)
@@ -8987,6 +8998,8 @@ async def test_list_attack_paths_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -9440,6 +9453,9 @@ def test_list_big_query_exports_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, bigquery_export.BigQueryExport) for i in results)
@@ -9532,6 +9548,8 @@ async def test_list_big_query_exports_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -9970,6 +9988,9 @@ def test_list_findings_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -10063,6 +10084,8 @@ async def test_list_findings_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -10446,6 +10469,9 @@ def test_list_mute_configs_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, mute_config.MuteConfig) for i in results)
@@ -10538,6 +10564,8 @@ async def test_list_mute_configs_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -10993,6 +11021,9 @@ def test_list_notification_configs_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -11087,6 +11118,8 @@ async def test_list_notification_configs_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -11544,6 +11577,9 @@ def test_list_resource_value_configs_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -11638,6 +11674,8 @@ async def test_list_resource_value_configs_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -12070,6 +12108,9 @@ def test_list_sources_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, source.Source) for i in results)
@@ -12158,6 +12199,8 @@ async def test_list_sources_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -12617,6 +12660,9 @@ def test_list_valued_resources_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, valued_resource.ValuedResource) for i in results)
@@ -12709,6 +12755,8 @@ async def test_list_valued_resources_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -20967,6 +21015,9 @@ def test_group_findings_rest_pager(transport: str = "rest"):
 
         pager = client.group_findings(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, securitycenter_service.GroupResult) for i in results)
@@ -21228,6 +21279,9 @@ def test_list_attack_paths_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "organizations/sample1/simulations/sample2"}
 
         pager = client.list_attack_paths(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -21495,6 +21549,9 @@ def test_list_big_query_exports_rest_pager(transport: str = "rest"):
 
         pager = client.list_big_query_exports(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, bigquery_export.BigQueryExport) for i in results)
@@ -21756,6 +21813,9 @@ def test_list_findings_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "organizations/sample1/sources/sample2"}
 
         pager = client.list_findings(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -22020,6 +22080,9 @@ def test_list_mute_configs_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "organizations/sample1"}
 
         pager = client.list_mute_configs(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -22286,6 +22349,9 @@ def test_list_notification_configs_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "organizations/sample1/locations/sample2"}
 
         pager = client.list_notification_configs(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -22555,6 +22621,9 @@ def test_list_resource_value_configs_rest_pager(transport: str = "rest"):
 
         pager = client.list_resource_value_configs(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -22810,6 +22879,9 @@ def test_list_sources_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "organizations/sample1"}
 
         pager = client.list_sources(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -23080,6 +23152,9 @@ def test_list_valued_resources_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "organizations/sample1/simulations/sample2"}
 
         pager = client.list_valued_resources(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -29487,6 +29562,21 @@ def test_create_finding_rest_call_success(request_type):
             ],
             "pipelines": [{"name": "name_value", "display_name": "display_name_value"}],
         },
+        "agent": {"id": "id_value", "display_name": "display_name_value"},
+        "agent_sessions": [{"session_id": "session_id_value"}],
+        "agent_anomaly": {
+            "confidence_score": 0.1673,
+            "detector_references": [
+                {
+                    "severity": 1,
+                    "detector_id": "detector_id_value",
+                    "display_name": "display_name_value",
+                    "explanation": "explanation_value",
+                    "recommendation": "recommendation_value",
+                }
+            ],
+            "invocation_references": [{"invocation_id": "invocation_id_value"}],
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -34619,6 +34709,21 @@ def test_update_finding_rest_call_success(request_type):
                 }
             ],
             "pipelines": [{"name": "name_value", "display_name": "display_name_value"}],
+        },
+        "agent": {"id": "id_value", "display_name": "display_name_value"},
+        "agent_sessions": [{"session_id": "session_id_value"}],
+        "agent_anomaly": {
+            "confidence_score": 0.1673,
+            "detector_references": [
+                {
+                    "severity": 1,
+                    "detector_id": "detector_id_value",
+                    "display_name": "display_name_value",
+                    "explanation": "explanation_value",
+                    "recommendation": "recommendation_value",
+                }
+            ],
+            "invocation_references": [{"invocation_id": "invocation_id_value"}],
         },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.

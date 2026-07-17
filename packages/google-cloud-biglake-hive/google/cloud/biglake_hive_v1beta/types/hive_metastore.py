@@ -73,7 +73,7 @@ class HiveCatalog(proto.Message):
 
     Attributes:
         name (str):
-            Output only. The resource name. Format:
+            Identifier. The resource name. Format:
             projects/{project_id_or_number}/catalogs/{catalog_id}
         description (str):
             Optional. Stores the catalog description.
@@ -86,6 +86,11 @@ class HiveCatalog(proto.Message):
         replicas (MutableSequence[google.cloud.biglake_hive_v1beta.types.HiveCatalog.Replica]):
             Output only. The replicas for the catalog
             metadata.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The creation time of the
+            catalog.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The update time of the catalog.
     """
 
     class Replica(proto.Message):
@@ -150,6 +155,16 @@ class HiveCatalog(proto.Message):
         proto.MESSAGE,
         number=4,
         message=Replica,
+    )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=timestamp_pb2.Timestamp,
     )
 
 
@@ -322,7 +337,7 @@ class HiveDatabase(proto.Message):
 
     Attributes:
         name (str):
-            Output only. The resource name. Format:
+            Identifier. The resource name. Format:
             projects/{project_id_or_number}/catalogs/{catalog_id}/databases/{database_id}
         description (str):
             Optional. Stores the database description.
@@ -335,6 +350,11 @@ class HiveDatabase(proto.Message):
         parameters (MutableMapping[str, str]):
             Optional. Stores the properties associated
             with the database. The maximum size is 2 MiB.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The creation time of the
+            database.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The update time of the database.
     """
 
     name: str = proto.Field(
@@ -353,6 +373,16 @@ class HiveDatabase(proto.Message):
         proto.STRING,
         proto.STRING,
         number=4,
+    )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=timestamp_pb2.Timestamp,
     )
 
 
@@ -506,7 +536,7 @@ class HiveTable(proto.Message):
 
     Attributes:
         name (str):
-            Output only. The resource name. Format:
+            Identifier. The resource name. Format:
             projects/{project_id_or_number}/catalogs/{catalog_id}/databases/{database_id}/tables/{table_id}
         description (str):
             Optional. Description of the table. The
@@ -520,9 +550,17 @@ class HiveTable(proto.Message):
         parameters (MutableMapping[str, str]):
             Optional. Stores the properties associated
             with the table. The maximum size is 4MiB.
+        view_original_text (str):
+            Optional. The original view text. Empty for
+            non-view. The maximum size is 16MiB.
+        view_expanded_text (str):
+            Optional. The expanded view text. Empty for
+            non-view. The maximum size is 16MiB.
         table_type (str):
             Output only. The type of the table. This is
             EXTERNAL for BigLake hive tables.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The update time of the table.
     """
 
     name: str = proto.Field(
@@ -553,9 +591,22 @@ class HiveTable(proto.Message):
         proto.STRING,
         number=8,
     )
+    view_original_text: str = proto.Field(
+        proto.STRING,
+        number=9,
+    )
+    view_expanded_text: str = proto.Field(
+        proto.STRING,
+        number=10,
+    )
     table_type: str = proto.Field(
         proto.STRING,
         number=11,
+    )
+    update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        message=timestamp_pb2.Timestamp,
     )
 
 

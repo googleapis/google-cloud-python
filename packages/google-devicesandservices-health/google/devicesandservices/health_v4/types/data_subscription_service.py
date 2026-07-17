@@ -588,10 +588,11 @@ class SubscriberConfig(proto.Message):
 class EndpointAuthorization(proto.Message):
     r"""Authorization mechanism for a subscriber endpoint. For all requests
     sent by the Webhooks service, the JSON payload is cryptographically
-    signed. The signature is delivered in the ``X-HEALTHAPI-SIGNATURE``
-    HTTP header. This is an ECDSA (NIST P256) signature of the JSON
-    payload. Clients must verify this signature using Google Health
-    API's public key to confirm the payload was sent by the Health API.
+    signed. The signature is delivered in the
+    ``GOOGLE-HEALTH-API-SIGNATURE`` HTTP header. This is an ECDSA (NIST
+    P256) signature of the JSON payload. Clients must verify this
+    signature using Google Health API's public key to confirm the
+    payload was sent by the Health API.
 
     Attributes:
         secret (str):

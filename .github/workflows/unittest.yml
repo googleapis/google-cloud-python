@@ -72,7 +72,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        python: ['3.9', '3.10', "3.11", "3.12", "3.13", "3.14"]
+        python: ['3.10', "3.11", "3.12", "3.13", "3.14"]
         package_shard: ${{ fromJson(needs.initialize.outputs.matrix) }}
     name: ${{ matrix.package_shard.is_sharded && format('unit ({0}, {1})', matrix.python, matrix.package_shard.name) || format('unit ({0})', matrix.python) }}
     steps:
