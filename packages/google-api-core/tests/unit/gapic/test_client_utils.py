@@ -16,13 +16,13 @@
 from unittest import mock
 
 import pytest
+from google.auth.exceptions import MutualTLSChannelError
 
 from google.api_core.gapic_v1.client_utils import (
     get_api_endpoint,
     get_default_mtls_endpoint,
     get_universe_domain,
 )
-from google.auth.exceptions import MutualTLSChannelError
 
 
 class MockClient:
@@ -186,7 +186,6 @@ def test_get_api_endpoint(
             )
             == expected
         )
-
 
 
 def test__get_universe_domain():
