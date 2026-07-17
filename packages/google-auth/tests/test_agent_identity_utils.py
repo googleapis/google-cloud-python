@@ -283,7 +283,6 @@ class TestAgentIdentityUtils:
         )
         assert mock_sleep.call_count == len(_agent_identity_utils._POLLING_INTERVALS)
 
-
     @mock.patch("time.sleep")
     @mock.patch("google.auth._agent_identity_utils.os.path.exists")
     def test_get_agent_identity_certificate_path_fail_fast_config_missing(
