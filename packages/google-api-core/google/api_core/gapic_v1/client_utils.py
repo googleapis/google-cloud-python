@@ -77,10 +77,14 @@ def should_use_mtls_endpoint(client_cert_available: bool) -> bool:
     otherwise falls back to evaluation of GOOGLE_API_USE_MTLS_ENDPOINT.
     """
     if hasattr(google.auth.transport.mtls, "should_use_mtls_endpoint"):
-        return google.auth.transport.mtls.should_use_mtls_endpoint(client_cert_available)
+        return google.auth.transport.mtls.should_use_mtls_endpoint(
+            client_cert_available
+        )
 
     # Fallback logic for older google-auth versions
-    use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto").strip().lower()
+    use_mtls_endpoint = (
+        os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto").strip().lower()
+    )
     if use_mtls_endpoint == "always":
         return True
     elif use_mtls_endpoint == "never":

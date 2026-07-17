@@ -193,7 +193,9 @@ def test_get_api_endpoint(
     default_endpoint_template,
     expected,
 ):
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": use_mtls_endpoint}):
+    with mock.patch.dict(
+        os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": use_mtls_endpoint}
+    ):
         if isinstance(expected, type) and issubclass(expected, Exception):
             with pytest.raises(expected):
                 get_api_endpoint(
