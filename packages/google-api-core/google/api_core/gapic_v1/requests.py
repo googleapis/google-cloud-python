@@ -52,7 +52,7 @@ def setup_request_id(
 
     if isinstance(request, dict):
         if is_proto3_optional:
-            if field_name not in request:
+            if field_name not in request or request[field_name] is None:
                 request[field_name] = str(uuid.uuid4())
         elif not request.get(field_name):
             request[field_name] = str(uuid.uuid4())
