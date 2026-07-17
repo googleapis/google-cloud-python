@@ -70,15 +70,6 @@ case ${TEST_TYPE} in
         ;;
     unit)
         case ${PY_VERSION} in
-        "3.9")
-            if nox --list-sessions | grep -q "unit-3.9"; then
-                nox -s unit-3.9
-                retval=$?
-            else
-                echo "Skipping unit-3.9 as it is not supported by this package."
-                retval=0
-            fi
-            ;;
         "3.10")
             nox -s unit-3.10
             retval=$?
