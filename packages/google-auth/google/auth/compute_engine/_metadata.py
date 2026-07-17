@@ -253,6 +253,8 @@ def get(
     headers=None,
     return_none_for_not_found_error=False,
     timeout=_METADATA_DEFAULT_TIMEOUT,
+    method="GET",
+    body=None,
 ):
     """Fetch a resource from the metadata server.
 
@@ -317,9 +319,15 @@ def get(
     last_exception = None
     for attempt in backoff:
         try:
-            response = request(
-                url=url, method="GET", headers=headers_to_use, timeout=timeout
-            )
+            kwargs = {
+                "url": url,
+                "method": method,
+                "headers": headers_to_use,
+                "timeout": timeout,
+            }
+            if body is not None:
+                kwargs["body"] = body
+            response = request(**kwargs)
             if response.status in transport.DEFAULT_RETRYABLE_STATUS_CODES:
                 _LOGGER.warning(
                     "Compute Engine Metadata server unavailable on "
@@ -489,18 +497,27 @@ def get_service_account_token(request, service_account="default", scopes=None):
             scopes = ",".join(scopes)
         params["scopes"] = scopes
 
-    cert = _agent_identity_utils.get_and_parse_agent_identity_certificate()
+    method = "GET"
+    body = None
+
+    cert, cert_bytes = _agent_identity_utils.get_agent_identity_certificate_and_bytes()
     if cert:
         if _agent_identity_utils.should_request_bound_token(cert):
-            fingerprint = _agent_identity_utils.calculate_certificate_fingerprint(cert)
-            params["bindCertificateFingerprint"] = fingerprint
+            method = "POST"
+            body = json.dumps({"certificate_chain": cert_bytes.decode("utf-8")}).encode(
+                "utf-8"
+            )
 
     metrics_header = {
         metrics.API_CLIENT_HEADER: metrics.token_request_access_token_mds()
     }
+    if method == "POST":
+        metrics_header["Content-Type"] = "application/json"
 
     path = "instance/service-accounts/{0}/token".format(service_account)
-    token_json = get(request, path, params=params, headers=metrics_header)
+    token_json = get(
+        request, path, params=params, headers=metrics_header, method=method, body=body
+    )
     token_expiry = _helpers.utcnow() + datetime.timedelta(
         seconds=token_json["expires_in"]
     )

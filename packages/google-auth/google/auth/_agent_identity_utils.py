@@ -193,14 +193,14 @@ def get_agent_identity_certificate_path():
     )
 
 
-def get_and_parse_agent_identity_certificate():
+def get_agent_identity_certificate_and_bytes():
     """Gets and parses the agent identity certificate if not opted out.
 
     Checks if the user has opted out of certificate-bound tokens. If not,
     it gets the certificate path, reads the file, and parses it.
 
     Returns:
-        The parsed certificate object if found and not opted out, otherwise None.
+        A tuple of (parsed certificate object, certificate bytes) if found and not opted out, otherwise (None, None).
     """
     # If the user has opted out of cert bound tokens, there is no need to
     # look up the certificate.
@@ -212,18 +212,18 @@ def get_and_parse_agent_identity_certificate():
         == "false"
     )
     if is_opted_out:
-        return None
+        return None, None
 
     # Respect explicit opt-out of mTLS / client certs
     from google.auth.transport import _mtls_helper
 
     env_override = _mtls_helper._check_use_client_cert_env()
     if env_override is False:
-        return None
+        return None, None
 
     cert_path = get_agent_identity_certificate_path()
     if not cert_path:
-        return None
+        return None, None
 
     try:
         with open(cert_path, "rb") as cert_file:
@@ -233,9 +233,22 @@ def get_and_parse_agent_identity_certificate():
             f"Failed to read agent identity certificate file at {cert_path}: {e}. "
             "Token binding protection cannot be enabled. Falling back to unbound tokens."
         )
-        return None
+        return None, None
 
-    return parse_certificate(cert_bytes)
+    return parse_certificate(cert_bytes), cert_bytes
+
+
+def get_and_parse_agent_identity_certificate():
+    """Gets and parses the agent identity certificate if not opted out.
+
+    Checks if the user has opted out of certificate-bound tokens. If not,
+    it gets the certificate path, reads the file, and parses it.
+
+    Returns:
+        The parsed certificate object if found and not opted out, otherwise None.
+    """
+    cert, _ = get_agent_identity_certificate_and_bytes()
+    return cert
 
 
 def parse_certificate(cert_bytes):
