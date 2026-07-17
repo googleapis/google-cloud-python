@@ -93,7 +93,7 @@ def should_use_mtls_endpoint(client_cert_available: bool) -> bool:
         return client_cert_available
     else:
         raise MutualTLSChannelError(
-            f"Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
+            "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
         )
 
 
