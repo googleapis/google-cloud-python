@@ -15,6 +15,7 @@
 import base64
 import hashlib
 import json
+import os
 from unittest import mock
 import urllib.parse
 
@@ -92,6 +93,34 @@ class TestAgentIdentityUtils:
         result = _agent_identity_utils.get_agent_identity_certificate_path()
         assert result == "cert_path"
         mock_get_cert.assert_called_once_with("/path/to/config.json", False)
+
+    @mock.patch(
+        "google.auth._agent_identity_utils._get_cert_path_with_optional_polling"
+    )
+    def test_get_agent_identity_certificate_path_prefix_false_positive(
+        self, mock_get_cert, monkeypatch, tmpdir
+    ):
+        base_dir = str(tmpdir)
+        well_known_dir = os.path.join(base_dir, "workload-spiffe-credentials")
+        well_known_path = os.path.join(well_known_dir, "certificates.pem")
+        
+        monkeypatch.setattr(
+            "google.auth._agent_identity_utils._WELL_KNOWN_CERT_PATH",
+            well_known_path,
+        )
+        
+        fake_dir = os.path.join(base_dir, "workload-spiffe-credentials-fake")
+        fake_config_path = os.path.join(fake_dir, "config.json")
+        
+        monkeypatch.setenv(
+            environment_vars.GOOGLE_API_CERTIFICATE_CONFIG, fake_config_path
+        )
+        mock_get_cert.return_value = "cert_path"
+
+        result = _agent_identity_utils.get_agent_identity_certificate_path()
+        
+        assert result == "cert_path"
+        mock_get_cert.assert_called_once_with(fake_config_path, False)
 
     @mock.patch("google.auth._agent_identity_utils.os.stat")
     def test_is_certificate_file_ready_permission_error(self, mock_stat):
