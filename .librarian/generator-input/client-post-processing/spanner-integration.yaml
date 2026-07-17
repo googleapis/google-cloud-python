@@ -1432,3 +1432,12 @@ replacements:
                 "auto",
                 "tests/unit",
     count: 1
+  - paths: [packages/google-cloud-spanner/.coveragerc]
+    before: |
+      \[report\]
+      show_missing = True
+    after: |
+      [report]
+      fail_under = 98
+      show_missing = True
+    count: 1
