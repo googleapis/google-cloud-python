@@ -717,6 +717,19 @@ def helper_test_transcode(http_options_list, expected_result_list):
             {"parent": "projects/my-project/locations/."},
             "Invalid value projects/my-project/locations/\\. for parent\\.",
         ],
+        # Non-matching values with path traversal (bypass prevention)
+        [
+            "/v2/{parent=projects/*/locations/*}/content:inspect",
+            [],
+            {"parent": "projects/.."},
+            "Invalid value projects/\\.\\. for parent\\.",
+        ],
+        [
+            "/v1/{name}",
+            [],
+            {"name": "projects/.."},
+            "Invalid value projects/\\.\\. for name\\.",
+        ],
     ],
 )
 def test_path_traversal_dots_validation_star(tmpl, args, kwargs, expected_err_match):

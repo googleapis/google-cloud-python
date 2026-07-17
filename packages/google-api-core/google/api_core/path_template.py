@@ -206,33 +206,44 @@ def _extract_and_validate_wildcards(
     Raises:
         ValueError: If a wildcard within a structurally valid value violates path traversal rules.
     """
+    err = ValueError(
+        f"Invalid value {val} for {property_name or 'positional variable'}."
+    )
+
+    # Single-segment templates (None or "*") cannot match exactly "." or ".."
+    # and cannot have multi-segment paths resolving to 0 segments.
     if template_str is None or template_str == "*":
-        if val in (".", ".."):
-            name_str = property_name if property_name else "positional variable"
-            raise ValueError("Invalid value {} for {}.".format(val, name_str))
+        if val in (".", "..") or (val and not _validate_multi_segment_value(val)):
+            raise err
         return
 
+    # Multi-segment templates ("**") must represent at least one valid, non-escaped segment.
     if template_str == "**":
         if not _validate_multi_segment_value(val):
-            name_str = property_name if property_name else "positional variable"
-            raise ValueError("Invalid value {} for {}.".format(val, name_str))
+            raise err
         return
 
-    # Sub-template case: use cached capture pattern and regex match
+    # Compile the sub-template into a regex capture pattern
+    # to isolate and validate individual wildcard values.
     pattern, wildcard_types = _build_capture_pattern(template_str)
 
     m = pattern.fullmatch(val)
     if m is not None:
+        # Validate each wildcard value within its matched boundaries,
+        # preventing traversals from escaping their structural positions.
         for i, wildcard_type in enumerate(wildcard_types):
             captured_val = m.group(i + 1)
             if wildcard_type == "*":
                 if captured_val in (".", ".."):
-                    name_str = property_name if property_name else "positional variable"
-                    raise ValueError("Invalid value {} for {}.".format(val, name_str))
+                    raise err
             else:
                 if not _validate_multi_segment_value(captured_val):
-                    name_str = property_name if property_name else "positional variable"
-                    raise ValueError("Invalid value {} for {}.".format(val, name_str))
+                    raise err
+    else:
+        # For values that don't match the pattern, ensure the value doesn't 
+        # resolve to 0 segments (e.g. "projects/..").
+        if val and not _validate_multi_segment_value(val):
+            raise err
 
 
 def _expand_variable_match(positional_vars, named_vars, match):
