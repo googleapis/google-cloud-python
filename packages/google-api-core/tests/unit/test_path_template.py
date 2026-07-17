@@ -833,3 +833,23 @@ def test_build_capture_pattern(template_str, expected_pattern, expected_wildcard
     pattern, wildcards = path_template._build_capture_pattern(template_str)
     assert pattern.pattern == expected_pattern
     assert wildcards == expected_wildcards
+
+
+@pytest.mark.parametrize(
+    "val, expected_valid",
+    [
+        ("a/b/c", True),
+        ("a/../b", True),
+        ("a/b/c/d/e/../../../..", True),
+        ("a/b/../..", False),
+        ("a/b/../../..", False),
+        (".", False),
+        ("..", False),
+        ("instance//..", False),
+        ("instance/my-instance///../..", False),
+    ],
+)
+def test_validate_multi_segment_value(val, expected_valid):
+    result = path_template._validate_multi_segment_value(val)
+    assert result == expected_valid
+
