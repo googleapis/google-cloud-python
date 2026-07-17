@@ -21,8 +21,8 @@ before invoking API methods, such as automatically generating request IDs
 if they are not already set.
 """
 
-import uuid
 from typing import Union
+import uuid
 
 import google.protobuf.message
 
