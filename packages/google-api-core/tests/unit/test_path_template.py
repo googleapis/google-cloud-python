@@ -827,6 +827,8 @@ def test_path_traversal_dots_validation_bare_double_star(
         ("projects/{project=**}", "projects/(.+)", ("**",)),
         ("projects/{project=locations/*}", "projects/locations/([^/]+)", ("*",)),
         ("projects/*/locations/**", "projects/([^/]+)/locations/(.+)", ("*", "**")),
+        ("projects/abc", "projects/abc", ()),
+        ("projects/my-project", r"projects/my\-project", ()),
     ],
 )
 def test_build_capture_pattern(template_str, expected_pattern, expected_wildcards):
