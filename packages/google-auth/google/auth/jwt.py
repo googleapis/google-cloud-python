@@ -585,7 +585,14 @@ class Credentials(
         self.token, self.expiry = self._make_jwt()
 
     def _build_regional_access_boundary_lookup_url(self, request=None):
-        """Builds the lookup URL using the service account's email address."""
+        """Builds the lookup URL using the service account's email address.
+
+        Returns None if the subject is populated.
+        """
+        if self._subject and self._subject != self._issuer:
+            # RAB does not apply to Workspace User Accounts via Domain-wide Delegation.
+            return None
+
         if not self.signer_email:
             return None
 
