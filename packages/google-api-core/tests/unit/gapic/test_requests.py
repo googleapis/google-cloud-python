@@ -69,8 +69,10 @@ UUID_REGEX = r"[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{1
         (MockValueErrorRequest(), True, "uuid"),
         # Dict cases
         ({}, True, "uuid"),
+        ({"request_id": None}, True, "uuid"),
         ({"request_id": "already_set"}, True, "already_set"),
         ({"request_id": ""}, False, "uuid"),
+        ({"request_id": None}, False, "uuid"),
         ({"request_id": "already_set"}, False, "already_set"),
         # None case
         (None, True, "none"),
@@ -84,8 +86,10 @@ UUID_REGEX = r"[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{1
         "proto3_optional_already_in_request_proto",
         "value_error_fallback",
         "dict_proto3_optional_not_in_request",
+        "dict_proto3_optional_value_none",
         "dict_proto3_optional_already_in_request",
         "dict_non_proto3_optional_empty",
+        "dict_non_proto3_optional_value_none",
         "dict_non_proto3_optional_already_set",
         "none_request",
     ],
