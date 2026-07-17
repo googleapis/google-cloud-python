@@ -17,9 +17,11 @@ def test_legacy_imports_retry_unary_sync():
     # TODO: Delete this test when when we revert these imports on the
     #       next major version release
     #       (https://github.com/googleapis/python-api-core/issues/576)
-    from google.api_core.retry import datetime_helpers  # noqa: F401
-    from google.api_core.retry import exceptions  # noqa: F401
-    from google.api_core.retry import auth_exceptions  # noqa: F401
+    from google.api_core.retry import (
+        auth_exceptions,  # noqa: F401
+        datetime_helpers,  # noqa: F401
+        exceptions,  # noqa: F401
+    )
 
 
 def test_legacy_imports_retry_unary_async():

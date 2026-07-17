@@ -16,9 +16,10 @@
 
 from typing import Union
 
+import google.protobuf.message
 import proto
 import requests
-import google.protobuf.message
+
 from google.api_core._rest_streaming_base import BaseResponseIterator
 
 
