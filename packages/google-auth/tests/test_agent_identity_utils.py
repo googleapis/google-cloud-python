@@ -76,6 +76,23 @@ class TestAgentIdentityUtils:
         result = _agent_identity_utils.get_agent_identity_certificate_path()
         assert result is None
 
+    @mock.patch("google.auth._agent_identity_utils.os.path.commonpath")
+    @mock.patch(
+        "google.auth._agent_identity_utils._get_cert_path_with_optional_polling"
+    )
+    def test_get_agent_identity_certificate_path_value_error(
+        self, mock_get_cert, mock_commonpath, monkeypatch
+    ):
+        monkeypatch.setenv(
+            environment_vars.GOOGLE_API_CERTIFICATE_CONFIG, "/path/to/config.json"
+        )
+        mock_commonpath.side_effect = ValueError("Different drives")
+        mock_get_cert.return_value = "cert_path"
+
+        result = _agent_identity_utils.get_agent_identity_certificate_path()
+        assert result == "cert_path"
+        mock_get_cert.assert_called_once_with("/path/to/config.json", False)
+
     @mock.patch("google.auth._agent_identity_utils.os.stat")
     def test_is_certificate_file_ready_permission_error(self, mock_stat):
         mock_stat.side_effect = PermissionError("Permission denied")

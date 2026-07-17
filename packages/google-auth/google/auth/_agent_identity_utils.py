@@ -99,7 +99,15 @@ def get_agent_identity_certificate_path():
     # For all other paths, we return early to avoid introducing unnecessary startup
     # delays.
     well_known_dir = os.path.dirname(_WELL_KNOWN_CERT_PATH)
-    should_poll = cert_config_path.startswith(well_known_dir)
+    try:
+        abs_cert_path = os.path.abspath(cert_config_path)
+        abs_well_known_dir = os.path.abspath(well_known_dir)
+        should_poll = (
+            os.path.commonpath([abs_well_known_dir, abs_cert_path])
+            == abs_well_known_dir
+        )
+    except ValueError:
+        should_poll = False
 
     return _get_cert_path_with_optional_polling(cert_config_path, should_poll)
 
@@ -197,7 +205,7 @@ def _parse_cert_path_from_config(cert_config_path):
     """
     import json
 
-    with open(cert_config_path, "r") as f:
+    with open(cert_config_path, "r", encoding="utf-8") as f:
         cert_config = json.load(f)
 
     cert_configs = (
