@@ -16,8 +16,11 @@
 
 """Helpers for client setup and configuration."""
 
+import os
 from typing import Callable, Optional, Tuple
+from urllib.parse import urlparse, urlunparse
 
+import google.auth.transport.mtls  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 
 
@@ -38,28 +41,62 @@ def get_default_mtls_endpoint(api_endpoint: Optional[str]) -> Optional[str]:
     if not api_endpoint or ".mtls." in api_endpoint.lower():
         return api_endpoint
 
-    # Handle optional port suffix (e.g. ":443")
-    parts = api_endpoint.split(":")
-    host = parts[0]
-    port = ":" + parts[1] if len(parts) > 1 else ""
+    has_scheme = "://" in api_endpoint
+    if not has_scheme:
+        parsed = urlparse("//" + api_endpoint)
+    else:
+        parsed = urlparse(api_endpoint)
+
+    host = parsed.hostname
+    if not host:
+        return api_endpoint
+
+    port = f":{parsed.port}" if parsed.port else ""
 
     lowered_host = host.lower()
     if lowered_host.endswith(".sandbox.googleapis.com"):
-        # len(".sandbox.googleapis.com") == 23
-        return host[:-23] + ".mtls.sandbox.googleapis.com" + port
+        new_host = host[:-23] + ".mtls.sandbox.googleapis.com"
+    elif lowered_host.endswith(".googleapis.com"):
+        new_host = host[:-15] + ".mtls.googleapis.com"
+    else:
+        return api_endpoint
 
-    if lowered_host.endswith(".googleapis.com"):
-        # len(".googleapis.com") == 15
-        return host[:-15] + ".mtls.googleapis.com" + port
+    netloc = new_host + port
+    new_parsed = parsed._replace(netloc=netloc)
 
-    return api_endpoint
+    if not has_scheme:
+        return urlunparse(new_parsed)[2:]
+    else:
+        return urlunparse(new_parsed)
+
+
+def should_use_mtls_endpoint(client_cert_available: bool) -> bool:
+    """Helper to determine whether to use mTLS endpoint.
+
+    Uses google.auth.transport.mtls.should_use_mtls_endpoint if available,
+    otherwise falls back to evaluation of GOOGLE_API_USE_MTLS_ENDPOINT.
+    """
+    if hasattr(google.auth.transport.mtls, "should_use_mtls_endpoint"):
+        return google.auth.transport.mtls.should_use_mtls_endpoint(client_cert_available)
+
+    # Fallback logic for older google-auth versions
+    use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto").strip().lower()
+    if use_mtls_endpoint == "always":
+        return True
+    elif use_mtls_endpoint == "never":
+        return False
+    elif use_mtls_endpoint == "auto":
+        return client_cert_available
+    else:
+        raise MutualTLSChannelError(
+            f"Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
+        )
 
 
 def get_api_endpoint(
     api_override: Optional[str],
     client_cert_source: Optional[Callable[[], Tuple[bytes, bytes]]],
     universe_domain: str,
-    use_mtls_endpoint: str,
     default_universe: str,
     default_mtls_endpoint: Optional[str],
     default_endpoint_template: str,
@@ -72,8 +109,6 @@ def get_api_endpoint(
         client_cert_source (Optional[Callable[[], Tuple[bytes, bytes]]]): The client
             certificate source used by the client.
         universe_domain (str): The universe domain used by the client.
-        use_mtls_endpoint (str): How to use the mTLS endpoint. Possible values
-            are "always", "auto", or "never".
         default_universe (str): The default universe domain.
         default_mtls_endpoint (Optional[str]): The default mTLS endpoint.
         default_endpoint_template (str): The default endpoint template containing
@@ -89,9 +124,9 @@ def get_api_endpoint(
     """
     if api_override is not None:
         return api_override
-    elif use_mtls_endpoint == "always" or (
-        use_mtls_endpoint == "auto" and client_cert_source
-    ):
+
+    client_cert_available = client_cert_source is not None
+    if should_use_mtls_endpoint(client_cert_available):
         if universe_domain.lower() != default_universe.lower():
             raise MutualTLSChannelError(
                 f"mTLS is not supported in any universe other than {default_universe}."

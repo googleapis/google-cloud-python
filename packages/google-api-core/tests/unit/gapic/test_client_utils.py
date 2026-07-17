@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import os
 from unittest import mock
 
 import pytest
@@ -43,6 +44,16 @@ def test_get_default_mtls_endpoint():
     assert (
         get_default_mtls_endpoint("foo.Sandbox.GoogleAPIs.com")
         == "foo.mtls.sandbox.googleapis.com"
+    )
+
+    # Test valid API endpoints with schemes
+    assert (
+        get_default_mtls_endpoint("https://foo.googleapis.com")
+        == "https://foo.mtls.googleapis.com"
+    )
+    assert (
+        get_default_mtls_endpoint("http://foo.googleapis.com:8080/v1")
+        == "http://foo.mtls.googleapis.com:8080/v1"
     )
 
     # Test valid API endpoints with ports
@@ -182,30 +193,29 @@ def test_get_api_endpoint(
     default_endpoint_template,
     expected,
 ):
-    if isinstance(expected, type) and issubclass(expected, Exception):
-        with pytest.raises(expected):
-            get_api_endpoint(
-                api_override,
-                client_cert_source,
-                universe_domain,
-                use_mtls_endpoint,
-                default_universe,
-                default_mtls_endpoint,
-                default_endpoint_template,
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": use_mtls_endpoint}):
+        if isinstance(expected, type) and issubclass(expected, Exception):
+            with pytest.raises(expected):
+                get_api_endpoint(
+                    api_override,
+                    client_cert_source,
+                    universe_domain,
+                    default_universe,
+                    default_mtls_endpoint,
+                    default_endpoint_template,
+                )
+        else:
+            assert (
+                get_api_endpoint(
+                    api_override,
+                    client_cert_source,
+                    universe_domain,
+                    default_universe,
+                    default_mtls_endpoint,
+                    default_endpoint_template,
+                )
+                == expected
             )
-    else:
-        assert (
-            get_api_endpoint(
-                api_override,
-                client_cert_source,
-                universe_domain,
-                use_mtls_endpoint,
-                default_universe,
-                default_mtls_endpoint,
-                default_endpoint_template,
-            )
-            == expected
-        )
 
 
 def test__get_universe_domain():
