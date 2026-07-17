@@ -67,93 +67,88 @@ def _is_certificate_file_ready(path):
         st = os.stat(path)
         return stat.S_ISREG(st.st_mode) and st.st_size > 0
     except PermissionError:
-        # Propagate PermissionError to let caller handle it (fail-fast or fallback)
+        # Propagate PermissionError to let caller handle it (e.g., return early or fallback)
         raise
     except OSError:
         return False
 
 
 def get_agent_identity_certificate_path():
-    """Gets the certificate path from the certificate config file.
+    """Gets the agent certificate path from the certificate config file.
 
     The path to the certificate config file is read from the
     GOOGLE_API_CERTIFICATE_CONFIG environment variable. This function
-    implements a retry mechanism to handle cases where the environment
+    can optionally trigger polling to handle cases where the environment
     variable is set before the files are available on the filesystem.
 
     Returns:
-        str: The path to the leaf certificate file.
+        Optional[str]: The path to the agent's certificate file, or None if unavailable.
 
     Raises:
         google.auth.exceptions.RefreshError: If the certificate config file
             or the certificate file cannot be found after retries.
     """
-    import json
-
     cert_config_path = os.environ.get(environment_vars.GOOGLE_API_CERTIFICATE_CONFIG)
 
-    # Check if the well-known workload directory is mounted.
+    if not cert_config_path:
+        return None
+
+    # We trigger polling only if the config path points to the well-known directory.
+    # Cloud Run dynamically generates these files in this directory, and both the
+    # config file and the certificate file may experience a brief startup latency.
+    # For all other paths, we return early to avoid introducing unnecessary startup
+    # delays.
     well_known_dir = os.path.dirname(_WELL_KNOWN_CERT_PATH)
-    has_well_known_dir = os.path.exists(well_known_dir)
+    try:
+        abs_cert_path = os.path.abspath(cert_config_path)
+        abs_well_known_dir = os.path.abspath(well_known_dir)
+        should_poll = (
+            os.path.commonpath([abs_well_known_dir, abs_cert_path])
+            == abs_well_known_dir
+        )
+    except ValueError:
+        should_poll = False
 
-    # If we have neither a config path nor a well-known mount directory, exit immediately.
-    if not cert_config_path and not has_well_known_dir:
-        return None
+    return _get_cert_path_with_optional_polling(cert_config_path, should_poll)
 
-    # If ECP config path is specified but does not exist, and we are on a workstation, fail-fast immediately.
-    if (
-        cert_config_path
-        and not has_well_known_dir
-        and not os.path.exists(cert_config_path)
-    ):
-        return None
 
+def _get_cert_path_with_optional_polling(cert_config_path, should_poll):
+    """Gets the certificate path, optionally polling until it is ready.
+
+    Args:
+        cert_config_path (str): The path to the certificate configuration file.
+        should_poll (bool): If True, the function will poll for the file and
+            certificate to be ready. If False, it will check only once and
+            return early if they are not immediately available.
+
+    Returns:
+        str: The path to the certificate file, or None if unavailable.
+
+    Raises:
+        google.auth.exceptions.RefreshError: If the certificate config file
+            or the certificate file cannot be found after retries.
+    """
     has_logged_config_warning = False
     has_logged_cert_warning = False
 
     for interval in _POLLING_INTERVALS:
         try:
-            # Path A: Config file is explicitly set
-            if cert_config_path:
-                with open(cert_config_path, "r") as f:
-                    cert_config = json.load(f)
+            cert_path = _parse_cert_path_from_config(cert_config_path)
 
-                cert_configs = (
-                    cert_config.get("cert_configs")
-                    if isinstance(cert_config, dict)
-                    else None
-                )
-                workload_config = (
-                    cert_configs.get("workload")
-                    if isinstance(cert_configs, dict)
-                    else None
-                )
+            if cert_path is None:
+                return None
 
-                if (
-                    not isinstance(workload_config, dict)
-                    or "cert_path" not in workload_config
-                ):
-                    return None
+            if _is_certificate_file_ready(cert_path):
+                return cert_path
 
-                cert_path = workload_config["cert_path"]
-                if _is_certificate_file_ready(cert_path):
-                    return cert_path
+            # The config was parsed, but the cert file is not ready yet
+            if not should_poll:
+                # If polling is disabled, return early.
+                return None
 
-                # The config was parsed, but the cert file is not ready yet
-                target_path = cert_path
-
-            # Path B: Config is NOT set, fallback to the well-known path
-            else:
-                if _is_certificate_file_ready(_WELL_KNOWN_CERT_PATH):
-                    return _WELL_KNOWN_CERT_PATH
-
-                # The well-known cert file is not ready yet
-                target_path = _WELL_KNOWN_CERT_PATH
-
-            # Log a warning on the first failed attempt to load the certificate file
             if not has_logged_cert_warning:
                 warnings.warn(
-                    f"Certificate file not ready at {target_path}. Retrying until startup timeout (up to {_TOTAL_TIMEOUT} seconds total)..."
+                    f"Certificate file not ready at {cert_path}. Retrying until startup timeout (up to {_TOTAL_TIMEOUT} seconds total)..."
                 )
                 has_logged_cert_warning = True
 
@@ -164,25 +159,24 @@ def get_agent_identity_certificate_path():
             )
             return None
         except (IOError, ValueError, KeyError) as e:
-            if cert_config_path and os.path.exists(cert_config_path):
+            if os.path.exists(cert_config_path):
                 # If the file exists but has invalid JSON or is unreadable,
-                # we assume it is in its final format and fail-fast by returning None.
+                # we assume it is in its final format and return early (returning None).
                 return None
 
-            if not has_logged_config_warning and cert_config_path:
+            if not should_poll:
+                # If polling is disabled, return early if the file doesn't exist.
+                return None
+
+            if not has_logged_config_warning:
                 warnings.warn(
                     f"Certificate config file not found or incomplete: {e} (from "
                     f"{environment_vars.GOOGLE_API_CERTIFICATE_CONFIG} environment variable). "
                     f"Retrying until startup timeout (up to {_TOTAL_TIMEOUT} seconds total)..."
                 )
                 has_logged_config_warning = True
-            pass
 
-        # A sleep is required in two cases:
-        # 1. The config file is not found (the except block).
-        # 2. The config file/well-known path is found, but the certificate is not yet available.
-        # In both cases, we need to poll, so we sleep on every iteration
-        # that doesn't return a certificate.
+        # Sleep before the next polling attempt.
         time.sleep(interval)
 
     raise exceptions.RefreshError(
@@ -191,6 +185,40 @@ def get_agent_identity_certificate_path():
         f"{environment_vars.GOOGLE_API_PREVENT_AGENT_TOKEN_SHARING_FOR_GCP_SERVICES} to false "
         "to fall back to unbound tokens."
     )
+
+
+def _parse_cert_path_from_config(cert_config_path):
+    """Reads the cert config file and returns the cert_path.
+
+    Args:
+        cert_config_path (str): The path to the certificate configuration file.
+
+    Returns:
+        Optional[str]: The path to the certificate file, or None if not found
+            in the config.
+
+    Raises:
+        IOError: If the certificate config file cannot be read.
+        ValueError: If the certificate config file contains invalid JSON.
+        KeyError: If the certificate config file does not contain the
+            expected structure.
+    """
+    import json
+
+    with open(cert_config_path, "r", encoding="utf-8") as f:
+        cert_config = json.load(f)
+
+    cert_configs = (
+        cert_config.get("cert_configs") if isinstance(cert_config, dict) else None
+    )
+    workload_config = (
+        cert_configs.get("workload") if isinstance(cert_configs, dict) else None
+    )
+
+    if not isinstance(workload_config, dict) or "cert_path" not in workload_config:
+        return None
+
+    return workload_config["cert_path"]
 
 
 def get_and_parse_agent_identity_certificate():
