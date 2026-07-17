@@ -21,7 +21,7 @@ omit =
   google/cloud/sqlalchemy_spanner/requirements.py
 
 [report]
-fail_under = 0
+fail_under = 90
 show_missing = True
 exclude_lines =
     # Re-enable the standard pragma
