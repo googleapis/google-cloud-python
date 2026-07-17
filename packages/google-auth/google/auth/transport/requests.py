@@ -208,7 +208,7 @@ class _MutualTlsAdapter(requests.adapters.HTTPAdapter):
         google.auth.exceptions.MutualTLSChannelError: If the cert or key is invalid.
     """
 
-    def __init__(self, cert, key):
+    def __init__(self, cert, key, **kwargs):
         import certifi
         import ssl
 
@@ -250,7 +250,7 @@ class _MutualTlsAdapter(requests.adapters.HTTPAdapter):
         self._ctx_poolmanager = ctx_poolmanager
         self._ctx_proxymanager = ctx_proxymanager
 
-        super(_MutualTlsAdapter, self).__init__()
+        super(_MutualTlsAdapter, self).__init__(**kwargs)
 
     def init_poolmanager(self, *args, **kwargs):
         kwargs["ssl_context"] = self._ctx_poolmanager
@@ -457,6 +457,11 @@ class AuthorizedSession(requests.Session):
                 If the callback is None, application default SSL credentials
                 will be used.
 
+        .. warning::
+            Calling this method mutates the underlying `requests.Session` adapter
+            dictionary. It is not thread-safe to call this explicitly while other
+            threads are making requests.
+
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If mutual TLS channel
                 creation failed for any reason. The existing session state (such
@@ -475,10 +480,58 @@ class AuthorizedSession(requests.Session):
                 client_cert_callback
             )
 
+            old_adapter = self.adapters.get("https://")
+
+            kwargs = {}
+            if old_adapter is not None:
+                kwargs["max_retries"] = getattr(old_adapter, "max_retries", 0)
+                kwargs["pool_connections"] = getattr(
+                    old_adapter, "_pool_connections", requests.adapters.DEFAULT_POOLSIZE
+                )
+                kwargs["pool_maxsize"] = getattr(
+                    old_adapter, "_pool_maxsize", requests.adapters.DEFAULT_POOLSIZE
+                )
+                kwargs["pool_block"] = getattr(
+                    old_adapter, "_pool_block", requests.adapters.DEFAULT_POOLBLOCK
+                )
+
+            old_auth_adapter = None
+            auth_kwargs = {}
+            if self._auth_request_session is not None:
+                old_auth_adapter = self._auth_request_session.adapters.get("https://")
+
+                if old_auth_adapter is not None:
+                    auth_kwargs["max_retries"] = getattr(
+                        old_auth_adapter, "max_retries", 0
+                    )
+                    auth_kwargs["pool_connections"] = getattr(
+                        old_auth_adapter,
+                        "_pool_connections",
+                        requests.adapters.DEFAULT_POOLSIZE,
+                    )
+                    auth_kwargs["pool_maxsize"] = getattr(
+                        old_auth_adapter,
+                        "_pool_maxsize",
+                        requests.adapters.DEFAULT_POOLSIZE,
+                    )
+                    auth_kwargs["pool_block"] = getattr(
+                        old_auth_adapter,
+                        "_pool_block",
+                        requests.adapters.DEFAULT_POOLBLOCK,
+                    )
+
             if is_mtls:
-                new_adapter = _MutualTlsAdapter(cert, key)
+                new_adapter = _MutualTlsAdapter(cert, key, **kwargs)
+                if self._auth_request_session is not None:
+                    new_auth_adapter = _MutualTlsAdapter(cert, key, **auth_kwargs)
+                else:
+                    new_auth_adapter = None
             else:
-                new_adapter = requests.adapters.HTTPAdapter()
+                new_adapter = requests.adapters.HTTPAdapter(**kwargs)
+                if self._auth_request_session is not None:
+                    new_auth_adapter = requests.adapters.HTTPAdapter(**auth_kwargs)
+                else:
+                    new_auth_adapter = None
         except (
             exceptions.ClientCertError,
             ImportError,
@@ -489,6 +542,19 @@ class AuthorizedSession(requests.Session):
             raise new_exc from caught_exc
 
         self.mount("https://", new_adapter)
+
+        if old_adapter is not None and old_adapter is not new_adapter:
+            old_adapter.close()
+
+        if self._auth_request_session is not None and new_auth_adapter is not None:
+            self._auth_request_session.mount("https://", new_auth_adapter)
+
+            if (
+                old_auth_adapter is not None
+                and old_auth_adapter is not new_auth_adapter
+            ):
+                old_auth_adapter.close()
+
         self._is_mtls = is_mtls
         if is_mtls:
             self._cached_cert = cert
