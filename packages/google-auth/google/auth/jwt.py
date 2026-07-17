@@ -589,6 +589,9 @@ class Credentials(
 
         Returns None if the subject is populated.
         """
+        # In jwt.Credentials, subject defaults to client_email (which is the issuer).
+        # We must check self._subject != self._issuer to correctly determine if
+        # Domain-Wide Delegation is active.
         if self._subject and self._subject != self._issuer:
             # RAB does not apply to Workspace User Accounts via Domain-wide Delegation.
             return None
