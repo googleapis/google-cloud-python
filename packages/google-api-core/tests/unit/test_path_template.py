@@ -843,6 +843,7 @@ def test_build_capture_pattern(template_str, expected_pattern, expected_wildcard
         ("a/b/c/d/e/../../../..", True),
         ("a/b/../..", False),
         ("a/b/../../..", False),
+        ('', False),
         (".", False),
         ("..", False),
         ("", False),
@@ -857,3 +858,32 @@ def test_build_capture_pattern(template_str, expected_pattern, expected_wildcard
 def test_validate_multi_segment_value(val, expected_valid):
     result = path_template._validate_multi_segment_value(val)
     assert result == expected_valid
+
+
+@pytest.mark.parametrize(
+    "val, template_str, expect_error",
+    [
+        ("api", None, False),
+        ("api", "*", False),
+        (".", None, True),
+        ("..", None, True),
+        (".", "*", True),
+        ("..", "*", True),
+        ("", "*", False),
+        ("api/v1", "**", False),
+        (".", "**", True),
+        ("..", "**", True),
+        ("", "**", True),
+        ("projects/my-proj/locations/us-central1", "projects/*/locations/*", False),
+        ("projects/my-proj/locations/.", "projects/*/locations/*", True),
+        ("projects/my-proj/locations/..", "projects/*/locations/*", True),
+        ("projects/../locations/us-central1", "projects/*/locations/*", True),
+    ],
+)
+def test_extract_and_validate_wildcards(val, template_str, expect_error):
+    if expect_error:
+        with pytest.raises(ValueError):
+            path_template._extract_and_validate_wildcards(val, template_str)
+    else:
+        # Should not raise any exception
+        path_template._extract_and_validate_wildcards(val, template_str)

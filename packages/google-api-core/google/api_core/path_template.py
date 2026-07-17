@@ -94,6 +94,9 @@ def _validate_multi_segment_value(val: str) -> bool:
         bool: True if the value is valid and does not violate traversal boundaries,
             False otherwise.
     """
+    if val in ('', '.', '..'):
+        return False
+
     segments = val.split("/")
     leftover_segments = 0
     unseen_segments = len(segments)
@@ -210,40 +213,33 @@ def _extract_and_validate_wildcards(
         f"Invalid value {val} for {property_name or 'positional variable'}."
     )
 
-    # Single-segment templates (None or "*") cannot match exactly "." or ".."
-    # and cannot have multi-segment paths resolving to 0 segments.
     if template_str is None or template_str == "*":
-        if val in (".", "..") or (val and not _validate_multi_segment_value(val)):
-            raise err
-        return
-
-    # Multi-segment templates ("**") must represent at least one valid, non-escaped segment.
-    if template_str == "**":
-        if not _validate_multi_segment_value(val):
-            raise err
-        return
-
-    # Compile the sub-template into a regex capture pattern
-    # to isolate and validate individual wildcard values.
-    pattern, wildcard_types = _build_capture_pattern(template_str)
-
-    m = pattern.fullmatch(val)
-    if m is not None:
-        # Validate each wildcard value within its matched boundaries,
-        # preventing traversals from escaping their structural positions.
-        for i, wildcard_type in enumerate(wildcard_types):
-            captured_val = m.group(i + 1)
-            if wildcard_type == "*":
-                if captured_val in (".", ".."):
-                    raise err
-            else:
-                if not _validate_multi_segment_value(captured_val):
-                    raise err
-    else:
-        # For values that don't match the pattern, ensure the value doesn't
-        # resolve to 0 segments (e.g. "projects/..").
+        # Single-segment templates (None or "*") cannot match exactly "." or ".."
+        # and cannot have multi-segment paths resolving to 0 segments.
         if val and not _validate_multi_segment_value(val):
             raise err
+    elif template_str == "**":
+        # Multi-segment templates ("**") must represent at least one valid,
+        # non-escaped segment.
+        if not _validate_multi_segment_value(val):
+            raise err
+    else:
+        # Compile the sub-template into a regex capture pattern
+        # to isolate and validate individual wildcard values.
+        pattern, wildcard_types = _build_capture_pattern(template_str)
+
+        m = pattern.fullmatch(val)
+        if m is not None:
+            # Validate each wildcard value within its matched boundaries,
+            # preventing traversals from escaping their structural positions.
+            for captured_val in m.groups():
+                if not _validate_multi_segment_value(captured_val):
+                    raise err
+        else:
+            # For values that don't match the pattern, ensure the value doesn't
+            # resolve to 0 segments (e.g. "projects/..").
+            if val and not _validate_multi_segment_value(val):
+                raise err
 
 
 def _expand_variable_match(positional_vars, named_vars, match):
