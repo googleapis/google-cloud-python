@@ -33,14 +33,15 @@ def get_default_mtls_endpoint(api_endpoint: Optional[str]) -> Optional[str]:
     Returns:
         Optional[str]: converted mTLS api endpoint.
     """
-    if not api_endpoint or ".mtls." in api_endpoint:
+    if not api_endpoint or ".mtls." in api_endpoint.lower():
         return api_endpoint
 
-    if api_endpoint.endswith(".sandbox.googleapis.com"):
+    lowered_endpoint = api_endpoint.lower()
+    if lowered_endpoint.endswith(".sandbox.googleapis.com"):
         # len(".sandbox.googleapis.com") == 23
         return api_endpoint[:-23] + ".mtls.sandbox.googleapis.com"
 
-    if api_endpoint.endswith(".googleapis.com"):
+    if lowered_endpoint.endswith(".googleapis.com"):
         # len(".googleapis.com") == 15
         return api_endpoint[:-15] + ".mtls.googleapis.com"
 

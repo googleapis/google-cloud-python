@@ -39,6 +39,15 @@ def test_get_default_mtls_endpoint():
         get_default_mtls_endpoint("foo.sandbox.googleapis.com")
         == "foo.mtls.sandbox.googleapis.com"
     )
+    # Test case-insensitivity
+    assert (
+        get_default_mtls_endpoint("foo.GoogleAPIs.com")
+        == "foo.mtls.googleapis.com"
+    )
+    assert (
+        get_default_mtls_endpoint("foo.Sandbox.GoogleAPIs.com")
+        == "foo.mtls.sandbox.googleapis.com"
+    )
 
     # Test endpoints that shouldn't be converted
     assert (
