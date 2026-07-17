@@ -509,14 +509,14 @@ class TestAuthorizedSession(object):
             auth_session.adapters["https://"],
             google.auth.transport.requests._MutualTlsAdapter,
         )
-        # _auth_request_session gets the exact same adapter
+        # _auth_request_session gets a separate adapter instance
         assert isinstance(
             auth_session._auth_request_session.adapters["https://"],
             google.auth.transport.requests._MutualTlsAdapter,
         )
         assert (
             auth_session.adapters["https://"]
-            is auth_session._auth_request_session.adapters["https://"]
+            is not auth_session._auth_request_session.adapters["https://"]
         )
 
     @mock.patch(
