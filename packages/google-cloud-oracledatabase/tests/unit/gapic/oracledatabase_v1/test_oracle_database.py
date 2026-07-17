@@ -1798,6 +1798,9 @@ def test_list_cloud_exadata_infrastructures_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -1892,6 +1895,8 @@ async def test_list_cloud_exadata_infrastructures_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -3808,6 +3813,9 @@ def test_list_cloud_vm_clusters_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, vm_cluster.CloudVmCluster) for i in results)
@@ -3900,6 +3908,8 @@ async def test_list_cloud_vm_clusters_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -5452,6 +5462,9 @@ def test_list_entitlements_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, entitlement.Entitlement) for i in results)
@@ -5544,6 +5557,8 @@ async def test_list_entitlements_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -5974,6 +5989,9 @@ def test_list_db_servers_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, db_server.DbServer) for i in results)
@@ -6062,6 +6080,8 @@ async def test_list_db_servers_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -6490,6 +6510,9 @@ def test_list_db_nodes_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, db_node.DbNode) for i in results)
@@ -6578,6 +6601,8 @@ async def test_list_db_nodes_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -7010,6 +7035,9 @@ def test_list_gi_versions_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, gi_version.GiVersion) for i in results)
@@ -7098,6 +7126,8 @@ async def test_list_gi_versions_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -7548,6 +7578,9 @@ def test_list_minor_versions_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, minor_version.MinorVersion) for i in results)
@@ -7640,6 +7673,8 @@ async def test_list_minor_versions_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -8095,6 +8130,9 @@ def test_list_db_system_shapes_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, db_system_shape.DbSystemShape) for i in results)
@@ -8187,6 +8225,8 @@ async def test_list_db_system_shapes_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -8650,6 +8690,9 @@ def test_list_autonomous_databases_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -8744,6 +8787,8 @@ async def test_list_autonomous_databases_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -11429,6 +11474,9 @@ def test_list_autonomous_db_versions_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -11523,6 +11571,8 @@ async def test_list_autonomous_db_versions_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -11982,6 +12032,9 @@ def test_list_autonomous_database_character_sets_pager(transport_name: str = "gr
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -12079,6 +12132,8 @@ async def test_list_autonomous_database_character_sets_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -12543,6 +12598,9 @@ def test_list_autonomous_database_backups_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -12638,6 +12696,8 @@ async def test_list_autonomous_database_backups_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -14868,6 +14928,9 @@ def test_list_odb_networks_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, odb_network.OdbNetwork) for i in results)
@@ -14960,6 +15023,8 @@ async def test_list_odb_networks_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -16454,6 +16519,9 @@ def test_list_odb_subnets_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, odb_subnet.OdbSubnet) for i in results)
@@ -16542,6 +16610,8 @@ async def test_list_odb_subnets_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -18047,6 +18117,9 @@ def test_list_exadb_vm_clusters_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, exadb_vm_cluster.ExadbVmCluster) for i in results)
@@ -18139,6 +18212,8 @@ async def test_list_exadb_vm_clusters_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -20412,6 +20487,9 @@ def test_list_exascale_db_storage_vaults_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -20507,6 +20585,8 @@ async def test_list_exascale_db_storage_vaults_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -22074,6 +22154,9 @@ def test_list_db_system_initial_storage_sizes_pager(transport_name: str = "grpc"
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -22169,6 +22252,8 @@ async def test_list_db_system_initial_storage_sizes_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -22606,6 +22691,9 @@ def test_list_databases_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, database.Database) for i in results)
@@ -22694,6 +22782,8 @@ async def test_list_databases_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -23545,6 +23635,9 @@ def test_list_pluggable_databases_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, pluggable_database.PluggableDatabase) for i in results)
@@ -23637,6 +23730,8 @@ async def test_list_pluggable_databases_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -24426,6 +24521,9 @@ def test_list_db_systems_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, db_system.DbSystem) for i in results)
@@ -24514,6 +24612,8 @@ async def test_list_db_systems_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -26001,6 +26101,9 @@ def test_list_goldengate_deployments_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -26095,6 +26198,8 @@ async def test_list_goldengate_deployments_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -28355,6 +28460,9 @@ def test_list_goldengate_connections_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -28449,6 +28557,8 @@ async def test_list_goldengate_connections_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -30019,6 +30129,9 @@ def test_list_goldengate_deployment_versions_pager(transport_name: str = "grpc")
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -30114,6 +30227,8 @@ async def test_list_goldengate_deployment_versions_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -30590,6 +30705,9 @@ def test_list_goldengate_deployment_types_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -30685,6 +30803,8 @@ async def test_list_goldengate_deployment_types_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -31155,6 +31275,9 @@ def test_list_goldengate_deployment_environments_pager(transport_name: str = "gr
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -31252,6 +31375,8 @@ async def test_list_goldengate_deployment_environments_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -31728,6 +31853,9 @@ def test_list_goldengate_connection_types_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -31823,6 +31951,8 @@ async def test_list_goldengate_connection_types_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -32262,6 +32392,9 @@ def test_list_db_versions_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, db_version.DbVersion) for i in results)
@@ -32350,6 +32483,8 @@ async def test_list_db_versions_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -32805,6 +32940,9 @@ def test_list_database_character_sets_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -32899,6 +33037,8 @@ async def test_list_database_character_sets_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -33375,6 +33515,9 @@ def test_list_goldengate_connection_assignments_pager(transport_name: str = "grp
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -33472,6 +33615,8 @@ async def test_list_goldengate_connection_assignments_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -35281,6 +35426,9 @@ def test_list_cloud_exadata_infrastructures_rest_pager(transport: str = "rest"):
 
         pager = client.list_cloud_exadata_infrastructures(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -36382,6 +36530,9 @@ def test_list_cloud_vm_clusters_rest_pager(transport: str = "rest"):
 
         pager = client.list_cloud_vm_clusters(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, vm_cluster.CloudVmCluster) for i in results)
@@ -37244,6 +37395,9 @@ def test_list_entitlements_rest_pager(transport: str = "rest"):
 
         pager = client.list_entitlements(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, entitlement.Entitlement) for i in results)
@@ -37503,6 +37657,9 @@ def test_list_db_servers_rest_pager(transport: str = "rest"):
         }
 
         pager = client.list_db_servers(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -37764,6 +37921,9 @@ def test_list_db_nodes_rest_pager(transport: str = "rest"):
 
         pager = client.list_db_nodes(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, db_node.DbNode) for i in results)
@@ -38022,6 +38182,9 @@ def test_list_gi_versions_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/locations/sample2"}
 
         pager = client.list_gi_versions(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -38289,6 +38452,9 @@ def test_list_minor_versions_rest_pager(transport: str = "rest"):
 
         pager = client.list_minor_versions(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, minor_version.MinorVersion) for i in results)
@@ -38551,6 +38717,9 @@ def test_list_db_system_shapes_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/locations/sample2"}
 
         pager = client.list_db_system_shapes(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -38818,6 +38987,9 @@ def test_list_autonomous_databases_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/locations/sample2"}
 
         pager = client.list_autonomous_databases(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -40293,6 +40465,9 @@ def test_list_autonomous_db_versions_rest_pager(transport: str = "rest"):
 
         pager = client.list_autonomous_db_versions(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -40573,6 +40748,9 @@ def test_list_autonomous_database_character_sets_rest_pager(transport: str = "re
 
         pager = client.list_autonomous_database_character_sets(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -40849,6 +41027,9 @@ def test_list_autonomous_database_backups_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/locations/sample2"}
 
         pager = client.list_autonomous_database_backups(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -42048,6 +42229,9 @@ def test_list_odb_networks_rest_pager(transport: str = "rest"):
 
         pager = client.list_odb_networks(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, odb_network.OdbNetwork) for i in results)
@@ -42897,6 +43081,9 @@ def test_list_odb_subnets_rest_pager(transport: str = "rest"):
 
         pager = client.list_odb_subnets(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, odb_subnet.OdbSubnet) for i in results)
@@ -43744,6 +43931,9 @@ def test_list_exadb_vm_clusters_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/locations/sample2"}
 
         pager = client.list_exadb_vm_clusters(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -45016,6 +45206,9 @@ def test_list_exascale_db_storage_vaults_rest_pager(transport: str = "rest"):
 
         pager = client.list_exascale_db_storage_vaults(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -45909,6 +46102,9 @@ def test_list_db_system_initial_storage_sizes_rest_pager(transport: str = "rest"
 
         pager = client.list_db_system_initial_storage_sizes(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -46168,6 +46364,9 @@ def test_list_databases_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/locations/sample2"}
 
         pager = client.list_databases(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -46614,6 +46813,9 @@ def test_list_pluggable_databases_rest_pager(transport: str = "rest"):
 
         pager = client.list_pluggable_databases(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, pluggable_database.PluggableDatabase) for i in results)
@@ -47055,6 +47257,9 @@ def test_list_db_systems_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/locations/sample2"}
 
         pager = client.list_db_systems(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -47901,6 +48106,9 @@ def test_list_goldengate_deployments_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/locations/sample2"}
 
         pager = client.list_goldengate_deployments(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -49145,6 +49353,9 @@ def test_list_goldengate_connections_rest_pager(transport: str = "rest"):
 
         pager = client.list_goldengate_connections(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -50028,6 +50239,9 @@ def test_list_goldengate_deployment_versions_rest_pager(transport: str = "rest")
 
         pager = client.list_goldengate_deployment_versions(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -50310,6 +50524,9 @@ def test_list_goldengate_deployment_types_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/locations/sample2"}
 
         pager = client.list_goldengate_deployment_types(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -50594,6 +50811,9 @@ def test_list_goldengate_deployment_environments_rest_pager(transport: str = "re
 
         pager = client.list_goldengate_deployment_environments(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -50877,6 +51097,9 @@ def test_list_goldengate_connection_types_rest_pager(transport: str = "rest"):
 
         pager = client.list_goldengate_connection_types(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -51138,6 +51361,9 @@ def test_list_db_versions_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/locations/sample2"}
 
         pager = client.list_db_versions(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -51406,6 +51632,9 @@ def test_list_database_character_sets_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/locations/sample2"}
 
         pager = client.list_database_character_sets(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -51690,6 +51919,9 @@ def test_list_goldengate_connection_assignments_rest_pager(transport: str = "res
         sample_request = {"parent": "projects/sample1/locations/sample2"}
 
         pager = client.list_goldengate_connection_assignments(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6

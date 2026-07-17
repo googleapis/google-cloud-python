@@ -2769,6 +2769,9 @@ def test_aggregated_list_rest_pager(transport: str = "rest"):
 
         pager = client.aggregated_list(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         assert isinstance(pager.get("a"), compute.InstancesScopedList)
         assert pager.get("h") is None
 
@@ -7712,6 +7715,9 @@ def test_list_rest_pager(transport: str = "rest"):
 
         pager = client.list(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, compute.Instance) for i in results)
@@ -7997,6 +8003,9 @@ def test_list_referrers_rest_pager(transport: str = "rest"):
         }
 
         pager = client.list_referrers(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -21491,6 +21500,7 @@ def test_add_network_interface_rest_call_success(request_type):
                 "subnetwork_range_name": "subnetwork_range_name_value",
             }
         ],
+        "alias_ipv6_ranges": {},
         "enable_vpc_scoped_dns": True,
         "fingerprint": "fingerprint_value",
         "igmp_query": "igmp_query_value",
@@ -22525,6 +22535,7 @@ def test_bulk_insert_rest_call_success(request_type):
             ],
             "key_revocation_action_type": "key_revocation_action_type_value",
             "labels": {},
+            "local_ssd_encryption_mode": "local_ssd_encryption_mode_value",
             "machine_type": "machine_type_value",
             "metadata": {
                 "fingerprint": "fingerprint_value",
@@ -22554,6 +22565,7 @@ def test_bulk_insert_rest_call_success(request_type):
                             "subnetwork_range_name": "subnetwork_range_name_value",
                         }
                     ],
+                    "alias_ipv6_ranges": {},
                     "enable_vpc_scoped_dns": True,
                     "fingerprint": "fingerprint_value",
                     "igmp_query": "igmp_query_value",
@@ -23577,6 +23589,7 @@ def test_get_rest_call_success(request_type):
             last_start_timestamp="last_start_timestamp_value",
             last_stop_timestamp="last_stop_timestamp_value",
             last_suspended_timestamp="last_suspended_timestamp_value",
+            local_ssd_encryption_mode="local_ssd_encryption_mode_value",
             machine_type="machine_type_value",
             min_cpu_platform="min_cpu_platform_value",
             name="name_value",
@@ -23620,6 +23633,7 @@ def test_get_rest_call_success(request_type):
     assert response.last_start_timestamp == "last_start_timestamp_value"
     assert response.last_stop_timestamp == "last_stop_timestamp_value"
     assert response.last_suspended_timestamp == "last_suspended_timestamp_value"
+    assert response.local_ssd_encryption_mode == "local_ssd_encryption_mode_value"
     assert response.machine_type == "machine_type_value"
     assert response.min_cpu_platform == "min_cpu_platform_value"
     assert response.name == "name_value"
@@ -24618,6 +24632,7 @@ def test_insert_rest_call_success(request_type):
         "last_start_timestamp": "last_start_timestamp_value",
         "last_stop_timestamp": "last_stop_timestamp_value",
         "last_suspended_timestamp": "last_suspended_timestamp_value",
+        "local_ssd_encryption_mode": "local_ssd_encryption_mode_value",
         "machine_type": "machine_type_value",
         "metadata": {
             "fingerprint": "fingerprint_value",
@@ -24648,6 +24663,7 @@ def test_insert_rest_call_success(request_type):
                         "subnetwork_range_name": "subnetwork_range_name_value",
                     }
                 ],
+                "alias_ipv6_ranges": {},
                 "enable_vpc_scoped_dns": True,
                 "fingerprint": "fingerprint_value",
                 "igmp_query": "igmp_query_value",
@@ -24697,6 +24713,7 @@ def test_insert_rest_call_success(request_type):
             },
             "physical_host": "physical_host_value",
             "physical_host_topology": {
+                "additional_attributes": {"accelerator_topology_ids": {}},
                 "block": "block_value",
                 "cluster": "cluster_value",
                 "host": "host_value",
@@ -30981,6 +30998,7 @@ def test_update_rest_call_success(request_type):
         "last_start_timestamp": "last_start_timestamp_value",
         "last_stop_timestamp": "last_stop_timestamp_value",
         "last_suspended_timestamp": "last_suspended_timestamp_value",
+        "local_ssd_encryption_mode": "local_ssd_encryption_mode_value",
         "machine_type": "machine_type_value",
         "metadata": {
             "fingerprint": "fingerprint_value",
@@ -31011,6 +31029,7 @@ def test_update_rest_call_success(request_type):
                         "subnetwork_range_name": "subnetwork_range_name_value",
                     }
                 ],
+                "alias_ipv6_ranges": {},
                 "enable_vpc_scoped_dns": True,
                 "fingerprint": "fingerprint_value",
                 "igmp_query": "igmp_query_value",
@@ -31060,6 +31079,7 @@ def test_update_rest_call_success(request_type):
             },
             "physical_host": "physical_host_value",
             "physical_host_topology": {
+                "additional_attributes": {"accelerator_topology_ids": {}},
                 "block": "block_value",
                 "cluster": "cluster_value",
                 "host": "host_value",
@@ -31882,6 +31902,7 @@ def test_update_network_interface_rest_call_success(request_type):
                 "subnetwork_range_name": "subnetwork_range_name_value",
             }
         ],
+        "alias_ipv6_ranges": {},
         "enable_vpc_scoped_dns": True,
         "fingerprint": "fingerprint_value",
         "igmp_query": "igmp_query_value",

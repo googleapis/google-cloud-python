@@ -24,12 +24,13 @@
 
 import functools
 
+from google.longrunning import operations_pb2
+from grpc import Compression
+
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, page_iterator_async
 from google.api_core import retry_async as retries
 from google.api_core import timeout as timeouts
-from google.longrunning import operations_pb2
-from grpc import Compression
 
 
 class OperationsAsyncClient:

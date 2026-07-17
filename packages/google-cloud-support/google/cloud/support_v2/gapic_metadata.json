@@ -256,6 +256,115 @@
           }
         }
       }
+    },
+    "SupportEventSubscriptionService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "SupportEventSubscriptionServiceClient",
+          "rpcs": {
+            "CreateSupportEventSubscription": {
+              "methods": [
+                "create_support_event_subscription"
+              ]
+            },
+            "DeleteSupportEventSubscription": {
+              "methods": [
+                "delete_support_event_subscription"
+              ]
+            },
+            "GetSupportEventSubscription": {
+              "methods": [
+                "get_support_event_subscription"
+              ]
+            },
+            "ListSupportEventSubscriptions": {
+              "methods": [
+                "list_support_event_subscriptions"
+              ]
+            },
+            "UndeleteSupportEventSubscription": {
+              "methods": [
+                "undelete_support_event_subscription"
+              ]
+            },
+            "UpdateSupportEventSubscription": {
+              "methods": [
+                "update_support_event_subscription"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "SupportEventSubscriptionServiceAsyncClient",
+          "rpcs": {
+            "CreateSupportEventSubscription": {
+              "methods": [
+                "create_support_event_subscription"
+              ]
+            },
+            "DeleteSupportEventSubscription": {
+              "methods": [
+                "delete_support_event_subscription"
+              ]
+            },
+            "GetSupportEventSubscription": {
+              "methods": [
+                "get_support_event_subscription"
+              ]
+            },
+            "ListSupportEventSubscriptions": {
+              "methods": [
+                "list_support_event_subscriptions"
+              ]
+            },
+            "UndeleteSupportEventSubscription": {
+              "methods": [
+                "undelete_support_event_subscription"
+              ]
+            },
+            "UpdateSupportEventSubscription": {
+              "methods": [
+                "update_support_event_subscription"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "SupportEventSubscriptionServiceClient",
+          "rpcs": {
+            "CreateSupportEventSubscription": {
+              "methods": [
+                "create_support_event_subscription"
+              ]
+            },
+            "DeleteSupportEventSubscription": {
+              "methods": [
+                "delete_support_event_subscription"
+              ]
+            },
+            "GetSupportEventSubscription": {
+              "methods": [
+                "get_support_event_subscription"
+              ]
+            },
+            "ListSupportEventSubscriptions": {
+              "methods": [
+                "list_support_event_subscriptions"
+              ]
+            },
+            "UndeleteSupportEventSubscription": {
+              "methods": [
+                "undelete_support_event_subscription"
+              ]
+            },
+            "UpdateSupportEventSubscription": {
+              "methods": [
+                "update_support_event_subscription"
+              ]
+            }
+          }
+        }
+      }
     }
   }
 }

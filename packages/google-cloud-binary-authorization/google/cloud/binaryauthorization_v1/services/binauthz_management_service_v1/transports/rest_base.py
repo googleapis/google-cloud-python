@@ -19,6 +19,10 @@ from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
 import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.api_core import gapic_v1, path_template
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.protobuf import json_format
 
 from google.cloud.binaryauthorization_v1.types import resources, service
@@ -449,6 +453,107 @@ class _BaseBinauthzManagementServiceV1RestTransport(
             )
 
             query_params["$alt"] = "json;enum-encoding=int"
+            return query_params
+
+    class _BaseGetIamPolicy:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{resource=projects/*/policy}:getIamPolicy",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1/{resource=projects/*/attestors/*}:getIamPolicy",
+                },
+            ]
+            return http_options
+
+        @staticmethod
+        def _get_transcoded_request(http_options, request):
+            request_kwargs = json_format.MessageToDict(request)
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            return transcoded_request
+
+        @staticmethod
+        def _get_query_params_json(transcoded_request):
+            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            return query_params
+
+    class _BaseSetIamPolicy:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{resource=projects/*/policy}:setIamPolicy",
+                    "body": "*",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v1/{resource=projects/*/attestors/*}:setIamPolicy",
+                    "body": "*",
+                },
+            ]
+            return http_options
+
+        @staticmethod
+        def _get_transcoded_request(http_options, request):
+            request_kwargs = json_format.MessageToDict(request)
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            return transcoded_request
+
+        @staticmethod
+        def _get_request_body_json(transcoded_request):
+            body = json.dumps(transcoded_request["body"])
+            return body
+
+        @staticmethod
+        def _get_query_params_json(transcoded_request):
+            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            return query_params
+
+    class _BaseTestIamPermissions:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{resource=projects/*/policy}:testIamPermissions",
+                    "body": "*",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v1/{resource=projects/*/attestors/*}:testIamPermissions",
+                    "body": "*",
+                },
+            ]
+            return http_options
+
+        @staticmethod
+        def _get_transcoded_request(http_options, request):
+            request_kwargs = json_format.MessageToDict(request)
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            return transcoded_request
+
+        @staticmethod
+        def _get_request_body_json(transcoded_request):
+            body = json.dumps(transcoded_request["body"])
+            return body
+
+        @staticmethod
+        def _get_query_params_json(transcoded_request):
+            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
             return query_params
 
 

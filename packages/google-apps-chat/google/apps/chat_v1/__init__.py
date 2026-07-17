@@ -45,6 +45,17 @@ from .types.attachment import (
     UploadAttachmentRequest,
     UploadAttachmentResponse,
 )
+from .types.audience import Audience
+from .types.availability import (
+    Availability,
+    CustomStatus,
+    DoNotDisturbMetadata,
+    GetAvailabilityRequest,
+    MarkAsActiveRequest,
+    MarkAsAwayRequest,
+    MarkAsDoNotDisturbRequest,
+    UpdateAvailabilityRequest,
+)
 from .types.contextual_addon import ContextualAddOnMarkup
 from .types.deletion_metadata import DeletionMetadata
 from .types.event_payload import (
@@ -261,6 +272,8 @@ __all__ = (
     "AttachedGif",
     "Attachment",
     "AttachmentDataRef",
+    "Audience",
+    "Availability",
     "CalendarEventLinkData",
     "CardWithId",
     "ChatServiceClient",
@@ -277,6 +290,7 @@ __all__ = (
     "CreateSpaceRequest",
     "CustomEmoji",
     "CustomEmojiMetadata",
+    "CustomStatus",
     "DeleteCustomEmojiRequest",
     "DeleteMembershipRequest",
     "DeleteMessageRequest",
@@ -286,6 +300,7 @@ __all__ = (
     "DeletionMetadata",
     "Dialog",
     "DialogAction",
+    "DoNotDisturbMetadata",
     "DriveDataRef",
     "DriveLinkData",
     "Emoji",
@@ -295,6 +310,7 @@ __all__ = (
     "FindGroupChatsResponse",
     "ForwardedMetadata",
     "GetAttachmentRequest",
+    "GetAvailabilityRequest",
     "GetCustomEmojiRequest",
     "GetMembershipRequest",
     "GetMessageRequest",
@@ -321,6 +337,9 @@ __all__ = (
     "ListSpaceEventsResponse",
     "ListSpacesRequest",
     "ListSpacesResponse",
+    "MarkAsActiveRequest",
+    "MarkAsAwayRequest",
+    "MarkAsDoNotDisturbRequest",
     "MatchedUrl",
     "MeetSpaceLinkData",
     "Membership",
@@ -365,6 +384,7 @@ __all__ = (
     "SpaceView",
     "Thread",
     "ThreadReadState",
+    "UpdateAvailabilityRequest",
     "UpdateMembershipRequest",
     "UpdateMessageRequest",
     "UpdateSectionRequest",

@@ -3746,6 +3746,9 @@ def test_list_clusters_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, clusters.Cluster) for i in results)
@@ -3834,6 +3837,8 @@ async def test_list_clusters_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -5624,6 +5629,9 @@ def test_list_clusters_rest_pager(transport: str = "rest"):
 
         pager = client.list_clusters(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, clusters.Cluster) for i in results)
@@ -6420,6 +6428,14 @@ def test_create_cluster_rest_call_success(request_type):
                     "local_ssd_interface": "local_ssd_interface_value",
                     "boot_disk_provisioned_iops": 2793,
                     "boot_disk_provisioned_throughput": 3464,
+                    "attached_disk_configs": [
+                        {
+                            "disk_type": 1,
+                            "disk_size_gb": 1261,
+                            "provisioned_iops": 1740,
+                            "provisioned_throughput": 2411,
+                        }
+                    ],
                 },
                 "is_preemptible": True,
                 "preemptibility": 1,
@@ -6448,6 +6464,7 @@ def test_create_cluster_rest_call_success(request_type):
                                 "machine_types_value2",
                             ],
                             "rank": 428,
+                            "disk_config": {},
                         }
                     ],
                     "instance_selection_results": [
@@ -6844,6 +6861,14 @@ def test_update_cluster_rest_call_success(request_type):
                     "local_ssd_interface": "local_ssd_interface_value",
                     "boot_disk_provisioned_iops": 2793,
                     "boot_disk_provisioned_throughput": 3464,
+                    "attached_disk_configs": [
+                        {
+                            "disk_type": 1,
+                            "disk_size_gb": 1261,
+                            "provisioned_iops": 1740,
+                            "provisioned_throughput": 2411,
+                        }
+                    ],
                 },
                 "is_preemptible": True,
                 "preemptibility": 1,
@@ -6872,6 +6897,7 @@ def test_update_cluster_rest_call_success(request_type):
                                 "machine_types_value2",
                             ],
                             "rank": 428,
+                            "disk_config": {},
                         }
                     ],
                     "instance_selection_results": [

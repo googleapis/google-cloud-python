@@ -3197,6 +3197,9 @@ def test_list_conversations_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resources.Conversation) for i in results)
@@ -3289,6 +3292,8 @@ async def test_list_conversations_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -4709,6 +4714,9 @@ def test_list_analyses_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resources.Analysis) for i in results)
@@ -4797,6 +4805,8 @@ async def test_list_analyses_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -12513,6 +12523,9 @@ def test_list_phrase_matchers_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resources.PhraseMatcher) for i in results)
@@ -12605,6 +12618,8 @@ async def test_list_phrase_matchers_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -15473,6 +15488,9 @@ def test_list_analysis_rules_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resources.AnalysisRule) for i in results)
@@ -15565,6 +15583,8 @@ async def test_list_analysis_rules_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -18046,6 +18066,9 @@ def test_list_views_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resources.View) for i in results)
@@ -18134,6 +18157,8 @@ async def test_list_views_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -20900,6 +20925,9 @@ def test_list_qa_questions_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resources.QaQuestion) for i in results)
@@ -20992,6 +21020,8 @@ async def test_list_qa_questions_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -22834,6 +22864,9 @@ def test_list_qa_scorecards_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resources.QaScorecard) for i in results)
@@ -22926,6 +22959,8 @@ async def test_list_qa_scorecards_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -25349,6 +25384,9 @@ def test_list_qa_scorecard_revisions_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resources.QaScorecardRevision) for i in results)
@@ -25441,6 +25479,8 @@ async def test_list_qa_scorecard_revisions_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -26267,6 +26307,9 @@ def test_list_feedback_labels_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resources.FeedbackLabel) for i in results)
@@ -26359,6 +26402,8 @@ async def test_list_feedback_labels_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -27852,6 +27897,9 @@ def test_list_all_feedback_labels_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resources.FeedbackLabel) for i in results)
@@ -27944,6 +27992,8 @@ async def test_list_all_feedback_labels_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -29672,6 +29722,9 @@ def test_list_conversations_rest_pager(transport: str = "rest"):
 
         pager = client.list_conversations(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resources.Conversation) for i in results)
@@ -30484,6 +30537,9 @@ def test_list_analyses_rest_pager(transport: str = "rest"):
         }
 
         pager = client.list_analyses(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -34621,6 +34677,9 @@ def test_list_phrase_matchers_rest_pager(transport: str = "rest"):
 
         pager = client.list_phrase_matchers(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resources.PhraseMatcher) for i in results)
@@ -36175,6 +36234,9 @@ def test_list_analysis_rules_rest_pager(transport: str = "rest"):
 
         pager = client.list_analysis_rules(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resources.AnalysisRule) for i in results)
@@ -37523,6 +37585,9 @@ def test_list_views_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/locations/sample2"}
 
         pager = client.list_views(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -39025,6 +39090,9 @@ def test_list_qa_questions_rest_pager(transport: str = "rest"):
 
         pager = client.list_qa_questions(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resources.QaQuestion) for i in results)
@@ -40041,6 +40109,9 @@ def test_list_qa_scorecards_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/locations/sample2"}
 
         pager = client.list_qa_scorecards(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -41336,6 +41407,9 @@ def test_list_qa_scorecard_revisions_rest_pager(transport: str = "rest"):
 
         pager = client.list_qa_scorecard_revisions(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resources.QaScorecardRevision) for i in results)
@@ -41806,6 +41880,9 @@ def test_list_feedback_labels_rest_pager(transport: str = "rest"):
         }
 
         pager = client.list_feedback_labels(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -42633,6 +42710,9 @@ def test_list_all_feedback_labels_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/locations/sample2"}
 
         pager = client.list_all_feedback_labels(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6

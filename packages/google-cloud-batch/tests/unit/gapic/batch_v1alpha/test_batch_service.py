@@ -3387,6 +3387,9 @@ def test_list_jobs_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, job.Job) for i in results)
@@ -3475,6 +3478,8 @@ async def test_list_jobs_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -4227,6 +4232,9 @@ def test_list_tasks_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, task.Task) for i in results)
@@ -4315,6 +4323,8 @@ async def test_list_tasks_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -5879,6 +5889,9 @@ def test_list_resource_allowances_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resource_allowance.ResourceAllowance) for i in results)
@@ -5971,6 +5984,8 @@ async def test_list_resource_allowances_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -7406,6 +7421,9 @@ def test_list_jobs_rest_pager(transport: str = "rest"):
 
         pager = client.list_jobs(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, job.Job) for i in results)
@@ -7843,6 +7861,9 @@ def test_list_tasks_rest_pager(transport: str = "rest"):
         }
 
         pager = client.list_tasks(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -8708,6 +8729,9 @@ def test_list_resource_allowances_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/locations/sample2"}
 
         pager = client.list_resource_allowances(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -9872,6 +9896,7 @@ def test_create_job_rest_call_success(request_type):
                                 "network": "network_value",
                                 "subnetwork": "subnetwork_value",
                                 "no_external_ip_address": True,
+                                "nic_type": 1,
                             }
                         ]
                     },
@@ -9880,6 +9905,7 @@ def test_create_job_rest_call_success(request_type):
                         "max_distance": 1264,
                     },
                     "tags": ["tags_value1", "tags_value2"],
+                    "instance_flexibility_policy": {"instance_selections": {}},
                 },
                 "labels": {},
                 "task_environments": {},
@@ -10643,6 +10669,7 @@ def test_update_job_rest_call_success(request_type):
                                 "network": "network_value",
                                 "subnetwork": "subnetwork_value",
                                 "no_external_ip_address": True,
+                                "nic_type": 1,
                             }
                         ]
                     },
@@ -10651,6 +10678,7 @@ def test_update_job_rest_call_success(request_type):
                         "max_distance": 1264,
                     },
                     "tags": ["tags_value1", "tags_value2"],
+                    "instance_flexibility_policy": {"instance_selections": {}},
                 },
                 "labels": {},
                 "task_environments": {},

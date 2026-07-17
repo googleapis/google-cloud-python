@@ -39,6 +39,7 @@ except ImportError:  # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 
 import google.auth
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 from google.api_core import (
@@ -1311,6 +1312,7 @@ def test_create_sip_trunk(request_type, transport: str = "grpc"):
             name="name_value",
             expected_hostname=["expected_hostname_value"],
             display_name="display_name_value",
+            google_root_cert_file=gcd_sip_trunk.SipTrunk.GoogleRootCertFile.EXTERNAL_PRIVATE_CA,
         )
         response = client.create_sip_trunk(request)
 
@@ -1325,6 +1327,10 @@ def test_create_sip_trunk(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.expected_hostname == ["expected_hostname_value"]
     assert response.display_name == "display_name_value"
+    assert (
+        response.google_root_cert_file
+        == gcd_sip_trunk.SipTrunk.GoogleRootCertFile.EXTERNAL_PRIVATE_CA
+    )
 
 
 def test_create_sip_trunk_non_empty_request_with_auto_populated_field():
@@ -1461,6 +1467,7 @@ async def test_create_sip_trunk_async(request_type, transport: str = "grpc_async
                 name="name_value",
                 expected_hostname=["expected_hostname_value"],
                 display_name="display_name_value",
+                google_root_cert_file=gcd_sip_trunk.SipTrunk.GoogleRootCertFile.EXTERNAL_PRIVATE_CA,
             )
         )
         response = await client.create_sip_trunk(request)
@@ -1476,6 +1483,10 @@ async def test_create_sip_trunk_async(request_type, transport: str = "grpc_async
     assert response.name == "name_value"
     assert response.expected_hostname == ["expected_hostname_value"]
     assert response.display_name == "display_name_value"
+    assert (
+        response.google_root_cert_file
+        == gcd_sip_trunk.SipTrunk.GoogleRootCertFile.EXTERNAL_PRIVATE_CA
+    )
 
 
 def test_create_sip_trunk_field_headers():
@@ -2320,6 +2331,9 @@ def test_list_sip_trunks_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, sip_trunk.SipTrunk) for i in results)
@@ -2408,6 +2422,8 @@ async def test_list_sip_trunks_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -2485,6 +2501,7 @@ def test_get_sip_trunk(request_type, transport: str = "grpc"):
             name="name_value",
             expected_hostname=["expected_hostname_value"],
             display_name="display_name_value",
+            google_root_cert_file=sip_trunk.SipTrunk.GoogleRootCertFile.EXTERNAL_PRIVATE_CA,
         )
         response = client.get_sip_trunk(request)
 
@@ -2499,6 +2516,10 @@ def test_get_sip_trunk(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.expected_hostname == ["expected_hostname_value"]
     assert response.display_name == "display_name_value"
+    assert (
+        response.google_root_cert_file
+        == sip_trunk.SipTrunk.GoogleRootCertFile.EXTERNAL_PRIVATE_CA
+    )
 
 
 def test_get_sip_trunk_non_empty_request_with_auto_populated_field():
@@ -2633,6 +2654,7 @@ async def test_get_sip_trunk_async(request_type, transport: str = "grpc_asyncio"
                 name="name_value",
                 expected_hostname=["expected_hostname_value"],
                 display_name="display_name_value",
+                google_root_cert_file=sip_trunk.SipTrunk.GoogleRootCertFile.EXTERNAL_PRIVATE_CA,
             )
         )
         response = await client.get_sip_trunk(request)
@@ -2648,6 +2670,10 @@ async def test_get_sip_trunk_async(request_type, transport: str = "grpc_asyncio"
     assert response.name == "name_value"
     assert response.expected_hostname == ["expected_hostname_value"]
     assert response.display_name == "display_name_value"
+    assert (
+        response.google_root_cert_file
+        == sip_trunk.SipTrunk.GoogleRootCertFile.EXTERNAL_PRIVATE_CA
+    )
 
 
 def test_get_sip_trunk_field_headers():
@@ -2813,6 +2839,7 @@ def test_update_sip_trunk(request_type, transport: str = "grpc"):
             name="name_value",
             expected_hostname=["expected_hostname_value"],
             display_name="display_name_value",
+            google_root_cert_file=gcd_sip_trunk.SipTrunk.GoogleRootCertFile.EXTERNAL_PRIVATE_CA,
         )
         response = client.update_sip_trunk(request)
 
@@ -2827,6 +2854,10 @@ def test_update_sip_trunk(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.expected_hostname == ["expected_hostname_value"]
     assert response.display_name == "display_name_value"
+    assert (
+        response.google_root_cert_file
+        == gcd_sip_trunk.SipTrunk.GoogleRootCertFile.EXTERNAL_PRIVATE_CA
+    )
 
 
 def test_update_sip_trunk_non_empty_request_with_auto_populated_field():
@@ -2959,6 +2990,7 @@ async def test_update_sip_trunk_async(request_type, transport: str = "grpc_async
                 name="name_value",
                 expected_hostname=["expected_hostname_value"],
                 display_name="display_name_value",
+                google_root_cert_file=gcd_sip_trunk.SipTrunk.GoogleRootCertFile.EXTERNAL_PRIVATE_CA,
             )
         )
         response = await client.update_sip_trunk(request)
@@ -2974,6 +3006,10 @@ async def test_update_sip_trunk_async(request_type, transport: str = "grpc_async
     assert response.name == "name_value"
     assert response.expected_hostname == ["expected_hostname_value"]
     assert response.display_name == "display_name_value"
+    assert (
+        response.google_root_cert_file
+        == gcd_sip_trunk.SipTrunk.GoogleRootCertFile.EXTERNAL_PRIVATE_CA
+    )
 
 
 def test_update_sip_trunk_field_headers():
@@ -3742,6 +3778,9 @@ def test_list_sip_trunks_rest_pager(transport: str = "rest"):
 
         pager = client.list_sip_trunks(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, sip_trunk.SipTrunk) for i in results)
@@ -4350,6 +4389,7 @@ async def test_create_sip_trunk_empty_call_grpc_asyncio():
                 name="name_value",
                 expected_hostname=["expected_hostname_value"],
                 display_name="display_name_value",
+                google_root_cert_file=gcd_sip_trunk.SipTrunk.GoogleRootCertFile.EXTERNAL_PRIVATE_CA,
             )
         )
         await client.create_sip_trunk(request=None)
@@ -4426,6 +4466,7 @@ async def test_get_sip_trunk_empty_call_grpc_asyncio():
                 name="name_value",
                 expected_hostname=["expected_hostname_value"],
                 display_name="display_name_value",
+                google_root_cert_file=sip_trunk.SipTrunk.GoogleRootCertFile.EXTERNAL_PRIVATE_CA,
             )
         )
         await client.get_sip_trunk(request=None)
@@ -4454,6 +4495,7 @@ async def test_update_sip_trunk_empty_call_grpc_asyncio():
                 name="name_value",
                 expected_hostname=["expected_hostname_value"],
                 display_name="display_name_value",
+                google_root_cert_file=gcd_sip_trunk.SipTrunk.GoogleRootCertFile.EXTERNAL_PRIVATE_CA,
             )
         )
         await client.update_sip_trunk(request=None)
@@ -4527,6 +4569,25 @@ def test_create_sip_trunk_rest_call_success(request_type):
             }
         ],
         "display_name": "display_name_value",
+        "peer_hostnames": [
+            {
+                "peer_hostname": "peer_hostname_value",
+                "enabled_sip_ping": True,
+                "ping_interval": {"seconds": 751, "nanos": 543},
+                "peer_socket_address": "peer_socket_address_value",
+                "probe_details": {
+                    "options_latency": {},
+                    "probe_status": 1,
+                    "init_time": {},
+                },
+                "connection_state": 1,
+                "error_details": {
+                    "certificate_state": 1,
+                    "error_message": "error_message_value",
+                },
+            }
+        ],
+        "google_root_cert_file": 5,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -4604,6 +4665,7 @@ def test_create_sip_trunk_rest_call_success(request_type):
             name="name_value",
             expected_hostname=["expected_hostname_value"],
             display_name="display_name_value",
+            google_root_cert_file=gcd_sip_trunk.SipTrunk.GoogleRootCertFile.EXTERNAL_PRIVATE_CA,
         )
 
         # Wrap the value into a proper Response obj
@@ -4623,6 +4685,10 @@ def test_create_sip_trunk_rest_call_success(request_type):
     assert response.name == "name_value"
     assert response.expected_hostname == ["expected_hostname_value"]
     assert response.display_name == "display_name_value"
+    assert (
+        response.google_root_cert_file
+        == gcd_sip_trunk.SipTrunk.GoogleRootCertFile.EXTERNAL_PRIVATE_CA
+    )
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -4968,6 +5034,7 @@ def test_get_sip_trunk_rest_call_success(request_type):
             name="name_value",
             expected_hostname=["expected_hostname_value"],
             display_name="display_name_value",
+            google_root_cert_file=sip_trunk.SipTrunk.GoogleRootCertFile.EXTERNAL_PRIVATE_CA,
         )
 
         # Wrap the value into a proper Response obj
@@ -4987,6 +5054,10 @@ def test_get_sip_trunk_rest_call_success(request_type):
     assert response.name == "name_value"
     assert response.expected_hostname == ["expected_hostname_value"]
     assert response.display_name == "display_name_value"
+    assert (
+        response.google_root_cert_file
+        == sip_trunk.SipTrunk.GoogleRootCertFile.EXTERNAL_PRIVATE_CA
+    )
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -5108,6 +5179,25 @@ def test_update_sip_trunk_rest_call_success(request_type):
             }
         ],
         "display_name": "display_name_value",
+        "peer_hostnames": [
+            {
+                "peer_hostname": "peer_hostname_value",
+                "enabled_sip_ping": True,
+                "ping_interval": {"seconds": 751, "nanos": 543},
+                "peer_socket_address": "peer_socket_address_value",
+                "probe_details": {
+                    "options_latency": {},
+                    "probe_status": 1,
+                    "init_time": {},
+                },
+                "connection_state": 1,
+                "error_details": {
+                    "certificate_state": 1,
+                    "error_message": "error_message_value",
+                },
+            }
+        ],
+        "google_root_cert_file": 5,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -5185,6 +5275,7 @@ def test_update_sip_trunk_rest_call_success(request_type):
             name="name_value",
             expected_hostname=["expected_hostname_value"],
             display_name="display_name_value",
+            google_root_cert_file=gcd_sip_trunk.SipTrunk.GoogleRootCertFile.EXTERNAL_PRIVATE_CA,
         )
 
         # Wrap the value into a proper Response obj
@@ -5204,6 +5295,10 @@ def test_update_sip_trunk_rest_call_success(request_type):
     assert response.name == "name_value"
     assert response.expected_hostname == ["expected_hostname_value"]
     assert response.display_name == "display_name_value"
+    assert (
+        response.google_root_cert_file
+        == gcd_sip_trunk.SipTrunk.GoogleRootCertFile.EXTERNAL_PRIVATE_CA
+    )
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])

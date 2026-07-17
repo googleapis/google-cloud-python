@@ -37,13 +37,13 @@ automatically by another client class to deal with operations.
 
 import functools
 
-from google.api_core import exceptions as core_exceptions
-from google.api_core import gapic_v1
-from google.api_core import page_iterator
-from google.api_core import retry as retries
-from google.api_core import timeout as timeouts
 from google.longrunning import operations_pb2
 from grpc import Compression
+
+from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, page_iterator
+from google.api_core import retry as retries
+from google.api_core import timeout as timeouts
 
 
 class OperationsClient(object):

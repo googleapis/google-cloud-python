@@ -23,7 +23,6 @@ except ImportError:
 from google.api_core import exceptions
 from google.api_core.gapic_v1 import config_async
 
-
 INTERFACE_CONFIG = {
     "retry_codes": {
         "idempotent": ["DEADLINE_EXCEEDED", "UNAVAILABLE"],

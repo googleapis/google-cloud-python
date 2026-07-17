@@ -22,8 +22,7 @@ except ImportError:  # pragma: NO COVER
 
 import pytest
 
-from google.api_core import exceptions
-from google.api_core import retry
+from google.api_core import exceptions, retry
 from google.api_core.retry import retry_streaming
 
 from .test_retry_base import Test_BaseRetry
@@ -127,8 +126,8 @@ class TestStreamingRetry(Test_BaseRetry):
         Test that a retry-decorated generator yields values as expected
         This test checks a generator with no issues
         """
-        import types
         import collections
+        import types
 
         retry_ = retry_streaming.StreamingRetry()
 
@@ -263,7 +262,7 @@ class TestStreamingRetry(Test_BaseRetry):
         with pytest.raises(TypeError) as exc_info:
             # calling first send with non-None input should raise a TypeError
             result.send("can not send to fresh generator")
-            assert exc_info.match("can't send non-None value")
+        assert exc_info.match("can't send non-None value")
         # initiate iteration with None
         result = retry_(self._generator_mock)(error_on=3)
         assert result.send(None) == 0
@@ -461,6 +460,7 @@ class TestStreamingRetry(Test_BaseRetry):
         test when timeout is exceeded
         """
         import time
+
         from google.api_core.retry import RetryFailureReason
         from google.api_core.retry.retry_streaming import retry_target_stream
 

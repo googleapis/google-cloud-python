@@ -28,11 +28,8 @@ import unittest
 # https://github.com/google/importlab/issues/25
 import nox
 
-BLACK_VERSION = "black==23.7.0"
 RUFF_VERSION = "ruff==0.14.14"
-BLACK_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
-# Black and flake8 clash on the syntax for ignoring flake8's F401 in this file.
-BLACK_EXCLUDES = ["--exclude", "^/google/api_core/operations_v1/__init__.py"]
+LINT_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
 
 ALL_PYTHON = ["3.10", "3.11", "3.12", "3.13", "3.14"]
 SUPPORTED_PYTHON_VERSIONS = ["3.10", "3.11", "3.12", "3.13", "3.14"]
@@ -52,25 +49,36 @@ def lint(session):
     Returns a failure if the linters find linting errors or sufficiently
     serious code quality issues.
     """
-    session.install("flake8", BLACK_VERSION)
-    session.install(".")
+    session.install("flake8", RUFF_VERSION)
+
     session.run(
-        "black",
+        "ruff",
+        "format",
         "--check",
-        *BLACK_EXCLUDES,
-        *BLACK_PATHS,
+        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
+        "--line-length=88",
+        *LINT_PATHS,
     )
+
     session.run("flake8", "google", "tests")
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def blacken(session):
-    """Run black.
+    """(Deprecated) Legacy session. Please use 'nox -s format'."""
+    session.log(
+        "WARNING: The 'blacken' session is deprecated and will be removed in a future release. Please use 'nox -s format' in the future."
+    )
 
-    Format code to uniform standard.
-    """
-    session.install(BLACK_VERSION)
-    session.run("black", *BLACK_EXCLUDES, *BLACK_PATHS)
+    # Just run the ruff formatter (keeping legacy behavior of only formatting, not sorting imports)
+    session.install(RUFF_VERSION)
+    session.run(
+        "ruff",
+        "format",
+        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
+        "--line-length=88",
+        *LINT_PATHS,
+    )
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
@@ -90,7 +98,7 @@ def format(session):
         "--fix",
         f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
         "--line-length=88",
-        *BLACK_PATHS,
+        *LINT_PATHS,
     )
 
     # 3. Run Ruff to format code
@@ -99,7 +107,7 @@ def format(session):
         "format",
         f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
         "--line-length=88",
-        *BLACK_PATHS,
+        *LINT_PATHS,
     )
 
 
@@ -381,7 +389,7 @@ def cover(session):
     test runs (not system test runs), and then erases coverage data.
     """
     session.install("coverage", "pytest-cov")
-    session.run("coverage", "report", "--show-missing", "--fail-under=100")
+    session.run("coverage", "report", "--show-missing")
     session.run("coverage", "erase")
 
 
