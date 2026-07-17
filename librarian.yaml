@@ -227,7 +227,7 @@ libraries:
       metadata_name_override: area120tables
       default_version: v1alpha1
   - name: google-auth
-    version: 2.56.0
+    version: 2.56.1
     python:
       library_type: AUTH
   - name: google-auth-httplib2
@@ -279,7 +279,7 @@ libraries:
       metadata_name_override: advisorynotifications
       default_version: v1
   - name: google-cloud-agentidentity
-    version: 0.0.0
+    version: 0.1.0
     apis:
       - path: google/cloud/agentidentity/v1
       - path: google/cloud/agentidentity/v1beta
