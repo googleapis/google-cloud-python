@@ -252,3 +252,5 @@ export system_test_script PROJECT_ROOT KOKORO_GFILE_DIR
 printf '%s\n' "${PACKAGES_TO_TEST[@]}" | xargs -P "$MAX_JOBS" -I {} bash -c 'run_package_test "{}" > "$LOG_DIR/{}.log" 2>&1 || touch "$LOG_DIR/{}.failed"'
 
 reap_parallel_results || RETVAL=1
+
+exit ${RETVAL}
