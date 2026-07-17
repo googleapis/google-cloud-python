@@ -764,7 +764,7 @@ def test_path_traversal_dots_validation_double_star_valid(name_val, expected_pat
     ],
 )
 def test_path_traversal_dots_validation_double_star_invalid(name_val):
-    with pytest.raises(ValueError, match="Invalid value .* for name\\."):
+    with pytest.raises(ValueError, match=r"Invalid value .* for name\."):
         path_template.expand(
             "/v3/{name=projects/*/monitoredResourceDescriptors/**}",
             name=name_val,
@@ -786,3 +786,29 @@ def test_percent_encoding_unreserved_characters(tmpl, kwargs, expected_result):
     # For single-segment with '/', validate should fail because '/' is preserved
     if "/" in kwargs.get("name", "") and tmpl == "/v1/{name}":
         assert not path_template.validate(tmpl, result)
+
+
+@pytest.mark.parametrize(
+    "tmpl, args, kwargs, expected_err_match",
+    [
+        ("/v1/**", [".."], {}, r"Invalid value .* for positional variable\."),
+        ("/v1/{name=**}", [], {"name": ".."}, r"Invalid value .* for name\."),
+    ],
+)
+def test_path_traversal_dots_validation_bare_double_star(tmpl, args, kwargs, expected_err_match):
+    with pytest.raises(ValueError, match=expected_err_match):
+        path_template.expand(tmpl, *args, **kwargs)
+
+@pytest.mark.parametrize(
+    "template_str, expected_pattern, expected_wildcards",
+    [
+        ("projects/{project}/locations/{location}", "projects/([^/]+)/locations/([^/]+)", ("*", "*")),
+        ("projects/{project=**}", "projects/(.+)", ("**",)),
+        ("projects/{project=locations/*}", "projects/locations/([^/]+)", ("*",)),
+        ("projects/*/locations/**", "projects/([^/]+)/locations/(.+)", ("*", "**")),
+    ],
+)
+def test_build_capture_pattern(template_str, expected_pattern, expected_wildcards):
+    pattern, wildcards = path_template._build_capture_pattern(template_str)
+    assert pattern.pattern == expected_pattern
+    assert wildcards == expected_wildcards

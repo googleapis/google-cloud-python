@@ -143,18 +143,16 @@ def _build_capture_pattern(template_str: str) -> tuple[re.Pattern, tuple[str, ..
         elif positional == "**":
             wildcard_types.append("**")
             return r"(.+)"
-        elif name is not None:
-            if not template or template == "*":
-                wildcard_types.append("*")
-                return r"([^/]+)"
-            elif template == "**":
-                wildcard_types.append("**")
-                return r"(.+)"
-            else:
-                sub_pattern, sub_types = _build_capture_pattern(template)
-                wildcard_types.extend(sub_types)
-                return sub_pattern.pattern
-        return match.group(0)
+        elif not template or template == "*":
+            wildcard_types.append("*")
+            return r"([^/]+)"
+        elif template == "**":
+            wildcard_types.append("**")
+            return r"(.+)"
+        else:
+            sub_pattern, sub_types = _build_capture_pattern(template)
+            wildcard_types.extend(sub_types)
+            return sub_pattern.pattern
 
     parts = []
     last_idx = 0
@@ -232,7 +230,7 @@ def _extract_and_validate_wildcards(
                 if captured_val in (".", ".."):
                     name_str = property_name if property_name else "positional variable"
                     raise ValueError("Invalid value {} for {}.".format(val, name_str))
-            elif wildcard_type == "**":
+            else:
                 if not _validate_multi_segment_value(captured_val):
                     name_str = property_name if property_name else "positional variable"
                     raise ValueError("Invalid value {} for {}.".format(val, name_str))
