@@ -34,7 +34,7 @@ def _verify_pqc_metadata(interceptor, transport_name):
     assert negotiated_group is not None, "Failed: Showcase server did not return negotiated TLS group header."
     assert supported_groups is not None, "Failed: Showcase server did not return client advertised supported groups."
 
-    # Enforce PQC compliance by verifying a post-quantum MLKEM hybrid group was negotiated.
+    # Enforce PQC compliance by verifying a post-quantum MLKEM group was negotiated.
     # Substring check ("MLKEM" in ...) ensures compatibility across different transport and library group strings.
     assert (
         "MLKEM" in negotiated_group
@@ -42,7 +42,7 @@ def _verify_pqc_metadata(interceptor, transport_name):
 
 
 def test_pqc_grpc(intercepted_echo_grpc):
-    """Verifies that the gRPC client library negotiates PQC (X25519MLKEM768) with Showcase server."""
+    """Verifies that the gRPC client library negotiates post-quantum MLKEM with Showcase server."""
     # TODO(https://github.com/googleapis/google-cloud-python/issues/17752):
     # Remove this check once grpcio >= 1.83.0 is enforced across all client libraries.
     if Version(grpc.__version__) < Version("1.83.0rc0"):
@@ -57,7 +57,7 @@ def test_pqc_grpc(intercepted_echo_grpc):
 
 
 def test_pqc_rest(intercepted_echo_rest):
-    """Verifies that the REST client library negotiates PQC (X25519MLKEM768) with Showcase server."""
+    """Verifies that the REST client library negotiates post-quantum MLKEM with Showcase server."""
     client, interceptor = intercepted_echo_rest
     response = client.echo(request=showcase.EchoRequest(content="Verify PQC connection."))
     assert response.content == "Verify PQC connection."
@@ -66,7 +66,7 @@ def test_pqc_rest(intercepted_echo_rest):
 
 @pytest.mark.asyncio
 async def test_pqc_grpc_async(intercepted_echo_grpc_async):
-    """Verifies that the async gRPC client library negotiates PQC (X25519MLKEM768) with Showcase server."""
+    """Verifies that the async gRPC client library negotiates post-quantum MLKEM with Showcase server."""
     # TODO(https://github.com/googleapis/google-cloud-python/issues/17752):
     # Remove this check once grpcio >= 1.83.0 is enforced across all client libraries.
     if Version(grpc.__version__) < Version("1.83.0rc0"):
