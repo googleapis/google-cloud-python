@@ -34,10 +34,11 @@ def _verify_pqc_metadata(interceptor, transport_name):
     assert negotiated_group is not None, "Failed: Showcase server did not return negotiated TLS group header."
     assert supported_groups is not None, "Failed: Showcase server did not return client advertised supported groups."
 
-    # Enforce PQC compliance (X25519MLKEM768)
+    # Enforce PQC compliance by verifying an MLKEM group (e.g. X25519MLKEM768) was negotiated.
+    # Substring check ("MLKEM" in ...) allows compatibility across gRPC and REST implementation strings.
     assert (
         "MLKEM" in negotiated_group
-    ), f"Failed: {transport_name} Connection did not negotiate X25519MLKEM768! Negotiated: {negotiated_group}"
+    ), f"Failed: {transport_name} Connection did not negotiate an MLKEM group (e.g. X25519MLKEM768)! Negotiated: {negotiated_group}"
 
 
 def test_pqc_grpc(intercepted_echo_grpc):
