@@ -141,16 +141,16 @@ def _build_capture_pattern(template_str: str) -> tuple[re.Pattern, tuple[str, ..
 
         if positional == "*":
             wildcard_types.append("*")
-            return r"([^/]+)"
+            return _SINGLE_SEGMENT_PATTERN
         elif positional == "**":
             wildcard_types.append("**")
-            return r"(.+)"
+            return _MULTI_SEGMENT_PATTERN
         elif not template or template == "*":
             wildcard_types.append("*")
-            return r"([^/]+)"
+            return _SINGLE_SEGMENT_PATTERN
         elif template == "**":
             wildcard_types.append("**")
-            return r"(.+)"
+            return _MULTI_SEGMENT_PATTERN
         else:
             sub_pattern, sub_types = _build_capture_pattern(template)
             wildcard_types.extend(sub_types)
