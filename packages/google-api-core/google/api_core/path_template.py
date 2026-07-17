@@ -134,7 +134,6 @@ def _build_capture_pattern(template_str: str) -> tuple[re.Pattern, tuple[str, ..
 
     def replacer(match):
         positional = match.group("positional")
-        name = match.group("name")
         template = match.group("template")
 
         if positional == "*":

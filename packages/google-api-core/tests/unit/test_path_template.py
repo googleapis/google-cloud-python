@@ -795,14 +795,21 @@ def test_percent_encoding_unreserved_characters(tmpl, kwargs, expected_result):
         ("/v1/{name=**}", [], {"name": ".."}, r"Invalid value .* for name\."),
     ],
 )
-def test_path_traversal_dots_validation_bare_double_star(tmpl, args, kwargs, expected_err_match):
+def test_path_traversal_dots_validation_bare_double_star(
+    tmpl, args, kwargs, expected_err_match
+):
     with pytest.raises(ValueError, match=expected_err_match):
         path_template.expand(tmpl, *args, **kwargs)
+
 
 @pytest.mark.parametrize(
     "template_str, expected_pattern, expected_wildcards",
     [
-        ("projects/{project}/locations/{location}", "projects/([^/]+)/locations/([^/]+)", ("*", "*")),
+        (
+            "projects/{project}/locations/{location}",
+            "projects/([^/]+)/locations/([^/]+)",
+            ("*", "*"),
+        ),
         ("projects/{project=**}", "projects/(.+)", ("**",)),
         ("projects/{project=locations/*}", "projects/locations/([^/]+)", ("*",)),
         ("projects/*/locations/**", "projects/([^/]+)/locations/(.+)", ("*", "**")),
