@@ -852,4 +852,3 @@ def test_build_capture_pattern(template_str, expected_pattern, expected_wildcard
 def test_validate_multi_segment_value(val, expected_valid):
     result = path_template._validate_multi_segment_value(val)
     assert result == expected_valid
-
