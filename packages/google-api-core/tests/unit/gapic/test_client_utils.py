@@ -13,9 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import os
-from unittest import mock
-
 import pytest
 from google.auth.exceptions import MutualTLSChannelError
 
@@ -24,12 +21,6 @@ from google.api_core.gapic_v1.client_utils import (
     get_default_mtls_endpoint,
     get_universe_domain,
 )
-
-
-class MockClient:
-    _DEFAULT_UNIVERSE = "googleapis.com"
-    DEFAULT_MTLS_ENDPOINT = "foo.mtls.googleapis.com"
-    _DEFAULT_ENDPOINT_TEMPLATE = "foo.{UNIVERSE_DOMAIN}"
 
 
 def test_get_default_mtls_endpoint():
@@ -89,156 +80,101 @@ def test_get_default_mtls_endpoint():
 
 
 @pytest.mark.parametrize(
-    "api_override,client_cert_source,universe_domain,use_mtls_endpoint,default_universe,default_mtls_endpoint,default_endpoint_template,expected",
+    "api_override,universe_domain,default_universe,default_mtls_endpoint,default_endpoint_template,use_mtls,expected",
     [
         (
             "foo.com",
-            mock.Mock(),
             "googleapis.com",
-            "always",
             "googleapis.com",
             "foo.mtls.googleapis.com",
             "foo.{UNIVERSE_DOMAIN}",
+            True,
             "foo.com",
         ),
         (
             None,
-            mock.Mock(),
             "googleapis.com",
-            "auto",
             "googleapis.com",
             "foo.mtls.googleapis.com",
             "foo.{UNIVERSE_DOMAIN}",
+            True,
             "foo.mtls.googleapis.com",
         ),
         (
             None,
-            None,
             "googleapis.com",
-            "auto",
             "googleapis.com",
             "foo.mtls.googleapis.com",
             "foo.{UNIVERSE_DOMAIN}",
+            False,
             "foo.googleapis.com",
         ),
         (
             None,
-            None,
-            "googleapis.com",
-            "always",
-            "googleapis.com",
-            "foo.mtls.googleapis.com",
-            "foo.{UNIVERSE_DOMAIN}",
-            "foo.mtls.googleapis.com",
-        ),
-        (
-            None,
-            mock.Mock(),
-            "googleapis.com",
-            "always",
-            "googleapis.com",
-            "foo.mtls.googleapis.com",
-            "foo.{UNIVERSE_DOMAIN}",
-            "foo.mtls.googleapis.com",
-        ),
-        (
-            None,
-            None,
             "bar.com",
-            "never",
             "googleapis.com",
             "foo.mtls.googleapis.com",
             "foo.{UNIVERSE_DOMAIN}",
-            "foo.bar.com",
-        ),
-        (
-            None,
-            None,
-            "googleapis.com",
-            "never",
-            "googleapis.com",
-            "foo.mtls.googleapis.com",
-            "foo.{UNIVERSE_DOMAIN}",
-            "foo.googleapis.com",
-        ),
-        (
-            None,
-            mock.Mock(),
-            "bar.com",
-            "auto",
-            "googleapis.com",
-            "foo.mtls.googleapis.com",
-            "foo.{UNIVERSE_DOMAIN}",
+            True,
             MutualTLSChannelError,
         ),
         (
             None,
-            mock.Mock(),
             "googleapis.com",
-            "always",
             "googleapis.com",
             None,
             "foo.{UNIVERSE_DOMAIN}",
+            True,
             ValueError,
         ),
     ],
 )
 def test_get_api_endpoint(
     api_override,
-    client_cert_source,
     universe_domain,
-    use_mtls_endpoint,
     default_universe,
     default_mtls_endpoint,
     default_endpoint_template,
+    use_mtls,
     expected,
 ):
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": use_mtls_endpoint}
-    ):
-        if isinstance(expected, type) and issubclass(expected, Exception):
-            with pytest.raises(expected):
-                get_api_endpoint(
-                    api_override,
-                    client_cert_source,
-                    universe_domain,
-                    default_universe,
-                    default_mtls_endpoint,
-                    default_endpoint_template,
-                )
-        else:
-            assert (
-                get_api_endpoint(
-                    api_override,
-                    client_cert_source,
-                    universe_domain,
-                    default_universe,
-                    default_mtls_endpoint,
-                    default_endpoint_template,
-                )
-                == expected
+    if isinstance(expected, type) and issubclass(expected, Exception):
+        with pytest.raises(expected):
+            get_api_endpoint(
+                api_override,
+                universe_domain,
+                default_universe,
+                default_mtls_endpoint,
+                default_endpoint_template,
+                use_mtls,
             )
-
-
-def test__get_universe_domain():
-    client_universe_domain = "foo.com"
-    universe_domain_env = "bar.com"
-
-    assert (
-        get_universe_domain(
-            client_universe_domain, universe_domain_env, MockClient._DEFAULT_UNIVERSE
+    else:
+        assert (
+            get_api_endpoint(
+                api_override,
+                universe_domain,
+                default_universe,
+                default_mtls_endpoint,
+                default_endpoint_template,
+                use_mtls,
+            )
+            == expected
         )
-        == client_universe_domain
-    )
-    assert (
-        get_universe_domain(None, universe_domain_env, MockClient._DEFAULT_UNIVERSE)
-        == universe_domain_env
-    )
-    assert (
-        get_universe_domain(None, None, MockClient._DEFAULT_UNIVERSE)
-        == MockClient._DEFAULT_UNIVERSE
-    )
+
+
+def test_get_universe_domain():
+    # When universe_domain is provided
+    assert get_universe_domain("foo.com", "default.com") == "foo.com"
+    assert get_universe_domain("  foo.com  ", "default.com") == "foo.com"
+
+    # When universe_domain is None, falls back to default_universe
+    assert get_universe_domain(None, "default.com") == "default.com"
+
+    # ValueError raised when resolved value is empty string
+    with pytest.raises(ValueError) as excinfo:
+        get_universe_domain("", "default.com")
+    assert str(excinfo.value) == "Universe Domain cannot be an empty string."
 
     with pytest.raises(ValueError) as excinfo:
-        get_universe_domain("", None, MockClient._DEFAULT_UNIVERSE)
+        get_universe_domain("   ", "default.com")
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."

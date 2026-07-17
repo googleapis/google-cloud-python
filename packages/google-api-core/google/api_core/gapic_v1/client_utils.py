@@ -14,13 +14,9 @@
 # limitations under the License.
 #
 
-"""Helpers for client setup and configuration."""
-
-import os
-from typing import Callable, Optional, Tuple
+from typing import Optional
 from urllib.parse import urlparse, urlunparse
 
-import google.auth.transport.mtls  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 
 
@@ -70,53 +66,25 @@ def get_default_mtls_endpoint(api_endpoint: Optional[str]) -> Optional[str]:
         return urlunparse(new_parsed)
 
 
-def should_use_mtls_endpoint(client_cert_available: bool) -> bool:
-    """Helper to determine whether to use mTLS endpoint.
-
-    Uses google.auth.transport.mtls.should_use_mtls_endpoint if available,
-    otherwise falls back to evaluation of GOOGLE_API_USE_MTLS_ENDPOINT.
-    """
-    if hasattr(google.auth.transport.mtls, "should_use_mtls_endpoint"):
-        return google.auth.transport.mtls.should_use_mtls_endpoint(
-            client_cert_available
-        )
-
-    # Fallback logic for older google-auth versions
-    use_mtls_endpoint = (
-        os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto").strip().lower()
-    )
-    if use_mtls_endpoint == "always":
-        return True
-    elif use_mtls_endpoint == "never":
-        return False
-    elif use_mtls_endpoint == "auto":
-        return client_cert_available
-    else:
-        raise MutualTLSChannelError(
-            "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-        )
-
-
 def get_api_endpoint(
     api_override: Optional[str],
-    client_cert_source: Optional[Callable[[], Tuple[bytes, bytes]]],
     universe_domain: str,
     default_universe: str,
     default_mtls_endpoint: Optional[str],
     default_endpoint_template: str,
+    use_mtls: bool,
 ) -> str:
     """Return the API endpoint used by the client.
 
     Args:
         api_override (Optional[str]): The API endpoint override. If specified,
             this is always returned.
-        client_cert_source (Optional[Callable[[], Tuple[bytes, bytes]]]): The client
-            certificate source used by the client.
         universe_domain (str): The universe domain used by the client.
         default_universe (str): The default universe domain.
         default_mtls_endpoint (Optional[str]): The default mTLS endpoint.
         default_endpoint_template (str): The default endpoint template containing
             a placeholder `{UNIVERSE_DOMAIN}`.
+        use_mtls (bool): Whether to use the mTLS endpoint.
 
     Returns:
         str: The API endpoint to be used by the client.
@@ -129,8 +97,7 @@ def get_api_endpoint(
     if api_override is not None:
         return api_override
 
-    client_cert_available = client_cert_source is not None
-    if should_use_mtls_endpoint(client_cert_available):
+    if use_mtls:
         if universe_domain.lower() != default_universe.lower():
             raise MutualTLSChannelError(
                 f"mTLS is not supported in any universe other than {default_universe}."
@@ -143,17 +110,13 @@ def get_api_endpoint(
 
 
 def get_universe_domain(
-    client_universe_domain: Optional[str],
-    universe_domain_env: Optional[str],
-    default_universe: str,
+    universe_domain: Optional[str],
+    default_universe: str = "googleapis.com",
 ) -> str:
     """Return the universe domain used by the client.
 
     Args:
-        client_universe_domain (Optional[str]): The universe domain configured
-            via client options.
-        universe_domain_env (Optional[str]): The universe domain configured
-            via environment variable.
+        universe_domain (Optional[str]): The configured universe domain.
         default_universe (str): The default universe domain.
 
     Returns:
@@ -162,13 +125,10 @@ def get_universe_domain(
     Raises:
         ValueError: If the resolved universe domain is an empty string.
     """
-    if client_universe_domain is not None:
-        universe_domain = client_universe_domain.strip()
-    elif universe_domain_env is not None:
-        universe_domain = universe_domain_env.strip()
-    else:
-        universe_domain = default_universe
+    resolved = (
+        universe_domain.strip() if universe_domain is not None else default_universe
+    )
 
-    if not universe_domain:
+    if not resolved:
         raise ValueError("Universe Domain cannot be an empty string.")
-    return universe_domain
+    return resolved
