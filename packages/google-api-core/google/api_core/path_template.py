@@ -98,7 +98,7 @@ def _validate_multi_segment_value(val: str) -> bool:
         bool: True if the value is valid and does not violate traversal boundaries,
             False otherwise.
     """
-    if val in ('', '.', '..'):
+    if val in ("", ".", ".."):
         return False
 
     segments = val.split("/")
@@ -138,34 +138,32 @@ def _build_capture_pattern(template_str: str) -> tuple[re.Pattern, tuple[str, ..
             - A list of wildcard type strings ('*' or '**') in matching order.
     """
     wildcard_types = []
-
-    def replacer(match):
-        positional = match.group("positional")
-        template = match.group("template")
-
-        if positional == "*":
-            wildcard_types.append("*")
-            return _SINGLE_SEGMENT_PATTERN
-        elif positional == "**":
-            wildcard_types.append("**")
-            return _MULTI_SEGMENT_PATTERN
-        elif not template or template == "*":
-            wildcard_types.append("*")
-            return _SINGLE_SEGMENT_PATTERN
-        elif template == "**":
-            wildcard_types.append("**")
-            return _MULTI_SEGMENT_PATTERN
-        else:
-            sub_pattern, sub_types = _build_capture_pattern(template)
-            wildcard_types.extend(sub_types)
-            return sub_pattern.pattern
-
     parts = []
     last_idx = 0
     for match in _VARIABLE_RE.finditer(template_str):
         literal = template_str[last_idx : match.start()]
         parts.append(re.escape(literal))
-        replaced = replacer(match)
+
+        positional = match.group("positional")
+        template = match.group("template")
+
+        if positional == "*":
+            wildcard_types.append("*")
+            replaced = _SINGLE_SEGMENT_PATTERN
+        elif positional == "**":
+            wildcard_types.append("**")
+            replaced = _MULTI_SEGMENT_PATTERN
+        elif not template or template == "*":
+            wildcard_types.append("*")
+            replaced = _SINGLE_SEGMENT_PATTERN
+        elif template == "**":
+            wildcard_types.append("**")
+            replaced = _MULTI_SEGMENT_PATTERN
+        else:
+            sub_pattern, sub_types = _build_capture_pattern(template)
+            wildcard_types.extend(sub_types)
+            replaced = sub_pattern.pattern
+
         parts.append(replaced)
         last_idx = match.end()
     literal = template_str[last_idx:]

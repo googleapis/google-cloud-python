@@ -850,7 +850,7 @@ def test_build_capture_pattern(template_str, expected_pattern, expected_wildcard
         ("a/b/c/d/e/../../../..", True),
         ("a/b/../..", False),
         ("a/b/../../..", False),
-        ('', False),
+        ("", False),
         (".", False),
         ("..", False),
         ("", False),
