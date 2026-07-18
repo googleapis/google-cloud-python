@@ -205,7 +205,7 @@ def _get_http_options():
 
     http_options = _Base{{ service_name }}RestTransport._Base{{method_name}}._get_http_options()
     request, metadata = {{ await_prefix }}self._interceptor.pre_{{ method_name|snake_case }}(request, metadata)
-    transcoded_request, body, query_params = gapic_v1.rest_helpers.transcode(
+    transcoded_request, body, query_params = rest_helpers.transcode(
         http_options,
         request,
         required_fields_default_values=getattr(
