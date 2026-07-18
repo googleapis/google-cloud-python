@@ -141,30 +141,18 @@ class _GapicCallable(object):
         wrapped_func = _apply_decorators(self._target, [retry, timeout])
 
         # Add the user agent metadata to the call.
-        if self._init_metadata or self._x_goog_api_client:
-            user_metadata = kwargs.get("metadata")
-            if not user_metadata:
-                if self._x_goog_api_client:
-                    kwargs["metadata"] = [
-                        (client_info.METRICS_METADATA_KEY, self._x_goog_api_client),
-                        *self._init_metadata
-                    ]
-                else:
-                    kwargs["metadata"] = self._init_metadata
-            else:
-                # Merge user-supplied metadata with library-supplied metadata.
-                merged_metadata, api_client_values = _extract_metrics_header(user_metadata)
-                if self._x_goog_api_client:
-                    if api_client_values:
-                        api_client_values = f"{api_client_values} {self._x_goog_api_client}"
-                    else:
-                        api_client_values = self._x_goog_api_client
-                if api_client_values:
-                    merged_metadata.append(
-                        (client_info.METRICS_METADATA_KEY, api_client_values)
-                    )
-                merged_metadata.extend(self._init_metadata)
-                kwargs["metadata"] = merged_metadata
+        final_metadata = list(self._init_metadata)
+        if user_metadata := kwargs.get("metadata"):
+            remaining, user_x_goog = _extract_metrics_header(user_metadata)
+            api_client_tokens = [t for t in [user_x_goog, self._x_goog_api_client] if t]
+            if api_client_tokens:
+                final_metadata.append((client_info.METRICS_METADATA_KEY, " ".join(api_client_tokens)))
+            final_metadata.extend(remaining)
+        else:
+            if self._x_goog_api_client:
+                final_metadata.append((client_info.METRICS_METADATA_KEY, self._x_goog_api_client))
+        if final_metadata:
+            kwargs["metadata"] = final_metadata
 
         if self._compression is not None:
             kwargs["compression"] = compression
