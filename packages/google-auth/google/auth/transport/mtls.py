@@ -24,7 +24,6 @@ from google.auth import environment_vars
 from google.auth import exceptions
 from google.auth.transport import _mtls_helper
 
-
 _LOGGER = logging.getLogger(__name__)
 
 
@@ -44,25 +43,18 @@ def has_default_client_cert_source(include_context_aware=True):
     Returns:
         bool: indicating if the default client cert source exists.
     """
+    cert_path = _mtls_helper._get_cert_config_path(
+        include_context_aware=include_context_aware
+    )
+    if cert_path is not None:
+        return True
     if (
         include_context_aware
         and _mtls_helper._check_config_path(_mtls_helper.CONTEXT_AWARE_METADATA_PATH)
         is not None
     ):
         return True
-    if (
-        _mtls_helper._check_config_path(
-            _mtls_helper.CERTIFICATE_CONFIGURATION_DEFAULT_PATH
-        )
-        is not None
-    ):
-        return True
-    cert_config_path = getenv("GOOGLE_API_CERTIFICATE_CONFIG")
-    if (
-        cert_config_path
-        and _mtls_helper._check_config_path(cert_config_path) is not None
-    ):
-        return True
+
     return False
 
 
@@ -146,7 +138,9 @@ def should_use_client_cert():
     If GOOGLE_API_USE_CLIENT_CERTIFICATE is set to true or false, a corresponding
     bool value will be returned
     If GOOGLE_API_USE_CLIENT_CERTIFICATE is unset, the value will be inferred by
-    reading a file pointed at by GOOGLE_API_CERTIFICATE_CONFIG, and verifying it
+    reading a file pointed at by GOOGLE_API_CERTIFICATE_CONFIG or
+    CLOUDSDK_CONTEXT_AWARE_CERTIFICATE_CONFIG_FILE_PATH, or the default path
+    like ~/.config/gcloud/certificate_config.json, and verifying it
     contains a "workload" section. If so, the function will return True,
     otherwise False.
 
