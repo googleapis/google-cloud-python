@@ -19,7 +19,6 @@ import pytest
 
 from google.api_core.gapic_v1.requests import setup_request_id
 
-
 # --- Mock Request Helper Classes ---
 
 
