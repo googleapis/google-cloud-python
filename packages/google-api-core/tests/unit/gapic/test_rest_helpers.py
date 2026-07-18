@@ -16,7 +16,7 @@ import json
 
 from google.protobuf import descriptor_pb2
 
-from google.api_core.gapic_v1.rest_helpers import transcode
+from google.api_core.gapic_v1.rest_helpers import transcode, RestTransportInterceptor
 
 
 def test_transcode_basic():
@@ -134,3 +134,28 @@ def test_transcode_with_numeric_enums():
     # Type number for TYPE_STRING is 9
     assert query_params["type"] == 9
     assert query_params["$alt"] == "json;enum-encoding=int"
+
+
+def test_rest_transport_interceptor():
+    import pytest
+
+    interceptor = RestTransportInterceptor()
+
+    # pre_ hook
+    req, metadata = interceptor.pre_some_rpc("my-request", [("key", "val")])
+    assert req == "my-request"
+    assert metadata == [("key", "val")]
+
+    # post_ hook
+    res = interceptor.post_some_rpc("my-response")
+    assert res == "my-response"
+
+    # post_ with metadata hook
+    res, metadata = interceptor.post_some_rpc_with_metadata("my-response", [("key", "val")])
+    assert res == "my-response"
+    assert metadata == [("key", "val")]
+
+    # Non-hook lookup raises AttributeError
+    with pytest.raises(AttributeError) as excinfo:
+        getattr(interceptor, "some_other_method")
+    assert "object has no attribute 'some_other_method'" in str(excinfo.value)
