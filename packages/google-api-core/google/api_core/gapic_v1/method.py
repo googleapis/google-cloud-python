@@ -17,7 +17,7 @@
 This is used by gapic clients to provide common error mapping, retry, timeout,
 compression, pagination, and long-running operations to gRPC methods.
 """
-
+from typing import Tuple, List
 import enum
 import functools
 
@@ -57,7 +57,7 @@ def _apply_decorators(func, decorators):
     return func
 
 
-def _extract_metrics_header(metadata) -> Tuple[List[Tuple[str, str], ...], str]
+def _extract_metrics_header(metadata) -> Tuple[List[Tuple[str, str]], str]:
     """Extract x-google-api-client header from metadata list.
 
     Args:
@@ -146,8 +146,9 @@ class _GapicCallable(object):
             if not user_metadata:
                 if self._x_goog_api_client:
                     kwargs["metadata"] = [
-                        (client_info.METRICS_METADATA_KEY, self._x_goog_api_client)
-                    ] + self._init_metadata
+                        (client_info.METRICS_METADATA_KEY, self._x_goog_api_client),
+                        *self._init_metadata
+                    ]
                 else:
                     kwargs["metadata"] = self._init_metadata
             else:
