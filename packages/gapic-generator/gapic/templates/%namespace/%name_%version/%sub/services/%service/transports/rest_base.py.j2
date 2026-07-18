@@ -120,51 +120,8 @@ class _Base{{ service.name }}RestTransport({{service.name}}Transport):
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
         {% endif %}{# required fields #}
-        
         {% set method_http_options = method.http_options %}
-        
         {{ shared_macros.http_options_method(method_http_options)|indent(8) }}
-        
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            {% if method.input.ident.is_proto_plus_type %}
-            pb_request = {{method.input.ident}}.pb(request)
-            {% else %}
-            pb_request = request
-            {% endif %}
-            transcoded_request = path_template.transcode(http_options, pb_request)
-            return transcoded_request
-
-        {% set body_spec = method.http_options[0].body %}
-        {%- if body_spec %}
-
-        @staticmethod
-        def _get_request_body_json(transcoded_request):
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request['body'],
-                use_integers_for_enums={{ opts.rest_numeric_enums }}
-            )
-            return body
-
-        {%- endif %}{# body_spec #}
-
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums={{ opts.rest_numeric_enums }},
-            ))
-            {% if method.input.required_fields %}
-            query_params.update(_Base{{ service.name }}RestTransport._Base{{method.name}}._get_unset_required_fields(query_params))
-            {% endif %}{# required fields #}
-
-            {% if opts.rest_numeric_enums %}
-            query_params["$alt"] = "json;enum-encoding=int"
-            {% endif %}
-            return query_params
-
         {% endif %}{# method.http_options and not method.client_streaming #}
     {% endfor %}
 

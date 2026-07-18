@@ -350,6 +350,7 @@ def showcase_library(
         )
 
         # Install the generated showcase library.
+        session.install("-e", "../google-api-core")
         if templates == "DEFAULT":
             # Use the constraints file for the specific python runtime version.
             # We do this to make sure that we're testing against the lowest
@@ -380,6 +381,9 @@ def showcase_library(
             # Install the library without a constraints file.
             session.install("-e", tmp_dir)
 
+        import shutil
+        shutil.rmtree("generated_showcase", ignore_errors=True)
+        shutil.copytree(tmp_dir, "generated_showcase")
         yield tmp_dir
 
 
@@ -504,6 +508,10 @@ def run_showcase_unit_tests(session, fail_under=100, rest_async_io_enabled=False
     session.run("python", "-m", "pip", "freeze")
 
     # Run the tests.
+    import os
+    env = os.environ.copy()
+    env["GOOGLE_API_USE_CLIENT_CERTIFICATE"] = "false"
+    env["CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE"] = ""
     session.run(
         "py.test",
         *(
@@ -517,6 +525,7 @@ def run_showcase_unit_tests(session, fail_under=100, rest_async_io_enabled=False
                 path.join("tests", "unit"),
             ]
         ),
+        env=env,
     )
 
 

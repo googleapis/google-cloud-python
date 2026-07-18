@@ -198,22 +198,23 @@ def _get_http_options():
         service: The service.
         is_async (bool): Used to determine the code path i.e. whether for sync or async call.
         is_request_message_proto_plus_type (bool): Used to determine whether the request message is a proto-plus type. #}
-{% macro rest_call_method_common(body_spec, method_name, service, is_async=False, is_request_message_proto_plus_type=False) %}
+{% macro rest_call_method_common(body_spec, method_name, service, is_async=False, is_request_message_proto_plus_type=False, rest_numeric_enums=False) %}
 {% set service_name = service.name %}
 {% set await_prefix = "await " if is_async else "" %}
 {% set async_class_prefix = "Async" if is_async else "" %}
 
     http_options = _Base{{ service_name }}RestTransport._Base{{method_name}}._get_http_options()
-    {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2274): Add debug log before intercepting a request #} 
     request, metadata = {{ await_prefix }}self._interceptor.pre_{{ method_name|snake_case }}(request, metadata)
-    transcoded_request = _Base{{ service_name }}RestTransport._Base{{method_name}}._get_transcoded_request(http_options, request)
-
-    {% if body_spec %}
-    body = _Base{{ service_name }}RestTransport._Base{{method_name}}._get_request_body_json(transcoded_request)
-    {% endif %}{# body_spec #}
-
-    # Jsonify the query params
-    query_params = _Base{{ service_name }}RestTransport._Base{{method_name}}._get_query_params_json(transcoded_request)
+    transcoded_request, body, query_params = gapic_v1.rest_helpers.transcode(
+        http_options,
+        request,
+        required_fields_default_values=getattr(
+            _Base{{ service_name }}RestTransport._Base{{method_name}},
+            "__REQUIRED_FIELDS_DEFAULT_VALUES",
+            None,
+        ),
+        rest_numeric_enums={{ rest_numeric_enums }},
+    )
 
     if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
         request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
