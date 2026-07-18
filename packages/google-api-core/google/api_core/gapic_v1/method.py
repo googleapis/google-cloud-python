@@ -57,33 +57,29 @@ def _apply_decorators(func, decorators):
     return func
 
 
-def _extract_metrics_header(metadata):
+def _extract_metrics_header(metadata) -> Tuple[List[Tuple[str, str], ...], str]
     """Extract x-google-api-client header from metadata list.
 
     Args:
         metadata (Sequence[Tuple[str, str]]): The metadata to extract from.
 
     Returns:
-        Tuple[List[Tuple[str, str]], List[str]]: A tuple containing:
-            - A list of remaining metadata tuples.
-            - A list of metrics header values found.
+        A tuple containing:
+            - A sequence of remaining metadata tuples.
+            - a string representing the header value.
     """
     if not metadata:
-        return [], []
+        return (), ""
 
-    for i, (key, val) in enumerate(metadata):
-        if key == client_info.METRICS_METADATA_KEY:
-            # Key located. Check the rest of the list for duplicate entries
-            arbitrary_metadata = list(metadata[:i])
-            metric_values = [val]
-            for k, v in metadata[i + 1 :]:
-                if k == client_info.METRICS_METADATA_KEY:
-                    metric_values.append(v)
-                else:
-                    arbitrary_metadata.append((k, v))
-            return arbitrary_metadata, metric_values
-    # No key found
-    return list(metadata), []
+    key_to_find = client_info.METRICS_METADATA_KEY
+
+    metric_str = " ".join([v for k, v in metadata if k == key_to_find])
+
+    if not metric_str:
+        return list(metadata), ""
+
+    arbitrary_metadata = [item for item in metadata if item[0] != key_to_find]
+    return arbitrary_metadata, metric_str
 
 
 class _GapicCallable(object):
@@ -121,8 +117,7 @@ class _GapicCallable(object):
         self._compression = compression
         self._metadata = metadata
         # Pre-extract the x-goog-api-client header from the initialized metadata.
-        self._arbitrary_metadata, metric_values = _extract_metrics_header(metadata)
-        self._metrics_values = " ".join(metric_values) if metric_values else ""
+        self._arbitrary_metadata, self._metrics_values = _extract_metrics_header(metadata)
 
     def __call__(
         self, *args, timeout=DEFAULT, retry=DEFAULT, compression=DEFAULT, **kwargs
@@ -158,10 +153,13 @@ class _GapicCallable(object):
                 # Merge user-supplied metadata with library-supplied metadata.
                 merged_metadata, api_client_values = _extract_metrics_header(metadata)
                 if self._metrics_values:
-                    api_client_values.append(self._metrics_values)
+                    if api_client_values:
+                        api_client_values = f"{api_client_values} {self._metrics_values}"
+                    else:
+                        api_client_values = self._metrics_values
                 if api_client_values:
                     merged_metadata.append(
-                        (client_info.METRICS_METADATA_KEY, " ".join(api_client_values))
+                        (client_info.METRICS_METADATA_KEY, api_client_values)
                     )
                 merged_metadata.extend(self._arbitrary_metadata)
                 kwargs["metadata"] = merged_metadata
