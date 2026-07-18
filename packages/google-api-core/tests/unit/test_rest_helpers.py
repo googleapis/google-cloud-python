@@ -12,9 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import json
 import pytest
+from google.protobuf import descriptor_pb2
 
 from google.api_core import rest_helpers
+from google.api_core.rest_helpers import transcode, RestTransportInterceptor
 
 
 def test_flatten_simple_value():
@@ -92,3 +95,145 @@ def test_flatten_repeated_list():
 
     with pytest.raises(ValueError):
         rest_helpers.flatten_query_params(obj)
+
+
+def test_transcode_basic():
+    # We use FieldDescriptorProto as it has standard primitive fields and nested messages.
+    http_options = [
+        {
+            "method": "get",
+            "uri": "/v1/test/{name}",
+        }
+    ]
+
+    request = descriptor_pb2.FieldDescriptorProto()
+    request.name = "my-field"
+    request.number = 123
+
+    transcoded, body, query_params = transcode(http_options, request)
+
+    assert transcoded["method"] == "get"
+    assert transcoded["uri"] == "/v1/test/my-field"
+    assert body is None
+    # 'number' should be in query parameters
+    assert "number" in query_params
+    assert query_params["number"] == 123
+
+
+def test_transcode_with_nested_field():
+    http_options = [
+        {
+            "method": "get",
+            "uri": "/v1/test/{options.deprecated}/{name}",
+        }
+    ]
+
+    request = descriptor_pb2.FieldDescriptorProto()
+    request.name = "my-field"
+    request.options.deprecated = True
+    request.number = 123
+
+    transcoded, body, query_params = transcode(http_options, request)
+
+    assert transcoded["method"] == "get"
+    assert transcoded["uri"] == "/v1/test/True/my-field"
+    assert body is None
+    assert "number" in query_params
+    assert query_params["number"] == 123
+
+
+def test_transcode_with_body():
+    http_options = [
+        {
+            "method": "post",
+            "uri": "/v1/test/{name}",
+            "body": "options",
+        }
+    ]
+
+    request = descriptor_pb2.FieldDescriptorProto()
+    request.name = "my-field"
+    request.options.deprecated = True
+    request.number = 123
+
+    transcoded, body, query_params = transcode(http_options, request)
+
+    assert transcoded["method"] == "post"
+    assert transcoded["uri"] == "/v1/test/my-field"
+    assert body is not None
+    body_data = json.loads(body)
+    assert body_data["deprecated"] is True
+    # Query parameters should not contain 'options' (the body)
+    assert "number" in query_params
+    assert query_params["number"] == 123
+    assert "options" not in query_params
+
+
+def test_transcode_with_required_fields_default_values():
+    http_options = [
+        {
+            "method": "get",
+            "uri": "/v1/test/{name}",
+        }
+    ]
+
+    request = descriptor_pb2.FieldDescriptorProto()
+    request.name = "my-field"
+
+    required_defaults = {"requiredQueryParam": "default-val"}
+
+    transcoded, body, query_params = transcode(
+        http_options,
+        request,
+        required_fields_default_values=required_defaults,
+    )
+
+    assert query_params["requiredQueryParam"] == "default-val"
+
+
+def test_transcode_with_numeric_enums():
+    http_options = [
+        {
+            "method": "get",
+            "uri": "/v1/test/{name}",
+        }
+    ]
+
+    request = descriptor_pb2.FieldDescriptorProto()
+    request.name = "my-field"
+    request.type = descriptor_pb2.FieldDescriptorProto.TYPE_STRING
+
+    # Without numeric enums
+    _, _, query_params = transcode(http_options, request, rest_numeric_enums=False)
+    assert query_params["type"] == "TYPE_STRING"
+
+    # With numeric enums
+    _, _, query_params = transcode(http_options, request, rest_numeric_enums=True)
+    # Type number for TYPE_STRING is 9
+    assert query_params["type"] == 9
+    assert query_params["$alt"] == "json;enum-encoding=int"
+
+
+def test_rest_transport_interceptor():
+    import pytest
+
+    interceptor = RestTransportInterceptor()
+
+    # pre_ hook
+    req, metadata = interceptor.pre_some_rpc("my-request", [("key", "val")])
+    assert req == "my-request"
+    assert metadata == [("key", "val")]
+
+    # post_ hook
+    res = interceptor.post_some_rpc("my-response")
+    assert res == "my-response"
+
+    # post_ with metadata hook
+    res, metadata = interceptor.post_some_rpc_with_metadata("my-response", [("key", "val")])
+    assert res == "my-response"
+    assert metadata == [("key", "val")]
+
+    # Non-hook lookup raises AttributeError
+    with pytest.raises(AttributeError) as excinfo:
+        getattr(interceptor, "some_other_method")
+    assert "object has no attribute 'some_other_method'" in str(excinfo.value)
