@@ -115,9 +115,10 @@ class _GapicCallable(object):
         self._retry = retry
         self._timeout = timeout
         self._compression = compression
-        self._metadata = metadata
         # Pre-extract the x-goog-api-client header from the initialized metadata.
-        self._arbitrary_metadata, self._metrics_values = _extract_metrics_header(metadata)
+        remaining_metadata, x_goog_api_client = _extract_metrics_header(metadata)
+        self._init_metadata = tuple(remaining_metadata)
+        self._x_goog_api_client = x_goog_api_client
 
     def __call__(
         self, *args, timeout=DEFAULT, retry=DEFAULT, compression=DEFAULT, **kwargs
@@ -140,28 +141,28 @@ class _GapicCallable(object):
         wrapped_func = _apply_decorators(self._target, [retry, timeout])
 
         # Add the user agent metadata to the call.
-        if self._metadata is not None:
-            metadata = kwargs.get("metadata")
-            if not metadata:
-                if self._metrics_values:
+        if self._init_metadata or self._x_goog_api_client:
+            user_metadata = kwargs.get("metadata")
+            if not user_metadata:
+                if self._x_goog_api_client:
                     kwargs["metadata"] = [
-                        (client_info.METRICS_METADATA_KEY, self._metrics_values)
-                    ] + self._arbitrary_metadata
+                        (client_info.METRICS_METADATA_KEY, self._x_goog_api_client)
+                    ] + self._init_metadata
                 else:
-                    kwargs["metadata"] = self._arbitrary_metadata
+                    kwargs["metadata"] = self._init_metadata
             else:
                 # Merge user-supplied metadata with library-supplied metadata.
-                merged_metadata, api_client_values = _extract_metrics_header(metadata)
-                if self._metrics_values:
+                merged_metadata, api_client_values = _extract_metrics_header(user_metadata)
+                if self._x_goog_api_client:
                     if api_client_values:
-                        api_client_values = f"{api_client_values} {self._metrics_values}"
+                        api_client_values = f"{api_client_values} {self._x_goog_api_client}"
                     else:
-                        api_client_values = self._metrics_values
+                        api_client_values = self._x_goog_api_client
                 if api_client_values:
                     merged_metadata.append(
                         (client_info.METRICS_METADATA_KEY, api_client_values)
                     )
-                merged_metadata.extend(self._arbitrary_metadata)
+                merged_metadata.extend(self._init_metadata)
                 kwargs["metadata"] = merged_metadata
 
         if self._compression is not None:
