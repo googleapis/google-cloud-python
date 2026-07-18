@@ -57,7 +57,7 @@ def _apply_decorators(func, decorators):
     return func
 
 
-def _extract_metrics_header(metadata) -> Tuple[List[Tuple[str, str]], str]:
+def _extract_metrics_header(metadata) -> Tuple[str, List[Tuple[str, str]]]:
     """Extract x-google-api-client header from metadata list.
 
     Args:
@@ -69,17 +69,17 @@ def _extract_metrics_header(metadata) -> Tuple[List[Tuple[str, str]], str]:
             - a string representing the header value.
     """
     if not metadata:
-        return (), ""
+        return "", ()
 
     key_to_find = client_info.METRICS_METADATA_KEY
 
     metric_str = " ".join([v for k, v in metadata if k == key_to_find])
 
     if not metric_str:
-        return list(metadata), ""
+        return "", list(metadata)
 
     arbitrary_metadata = [item for item in metadata if item[0] != key_to_find]
-    return arbitrary_metadata, metric_str
+    return metric_str, arbitrary_metadata
 
 
 class _GapicCallable(object):
@@ -116,8 +116,8 @@ class _GapicCallable(object):
         self._timeout = timeout
         self._compression = compression
         # Pre-extract the x-goog-api-client header from the initialized metadata.
-        remaining_metadata, x_goog_api_client = _extract_metrics_header(metadata)
-        self._static_metadata = tuple(remaining_metadata)
+        x_goog_api_client, remaining = _extract_metrics_header(metadata)
+        self._static_metadata = tuple(remaining)
         self._x_goog_api_client = x_goog_api_client
         if x_goog_api_client:
             self._default_metadata = (
@@ -150,7 +150,7 @@ class _GapicCallable(object):
         # Add the user agent metadata to the call.
         if user_metadata := kwargs.get("metadata"):
             final_metadata = list(self._static_metadata)
-            remaining, user_x_goog = _extract_metrics_header(user_metadata)
+            user_x_goog, remaining = _extract_metrics_header(user_metadata)
             api_client_tokens = [t for t in [user_x_goog, self._x_goog_api_client] if t]
             if api_client_tokens:
                 final_metadata.append((client_info.METRICS_METADATA_KEY, " ".join(api_client_tokens)))
