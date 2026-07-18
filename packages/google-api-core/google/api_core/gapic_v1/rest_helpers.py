@@ -68,3 +68,30 @@ def transcode(
         query_params_json["$alt"] = "json;enum-encoding=int"
 
     return transcoded_request, body_json, query_params_json
+
+
+class RestTransportInterceptor:
+    """Base class for REST transport interceptors."""
+
+    def __getattr__(self, name: str) -> Any:
+        if name.startswith("pre_"):
+
+            def _pre_passthrough(request, metadata):
+                return request, metadata
+
+            return _pre_passthrough
+        elif name.startswith("post_") and name.endswith("_with_metadata"):
+
+            def _post_with_metadata_passthrough(response, metadata):
+                return response, metadata
+
+            return _post_with_metadata_passthrough
+        elif name.startswith("post_"):
+
+            def _post_passthrough(response):
+                return response
+
+            return _post_passthrough
+        raise AttributeError(
+            f"'{self.__class__.__name__}' object has no attribute '{name}'"
+        )
