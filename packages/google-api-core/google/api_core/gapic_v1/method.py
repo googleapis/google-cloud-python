@@ -117,8 +117,15 @@ class _GapicCallable(object):
         self._compression = compression
         # Pre-extract the x-goog-api-client header from the initialized metadata.
         remaining_metadata, x_goog_api_client = _extract_metrics_header(metadata)
-        self._init_metadata = tuple(remaining_metadata)
+        self._static_metadata = tuple(remaining_metadata)
         self._x_goog_api_client = x_goog_api_client
+        if x_goog_api_client:
+            self._default_metadata = (
+                (client_info.METRICS_METADATA_KEY, x_goog_api_client),
+                *self._static_metadata
+            )
+        else:
+            self._default_metadata = self._static_metadata
 
     def __call__(
         self, *args, timeout=DEFAULT, retry=DEFAULT, compression=DEFAULT, **kwargs
@@ -141,18 +148,16 @@ class _GapicCallable(object):
         wrapped_func = _apply_decorators(self._target, [retry, timeout])
 
         # Add the user agent metadata to the call.
-        final_metadata = list(self._init_metadata)
         if user_metadata := kwargs.get("metadata"):
+            final_metadata = list(self._static_metadata)
             remaining, user_x_goog = _extract_metrics_header(user_metadata)
             api_client_tokens = [t for t in [user_x_goog, self._x_goog_api_client] if t]
             if api_client_tokens:
                 final_metadata.append((client_info.METRICS_METADATA_KEY, " ".join(api_client_tokens)))
             final_metadata.extend(remaining)
-        else:
-            if self._x_goog_api_client:
-                final_metadata.append((client_info.METRICS_METADATA_KEY, self._x_goog_api_client))
-        if final_metadata:
             kwargs["metadata"] = final_metadata
+        elif self._default_metadata:
+            kwargs["metadata"] = self._default_metadata
 
         if self._compression is not None:
             kwargs["compression"] = compression
