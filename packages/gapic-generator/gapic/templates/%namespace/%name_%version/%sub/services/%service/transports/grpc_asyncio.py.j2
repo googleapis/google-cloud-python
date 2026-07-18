@@ -229,45 +229,19 @@ class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
           google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
               and ``credentials_file`` are passed.
         """
-        self._grpc_channel = None
-        self._ssl_channel_credentials = ssl_channel_credentials
         self._stubs: Dict[str, Callable] = {}
         {% if service.has_lro %}
         self._operations_client: Optional[operations_v1.OperationsAsyncClient] = None
         {% endif %}
 
-        if api_mtls_endpoint:
-            warnings.warn("api_mtls_endpoint is deprecated", DeprecationWarning)
-        if client_cert_source:
-            warnings.warn("client_cert_source is deprecated", DeprecationWarning)
-
-        if isinstance(channel, aio.Channel):
-            # Ignore credentials if a channel was passed.
-            credentials = None
-            self._ignore_credentials = True
-            # If a channel was explicitly provided, set it.
-            self._grpc_channel = channel
-            self._ssl_channel_credentials = None
-        else:
-            if api_mtls_endpoint:
-                host = api_mtls_endpoint
-
-                # Create SSL credentials with client_cert_source or application
-                # default SSL credentials.
-                if client_cert_source:
-                    cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
-                else:
-                    self._ssl_channel_credentials = SslCredentials().ssl_credentials
-
-            else:
-                if client_cert_source_for_mtls and not ssl_channel_credentials:
-                    cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+        self._grpc_channel, self._ssl_channel_credentials, self._ignore_credentials, host = gapic_v1.client_utils.resolve_grpc_channel(
+            host=host,
+            channel=channel,
+            api_mtls_endpoint=api_mtls_endpoint,
+            client_cert_source=client_cert_source,
+            ssl_channel_credentials=ssl_channel_credentials,
+            client_cert_source_for_mtls=client_cert_source_for_mtls,
+        )
 
         # The base transport sets the host, credentials and scopes
         super().__init__(

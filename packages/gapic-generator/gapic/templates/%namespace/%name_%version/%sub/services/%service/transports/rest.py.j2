@@ -153,13 +153,14 @@ class {{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST)
+        self._session = gapic_v1.client_utils.resolve_rest_session(
+            self._credentials,
+            default_host=self.DEFAULT_HOST,
+            client_cert_source_for_mtls=client_cert_source_for_mtls,
+        )
         {% if service.has_lro %}
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         {% endif %}
-        if client_cert_source_for_mtls:
-            self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or {{ service.name }}RestInterceptor()
         self._prep_wrapped_messages(client_info)
 

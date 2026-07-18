@@ -17,7 +17,6 @@ from google.api_core import retry as retries
 from google.api_core import operations_v1
 {% endif %}
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.oauth2 import service_account # type: ignore
 import google.protobuf
 
 {% filter sort_lines %}
@@ -112,38 +111,18 @@ class {{ service.name }}Transport(abc.ABC):
 
         # Save the scopes.
         self._scopes = scopes
-        if not hasattr(self, "_ignore_credentials"):
-            self._ignore_credentials: bool = False
 
-        # If no credentials are provided, then determine the appropriate
-        # defaults.
-        if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
-
-        if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                                credentials_file,
-                                scopes=scopes,
-                                quota_project_id=quota_project_id,
-                                default_scopes=self.AUTH_SCOPES,
-                            )
-        elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(scopes=scopes, quota_project_id=quota_project_id, default_scopes=self.AUTH_SCOPES)
-            # Don't apply audience if the credentials file passed from user.
-            if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
-
-        # If the credentials are service account credentials, then always try to use self signed JWT.
-        if always_use_jwt_access and isinstance(credentials, service_account.Credentials) and hasattr(service_account.Credentials, "with_always_use_jwt_access"):
-            credentials = credentials.with_always_use_jwt_access(True)
-
-        # Save the credentials.
-        self._credentials = credentials
-
-        # Save the hostname. Default to port 443 (HTTPS) if none is specified.
-        if ':' not in host:
-            host += ':443'
-        self._host = host
+        self._credentials, self._host = gapic_v1.client_utils.resolve_credentials_and_host(
+            host=host,
+            credentials=credentials,
+            credentials_file=credentials_file,
+            scopes=scopes,
+            quota_project_id=quota_project_id,
+            always_use_jwt_access=always_use_jwt_access,
+            api_audience=api_audience,
+            auth_scopes=self.AUTH_SCOPES,
+            ignore_credentials=getattr(self, "_ignore_credentials", False),
+        )
 
         self._wrapped_methods: Dict[Callable, Callable] = {}
 

@@ -257,7 +257,7 @@ def resolve_grpc_channel(
                     certificate_chain=cert, private_key=key
                 )
             else:
-                from google.api_core.grpc_helpers import SslCredentials
+                from google.auth.transport.grpc import SslCredentials
                 ssl_channel_credentials = SslCredentials().ssl_credentials
         else:
             if client_cert_source_for_mtls and not ssl_channel_credentials:
