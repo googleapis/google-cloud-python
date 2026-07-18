@@ -26,6 +26,9 @@ from importlib import metadata
 from .services.security_center import SecurityCenterAsyncClient, SecurityCenterClient
 from .types.access import Access, Geolocation, ServiceAccountDelegationInfo
 from .types.affected_resources import AffectedResources
+from .types.agent import Agent
+from .types.agent_anomaly import AgentAnomaly, DetectorReference, InvocationReference
+from .types.agent_session import AgentSession
 from .types.ai_model import AiModel
 from .types.application import Application
 from .types.attack_exposure import AttackExposure
@@ -243,6 +246,9 @@ __all__ = (
     "Access",
     "AdaptiveProtection",
     "AffectedResources",
+    "Agent",
+    "AgentAnomaly",
+    "AgentSession",
     "AiModel",
     "Allowed",
     "Application",
@@ -287,6 +293,7 @@ __all__ = (
     "DeleteNotificationConfigRequest",
     "DeleteResourceValueConfigRequest",
     "Denied",
+    "DetectorReference",
     "Disk",
     "EnvironmentVariable",
     "ExfilResource",
@@ -312,6 +319,7 @@ __all__ = (
     "GroupResult",
     "IamBinding",
     "Indicator",
+    "InvocationReference",
     "IpRule",
     "IpRules",
     "Job",

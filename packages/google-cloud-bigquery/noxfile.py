@@ -15,13 +15,13 @@
 from __future__ import absolute_import
 
 import contextlib
-from functools import wraps
 import os
 import pathlib
-from typing import Generator
 import re
 import shutil
 import time
+from functools import wraps
+from typing import Generator
 
 import nox
 
@@ -41,6 +41,17 @@ DEFAULT_PYTHON_VERSION = "3.14"
 ALL_PYTHON = ["3.10", "3.11", "3.12", "3.13", "3.14"]
 UNIT_TEST_PYTHON_VERSIONS = ALL_PYTHON
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
+# Path to the centralized mypy configuration file at the repository root.
+# Search upwards to support running nox from both monorepo packages and integration test goldens.
+MYPY_CONFIG_FILE = next(
+    (
+        str(p / "mypy.ini")
+        for p in CURRENT_DIRECTORY.parents
+        if (p / "mypy.ini").exists()
+    ),
+    str(CURRENT_DIRECTORY.parent.parent / "mypy.ini"),
+)
+
 
 SYSTEM_TEST_PYTHON_VERSIONS = UNIT_TEST_PYTHON_VERSIONS
 
@@ -215,7 +226,13 @@ def mypy(session):
     )
     session.run("python", "-m", "pip", "freeze")
     with log_package_context(session):
-        session.run("mypy", "-p", "google", "--show-traceback")
+        session.run(
+            "mypy",
+            f"--config-file={MYPY_CONFIG_FILE}",
+            "-p",
+            "google",
+            "--show-traceback",
+        )
 
 
 @nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)

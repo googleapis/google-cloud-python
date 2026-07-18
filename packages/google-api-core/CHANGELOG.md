@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## [2.32.0](https://github.com/googleapis/google-cloud-python/compare/google-api-core-v2.31.0...google-api-core-v2.32.0) (2026-07-16)
+
+
+### Features
+
+* implement PEP 0810 lazy loading in operations_v1 ([#17724](https://github.com/googleapis/google-cloud-python/issues/17724)) ([22c5304](https://github.com/googleapis/google-cloud-python/commit/22c5304f2a4d292f09784a83903883099bd1ea3b))
+
+
+### Bug Fixes
+
+* **api_core:** clarify misleading http 404 unimplemented error message ([#17681](https://github.com/googleapis/google-cloud-python/issues/17681)) ([00b9040](https://github.com/googleapis/google-cloud-python/commit/00b90401e5c8023c8bd3b19ede4ee0d33b9ebedb))
+
 ## [2.31.0](https://github.com/googleapis/google-cloud-python/compare/google-api-core-v2.30.3...google-api-core-v2.31.0) (2026-06-02)
 
 

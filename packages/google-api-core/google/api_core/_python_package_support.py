@@ -15,16 +15,14 @@
 """Code to check versions of dependencies used by Google Cloud Client Libraries."""
 
 import warnings
-from typing import Optional, Tuple
-
 from collections import namedtuple
+from importlib import metadata
+from typing import Optional, Tuple
 
 from ._python_version_support import (
     _flatten_message,
     _get_distribution_and_import_packages,
 )
-
-from importlib import metadata
 
 ParsedVersion = Tuple[int, ...]
 

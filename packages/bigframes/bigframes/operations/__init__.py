@@ -26,7 +26,6 @@ from bigframes.operations.ai_ops import (
     AISimilarity,
 )
 from bigframes.operations.array_ops import (
-    ArrayIndexOp,
     ArrayMapOp,
     ArrayReduceOp,
     ArraySliceOp,
@@ -93,6 +92,9 @@ from bigframes.operations.frequency_ops import (
 from bigframes.operations.generic_ops import (
     AsTypeOp,
     CaseWhenOp,
+    CoerceToBoolOp,
+    DynamicGetItemOp,
+    GetItemOp,
     IsInOp,
     MapOp,
     RowKey,
@@ -100,6 +102,7 @@ from bigframes.operations.generic_ops import (
     case_when_op,
     clip_op,
     coalesce_op,
+    coerce_to_bool_op,
     fillna_op,
     hash_op,
     invert_op,
@@ -196,7 +199,6 @@ from bigframes.operations.string_ops import (
     StrContainsRegexOp,
     StrExtractOp,
     StrFindOp,
-    StrGetOp,
     StringSplitOp,
     StrLstripOp,
     StrPadOp,
@@ -247,6 +249,8 @@ __all__ = [
     "clip_op",
     "coalesce_op",
     "fillna_op",
+    "DynamicGetItemOp",
+    "GetItemOp",
     "hash_op",
     "invert_op",
     "IsInOp",
@@ -255,6 +259,8 @@ __all__ = [
     "maximum_op",
     "minimum_op",
     "notnull_op",
+    "CoerceToBoolOp",
+    "coerce_to_bool_op",
     "RowKey",
     "SqlScalarOp",
     "where_op",
@@ -280,7 +286,6 @@ __all__ = [
     "StrContainsRegexOp",
     "StrExtractOp",
     "StrFindOp",
-    "StrGetOp",
     "StrLstripOp",
     "StringSplitOp",
     "strip_op",
@@ -364,7 +369,6 @@ __all__ = [
     "tanh_op",
     "unsafe_pow_op",
     # Array ops
-    "ArrayIndexOp",
     "ArraySliceOp",
     "ArrayToStringOp",
     # Blob ops

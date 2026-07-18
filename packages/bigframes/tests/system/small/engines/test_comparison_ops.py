@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import asyncio
 import itertools
 
 import pytest
@@ -19,7 +20,7 @@ import pytest
 import bigframes.operations as ops
 from bigframes.core import array_value
 from bigframes.session import polars_executor
-from bigframes.testing.engine_utils import assert_equivalence_execution
+from bigframes.testing.engine_utils import SPEC, assert_equivalence_execution
 
 pytest.importorskip("polars")
 
@@ -68,3 +69,16 @@ def test_engines_project_comparison_op(
     # bool col actually doesn't work properly for bq engine
     arr = apply_op_pairwise(scalars_array_value, op, excluded_cols=["string_col"])
     assert_equivalence_execution(arr.node, REFERENCE_ENGINE, engine)
+
+
+@pytest.mark.parametrize("engine", ["bq-sqlglot"], indirect=True)
+def test_engines_precedence_like_and_in(
+    scalars_array_value: array_value.ArrayValue, engine
+):
+    exprs = [
+        ops.eq_op.as_expr("bool_col", ops.StrContainsOp("a").as_expr("string_col")),
+    ]
+    arr, _ = scalars_array_value.compute_values(exprs)
+    res = asyncio.run(engine.execute(arr.node, SPEC))
+    assert res is not None
+    assert len(res.batches().to_pandas()) > 0

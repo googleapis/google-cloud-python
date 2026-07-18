@@ -74,6 +74,9 @@ from google.cloud.securitycenter_v2.services.security_center import pagers
 from google.cloud.securitycenter_v2.types import (
     access,
     affected_resources,
+    agent,
+    agent_anomaly,
+    agent_session,
     ai_model,
     application,
     attack_exposure,

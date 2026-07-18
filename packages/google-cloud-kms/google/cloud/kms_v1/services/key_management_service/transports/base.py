@@ -386,6 +386,16 @@ class KeyManagementServiceTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.import_trusted_key_wrapped_crypto_key_version: gapic_v1.method.wrap_method(
+                self.import_trusted_key_wrapped_crypto_key_version,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.export_trusted_key_wrapped_crypto_key_version: gapic_v1.method.wrap_method(
+                self.export_trusted_key_wrapped_crypto_key_version,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.create_import_job: gapic_v1.method.wrap_method(
                 self.create_import_job,
                 default_retry=retries.Retry(
@@ -802,6 +812,27 @@ class KeyManagementServiceTransport(abc.ABC):
     ) -> Callable[
         [service.ImportCryptoKeyVersionRequest],
         Union[resources.CryptoKeyVersion, Awaitable[resources.CryptoKeyVersion]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def import_trusted_key_wrapped_crypto_key_version(
+        self,
+    ) -> Callable[
+        [service.ImportTrustedKeyWrappedCryptoKeyVersionRequest],
+        Union[resources.CryptoKeyVersion, Awaitable[resources.CryptoKeyVersion]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def export_trusted_key_wrapped_crypto_key_version(
+        self,
+    ) -> Callable[
+        [service.ExportTrustedKeyWrappedCryptoKeyVersionRequest],
+        Union[
+            service.ExportTrustedKeyWrappedCryptoKeyVersionResponse,
+            Awaitable[service.ExportTrustedKeyWrappedCryptoKeyVersionResponse],
+        ],
     ]:
         raise NotImplementedError()
 

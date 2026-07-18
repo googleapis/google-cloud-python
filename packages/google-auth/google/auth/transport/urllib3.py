@@ -174,22 +174,30 @@ def _make_mutual_tls_http(cert, key):
         urllib3.PoolManager: Mutual TLS HTTP connection.
 
     Raises:
-        ImportError: If certifi or pyOpenSSL is not installed.
-        OpenSSL.crypto.Error: If the cert or key is invalid.
+        google.auth.exceptions.MutualTLSChannelError: If the cert or key is invalid.
     """
     import certifi
-    from OpenSSL import crypto
-    import urllib3.contrib.pyopenssl  # type: ignore
+    import ssl
 
-    urllib3.contrib.pyopenssl.inject_into_urllib3()
     ctx = urllib3.util.ssl_.create_urllib3_context()
     ctx.load_verify_locations(cafile=certifi.where())
 
-    pkey = crypto.load_privatekey(crypto.FILETYPE_PEM, key)
-    x509 = crypto.load_certificate(crypto.FILETYPE_PEM, cert)
-
-    ctx._ctx.use_certificate(x509)
-    ctx._ctx.use_privatekey(pkey)
+    try:
+        with _mtls_helper.secure_cert_key_paths(cert, key) as (
+            cert_path,
+            key_path,
+            passphrase,
+        ):
+            password = passphrase
+            ctx.load_cert_chain(
+                certfile=cert_path,
+                keyfile=key_path,
+                password=password,
+            )
+    except (ssl.SSLError, OSError, IOError, ValueError, RuntimeError, TypeError) as exc:
+        raise exceptions.MutualTLSChannelError(
+            "Failed to configure client certificate and key for mTLS."
+        ) from exc
 
     http = urllib3.PoolManager(ssl_context=ctx)
     return http
@@ -327,25 +335,22 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
                 If the callback is None, application default SSL credentials
                 will be used.
 
+        .. warning::
+            Calling this method mutates the underlying `urllib3.PoolManager`.
+            It is not thread-safe to call this explicitly while other
+            threads are making requests.
+
         Returns:
             True if the channel is mutual TLS and False otherwise.
 
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If mutual TLS channel
-                creation failed for any reason.
+                creation failed for any reason. The existing channel state (the
+                HTTP client) remains unmodified if this error is raised.
         """
         use_client_cert = transport._mtls_helper.check_use_client_cert()
         if not use_client_cert:
-            self._is_mtls = False
             return False
-        else:
-            self._is_mtls = True
-        try:
-            import OpenSSL
-        except ImportError as caught_exc:
-            self._is_mtls = False
-            new_exc = exceptions.MutualTLSChannelError(caught_exc)
-            raise new_exc from caught_exc
 
         try:
             found_cert_key, cert, key = transport._mtls_helper.get_client_cert_and_key(
@@ -353,20 +358,34 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
             )
 
             if found_cert_key:
-                self.http = _make_mutual_tls_http(cert, key)
-                self._cached_cert = cert
+                new_http = _make_mutual_tls_http(cert, key)
+                new_is_mtls = True
             else:
-                self.http = _make_default_http()
-                self._is_mtls = False
+                new_http = _make_default_http()
+                new_is_mtls = False
         except (
             exceptions.ClientCertError,
             ImportError,
             OSError,
-            OpenSSL.crypto.Error,
+            ValueError,
         ) as caught_exc:
-            self._is_mtls = False
             new_exc = exceptions.MutualTLSChannelError(caught_exc)
             raise new_exc from caught_exc
+
+        old_http = self.http
+
+        self.http = new_http
+        self._is_mtls = new_is_mtls
+        self._request.http = new_http
+
+        if old_http is not None and old_http is not new_http:
+            getattr(old_http, "clear", getattr(old_http, "close", lambda: None))()
+
+        if new_is_mtls:
+            self._cached_cert = cert
+        else:
+            if hasattr(self, "_cached_cert"):
+                del self._cached_cert
 
         if self._has_user_provided_http:
             self._has_user_provided_http = False
@@ -483,7 +502,7 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
 
     def __del__(self):
         if hasattr(self, "http") and self.http is not None:
-            self.http.clear()
+            getattr(self.http, "clear", getattr(self.http, "close", lambda: None))()
 
     @property
     def headers(self):

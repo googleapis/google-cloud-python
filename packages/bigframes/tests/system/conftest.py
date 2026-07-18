@@ -12,18 +12,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import base64
+import datetime
+import decimal
 import hashlib
+import json
 import logging
 import math
 import pathlib
 import textwrap
 import traceback
 import typing
-from datetime import datetime
 from typing import Dict, Generator, Optional
 
+import db_dtypes  # type: ignore[import-untyped]
 import fsspec  # type: ignore[import-untyped]
 import gcsfs  # type: ignore[import-untyped]
+import geopandas as gpd  # type: ignore[import-untyped]
 import google.api_core.exceptions
 import google.cloud.bigquery as bigquery
 import google.cloud.bigquery_connection_v1 as bigquery_connection_v1
@@ -34,6 +39,7 @@ import google.cloud.resourcemanager_v3 as resourcemanager_v3
 import google.cloud.storage as storage  # type: ignore
 import numpy as np
 import pandas as pd
+import pandas.arrays
 import pyarrow as pa
 import pytest
 import pytz
@@ -496,14 +502,213 @@ def nested_structs_df(
 
 @pytest.fixture(scope="session")
 def nested_structs_pandas_df(nested_structs_pandas_type: pd.ArrowDtype) -> pd.DataFrame:
-    """pd.DataFrame pointing at test data."""
+    """pd.DataFrame pointing at test data.
 
-    df = pd.read_json(
-        DATA_DIR / "nested_structs.jsonl",
-        lines=True,
+    Manually parses using json.loads to preserve data types.
+    """
+    with open(DATA_DIR / "nested_structs.jsonl") as f:
+        raw_rows = [json.loads(line) for line in f]
+
+    ids = [row["id"] for row in raw_rows]
+
+    def get_val(row, col_name):
+        return row.get(col_name)
+
+    # person
+    person_struct_schema = nested_structs_pandas_type.pyarrow_dtype
+    processed_person: list[Optional[dict[str, typing.Any]]] = []
+    for row in raw_rows:
+        x = get_val(row, "person")
+        if x is None:
+            processed_person.append(None)
+        else:
+            d = dict(x)
+            if "age" in d and d["age"] is not None:
+                d["age"] = int(d["age"])
+            processed_person.append(d)
+    person_arr = pa.array(processed_person, type=person_struct_schema)
+    person_ser = pd.Series(person_arr, index=ids, dtype=nested_structs_pandas_type)
+
+    # bool_col
+    bool_vals = [
+        bool(get_val(row, "bool_col")) if get_val(row, "bool_col") is not None else None
+        for row in raw_rows
+    ]
+    bool_ser = pd.Series(bool_vals, index=ids, dtype=pd.BooleanDtype())
+
+    # int64_col
+    int64_vals = [
+        int(get_val(row, "int64_col"))
+        if get_val(row, "int64_col") is not None
+        else None
+        for row in raw_rows
+    ]
+    int64_ser = pd.Series(int64_vals, index=ids, dtype=pd.Int64Dtype())
+
+    # float64_col
+    float64_vals = [
+        float(get_val(row, "float64_col"))
+        if get_val(row, "float64_col") is not None
+        else None
+        for row in raw_rows
+    ]
+    np_vals = np.array(
+        [x if x is not None else np.nan for x in float64_vals], dtype=np.float64
     )
-    df = df.set_index("id")
-    df["person"] = df["person"].astype(nested_structs_pandas_type)
+    mask = np.array([x is None for x in float64_vals], dtype=bool)
+    float64_arr = pd.arrays.FloatingArray(np_vals, mask)  # type: ignore
+    float64_ser = pd.Series(float64_arr, index=ids)
+
+    # string_col
+    string_vals = [
+        str(get_val(row, "string_col"))
+        if get_val(row, "string_col") is not None
+        else None
+        for row in raw_rows
+    ]
+    string_ser = pd.Series(
+        string_vals, index=ids, dtype=pd.StringDtype(storage="pyarrow")
+    )
+
+    # json_col
+    json_strs: list[Optional[str]] = []
+    for row in raw_rows:
+        if "json_col" not in row:
+            json_strs.append(None)
+        elif row["json_col"] is None:
+            json_strs.append("null")
+        else:
+            json_strs.append(
+                json.dumps(row["json_col"], sort_keys=True, separators=(",", ":"))
+            )
+    json_arr = pa.array(json_strs, type=db_dtypes.JSONArrowType())
+    json_ser = pd.Series(
+        json_arr, index=ids, dtype=pd.ArrowDtype(db_dtypes.JSONArrowType())
+    )
+
+    # date_col
+    date_vals = [
+        datetime.date.fromisoformat(get_val(row, "date_col"))
+        if get_val(row, "date_col") is not None
+        else None
+        for row in raw_rows
+    ]
+    date_arr = pa.array(date_vals, type=pa.date32())
+    date_ser = pd.Series(date_arr, index=ids, dtype=pd.ArrowDtype(pa.date32()))
+
+    # time_col
+    time_vals = [
+        datetime.time.fromisoformat(get_val(row, "time_col"))
+        if get_val(row, "time_col") is not None
+        else None
+        for row in raw_rows
+    ]
+    time_arr = pa.array(time_vals, type=pa.time64("us"))
+    time_ser = pd.Series(time_arr, index=ids, dtype=pd.ArrowDtype(pa.time64("us")))
+
+    # datetime_col
+    datetime_vals: list[Optional[datetime.datetime]] = []
+    for row in raw_rows:
+        val = get_val(row, "datetime_col")
+        if val is None:
+            datetime_vals.append(None)
+        else:
+            datetime_vals.append(datetime.datetime.fromisoformat(val.replace(" ", "T")))
+    datetime_arr = pa.array(datetime_vals, type=pa.timestamp("us"))
+    datetime_ser = pd.Series(
+        datetime_arr, index=ids, dtype=pd.ArrowDtype(pa.timestamp("us"))
+    )
+
+    # timestamp_col
+    timestamp_vals = [
+        datetime.datetime.fromisoformat(
+            get_val(row, "timestamp_col").replace("Z", "+00:00")
+        )
+        if get_val(row, "timestamp_col") is not None
+        else None
+        for row in raw_rows
+    ]
+    timestamp_arr = pa.array(timestamp_vals, type=pa.timestamp("us", tz="UTC"))
+    timestamp_ser = pd.Series(
+        timestamp_arr, index=ids, dtype=pd.ArrowDtype(pa.timestamp("us", tz="UTC"))
+    )
+
+    # bytes_col
+    bytes_vals: list[Optional[bytes]] = []
+    for row in raw_rows:
+        val = get_val(row, "bytes_col")
+        if val is None:
+            bytes_vals.append(None)
+        elif val == "":
+            bytes_vals.append(b"")
+        else:
+            bytes_vals.append(base64.b64decode(val))
+    bytes_arr = pa.array(bytes_vals, type=pa.binary())
+    bytes_ser = pd.Series(bytes_arr, index=ids, dtype=pd.ArrowDtype(pa.binary()))
+
+    # numeric_col
+    numeric_vals = [
+        decimal.Decimal(str(get_val(row, "numeric_col")))
+        if get_val(row, "numeric_col") is not None
+        else None
+        for row in raw_rows
+    ]
+    numeric_arr = pa.array(numeric_vals, type=pa.decimal128(38, 9))
+    numeric_ser = pd.Series(
+        numeric_arr, index=ids, dtype=pd.ArrowDtype(pa.decimal128(38, 9))
+    )
+
+    # bignumeric_col
+    bignumeric_vals = [
+        decimal.Decimal(str(get_val(row, "bignumeric_col")))
+        if get_val(row, "bignumeric_col") is not None
+        else None
+        for row in raw_rows
+    ]
+    bignumeric_arr = pa.array(bignumeric_vals, type=pa.decimal256(76, 38))
+    bignumeric_ser = pd.Series(
+        bignumeric_arr, index=ids, dtype=pd.ArrowDtype(pa.decimal256(76, 38))
+    )
+
+    # geography_col
+    geo_vals = [get_val(row, "geography_col") for row in raw_rows]
+    geo_ser = gpd.GeoSeries.from_wkt(geo_vals)
+    geo_ser.index = ids
+
+    # duration_col
+    duration_vals = [
+        int(get_val(row, "duration_col"))
+        if get_val(row, "duration_col") is not None
+        else None
+        for row in raw_rows
+    ]
+    duration_arr = pa.array(duration_vals, type=pa.duration("us"))
+    duration_ser = pd.Series(
+        duration_arr, index=ids, dtype=pd.ArrowDtype(pa.duration("us"))
+    )
+
+    df = pd.DataFrame(
+        {
+            "person": person_ser,
+            "bool_col": bool_ser,
+            "int64_col": int64_ser,
+            "float64_col": float64_ser,
+            "string_col": string_ser,
+            "json_col": json_ser,
+            "date_col": date_ser,
+            "time_col": time_ser,
+            "datetime_col": datetime_ser,
+            "timestamp_col": timestamp_ser,
+            "bytes_col": bytes_ser,
+            "numeric_col": numeric_ser,
+            "bignumeric_col": bignumeric_ser,
+            "geography_col": geo_ser,
+            "duration_col": duration_ser,
+        },
+        index=ids,
+    )
+    df.index.name = "id"
+
     return df
 
 
@@ -834,9 +1039,9 @@ def new_time_series_pandas_df():
     return pd.DataFrame(
         {
             "parsed_date": [
-                datetime(2017, 8, 2, tzinfo=utc),
-                datetime(2017, 8, 3, tzinfo=utc),
-                datetime(2017, 8, 4, tzinfo=utc),
+                datetime.datetime(2017, 8, 2, tzinfo=utc),
+                datetime.datetime(2017, 8, 3, tzinfo=utc),
+                datetime.datetime(2017, 8, 4, tzinfo=utc),
             ],
             "total_visits": [2500, 2500, 2500],
         }
@@ -855,12 +1060,12 @@ def new_time_series_pandas_df_w_id():
     return pd.DataFrame(
         {
             "parsed_date": [
-                datetime(2017, 8, 2, tzinfo=utc),
-                datetime(2017, 8, 2, tzinfo=utc),
-                datetime(2017, 8, 3, tzinfo=utc),
-                datetime(2017, 8, 3, tzinfo=utc),
-                datetime(2017, 8, 4, tzinfo=utc),
-                datetime(2017, 8, 4, tzinfo=utc),
+                datetime.datetime(2017, 8, 2, tzinfo=utc),
+                datetime.datetime(2017, 8, 2, tzinfo=utc),
+                datetime.datetime(2017, 8, 3, tzinfo=utc),
+                datetime.datetime(2017, 8, 3, tzinfo=utc),
+                datetime.datetime(2017, 8, 4, tzinfo=utc),
+                datetime.datetime(2017, 8, 4, tzinfo=utc),
             ],
             "id": ["1", "2", "1", "2", "1", "2"],
             "total_visits": [2500, 2500, 2500, 2500, 2500, 2500],
@@ -1473,7 +1678,7 @@ def cleanup_cloud_functions(session, cloudfunctions_client, dataset_id_permanent
                 continue
 
             # Ignore the functions less than one day old
-            age = datetime.now() - datetime.fromtimestamp(
+            age = datetime.datetime.now() - datetime.datetime.fromtimestamp(
                 cloud_function.update_time.timestamp()
             )
             if age.days <= 0:

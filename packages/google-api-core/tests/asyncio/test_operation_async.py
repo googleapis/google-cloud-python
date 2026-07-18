@@ -26,14 +26,11 @@ try:
 except ImportError:  # pragma: NO COVER
     pytest.skip("No GRPC", allow_module_level=True)
 
-from google.api_core import exceptions
-from google.api_core import operation_async
-from google.api_core import operations_v1
-from google.api_core import retry_async
 from google.longrunning import operations_pb2
 from google.protobuf import struct_pb2
-from google.rpc import code_pb2
-from google.rpc import status_pb2
+from google.rpc import code_pb2, status_pb2
+
+from google.api_core import exceptions, operation_async, operations_v1, retry_async
 
 TEST_OPERATION_NAME = "test/operation"
 

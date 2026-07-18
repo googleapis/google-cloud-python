@@ -18,12 +18,12 @@ from unittest.mock import patch
 import pytest
 
 from google.api_core._python_package_support import (
-    parse_version_to_tuple,
-    get_dependency_version,
-    warn_deprecation_for_versions_less_than,
-    check_dependency_versions,
     DependencyConstraint,
     DependencyVersion,
+    check_dependency_versions,
+    get_dependency_version,
+    parse_version_to_tuple,
+    warn_deprecation_for_versions_less_than,
 )
 
 

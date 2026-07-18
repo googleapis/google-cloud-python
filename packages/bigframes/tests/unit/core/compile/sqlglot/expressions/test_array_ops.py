@@ -35,9 +35,9 @@ def test_array_to_string(repeated_types_df: bpd.DataFrame, snapshot):
 
 def test_array_index(scalar_types_df: bpd.DataFrame, snapshot):
     ops_map = {
-        "string_index": ops.ArrayIndexOp(index=1).as_expr("string_col"),
+        "string_index": ops.GetItemOp(key=1).as_expr("string_col"),
         "array_index": expression.OpExpression(
-            ops.ArrayIndexOp(index=1),
+            ops.GetItemOp(key=1),
             (ops.ToArrayOp().as_expr("int64_col", "int64_too"),),
         ),
     }
@@ -103,4 +103,15 @@ def test_to_array_op(scalar_types_df: bpd.DataFrame, snapshot):
     }
 
     sql = utils._apply_ops_to_sql(bf_df, list(ops_map.values()), list(ops_map.keys()))
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_to_array_with_subquery_expression(repeated_types_df: bpd.DataFrame, snapshot):
+    reduced = ops.ArrayReduceOp(agg_ops.SumOp()).as_expr("float_list_col")
+    coalesced_reduced = ops.coalesce_op.as_expr(reduced, expression.const(0.0))
+    array_expr = ops.ToArrayOp().as_expr(coalesced_reduced)
+
+    sql = utils._apply_ops_to_sql(
+        repeated_types_df, [array_expr], ["arr_subquery_coalesce"]
+    )
     snapshot.assert_match(sql, "out.sql")

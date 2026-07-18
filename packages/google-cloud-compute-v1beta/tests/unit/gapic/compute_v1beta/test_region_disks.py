@@ -3904,6 +3904,9 @@ def test_list_rest_pager(transport: str = "rest"):
 
         pager = client.list(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, compute.Disk) for i in results)
@@ -8913,6 +8916,9 @@ def test_get_rest_call_success(request_type):
             source_image_id="source_image_id_value",
             source_instant_snapshot="source_instant_snapshot_value",
             source_instant_snapshot_id="source_instant_snapshot_id_value",
+            source_machine_image="source_machine_image_value",
+            source_machine_image_disk_device_name="source_machine_image_disk_device_name_value",
+            source_machine_image_id="source_machine_image_id_value",
             source_snapshot="source_snapshot_value",
             source_snapshot_id="source_snapshot_id_value",
             source_storage_object="source_storage_object_value",
@@ -8982,6 +8988,12 @@ def test_get_rest_call_success(request_type):
     assert response.source_image_id == "source_image_id_value"
     assert response.source_instant_snapshot == "source_instant_snapshot_value"
     assert response.source_instant_snapshot_id == "source_instant_snapshot_id_value"
+    assert response.source_machine_image == "source_machine_image_value"
+    assert (
+        response.source_machine_image_disk_device_name
+        == "source_machine_image_disk_device_name_value"
+    )
+    assert response.source_machine_image_id == "source_machine_image_id_value"
     assert response.source_snapshot == "source_snapshot_value"
     assert response.source_snapshot_id == "source_snapshot_id_value"
     assert response.source_storage_object == "source_storage_object_value"
@@ -9284,6 +9296,10 @@ def test_insert_rest_call_success(request_type):
         "source_image_id": "source_image_id_value",
         "source_instant_snapshot": "source_instant_snapshot_value",
         "source_instant_snapshot_id": "source_instant_snapshot_id_value",
+        "source_machine_image": "source_machine_image_value",
+        "source_machine_image_disk_device_name": "source_machine_image_disk_device_name_value",
+        "source_machine_image_encryption_key": {},
+        "source_machine_image_id": "source_machine_image_id_value",
         "source_snapshot": "source_snapshot_value",
         "source_snapshot_encryption_key": {},
         "source_snapshot_id": "source_snapshot_id_value",
@@ -11618,6 +11634,10 @@ def test_update_rest_call_success(request_type):
         "source_image_id": "source_image_id_value",
         "source_instant_snapshot": "source_instant_snapshot_value",
         "source_instant_snapshot_id": "source_instant_snapshot_id_value",
+        "source_machine_image": "source_machine_image_value",
+        "source_machine_image_disk_device_name": "source_machine_image_disk_device_name_value",
+        "source_machine_image_encryption_key": {},
+        "source_machine_image_id": "source_machine_image_id_value",
         "source_snapshot": "source_snapshot_value",
         "source_snapshot_encryption_key": {},
         "source_snapshot_id": "source_snapshot_id_value",

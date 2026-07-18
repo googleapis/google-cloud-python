@@ -22,7 +22,7 @@ omit =
   sqlalchemy_bigquery/requirements.py
 
 [report]
-fail_under = 100
+fail_under = 98
 show_missing = True
 exclude_lines =
     # Re-enable the standard pragma

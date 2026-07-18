@@ -13,10 +13,11 @@
 # limitations under the License.
 
 """Helpers for :mod:`grpc`."""
+
 import collections
 import functools
-from typing import Generic, Iterator, Optional, TypeVar
 import warnings
+from typing import Generic, Iterator, Optional, TypeVar
 
 import google.auth
 import google.auth.credentials
@@ -26,7 +27,6 @@ import google.protobuf
 import grpc
 
 from google.api_core import exceptions, general_helpers
-
 
 # The list of gRPC Callable interfaces that return iterators.
 _STREAM_WRAP_CLASSES = (grpc.UnaryStreamMultiCallable, grpc.StreamStreamMultiCallable)
