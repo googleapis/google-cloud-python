@@ -27,10 +27,9 @@ __lazy_modules__: Set[str] = {
     "google.api_core.gapic_v1.client_info",
     "google.api_core.gapic_v1.client_utils",
     "google.api_core.gapic_v1.requests",
-    "google.api_core.gapic_v1.rest_helpers",
     "google.api_core.gapic_v1.routing_header",
 }
-__all__ = ["client_info", "client_utils", "requests", "rest_helpers", "routing_header"]
+__all__ = ["client_info", "client_utils", "requests", "routing_header"]
 
 if _has_grpc:
     __lazy_modules__.update(
@@ -46,7 +45,6 @@ from google.api_core.gapic_v1 import (  # noqa: E402
     client_info,
     client_utils,
     requests,
-    rest_helpers,
     routing_header,
 )
 
