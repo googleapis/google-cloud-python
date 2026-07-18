@@ -370,7 +370,7 @@ def _wrap_method(self, func, *args, **kwargs):
 {% set async_docstring = "Asynchronous " if is_async else "" %}
 {% set async_suffix = "_async" if is_async else "" %}
 
-class {{ async_method_name_prefix }}{{ service.name }}RestInterceptor:
+class {{ async_method_name_prefix }}{{ service.name }}RestInterceptor(gapic_v1.rest_helpers.RestTransportInterceptor):
     """{{ async_docstring }}Interceptor for {{ service.name }}.
 
     Interceptors are used to manipulate requests, request metadata, and responses
@@ -403,79 +403,7 @@ class {{ async_method_name_prefix }}{{ service.name }}RestInterceptor:
 
 
     """
-    {% for method in service.methods.values()|sort(attribute="name") if not method.client_streaming and method.http_options %}
-    {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2147): Remove the condition below once async rest transport supports the guarded methods. #}
-    {{ async_prefix }}def pre_{{ method.name|snake_case }}(self, request: {{method.input.ident}}, {{ client_method_metadata_argument() }}) -> Tuple[{{method.input.ident}}, {{ client_method_metadata_type() }}]:
-        """Pre-rpc interceptor for {{ method.name|snake_case }}
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the {{ service.name }} server.
-        """
-        return request, metadata
-
-    {% if not method.void %}
-    {% if not method.server_streaming %}
-    {{ async_prefix }}def post_{{ method.name|snake_case }}(self, response: {{method.output.ident}}) -> {{method.output.ident}}:
-    {% else %}
-    {{ async_prefix }}def post_{{ method.name|snake_case }}(self, response: rest_streaming{{ async_suffix }}.{{ async_method_name_prefix }}ResponseIterator) -> rest_streaming{{ async_suffix }}.{{ async_method_name_prefix }}ResponseIterator:
-    {% endif %}
-        """Post-rpc interceptor for {{ method.name|snake_case }}
-
-        DEPRECATED. Please use the `post_{{ method.name|snake_case }}_with_metadata`
-        interceptor instead.
-
-        Override in a subclass to read or manipulate the response
-        after it is returned by the {{ service.name }} server but before
-        it is returned to user code. This `post_{{ method.name|snake_case }}` interceptor runs
-        before the `post_{{ method.name|snake_case }}_with_metadata` interceptor.
-        """
-        return response
-
-    {% if not method.server_streaming %}
-    {{ async_prefix }}def post_{{ method.name|snake_case }}_with_metadata(self, response: {{method.output.ident}}, {{ client_method_metadata_argument() }}) -> Tuple[{{method.output.ident}}, {{ client_method_metadata_type() }}]:
-    {% else %}
-    {{ async_prefix }}def post_{{ method.name|snake_case }}_with_metadata(self, response: rest_streaming{{ async_suffix }}.{{ async_method_name_prefix }}ResponseIterator, {{ client_method_metadata_argument() }}) -> Tuple[rest_streaming{{ async_suffix }}.{{ async_method_name_prefix }}ResponseIterator, {{ client_method_metadata_type() }}]:
-    {% endif %}
-        """Post-rpc interceptor for {{ method.name|snake_case }}
-
-        Override in a subclass to read or manipulate the response or metadata after it
-        is returned by the {{ service.name }} server but before it is returned to user code.
-        
-        We recommend only using this `post_{{ method.name|snake_case }}_with_metadata`
-        interceptor in new development instead of the `post_{{ method.name|snake_case }}` interceptor.
-        When both interceptors are used, this `post_{{ method.name|snake_case }}_with_metadata` interceptor runs after the
-        `post_{{ method.name|snake_case }}` interceptor. The (possibly modified) response returned by 
-        `post_{{ method.name|snake_case }}` will be passed to
-        `post_{{ method.name|snake_case }}_with_metadata`.
-        """
-        return response, metadata
-
-    {% endif %}{# not method.void #}
-    {% endfor %}
-
-    {% for name, signature in api.mixin_api_signatures.items() %}
-    {{ async_prefix }}def pre_{{ name|snake_case }}(
-        self, request: {{signature.request_type}}, {{ client_method_metadata_argument() }}
-    ) -> Tuple[{{signature.request_type}}, {{ client_method_metadata_type() }}]:
-        """Pre-rpc interceptor for {{ name|snake_case }}
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the {{ service.name }} server.
-        """
-        return request, metadata
-
-    {{ async_prefix }}def post_{{ name|snake_case }}(
-        self, response: {{signature.response_type}}
-    ) -> {{signature.response_type}}:
-        """Post-rpc interceptor for {{ name|snake_case }}
-
-        Override in a subclass to manipulate the response
-        after it is returned by the {{ service.name }} server but before
-        it is returned to user code.
-        """
-        return response
-
-    {% endfor %}
+    pass
 {% endmacro %}
 
 {% macro generate_mixin_call_method(service, api, name, sig, is_async) %}

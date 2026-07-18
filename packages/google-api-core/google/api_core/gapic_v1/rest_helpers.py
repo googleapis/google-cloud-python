@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import types
 from typing import Any, Dict, List, Optional, Tuple
 
 from google.protobuf import json_format
@@ -70,28 +71,42 @@ def transcode(
     return transcoded_request, body_json, query_params_json
 
 
-class RestTransportInterceptor:
+class RestTransportInterceptorMeta(type):
+    """Metaclass for RestTransportInterceptor to allow class-level mocking of hooks."""
+
+    def __getattr__(cls, name: str) -> Any:
+        if name.startswith("pre_"):
+
+            def _dummy(self, request, metadata):
+                return request, metadata
+
+            setattr(cls, name, _dummy)
+            return _dummy
+        elif name.startswith("post_") and name.endswith("_with_metadata"):
+
+            def _dummy(self, response, metadata):
+                return response, metadata
+
+            setattr(cls, name, _dummy)
+            return _dummy
+        elif name.startswith("post_"):
+
+            def _dummy(self, response):
+                return response
+
+            setattr(cls, name, _dummy)
+            return _dummy
+        raise AttributeError(f"type object '{cls.__name__}' has no attribute '{name}'")
+
+
+class RestTransportInterceptor(metaclass=RestTransportInterceptorMeta):
     """Base class for REST transport interceptors."""
 
     def __getattr__(self, name: str) -> Any:
-        if name.startswith("pre_"):
-
-            def _pre_passthrough(request, metadata):
-                return request, metadata
-
-            return _pre_passthrough
-        elif name.startswith("post_") and name.endswith("_with_metadata"):
-
-            def _post_with_metadata_passthrough(response, metadata):
-                return response, metadata
-
-            return _post_with_metadata_passthrough
-        elif name.startswith("post_"):
-
-            def _post_passthrough(response):
-                return response
-
-            return _post_passthrough
-        raise AttributeError(
-            f"'{self.__class__.__name__}' object has no attribute '{name}'"
-        )
+        try:
+            cls_attr = getattr(self.__class__, name)
+            return types.MethodType(cls_attr, self)
+        except AttributeError:
+            raise AttributeError(
+                f"'{self.__class__.__name__}' object has no attribute '{name}'"
+            )
