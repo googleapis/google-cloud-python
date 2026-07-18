@@ -611,7 +611,9 @@ class TestGetCertConfigPath(object):
         mock_path_exists.return_value = True
         returned_path = _mtls_helper._get_cert_config_path()
         expected_path = os.path.expanduser(
-            _mtls_helper.CERTIFICATE_CONFIGURATION_DEFAULT_PATH
+            os.path.join(
+                _mtls_helper._cloud_sdk.get_config_path(), "certificate_config.json"
+            )
         )
         assert returned_path == expected_path
 
@@ -690,7 +692,9 @@ class TestGetCertConfigPath(object):
         mock_path_exists.return_value = True
         returned_path = _mtls_helper._get_cert_config_path(include_context_aware=False)
         expected_path = os.path.expanduser(
-            _mtls_helper.CERTIFICATE_CONFIGURATION_DEFAULT_PATH
+            os.path.join(
+                _mtls_helper._cloud_sdk.get_config_path(), "certificate_config.json"
+            )
         )
         assert returned_path == expected_path
 

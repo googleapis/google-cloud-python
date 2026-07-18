@@ -26,6 +26,7 @@ import tempfile
 from typing import cast, Generator, List, Optional, Tuple, Union
 
 from google.auth import _agent_identity_utils
+from google.auth import _cloud_sdk
 from google.auth import environment_vars
 from google.auth import exceptions
 
@@ -434,7 +435,9 @@ def _get_cert_config_path(certificate_config_path=None, include_context_aware=Tr
                 certificate_config_path = env_path
                 source = f"environment variable {environment_vars.CLOUDSDK_CONTEXT_AWARE_CERTIFICATE_CONFIG_FILE_PATH}"
             else:
-                certificate_config_path = CERTIFICATE_CONFIGURATION_DEFAULT_PATH
+                certificate_config_path = os.path.join(
+                    _cloud_sdk.get_config_path(), "certificate_config.json"
+                )
                 is_explicit = False
 
     certificate_config_path = path.expanduser(certificate_config_path)
