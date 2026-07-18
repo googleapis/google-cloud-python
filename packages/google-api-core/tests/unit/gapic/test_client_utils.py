@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from unittest import mock
 import pytest
 from google.auth.exceptions import MutualTLSChannelError
 
@@ -19,6 +20,9 @@ from google.api_core.gapic_v1.client_utils import (
     get_api_endpoint,
     get_default_mtls_endpoint,
     get_universe_domain,
+    resolve_credentials_and_host,
+    resolve_grpc_channel,
+    resolve_rest_session,
 )
 
 
@@ -177,3 +181,60 @@ def test_get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         get_universe_domain("   ", "default.com")
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+def test_resolve_credentials_and_host():
+    mock_creds = mock.Mock()
+    # Host with port formatting
+    creds, host = resolve_credentials_and_host(
+        host="foo.com",
+        credentials=mock_creds,
+        ignore_credentials=True,
+    )
+    assert creds is mock_creds
+    assert host == "foo.com:443"
+
+    # Host with existing port
+    _, host_with_port = resolve_credentials_and_host(
+        host="foo.com:80",
+        credentials=mock_creds,
+        ignore_credentials=True,
+    )
+    assert host_with_port == "foo.com:80"
+
+    # Duplicate credential args check
+    from google.api_core import exceptions as core_exceptions
+    with pytest.raises(core_exceptions.DuplicateCredentialArgs):
+        resolve_credentials_and_host(
+            host="foo.com",
+            credentials=mock_creds,
+            credentials_file="path/to/file",
+        )
+
+
+def test_resolve_grpc_channel():
+    import grpc
+
+    # Sync channel reuse
+    mock_channel = mock.create_autospec(grpc.Channel)
+    channel, ssl_creds, ignore_creds, host = resolve_grpc_channel(
+        host="foo.com",
+        channel=mock_channel,
+    )
+    assert channel is mock_channel
+    assert ssl_creds is None
+    assert ignore_creds is True
+    assert host == "foo.com"
+
+
+def test_resolve_rest_session():
+    mock_creds = mock.Mock()
+    with mock.patch("google.auth.transport.requests.AuthorizedSession") as mock_session_class:
+        mock_session = mock_session_class.return_value
+        session = resolve_rest_session(
+            credentials=mock_creds,
+            default_host="foo.com",
+            client_cert_source_for_mtls=lambda: (b"cert", b"key"),
+        )
+        assert session is mock_session
+        mock_session.configure_mtls_channel.assert_called_once()
