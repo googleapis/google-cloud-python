@@ -722,7 +722,7 @@ class TestNotImplementedFUNCTIONS:
 
         assert gql_module._time_function([10, 30]) == datetime.time(10, 30)
         with pytest.raises(exceptions.BadQueryError):
-            gql_module._time_function([1, 2, 3, 4])
+            gql_module._time_function([])
 
     @staticmethod
     def test_ancestor_condition_not_is():
