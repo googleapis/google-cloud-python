@@ -586,7 +586,7 @@ def test_dml(engine, session, table_dml):
 def test_create_table(engine, bigquery_dataset, time_partitioning_field):
     meta = MetaData()
     Table(
-        f"{bigquery_dataset}.test_table_create",
+        f"{bigquery_dataset}.test_table_create_{time_partitioning_field}",
         meta,
         Column("integer_c", sqlalchemy.Integer, doc="column description"),
         Column("float_c", sqlalchemy.Float),
