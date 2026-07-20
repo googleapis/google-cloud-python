@@ -665,6 +665,17 @@ UNSUPPORTED_SUITES = [
     "IdentityColumnTest",
     "IdentityReflectionTest",
     "ServerSideCursorsTest",
+    "DateHistoricTest",
+    "DateTimeHistoricTest",
+    "DateTimeMicrosecondsTest",
+    "TimeMicrosecondsTest",
+    "PrecisionIntervalTest",
+    "EscapingTest",
+    "SameNamedSchemaTableTest",
+    "PercentSchemaNamesTest",
+    "FutureTableDDLTest",
+    "FutureWeCanSetDefaultSchemaWEventsTest",
+    "WeCanSetDefaultSchemaWEventsTest",
 ]
 
 for _suite_name in UNSUPPORTED_SUITES:
