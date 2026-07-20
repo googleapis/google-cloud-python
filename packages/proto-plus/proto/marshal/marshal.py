@@ -253,7 +253,7 @@ class Marshal(BaseMarshal):
     """
 
     _instances = {}
-    _lock = threading.Lock()
+    _instance_creation_lock = threading.Lock()
 
     def __new__(cls, *, name: str):
         """Create a marshal instance.
