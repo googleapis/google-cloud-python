@@ -8,6 +8,13 @@
 
 [run]
 branch = True
+source =
+    django_spanner
+
+[paths]
+source =
+    django_spanner
+    */site-packages/django_spanner
 
 [report]
 fail_under = 100
@@ -20,6 +27,5 @@ exclude_lines =
     # Ignore abstract methods
     raise NotImplementedError
 omit =
-  */site-packages/*.py
   tests/*
   */tests/*
