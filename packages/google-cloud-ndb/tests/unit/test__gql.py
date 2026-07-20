@@ -728,4 +728,4 @@ class TestNotImplementedFUNCTIONS:
     def test_ancestor_condition_not_is():
         gql = gql_module.GQL("SELECT * FROM Kind")
         with pytest.raises(ValueError, match="condition must be 'is'"):
-            gql._add_filter("ancestor", "!=", ["param"])
+            gql._AddProcessedParameterFilter("ancestor", "!=", "nop", ["param"])
