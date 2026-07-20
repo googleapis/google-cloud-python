@@ -52,22 +52,27 @@ class MetricsInterceptor(ClientInterceptor):
         return {}
 
     @staticmethod
-    def _extract_resource_from_path(metadata: Dict[str, str]) -> Dict[str, str]:
+    def _extract_resource_from_path(metadata: Any) -> Dict[str, str]:
         """
         Extracts resource information from the metadata based on the path.
 
-        This method iterates through the metadata dictionary to find the first tuple containing the key 'google-cloud-resource-prefix'. It then extracts the path from this tuple and parses it to extract project, instance, and database information using the _parse_resource_path method.
-
         Args:
-            metadata (Dict[str, str]): A dictionary containing metadata information.
+            metadata (Any): A sequence or dictionary containing metadata information.
 
         Returns:
             Dict[str, str]: A dictionary containing extracted project, instance, and database information.
         """
-        # Extract resource info from the first metadata tuple containing :path
-        path = next(
-            (value for key, value in metadata if key == GOOGLE_CLOUD_RESOURCE_KEY), ""
-        )
+        if not metadata:
+            return {}
+
+        items = metadata.items() if isinstance(metadata, dict) else metadata
+        path = ""
+
+        for key, value in items:
+            key_str = key.decode("utf-8") if isinstance(key, bytes) else str(key)
+            if key_str == GOOGLE_CLOUD_RESOURCE_KEY:
+                path = value.decode("utf-8") if isinstance(value, bytes) else str(value)
+                break
 
         resources = MetricsInterceptor._parse_resource_path(path)
         return resources
@@ -147,8 +152,7 @@ def _wrap_response(response: Any, tracer: Any) -> Any:
                     metadata.extend(response.initial_metadata() or [])
                 except Exception as e:
                     logger.warning(f"Failed to retrieve initial metadata: {e}")
-            tracer.record_gfe_metrics(metadata)
-            tracer.record_afe_metrics(metadata)
+            tracer.record_front_end_metrics(metadata)
         except Exception as e:
             logger.warning(f"Failed to record metrics: {e}")
         return response
@@ -256,8 +260,7 @@ class _StreamingResponseWrapper:
                     metadata.extend(self._response.initial_metadata() or [])
                 except Exception as e:
                     logger.warning(f"Failed to retrieve initial metadata: {e}")
-            self._tracer.record_gfe_metrics(metadata)
-            self._tracer.record_afe_metrics(metadata)
+            self._tracer.record_front_end_metrics(metadata)
         except Exception as e:
             logger.warning(f"Failed to record metrics: {e}")
 
@@ -333,8 +336,7 @@ class _AsyncUnaryResponseWrapper(grpc.aio.UnaryUnaryCall):
                     metadata.extend(res or [])
                 except Exception as e:
                     logger.warning(f"Failed to retrieve initial metadata: {e}")
-            self._tracer.record_gfe_metrics(metadata)
-            self._tracer.record_afe_metrics(metadata)
+            self._tracer.record_front_end_metrics(metadata)
         except Exception as e:
             logger.warning(f"Failed to record metrics: {e}")
 
@@ -439,8 +441,7 @@ class _AsyncStreamingResponseWrapper(
                     metadata.extend(res or [])
                 except Exception as e:
                     logger.warning(f"Failed to retrieve initial metadata: {e}")
-            self._tracer.record_gfe_metrics(metadata)
-            self._tracer.record_afe_metrics(metadata)
+            self._tracer.record_front_end_metrics(metadata)
         except Exception as e:
             logger.warning(f"Failed to record metrics: {e}")
 
