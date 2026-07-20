@@ -22,7 +22,7 @@ import pytest
 geoalchemy2 = pytest.importorskip("geoalchemy2")
 
 
-def test_geoalchemy2_core(bigquery_dataset):
+def test_geoalchemy2_core(engine, bigquery_dataset):
     """Make sure GeoAlchemy 2 Core Tutorial works as adapted to only having geography
 
     https://geoalchemy-2.readthedocs.io/en/latest/core_tutorial.html
@@ -31,12 +31,6 @@ def test_geoalchemy2_core(bigquery_dataset):
 
     - Bigquery doesn't have ST_BUFFER
     """
-
-    # Connect to the DB
-
-    from sqlalchemy import create_engine
-
-    engine = create_engine(f"bigquery:///{bigquery_dataset}")
 
     # Create the Table
 
@@ -137,17 +131,11 @@ def test_geoalchemy2_core(bigquery_dataset):
     )
 
 
-def test_geoalchemy2_orm(bigquery_dataset):
+def test_geoalchemy2_orm(engine, bigquery_dataset):
     """Make sure GeoAlchemy 2 ORM Tutorial works as adapted to only having geometry
 
     https://geoalchemy-2.readthedocs.io/en/latest/orm_tutorial.html
     """
-
-    # Connect to the DB
-
-    from sqlalchemy import create_engine
-
-    engine = create_engine(f"bigquery:///{bigquery_dataset}")
 
     # Declare a Mapping
 
@@ -252,10 +240,7 @@ def test_geoalchemy2_orm(bigquery_dataset):
     ]
 
 
-def test_geoalchemy2_orm_w_relationship(bigquery_dataset):
-    from sqlalchemy import create_engine
-
-    engine = create_engine(f"bigquery:///{bigquery_dataset}")
+def test_geoalchemy2_orm_w_relationship(engine, bigquery_dataset):
 
     from sqlalchemy import Column, Integer, String
     from sqlalchemy.ext.declarative import declarative_base
