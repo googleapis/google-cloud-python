@@ -643,3 +643,30 @@ del QuotedNameArgumentTest  # Quotes aren't allowed in BigQuery table names.
 del (
     WindowFunctionTest.test_window_rows_between
 )  # test expects BQ to return sorted results
+
+# Deleting compliance suites for features BigQuery (OLAP) explicitly does not support:
+UNSUPPORTED_SUITES = [
+    "IsolationLevelTest",
+    "TransactionTest",
+    "AutocommitIsolationTest",
+    "ComputedColumnTest",
+    "ComputedReflectionTest",
+    "TempTableElementsTest",
+    "TableNoColumnsTest",
+    "NativeUUIDTest",
+    "JSONLegacyStringCastIndexTest",
+    "DateTimeTZTest",
+    "TimeTZTest",
+    "IntervalTest",
+    "HasSequenceTest",
+    "HasSequenceTestEmpty",
+    "SequenceCompilerTest",
+    "SequenceTest",
+    "IdentityColumnTest",
+    "IdentityReflectionTest",
+    "ServerSideCursorsTest",
+]
+
+for _suite_name in UNSUPPORTED_SUITES:
+    if _suite_name in globals():
+        del globals()[_suite_name]

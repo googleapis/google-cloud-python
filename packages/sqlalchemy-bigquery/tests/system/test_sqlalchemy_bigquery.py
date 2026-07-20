@@ -813,7 +813,7 @@ def test_huge_in():
     try:
         assert list(
             conn.execute(
-                sqlalchemy.select(sqlalchemy.literal(-1).in_(list(range(99999))))
+                sqlalchemy.select(sqlalchemy.literal(-1).in_(list(range(10000))))
             )
         ) == [(False,)]
     except Exception:

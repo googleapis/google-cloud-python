@@ -132,10 +132,11 @@ def bigquery_regional_dataset(bigquery_client, bigquery_schema):
 
 @pytest.fixture(autouse=True)
 def cleanup_extra_tables(bigquery_client, bigquery_dataset):
-    common = "sample", "sample_one_row", "sample_view", "sample_dml_empty"
+    yield
+    common = ("sample", "sample_one_row", "sample_view", "sample_dml_empty")
     # Back-end may raise 403 for a dataset not ready yet.
     retry_403 = test_utils.retry.RetryErrors(exceptions.Forbidden)
-    tables = retry_403(bigquery_client.list_tables)(bigquery_dataset)
+    tables = retry_403(lambda: list(bigquery_client.list_tables(bigquery_dataset)))()
     for table in tables:
         if table.table_id not in common:
             bigquery_client.delete_table(table)

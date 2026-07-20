@@ -416,7 +416,7 @@ def _run_system_test_logic(session, test_type):
             "-vv",
             f"--junitxml=compliance_{session.python}_sponge_log.xml",
             "--reruns=3",
-            "--reruns-delay=60",
+            "--reruns-delay=3",
             "--only-rerun=Exceeded rate limits",
             "--only-rerun=Already Exists",
             "--only-rerun=Not found",

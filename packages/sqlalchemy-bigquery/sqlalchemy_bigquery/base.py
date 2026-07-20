@@ -29,7 +29,28 @@ import uuid
 from google import auth
 import google.api_core.exceptions
 from google.api_core.exceptions import NotFound
+import google.api_core.retry
 from google.cloud.bigquery import ConnectionProperty, QueryJobConfig, dbapi
+
+
+def _is_transient_bigquery_error(exc):
+    err_msg = str(exc).lower()
+    retry_errors = (
+        "exceeded rate limits",
+        "job exceeded rate limits",
+        "quota exceeded",
+        "backend error",
+        "service unavailable",
+    )
+    return any(msg in err_msg for msg in retry_errors)
+
+
+_retry_transient = google.api_core.retry.Retry(
+    predicate=_is_transient_bigquery_error,
+    initial=0.5,
+    maximum=5.0,
+    multiplier=2.0,
+)
 from google.cloud.bigquery.table import (
     RangePartitioning,
     TableReference,
@@ -1142,7 +1163,8 @@ class BigQueryDialect(DefaultDialect):
         kwargs = {}
         if context is not None and context.execution_options.get("job_config"):
             kwargs["job_config"] = context.execution_options.get("job_config")
-        cursor.execute(statement, parameters, **kwargs)
+
+        _retry_transient(cursor.execute)(statement, parameters, **kwargs)
 
     def create_connect_args(self, url):
         (
