@@ -8,6 +8,8 @@
 
 [run]
 branch = True
+source =
+    django_spanner
 
 [report]
 fail_under = 100
