@@ -265,7 +265,7 @@ class Marshal(BaseMarshal):
         """
         klass = cls._instances.get(name)
         if klass is None:
-            with cls._lock:
+            with cls._instance_creation_lock:
                 # Double check inside lock to confirm another thread hasn't
                 # created the instance while we were waiting for the lock.
                 klass = cls._instances.get(name)
