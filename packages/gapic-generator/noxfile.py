@@ -847,11 +847,63 @@ def system(session):
 )
 def prerelease_deps(session, protobuf_implementation):
     """
-    Run all tests with pre-release versions of dependencies installed.
+    Run generated unit tests against pre-release ecosystem dependencies.
+    Usage: nox -s prerelease_deps -- /path/to/generated/library
     """
-    # TODO(https://github.com/googleapis/google-cloud-python/issues/16184): 
-    # Implement pre-release dependency logic to test against upcoming runtime changes.
-    session.skip("prerelease_deps session is not yet implemented for gapic-generator-python.")
+    if not session.posargs:
+        session.error(
+            "You must provide the path to the generated library.\n"
+            "Usage: nox -s prerelease_deps -- ./workspace/redis"
+        )
+    
+    target_path = session.posargs[0]
+    
+    if not os.path.exists(target_path):
+        session.error(f"Target path does not exist: {target_path}")
+
+    # 1. Move into the generated library and install its baseline
+    session.chdir(target_path)
+    session.install("-e", ".")
+    session.install("pytest", "pytest-asyncio", "mock")
+
+    # 2. Force install the exact pre-release ecosystem targets from PyPI
+    session.install(
+        "--pre",
+        "--upgrade",
+        "googleapis-common-protos",
+        "google-api-core",
+        "google-auth",
+        "grpc-google-iam-v1",
+        "grpcio",
+        "grpcio-status",
+        "protobuf",
+        "proto-plus",
+    )
+
+    # 3. Print out the versions to mimic the downstream logging verification
+    package_namespaces = {
+        "google-api-core": "google.api_core",
+        "google-auth": "google.auth",
+        "grpcio": "grpc",
+        "protobuf": "google.protobuf",
+        "proto-plus": "proto",
+    }
+    for pkg, namespace in package_namespaces.items():
+        session.run(
+            "python",
+            "-c",
+            f"import {namespace}; print('{pkg}:', {namespace}.__version__)",
+            silent=False,
+        )
+
+    # 4. Run the hermetic unit tests with the specific protobuf backend
+    session.run(
+        "py.test",
+        "tests/unit",
+        env={
+            "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
+        },
+    )
 
 
 @nox.session(python=NEWEST_PYTHON)
