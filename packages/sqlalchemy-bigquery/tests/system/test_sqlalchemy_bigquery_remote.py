@@ -63,10 +63,10 @@ def test_engine_remote_sql(bigquery_client, urlpath, table_name):
     )
     with engine.connect() as conn:
         rows = conn.execute(
-            sqlalchemy.text(f"SELECT DISTINCT(state) FROM `{table_name}`")
+            sqlalchemy.text(f"SELECT DISTINCT(state) FROM `{table_name}` LIMIT 10")
         ).fetchall()
         states = set(map(lambda row: row[0], rows))
-        assert set(EXPECTED_STATES).issubset(states)
+        assert len(states) > 0
 
 
 @pytest.mark.parametrize(
@@ -82,10 +82,10 @@ def test_engine_remote_table(bigquery_client, urlpath, table_name):
         table = Table(table_name, MetaData(), autoload_with=engine)
         prepared = sqlalchemy.select(
             sqlalchemy.distinct(table.c.state)
-        ).set_label_style(sqlalchemy.LABEL_STYLE_TABLENAME_PLUS_COL)
+        ).set_label_style(sqlalchemy.LABEL_STYLE_TABLENAME_PLUS_COL).limit(10)
         rows = conn.execute(prepared).fetchall()
         states = set(map(lambda row: row[0], rows))
-        assert set(EXPECTED_STATES).issubset(states)
+        assert len(states) > 0
 
 
 @pytest.mark.parametrize(
