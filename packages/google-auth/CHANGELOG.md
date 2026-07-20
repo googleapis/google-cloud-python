@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.56.1](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.56.0...google-auth-v2.56.1) (2026-07-17)
+
+
+### Bug Fixes
+
+* disable RAB lookup for Domain-Wide Delegation ([#17763](https://github.com/googleapis/google-cloud-python/issues/17763)) ([00eb128](https://github.com/googleapis/google-cloud-python/commit/00eb1284fb6081cd37b747d09366568490a6d9ad)), closes [#17703](https://github.com/googleapis/google-cloud-python/issues/17703)
+
 ## [2.56.0](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.55.2...google-auth-v2.56.0) (2026-07-13)
 
 

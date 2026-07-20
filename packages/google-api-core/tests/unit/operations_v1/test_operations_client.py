@@ -19,12 +19,11 @@ try:
 except ImportError:  # pragma: NO COVER
     pytest.skip("No GRPC", allow_module_level=True)
 
-from google.api_core import grpc_helpers
-from google.api_core import operations_v1
-from google.api_core import page_iterator
-from google.api_core.operations_v1 import operations_client_config
 from google.longrunning import operations_pb2
 from google.protobuf import empty_pb2
+
+from google.api_core import grpc_helpers, operations_v1, page_iterator
+from google.api_core.operations_v1 import operations_client_config
 
 
 def test_get_operation():
