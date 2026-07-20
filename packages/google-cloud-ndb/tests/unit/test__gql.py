@@ -715,3 +715,17 @@ class TestNotImplementedFUNCTIONS:
     def test_nop():
         with pytest.raises(NotImplementedError):
             gql_module.FUNCTIONS["nop"]("any arg")
+
+    @staticmethod
+    def test_time_2_args_and_invalid():
+        import datetime
+
+        assert gql_module._time_function([10, 30]) == datetime.time(10, 30)
+        with pytest.raises(exceptions.BadQueryError):
+            gql_module._time_function([1, 2, 3, 4])
+
+    @staticmethod
+    def test_ancestor_condition_not_is():
+        gql = gql_module.GQL("SELECT * FROM Kind")
+        with pytest.raises(ValueError, match="condition must be 'is'"):
+            gql._add_filter("ancestor", "!=", ["param"])
