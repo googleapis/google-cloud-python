@@ -108,13 +108,14 @@ def test_operations_v1_transport_base_to_dict_protobuf_versions(monkeypatch):
     from google.api_core.operations_v1.transports import base
 
     message = operations_pb2.Operation(name="test_op")
+    transport = base.OperationsTransport()
 
     monkeypatch.setattr(base, "PROTOBUF_VERSION", "3.20.0")
-    res3 = base.OperationsTransport._to_dict(message)
+    res3 = transport._convert_protobuf_message_to_dict(message)
     assert res3.get("name") == "test_op"
 
     monkeypatch.setattr(base, "PROTOBUF_VERSION", "5.26.0")
-    res5 = base.OperationsTransport._to_dict(message)
+    res5 = transport._convert_protobuf_message_to_dict(message)
     assert res5.get("name") == "test_op"
 
 
