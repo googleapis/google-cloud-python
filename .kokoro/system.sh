@@ -151,6 +151,19 @@ reap_parallel_results() {
   echo "Failed:       $failed_count"
   echo "=================================================="
 
+  local passed_packages=()
+  for pkg in "${PACKAGES_TO_TEST[@]}"; do
+    if [ ! -f "$LOG_DIR/$pkg.failed" ]; then
+      passed_packages+=("$pkg")
+    fi
+  done
+
+  if [ ${#passed_packages[@]} -gt 0 ]; then
+    echo ""
+    echo "PASSED PACKAGES:"
+    printf "%s\n" "${passed_packages[@]}" | sort | sed 's/^/- /'
+  fi
+
   if [ "$failed_count" -gt 0 ]; then
     echo ""
     echo "!!! DETAILED LOGS FOR FAILED PACKAGES !!!"
