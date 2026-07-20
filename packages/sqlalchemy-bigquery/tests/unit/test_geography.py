@@ -24,8 +24,6 @@ from .conftest import setup_table
 geoalchemy2 = pytest.importorskip("geoalchemy2")
 
 
-# TODO(http://github.com/googleapis/google-cloud-python/issues/17287): Unskip once bug is resolved.
-@pytest.mark.skip(reason="Failing in CI with AssertionError.")
 def test_geoalchemy2_core(faux_conn, last_query):
     """Make sure GeoAlchemy 2 Core Tutorial works as adapted to only having geometry"""
     conn = faux_conn
@@ -83,7 +81,7 @@ def test_geoalchemy2_core(faux_conn, last_query):
     except Exception:
         pass  # sqlite had no special functions :)
     last_query(
-        "SELECT `lake`.`name`, ST_AsBinary(`lake`.`geog`) AS `geog` \n" "FROM `lake`"
+        "SELECT `lake`.`name`, ST_AsBinary(`lake`.`geog`) AS `geog` \nFROM `lake`"
     )
 
     # Spatial query
@@ -101,7 +99,7 @@ def test_geoalchemy2_core(faux_conn, last_query):
     last_query(
         "SELECT `lake`.`name` \n"
         "FROM `lake` \n"
-        "WHERE ST_Contains(`lake`.`geog`, %(ST_Contains_1:geography)s)",
+        "WHERE ST_Contains(`lake`.`geog`, %(ST_Contains_1:STRING)s)",
         {"ST_Contains_1": "POINT(4 1)"},
     )
 
@@ -183,3 +181,31 @@ def test_calling_st_functions_that_dont_take_geographies(faux_conn, last_query):
         " AS `ST_GeogFromText_1`",
         dict(ST_GeogFromText_2="point(0 0)"),
     )
+
+
+def test_fixup_st_arguments():
+    from geoalchemy2.functions import GenericFunction, ST_Area
+    from sqlalchemy.sql.elements import BindParameter
+
+    from sqlalchemy_bigquery.geography import GEOGRAPHY, _fixup_st_arguments
+
+    class DummyCompiler:
+        def visit_function(self, element, **kw):
+            return "func(param)"
+
+    # Case 1: argument.type is not yet GEOGRAPHY
+    func_element = ST_Area(BindParameter("param", "point(0 0)"))
+    res = _fixup_st_arguments(func_element, DummyCompiler())
+    assert res == "func(param)"
+    assert isinstance(func_element.clauses.clauses[0].type, GEOGRAPHY)
+
+    # Case 2: argument.type is ALREADY GEOGRAPHY
+    func_element2 = ST_Area(BindParameter("param", "point(0 0)", type_=GEOGRAPHY()))
+    _fixup_st_arguments(func_element2, DummyCompiler())
+
+    # Case 3: function without specified argument types
+    class ST_Unknown(GenericFunction):
+        name = "ST_Unknown"
+
+    func_element3 = ST_Unknown(BindParameter("param", "point(0 0)"))
+    _fixup_st_arguments(func_element3, DummyCompiler())
