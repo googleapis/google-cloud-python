@@ -110,6 +110,6 @@ def test_setup_request_id(request_obj, is_proto3_optional, expected):
     )
 
     if expected == "uuid":
-        assert re.match(UUID_REGEX, value)
+        assert re.fullmatch(UUID_REGEX, value)
     else:
         assert value == expected
