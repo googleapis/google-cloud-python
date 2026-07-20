@@ -135,9 +135,26 @@ case ${TEST_TYPE} in
                     echo "Could not find baseline commit for ${TARGET_BRANCH:-main}. Skipping baseline generation."
                 fi
             fi
+            # Run pip install and capture output to inspect for python compatibility issues
+            pip_output=$(pip install -e . 2>&1)
+            pip_retval=$?
             
-            pip install -e .
-            
+            if [ ${pip_retval} -ne 0 ]; then
+                echo "${pip_output}"
+                if echo "${pip_output}" | grep -q "requires a different Python"; then
+                    echo "WARNING: Package ${PACKAGE_NAME} is not compatible with Python ${PY_VERSION}. Skipping import profiler."
+                    deactivate
+                    rm -rf .venv-profiler
+                    rm -rf "${PROFILER_TEMP_DIR}"
+                    exit 0
+                else
+                    echo "ERROR: Failed to install package ${PACKAGE_NAME}."
+                    deactivate
+                    rm -rf .venv-profiler
+                    rm -rf "${PROFILER_TEMP_DIR}"
+                    exit ${pip_retval}
+                fi
+            fi
             if [ -f "${BASELINE_CSV}" ]; then
                 python ${PROFILER_SCRIPT} --package ${PACKAGE_NAME} --iterations 11 --fail-threshold 5000 --diff-baseline "${BASELINE_CSV}" --diff-threshold 100
             else
