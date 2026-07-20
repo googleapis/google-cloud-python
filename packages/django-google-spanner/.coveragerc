@@ -10,7 +10,6 @@
 branch = True
 source =
     django_spanner
-
 [paths]
 source =
     django_spanner
