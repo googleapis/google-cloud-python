@@ -6670,3 +6670,5 @@ def test_model_set_projection_branches():
 
     parent = Parent(child=Child(val="a"), children=[Child(val="b")])
     parent._set_projection(["child.val", "children.val", "nonexistent.subprop"])
+    parent._properties = None
+    parent._set_projection(["child.val"])
