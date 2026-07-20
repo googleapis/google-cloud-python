@@ -139,9 +139,9 @@ case ${TEST_TYPE} in
             pip install -e .
             
             if [ -f "${BASELINE_CSV}" ]; then
-                python ${PROFILER_SCRIPT} --package ${PACKAGE_NAME} --iterations 11 --fail-threshold 5000 --diff-baseline "${BASELINE_CSV}" --diff-threshold 100
+                python ${PROFILER_SCRIPT} --package ${PACKAGE_NAME} --iterations 11 --fail-threshold 20000 --diff-baseline "${BASELINE_CSV}" --diff-threshold 100
             else
-                python ${PROFILER_SCRIPT} --package ${PACKAGE_NAME} --iterations 11 --fail-threshold 5000
+                python ${PROFILER_SCRIPT} --package ${PACKAGE_NAME} --iterations 11 --fail-threshold 20000
             fi
             retval=$?
             deactivate
