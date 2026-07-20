@@ -68,11 +68,11 @@ if _has_async_rest:
         # On Python 3.15+, PEP 0810 lazy loading means these imports will succeed
         # instantly (returning a lazy proxy). Any actual ImportErrors (e.g., due to
         # missing aiohttp/auth dependencies) are deferred until the proxies are accessed.
-        from google.api_core.operations_v1.transports.rest_asyncio import (  # noqa: E402, F401
-            AsyncOperationsRestTransport,
-        )
         from google.api_core.operations_v1.operations_rest_client_async import (  # noqa: E402, F401
             AsyncOperationsRestClient,
+        )
+        from google.api_core.operations_v1.transports.rest_asyncio import (  # noqa: E402, F401
+            AsyncOperationsRestTransport,
         )
 
         __all__.extend(["AsyncOperationsRestClient", "AsyncOperationsRestTransport"])

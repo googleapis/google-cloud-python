@@ -23,13 +23,18 @@ from google.auth.transport import _mtls_helper
 from google.auth.transport import mtls
 
 
+@mock.patch("google.auth.transport._mtls_helper._get_cert_config_path")
 @mock.patch("google.auth.transport._mtls_helper._check_config_path")
-def test_has_default_client_cert_source_with_context_aware_metadata(mock_check):
+def test_has_default_client_cert_source_with_context_aware_metadata(
+    mock_check, mock_get_cert
+):
     """
     Directly tests the logic: if CONTEXT_AWARE_METADATA_PATH is found, return True.
     """
 
-    # Setup: Return a path only for the Context Aware Metadata Path
+    # Setup: _get_cert_config_path returns None, so it falls back to context aware metadata
+    mock_get_cert.return_value = None
+
     def side_effect(path):
         if path == _mtls_helper.CONTEXT_AWARE_METADATA_PATH:
             return "/path/to/context_aware_metadata.json"
@@ -42,23 +47,36 @@ def test_has_default_client_cert_source_with_context_aware_metadata(mock_check):
 
     # Assert
     assert result is True
+    mock_get_cert.assert_called_once_with(include_context_aware=True)
     mock_check.assert_any_call(_mtls_helper.CONTEXT_AWARE_METADATA_PATH)
-    assert side_effect("non-matching-path") is None
+
+
+@mock.patch("google.auth.transport._mtls_helper._get_cert_config_path")
+@mock.patch("google.auth.transport._mtls_helper._check_config_path")
+def test_has_default_client_cert_source_without_context_aware(
+    mock_check, mock_get_cert
+):
+    """
+    Tests that if include_context_aware is False, it skips checking CONTEXT_AWARE_METADATA_PATH.
+    """
+    mock_get_cert.return_value = None
+
+    result = mtls.has_default_client_cert_source(include_context_aware=False)
+
+    assert result is False
+    mock_get_cert.assert_called_once_with(include_context_aware=False)
+    mock_check.assert_not_called()
 
 
 @mock.patch("google.auth.transport._mtls_helper._check_config_path")
-def test_has_default_client_cert_source_falls_back(mock_check):
+@mock.patch("google.auth.transport._mtls_helper._get_cert_config_path")
+def test_has_default_client_cert_source_falls_back(mock_get_cert, mock_check):
     """
-    Tests that it skips CONTEXT_AWARE_METADATA_PATH if None, and checks the next path.
+    Tests that it checks X.509 WIF first, and if found, returns True without checking context aware metadata.
     """
 
-    # Setup: First path is None, second path is valid
-    def side_effect(path):
-        if path == _mtls_helper.CERTIFICATE_CONFIGURATION_DEFAULT_PATH:
-            return "/path/to/default_cert.json"
-        return None
-
-    mock_check.side_effect = side_effect
+    # Setup: First path is valid
+    mock_get_cert.return_value = "/path/to/default_cert.json"
 
     # Execute
     result = mtls.has_default_client_cert_source(True)
@@ -66,47 +84,30 @@ def test_has_default_client_cert_source_falls_back(mock_check):
     # Assert
     assert result is True
     # Verify the sequence of calls
-    expected_calls = [
-        mock.call(_mtls_helper.CONTEXT_AWARE_METADATA_PATH),
-        mock.call(_mtls_helper.CERTIFICATE_CONFIGURATION_DEFAULT_PATH),
-    ]
-    mock_check.assert_has_calls(expected_calls)
+    mock_get_cert.assert_called_once_with(include_context_aware=True)
+    mock_check.assert_not_called()
 
 
-@mock.patch("google.auth.transport.mtls.getenv", autospec=True)
+@mock.patch("google.auth.transport._mtls_helper._get_cert_config_path", autospec=True)
 @mock.patch("google.auth.transport._mtls_helper._check_config_path", autospec=True)
-def test_has_default_client_cert_source_env_var_success(check_config_path, mock_getenv):
-    # 1. Mock getenv to return our test path
-    mock_getenv.side_effect = lambda var: (
-        "path/to/cert.json" if var == "GOOGLE_API_CERTIFICATE_CONFIG" else None
-    )
+def test_has_default_client_cert_source_env_var_success(
+    check_config_path, get_cert_config_path
+):
+    check_config_path.return_value = None
+    get_cert_config_path.return_value = "/absolute/path/to/cert.json"
 
-    # 2. Mock _check_config_path side effect
-    def side_effect(path):
-        # Return None for legacy paths to ensure we reach the env var logic
-        if path == "path/to/cert.json":
-            return "/absolute/path/to/cert.json"
-        return None
-
-    check_config_path.side_effect = side_effect
-
-    # 3. This should now return True
     assert mtls.has_default_client_cert_source(True)
 
-    # 4. Verify the env var path was checked
-    check_config_path.assert_called_with("path/to/cert.json")
+    get_cert_config_path.assert_called_with(include_context_aware=True)
 
 
-@mock.patch("google.auth.transport.mtls.getenv", autospec=True)
+@mock.patch("google.auth.transport._mtls_helper._get_cert_config_path", autospec=True)
 @mock.patch("google.auth.transport._mtls_helper._check_config_path", autospec=True)
 def test_has_default_client_cert_source_env_var_invalid_config_path(
-    check_config_path, mock_getenv
+    check_config_path, get_cert_config_path
 ):
-    # Set the env var but make the check fail
-    mock_getenv.side_effect = lambda var: (
-        "invalid/path" if var == "GOOGLE_API_CERTIFICATE_CONFIG" else None
-    )
     check_config_path.return_value = None
+    get_cert_config_path.return_value = None
 
     assert not mtls.has_default_client_cert_source(True)
 
