@@ -70,3 +70,10 @@ def test_arraysize_querystring_takes_precedence_over_default(faux_conn, metadata
     metadata.create_all(engine)
 
     assert conn.connection.test_data["arraysize"] == arraysize
+
+
+def test_dbapi_deprecated():
+    from sqlalchemy_bigquery.base import BigQueryDialect
+
+    assert BigQueryDialect.dbapi() is BigQueryDialect.import_dbapi()
+
