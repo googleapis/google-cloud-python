@@ -47,15 +47,12 @@ def test_get_rule_uninitialized_instance():
 
     m = Marshal(name="default")
 
-    # Inject FakeMarshal into Marshal._instances
-    Marshal._instances["fake_uninitialized"] = FakeMarshal()
+    # Inject FakeMarshal into Marshal._instances safely using patch.dict
+    with patch.dict(Marshal._instances, {"fake_uninitialized": FakeMarshal()}):
 
-    class DummyType:
-        pass
+        class DummyType:
+            pass
 
-    # This should not raise AttributeError because of getattr safety
-    rule = m.get_rule(DummyType)
-    assert rule == m._noop
-
-    # Clean up
-    del Marshal._instances["fake_uninitialized"]
+        # This should not raise AttributeError because of getattr safety
+        rule = m.get_rule(DummyType)
+        assert rule == m._noop
