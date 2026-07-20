@@ -15,6 +15,11 @@ source =
     django_spanner
     */site-packages/django_spanner
 
+[paths]
+source =
+    django_spanner
+    */site-packages/django_spanner
+
 [report]
 fail_under = 100
 show_missing = True
