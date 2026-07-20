@@ -113,13 +113,23 @@ def test_operations_v1_transport_base_to_dict_protobuf_versions(monkeypatch):
         credentials=ga_credentials.AnonymousCredentials()
     )
 
+    calls = []
+
+    def mock_message_to_dict(*args, **kwargs):
+        calls.append(kwargs)
+        return {"name": "test_op"}
+
+    monkeypatch.setattr(base.json_format, "MessageToDict", mock_message_to_dict)
+
     monkeypatch.setattr(base, "PROTOBUF_VERSION", "3.20.0")
     res3 = transport._convert_protobuf_message_to_dict(message)
     assert res3.get("name") == "test_op"
+    assert "including_default_value_fields" in calls[-1]
 
     monkeypatch.setattr(base, "PROTOBUF_VERSION", "5.26.0")
     res5 = transport._convert_protobuf_message_to_dict(message)
     assert res5.get("name") == "test_op"
+    assert "always_print_fields_with_no_presence" in calls[-1]
 
 
 def test_operations_v1_init_import_error_fallback(monkeypatch):
