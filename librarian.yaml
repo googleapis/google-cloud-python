@@ -2303,6 +2303,13 @@ libraries:
         google/maps/geocode/v4:
           - proto-plus-deps=google.geo.type
       default_version: v4
+  - name: google-maps-isochrones
+    version: 0.0.0
+    apis:
+      - path: google/maps/isochrones/v1
+    copyright_year: "2026"
+    python:
+      default_version: v1
   - name: google-maps-mapmanagement
     version: 0.1.0
     apis:

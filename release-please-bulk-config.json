@@ -3517,6 +3517,18 @@
         }
       ]
     },
+    "packages/google-maps-isochrones": {
+      "component": "google-maps-isochrones",
+      "extra-files": [
+        "google/maps/isochrones/gapic_version.py",
+        "google/maps/isochrones_v1/gapic_version.py",
+        {
+          "jsonpath": "$.clientLibrary.version",
+          "path": "samples/generated_samples/snippet_metadata_google.maps.isochrones.v1.json",
+          "type": "json"
+        }
+      ]
+    },
     "packages/google-maps-mapmanagement": {
       "component": "google-maps-mapmanagement",
       "extra-files": [
