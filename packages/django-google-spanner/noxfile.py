@@ -131,7 +131,7 @@ def default(session):
         "--cov-append",
         "--cov-config=.coveragerc",
         "--cov-report=",
-        "--cov-fail-under=75",
+        "--cov-fail-under=0",
         os.path.join("tests", "unit"),
         *session.posargs,
     )
@@ -155,6 +155,12 @@ def mockserver(session):
     session.run(
         "py.test",
         "--quiet",
+        "--cov=django_spanner",
+        "--cov=tests.mockserver_tests",
+        "--cov-append",
+        "--cov-config=.coveragerc",
+        "--cov-report=",
+        "--cov-fail-under=0",
         os.path.join("tests", "mockserver_tests"),
         *session.posargs,
     )

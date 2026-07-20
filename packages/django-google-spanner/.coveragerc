@@ -10,7 +10,7 @@
 branch = True
 
 [report]
-fail_under = 80
+fail_under = 100
 show_missing = True
 exclude_lines =
     # Re-enable the standard pragma
@@ -21,3 +21,5 @@ exclude_lines =
     raise NotImplementedError
 omit =
   */site-packages/*.py
+  tests/*
+  */tests/*
