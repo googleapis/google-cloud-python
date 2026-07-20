@@ -134,7 +134,7 @@ libraries:
       metadata_name_override: analyticsdata
       default_version: v1beta
   - name: google-api-core
-    version: 2.31.0
+    version: 2.32.0
     python:
       library_type: CORE
   - name: google-apps-card
@@ -146,7 +146,7 @@ libraries:
     python:
       default_version: v1
   - name: google-apps-chat
-    version: 0.10.2
+    version: 0.10.3
     apis:
       - path: google/chat/v1
     python:
@@ -227,7 +227,7 @@ libraries:
       metadata_name_override: area120tables
       default_version: v1alpha1
   - name: google-auth
-    version: 2.56.0
+    version: 2.56.1
     python:
       library_type: AUTH
   - name: google-auth-httplib2
@@ -277,6 +277,14 @@ libraries:
       - path: google/cloud/advisorynotifications/v1
     python:
       metadata_name_override: advisorynotifications
+      default_version: v1
+  - name: google-cloud-agentidentity
+    version: 0.1.0
+    apis:
+      - path: google/cloud/agentidentity/v1
+      - path: google/cloud/agentidentity/v1beta
+    copyright_year: "2026"
+    python:
       default_version: v1
   - name: google-cloud-agentidentitycredentials
     version: 0.1.0
@@ -482,7 +490,7 @@ libraries:
       metadata_name_override: baremetalsolution
       default_version: v2
   - name: google-cloud-batch
-    version: 0.22.0
+    version: 0.22.1
     apis:
       - path: google/cloud/batch/v1
       - path: google/cloud/batch/v1alpha
@@ -631,7 +639,7 @@ libraries:
       metadata_name_override: bigquerystorage
       default_version: v1
   - name: google-cloud-bigtable
-    version: 2.40.0
+    version: 2.41.0
     apis:
       - path: google/bigtable/v2
       - path: google/bigtable/admin/v2
@@ -759,14 +767,14 @@ libraries:
       metadata_name_override: common
       default_version: apiVersion
   - name: google-cloud-compute
-    version: 1.49.0
+    version: 1.50.0
     apis:
       - path: google/cloud/compute/v1
     python:
       metadata_name_override: compute
       default_version: v1
   - name: google-cloud-compute-v1beta
-    version: 0.12.0
+    version: 0.12.1
     apis:
       - path: google/cloud/compute/v1beta
     python:
@@ -979,7 +987,7 @@ libraries:
     python:
       default_version: v1
   - name: google-cloud-dialogflow
-    version: 2.50.0
+    version: 2.51.0
     apis:
       - path: google/cloud/dialogflow/v2
       - path: google/cloud/dialogflow/v2beta1
@@ -1005,7 +1013,7 @@ libraries:
       metadata_name_override: dialogflow-cx
       default_version: v3
   - name: google-cloud-discoveryengine
-    version: 0.20.1
+    version: 0.20.2
     apis:
       - path: google/cloud/discoveryengine/v1
       - path: google/cloud/discoveryengine/v1beta
@@ -1325,7 +1333,7 @@ libraries:
       metadata_name_override: ids
       default_version: v1
   - name: google-cloud-kms
-    version: 3.15.0
+    version: 3.16.0
     apis:
       - path: google/cloud/kms/v1
     python:
@@ -1429,7 +1437,7 @@ libraries:
       metadata_name_override: memcache
       default_version: v1
   - name: google-cloud-memorystore
-    version: 0.5.2
+    version: 0.5.3
     apis:
       - path: google/cloud/memorystore/v1
       - path: google/cloud/memorystore/v1beta
@@ -1794,7 +1802,7 @@ libraries:
       metadata_name_override: cloudscheduler
       default_version: v1
   - name: google-cloud-secret-manager
-    version: 2.29.0
+    version: 2.30.0
     apis:
       - path: google/cloud/secretmanager/v1
       - path: google/cloud/secretmanager/v1beta2
@@ -1829,7 +1837,7 @@ libraries:
       metadata_name_override: publicca
       default_version: v1
   - name: google-cloud-securitycenter
-    version: 1.45.0
+    version: 1.46.0
     apis:
       - path: google/cloud/securitycenter/v2
       - path: google/cloud/securitycenter/v1
@@ -2394,7 +2402,7 @@ libraries:
           - proto-plus-deps=google.shopping.type
       default_version: v1
   - name: google-shopping-merchant-inventories
-    version: 1.5.0
+    version: 1.6.0
     apis:
       - path: google/shopping/merchant/inventories/v1
       - path: google/shopping/merchant/inventories/v1beta
@@ -2452,7 +2460,7 @@ libraries:
           - proto-plus-deps=google.shopping.type
       default_version: v1
   - name: google-shopping-merchant-products
-    version: 1.7.0
+    version: 1.8.0
     apis:
       - path: google/shopping/merchant/products/v1
       - path: google/shopping/merchant/products/v1beta

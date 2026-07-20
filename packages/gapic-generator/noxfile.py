@@ -44,7 +44,6 @@ LINT_PATHS = ["docs", "gapic", "tests", "test_utils", "noxfile.py", "setup.py"]
 RUFF_EXCLUDES = "*golden*,*pb2.py,*pb2.pyi"
 
 ALL_PYTHON = (
-    "3.9",
     "3.10",
     "3.11",
     "3.12",
@@ -59,8 +58,7 @@ NEWEST_PYTHON = ALL_PYTHON[-2]
 @nox.session(python=ALL_PYTHON)
 def unit(session):
     """Run the unit test suite."""
-    if session.python == "3.9":
-        session.skip("Skipping Python 3.9 unit tests temporarily.")
+
     session.install(
         # TODO(https://github.com/googleapis/gapic-generator-python/issues/2478):
         # Temporarily pin coverage to 7.11.0
@@ -474,6 +472,24 @@ def showcase_mtls(
             *pytest_command,
             env=env,
         )
+
+
+# TODO(https://github.com/googleapis/google-cloud-python/issues/17752):
+# Remove showcase_pqc once grpcio >= 1.83.0 is enforced by default.
+@nox.session(python=NEWEST_PYTHON)
+def showcase_pqc(
+    session,
+    templates="DEFAULT",
+    other_opts: typing.Iterable[str] = (),
+    env: typing.Optional[typing.Dict[str, str]] = {},
+):
+    """Run the Showcase PQC verification test suite against grpcio 1.83+ over standard TLS."""
+    with showcase_library(session, templates=templates, other_opts=other_opts):
+        session.install("pytest", "pytest-asyncio")
+        # TODO(https://github.com/googleapis/google-cloud-python/issues/17751):
+        # Update the version below to `1.83.0` once released, and remove `--pre`.
+        session.install("--pre", "--upgrade", "grpcio>=1.83.0rc0", "grpcio-status>=1.83.0rc0")
+        session.run("py.test", "--quiet", "--tls", *(session.posargs or ["tests/system/test_pqc.py"]), env=env)
 
 
 def run_showcase_unit_tests(session, fail_under=100, rest_async_io_enabled=False):
