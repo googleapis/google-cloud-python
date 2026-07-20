@@ -100,3 +100,38 @@ def test_cancel_operation():
 
 def test_operations_client_config():
     assert operations_client_config.config["interfaces"]
+
+
+def test_operations_v1_transport_base_to_dict_protobuf_versions(monkeypatch):
+    from google.longrunning import operations_pb2
+
+    from google.api_core.operations_v1.transports import base
+
+    message = operations_pb2.Operation(name="test_op")
+
+    monkeypatch.setattr(base, "PROTOBUF_VERSION", "3.20.0")
+    res3 = base.OperationsTransport._to_dict(message)
+    assert res3.get("name") == "test_op"
+
+    monkeypatch.setattr(base, "PROTOBUF_VERSION", "5.26.0")
+    res5 = base.OperationsTransport._to_dict(message)
+    assert res5.get("name") == "test_op"
+
+
+def test_operations_v1_init_import_error_fallback(monkeypatch):
+    import importlib
+
+    import google.api_core.operations_v1 as op_v1
+
+    orig_import = __import__
+
+    def mock_import(name, globals=None, locals=None, fromlist=(), level=0):
+        if "operations_rest_client_async" in name or (
+            fromlist and "AsyncOperationsRestClient" in fromlist
+        ):
+            raise ImportError("Simulated async rest import error")
+        return orig_import(name, globals, locals, fromlist, level)
+
+    monkeypatch.setattr("builtins.__import__", mock_import)
+    monkeypatch.setattr(op_v1, "_has_async_rest", True)
+    importlib.reload(op_v1)
