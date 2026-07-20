@@ -121,6 +121,7 @@ run_package_test() {
   return $res
 }
 
+# Analyzes results of parallel test runs, prints summary, and dumps failed logs
 reap_parallel_results() {
   local retval=0
   local failed_count=0
@@ -131,6 +132,7 @@ reap_parallel_results() {
     return 1
   fi
 
+  # Count failed packages by checking for .failed marker files
   for failed in "$LOG_DIR"/*.failed; do
     if [ -f "$failed" ]; then
       failed_count=$((failed_count + 1))
@@ -158,7 +160,11 @@ reap_parallel_results() {
         echo "--------------------------------------------------"
         echo "LOGS FOR: $pkg"
         echo "--------------------------------------------------"
-        cat "$LOG_DIR/$pkg.log"
+        if [ -n "$KOKORO_ARTIFACTS_DIR" ] && [ -f "$KOKORO_ARTIFACTS_DIR/$pkg/sponge_log.log" ]; then
+          cat "$KOKORO_ARTIFACTS_DIR/$pkg/sponge_log.log"
+        else
+          cat "$LOG_DIR/$pkg.log"
+        fi
         echo ""
       fi
     done
@@ -249,7 +255,25 @@ export LOG_DIR
 export -f run_package_test
 export system_test_script PROJECT_ROOT KOKORO_GFILE_DIR
 
-printf '%s\n' "${PACKAGES_TO_TEST[@]}" | xargs -P "$MAX_JOBS" -I {} bash -c 'run_package_test "{}" > "$LOG_DIR/{}.log" 2>&1 || touch "$LOG_DIR/{}.failed"'
+# Stream package names to xargs for parallel execution
+# -P "$MAX_JOBS" controls concurrency
+# -I {} replaces {} with the package name
+printf '%s\n' "${PACKAGES_TO_TEST[@]}" \
+  | xargs -P "$MAX_JOBS" -I {} \
+    bash -c '
+      pkg="$1"
+      # Determine log location: prefer Sponge artifacts directory if available
+      if [ -n "$KOKORO_ARTIFACTS_DIR" ]; then
+        pkg_log_dir="$KOKORO_ARTIFACTS_DIR/$pkg"
+        mkdir -p "$pkg_log_dir" || { touch "$LOG_DIR/$pkg.failed"; exit 1; }
+        log_file="$pkg_log_dir/sponge_log.log"
+      else
+        log_file="$LOG_DIR/$pkg.log"
+      fi
+
+      # Run test; if it fails, create a .failed file to signal failure to the reaper
+      run_package_test "$pkg" > "$log_file" 2>&1 || touch "$LOG_DIR/$pkg.failed"
+    ' _ "{}"
 
 reap_parallel_results || RETVAL=1
 
