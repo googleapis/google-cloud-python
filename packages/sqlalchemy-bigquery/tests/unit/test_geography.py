@@ -32,7 +32,7 @@ def test_geoalchemy2_core(faux_conn, last_query):
 
     from sqlalchemy import Column, String
 
-    from sqlalchemy_bigquery import GEOGRAPHY
+    from sqlalchemy_bigquery import GEOGRAPHY, WKT
 
     lake_table = setup_table(
         conn, "lake", Column("name", String), Column("geog", GEOGRAPHY)
@@ -91,7 +91,7 @@ def test_geoalchemy2_core(faux_conn, last_query):
     try:
         conn.execute(
             select(lake_table.c.name).where(
-                func.ST_Contains(lake_table.c.geog, "POINT(4 1)")
+                func.ST_Contains(lake_table.c.geog, WKT("POINT(4 1)"))
             )
         )
     except Exception:
@@ -99,8 +99,8 @@ def test_geoalchemy2_core(faux_conn, last_query):
     last_query(
         "SELECT `lake`.`name` \n"
         "FROM `lake` \n"
-        "WHERE ST_Contains(`lake`.`geog`, %(ST_Contains_1:STRING)s)",
-        {"ST_Contains_1": "POINT(4 1)"},
+        "WHERE ST_Contains(`lake`.`geog`, ST_GeogFromText(%(ST_GeogFromText_1:STRING)s))",
+        {"ST_GeogFromText_1": "POINT(4 1)"},
     )
 
     try:
