@@ -17,7 +17,7 @@ source =
     */site-packages/django_spanner
 
 [report]
-fail_under = 68
+fail_under = 100
 show_missing = True
 exclude_lines =
     # Re-enable the standard pragma
