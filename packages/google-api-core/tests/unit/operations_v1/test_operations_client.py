@@ -103,12 +103,15 @@ def test_operations_client_config():
 
 
 def test_operations_v1_transport_base_to_dict_protobuf_versions(monkeypatch):
+    from google.auth import credentials as ga_credentials
     from google.longrunning import operations_pb2
 
     from google.api_core.operations_v1.transports import base
 
     message = operations_pb2.Operation(name="test_op")
-    transport = base.OperationsTransport()
+    transport = base.OperationsTransport(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
 
     monkeypatch.setattr(base, "PROTOBUF_VERSION", "3.20.0")
     res3 = transport._convert_protobuf_message_to_dict(message)
