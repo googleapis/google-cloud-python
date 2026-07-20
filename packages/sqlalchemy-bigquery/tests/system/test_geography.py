@@ -38,12 +38,9 @@ def test_geoalchemy2_core(engine, bigquery_dataset):
 
     from sqlalchemy_bigquery import GEOGRAPHY, WKT
 
-    metadata = MetaData()
     lake_table = Table(
         "lake", metadata, Column("name", String), Column("geog", GEOGRAPHY)
     )
-
-    lake_table.create(engine)
 
     # Insertions
 

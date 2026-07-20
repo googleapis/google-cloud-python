@@ -92,6 +92,17 @@ def bigquery_dataset(
     )
     view.view_query = f"SELECT string FROM `{dataset_id}.sample`"
     bigquery_client.create_table(view)
+
+    # Pre-create session-scoped lake table for geography tests
+    lake_table = bigquery.Table(
+        f"{project_id}.{dataset_id}.lake",
+        schema=[
+            bigquery.SchemaField("name", "STRING"),
+            bigquery.SchemaField("geog", "GEOGRAPHY"),
+        ],
+    )
+    bigquery_client.create_table(lake_table)
+
     yield dataset_id
     bigquery_client.delete_dataset(dataset_id, delete_contents=True)
 
