@@ -117,8 +117,6 @@ def test_geoalchemy2_core(bigquery_dataset):
 
     # and, while we're at it, that we can insert WKTs, although we
     # normally wouldn't want to.
-    from sqlalchemy_bigquery import WKT
-
     conn.execute(
         lake_table.insert().values(
             name="test2",
