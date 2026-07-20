@@ -1019,6 +1019,18 @@
         }
       ]
     },
+    "packages/google-cloud-commerceproducer": {
+      "component": "google-cloud-commerceproducer",
+      "extra-files": [
+        "google/cloud/commerceproducer/gapic_version.py",
+        "google/cloud/commerceproducer_v1beta/gapic_version.py",
+        {
+          "jsonpath": "$.clientLibrary.version",
+          "path": "samples/generated_samples/snippet_metadata_google.cloud.commerceproducer.v1beta.json",
+          "type": "json"
+        }
+      ]
+    },
     "packages/google-cloud-common": {
       "component": "google-cloud-common",
       "extra-files": [
