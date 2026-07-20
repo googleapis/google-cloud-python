@@ -16,11 +16,16 @@ jobs:
   import-profile:
     runs-on: ubuntu-latest
     timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5, 6, 7] # 8 parallel shards
+    name: import-profile (Shard ${{ matrix.shard }})
     steps:
     - name: Checkout
       uses: actions/checkout@v6
       with:
-        fetch-depth: 2
+        fetch-depth: 0 # Fetch git history to find changed packages
     - name: Setup Python
       uses: actions/setup-python@v6
       with:
@@ -34,5 +39,44 @@ jobs:
         PY_VERSION: "3.15"
         # Workaround: Allows libcst to compile on Python 3.15+ while PyO3 catches up
         PYO3_USE_ABI3_FORWARD_COMPATIBILITY: "1"
+        SHARD_INDEX: ${{ matrix.shard }}
+        TOTAL_SHARDS: 8
       run: |
-        ci/run_conditional_tests.sh
+        TARGET_BRANCH=${TARGET_BRANCH:-main}
+        git fetch origin "${TARGET_BRANCH}" --deepen=200 || true
+        
+        # Get unique list of modified packages under packages/
+        modified_packages=$(git diff --name-only origin/"${TARGET_BRANCH}"... | grep '^packages/' | cut -d/ -f1,2 | sort -u)
+        
+        # Filter packages assigned to this specific shard index
+        idx=0
+        packages_to_test=""
+        for pkg in $modified_packages; do
+          if [ -d "$pkg" ]; then
+            if [ $((idx % TOTAL_SHARDS)) -eq SHARD_INDEX ]; then
+              packages_to_test="$packages_to_test $pkg"
+            fi
+            idx=$((idx + 1))
+          fi
+        done
+        
+        # Run tests on the assigned packages
+        if [ -n "$packages_to_test" ]; then
+          echo "Shard ${{ matrix.shard }} running packages: $packages_to_test"
+          PACKAGE_LIST="$packages_to_test" ci/run_conditional_tests.sh
+        else
+          echo "No packages assigned to Shard ${{ matrix.shard }}."
+        fi
+
+  all-import-profiles:
+    needs: import-profile
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check import profile results
+        run: |
+          if [[ "${{ needs.import-profile.result }}" != "success" && "${{ needs.import-profile.result }}" != "skipped" ]]; then
+            echo "Import profiles failed"
+            exit 1
+          fi
+          echo "All import profiles passed or were skipped"

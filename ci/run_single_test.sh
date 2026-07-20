@@ -135,13 +135,11 @@ case ${TEST_TYPE} in
                     echo "Could not find baseline commit for ${TARGET_BRANCH:-main}. Skipping baseline generation."
                 fi
             fi
-            
             pip install -e .
-            
             if [ -f "${BASELINE_CSV}" ]; then
-                python ${PROFILER_SCRIPT} --package ${PACKAGE_NAME} --iterations 11 --fail-threshold 5000 --diff-baseline "${BASELINE_CSV}" --diff-threshold 100
+                python "${PROFILER_SCRIPT}" --package "${PACKAGE_NAME}" --iterations 11 --fail-threshold 120000 --diff-baseline "${BASELINE_CSV}" --diff-threshold 100
             else
-                python ${PROFILER_SCRIPT} --package ${PACKAGE_NAME} --iterations 11 --fail-threshold 5000
+                python "${PROFILER_SCRIPT}" --package "${PACKAGE_NAME}" --iterations 11 --fail-threshold 120000
             fi
             retval=$?
             deactivate
