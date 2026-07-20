@@ -14,6 +14,8 @@
 
 """Google Auth Library for Python."""
 
+# Trigger GHA import profiler run
+
 import logging
 
 from google.auth import version as google_auth_version
