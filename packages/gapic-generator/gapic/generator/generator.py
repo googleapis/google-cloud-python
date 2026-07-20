@@ -120,7 +120,7 @@ class Generator:
         for template_name in client_templates:
             # Quick check: Skip "private" templates.
             filename = template_name.split("/")[-1]
-            if filename.startswith("_") and filename != "__init__.py.j2":
+            if filename.startswith("_") and filename not in ("__init__.py.j2", "_compat.py.j2"):
                 continue
 
             # Append to the output files dictionary.

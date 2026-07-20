@@ -27,7 +27,7 @@ from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 {% if has_auto_populated_fields.value %}
-from google.api_core.gapic_v1.requests import setup_request_id
+from {{package_path}}._compat import setup_request_id
 {% endif %}
 from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials   # type: ignore
