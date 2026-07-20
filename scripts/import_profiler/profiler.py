@@ -156,13 +156,6 @@ Code Volume (Deterministic):
 
 def run_master(iterations, target_module, cpu=0, csv_path=None, clear_cache=True, fail_threshold=None, diff_baseline=None, diff_threshold=None):
     """Orchestrates the benchmark."""
-    # Skip packages/sqlalchemy-bigquery because python_requires restricts to < 3.15
-    # TODO: Re-enable once Python 3.15 is supported (see issue #17786)
-    if (target_module == "sqlalchemy.bigquery" or target_module == "sqlalchemy_bigquery") and sys.version_info >= (3, 15):
-        print(f"\nWARNING: Skipping {target_module} import profiling: python_requires limits support to < 3.15 (see issue #17786)")
-        print("\nSession import_profiler was successful.")
-        sys.exit(0)
-
     if iterations < 1:
         raise ValueError("Number of iterations must be at least 1.")
     times, memories, rss_memories = [], [], []
