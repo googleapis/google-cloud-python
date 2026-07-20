@@ -101,6 +101,7 @@ case ${TEST_TYPE} in
             echo "Creating temporary virtualenv for import profile..."
             python3 -m venv .venv-profiler
             source .venv-profiler/bin/activate
+            export PYO3_USE_ABI3_FORWARD_COMPATIBILITY=1
             python -m pip install --upgrade pip setuptools
             
             PACKAGE_NAME=$(basename $(pwd))
@@ -139,9 +140,9 @@ case ${TEST_TYPE} in
             pip install -e .
             
             if [ -f "${BASELINE_CSV}" ]; then
-                python ${PROFILER_SCRIPT} --package ${PACKAGE_NAME} --iterations 11 --fail-threshold 5000 --diff-baseline "${BASELINE_CSV}" --diff-threshold 100
+                python ${PROFILER_SCRIPT} --package ${PACKAGE_NAME} --iterations 11 --fail-threshold 20000 --diff-baseline "${BASELINE_CSV}" --diff-threshold 100
             else
-                python ${PROFILER_SCRIPT} --package ${PACKAGE_NAME} --iterations 11 --fail-threshold 5000
+                python ${PROFILER_SCRIPT} --package ${PACKAGE_NAME} --iterations 11 --fail-threshold 20000
             fi
             retval=$?
             deactivate

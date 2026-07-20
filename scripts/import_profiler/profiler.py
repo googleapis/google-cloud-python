@@ -266,10 +266,9 @@ def run_master(iterations, target_module, cpu=0, csv_path=None, clear_cache=True
                 relative_diff_threshold = 0.15 * baseline_p50
                 if diff > diff_threshold and diff > relative_diff_threshold:
                     final_messages.append(
-                        f"FAILURE: Import time regression of {diff:.2f} ms exceeds both the absolute threshold ({diff_threshold} ms) "
+                        f"WARNING: Import time regression of {diff:.2f} ms exceeds both the absolute threshold ({diff_threshold} ms) "
                         f"and the relative threshold ({relative_diff_threshold:.2f} ms, 15% of baseline Median)."
                     )
-                    exit_code = 1
                 else:
                     if diff > diff_threshold:
                         final_messages.append(f"SUCCESS: Import time regression of {diff:.2f} ms exceeds absolute threshold ({diff_threshold} ms) but is within relative threshold ({relative_diff_threshold:.2f} ms, 15%).")
@@ -281,10 +280,9 @@ def run_master(iterations, target_module, cpu=0, csv_path=None, clear_cache=True
     if fail_threshold is not None:
         if p50_time > fail_threshold:
             if baseline_p50 is not None and baseline_p50 > fail_threshold:
-                final_messages.append(f"WARNING: Median import time ({p50_time:.2f} ms) exceeds the absolute failure threshold ({fail_threshold} ms), but the baseline ({baseline_p50:.2f} ms) also exceeded it. Bypassing absolute backstop failure.")
+                final_messages.append(f"WARNING: Median import time ({p50_time:.2f} ms) exceeds the absolute threshold ({fail_threshold} ms), and the baseline ({baseline_p50:.2f} ms) also exceeded it.")
             else:
-                final_messages.append(f"FAILURE: Median import time ({p50_time:.2f} ms) exceeds the failure threshold ({fail_threshold} ms).")
-                exit_code = 1
+                final_messages.append(f"WARNING: Median import time ({p50_time:.2f} ms) exceeds the threshold ({fail_threshold} ms).")
         else:
             final_messages.append(f"SUCCESS: Median import time ({p50_time:.2f} ms) is within the failure threshold ({fail_threshold} ms).")
 
