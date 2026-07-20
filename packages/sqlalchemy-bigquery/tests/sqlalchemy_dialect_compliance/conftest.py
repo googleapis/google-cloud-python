@@ -82,6 +82,3 @@ def pytest_sessionfinish(session):
     _pytest_sessionfinish(session)
     with contextlib.closing(google.cloud.bigquery.Client()) as client:
         client.delete_dataset(dataset_id, delete_contents=True, not_found_ok=True)
-        for dataset in client.list_datasets():
-            if prefixer.should_cleanup(dataset.dataset_id):
-                client.delete_dataset(dataset, delete_contents=True, not_found_ok=True)

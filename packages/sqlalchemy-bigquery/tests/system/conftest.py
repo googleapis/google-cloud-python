@@ -142,13 +142,6 @@ def cleanup_extra_tables(bigquery_client, bigquery_dataset):
             bigquery_client.delete_table(table)
 
 
-@pytest.fixture(scope="session", autouse=True)
-def cleanup_datasets(bigquery_client: bigquery.Client):
-    for dataset in bigquery_client.list_datasets():
-        if prefixer.should_cleanup(dataset.dataset_id):
-            bigquery_client.delete_dataset(
-                dataset, delete_contents=True, not_found_ok=True
-            )
 
 
 @pytest.fixture(scope="session")
