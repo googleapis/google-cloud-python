@@ -27,9 +27,6 @@ class MockRequest:
         for k, v in kwargs.items():
             setattr(self, k, v)
 
-    def __contains__(self, key):
-        return hasattr(self, key)
-
 
 class MockProtoRequest:
     def __init__(self, **kwargs):
@@ -43,9 +40,6 @@ class MockProtoRequest:
 class MockValueErrorRequest:
     def HasField(self, key):
         raise ValueError("Mismatched field")
-
-    def __contains__(self, key):
-        return hasattr(self, key)
 
 
 # --- Parameterized Test ---
