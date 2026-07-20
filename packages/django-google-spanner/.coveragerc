@@ -20,6 +20,5 @@ exclude_lines =
     # Ignore abstract methods
     raise NotImplementedError
 omit =
-  */site-packages/*.py
   tests/*
   */tests/*
