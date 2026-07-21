@@ -13,26 +13,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
 import asyncio
+import json
+import math
+import os
+from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
 from unittest import mock
 from unittest.mock import AsyncMock
 
 import grpc
-from grpc.experimental import aio
-from collections.abc import Iterable, AsyncIterable
-from google.protobuf import json_format
-import json
-import math
 import pytest
-from collections.abc import Sequence, Mapping
 from google.api_core import api_core_version
-from proto.marshal.rules.dates import DurationRule, TimestampRule
-from proto.marshal.rules import wrappers
-from requests import Response
-from requests import Request, PreparedRequest
-from requests.sessions import Session
 from google.protobuf import json_format
+from grpc.experimental import aio
+from proto.marshal.rules import wrappers
+from proto.marshal.rules.dates import DurationRule, TimestampRule
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
 
 try:
     from google.auth.aio import credentials as ga_credentials_async
@@ -40,56 +37,64 @@ try:
 except ImportError: # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 
-from google.api_core import client_options
-from google.api_core import exceptions as core_exceptions
-from google.api_core import future
-from google.api_core import gapic_v1
-from google.api_core import grpc_helpers
-from google.api_core import grpc_helpers_async
-from google.api_core import operation
-from google.api_core import operations_v1
-from google.api_core import path_template
-from google.api_core import retry as retries
-from google.auth import credentials as ga_credentials
-from google.auth.exceptions import MutualTLSChannelError
-from google.cloud.eventarc_v1.services.eventarc import EventarcAsyncClient
-from google.cloud.eventarc_v1.services.eventarc import EventarcClient
-from google.cloud.eventarc_v1.services.eventarc import pagers
-from google.cloud.eventarc_v1.services.eventarc import transports
-from google.cloud.eventarc_v1.types import channel
-from google.cloud.eventarc_v1.types import channel as gce_channel
-from google.cloud.eventarc_v1.types import channel_connection
-from google.cloud.eventarc_v1.types import channel_connection as gce_channel_connection
-from google.cloud.eventarc_v1.types import discovery
-from google.cloud.eventarc_v1.types import enrollment
-from google.cloud.eventarc_v1.types import enrollment as gce_enrollment
-from google.cloud.eventarc_v1.types import eventarc
-from google.cloud.eventarc_v1.types import google_api_source
-from google.cloud.eventarc_v1.types import google_api_source as gce_google_api_source
-from google.cloud.eventarc_v1.types import google_channel_config
-from google.cloud.eventarc_v1.types import google_channel_config as gce_google_channel_config
-from google.cloud.eventarc_v1.types import logging_config
-from google.cloud.eventarc_v1.types import message_bus
-from google.cloud.eventarc_v1.types import message_bus as gce_message_bus
-from google.cloud.eventarc_v1.types import network_config
-from google.cloud.eventarc_v1.types import pipeline
-from google.cloud.eventarc_v1.types import pipeline as gce_pipeline
-from google.cloud.eventarc_v1.types import trigger
-from google.cloud.eventarc_v1.types import trigger as gce_trigger
-from google.cloud.location import locations_pb2
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import options_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
-from google.longrunning import operations_pb2 # type: ignore
-from google.oauth2 import service_account
 import google.api_core.operation_async as operation_async  # type: ignore
 import google.auth
 import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import google.rpc.code_pb2 as code_pb2  # type: ignore
-
-
+from google.api_core import (
+    client_options,
+    future,
+    gapic_v1,
+    grpc_helpers,
+    grpc_helpers_async,
+    operation,
+    operations_v1,
+    path_template,
+)
+from google.api_core import exceptions as core_exceptions
+from google.api_core import retry as retries
+from google.auth import credentials as ga_credentials
+from google.auth.exceptions import MutualTLSChannelError
+from google.cloud.eventarc_v1.services.eventarc import (
+    EventarcAsyncClient,
+    EventarcClient,
+    pagers,
+    transports,
+)
+from google.cloud.eventarc_v1.types import (
+    channel,
+    channel_connection,
+    discovery,
+    enrollment,
+    eventarc,
+    google_api_source,
+    google_channel_config,
+    logging_config,
+    message_bus,
+    network_config,
+    pipeline,
+    trigger,
+)
+from google.cloud.eventarc_v1.types import channel as gce_channel
+from google.cloud.eventarc_v1.types import channel_connection as gce_channel_connection
+from google.cloud.eventarc_v1.types import enrollment as gce_enrollment
+from google.cloud.eventarc_v1.types import google_api_source as gce_google_api_source
+from google.cloud.eventarc_v1.types import (
+    google_channel_config as gce_google_channel_config,
+)
+from google.cloud.eventarc_v1.types import message_bus as gce_message_bus
+from google.cloud.eventarc_v1.types import pipeline as gce_pipeline
+from google.cloud.eventarc_v1.types import trigger as gce_trigger
+from google.cloud.location import locations_pb2
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    options_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
+from google.longrunning import operations_pb2  # type: ignore
+from google.oauth2 import service_account
 
 CRED_INFO_JSON = {
     "credential_source": "/path/to/file",
@@ -721,7 +726,7 @@ def test_eventarc_client_get_mtls_endpoint_and_cert_source(client_class):
                     config_filename = "mock_certificate_config.json"
                     config_file_content = json.dumps(config_data)
                     m = mock.mock_open(read_data=config_file_content)
-                    with mock.patch("builtins.open", m), mock.patch("os.path.exists", return_value=True):
+                    with mock.patch("builtins.open", m), mock.patch("os.path.exists", side_effect=lambda path: os.path.basename(path) == config_filename):
                         with mock.patch.dict(
                             os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                         ):
@@ -768,7 +773,7 @@ def test_eventarc_client_get_mtls_endpoint_and_cert_source(client_class):
                     config_filename = "mock_certificate_config.json"
                     config_file_content = json.dumps(config_data)
                     m = mock.mock_open(read_data=config_file_content)
-                    with mock.patch("builtins.open", m), mock.patch("os.path.exists", return_value=True):
+                    with mock.patch("builtins.open", m), mock.patch("os.path.exists", side_effect=lambda path: os.path.basename(path) == config_filename):
                         with mock.patch.dict(
                             os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                         ):
