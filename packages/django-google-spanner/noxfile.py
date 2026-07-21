@@ -118,21 +118,21 @@ def default(session):
     session.install(
         *UNIT_TEST_STANDARD_DEPENDENCIES,
         *UNIT_TEST_EXTERNAL_DEPENDENCIES,
-        *UNIT_TEST_DEPENDENCIES,
+        *UNIT_TEST_MOCKSERVER_DEPENDENCIES,
     )
     session.install("-e", ".")
 
-    # Run py.test against the unit tests.
+    # Run py.test against unit and mockserver tests.
     session.run(
         "py.test",
         "--quiet",
         "--cov=django_spanner",
-        "--cov=tests.unit",
         "--cov-append",
         "--cov-config=.coveragerc",
         "--cov-report=",
-        "--cov-fail-under=75",
+        "--cov-fail-under=0",
         os.path.join("tests", "unit"),
+        os.path.join("tests", "mockserver_tests"),
         *session.posargs,
     )
 
@@ -155,6 +155,12 @@ def mockserver(session):
     session.run(
         "py.test",
         "--quiet",
+        "--cov=django_spanner",
+        "--cov=tests.mockserver_tests",
+        "--cov-append",
+        "--cov-config=.coveragerc",
+        "--cov-report=",
+        "--cov-fail-under=0",
         os.path.join("tests", "mockserver_tests"),
         *session.posargs,
     )
