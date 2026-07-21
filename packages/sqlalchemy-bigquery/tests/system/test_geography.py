@@ -22,7 +22,7 @@ import pytest
 geoalchemy2 = pytest.importorskip("geoalchemy2")
 
 
-def test_geoalchemy2_core(engine, bigquery_dataset):
+def test_geoalchemy2_core(bigquery_dataset):
     """Make sure GeoAlchemy 2 Core Tutorial works as adapted to only having geography
 
     https://geoalchemy-2.readthedocs.io/en/latest/core_tutorial.html
@@ -31,6 +31,10 @@ def test_geoalchemy2_core(engine, bigquery_dataset):
 
     - Bigquery doesn't have ST_BUFFER
     """
+
+    from sqlalchemy import create_engine
+
+    engine = create_engine(f"bigquery:///{bigquery_dataset}")
 
     # Create the Table
 
