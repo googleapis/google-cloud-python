@@ -1,0 +1,76 @@
+# {% include '_license.j2' %}
+
+import re
+from typing import Optional, Callable, Tuple, Union
+from google.auth.exceptions import MutualTLSChannelError
+
+try:
+    from google.api_core.gapic_v1.client_utils import (
+        get_default_mtls_endpoint,
+        get_api_endpoint,
+        get_universe_domain,
+    )
+except ImportError:
+    # TODO: Remove these fallbacks when google-api-core >= 2.18.0 is the minimum required version.
+
+    def get_default_mtls_endpoint(api_endpoint: Optional[str]) -> Optional[str]:
+        """Converts api endpoint to mTLS endpoint."""
+        if not api_endpoint:
+            return api_endpoint
+
+        mtls_endpoint_re = re.compile(
+            r"(?P<name>[^.]+)(?P<mtls>\.mtls)?(?P<sandbox>\.sandbox)?(?P<googledomain>\.googleapis\.com)?"
+        )
+
+        m = mtls_endpoint_re.match(api_endpoint)
+        if m is None:
+            # Could not parse api_endpoint; return as-is.
+            return api_endpoint
+
+        name, mtls, sandbox, googledomain = m.groups()
+        if mtls or not googledomain:
+            return api_endpoint
+
+        if sandbox:
+            return api_endpoint.replace(
+                "sandbox.googleapis.com", "mtls.sandbox.googleapis.com"
+            )
+
+        return api_endpoint.replace(".googleapis.com", ".mtls.googleapis.com")
+
+    def get_api_endpoint(
+        api_override: Optional[str],
+        client_cert_source: Optional[Callable[[], Tuple[bytes, bytes]]],
+        universe_domain: str,
+        use_mtls_endpoint: str,
+        default_universe: str,
+        default_mtls_endpoint: str,
+        default_endpoint_template: str,
+    ) -> str:
+        """Return the API endpoint used by the client."""
+        if api_override is not None:
+            api_endpoint = api_override
+        elif use_mtls_endpoint == "always" or (use_mtls_endpoint == "auto" and client_cert_source):
+            if universe_domain != default_universe:
+                raise MutualTLSChannelError(
+                    f"mTLS is not supported in any universe other than {default_universe}."
+                )
+            api_endpoint = default_mtls_endpoint
+        else:
+            api_endpoint = default_endpoint_template.format(UNIVERSE_DOMAIN=universe_domain)
+        return api_endpoint
+
+    def get_universe_domain(
+        client_universe_domain: Optional[str],
+        universe_domain_env: Optional[str],
+        default_universe: str,
+    ) -> str:
+        """Return the universe domain used by the client."""
+        universe_domain = default_universe
+        if client_universe_domain is not None:
+            universe_domain = client_universe_domain
+        elif universe_domain_env is not None:
+            universe_domain = universe_domain_env
+        if len(universe_domain.strip()) == 0:
+            raise ValueError("Universe Domain cannot be an empty string.") 
+        return universe_domain
