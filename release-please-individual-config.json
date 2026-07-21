@@ -5,8 +5,44 @@
     "packages/bigframes": {
       "component": "bigframes"
     },
+    "packages/google-cloud-commerceproducer": {
+      "component": "google-cloud-commerceproducer",
+      "extra-files": [
+        "google/cloud/commerceproducer/gapic_version.py",
+        "google/cloud/commerceproducer_v1beta/gapic_version.py",
+        {
+          "jsonpath": "$.clientLibrary.version",
+          "path": "samples/generated_samples/snippet_metadata_google.cloud.commerceproducer.v1beta.json",
+          "type": "json"
+        }
+      ]
+    },
+    "packages/google-cloud-productregistry": {
+      "component": "google-cloud-productregistry",
+      "extra-files": [
+        "google/cloud/productregistry/gapic_version.py",
+        "google/cloud/productregistry_v1/gapic_version.py",
+        {
+          "jsonpath": "$.clientLibrary.version",
+          "path": "samples/generated_samples/snippet_metadata_google.cloud.productregistry.v1.json",
+          "type": "json"
+        }
+      ]
+    },
     "packages/google-crc32c": {
       "component": "google-crc32c"
+    },
+    "packages/google-maps-isochrones": {
+      "component": "google-maps-isochrones",
+      "extra-files": [
+        "google/maps/isochrones/gapic_version.py",
+        "google/maps/isochrones_v1/gapic_version.py",
+        {
+          "jsonpath": "$.clientLibrary.version",
+          "path": "samples/generated_samples/snippet_metadata_google.maps.isochrones.v1.json",
+          "type": "json"
+        }
+      ]
     },
     "packages/pandas-gbq": {
       "component": "pandas-gbq"
