@@ -79,6 +79,17 @@ SYSTEM_TEST_EXTRAS = [
 SYSTEM_TEST_EXTRAS_BY_PYTHON = {}
 
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
+# Path to the centralized mypy configuration file at the repository root.
+# Search upwards to support running nox from both monorepo packages and integration test goldens.
+MYPY_CONFIG_FILE = next(
+    (
+        str(p / "mypy.ini")
+        for p in CURRENT_DIRECTORY.parents
+        if (p / "mypy.ini").exists()
+    ),
+    str(CURRENT_DIRECTORY.parent.parent / "mypy.ini"),
+)
+
 
 # Error if a python version is missing
 nox.options.error_on_missing_interpreters = True
@@ -544,6 +555,7 @@ def mypy(session):
     session.install(".")
     session.run(
         "mypy",
+        f"--config-file={MYPY_CONFIG_FILE}",
         "pandas_gbq",
         "--check-untyped-defs",
         *session.posargs,

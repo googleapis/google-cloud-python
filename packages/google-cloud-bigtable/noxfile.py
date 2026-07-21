@@ -67,6 +67,17 @@ SYSTEM_TEST_EXTRAS: List[str] = []
 SYSTEM_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {}
 
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
+# Path to the centralized mypy configuration file at the repository root.
+# Search upwards to support running nox from both monorepo packages and integration test goldens.
+MYPY_CONFIG_FILE = next(
+    (
+        str(p / "mypy.ini")
+        for p in CURRENT_DIRECTORY.parents
+        if (p / "mypy.ini").exists()
+    ),
+    str(CURRENT_DIRECTORY.parent.parent / "mypy.ini"),
+)
+
 
 # 'docfx' is excluded since it only needs to run in 'docs-presubmit'
 nox.options.sessions = [
@@ -176,7 +187,9 @@ def mypy(session):
         "types-requests",
     )
     session.install("google-cloud-testutils")
-    session.run("mypy", "-p", "google.cloud.bigtable.data")
+    session.run(
+        "mypy", f"--config-file={MYPY_CONFIG_FILE}", "-p", "google.cloud.bigtable.data"
+    )
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
