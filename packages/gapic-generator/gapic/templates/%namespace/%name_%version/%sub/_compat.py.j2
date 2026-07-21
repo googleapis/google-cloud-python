@@ -5,7 +5,7 @@ from typing import Optional, Callable, Tuple, Union
 from google.auth.exceptions import MutualTLSChannelError
 
 try:
-    from google.api_core.gapic_v1.client_utils import (
+    from google.api_core.gapic_v1.config import (
         use_client_cert_effective,
         get_client_cert_source,
         read_environment_variables,
