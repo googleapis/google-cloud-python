@@ -3896,6 +3896,9 @@
     "packages/proto-plus": {
       "component": "proto-plus"
     },
+    "packages/sqlalchemy-bigquery": {
+      "component": "sqlalchemy-bigquery"
+    },
     "packages/sqlalchemy-spanner": {
       "component": "sqlalchemy-spanner"
     }
