@@ -66,6 +66,16 @@ UNIT_TEST_MOCKSERVER_DEPENDENCIES = [
 ]
 
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
+# Path to the centralized mypy configuration file at the repository root.
+# Search upwards to support running nox from both monorepo packages and integration test goldens.
+MYPY_CONFIG_FILE = next(
+    (
+        str(p / "mypy.ini")
+        for p in CURRENT_DIRECTORY.parents
+        if (p / "mypy.ini").exists()
+    ),
+    str(CURRENT_DIRECTORY.parent.parent / "mypy.ini"),
+)
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
@@ -326,6 +336,21 @@ def mypy(session):
     # TODO(https://github.com/googleapis/google-cloud-python/issues/17047):
     # Add typehints to this package.
     session.skip("Typehints and thus mypy are not yet supported.")
+
+    session.install("-e", ".")
+    session.install(
+        "mypy",
+        "types-setuptools",
+        "types-protobuf",
+        "types-requests",
+    )
+    session.run(
+        "mypy",
+        f"--config-file={MYPY_CONFIG_FILE}",
+        "-p",
+        "django_spanner",
+        *session.posargs,
+    )
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)

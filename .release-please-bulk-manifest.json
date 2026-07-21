@@ -17,7 +17,7 @@
   "packages/google-apps-meet": "0.5.0",
   "packages/google-apps-script-type": "0.8.0",
   "packages/google-area120-tables": "0.15.0",
-  "packages/google-auth": "2.56.1",
+  "packages/google-auth": "2.56.2",
   "packages/google-auth-httplib2": "0.4.0",
   "packages/google-auth-oauthlib": "1.4.0",
   "packages/google-backstory": "0.1.0",
@@ -248,7 +248,6 @@
   "packages/google-maps-fleetengine": "0.6.0",
   "packages/google-maps-fleetengine-delivery": "0.6.0",
   "packages/google-maps-geocode": "0.3.0",
-  "packages/google-maps-isochrones": "0.0.0",
   "packages/google-maps-mapmanagement": "0.1.0",
   "packages/google-maps-mapsplatformdatasets": "0.8.0",
   "packages/google-maps-navconnect": "0.2.0",
@@ -277,5 +276,6 @@
   "packages/grafeas": "1.23.0",
   "packages/grpc-google-iam-v1": "0.14.4",
   "packages/proto-plus": "1.28.1",
+  "packages/sqlalchemy-bigquery": "1.17.0",
   "packages/sqlalchemy-spanner": "1.19.0"
 }
