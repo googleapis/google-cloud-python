@@ -276,5 +276,6 @@
   "packages/grafeas": "1.23.0",
   "packages/grpc-google-iam-v1": "0.14.4",
   "packages/proto-plus": "1.28.1",
+  "packages/sqlalchemy-bigquery": "1.17.0",
   "packages/sqlalchemy-spanner": "1.19.0"
 }

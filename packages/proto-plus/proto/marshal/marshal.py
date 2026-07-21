@@ -13,24 +13,20 @@
 # limitations under the License.
 
 import abc
+import threading
 
-from google.protobuf import duration_pb2
-from google.protobuf import timestamp_pb2
-from google.protobuf import field_mask_pb2
-from google.protobuf import struct_pb2
-from google.protobuf import wrappers_pb2
+from google.protobuf import (
+    duration_pb2,
+    field_mask_pb2,
+    struct_pb2,
+    timestamp_pb2,
+    wrappers_pb2,
+)
 
 from proto.marshal import compat
-from proto.marshal.collections import MapComposite
-from proto.marshal.collections import Repeated
-from proto.marshal.collections import RepeatedComposite
-
+from proto.marshal.collections import MapComposite, Repeated, RepeatedComposite
 from proto.marshal.rules import bytes as pb_bytes
-from proto.marshal.rules import stringy_numbers
-from proto.marshal.rules import dates
-from proto.marshal.rules import struct
-from proto.marshal.rules import wrappers
-from proto.marshal.rules import field_mask
+from proto.marshal.rules import dates, field_mask, stringy_numbers, struct, wrappers
 from proto.primitives import ProtoType
 
 
@@ -168,7 +164,10 @@ class BaseMarshal:
         # See https://github.com/googleapis/proto-plus-python/issues/349
         if rule == self._noop and hasattr(self, "_instances"):
             for _, instance in self._instances.items():
-                rule = instance._rules.get(proto_type, self._noop)
+                # Avoid race condition where instance is added to _instances
+                # but __init__ hasn't run yet.
+                rules = getattr(instance, "_rules", {})
+                rule = rules.get(proto_type, self._noop)
                 if rule != self._noop:
                     break
         return rule
@@ -254,6 +253,7 @@ class Marshal(BaseMarshal):
     """
 
     _instances = {}
+    _instance_creation_lock = threading.Lock()
 
     def __new__(cls, *, name: str):
         """Create a marshal instance.
@@ -265,7 +265,18 @@ class Marshal(BaseMarshal):
         """
         klass = cls._instances.get(name)
         if klass is None:
-            klass = cls._instances[name] = super().__new__(cls)
+            with cls._instance_creation_lock:
+                # Double check inside lock to confirm another thread hasn't
+                # created the instance while we were waiting for the lock.
+                klass = cls._instances.get(name)
+                if klass is None:
+                    # Use Copy-on-Write to avoid 'RuntimeError: dictionary changed size during iteration'
+                    # in BaseMarshal.get_rule. This allows other threads to iterate over the old
+                    # dictionary safely while we replace it with a new one atomically.
+                    new_instances = cls._instances.copy()
+                    klass = super().__new__(cls)
+                    new_instances[name] = klass
+                    cls._instances = new_instances
 
         return klass
 
