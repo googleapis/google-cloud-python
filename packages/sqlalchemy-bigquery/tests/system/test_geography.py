@@ -38,6 +38,7 @@ def test_geoalchemy2_core(engine, bigquery_dataset):
 
     from sqlalchemy_bigquery import GEOGRAPHY, WKT
 
+    metadata = MetaData()
     lake_table = Table(
         "lake", metadata, Column("name", String), Column("geog", GEOGRAPHY)
     )
@@ -128,11 +129,15 @@ def test_geoalchemy2_core(engine, bigquery_dataset):
     )
 
 
-def test_geoalchemy2_orm(engine, bigquery_dataset):
+def test_geoalchemy2_orm(bigquery_dataset):
     """Make sure GeoAlchemy 2 ORM Tutorial works as adapted to only having geometry
 
     https://geoalchemy-2.readthedocs.io/en/latest/orm_tutorial.html
     """
+
+    from sqlalchemy import create_engine
+
+    engine = create_engine(f"bigquery:///{bigquery_dataset}")
 
     # Declare a Mapping
 
@@ -237,7 +242,10 @@ def test_geoalchemy2_orm(engine, bigquery_dataset):
     ]
 
 
-def test_geoalchemy2_orm_w_relationship(engine, bigquery_dataset):
+def test_geoalchemy2_orm_w_relationship(bigquery_dataset):
+    from sqlalchemy import create_engine
+
+    engine = create_engine(f"bigquery:///{bigquery_dataset}")
 
     from sqlalchemy import Column, Integer, String
     from sqlalchemy.ext.declarative import declarative_base
