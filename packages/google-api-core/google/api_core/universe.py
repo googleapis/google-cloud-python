@@ -141,9 +141,9 @@ def get_default_mtls_endpoint(api_endpoint: Optional[str]) -> Optional[str]:
     suffix_sandbox = ".sandbox.googleapis.com"
     suffix_google = ".googleapis.com"
     if lowered_host.endswith(suffix_sandbox):
-        new_host = host[:-len(suffix_sandbox)] + ".mtls.sandbox.googleapis.com"
+        new_host = host[: -len(suffix_sandbox)] + ".mtls.sandbox.googleapis.com"
     elif lowered_host.endswith(suffix_google):
-        new_host = host[:-len(suffix_google)] + ".mtls.googleapis.com"
+        new_host = host[: -len(suffix_google)] + ".mtls.googleapis.com"
     else:
         return api_endpoint
 
