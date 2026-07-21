@@ -10,7 +10,8 @@ from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
-from google.api_core import rest_helpers
+{% set package_path = api.naming.module_namespace|join('.') + "." + api.naming.versioned_module_name %}
+from {{package_path}} import _compat as rest_helpers
 from google.api_core import rest_streaming
 from google.api_core import gapic_v1
 import google.protobuf
@@ -245,7 +246,7 @@ class {{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
             {% endif %}
             """
 
-            {{ shared_macros.rest_call_method_common(body_spec, method.name, service, False, method.input.ident.is_proto_plus_type)|indent(8) }}
+            {{ shared_macros.rest_call_method_common(body_spec, method.name, service, False, method.input.ident.is_proto_plus_type, opts.rest_numeric_enums)|indent(8) }}
 
             {% if not method.void %}
             # Return the response

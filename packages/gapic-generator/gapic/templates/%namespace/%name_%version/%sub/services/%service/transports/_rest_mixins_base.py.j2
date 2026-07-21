@@ -25,27 +25,7 @@
 
         {{ shared_macros.http_options_method(api.mixin_http_options["{}".format(name)])|indent(8)}}
 
-        @staticmethod
-        def _get_transcoded_request(http_options, request):
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(
-                http_options, **request_kwargs)
-            return transcoded_request
-
-        {% set body_spec = api.mixin_http_options["{}".format(name)][0].body %}
-        {%- if body_spec %}
-
-        @staticmethod
-        def _get_request_body_json(transcoded_request):
-            body = json.dumps(transcoded_request['body'])
-            return body
-
-        {%- endif %} {# body_spec #}
-
-        @staticmethod
-        def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json.dumps(transcoded_request['query_params']))
-            return query_params
+        pass
 
     {% endfor %}
     {% endif %} {# rest in opts.transport #}

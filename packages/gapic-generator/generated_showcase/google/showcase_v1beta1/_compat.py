@@ -1,0 +1,108 @@
+# # Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+from typing import Any, Dict, List, Optional, Tuple
+
+try:
+    from google.api_core.rest_helpers import (
+        flatten_query_params,
+        transcode_request,
+    )
+except ImportError:  # pragma: NO COVER
+    # TODO: Remove these fallbacks when google-api-core >= 2.18.0 is the minimum required version.
+    import functools
+    import json
+    import operator
+    from google.protobuf import json_format  # type: ignore
+    from google.api_core import path_template  # type: ignore
+
+    def flatten_query_params(obj, strict=False):  # pragma: NO COVER
+        if obj is not None and not isinstance(obj, dict):
+            raise TypeError("flatten_query_params must be called with dict object")
+        return _flatten(obj, key_path=[], strict=strict)
+
+    def _flatten(obj, key_path, strict=False):  # pragma: NO COVER
+        if obj is None:
+            return []
+        if isinstance(obj, dict):
+            return _flatten_dict(obj, key_path=key_path, strict=strict)
+        if isinstance(obj, list):
+            return _flatten_list(obj, key_path=key_path, strict=strict)
+        return _flatten_value(obj, key_path=key_path, strict=strict)
+
+    def _is_primitive_value(obj):  # pragma: NO COVER
+        if obj is None:
+            return False
+        if isinstance(obj, (list, dict)):
+            raise ValueError("query params may not contain repeated dicts or lists")
+        return True
+
+    def _flatten_value(obj, key_path, strict=False):  # pragma: NO COVER
+        return [(".".join(key_path), _canonicalize(obj, strict=strict))]
+
+    def _flatten_dict(obj, key_path, strict=False):  # pragma: NO COVER
+        items = (
+            _flatten(value, key_path=key_path + [key], strict=strict)
+            for key, value in obj.items()
+        )
+        return functools.reduce(operator.concat, items, [])
+
+    def _flatten_list(elems, key_path, strict=False):  # pragma: NO COVER
+        items = (
+            _flatten_value(elem, key_path=key_path, strict=strict)
+            for elem in elems
+            if _is_primitive_value(elem)
+        )
+        return functools.reduce(operator.concat, items, [])
+
+    def _canonicalize(obj, strict=False):  # pragma: NO COVER
+        if strict:
+            value = str(obj)
+            if isinstance(obj, bool):
+                value = value.lower()
+            return value
+        return obj
+
+    def transcode_request(  # pragma: NO COVER
+        http_options: List[Dict[str, str]],
+        request: Any,
+        required_fields_default_values: Optional[Dict[str, Any]] = None,
+        rest_numeric_enums: bool = False,
+    ) -> Tuple[Dict[str, Any], Optional[str], Dict[str, Any]]:
+        pb_request = getattr(request, "_pb", request)
+        transcoded_request = path_template.transcode(http_options, pb_request)
+
+        body_json = None
+        if transcoded_request.get("body") is not None:
+            body_json = json_format.MessageToJson(
+                transcoded_request["body"],
+                use_integers_for_enums=rest_numeric_enums,
+            )
+
+        query_params_json = {}
+        if transcoded_request.get("query_params") is not None:
+            query_params_json = json.loads(json_format.MessageToJson(
+                transcoded_request["query_params"],
+                use_integers_for_enums=rest_numeric_enums,
+            ))
+
+        if required_fields_default_values:
+            for k, v in required_fields_default_values.items():
+                if k not in query_params_json:
+                    query_params_json[k] = v
+
+        if rest_numeric_enums:
+            query_params_json["$alt"] = "json;enum-encoding=int"
+
+        return transcoded_request, body_json, query_params_json
