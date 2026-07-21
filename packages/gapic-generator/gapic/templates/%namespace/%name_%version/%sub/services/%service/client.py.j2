@@ -364,7 +364,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
         client_cert_source: Optional[Callable[[], Tuple[bytes, bytes]]],
         universe_domain: str,
         use_mtls_endpoint: str,
-    ) -> str:
+    ) -> Optional[str]:
         """Return the API endpoint used by the client.
 
         Args:
@@ -376,7 +376,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
                 Possible values are "always", "auto", or "never".
 
         Returns:
-            str: The API endpoint to be used by the client.
+            Optional[str]: The API endpoint to be used by the client.
         """
         return client_utils.get_api_endpoint(
             api_override,

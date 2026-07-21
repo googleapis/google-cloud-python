@@ -44,9 +44,9 @@ except ImportError:
         universe_domain: str,
         use_mtls_endpoint: str,
         default_universe: str,
-        default_mtls_endpoint: str,
+        default_mtls_endpoint: Optional[str],
         default_endpoint_template: str,
-    ) -> str:
+    ) -> Optional[str]:
         """Return the API endpoint used by the client."""
         if api_override is not None:
             api_endpoint = api_override
