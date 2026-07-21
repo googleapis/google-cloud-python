@@ -30,6 +30,7 @@ from google.api_core import exceptions as core_exceptions
 from google.api_core import extended_operation
 {% endif %}
 from google.api_core import gapic_v1
+from {{package_path}} import _compat as client_utils
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials             # type: ignore
 from google.auth.transport import mtls                            # type: ignore
@@ -189,30 +190,9 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
     _DEFAULT_UNIVERSE = "googleapis.com"
 
     @staticmethod
-    def _use_client_cert_effective():
-        """Returns whether client certificate should be used for mTLS if the 
-        google-auth version supports should_use_client_cert automatic mTLS enablement.
-
-        Alternatively, read from the GOOGLE_API_USE_CLIENT_CERTIFICATE env var.
-
-        Returns:
-            bool: whether client certificate should be used for mTLS
-        Raises:
-            ValueError: (If using a version of google-auth without should_use_client_cert and
-	    GOOGLE_API_USE_CLIENT_CERTIFICATE is set to an unexpected value.)
-        """
-        # check if google-auth version supports should_use_client_cert for automatic mTLS enablement
-        if hasattr(mtls, "should_use_client_cert"):  # pragma: NO COVER
-            return mtls.should_use_client_cert()
-        else: # pragma: NO COVER
-            # if unsupported, fallback to reading from env var
-            use_client_cert_str = os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false").lower()
-            if use_client_cert_str not in ("true", "false"):
-                raise ValueError(
-                    "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be"
-                    " either `true` or `false`"
-                )
-            return use_client_cert_str == "true"
+    def _use_client_cert_effective() -> bool:
+        """Returns whether client certificate should be used for mTLS."""
+        return client_utils.use_client_cert_effective()
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -352,44 +332,12 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
         return api_endpoint, client_cert_source
 
     @staticmethod
-    def _read_environment_variables():
-        """Returns the environment variables used by the client.
-
-        Returns:
-            Tuple[bool, str, str]: returns the GOOGLE_API_USE_CLIENT_CERTIFICATE,
-            GOOGLE_API_USE_MTLS_ENDPOINT, and GOOGLE_CLOUD_UNIVERSE_DOMAIN environment variables.
-
-        Raises:
-            ValueError: If GOOGLE_API_USE_CLIENT_CERTIFICATE is not
-                any of ["true", "false"].
-            google.auth.exceptions.MutualTLSChannelError: If GOOGLE_API_USE_MTLS_ENDPOINT
-                is not any of ["auto", "never", "always"].
-        """
-        use_client_cert = {{ service.client_name }}._use_client_cert_effective()
-        use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto").lower()
-        universe_domain_env = os.getenv("GOOGLE_CLOUD_UNIVERSE_DOMAIN")
-        if use_mtls_endpoint not in ("auto", "never", "always"):
-            raise MutualTLSChannelError("Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`")
-        return use_client_cert, use_mtls_endpoint, universe_domain_env
-
-    @staticmethod
-    def _get_client_cert_source(provided_cert_source, use_cert_flag):
-        """Return the client cert source to be used by the client.
-
-        Args:
-            provided_cert_source (bytes): The client certificate source provided.
-            use_cert_flag (bool): A flag indicating whether to use the client certificate.
-
-        Returns:
-            bytes or None: The client cert source to be used by the client.
-        """
-        client_cert_source = None
-        if use_cert_flag:
-            if provided_cert_source:
-                client_cert_source = provided_cert_source
-            elif mtls.has_default_client_cert_source():
-                client_cert_source = mtls.default_client_cert_source()
-        return client_cert_source
+    def _get_client_cert_source(
+        provided_cert_source: Optional[Callable[[], Tuple[bytes, bytes]]],
+        use_cert_flag: bool,
+    ) -> Optional[Callable[[], Tuple[bytes, bytes]]]:
+        """Return the client cert source to be used by the client."""
+        return client_utils.get_client_cert_source(provided_cert_source, use_cert_flag)
 
     @staticmethod
     def _get_api_endpoint(api_override, client_cert_source, universe_domain, use_mtls_endpoint) -> str:
@@ -597,7 +545,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
 
         universe_domain_opt = getattr(self._client_options, 'universe_domain', None)
 
-        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = {{ service.client_name }}._read_environment_variables()
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = client_utils.read_environment_variables()
         self._client_cert_source = {{ service.client_name }}._get_client_cert_source(self._client_options.client_cert_source, self._use_client_cert)
         self._universe_domain = {{ service.client_name }}._get_universe_domain(universe_domain_opt, self._universe_domain_env)
         self._api_endpoint: str = ""  # updated below, depending on `transport`
