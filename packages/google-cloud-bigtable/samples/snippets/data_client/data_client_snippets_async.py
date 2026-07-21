@@ -313,3 +313,31 @@ async def execute_query(table):
 
     # [END bigtable_async_execute_query]
     await execute_query(table.client.project, table.instance_id, table.table_id)
+
+
+async def read_row_ranges(table):
+    # [START bigtable_async_reads_row_ranges]
+    from google.cloud.bigtable.data import (
+        BigtableDataClientAsync,
+        ReadRowsQuery,
+        RowRange,
+    )
+
+    async def read_row_ranges(project_id, instance_id, table_id):
+        async with BigtableDataClientAsync(project=project_id) as client:
+            async with client.get_table(instance_id, table_id) as table:
+                range_1 = RowRange(
+                    start_key=b"phone#4c410523#20190501",
+                    end_key=b"phone#4c410523#201906201",
+                )
+                range_2 = RowRange(
+                    start_key=b"phone#5c10102#20190501",
+                    end_key=b"phone#5c10102#201906201",
+                )
+                query = ReadRowsQuery(row_ranges=[range_1, range_2])
+
+                async for row in await table.read_rows_stream(query):
+                    print(row)
+
+    # [END bigtable_async_reads_row_ranges]
+    await read_row_ranges(table.client.project, table.instance_id, table.table_id)

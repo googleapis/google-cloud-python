@@ -115,3 +115,8 @@ async def test_read_with_filter(table):
 @pytest.mark.asyncio
 async def test_execute_query(table):
     await data_snippets.execute_query(table)
+
+
+@pytest.mark.asyncio
+async def test_read_row_ranges(table):
+    await data_snippets.read_row_ranges(table)
