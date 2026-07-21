@@ -27,6 +27,7 @@ from google.cloud.logging_v2 import gapic_version as package_version
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
+from google.api_core.gapic_v1 import client_utils
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials             # type: ignore
 from google.auth.transport import mtls                            # type: ignore
@@ -97,38 +98,9 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
     """Service for configuring sinks used to route log entries."""
 
     @staticmethod
-    def _get_default_mtls_endpoint(api_endpoint) -> Optional[str]:
-        """Converts api endpoint to mTLS endpoint.
-
-        Convert "*.sandbox.googleapis.com" and "*.googleapis.com" to
-        "*.mtls.sandbox.googleapis.com" and "*.mtls.googleapis.com" respectively.
-        Args:
-            api_endpoint (Optional[str]): the api endpoint to convert.
-        Returns:
-            Optional[str]: converted mTLS api endpoint.
-        """
-        if not api_endpoint:
-            return api_endpoint
-
-        mtls_endpoint_re = re.compile(
-            r"(?P<name>[^.]+)(?P<mtls>\.mtls)?(?P<sandbox>\.sandbox)?(?P<googledomain>\.googleapis\.com)?"
-        )
-
-        m = mtls_endpoint_re.match(api_endpoint)
-        if m is None:
-            # Could not parse api_endpoint; return as-is.
-            return api_endpoint
-
-        name, mtls, sandbox, googledomain = m.groups()
-        if mtls or not googledomain:
-            return api_endpoint
-
-        if sandbox:
-            return api_endpoint.replace(
-                "sandbox.googleapis.com", "mtls.sandbox.googleapis.com"
-            )
-
-        return api_endpoint.replace(".googleapis.com", ".mtls.googleapis.com")
+    def _get_default_mtls_endpoint(api_endpoint: Optional[str]) -> Optional[str]:
+        """Converts api endpoint to mTLS endpoint."""
+        return client_utils.get_default_mtls_endpoint(api_endpoint)
 
     # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
     DEFAULT_ENDPOINT = "logging.googleapis.com"
@@ -446,53 +418,31 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         return client_cert_source
 
     @staticmethod
-    def _get_api_endpoint(api_override, client_cert_source, universe_domain, use_mtls_endpoint) -> str:
-        """Return the API endpoint used by the client.
-
-        Args:
-            api_override (str): The API endpoint override. If specified, this is always
-                the return value of this function and the other arguments are not used.
-            client_cert_source (bytes): The client certificate source used by the client.
-            universe_domain (str): The universe domain used by the client.
-            use_mtls_endpoint (str): How to use the mTLS endpoint, which depends also on the other parameters.
-                Possible values are "always", "auto", or "never".
-
-        Returns:
-            str: The API endpoint to be used by the client.
-        """
-        if api_override is not None:
-            api_endpoint = api_override
-        elif use_mtls_endpoint == "always" or (use_mtls_endpoint == "auto" and client_cert_source):
-            _default_universe = ConfigServiceV2Client._DEFAULT_UNIVERSE
-            if universe_domain != _default_universe:
-                raise MutualTLSChannelError(f"mTLS is not supported in any universe other than {_default_universe}.")
-            api_endpoint = ConfigServiceV2Client.DEFAULT_MTLS_ENDPOINT
-        else:
-            api_endpoint = ConfigServiceV2Client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=universe_domain)
-        return api_endpoint
+    def _get_api_endpoint(
+        api_override: Optional[str],
+        client_cert_source: Optional[Callable[[], Tuple[bytes, bytes]]],
+        universe_domain: str,
+        use_mtls_endpoint: str,
+    ) -> str:
+        """Return the API endpoint used by the client."""
+        return client_utils.get_api_endpoint(
+            api_override,
+            client_cert_source,
+            universe_domain,
+            use_mtls_endpoint,
+            ConfigServiceV2Client._DEFAULT_UNIVERSE,
+            ConfigServiceV2Client.DEFAULT_MTLS_ENDPOINT,
+            ConfigServiceV2Client._DEFAULT_ENDPOINT_TEMPLATE,
+        )
 
     @staticmethod
     def _get_universe_domain(client_universe_domain: Optional[str], universe_domain_env: Optional[str]) -> str:
-        """Return the universe domain used by the client.
-
-        Args:
-            client_universe_domain (Optional[str]): The universe domain configured via the client options.
-            universe_domain_env (Optional[str]): The universe domain configured via the "GOOGLE_CLOUD_UNIVERSE_DOMAIN" environment variable.
-
-        Returns:
-            str: The universe domain to be used by the client.
-
-        Raises:
-            ValueError: If the universe domain is an empty string.
-        """
-        universe_domain = ConfigServiceV2Client._DEFAULT_UNIVERSE
-        if client_universe_domain is not None:
-            universe_domain = client_universe_domain
-        elif universe_domain_env is not None:
-            universe_domain = universe_domain_env
-        if len(universe_domain.strip()) == 0:
-            raise ValueError("Universe Domain cannot be an empty string.")
-        return universe_domain
+        """Return the universe domain used by the client."""
+        return client_utils.get_universe_domain(
+            client_universe_domain,
+            universe_domain_env,
+            ConfigServiceV2Client._DEFAULT_UNIVERSE,
+        )
 
     def _validate_universe_domain(self):
         """Validates client's and credentials' universe domains are consistent.

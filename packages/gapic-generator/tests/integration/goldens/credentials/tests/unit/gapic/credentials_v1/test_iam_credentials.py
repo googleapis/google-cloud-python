@@ -268,41 +268,6 @@ def test__get_client_cert_source():
             assert IAMCredentialsClient._get_client_cert_source(None, True) is mock_default_cert_source
             assert IAMCredentialsClient._get_client_cert_source(mock_provided_cert_source, "true") is mock_provided_cert_source
 
-@mock.patch.object(IAMCredentialsClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(IAMCredentialsClient))
-@mock.patch.object(IAMCredentialsAsyncClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(IAMCredentialsAsyncClient))
-def test__get_api_endpoint():
-    api_override = "foo.com"
-    mock_client_cert_source = mock.Mock()
-    default_universe = IAMCredentialsClient._DEFAULT_UNIVERSE
-    default_endpoint = IAMCredentialsClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=default_universe)
-    mock_universe = "bar.com"
-    mock_endpoint = IAMCredentialsClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=mock_universe)
-
-    assert IAMCredentialsClient._get_api_endpoint(api_override, mock_client_cert_source, default_universe, "always") == api_override
-    assert IAMCredentialsClient._get_api_endpoint(None, mock_client_cert_source, default_universe, "auto") == IAMCredentialsClient.DEFAULT_MTLS_ENDPOINT
-    assert IAMCredentialsClient._get_api_endpoint(None, None, default_universe, "auto") == default_endpoint
-    assert IAMCredentialsClient._get_api_endpoint(None, None, default_universe, "always") == IAMCredentialsClient.DEFAULT_MTLS_ENDPOINT
-    assert IAMCredentialsClient._get_api_endpoint(None, mock_client_cert_source, default_universe, "always") == IAMCredentialsClient.DEFAULT_MTLS_ENDPOINT
-    assert IAMCredentialsClient._get_api_endpoint(None, None, mock_universe, "never") == mock_endpoint
-    assert IAMCredentialsClient._get_api_endpoint(None, None, default_universe, "never") == default_endpoint
-
-    with pytest.raises(MutualTLSChannelError) as excinfo:
-        IAMCredentialsClient._get_api_endpoint(None, mock_client_cert_source, mock_universe, "auto")
-    assert str(excinfo.value) == "mTLS is not supported in any universe other than googleapis.com."
-
-
-def test__get_universe_domain():
-    client_universe_domain = "foo.com"
-    universe_domain_env = "bar.com"
-
-    assert IAMCredentialsClient._get_universe_domain(client_universe_domain, universe_domain_env) == client_universe_domain
-    assert IAMCredentialsClient._get_universe_domain(None, universe_domain_env) == universe_domain_env
-    assert IAMCredentialsClient._get_universe_domain(None, None) == IAMCredentialsClient._DEFAULT_UNIVERSE
-
-    with pytest.raises(ValueError) as excinfo:
-        IAMCredentialsClient._get_universe_domain("", None)
-    assert str(excinfo.value) == "Universe Domain cannot be an empty string."
-
 @pytest.mark.parametrize("error_code,cred_info_json,show_cred_info", [
     (401, CRED_INFO_JSON, True),
     (403, CRED_INFO_JSON, True),
