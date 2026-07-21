@@ -117,12 +117,11 @@ class _GapicCallable(object):
         self._timeout = timeout
         self._compression = compression
         # Pre-extract the x-goog-api-client header from the initialized metadata.
-        x_goog_api_client, remaining = _extract_metrics_header(metadata)
+        self._x_goog_api_client, remaining = _extract_metrics_header(metadata)
         self._static_metadata = tuple(remaining)
-        self._x_goog_api_client = x_goog_api_client
-        if x_goog_api_client:
+        if self._x_goog_api_client:
             self._default_metadata = (
-                (client_info.METRICS_METADATA_KEY, x_goog_api_client),
+                (client_info.METRICS_METADATA_KEY, self._x_goog_api_client),
                 *self._static_metadata,
             )
         else:
