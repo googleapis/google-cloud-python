@@ -418,9 +418,6 @@ def _run_system_test_logic(session, test_type):
             "--reruns=3",
             "--reruns-delay=3",
             "--only-rerun=Exceeded rate limits",
-            "--only-rerun=Already Exists",
-            "--only-rerun=Not found",
-            "--only-rerun=Cannot execute DML over a non-existent table",
             "--only-rerun=Job exceeded rate limits",
             test_path,
             *session.posargs,
@@ -437,7 +434,7 @@ def _run_system_test_logic(session, test_type):
 
 
 @nox.session(python="3.12")
-@nox.parametrize("test_type", ["system", "system_noextras", "compliance"])
+@nox.parametrize("test_type", ["system", "compliance"])
 @_calculate_duration
 def system(session, test_type):
     """Run the system test suite."""
