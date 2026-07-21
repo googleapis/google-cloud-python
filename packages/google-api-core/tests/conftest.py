@@ -25,7 +25,6 @@ def mock_mtls_env():
         os.environ,
         {
             "GOOGLE_API_USE_CLIENT_CERTIFICATE": "false",
-            "CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE": "false",
         },
     ):
         yield
