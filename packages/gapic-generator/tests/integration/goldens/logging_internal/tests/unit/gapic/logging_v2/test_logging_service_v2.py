@@ -270,6 +270,41 @@ def test__get_client_cert_source():
             assert LoggingServiceV2Client._get_client_cert_source(None, True) is mock_default_cert_source
             assert LoggingServiceV2Client._get_client_cert_source(mock_provided_cert_source, "true") is mock_provided_cert_source
 
+@mock.patch.object(LoggingServiceV2Client, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(LoggingServiceV2Client))
+@mock.patch.object(LoggingServiceV2AsyncClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(LoggingServiceV2AsyncClient))
+def test__get_api_endpoint():
+    api_override = "foo.com"
+    mock_client_cert_source = mock.Mock()
+    default_universe = LoggingServiceV2Client._DEFAULT_UNIVERSE
+    default_endpoint = LoggingServiceV2Client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=default_universe)
+    mock_universe = "bar.com"
+    mock_endpoint = LoggingServiceV2Client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=mock_universe)
+
+    assert LoggingServiceV2Client._get_api_endpoint(api_override, mock_client_cert_source, default_universe, "always") == api_override
+    assert LoggingServiceV2Client._get_api_endpoint(None, mock_client_cert_source, default_universe, "auto") == LoggingServiceV2Client.DEFAULT_MTLS_ENDPOINT
+    assert LoggingServiceV2Client._get_api_endpoint(None, None, default_universe, "auto") == default_endpoint
+    assert LoggingServiceV2Client._get_api_endpoint(None, None, default_universe, "always") == LoggingServiceV2Client.DEFAULT_MTLS_ENDPOINT
+    assert LoggingServiceV2Client._get_api_endpoint(None, mock_client_cert_source, default_universe, "always") == LoggingServiceV2Client.DEFAULT_MTLS_ENDPOINT
+    assert LoggingServiceV2Client._get_api_endpoint(None, None, mock_universe, "never") == mock_endpoint
+    assert LoggingServiceV2Client._get_api_endpoint(None, None, default_universe, "never") == default_endpoint
+
+    with pytest.raises(MutualTLSChannelError) as excinfo:
+        LoggingServiceV2Client._get_api_endpoint(None, mock_client_cert_source, mock_universe, "auto")
+    assert str(excinfo.value) == "mTLS is not supported in any universe other than googleapis.com."
+
+
+def test__get_universe_domain():
+    client_universe_domain = "foo.com"
+    universe_domain_env = "bar.com"
+
+    assert LoggingServiceV2Client._get_universe_domain(client_universe_domain, universe_domain_env) == client_universe_domain
+    assert LoggingServiceV2Client._get_universe_domain(None, universe_domain_env) == universe_domain_env
+    assert LoggingServiceV2Client._get_universe_domain(None, None) == LoggingServiceV2Client._DEFAULT_UNIVERSE
+
+    with pytest.raises(ValueError) as excinfo:
+        LoggingServiceV2Client._get_universe_domain("", None)
+    assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
 @pytest.mark.parametrize("error_code,cred_info_json,show_cred_info", [
     (401, CRED_INFO_JSON, True),
     (403, CRED_INFO_JSON, True),

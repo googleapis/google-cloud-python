@@ -1,8 +1,17 @@
 # {% include '_license.j2' %}
 
+"""A compatibility module for older versions of google-api-core."""
+
+import functools
+import json
+import operator
+import os
 import re
-from typing import Optional, Callable, Tuple, Union
+import uuid
+from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 from google.auth.exceptions import MutualTLSChannelError
+import google.protobuf.message
+
 
 try:
     from google.api_core.universe import (
@@ -11,8 +20,7 @@ try:
         get_universe_domain,
     )
 except ImportError:
-    # TODO: Remove these fallbacks when google-api-core >= 2.18.0 is the minimum required version.
-
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/17813): Remove these fallbacks when google-api-core >= 2.18.0 is the minimum required version.
     def get_default_mtls_endpoint(api_endpoint: Optional[str]) -> Optional[str]:
         """Converts api endpoint to mTLS endpoint."""
         if not api_endpoint:
@@ -74,3 +82,189 @@ except ImportError:
         if len(universe_domain.strip()) == 0:
             raise ValueError("Universe Domain cannot be an empty string.") 
         return universe_domain
+
+
+try:
+    from google.api_core.gapic_v1.config import (
+        use_client_cert_effective,
+        get_client_cert_source,
+        read_environment_variables,
+    )
+except ImportError:
+    from google.auth.transport import mtls  # type: ignore
+
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/17813): Remove these fallbacks when google-api-core >= 2.18.0 is the minimum required version.
+
+    def use_client_cert_effective() -> bool:
+        """Returns whether client certificate should be used for mTLS."""
+        if hasattr(mtls, "should_use_client_cert"):
+            return mtls.should_use_client_cert()
+        else:
+            use_client_cert_str = os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false").lower()
+            if use_client_cert_str not in ("true", "false"):
+                raise ValueError(
+                    "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be"
+                    " either `true` or `false`"
+                )
+            return use_client_cert_str == "true"
+
+    def get_client_cert_source(
+        provided_cert_source: Optional[Callable[[], Tuple[bytes, bytes]]],
+        use_cert_flag: bool,
+    ) -> Optional[Callable[[], Tuple[bytes, bytes]]]:
+        """Return the client cert source to be used by the client."""
+        client_cert_source = None
+        if use_cert_flag:
+            if provided_cert_source:
+                client_cert_source = provided_cert_source
+            elif (
+                hasattr(mtls, "has_default_client_cert_source")
+                and mtls.has_default_client_cert_source()
+            ):
+                client_cert_source = mtls.default_client_cert_source()
+            else:
+                raise ValueError(
+                    "Client certificate is required for mTLS, but no client certificate source was provided or found."
+                )
+        return client_cert_source
+
+    def read_environment_variables() -> Tuple[bool, str, Optional[str]]:
+        """Returns the environment variables used by the client."""
+        use_client_cert = use_client_cert_effective()
+        use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto").lower()
+        universe_domain_env = os.getenv("GOOGLE_CLOUD_UNIVERSE_DOMAIN")
+        if use_mtls_endpoint not in ("auto", "never", "always"):
+            raise MutualTLSChannelError(
+                "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` "
+                "must be `never`, `auto` or `always`"
+            )
+        return use_client_cert, use_mtls_endpoint, universe_domain_env
+
+
+try:
+    from google.api_core.gapic_v1.request import setup_request_id  # type: ignore
+except ImportError:
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/17813): Remove this fallback when google-api-core >= 2.26.0 is the minimum required version.
+    def setup_request_id(request, field_name: str, is_proto3_optional: bool):
+        """Populate a UUID4 field in the request if it is not already set.
+
+        Args:
+            request (Union[google.protobuf.message.Message, dict]): The request object.
+            field_name (str): The name of the field to populate.
+            is_proto3_optional (bool): Whether the field is proto3 optional.
+        """
+        request_id_val = str(uuid.uuid4())
+        if request is None:
+            return
+
+        if isinstance(request, dict):
+            if is_proto3_optional:
+                if field_name not in request or request[field_name] is None:
+                    request[field_name] = request_id_val
+            elif not request.get(field_name):
+                request[field_name] = request_id_val
+            return
+
+        if is_proto3_optional:
+            try:
+                # Pure protobuf messages
+                if not request.HasField(field_name):
+                    setattr(request, field_name, request_id_val)
+            except (AttributeError, ValueError):
+                # Proto-plus messages or other objects
+                if getattr(request, field_name, None) is None:
+                    setattr(request, field_name, request_id_val)
+        else:
+            if not getattr(request, field_name, None):
+                setattr(request, field_name, request_id_val)
+
+
+try:
+    from google.api_core.rest_helpers import (
+        flatten_query_params,
+        transcode_request,
+    )
+except ImportError:  # pragma: NO COVER
+    # TODO: Remove these fallbacks when google-api-core >= 2.18.0 is the minimum required version.
+    from google.protobuf import json_format  # type: ignore
+    from google.api_core import path_template  # type: ignore
+
+    def flatten_query_params(obj, strict=False):  # pragma: NO COVER
+        if obj is not None and not isinstance(obj, dict):
+            raise TypeError("flatten_query_params must be called with dict object")
+        return _flatten(obj, key_path=[], strict=strict)
+
+    def _flatten(obj, key_path, strict=False):  # pragma: NO COVER
+        if obj is None:
+            return []
+        if isinstance(obj, dict):
+            return _flatten_dict(obj, key_path=key_path, strict=strict)
+        if isinstance(obj, list):
+            return _flatten_list(obj, key_path=key_path, strict=strict)
+        return _flatten_value(obj, key_path=key_path, strict=strict)
+
+    def _is_primitive_value(obj):  # pragma: NO COVER
+        if obj is None:
+            return False
+        if isinstance(obj, (list, dict)):
+            raise ValueError("query params may not contain repeated dicts or lists")
+        return True
+
+    def _flatten_value(obj, key_path, strict=False):  # pragma: NO COVER
+        return [(".".join(key_path), _canonicalize(obj, strict=strict))]
+
+    def _flatten_dict(obj, key_path, strict=False):  # pragma: NO COVER
+        items = (
+            _flatten(value, key_path=key_path + [key], strict=strict)
+            for key, value in obj.items()
+        )
+        return functools.reduce(operator.concat, items, [])
+
+    def _flatten_list(elems, key_path, strict=False):  # pragma: NO COVER
+        items = (
+            _flatten_value(elem, key_path=key_path, strict=strict)
+            for elem in elems
+            if _is_primitive_value(elem)
+        )
+        return functools.reduce(operator.concat, items, [])
+
+    def _canonicalize(obj, strict=False):  # pragma: NO COVER
+        if strict:
+            value = str(obj)
+            if isinstance(obj, bool):
+                value = value.lower()
+            return value
+        return obj
+
+    def transcode_request(  # pragma: NO COVER
+        http_options: List[Dict[str, str]],
+        request: Any,
+        required_fields_default_values: Optional[Dict[str, Any]] = None,
+        rest_numeric_enums: bool = False,
+    ) -> Tuple[Dict[str, Any], Optional[str], Dict[str, Any]]:
+        pb_request = getattr(request, "_pb", request)
+        transcoded_request = path_template.transcode(http_options, pb_request)
+
+        body_json = None
+        if transcoded_request.get("body") is not None:
+            body_json = json_format.MessageToJson(
+                transcoded_request["body"],
+                use_integers_for_enums=rest_numeric_enums,
+            )
+
+        query_params_json = {}
+        if transcoded_request.get("query_params") is not None:
+            query_params_json = json.loads(json_format.MessageToJson(
+                transcoded_request["query_params"],
+                use_integers_for_enums=rest_numeric_enums,
+            ))
+
+        if required_fields_default_values:
+            for k, v in required_fields_default_values.items():
+                if k not in query_params_json:
+                    query_params_json[k] = v
+
+        if rest_numeric_enums:
+            query_params_json["$alt"] = "json;enum-encoding=int"
+
+        return transcoded_request, body_json, query_params_json
