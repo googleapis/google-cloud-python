@@ -61,9 +61,9 @@ extras = {
     # experimental in this SDK. More info in b/465352227
     "grpc": [
         "google-api-core[grpc] >= 2.27.0, < 3.0.0",
-        "grpcio >= 1.59.0, < 2.0.0; python_version < '3.14'",
+        "grpcio >= 1.59.0, < 2.0.0",
         "grpcio >= 1.75.1, < 2.0.0; python_version >= '3.14'",
-        "grpcio-status >= 1.59.0, < 2.0.0; python_version < '3.14'",
+        "grpcio-status >= 1.59.0, < 2.0.0",
         "grpcio-status >= 1.75.1, < 2.0.0; python_version >= '3.14'",
         "proto-plus >= 1.22.3, <2.0.0; python_version < '3.13'",
         "proto-plus >= 1.25.0, <2.0.0; python_version >= '3.13'",

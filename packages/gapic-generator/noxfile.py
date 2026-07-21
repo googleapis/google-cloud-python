@@ -14,7 +14,7 @@
 
 # Helpful notes for local usage:
 #   unset PYENV_VERSION
-#   pyenv local 3.14.1 3.13.10 3.12.11 3.11.4 3.10.12 3.9.17
+#   pyenv local 3.14.1 3.13.10 3.12.11 3.11.4 3.10.12
 #   PIP_INDEX_URL=https://pypi.org/simple nox
 
 from __future__ import absolute_import
@@ -58,7 +58,6 @@ NEWEST_PYTHON = ALL_PYTHON[-2]
 @nox.session(python=ALL_PYTHON)
 def unit(session):
     """Run the unit test suite."""
-
     session.install(
         # TODO(https://github.com/googleapis/gapic-generator-python/issues/2478):
         # Temporarily pin coverage to 7.11.0

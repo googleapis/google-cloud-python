@@ -32,7 +32,6 @@ RUFF_VERSION = "ruff==0.14.14"
 LINT_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
 
 UNIT_TEST_PYTHON_VERSIONS: List[str] = [
-    "3.9",
     "3.10",
     "3.11",
     "3.12",
@@ -56,7 +55,6 @@ UNIT_TEST_EXTRAS: List[str] = []
 UNIT_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {}
 
 SYSTEM_TEST_PYTHON_VERSIONS: List[str] = [
-    "3.9",
     "3.10",
     "3.11",
     "3.12",
