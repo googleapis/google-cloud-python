@@ -12,13 +12,14 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
+"""A compatibility module for older versions of google-api-core."""
 
 import uuid
 
 try:
     from google.api_core.gapic_v1.request import setup_request_id  # type: ignore
 except ImportError:
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/17813): Remove this fallback when google-api-core >= 2.26.0 is the minimum required version.
     def setup_request_id(request, field_name: str, is_proto3_optional: bool):
         """Populate a UUID4 field in the request if it is not already set.
 
