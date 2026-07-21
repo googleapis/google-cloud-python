@@ -6658,3 +6658,17 @@ def ManyFieldsFactory():
         unused = model.FloatProperty()
 
     return ManyFields
+
+
+def test_model_set_projection_branches():
+    class Child(model.Model):
+        val = model.StringProperty()
+
+    class Parent(model.Model):
+        child = model.StructuredProperty(Child)
+        children = model.StructuredProperty(Child, repeated=True)
+
+    parent = Parent(child=Child(val="a"), children=[Child(val="b")])
+    parent._set_projection(["child.val", "children.val", "nonexistent.subprop"])
+    parent._properties = None
+    parent._set_projection(["child.val"])
