@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/proto-plus/#history
 
+## [1.28.2](https://github.com/googleapis/google-cloud-python/compare/proto-plus-v1.28.1...proto-plus-v1.28.2) (2026-07-21)
+
+
+### Bug Fixes
+
+* **proto-plus:** make Marshal thread-safe and handle race conditions ([#17774](https://github.com/googleapis/google-cloud-python/issues/17774)) ([0719f1e](https://github.com/googleapis/google-cloud-python/commit/0719f1ec1d4146dbfc96d24c95b7ccafd31ab447)), closes [#15100](https://github.com/googleapis/google-cloud-python/issues/15100)
+
 ## [1.28.1](https://github.com/googleapis/google-cloud-python/compare/proto-plus-v1.28.0...proto-plus-v1.28.1) (2026-07-07)
 
 

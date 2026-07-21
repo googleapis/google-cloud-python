@@ -74,7 +74,7 @@ libraries:
     python:
       library_type: INTEGRATION
   - name: gapic-generator
-    version: 1.37.0
+    version: 1.37.1
     python:
       library_type: CORE
   - name: gcp-sphinx-docfx-yaml
@@ -134,7 +134,7 @@ libraries:
       metadata_name_override: analyticsdata
       default_version: v1beta
   - name: google-api-core
-    version: 2.32.0
+    version: 2.33.0
     python:
       library_type: CORE
   - name: google-apps-card
@@ -227,7 +227,7 @@ libraries:
       metadata_name_override: area120tables
       default_version: v1alpha1
   - name: google-auth
-    version: 2.56.1
+    version: 2.56.2
     python:
       library_type: AUTH
   - name: google-auth-httplib2
@@ -2311,7 +2311,7 @@ libraries:
           - proto-plus-deps=google.geo.type
       default_version: v4
   - name: google-maps-isochrones
-    version: 0.0.0
+    version: 0.1.0
     apis:
       - path: google/maps/isochrones/v1
     copyright_year: "2026"
@@ -2589,11 +2589,11 @@ libraries:
     python:
       library_type: INTEGRATION
   - name: proto-plus
-    version: 1.28.1
+    version: 1.28.2
     python:
       library_type: CORE
   - name: sqlalchemy-bigquery
-    version: 1.17.0
+    version: 1.17.1
     python:
       library_type: INTEGRATION
   - name: sqlalchemy-spanner
