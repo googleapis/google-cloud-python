@@ -5715,167 +5715,12 @@ class TestRowIterator(unittest.TestCase):
 
         self.assertEqual([v.__class__.__name__ for v in df.g], ["Point"])
 
-    def test_to_dataframe_delegated_when_supported_no_range_types(self):
-        import sys
-
-        db_dtypes = pytest.importorskip("db_dtypes")
-        pandas = pytest.importorskip("pandas")
-        mock_pandas_gbq = mock.Mock()
-        mock_pandas_gbq.pandas.from_row_iterator.return_value = mock.sentinel.dataframe
-        mock_pandas_gbq.__version__ = "1.0.0"
-
-        with mock.patch(
-            "google.cloud.bigquery._versions_helpers.PandasGBQVersions.is_delegation_supported",
-            new_callable=mock.PropertyMock,
-            return_value=True,
-        ):
-            with mock.patch(
-                "google.cloud.bigquery._versions_helpers.SUPPORTS_RANGE_PYARROW",
-                False,
-            ):
-                with mock.patch.dict(sys.modules, {"pandas_gbq": mock_pandas_gbq}):
-                    row_iterator = self._make_one_from_data(
-                        (("name", "STRING"),), (("foo",),)
-                    )
-                    df = row_iterator.to_dataframe(
-                        progress_bar_type="tqdm", timeout=5.0
-                    )
-
-                    mock_pandas_gbq.pandas.from_row_iterator.assert_called_once_with(
-                        row_iterator,
-                        bqstorage_client=None,
-                        dtypes={},
-                        progress_bar_type="tqdm",
-                        create_bqstorage_client=True,
-                        geography_as_object=False,
-                        bool_dtype=pandas.BooleanDtype(),
-                        int_dtype=pandas.Int64Dtype(),
-                        float_dtype=None,
-                        string_dtype=None,
-                        date_dtype=DefaultPandasDTypes.DATE_DTYPE,
-                        datetime_dtype=None,
-                        time_dtype=db_dtypes.TimeDtype(),
-                        timestamp_dtype=None,
-                        range_date_dtype=None,
-                        range_datetime_dtype=None,
-                        range_timestamp_dtype=None,
-                        timeout=5.0,
-                    )
-                    self.assertEqual(df, mock.sentinel.dataframe)
-
-    def test_to_dataframe_delegated_when_supported_with_range_types(self):
-        import sys
-
-        db_dtypes = pytest.importorskip("db_dtypes")
-        pandas = pytest.importorskip("pandas")
-        if not hasattr(pandas, "ArrowDtype"):
-            pytest.skip("pandas.ArrowDtype is not available in this environment.")
-        pyarrow = pytest.importorskip("pyarrow")
-        mock_pandas_gbq = mock.Mock()
-        mock_pandas_gbq.pandas.from_row_iterator.return_value = mock.sentinel.dataframe
-        mock_pandas_gbq.__version__ = "1.0.0"
-
-        with mock.patch(
-            "google.cloud.bigquery._versions_helpers.PandasGBQVersions.is_delegation_supported",
-            new_callable=mock.PropertyMock,
-            return_value=True,
-        ):
-            with mock.patch(
-                "google.cloud.bigquery._versions_helpers.SUPPORTS_RANGE_PYARROW",
-                True,
-            ):
-                with mock.patch.dict(sys.modules, {"pandas_gbq": mock_pandas_gbq}):
-                    row_iterator = self._make_one_from_data(
-                        (("name", "STRING"),), (("foo",),)
-                    )
-                    df = row_iterator.to_dataframe(
-                        progress_bar_type="tqdm", timeout=5.0
-                    )
-
-                    expected_range_date = pandas.ArrowDtype(
-                        pyarrow.struct(
-                            [("start", pyarrow.date32()), ("end", pyarrow.date32())]
-                        )
-                    )
-                    expected_range_datetime = pandas.ArrowDtype(
-                        pyarrow.struct(
-                            [
-                                ("start", pyarrow.timestamp("us")),
-                                ("end", pyarrow.timestamp("us")),
-                            ]
-                        )
-                    )
-                    expected_range_timestamp = pandas.ArrowDtype(
-                        pyarrow.struct(
-                            [
-                                ("start", pyarrow.timestamp("us", tz="UTC")),
-                                ("end", pyarrow.timestamp("us", tz="UTC")),
-                            ]
-                        )
-                    )
-
-                    mock_pandas_gbq.pandas.from_row_iterator.assert_called_once_with(
-                        row_iterator,
-                        bqstorage_client=None,
-                        dtypes={},
-                        progress_bar_type="tqdm",
-                        create_bqstorage_client=True,
-                        geography_as_object=False,
-                        bool_dtype=pandas.BooleanDtype(),
-                        int_dtype=pandas.Int64Dtype(),
-                        float_dtype=None,
-                        string_dtype=None,
-                        date_dtype=DefaultPandasDTypes.DATE_DTYPE,
-                        datetime_dtype=None,
-                        time_dtype=db_dtypes.TimeDtype(),
-                        timestamp_dtype=None,
-                        range_date_dtype=expected_range_date,
-                        range_datetime_dtype=expected_range_datetime,
-                        range_timestamp_dtype=expected_range_timestamp,
-                        timeout=5.0,
-                    )
-                    self.assertEqual(df, mock.sentinel.dataframe)
-
-    def test_to_dataframe_not_delegated_when_unsupported(self):
-        import sys
-
-        pandas = pytest.importorskip("pandas")
-        pytest.importorskip("pyarrow")
-        mock_pandas_gbq = mock.Mock()
-
-        with mock.patch(
-            "google.cloud.bigquery._versions_helpers.PandasGBQVersions.is_delegation_supported",
-            new_callable=mock.PropertyMock,
-            return_value=False,
-        ):
-            with mock.patch.dict(sys.modules, {"pandas_gbq": mock_pandas_gbq}):
-                row_iterator = self._make_one_from_data(
-                    (("name", "STRING"),), (("foo",),)
-                )
-
-                with warnings.catch_warnings(record=True) as warned:
-                    warnings.simplefilter("always")
-                    df = row_iterator.to_dataframe(create_bqstorage_client=False)
-
-                mock_pandas_gbq.pandas.from_row_iterator.assert_not_called()
-                self.assertIsInstance(df, pandas.DataFrame)
-                self.assertEqual(df.name.tolist(), ["foo"])
-
-                deprecation_warnings = [
-                    w
-                    for w in warned
-                    if issubclass(w.category, PendingDeprecationWarning)
-                    and "pandas-gbq" in str(w.message)
-                ]
-                self.assertEqual(len(deprecation_warnings), 1)
-
     def test_to_dataframe_delegated_updates_user_agent(self):
         import sys
 
         pytest.importorskip("db_dtypes")
-        pytest.importorskip("pandas")
+        pandas = pytest.importorskip("pandas")
         mock_pandas_gbq = mock.Mock()
-        mock_pandas_gbq.pandas.from_row_iterator.return_value = mock.sentinel.dataframe
         mock_pandas_gbq.__version__ = "1.0.0"
 
         mock_client_info = mock.Mock()
@@ -5901,7 +5746,7 @@ class TestRowIterator(unittest.TestCase):
                     df = row_iterator.to_dataframe(
                         progress_bar_type="tqdm", timeout=5.0
                     )
-                    self.assertEqual(df, mock.sentinel.dataframe)
+                    self.assertIsInstance(df, pandas.DataFrame)
                     self.assertEqual(
                         mock_client_info.user_agent,
                         "gl-python/3.10.0 pandas-gbq/1.0.0",
@@ -5911,9 +5756,8 @@ class TestRowIterator(unittest.TestCase):
         import sys
 
         pytest.importorskip("db_dtypes")
-        pytest.importorskip("pandas")
+        pandas = pytest.importorskip("pandas")
         mock_pandas_gbq = mock.Mock()
-        mock_pandas_gbq.pandas.from_row_iterator.return_value = mock.sentinel.dataframe
         mock_pandas_gbq.__version__ = "1.0.0"
 
         mock_client_info = mock.Mock()
@@ -5939,7 +5783,7 @@ class TestRowIterator(unittest.TestCase):
                     df = row_iterator.to_dataframe(
                         progress_bar_type="tqdm", timeout=5.0
                     )
-                    self.assertEqual(df, mock.sentinel.dataframe)
+                    self.assertIsInstance(df, pandas.DataFrame)
                     self.assertEqual(
                         mock_client_info.user_agent,
                         "gl-python/3.10.0 pandas-gbq/1.0.0",
@@ -5949,9 +5793,8 @@ class TestRowIterator(unittest.TestCase):
         import sys
 
         pytest.importorskip("db_dtypes")
-        pytest.importorskip("pandas")
+        pandas = pytest.importorskip("pandas")
         mock_pandas_gbq = mock.Mock()
-        mock_pandas_gbq.pandas.from_row_iterator.return_value = mock.sentinel.dataframe
         mock_pandas_gbq.__version__ = "1.0.0"
 
         mock_client = _mock_client()
@@ -5974,15 +5817,14 @@ class TestRowIterator(unittest.TestCase):
                     df = row_iterator.to_dataframe(
                         progress_bar_type="tqdm", timeout=5.0
                     )
-                    self.assertEqual(df, mock.sentinel.dataframe)
+                    self.assertIsInstance(df, pandas.DataFrame)
 
     def test_to_dataframe_delegated_when_user_agent_is_none(self):
         import sys
 
         pytest.importorskip("db_dtypes")
-        pytest.importorskip("pandas")
+        pandas = pytest.importorskip("pandas")
         mock_pandas_gbq = mock.Mock()
-        mock_pandas_gbq.pandas.from_row_iterator.return_value = mock.sentinel.dataframe
         mock_pandas_gbq.__version__ = "1.0.0"
 
         mock_client_info = mock.Mock()
@@ -6008,7 +5850,7 @@ class TestRowIterator(unittest.TestCase):
                     df = row_iterator.to_dataframe(
                         progress_bar_type="tqdm", timeout=5.0
                     )
-                    self.assertEqual(df, mock.sentinel.dataframe)
+                    self.assertIsInstance(df, pandas.DataFrame)
                     self.assertEqual(
                         mock_client_info.user_agent,
                         "pandas-gbq/1.0.0",

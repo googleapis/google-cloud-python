@@ -2711,14 +2711,6 @@ class RowIterator(HTTPIterator):
                 is not supported dtype.
 
         """
-        if not _versions_helpers.PANDAS_GBQ_VERSIONS.is_delegation_supported:
-            warnings.warn(
-                "Retrieving dataframes via the core client is deprecated. "
-                "Please install 'pandas-gbq' for the new high-performance backend.",
-                PendingDeprecationWarning,
-                stacklevel=2,
-            )
-
         _pandas_helpers.verify_pandas_imports()
 
         if geography_as_object and shapely is None:
@@ -2828,26 +2820,6 @@ class RowIterator(HTTPIterator):
                             f"{ua} pandas-gbq/{pandas_gbq_version}".strip()
                         )
 
-            return pandas_gbq.pandas.from_row_iterator(
-                self,
-                bqstorage_client=bqstorage_client,
-                dtypes=dtypes,
-                progress_bar_type=progress_bar_type,
-                create_bqstorage_client=create_bqstorage_client,
-                geography_as_object=geography_as_object,
-                bool_dtype=bool_dtype,
-                int_dtype=int_dtype,
-                float_dtype=float_dtype,
-                string_dtype=string_dtype,
-                date_dtype=date_dtype,
-                datetime_dtype=datetime_dtype,
-                time_dtype=time_dtype,
-                timestamp_dtype=timestamp_dtype,
-                range_date_dtype=range_date_dtype,
-                range_datetime_dtype=range_datetime_dtype,
-                range_timestamp_dtype=range_timestamp_dtype,
-                timeout=timeout,
-            )
 
         record_batch = self.to_arrow(
             progress_bar_type=progress_bar_type,
