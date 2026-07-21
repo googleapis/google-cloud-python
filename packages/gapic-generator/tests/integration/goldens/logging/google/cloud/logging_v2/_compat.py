@@ -45,7 +45,7 @@ except ImportError:  # pragma: NO COVER
                     setattr(request, field_name, request_id_val)
             except (AttributeError, ValueError):
                 # Proto-plus messages or other objects
-                if getattr(request, field_name, None) is None:
+                if not getattr(request, field_name, None):
                     setattr(request, field_name, request_id_val)
         else:
             if not getattr(request, field_name, None):
