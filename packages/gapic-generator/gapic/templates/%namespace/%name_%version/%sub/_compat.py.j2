@@ -1,0 +1,61 @@
+# {% include '_license.j2' %}
+
+import os
+from typing import Optional, Callable, Tuple, Union
+from google.auth.exceptions import MutualTLSChannelError
+
+try:
+    from google.api_core.gapic_v1.client_utils import (
+        use_client_cert_effective,
+        get_client_cert_source,
+        read_environment_variables,
+    )
+except ImportError:
+    from google.auth.transport import mtls  # type: ignore
+
+    # TODO: Remove these fallbacks when google-api-core >= 2.18.0 is the minimum required version.
+
+    def use_client_cert_effective() -> bool:
+        """Returns whether client certificate should be used for mTLS."""
+        if hasattr(mtls, "should_use_client_cert"):
+            return mtls.should_use_client_cert()
+        else:
+            use_client_cert_str = os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false").lower()
+            if use_client_cert_str not in ("true", "false"):
+                raise ValueError(
+                    "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be"
+                    " either `true` or `false`"
+                )
+            return use_client_cert_str == "true"
+
+    def get_client_cert_source(
+        provided_cert_source: Optional[Callable[[], Tuple[bytes, bytes]]],
+        use_cert_flag: bool,
+    ) -> Optional[Callable[[], Tuple[bytes, bytes]]]:
+        """Return the client cert source to be used by the client."""
+        client_cert_source = None
+        if use_cert_flag:
+            if provided_cert_source:
+                client_cert_source = provided_cert_source
+            elif (
+                hasattr(mtls, "has_default_client_cert_source")
+                and mtls.has_default_client_cert_source()
+            ):
+                client_cert_source = mtls.default_client_cert_source()
+            else:
+                raise ValueError(
+                    "Client certificate is required for mTLS, but no client certificate source was provided or found."
+                )
+        return client_cert_source
+
+    def read_environment_variables() -> Tuple[bool, str, Optional[str]]:
+        """Returns the environment variables used by the client."""
+        use_client_cert = use_client_cert_effective()
+        use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto").lower()
+        universe_domain_env = os.getenv("GOOGLE_CLOUD_UNIVERSE_DOMAIN")
+        if use_mtls_endpoint not in ("auto", "never", "always"):
+            raise MutualTLSChannelError(
+                "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` "
+                "must be `never`, `auto` or `always`"
+            )
+        return use_client_cert, use_mtls_endpoint, universe_domain_env
