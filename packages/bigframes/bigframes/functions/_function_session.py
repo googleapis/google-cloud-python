@@ -399,7 +399,7 @@ class FunctionSession:
                 the cloud function to return a response. See for more details
                 https://cloud.google.com/functions/docs/configuring/timeout.
                 Please note that even though the cloud function (2nd gen) itself
-                allows seeting up to 60 minutes of timeout, BigQuery remote
+                allows setting up to 60 minutes of timeout, BigQuery remote
                 function can wait only up to 20 minutes, see for more details
                 https://cloud.google.com/bigquery/quotas#remote_function_limits.
                 By default BigQuery DataFrames uses a 10 minute timeout. `None`
