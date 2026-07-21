@@ -15,6 +15,9 @@ except ImportError:  # pragma: NO COVER
             is_proto3_optional (bool): Whether the field is proto3 optional.
         """
         request_id_val = str(uuid.uuid4())
+        if request is None:
+            return
+
         if isinstance(request, dict):
             if is_proto3_optional:
                 if field_name not in request or request[field_name] is None:
@@ -30,7 +33,7 @@ except ImportError:  # pragma: NO COVER
                     setattr(request, field_name, request_id_val)
             except (AttributeError, ValueError):
                 # Proto-plus messages or other objects
-                if not getattr(request, field_name, None):
+                if getattr(request, field_name, None) is None:
                     setattr(request, field_name, request_id_val)
         else:
             if not getattr(request, field_name, None):
