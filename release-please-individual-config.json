@@ -46,9 +46,6 @@
     },
     "packages/pandas-gbq": {
       "component": "pandas-gbq"
-    },
-    "packages/sqlalchemy-bigquery": {
-      "component": "sqlalchemy-bigquery"
     }
   },
   "release-type": "python-librarian",
