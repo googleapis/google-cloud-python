@@ -92,6 +92,7 @@ SYSTEM_TEST_PYTHON_VERSIONS: List[str] = ALL_PYTHON
 SYSTEM_TEST_STANDARD_DEPENDENCIES: List[str] = [
     "mock",
     "pytest",
+    "pytest-xdist",
     "google-cloud-testutils",
 ]
 SYSTEM_TEST_EXTERNAL_DEPENDENCIES: List[str] = []
@@ -392,6 +393,7 @@ def _run_system_test_logic(session, test_type):
         session.install(
             "mock",
             "pytest",
+            "pytest-xdist",
             "pytest-rerunfailures",
             "google-cloud-testutils",
             "-c",
@@ -413,6 +415,8 @@ def _run_system_test_logic(session, test_type):
     if test_type == "compliance":
         session.run(
             "py.test",
+            "-n",
+            "auto",
             "-vv",
             f"--junitxml=compliance_{session.python}_sponge_log.xml",
             "--reruns=3",
@@ -426,6 +430,8 @@ def _run_system_test_logic(session, test_type):
     else:
         session.run(
             "py.test",
+            "-n",
+            "auto",
             "--quiet",
             f"--junitxml=system_{session.python}_sponge_log.xml",
             test_path,

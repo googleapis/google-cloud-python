@@ -73,7 +73,8 @@ def bigquery_dataset(
     bigquery_client: bigquery.Client, bigquery_schema: List[bigquery.SchemaField]
 ):
     project_id = bigquery_client.project
-    dataset_id = prefixer.create_prefix()
+    worker_id = os.environ.get("PYTEST_XDIST_WORKER", "master")
+    dataset_id = f"{prefixer.create_prefix()}_{worker_id}"
     dataset = bigquery.Dataset(f"{project_id}.{dataset_id}")
     dataset = bigquery_client.create_dataset(dataset)
     sample_table_id = f"{project_id}.{dataset_id}.sample"
@@ -92,16 +93,6 @@ def bigquery_dataset(
     )
     view.view_query = f"SELECT string FROM `{dataset_id}.sample`"
     bigquery_client.create_table(view)
-
-    # Pre-create session-scoped lake table for geography tests
-    lake_table = bigquery.Table(
-        f"{project_id}.{dataset_id}.lake",
-        schema=[
-            bigquery.SchemaField("name", "STRING"),
-            bigquery.SchemaField("geog", "GEOGRAPHY"),
-        ],
-    )
-    bigquery_client.create_table(lake_table)
 
     yield dataset_id
     bigquery_client.delete_dataset(dataset_id, delete_contents=True)
@@ -125,7 +116,8 @@ def bigquery_empty_table(
 @pytest.fixture(scope="session")
 def bigquery_regional_dataset(bigquery_client, bigquery_schema):
     project_id = bigquery_client.project
-    dataset_id = prefixer.create_prefix()
+    worker_id = os.environ.get("PYTEST_XDIST_WORKER", "master")
+    dataset_id = f"{prefixer.create_prefix()}_{worker_id}"
     dataset = bigquery.Dataset(f"{project_id}.{dataset_id}")
     dataset.location = "asia-northeast1"
     dataset = bigquery_client.create_dataset(dataset)

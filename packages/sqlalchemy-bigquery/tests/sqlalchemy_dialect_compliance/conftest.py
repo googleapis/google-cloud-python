@@ -70,7 +70,9 @@ sqlalchemy_bigquery.base.BigQueryCompiler.visit_delete = visit_delete
 
 
 def pytest_sessionstart(session):
-    dataset_id = prefixer.create_prefix()
+    import os
+    worker_id = os.environ.get("PYTEST_XDIST_WORKER", "master")
+    dataset_id = f"{prefixer.create_prefix()}_{worker_id}"
     session.config.option.dburi = [f"bigquery:///{dataset_id}"]
     with contextlib.closing(google.cloud.bigquery.Client()) as client:
         client.create_dataset(dataset_id)
