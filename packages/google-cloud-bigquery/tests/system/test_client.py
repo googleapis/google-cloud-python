@@ -2213,7 +2213,26 @@ class TestBigQuery(unittest.TestCase):
                 break
             time.sleep(0.1)
 
-        self.assertLessEqual(conn_count_end, conn_count_start)
+        try:
+            self.assertLessEqual(conn_count_end, conn_count_start)
+        except AssertionError as e:
+            # Due to flakiness in this test (likely caused by OS cleanup delays or
+            # non-deterministic garbage collection of sockets), we want to capture
+            # the detailed state of connections in future failing runs to help
+            # decrease false positives and identify the root cause.
+            conn_debug = [
+                f"Status: {c.status}, Laddr: {c.laddr}, Raddr: {c.raddr}"
+                for c in current_process.net_connections()
+            ]
+            debug_msg = "\n".join(conn_debug)
+
+            raise AssertionError(
+                f"{e}\n\n"
+                f"--- Socket Leak Debug Info ---\n"
+                f"Start Count: {conn_count_start}\n"
+                f"End Count: {conn_count_end}\n"
+                f"Current Connections:\n{debug_msg}"
+            )
 
     def _load_table_for_dml(self, rows, dataset_id, table_id):
         from google.cloud._testing import _NamedTemporaryFile
