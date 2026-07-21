@@ -2579,7 +2579,7 @@ libraries:
     python:
       library_type: CORE
   - name: sqlalchemy-bigquery
-    version: 1.17.0
+    version: 1.17.1
     python:
       library_type: INTEGRATION
   - name: sqlalchemy-spanner
