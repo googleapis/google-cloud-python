@@ -16,7 +16,6 @@ import os
 from unittest import mock
 
 import pytest
-from google.auth.exceptions import MutualTLSChannelError
 
 try:
     import grpc  # noqa: F401
@@ -25,6 +24,7 @@ except ImportError:
 
 from google.api_core import exceptions
 from google.api_core.gapic_v1 import config
+from google.auth.exceptions import MutualTLSChannelError
 
 INTERFACE_CONFIG = {
     "retry_codes": {
@@ -121,14 +121,18 @@ def test_use_client_cert_effective_fallback_env_true():
 def test_use_client_cert_effective_fallback_env_false():
     mock_mtls = mock.Mock(spec=[])
     with mock.patch("google.api_core.gapic_v1.config.mtls", mock_mtls):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
+        with mock.patch.dict(
+            os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}
+        ):
             assert config.use_client_cert_effective() is False
 
 
 def test_use_client_cert_effective_fallback_env_invalid():
     mock_mtls = mock.Mock(spec=[])
     with mock.patch("google.api_core.gapic_v1.config.mtls", mock_mtls):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "invalid"}):
+        with mock.patch.dict(
+            os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "invalid"}
+        ):
             with pytest.raises(
                 ValueError,
                 match="Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`",
@@ -142,7 +146,9 @@ def test_get_client_cert_source_provided():
 
 
 def test_get_client_cert_source_default():
-    mock_mtls = mock.Mock(spec=["has_default_client_cert_source", "default_client_cert_source"])
+    mock_mtls = mock.Mock(
+        spec=["has_default_client_cert_source", "default_client_cert_source"]
+    )
     mock_mtls.has_default_client_cert_source.return_value = True
     mock_source = mock.Mock()
     mock_mtls.default_client_cert_source.return_value = mock_source
@@ -151,7 +157,9 @@ def test_get_client_cert_source_default():
 
 
 def test_get_client_cert_source_none():
-    mock_mtls = mock.Mock(spec=["has_default_client_cert_source", "default_client_cert_source"])
+    mock_mtls = mock.Mock(
+        spec=["has_default_client_cert_source", "default_client_cert_source"]
+    )
     mock_mtls.has_default_client_cert_source.return_value = False
     with mock.patch("google.api_core.gapic_v1.config.mtls", mock_mtls):
         with pytest.raises(
@@ -168,10 +176,15 @@ def test_get_client_cert_source_use_cert_flag_false():
 
 
 def test_read_environment_variables():
-    with mock.patch("google.api_core.gapic_v1.config.use_client_cert_effective", return_value=True):
+    with mock.patch(
+        "google.api_core.gapic_v1.config.use_client_cert_effective", return_value=True
+    ):
         with mock.patch.dict(
             os.environ,
-            {"GOOGLE_API_USE_MTLS_ENDPOINT": "always", "GOOGLE_CLOUD_UNIVERSE_DOMAIN": "my-universe.com"}
+            {
+                "GOOGLE_API_USE_MTLS_ENDPOINT": "always",
+                "GOOGLE_CLOUD_UNIVERSE_DOMAIN": "my-universe.com",
+            },
         ):
             use_cert, use_mtls, universe = config.read_environment_variables()
             assert use_cert is True
@@ -180,7 +193,9 @@ def test_read_environment_variables():
 
 
 def test_read_environment_variables_invalid_mtls():
-    with mock.patch("google.api_core.gapic_v1.config.use_client_cert_effective", return_value=True):
+    with mock.patch(
+        "google.api_core.gapic_v1.config.use_client_cert_effective", return_value=True
+    ):
         with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "invalid"}):
             with pytest.raises(MutualTLSChannelError):
                 config.read_environment_variables()

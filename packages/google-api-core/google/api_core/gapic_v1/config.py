@@ -181,7 +181,9 @@ def use_client_cert_effective() -> bool:
     if hasattr(mtls, "should_use_client_cert"):
         return mtls.should_use_client_cert()
     else:
-        use_client_cert_str = os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false").lower()
+        use_client_cert_str = os.getenv(
+            "GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"
+        ).lower()
         if use_client_cert_str not in ("true", "false"):
             raise ValueError(
                 "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be"
