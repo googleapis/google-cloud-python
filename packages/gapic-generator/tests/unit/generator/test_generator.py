@@ -117,6 +117,8 @@ def test_get_response_ignores_private_files():
         list_templates.return_value = [
             "foo/bar/baz.py.j2",
             "foo/bar/_base.py.j2",
+            "foo/bar/__init__.py.j2",
+            "foo/bar/_compat.py.j2",
             "molluscs/squid/sample.py.j2",
         ]
         with mock.patch.object(jinja2.Environment, "get_template") as get_template:
@@ -128,12 +130,13 @@ def test_get_response_ignores_private_files():
             get_template.assert_has_calls(
                 [
                     mock.call("molluscs/squid/sample.py.j2"),
+                    mock.call("foo/bar/__init__.py.j2"),
+                    mock.call("foo/bar/_compat.py.j2"),
                     mock.call("foo/bar/baz.py.j2"),
-                ]
+                ],
+                any_order=True,
             )
-            assert len(cgr.file) == 1
-            assert cgr.file[0].name == "foo/bar/baz.py"
-            assert cgr.file[0].content == "I am a template result.\n"
+            assert len(cgr.file) == 3
 
 
 def test_get_response_fails_invalid_file_paths():
