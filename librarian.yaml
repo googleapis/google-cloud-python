@@ -756,6 +756,13 @@ libraries:
     python:
       metadata_name_override: procurement
       default_version: v1
+  - name: google-cloud-commerceproducer
+    version: 0.0.0
+    apis:
+      - path: google/cloud/commerceproducer/v1beta
+    copyright_year: "2026"
+    python:
+      default_version: v1beta
   - name: google-cloud-common
     version: 1.10.0
     apis:

@@ -79,6 +79,7 @@
   "packages/google-cloud-cloudcontrolspartner": "0.6.0",
   "packages/google-cloud-cloudsecuritycompliance": "0.8.0",
   "packages/google-cloud-commerce-consumer-procurement": "0.6.0",
+  "packages/google-cloud-commerceproducer": "0.0.0",
   "packages/google-cloud-common": "1.10.0",
   "packages/google-cloud-compute": "1.50.0",
   "packages/google-cloud-compute-v1beta": "0.12.1",
