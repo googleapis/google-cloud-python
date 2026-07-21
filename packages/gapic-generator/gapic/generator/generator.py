@@ -266,14 +266,7 @@ class Generator:
         if not opts.metadata and template_name.endswith("gapic_metadata.json.j2"):
             return answer
 
-        # Only render _compat.py.j2 if the API schema has auto_populated_fields (e.g. UUID4 request IDs) which require fallback functions
-        if template_name.endswith("_compat.py.j2") or template_name.endswith("test__compat.py.j2"):  # pragma: NO COVER
-            has_auto_populated = any(  # pragma: NO COVER
-                m_settings and getattr(m_settings, "auto_populated_fields", None)  # pragma: NO COVER
-                for m_settings in api_schema.all_method_settings.values()  # pragma: NO COVER
-            )  # pragma: NO COVER
-            if not has_auto_populated:  # pragma: NO COVER
-                return answer  # pragma: NO COVER
+        
 
 
         # Disables generation of an unversioned Python package for this client

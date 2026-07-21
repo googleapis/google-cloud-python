@@ -17,9 +17,10 @@ import logging as std_logging
 from collections import OrderedDict
 import re
 from typing import Dict, Callable, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
+import uuid
+
 from google.cloud.storagebatchoperations_v1 import gapic_version as package_version
 
-from google.cloud.storagebatchoperations_v1._compat import setup_request_id
 from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -620,7 +621,7 @@ class StorageBatchOperationsAsyncClient:
             )),
         )
 
-        setup_request_id(request, 'request_id', False)
+        self._client._setup_request_id(request, 'request_id', False)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -726,7 +727,7 @@ class StorageBatchOperationsAsyncClient:
             )),
         )
 
-        setup_request_id(request, 'request_id', False)
+        self._client._setup_request_id(request, 'request_id', False)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -828,7 +829,7 @@ class StorageBatchOperationsAsyncClient:
             )),
         )
 
-        setup_request_id(request, 'request_id', False)
+        self._client._setup_request_id(request, 'request_id', False)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
