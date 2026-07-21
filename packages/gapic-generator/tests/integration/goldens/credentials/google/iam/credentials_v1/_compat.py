@@ -19,7 +19,7 @@ import uuid
 try:
     from google.api_core.gapic_v1.requests import setup_request_id  # type: ignore
 except ImportError:  # pragma: NO COVER
-    # TODO: Remove this fallback when google-api-core >= 2.18.0 is the minimum required version.
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/17812): Remove this fallback when google-api-core >= 2.26.0 is the minimum required version.
     def setup_request_id(request, field_name: str, is_proto3_optional: bool):
         """Populate a UUID4 field in the request if it is not already set.
 
@@ -28,23 +28,24 @@ except ImportError:  # pragma: NO COVER
             field_name (str): The name of the field to populate.
             is_proto3_optional (bool): Whether the field is proto3 optional.
         """
+        request_id_val = str(uuid.uuid4())
         if isinstance(request, dict):
             if is_proto3_optional:
-                if field_name not in request:
-                    request[field_name] = str(uuid.uuid4())
+                if field_name not in request or request[field_name] is None:
+                    request[field_name] = request_id_val
             elif not request.get(field_name):
-                request[field_name] = str(uuid.uuid4())
+                request[field_name] = request_id_val
             return
 
         if is_proto3_optional:
             try:
                 # Pure protobuf messages
                 if not request.HasField(field_name):
-                    setattr(request, field_name, str(uuid.uuid4()))
+                    setattr(request, field_name, request_id_val)
             except (AttributeError, ValueError):
                 # Proto-plus messages or other objects
-                if field_name not in request:
-                    setattr(request, field_name, str(uuid.uuid4()))
+                if getattr(request, field_name, None) is None:
+                    setattr(request, field_name, request_id_val)
         else:
-            if not getattr(request, field_name):
-                setattr(request, field_name, str(uuid.uuid4()))
+            if not getattr(request, field_name, None):
+                setattr(request, field_name, request_id_val)
