@@ -79,7 +79,6 @@
   "packages/google-cloud-cloudcontrolspartner": "0.6.0",
   "packages/google-cloud-cloudsecuritycompliance": "0.8.0",
   "packages/google-cloud-commerce-consumer-procurement": "0.6.0",
-  "packages/google-cloud-commerceproducer": "0.0.0",
   "packages/google-cloud-common": "1.10.0",
   "packages/google-cloud-compute": "1.50.0",
   "packages/google-cloud-compute-v1beta": "0.12.1",
@@ -277,5 +276,6 @@
   "packages/grafeas": "1.23.0",
   "packages/grpc-google-iam-v1": "0.14.4",
   "packages/proto-plus": "1.28.1",
+  "packages/sqlalchemy-bigquery": "1.17.0",
   "packages/sqlalchemy-spanner": "1.19.0"
 }
