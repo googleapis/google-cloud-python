@@ -13,9 +13,9 @@
 # limitations under the License.
 
 import pytest
+from google.auth.exceptions import MutualTLSChannelError
 
 from google.api_core import universe
-from google.auth.exceptions import MutualTLSChannelError
 
 
 class _Fake_Credentials:
@@ -114,13 +114,19 @@ def test_get_universe_domain():
 
 def test_get_default_mtls_endpoint():
     # Test valid API endpoints
-    assert universe.get_default_mtls_endpoint("foo.googleapis.com") == "foo.mtls.googleapis.com"
+    assert (
+        universe.get_default_mtls_endpoint("foo.googleapis.com")
+        == "foo.mtls.googleapis.com"
+    )
     assert (
         universe.get_default_mtls_endpoint("foo.sandbox.googleapis.com")
         == "foo.mtls.sandbox.googleapis.com"
     )
     # Test case-insensitivity
-    assert universe.get_default_mtls_endpoint("foo.GoogleAPIs.com") == "foo.mtls.googleapis.com"
+    assert (
+        universe.get_default_mtls_endpoint("foo.GoogleAPIs.com")
+        == "foo.mtls.googleapis.com"
+    )
     assert (
         universe.get_default_mtls_endpoint("foo.Sandbox.GoogleAPIs.com")
         == "foo.mtls.sandbox.googleapis.com"
@@ -166,6 +172,10 @@ def test_get_default_mtls_endpoint():
     # Test empty/None endpoints
     assert universe.get_default_mtls_endpoint("") == ""
     assert universe.get_default_mtls_endpoint(None) is None
+
+    # Test endpoints without host
+    assert universe.get_default_mtls_endpoint("http://") == "http://"
+    assert universe.get_default_mtls_endpoint("https://") == "https://"
 
 
 @pytest.mark.parametrize(
@@ -249,4 +259,3 @@ def test_get_api_endpoint(
             )
             == expected
         )
-
