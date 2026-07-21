@@ -243,8 +243,12 @@ def showcase_library(
     session.log("See https://github.com/googleapis/gapic-showcase")
     session.log("-" * 70)
 
+    # Install local google-api-core
+    session.install("-e", "../google-api-core")
+
     # Install gapic-generator-python
     session.install("-e", ".")
+
 
     # Install grpcio-tools for protoc
     session.install("grpcio-tools")
@@ -381,6 +385,7 @@ def showcase_library(
             session.install("-e", tmp_dir)
 
         yield tmp_dir
+
 
 
 @nox.session(python=ALL_PYTHON)
