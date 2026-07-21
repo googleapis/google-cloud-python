@@ -266,6 +266,16 @@ class Generator:
         if not opts.metadata and template_name.endswith("gapic_metadata.json.j2"):
             return answer
 
+        # Only render _compat.py.j2 if the API schema has auto_populated_fields
+        if template_name.endswith("_compat.py.j2"):
+            has_auto_populated = any(
+                m_settings and getattr(m_settings, "auto_populated_fields", None)
+                for m_settings in api_schema.all_method_settings.values()
+            )
+            if not has_auto_populated:
+                return answer
+
+
         # Disables generation of an unversioned Python package for this client
         # library. This means that the module names will need to be versioned in
         # import statements. For example `import google.cloud.library_v2` instead
