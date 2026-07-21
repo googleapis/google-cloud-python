@@ -17,7 +17,7 @@
   "packages/google-apps-meet": "0.5.0",
   "packages/google-apps-script-type": "0.8.0",
   "packages/google-area120-tables": "0.15.0",
-  "packages/google-auth": "2.56.1",
+  "packages/google-auth": "2.56.2",
   "packages/google-auth-httplib2": "0.4.0",
   "packages/google-auth-oauthlib": "1.4.0",
   "packages/google-backstory": "0.1.0",
