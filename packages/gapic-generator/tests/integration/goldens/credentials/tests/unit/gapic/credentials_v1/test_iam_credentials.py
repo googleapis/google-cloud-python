@@ -505,7 +505,7 @@ def test_iam_credentials_client_get_mtls_endpoint_and_cert_source(client_class):
 
     # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "Unsupported".
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}):
-        if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        if hasattr(mtls, "should_use_client_cert"):
             mock_client_cert_source = mock.Mock()
             mock_api_endpoint = "foo"
             options = client_options.ClientOptions(
@@ -541,7 +541,7 @@ def test_iam_credentials_client_get_mtls_endpoint_and_cert_source(client_class):
             None,
         ),
     ]
-    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+    if hasattr(mtls, "should_use_client_cert"):
         for config_data, expected_cert_source in test_cases:
             env = os.environ.copy()
             env.pop("GOOGLE_API_USE_CLIENT_CERTIFICATE", None)
@@ -588,7 +588,7 @@ def test_iam_credentials_client_get_mtls_endpoint_and_cert_source(client_class):
             None,
         ),
     ]
-    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+    if hasattr(mtls, "should_use_client_cert"):
         for config_data, expected_cert_source in test_cases:
             env = os.environ.copy()
             env.pop("GOOGLE_API_USE_CLIENT_CERTIFICATE", "")

@@ -103,7 +103,7 @@ from google.iam.v1 import policy_pb2  # type: ignore
 
 @pytest.fixture(autouse=True)
 def mock_should_use_client_cert():
-    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+    if hasattr(mtls, "should_use_client_cert"):
         with mock.patch("google.auth.transport.mtls.should_use_client_cert", return_value=False):
             yield
     else:
