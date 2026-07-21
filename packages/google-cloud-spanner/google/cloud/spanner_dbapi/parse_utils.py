@@ -384,8 +384,8 @@ def ensure_where_clause(sql):
 
 def escape_name(name):
     """
-    Apply backticks to the name that either contain '-' or
-    ' ', or is a Cloud Spanner's reserved keyword.
+    Apply backticks to the name if it is not a valid regular ASCII identifier,
+    or if it is a Cloud Spanner's reserved keyword.
 
     :type name: str
     :param name: Name to escape.
@@ -393,6 +393,16 @@ def escape_name(name):
     :rtype: str
     :returns: Name escaped if it has to be escaped.
     """
-    if "-" in name or " " in name or name.upper() in SPANNER_RESERVED_KEYWORDS:
-        return "`" + name + "`"
+    if not name:
+        return name
+
+    is_valid_regular_identifier = (
+        (name[0].isalpha() or name[0] == "_")
+        and all(c.isalnum() or c == "_" for c in name)
+        and name.isascii()
+    )
+
+    if not is_valid_regular_identifier or name.upper() in SPANNER_RESERVED_KEYWORDS:
+        return "`" + name.replace("`", "``") + "`"
+
     return name
