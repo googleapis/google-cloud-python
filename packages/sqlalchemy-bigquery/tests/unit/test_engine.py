@@ -76,4 +76,3 @@ def test_dbapi_deprecated():
     from sqlalchemy_bigquery.base import BigQueryDialect
 
     assert BigQueryDialect.dbapi() is BigQueryDialect.import_dbapi()
-
