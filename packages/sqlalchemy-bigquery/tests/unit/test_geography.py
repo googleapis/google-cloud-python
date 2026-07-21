@@ -188,6 +188,7 @@ def test_fixup_st_arguments():
     from sqlalchemy.sql.elements import BindParameter
 
     from sqlalchemy_bigquery.geography import GEOGRAPHY, _fixup_st_arguments
+
     class DummyCompiler:
         def visit_function(self, element, **kw):
             return "func(param)"
