@@ -35,7 +35,7 @@ RETVAL=0
 
 pwd
 
-echo "=== KOKORO VM SCOUTING ==="
+echo "=== KOKORO VM STATUS ==="
 echo "CPU Count:"
 nproc
 echo "--------------------------"
