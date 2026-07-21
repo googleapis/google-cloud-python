@@ -472,12 +472,7 @@ class StorageBatchOperationsClient(metaclass=StorageBatchOperationsClientMeta):
         # NOTE (b/349488459): universe validation is disabled until further notice.
         return True
 
-        Args:
-            request (Union[google.protobuf.message.Message, dict]): The request object.
-            field_name (str): The name of the field to populate.
-            is_proto3_optional (bool): Whether the field is proto3 optional.
-        """
-        setup_request_id(request, field_name, is_proto3_optional)
+
 
     def _add_cred_info_for_auth_errors(
         self,

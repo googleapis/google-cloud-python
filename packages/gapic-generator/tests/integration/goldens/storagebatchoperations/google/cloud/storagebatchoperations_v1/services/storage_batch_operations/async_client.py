@@ -19,6 +19,7 @@ import re
 from typing import Dict, Callable, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 from google.cloud.storagebatchoperations_v1 import gapic_version as package_version
 
+from google.cloud.storagebatchoperations_v1._compat import setup_request_id
 from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
