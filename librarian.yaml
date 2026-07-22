@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 language: python
-version: v0.26.0
+version: v0.28.0
 repo: googleapis/google-cloud-python
 sources:
   googleapis:
@@ -74,7 +74,7 @@ libraries:
     python:
       library_type: INTEGRATION
   - name: gapic-generator
-    version: 1.37.0
+    version: 1.37.1
     python:
       library_type: CORE
   - name: gcp-sphinx-docfx-yaml
@@ -134,7 +134,7 @@ libraries:
       metadata_name_override: analyticsdata
       default_version: v1beta
   - name: google-api-core
-    version: 2.32.0
+    version: 2.33.0
     python:
       library_type: CORE
   - name: google-apps-card
@@ -227,7 +227,7 @@ libraries:
       metadata_name_override: area120tables
       default_version: v1alpha1
   - name: google-auth
-    version: 2.56.1
+    version: 2.56.2
     python:
       library_type: AUTH
   - name: google-auth-httplib2
@@ -756,6 +756,13 @@ libraries:
     python:
       metadata_name_override: procurement
       default_version: v1
+  - name: google-cloud-commerceproducer
+    version: 0.1.0
+    apis:
+      - path: google/cloud/commerceproducer/v1beta
+    copyright_year: "2026"
+    python:
+      default_version: v1beta
   - name: google-cloud-common
     version: 1.10.0
     apis:
@@ -2303,6 +2310,13 @@ libraries:
         google/maps/geocode/v4:
           - proto-plus-deps=google.geo.type
       default_version: v4
+  - name: google-maps-isochrones
+    version: 0.1.0
+    apis:
+      - path: google/maps/isochrones/v1
+    copyright_year: "2026"
+    python:
+      default_version: v1
   - name: google-maps-mapmanagement
     version: 0.1.0
     apis:
@@ -2575,11 +2589,11 @@ libraries:
     python:
       library_type: INTEGRATION
   - name: proto-plus
-    version: 1.28.1
+    version: 1.28.2
     python:
       library_type: CORE
   - name: sqlalchemy-bigquery
-    version: 1.17.0
+    version: 1.17.1
     python:
       library_type: INTEGRATION
   - name: sqlalchemy-spanner

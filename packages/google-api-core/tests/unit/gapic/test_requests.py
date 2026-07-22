@@ -27,9 +27,6 @@ class MockRequest:
         for k, v in kwargs.items():
             setattr(self, k, v)
 
-    def __contains__(self, key):
-        return hasattr(self, key)
-
 
 class MockProtoRequest:
     def __init__(self, **kwargs):
@@ -44,9 +41,6 @@ class MockValueErrorRequest:
     def HasField(self, key):
         raise ValueError("Mismatched field")
 
-    def __contains__(self, key):
-        return hasattr(self, key)
-
 
 # --- Parameterized Test ---
 
@@ -59,6 +53,7 @@ UUID_REGEX = r"[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{1
         # MockRequest cases
         (MockRequest(), True, "uuid"),
         (MockRequest(request_id="already_set"), True, "already_set"),
+        (MockRequest(request_id=""), True, ""),
         (MockRequest(request_id=""), False, "uuid"),
         (MockRequest(request_id="already_set"), False, "already_set"),
         # MockProtoRequest cases
@@ -70,6 +65,7 @@ UUID_REGEX = r"[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{1
         ({}, True, "uuid"),
         ({"request_id": None}, True, "uuid"),
         ({"request_id": "already_set"}, True, "already_set"),
+        ({"request_id": ""}, True, ""),
         ({"request_id": ""}, False, "uuid"),
         ({"request_id": None}, False, "uuid"),
         ({"request_id": "already_set"}, False, "already_set"),
@@ -79,6 +75,7 @@ UUID_REGEX = r"[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{1
     ids=[
         "proto3_optional_not_in_request",
         "proto3_optional_already_in_request",
+        "proto3_optional_explicit_empty",
         "non_proto3_optional_empty",
         "non_proto3_optional_already_set",
         "proto3_optional_not_in_request_proto",
@@ -87,6 +84,7 @@ UUID_REGEX = r"[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{1
         "dict_proto3_optional_not_in_request",
         "dict_proto3_optional_value_none",
         "dict_proto3_optional_already_in_request",
+        "dict_proto3_optional_explicit_empty",
         "dict_non_proto3_optional_empty",
         "dict_non_proto3_optional_value_none",
         "dict_non_proto3_optional_already_set",
@@ -110,6 +108,20 @@ def test_setup_request_id(request_obj, is_proto3_optional, expected):
     )
 
     if expected == "uuid":
-        assert re.match(UUID_REGEX, value)
+        assert re.fullmatch(UUID_REGEX, value)
     else:
         assert value == expected
+
+
+def test_setup_request_id_assertion_strictness(mocker):
+    # Mock uuid.uuid4 to return a UUID with trailing characters
+    mock_uuid = mocker.patch("uuid.uuid4")
+    mock_uuid.return_value.__str__.return_value = (
+        "12345678-1234-4123-8123-123456789012-extra"
+    )
+
+    # We expect test_setup_request_id to fail (raise AssertionError) because the UUID is invalid.
+    # If test_setup_request_id uses re.fullmatch, it will fail (raise AssertionError), so pytest.raises passes.
+    # If test_setup_request_id uses re.match, it will NOT fail, so pytest.raises fails!
+    with pytest.raises(AssertionError):
+        test_setup_request_id(MockRequest(), is_proto3_optional=True, expected="uuid")

@@ -33,6 +33,7 @@ ALL_PYTHON = [
     "3.12",
     "3.13",
     "3.14",
+    "3.15",
 ]
 
 UNIT_TEST_STANDARD_DEPENDENCIES = [
@@ -66,6 +67,17 @@ SYSTEM_TEST_EXTRAS: List[str] = []
 SYSTEM_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {}
 
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
+# Path to the centralized mypy configuration file at the repository root.
+# Search upwards to support running nox from both monorepo packages and integration test goldens.
+MYPY_CONFIG_FILE = next(
+    (
+        str(p / "mypy.ini")
+        for p in CURRENT_DIRECTORY.parents
+        if (p / "mypy.ini").exists()
+    ),
+    str(CURRENT_DIRECTORY.parent.parent / "mypy.ini"),
+)
+
 
 # 'docfx' is excluded since it only needs to run in 'docs-presubmit'
 nox.options.sessions = [
@@ -175,7 +187,9 @@ def mypy(session):
         "types-requests",
     )
     session.install("google-cloud-testutils")
-    session.run("mypy", "-p", "google.cloud.bigtable.data")
+    session.run(
+        "mypy", f"--config-file={MYPY_CONFIG_FILE}", "-p", "google.cloud.bigtable.data"
+    )
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
@@ -216,24 +230,20 @@ def install_unittest_dependencies(session, *constraints):
 @nox.session(python=ALL_PYTHON)
 @nox.parametrize(
     "protobuf_implementation",
-    ["python", "upb", "cpp"],
+    ["python", "upb"],
 )
 def unit(session, protobuf_implementation):
     # Install all test dependencies, then install this package in-place.
-    py_version = tuple([int(v) for v in session.python.split(".")])
-    if protobuf_implementation == "cpp" and py_version >= (3, 11):
-        session.skip("cpp implementation is not supported in python 3.11+")
+
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/17741):
+    # Remove once `google-crc32c` wheels are published for 3.15
+    if session.python == "3.15":
+        session.skip("Skipping 3.15 until wheels are available for google-crc32c.")
 
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
     )
     install_unittest_dependencies(session, "-c", constraints_path)
-
-    # TODO(https://github.com/googleapis/synthtool/issues/1976):
-    # Remove the 'cpp' implementation once support for Protobuf 3.x is dropped.
-    # The 'cpp' implementation requires Protobuf<4.
-    if protobuf_implementation == "cpp":
-        session.install("protobuf<4")
 
     # Run py.test against the unit tests.
     session.run(
@@ -466,14 +476,10 @@ def docfx(session):
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 @nox.parametrize(
     "protobuf_implementation",
-    ["python", "upb", "cpp"],
+    ["python", "upb"],
 )
 def prerelease_deps(session, protobuf_implementation):
     """Run all tests with prerelease versions of dependencies installed."""
-
-    py_version = tuple([int(v) for v in session.python.split(".")])
-    if protobuf_implementation == "cpp" and py_version >= (3, 11):
-        session.skip("cpp implementation is not supported in python 3.11+")
 
     # Install all dependencies
     session.install("-e", ".[all, tests, tracing]")
