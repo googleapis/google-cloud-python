@@ -20,12 +20,11 @@
 
     {% for name, sig in api.mixin_api_signatures.items() %}
     class _Base{{ name }}:
+        """Base class for {{ name }} REST mixin method."""
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
         {{ shared_macros.http_options_method(api.mixin_http_options["{}".format(name)])|indent(8)}}
-
-        pass
 
     {% endfor %}
     {% endif %} {# rest in opts.transport #}
