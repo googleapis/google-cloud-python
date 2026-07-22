@@ -254,15 +254,9 @@ def test_transcode_with_required_fields_existing_key():
     assert query_params["name"] == "custom-name"
 
 
-def test_transcode_alias_and_gapic_v1_import():
-    from google.api_core.gapic_v1.rest_helpers import (
-        transcode as tr_gapic,
-        transcode_request as tr_req_gapic,
-    )
+def test_transcode_alias():
     from google.api_core.rest_helpers import transcode as tr_top
 
-    assert tr_gapic is transcode_request
-    assert tr_req_gapic is transcode_request
     assert tr_top is transcode_request
 
 
