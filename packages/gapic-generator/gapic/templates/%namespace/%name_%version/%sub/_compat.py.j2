@@ -180,7 +180,7 @@ except ImportError:
 
 
 try:
-    from google.api_core.rest_helpers import (
+    from google.api_core.rest_helpers import (  # type: ignore
         flatten_query_params,
         transcode_request,
     )
@@ -218,7 +218,7 @@ except ImportError:  # pragma: NO COVER
             _flatten(value, key_path=key_path + [key], strict=strict)
             for key, value in obj.items()
         )
-        return functools.reduce(operator.concat, items, [])
+        return functools.reduce(operator.concat, items, [])  # type: ignore
 
     def _flatten_list(elems, key_path, strict=False):  # pragma: NO COVER
         items = (
@@ -226,7 +226,7 @@ except ImportError:  # pragma: NO COVER
             for elem in elems
             if _is_primitive_value(elem)
         )
-        return functools.reduce(operator.concat, items, [])
+        return functools.reduce(operator.concat, items, [])  # type: ignore
 
     def _canonicalize(obj, strict=False):  # pragma: NO COVER
         if strict:
