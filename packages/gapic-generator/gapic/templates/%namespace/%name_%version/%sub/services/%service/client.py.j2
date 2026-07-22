@@ -405,7 +405,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
         return client_utils.get_universe_domain(
             client_universe_domain,
             universe_domain_env,
-            {{ service.client_name }}._DEFAULT_UNIVERSE,
+            default_universe={{ service.client_name }}._DEFAULT_UNIVERSE,
         )
     
     def _validate_universe_domain(self):

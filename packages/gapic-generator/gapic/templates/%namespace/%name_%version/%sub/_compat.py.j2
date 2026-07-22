@@ -69,9 +69,9 @@ except ImportError:
         return api_endpoint
 
     def get_universe_domain(
-        client_universe_domain: Optional[str],
-        universe_domain_env: Optional[str],
-        default_universe: str,
+        client_universe_domain: Optional[str] = None,
+        universe_domain_env: Optional[str] = None,
+        default_universe: str = "googleapis.com",
     ) -> str:
         """Return the universe domain used by the client."""
         universe_domain = default_universe
