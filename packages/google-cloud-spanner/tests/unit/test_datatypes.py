@@ -96,3 +96,26 @@ class Test_JsonObject_serde(unittest.TestCase):
         expected = json.dumps(data, sort_keys=True, separators=(",", ":"))
         data_jsonobject = JsonObject(JsonObject(data))
         self.assertEqual(data_jsonobject.serialize(), expected)
+
+    def test_to_python_dict(self):
+        obj = JsonObject({"a": 1, "b": [2, 3]})
+        self.assertFalse(obj.is_null)
+        self.assertFalse(obj.is_array)
+        self.assertFalse(obj.is_scalar)
+        self.assertEqual(obj.to_python(), {"a": 1, "b": [2, 3]})
+
+    def test_to_python_array(self):
+        obj = JsonObject([{"a": 1}, 2, "str"])
+        self.assertFalse(obj.is_null)
+        self.assertTrue(obj.is_array)
+        self.assertFalse(obj.is_scalar)
+        self.assertEqual(obj.to_python(), [{"a": 1}, 2, "str"])
+
+    def test_to_python_scalar_and_null(self):
+        scalar_obj = JsonObject("hello")
+        self.assertTrue(scalar_obj.is_scalar)
+        self.assertEqual(scalar_obj.to_python(), "hello")
+
+        null_obj = JsonObject(None)
+        self.assertTrue(null_obj.is_null)
+        self.assertIsNone(null_obj.to_python())

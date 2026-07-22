@@ -85,6 +85,7 @@ CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 UNIT_TEST_STANDARD_DEPENDENCIES = [
     "mock",
     "pytest",
+    "pytest-cov",
 ]
 
 UNIT_TEST_EXTERNAL_DEPENDENCIES = [
@@ -275,6 +276,9 @@ def mockserver(session):
     session.run(
         "py.test",
         "--quiet",
+        "--cov=google.cloud.sqlalchemy_spanner",
+        "--cov-append",
+        "--cov-config=.coveragerc",
         os.path.join("tests", "mockserver_tests"),
         *session.posargs,
     )
@@ -368,7 +372,15 @@ def unit(session, test_type):
             *UNIT_TEST_DEPENDENCIES,
         )
         session.install(".")
-        session.run("py.test", "--quiet", os.path.join("tests/unit"), *session.posargs)
+        session.run(
+            "py.test",
+            "--quiet",
+            "--cov=google.cloud.sqlalchemy_spanner",
+            "--cov-append",
+            "--cov-config=.coveragerc",
+            os.path.join("tests/unit"),
+            *session.posargs,
+        )
         return
 
 

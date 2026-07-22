@@ -57,6 +57,37 @@ class JsonObject(dict):
         if not self._is_null:
             super(JsonObject, self).__init__(*args, **kwargs)
 
+    @property
+    def is_null(self):
+        """Return True if JsonObject represents JSON null."""
+        return self._is_null
+
+    @property
+    def is_array(self):
+        """Return True if JsonObject represents a JSON array."""
+        return self._is_array
+
+    @property
+    def is_scalar(self):
+        """Return True if JsonObject represents a JSON scalar value."""
+        return self._is_scalar_value
+
+    def to_python(self):
+        """Return unwrapped native Python object representation (dict, list, scalar, or None)."""
+        if self._is_null:
+            return None
+        if self._is_array:
+            return [
+                item.to_python() if isinstance(item, JsonObject) else item
+                for item in self._array_value
+            ]
+        if self._is_scalar_value:
+            return self._simple_value
+        return {
+            k: (v.to_python() if isinstance(v, JsonObject) else v)
+            for k, v in self.items()
+        }
+
     def __repr__(self):
         if self._is_array:
             return str(self._array_value)
