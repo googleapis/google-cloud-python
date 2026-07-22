@@ -101,6 +101,7 @@ def get_packages_to_test():
         res = subprocess.check_output(['git', 'diff', '--name-only', git_diff_arg]).decode('utf-8')
         changed_files = res.splitlines()
     except subprocess.CalledProcessError:
+        # If change detection fails, fall back to all packages
         return all_packages
 
     to_test = []
