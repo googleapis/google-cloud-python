@@ -210,7 +210,7 @@ def _get_http_options():
         request,
         required_fields_default_values=getattr(
             _Base{{ service_name }}RestTransport._Base{{method_name}},
-            "__REQUIRED_FIELDS_DEFAULT_VALUES",
+            "_Base{{method_name}}__REQUIRED_FIELDS_DEFAULT_VALUES",
             None,
         ),
         rest_numeric_enums={{ rest_numeric_enums }},

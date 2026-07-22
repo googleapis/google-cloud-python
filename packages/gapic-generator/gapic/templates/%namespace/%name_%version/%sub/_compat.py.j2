@@ -182,9 +182,13 @@ except ImportError:
 try:
     from google.api_core.rest_helpers import (  # type: ignore
         flatten_query_params,
-        transcode_request,
+        transcode_request as _core_transcode_request,
     )
-except ImportError:  # pragma: NO COVER
+    import inspect
+    if "rest_numeric_enums" not in inspect.signature(_core_transcode_request).parameters:
+        raise ImportError
+    transcode_request = _core_transcode_request
+except (ImportError, AttributeError):  # pragma: NO COVER
     # TODO: Remove these fallbacks when google-api-core >= 2.18.0 is the minimum required version.
     from google.protobuf import json_format  # type: ignore
     from google.api_core import path_template  # type: ignore
