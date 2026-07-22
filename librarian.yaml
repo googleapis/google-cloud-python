@@ -290,6 +290,7 @@ libraries:
     version: 0.1.0
     apis:
       - path: google/cloud/agentidentitycredentials/v1
+      - path: google/cloud/agentidentitycredentials/v1beta
     copyright_year: "2026"
     python:
       default_version: v1
