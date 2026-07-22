@@ -17,7 +17,7 @@
 import uuid
 
 try:
-    from google.api_core.gapic_v1.request import setup_request_id  # type: ignore
+    from google.api_core.gapic_v1.requests import setup_request_id  # type: ignore
 except ImportError:
     # TODO(https://github.com/googleapis/google-cloud-python/issues/17813): Remove this fallback when google-api-core >= 2.26.0 is the minimum required version.
     def setup_request_id(request, field_name: str, is_proto3_optional: bool):
@@ -48,7 +48,14 @@ except ImportError:
                     setattr(request, field_name, request_id_val)
             except (AttributeError, ValueError):
                 # Proto-plus messages or other objects
-                if not getattr(request, field_name, None):
+                if hasattr(request, "_pb"):
+                    try:
+                        if not request._pb.HasField(field_name):
+                            setattr(request, field_name, request_id_val)
+                        return
+                    except (AttributeError, ValueError):
+                        pass
+                if getattr(request, field_name, None) is None:
                     setattr(request, field_name, request_id_val)
         else:
             if not getattr(request, field_name, None):

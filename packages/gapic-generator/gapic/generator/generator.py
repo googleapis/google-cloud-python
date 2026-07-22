@@ -37,6 +37,12 @@ from gapic.utils import Options
 from google.protobuf.compiler.plugin_pb2 import CodeGeneratorResponse
 
 
+ALLOWED_PRIVATE_TEMPLATES = (
+    "__init__.py.j2",
+    "_compat.py.j2",
+)
+
+
 class Generator:
     """A protoc code generator for client libraries.
 
@@ -118,9 +124,9 @@ class Generator:
         # and instead of iterating over it/them, we iterate over samples
         # and plug those into the template.
         for template_name in client_templates:
-            # Quick check: Skip "private" templates.
+            # Quick check: Skip "private" templates except explicitly allowed ones.
             filename = template_name.split("/")[-1]
-            if filename.startswith("_") and filename not in ("__init__.py.j2", "_compat.py.j2"):
+            if filename.startswith("_") and filename not in ALLOWED_PRIVATE_TEMPLATES:
                 continue
 
             # Append to the output files dictionary.
@@ -265,9 +271,6 @@ class Generator:
         # Very, very special case. This flag exists to gate this one file.
         if not opts.metadata and template_name.endswith("gapic_metadata.json.j2"):
             return answer
-
-        
-
 
         # Disables generation of an unversioned Python package for this client
         # library. This means that the module names will need to be versioned in

@@ -150,7 +150,9 @@ class FragTester:
                 constraints_path = str(
                     f"{tmp_dir}/testing/constraints-{self.session.python}.txt"
                 )
-                self.session.install(tmp_dir, "-e", ".", "-qqq", "-r", constraints_path)
+                self.session.install(tmp_dir, "-e", ".", "--no-build-isolation", "-qqq", "-r", constraints_path)
+
+            self.session.install("-e", "../google-api-core", "--no-build-isolation", "-qqq")
 
             # Run the fragment's generated unit tests.
             # Don't bother parallelizing them: we already parallelize
@@ -246,6 +248,9 @@ def showcase_library(
 
     # Install gapic-generator-python
     session.install("-e", ".")
+    # Install local editable google-api-core for monorepo development testing.
+    # On Python 3.10 below, google-api-core<2.28 is installed to validate
+    # fallback compatibility against released versions of google-api-core.
     session.install("-e", "../google-api-core")
 
     # Install grpcio-tools for protoc
@@ -375,12 +380,14 @@ def showcase_library(
                     )
                 extras = "[async_rest]"
 
-            session.install("-e", f"{tmp_dir}{extras}", "-r", constraints_path)
+            session.install("-e", f"{tmp_dir}{extras}", "--no-build-isolation", "-r", constraints_path)
         else:
             # The ads templates do not have constraints files.
             # See https://github.com/googleapis/gapic-generator-python/issues/1788
             # Install the library without a constraints file.
-            session.install("-e", tmp_dir)
+            session.install("-e", tmp_dir, "--no-build-isolation")
+
+        session.install("-e", "../google-api-core", "--no-build-isolation")
 
         yield tmp_dir
 
