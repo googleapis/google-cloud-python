@@ -16,6 +16,7 @@
 
 import functools
 import operator
+import re
 from typing import Any, Dict, List, Optional, Tuple
 
 from google.api_core import path_template
