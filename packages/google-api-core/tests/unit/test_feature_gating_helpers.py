@@ -13,8 +13,8 @@
 # limitations under the License.
 
 import pytest
-from google.api_core.observability import options
-from google.api_core.observability.options import (
+from google.api_core import feature_gating_helpers
+from google.api_core.feature_gating_helpers import (
     _get_env_bool,
     _strtobool,
     clear_test_env_overrides,
@@ -100,7 +100,7 @@ def test_resolve_feature_flags_ga_enabled_via_env():
     set_test_env_override("GOOGLE_SDK_PYTHON_TRACING_ENABLED", True)
 
     # Action
-    result = options.resolve_feature_flags(
+    result = feature_gating_helpers.resolve_feature_flags(
         env_var="GOOGLE_SDK_PYTHON_TRACING_ENABLED",
         provider_key="tracer_provider",
         client_options=None,
@@ -121,7 +121,7 @@ def test_resolve_feature_flags_exp_blocked_with_provider_fails_fast(exp_env_stat
 
     # Action & Assertion
     with pytest.raises(ValueError, match="Experimental feature"):
-        options.resolve_feature_flags(
+        feature_gating_helpers.resolve_feature_flags(
             env_var="GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED",
             provider_key="tracer_provider",
             client_options=client_options,
@@ -133,7 +133,7 @@ def test_resolve_feature_flags_exp_enabled_with_provider():
     set_test_env_override("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", True)
     client_options = {"tracer_provider": object()}
 
-    result = options.resolve_feature_flags(
+    result = feature_gating_helpers.resolve_feature_flags(
         env_var="GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED",
         provider_key="tracer_provider",
         client_options=client_options,
@@ -145,7 +145,7 @@ def test_resolve_feature_flags_exp_enabled_without_provider():
     """Verify that experimental feature is enabled if the experimental environment variable is enabled and NO provider is provided."""
     set_test_env_override("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", True)
 
-    result = options.resolve_feature_flags(
+    result = feature_gating_helpers.resolve_feature_flags(
         env_var="GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED",
         provider_key="tracer_provider",
         client_options=None,
@@ -157,7 +157,7 @@ def test_resolve_feature_flags_exp_disabled_without_provider():
     """Verify that experimental feature is disabled if the experimental environment variable is disabled and NO provider is provided."""
     set_test_env_override("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", False)
 
-    result = options.resolve_feature_flags(
+    result = feature_gating_helpers.resolve_feature_flags(
         env_var="GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED",
         provider_key="tracer_provider",
         client_options=None,
@@ -171,7 +171,7 @@ def test_resolve_feature_flags_ga_enabled_via_provider():
     set_test_env_override("GOOGLE_SDK_PYTHON_TRACING_ENABLED", False)
     client_options = {"tracer_provider": object()}
 
-    result = options.resolve_feature_flags(
+    result = feature_gating_helpers.resolve_feature_flags(
         env_var="GOOGLE_SDK_PYTHON_TRACING_ENABLED",
         provider_key="tracer_provider",
         client_options=client_options,
@@ -185,7 +185,7 @@ def test_resolve_feature_flags_ga_enabled_via_provider():
 def test_resolve_feature_flags_ga_fallback_to_false(env_val):
     """Verify that a GA feature is disabled if neither a provider is provided nor the environment variable is enabled."""
     set_test_env_override("GOOGLE_SDK_PYTHON_TRACING_ENABLED", env_val)
-    result = options.resolve_feature_flags(
+    result = feature_gating_helpers.resolve_feature_flags(
         env_var="GOOGLE_SDK_PYTHON_TRACING_ENABLED",
         provider_key="tracer_provider",
         client_options=None,
@@ -209,7 +209,7 @@ class _MockOptions:
 def test_resolve_feature_flags_options_without_key(client_options):
     """Verify behavior when client_options is present but missing the provider key."""
     # GA Path: should fall through to env var / fallback
-    result = options.resolve_feature_flags(
+    result = feature_gating_helpers.resolve_feature_flags(
         env_var="GOOGLE_SDK_PYTHON_TRACING_ENABLED",
         provider_key="tracer_provider",
         client_options=client_options,
