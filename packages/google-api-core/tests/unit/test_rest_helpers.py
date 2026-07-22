@@ -278,7 +278,7 @@ def test_transcode_request_proto_plus_wrapper():
     assert transcoded["uri"] == "/v1/test/proto-plus-field"
 
 
-def test_transcode_required_fields_bound_to_path():
+def test_transcode_with_required_fields_in_path():
     http_options = [{"method": "get", "uri": "/v1/test/{name}"}]
     request = descriptor_pb2.FieldDescriptorProto()
     request.name = "my-name"
@@ -293,7 +293,7 @@ def test_transcode_required_fields_bound_to_path():
     assert query_params["filter"] == "default-filter"
 
 
-def test_transcode_required_fields_bound_to_body_star():
+def test_transcode_with_required_fields_in_body():
     http_options = [{"method": "post", "uri": "/v1/test", "body": "*"}]
     request = descriptor_pb2.FieldDescriptorProto()
     request.name = "my-name"
@@ -304,4 +304,5 @@ def test_transcode_required_fields_bound_to_body_star():
     )
 
     assert body is not None
+    assert "name" not in query_params
     assert query_params == {}
