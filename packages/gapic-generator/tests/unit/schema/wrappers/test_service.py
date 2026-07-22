@@ -749,3 +749,9 @@ def test_resource_messages_raises_on_malformed_typeless_resource():
     # 2. Trigger the property and expect it to fail fast with the AIP-123 URL
     with pytest.raises(ValueError, match="https://google.aip.dev/123"):
         _ = service.resource_messages
+
+
+def test_service_has_auto_populated_fields():
+    service = make_service(name="ThingDoer")
+    assert not service.has_auto_populated_fields
+
