@@ -22,6 +22,8 @@ from google.protobuf import json_format
 
 from google.api_core import path_template
 
+__all__ = ["flatten_query_params", "transcode", "transcode_request"]
+
 
 def flatten_query_params(obj, strict=False):
     """Flatten a dict into a list of (name,value) tuples.
