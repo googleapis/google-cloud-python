@@ -324,3 +324,38 @@ def test_transcode_with_required_fields_in_body_param():
     assert transcoded["uri"] == "/v1/test/my-name"
     assert "options" not in query_params
     assert query_params["filter"] == "default-filter"
+
+
+def test_transcode_required_fields_no_matching_option():
+    http_options = [{"method": "get", "uri": "/v1/test"}]
+    request = descriptor_pb2.FieldDescriptorProto()
+    required_defaults = {"name": "default-name"}
+
+    with mock.patch(
+        "google.api_core.path_template.transcode",
+        return_value={"method": "delete", "uri": "/v1/test"},
+    ):
+        _, _, query_params = transcode_request(
+            http_options, request, required_fields_default_values=required_defaults
+        )
+        assert query_params["name"] == "default-name"
+
+
+def test_transcode_required_fields_uri_mismatch():
+    http_options = [
+        {"method": "get", "uri": "/v1/wrong_path/{name}"},
+        {"method": "get", "uri": "/v1/test/{name}"},
+    ]
+    request = descriptor_pb2.FieldDescriptorProto()
+    request.name = "my-name"
+    required_defaults = {"name": "default-name", "filter": "default-filter"}
+
+    with mock.patch(
+        "google.api_core.path_template.transcode",
+        return_value={"method": "get", "uri": "/v1/test/my-name"},
+    ):
+        transcoded, _, query_params = transcode_request(
+            http_options, request, required_fields_default_values=required_defaults
+        )
+        assert "name" not in query_params
+        assert query_params["filter"] == "default-filter"

@@ -180,9 +180,7 @@ def transcode_request(
                 assert bound_fields is not None
                 uri_template = matched_option.get("uri", "")
                 for m in path_template._VARIABLE_RE.finditer(uri_template):
-                    name = m.group("name")
-                    if name:
-                        bound_fields.add(name.split(".")[0])
+                    bound_fields.add(m.group("name").split(".")[0])
                 if body_param:
                     bound_fields.add(body_param.split(".")[0])
 
