@@ -252,3 +252,34 @@ def test_transcode_with_required_fields_existing_key():
     )
 
     assert query_params["name"] == "custom-name"
+
+
+def test_transcode_alias_and_gapic_v1_import():
+    from google.api_core.gapic_v1.rest_helpers import (
+        transcode as tr_gapic,
+        transcode_request as tr_req_gapic,
+    )
+    from google.api_core.rest_helpers import transcode as tr_top
+
+    assert tr_gapic is transcode_request
+    assert tr_req_gapic is transcode_request
+    assert tr_top is transcode_request
+
+
+def test_transcode_request_invalid_request():
+    http_options = [{"method": "get", "uri": "/v1/test"}]
+    with pytest.raises(TypeError, match="request cannot be None"):
+        transcode_request(http_options, None)
+
+
+def test_transcode_request_proto_plus_wrapper():
+    http_options = [{"method": "get", "uri": "/v1/test/{name}"}]
+    mock_pb = descriptor_pb2.FieldDescriptorProto()
+    mock_pb.name = "proto-plus-field"
+
+    mock_proto_plus = mock.Mock()
+    mock_proto_plus._pb = mock_pb
+
+    transcoded, _, _ = transcode_request(http_options, mock_proto_plus)
+    assert transcoded["uri"] == "/v1/test/proto-plus-field"
+

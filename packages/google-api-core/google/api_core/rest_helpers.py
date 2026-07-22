@@ -135,6 +135,9 @@ def transcode_request(
             - The serialized request body JSON string, or None if no body.
             - The query parameters dictionary.
     """
+    if request is None:
+        raise TypeError("request cannot be None")
+
     # Convert proto-plus message to its underlying protobuf message if needed
     pb_request = getattr(request, "_pb", request)
 
@@ -163,3 +166,7 @@ def transcode_request(
         query_params_json["$alt"] = "json;enum-encoding=int"
 
     return transcoded_request, body_json, query_params_json
+
+
+transcode = transcode_request
+
