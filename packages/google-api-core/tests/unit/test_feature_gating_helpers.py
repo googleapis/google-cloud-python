@@ -17,15 +17,7 @@ from google.api_core import feature_gating_helpers
 from google.api_core.feature_gating_helpers import (
     _get_env_bool,
     _strtobool,
-    clear_test_env_overrides,
-    set_test_env_override,
 )
-
-
-@pytest.fixture(autouse=True)
-def clean_overrides():
-    yield
-    clear_test_env_overrides()
 
 
 @pytest.mark.parametrize(
@@ -74,30 +66,12 @@ def test_get_env_bool(monkeypatch):
     assert _get_env_bool("TEST_VAR") is None
 
 
-def test_set_test_env_override_clear_specific():
-    """Verify that setting an override to None clears that specific override.
-
-    This is important to ensure tests can reset individual environment overrides
-    without affecting other overrides that might be set for other tests running
-    concurrently or subsequently.
-    """
-    set_test_env_override("TEST_A", True)
-    set_test_env_override("TEST_B", True)
-    assert _get_env_bool("TEST_A") is True
-    assert _get_env_bool("TEST_B") is True
-
-    # Clear only TEST_A
-    set_test_env_override("TEST_A", None)
-
-    # Verify TEST_A is cleared but TEST_B remains
-    assert _get_env_bool("TEST_A") is None
-    assert _get_env_bool("TEST_B") is True
 
 
-def test_resolve_feature_flags_ga_enabled_via_env():
+def test_resolve_feature_flags_ga_enabled_via_env(monkeypatch):
     """Verify that a GA feature is enabled if its environment variable is True."""
     # Setup: We pass a GA environment variable set to True
-    set_test_env_override("GOOGLE_SDK_PYTHON_TRACING_ENABLED", True)
+    monkeypatch.setenv("GOOGLE_SDK_PYTHON_TRACING_ENABLED", "true")
 
     # Action
     result = feature_gating_helpers.resolve_feature_flags(
@@ -110,13 +84,14 @@ def test_resolve_feature_flags_ga_enabled_via_env():
     assert result is True
 
 
-@pytest.mark.parametrize("exp_env_state", [None, False], ids=["missing", "disabled"])
-def test_resolve_feature_flags_exp_blocked_with_provider_fails_fast(exp_env_state):
+@pytest.mark.parametrize("exp_env_state", [None, "false"], ids=["missing", "disabled"])
+def test_resolve_feature_flags_exp_blocked_with_provider_fails_fast(monkeypatch, exp_env_state):
     """Verify that passing a provider to an experimental feature raises ValueError if the experimental environment variable is disabled or missing."""
     # Setup: Experimental env var is set to exp_env_state (None means not set)
-    set_test_env_override(
-        "GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", exp_env_state
-    )
+    if exp_env_state is not None:
+        monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", exp_env_state)
+    else:
+        monkeypatch.delenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", raising=False)
     client_options = {"tracer_provider": object()}
 
     # Action & Assertion
@@ -128,9 +103,9 @@ def test_resolve_feature_flags_exp_blocked_with_provider_fails_fast(exp_env_stat
         )
 
 
-def test_resolve_feature_flags_exp_enabled_with_provider():
+def test_resolve_feature_flags_exp_enabled_with_provider(monkeypatch):
     """Verify that experimental feature is enabled if the experimental environment variable is enabled and a provider is provided."""
-    set_test_env_override("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", True)
+    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "true")
     client_options = {"tracer_provider": object()}
 
     result = feature_gating_helpers.resolve_feature_flags(
@@ -141,9 +116,9 @@ def test_resolve_feature_flags_exp_enabled_with_provider():
     assert result is True
 
 
-def test_resolve_feature_flags_exp_enabled_without_provider():
+def test_resolve_feature_flags_exp_enabled_without_provider(monkeypatch):
     """Verify that experimental feature is enabled if the experimental environment variable is enabled and NO provider is provided."""
-    set_test_env_override("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", True)
+    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "true")
 
     result = feature_gating_helpers.resolve_feature_flags(
         env_var="GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED",
@@ -153,9 +128,9 @@ def test_resolve_feature_flags_exp_enabled_without_provider():
     assert result is True
 
 
-def test_resolve_feature_flags_exp_disabled_without_provider():
+def test_resolve_feature_flags_exp_disabled_without_provider(monkeypatch):
     """Verify that experimental feature is disabled if the experimental environment variable is disabled and NO provider is provided."""
-    set_test_env_override("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", False)
+    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "false")
 
     result = feature_gating_helpers.resolve_feature_flags(
         env_var="GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED",
@@ -165,10 +140,10 @@ def test_resolve_feature_flags_exp_disabled_without_provider():
     assert result is False
 
 
-def test_resolve_feature_flags_ga_enabled_via_provider():
+def test_resolve_feature_flags_ga_enabled_via_provider(monkeypatch):
     """Verify that a GA feature is enabled if a provider is provided, ignoring the environment variable."""
     # Env var is False, but provider is present
-    set_test_env_override("GOOGLE_SDK_PYTHON_TRACING_ENABLED", False)
+    monkeypatch.setenv("GOOGLE_SDK_PYTHON_TRACING_ENABLED", "false")
     client_options = {"tracer_provider": object()}
 
     result = feature_gating_helpers.resolve_feature_flags(
@@ -180,11 +155,14 @@ def test_resolve_feature_flags_ga_enabled_via_provider():
 
 
 @pytest.mark.parametrize(
-    "env_val", [None, False], ids=["env_not_set", "env_explicit_false"]
+    "env_val", [None, "false"], ids=["env_not_set", "env_explicit_false"]
 )
-def test_resolve_feature_flags_ga_fallback_to_false(env_val):
+def test_resolve_feature_flags_ga_fallback_to_false(monkeypatch, env_val):
     """Verify that a GA feature is disabled if neither a provider is provided nor the environment variable is enabled."""
-    set_test_env_override("GOOGLE_SDK_PYTHON_TRACING_ENABLED", env_val)
+    if env_val is not None:
+        monkeypatch.setenv("GOOGLE_SDK_PYTHON_TRACING_ENABLED", env_val)
+    else:
+        monkeypatch.delenv("GOOGLE_SDK_PYTHON_TRACING_ENABLED", raising=False)
     result = feature_gating_helpers.resolve_feature_flags(
         env_var="GOOGLE_SDK_PYTHON_TRACING_ENABLED",
         provider_key="tracer_provider",

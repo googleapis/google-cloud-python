@@ -24,11 +24,6 @@ from typing import Any, Dict, Optional, Union
 _TRUTHY_VALUES = ("y", "yes", "t", "true", "on", "1")
 _FALSY_VALUES = ("n", "no", "f", "false", "off", "0")
 
-# Test-only overrides for environment variables.
-# This is intended ONLY for unit/integration testing to prevent mutating
-# os.environ.
-_TEST_ENV_OVERRIDES: Dict[str, bool] = {}
-
 
 def _strtobool(val: str) -> Optional[bool]:
     """Convert a string representation of truth to a boolean."""
@@ -42,28 +37,8 @@ def _strtobool(val: str) -> Optional[bool]:
     raise ValueError(f"Invalid truth value: {val!r}")
 
 
-def set_test_env_override(name: str, value: Optional[bool]) -> None:
-    """Sets a test-only override for a specific environment variable.
-
-    This is intended ONLY for unit/integration testing to prevent mutating
-    os.environ.
-    """
-    if value is None:
-        _TEST_ENV_OVERRIDES.pop(name, None)
-    else:
-        _TEST_ENV_OVERRIDES[name] = value
-
-
-def clear_test_env_overrides() -> None:
-    """Clears all test-only overrides."""
-    _TEST_ENV_OVERRIDES.clear()
-
-
 def _get_env_bool(name: str) -> Optional[bool]:
     """Retrieve the boolean value of an environment variable."""
-    if name in _TEST_ENV_OVERRIDES:
-        return _TEST_ENV_OVERRIDES[name]
-
     val = os.getenv(name)
     if val is None:
         return None
@@ -108,7 +83,7 @@ def resolve_feature_flags(
     Args:
         env_var: The name of the environment variable controlling this feature.
         provider_key: The key in client_options/attributes for the programmatic provider.
-        client_options: A dictionary or object containing client configuration.
+        client_options: Optional. A dictionary or object containing client configuration.
 
     Returns:
         bool: True if the feature is resolved to enabled, False otherwise.
