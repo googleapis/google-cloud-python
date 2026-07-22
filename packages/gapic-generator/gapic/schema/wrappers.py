@@ -2413,6 +2413,17 @@ class Service:
     def is_internal(self) -> bool:
         return any(m.is_internal for m in self.methods.values())
 
+    @utils.cached_property
+    def has_auto_populated_fields(self) -> bool:
+        """Returns True if any method in this service has auto-populated fields (e.g. AIP-4235 request_id)."""
+        return any(
+            bool(
+                self.api.all_method_settings.get(m.meta.address.proto)
+                and self.api.all_method_settings[m.meta.address.proto].auto_populated_fields
+            )
+            for m in self.methods.values()
+        )
+
     @cached_proto_context
     def with_context(
         self,
