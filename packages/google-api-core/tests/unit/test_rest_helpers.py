@@ -16,10 +16,10 @@ import json
 from unittest import mock
 
 import pytest
-from google.protobuf import descriptor_pb2
 
 from google.api_core import rest_helpers
 from google.api_core.rest_helpers import transcode_request
+from google.protobuf import descriptor_pb2
 
 
 def test_flatten_simple_value():
@@ -276,4 +276,3 @@ def test_transcode_request_proto_plus_wrapper():
 
     transcoded, _, _ = transcode_request(http_options, mock_proto_plus)
     assert transcoded["uri"] == "/v1/test/proto-plus-field"
-
