@@ -306,3 +306,21 @@ def test_transcode_with_required_fields_in_body():
     assert body is not None
     assert "name" not in query_params
     assert query_params == {}
+
+
+def test_transcode_with_required_fields_in_body_param():
+    http_options = [{"method": "post", "uri": "/v1/test/{name}", "body": "options"}]
+    request = descriptor_pb2.FieldDescriptorProto()
+    request.name = "my-name"
+
+    required_defaults = {
+        "options": "default-options",
+        "filter": "default-filter",
+    }
+    transcoded, body, query_params = transcode_request(
+        http_options, request, required_fields_default_values=required_defaults
+    )
+
+    assert transcoded["uri"] == "/v1/test/my-name"
+    assert "options" not in query_params
+    assert query_params["filter"] == "default-filter"

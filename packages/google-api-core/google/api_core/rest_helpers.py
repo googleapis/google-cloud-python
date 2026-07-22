@@ -16,7 +16,7 @@
 
 import functools
 import operator
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Set, Tuple
 
 from google.api_core import path_template
 from google.protobuf import json_format
@@ -161,23 +161,29 @@ def transcode_request(
     if required_fields_default_values:
         matched_option = None
         for option in http_options:
-            if option.get("method", "").lower() == transcoded_request.get("method", "").lower():
-                if path_template.validate(option.get("uri", ""), transcoded_request.get("uri", "")):
+            if (
+                option.get("method", "").lower()
+                == transcoded_request.get("method", "").lower()
+            ):
+                if path_template.validate(
+                    option.get("uri", ""), transcoded_request.get("uri", "")
+                ):
                     matched_option = option
                     break
 
-        bound_fields = set()
+        bound_fields: Optional[Set[str]] = set()
         if matched_option:
-            uri_template = matched_option.get("uri", "")
-            for m in path_template._VARIABLE_RE.finditer(uri_template):
-                name = m.group("name")
-                if name:
-                    bound_fields.add(name.split(".")[0])
             body_param = matched_option.get("body")
-            if body_param:
-                if body_param == "*":
-                    bound_fields = None
-                else:
+            if body_param == "*":
+                bound_fields = None
+            else:
+                assert bound_fields is not None
+                uri_template = matched_option.get("uri", "")
+                for m in path_template._VARIABLE_RE.finditer(uri_template):
+                    name = m.group("name")
+                    if name:
+                        bound_fields.add(name.split(".")[0])
+                if body_param:
                     bound_fields.add(body_param.split(".")[0])
 
         if bound_fields is not None:
