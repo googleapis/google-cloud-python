@@ -248,10 +248,6 @@ def showcase_library(
 
     # Install gapic-generator-python
     session.install("-e", ".")
-    # Install local editable google-api-core for monorepo development testing.
-    # On Python 3.10 below, google-api-core<2.28 is installed to validate
-    # fallback compatibility against released versions of google-api-core.
-    session.install("-e", "../google-api-core")
 
     # Install grpcio-tools for protoc
     session.install("grpcio-tools")
