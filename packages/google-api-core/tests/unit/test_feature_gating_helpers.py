@@ -66,8 +66,6 @@ def test_get_env_bool(monkeypatch):
     assert _get_env_bool("TEST_VAR") is None
 
 
-
-
 def test_resolve_feature_flags_ga_enabled_via_env(monkeypatch):
     """Verify that a GA feature is enabled if its environment variable is True."""
     # Setup: We pass a GA environment variable set to True
@@ -85,13 +83,19 @@ def test_resolve_feature_flags_ga_enabled_via_env(monkeypatch):
 
 
 @pytest.mark.parametrize("exp_env_state", [None, "false"], ids=["missing", "disabled"])
-def test_resolve_feature_flags_exp_blocked_with_provider_fails_fast(monkeypatch, exp_env_state):
+def test_resolve_feature_flags_exp_blocked_with_provider_fails_fast(
+    monkeypatch, exp_env_state
+):
     """Verify that passing a provider to an experimental feature raises ValueError if the experimental environment variable is disabled or missing."""
     # Setup: Experimental env var is set to exp_env_state (None means not set)
     if exp_env_state is not None:
-        monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", exp_env_state)
+        monkeypatch.setenv(
+            "GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", exp_env_state
+        )
     else:
-        monkeypatch.delenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", raising=False)
+        monkeypatch.delenv(
+            "GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", raising=False
+        )
     client_options = {"tracer_provider": object()}
 
     # Action & Assertion
