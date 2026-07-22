@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/gapic-generator/#history
 
+## [1.37.1](https://github.com/googleapis/google-cloud-python/compare/gapic-generator-v1.37.0...gapic-generator-v1.37.1) (2026-07-22)
+
+
+### Bug Fixes
+
+* **gapic-generator:** remove lagging 3.9 refs ([#16924](https://github.com/googleapis/google-cloud-python/issues/16924)) ([a719055](https://github.com/googleapis/google-cloud-python/commit/a7190556f487028f04e42ade1f922075127028c3))
+* **gapic:** mock os.path.exists in mTLS tests to support newer google auth ([#17807](https://github.com/googleapis/google-cloud-python/issues/17807)) ([df0541a](https://github.com/googleapis/google-cloud-python/commit/df0541abf6aae710fc3e6644a5d8f3f706d29c5a))
+
 ## [1.37.0](https://github.com/googleapis/google-cloud-python/compare/gapic-generator-v1.36.0...gapic-generator-v1.37.0) (2026-07-07)
 
 

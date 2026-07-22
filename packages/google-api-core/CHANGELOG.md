@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## [2.33.0](https://github.com/googleapis/google-cloud-python/compare/google-api-core-v2.32.0...google-api-core-v2.33.0) (2026-07-22)
+
+
+### Features
+
+* **api_core:** add request-id auto-population logic to gapic_v1 public helpers ([#17738](https://github.com/googleapis/google-cloud-python/issues/17738)) ([68e1313](https://github.com/googleapis/google-cloud-python/commit/68e131341bd5d20ee50d7be3ed0410af4c12a46d))
+* **api-core:** add get_universe_domain helper to universe.py ([#17799](https://github.com/googleapis/google-cloud-python/issues/17799)) ([d461da7](https://github.com/googleapis/google-cloud-python/commit/d461da7bde04f2a698469f413116873633aa1f12))
+
+
+### Bug Fixes
+
+* **api-core:** prevent overwriting explicit empty strings for optional request_id ([#17798](https://github.com/googleapis/google-cloud-python/issues/17798)) ([07f7503](https://github.com/googleapis/google-cloud-python/commit/07f7503437f495dbce19b4f346ea17efcd738a65))
+
 ## [2.32.0](https://github.com/googleapis/google-cloud-python/compare/google-api-core-v2.31.0...google-api-core-v2.32.0) (2026-07-16)
 
 
