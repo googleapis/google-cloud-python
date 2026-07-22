@@ -17,8 +17,6 @@ from google.cloud.compute import gapic_version as package_version
 
 __version__ = package_version.__version__
 
-# Trigger GHA run on google-cloud-compute
-
 
 from google.cloud.compute_v1.services.accelerator_types.client import (
     AcceleratorTypesClient,

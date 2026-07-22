@@ -301,10 +301,9 @@ def run_master(iterations, target_module, cpu=0, csv_path=None, clear_cache=True
         
     if exit_code == 0:
         print("\nSession import_profiler was successful.")
-        sys.exit(0)
     else:
         print("\nSession import_profiler failed.")
-        sys.exit(1)
+    return exit_code
 
 
 def run_trace(target_module):
@@ -376,63 +375,64 @@ def run_mprofile(target_module):
     if p.exitcode != 0:
         print(f"Error generating memory snapshot, process exited with code {p.exitcode}", file=sys.stderr)
 
-if __name__ == "__main__":
+def validate_module_name(module_name):
+    """Validates that the input is a structurally valid Python module identifier to prevent arbitrary code execution."""
     import argparse
+    if not all(part.isidentifier() for part in module_name.split('.')):
+        raise argparse.ArgumentTypeError(f"'{module_name}' is not a valid Python module identifier.")
+    return module_name
 
-    def validate_module_name(module_name):
-        """Validates that the input is a structurally valid Python module identifier to prevent arbitrary code execution."""
-        if not all(part.isidentifier() for part in module_name.split('.')):
-            raise argparse.ArgumentTypeError(f"'{module_name}' is not a valid Python module identifier.")
-        return module_name
+def find_module_from_package(pkg):
+    import importlib.metadata
+    import importlib.util
 
-    def find_module_from_package(pkg):
-        import importlib.metadata
-        import importlib.util
-
-        # 1. Try to use importlib.metadata.files (works for standard installations from PyPI/wheels)
-        try:
-            files = importlib.metadata.files(pkg)
-            if files:
-                init_files = [str(f) for f in files if str(f).endswith('__init__.py') and '__pycache__' not in str(f) and not str(f).startswith('tests/')]
-                if init_files:
-                    from pathlib import Path
-                    shortest_init = min(init_files, key=lambda p: len(Path(p).parts))
-                    parts = Path(shortest_init).parent.parts
-                    mod = '.'.join(parts)
-                    if importlib.util.find_spec(mod):
-                        return mod
-        except Exception:
-            pass
-
-        # 2. Try setuptools.find_namespace_packages() in current directory (works for editable installs in source trees)
-        try:
-            import setuptools
-            import os
-            if os.path.exists('setup.py') or os.path.exists('pyproject.toml'):
-                pkgs = setuptools.find_namespace_packages(where='.')
-                for p in sorted(pkgs, key=len):
-                    if p in ("google", "google.cloud") or p.startswith("tests"):
-                        continue
-                    path = p.replace('.', os.sep)
-                    if os.path.isfile(os.path.join(path, '__init__.py')):
-                        if importlib.util.find_spec(p):
-                            return p
-        except Exception:
-            pass
-
-        # 3. Fallback to basic string manipulation heuristics
-        candidates = [
-            pkg.replace('-', '.'),
-            '.'.join(pkg.split('-')[:-1]) + '_' + pkg.split('-')[-1] if '-' in pkg else pkg,
-            pkg.replace('-', '_')
-        ]
-        for mod in candidates:
-            try:
+    # 1. Try to use importlib.metadata.files (works for standard installations from PyPI/wheels)
+    try:
+        files = importlib.metadata.files(pkg)
+        if files:
+            init_files = [str(f) for f in files if str(f).endswith('__init__.py') and '__pycache__' not in str(f) and not str(f).startswith('tests/')]
+            if init_files:
+                from pathlib import Path
+                shortest_init = min(init_files, key=lambda p: len(Path(p).parts))
+                parts = Path(shortest_init).parent.parts
+                mod = '.'.join(parts)
                 if importlib.util.find_spec(mod):
                     return mod
-            except Exception:
-                pass
-        return candidates[0]
+    except Exception:
+        pass
+
+    # 2. Try setuptools.find_namespace_packages() in current directory (works for editable installs in source trees)
+    try:
+        import setuptools
+        import os
+        if os.path.exists('setup.py') or os.path.exists('pyproject.toml'):
+            pkgs = setuptools.find_namespace_packages(where='.')
+            for p in sorted(pkgs, key=len):
+                if p in ("google", "google.cloud") or p.startswith("tests"):
+                    continue
+                path = p.replace('.', os.sep)
+                if os.path.isfile(os.path.join(path, '__init__.py')):
+                    if importlib.util.find_spec(p):
+                        return p
+    except Exception:
+        pass
+
+    # 3. Fallback to basic string manipulation heuristics
+    candidates = [
+        pkg.replace('-', '.'),
+        '.'.join(pkg.split('-')[:-1]) + '_' + pkg.split('-')[-1] if '-' in pkg else pkg,
+        pkg.replace('-', '_')
+    ]
+    for mod in candidates:
+        try:
+            if importlib.util.find_spec(mod):
+                return mod
+        except Exception:
+            pass
+    return candidates[0]
+
+if __name__ == "__main__":
+    import argparse
 
     parser = argparse.ArgumentParser(description="Python SDK Import Profiler")
     group = parser.add_mutually_exclusive_group(required=True)
@@ -470,4 +470,4 @@ if __name__ == "__main__":
         if not args.keep_pycache: clean_bytecode()
         run_mprofile(target_module)
     else:
-        run_master(args.iterations, target_module, args.cpu, args.csv, not args.keep_pycache, args.fail_threshold, args.diff_baseline, args.diff_threshold)
+        sys.exit(run_master(args.iterations, target_module, args.cpu, args.csv, not args.keep_pycache, args.fail_threshold, args.diff_baseline, args.diff_threshold))
