@@ -63,7 +63,7 @@ jobs:
         if [ -n "$TARGET_BRANCH" ]; then
           git fetch origin "$TARGET_BRANCH" --deepen=200 || true
         fi
-        echo "matrix=$(python3 ci/get_package_shards.py)" >> $GITHUB_OUTPUT
+        python3 ci/get_package_shards.py
 
   unit:
     needs: initialize

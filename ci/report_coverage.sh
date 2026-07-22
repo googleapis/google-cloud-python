@@ -79,7 +79,7 @@ report_package_coverage() {
 
         # Generate report
         if [ -f ".coveragerc" ]; then
-            echo "Using package-specific configuration: ${pkg}/.coveragerc" > "${pkg_log}"
+            echo "Using package-specific configuration: ${pkg}/.coveragerc" >> "${pkg_log}"
             if grep -q "fail_under" ".coveragerc"; then
                 COVERAGE_FILE="${pkg_coverage_db}" coverage report --rcfile=".coveragerc" --include="$PWD/**" >> "${pkg_log}" 2>&1
             else
@@ -87,7 +87,7 @@ report_package_coverage() {
                 COVERAGE_FILE="${pkg_coverage_db}" coverage report --rcfile=".coveragerc" --include="$PWD/**" --fail-under="${DEFAULT_FAIL_UNDER}" >> "${pkg_log}" 2>&1
             fi
         else
-            echo "No .coveragerc found for ${pkg}, enforcing default" > "${pkg_log}"
+            echo "No .coveragerc found for ${pkg}, enforcing default" >> "${pkg_log}"
             COVERAGE_FILE="${pkg_coverage_db}" coverage report --include="$PWD/**" --fail-under="${DEFAULT_FAIL_UNDER}" >> "${pkg_log}" 2>&1
         fi
         

@@ -195,4 +195,10 @@ def group_packages(packages):
 if __name__ == "__main__":
     packages = get_packages_to_test()
     shards = group_packages(packages)
-    print(json.dumps(shards))
+    shards_json = json.dumps(shards)
+    print(shards_json)
+
+    github_output = os.environ.get("GITHUB_OUTPUT")
+    if github_output:
+        with open(github_output, "a") as f:
+            f.write(f"matrix={shards_json}\n")
