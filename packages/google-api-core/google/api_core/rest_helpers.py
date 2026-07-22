@@ -160,9 +160,33 @@ def transcode_request(
         )
 
     if required_fields_default_values:
-        for k, v in required_fields_default_values.items():
-            if k not in query_params_json:
-                query_params_json[k] = v
+        matched_option = None
+        for option in http_options:
+            if option.get("method", "").lower() == transcoded_request.get("method", "").lower():
+                if path_template.validate(option.get("uri", ""), transcoded_request.get("uri", "")):
+                    matched_option = option
+                    break
+
+        bound_fields = set()
+        if matched_option:
+            uri_template = matched_option.get("uri", "")
+            for m in path_template._VARIABLE_RE.finditer(uri_template):
+                name = m.group("name")
+                if name:
+                    bound_fields.add(name.split(".")[0])
+            body_param = matched_option.get("body")
+            if body_param:
+                if body_param == "*":
+                    bound_fields = None
+                else:
+                    bound_fields.add(body_param.split(".")[0])
+
+        if bound_fields is not None:
+            for k, v in required_fields_default_values.items():
+                if k in bound_fields:
+                    continue
+                if k not in query_params_json:
+                    query_params_json[k] = v
 
     if rest_numeric_enums:
         query_params_json["$alt"] = "json;enum-encoding=int"
