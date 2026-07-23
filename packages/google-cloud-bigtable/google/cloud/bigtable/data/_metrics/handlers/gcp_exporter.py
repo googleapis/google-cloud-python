@@ -160,15 +160,21 @@ class BigtableMetricsExporter(MetricExporter):
                             monitored_resource = MonitoredResource(
                                 type="bigtable_client_raw",
                                 labels={
-                                    "project_id": self.project_id,
-                                    "instance": data_point.attributes[
-                                        "resource_instance"
-                                    ],
-                                    "cluster": data_point.attributes[
-                                        "resource_cluster"
-                                    ],
-                                    "table": data_point.attributes["resource_table"],
-                                    "zone": data_point.attributes["resource_zone"],
+                                    "project_id": data_point.attributes.get(
+                                        "resource_project", ""
+                                    )
+                                    "instance": data_point.attributes.get(
+                                        "resource_instance", ""
+                                    ),
+                                    "cluster": data_point.attributes.get(
+                                        "resource_cluster", ""
+                                    ),
+                                    "table": data_point.attributes.get(
+                                        "resource_table", ""
+                                    ),
+                                    "zone": data_point.attributes.get(
+                                        "resource_zone", ""
+                                    ),
                                 },
                             )
                             point = self._to_point(data_point)

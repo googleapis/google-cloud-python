@@ -118,6 +118,10 @@ class CompletedOperationMetric:
     cluster_id: str
     zone: str
     is_streaming: bool
+    project_id: str | None = None
+    instance_id: str | None = None
+    table_id: str | None = None
+    app_profile_id: str | None = None
     first_response_latency_ns: int | None = None
     flow_throttling_time_ns: int = 0
 
@@ -160,6 +164,10 @@ class ActiveOperationMetric:
     active_attempt: ActiveAttemptMetric | None = None
     cluster_id: str | None = None
     zone: str | None = None
+    project_id: str | None = None
+    instance_id: str | None = None
+    table_id: str | None = None
+    app_profile_id: str | None = None
     completed_attempts: list[CompletedAttemptMetric] = field(default_factory=list)
     is_streaming: bool = False  # only True for read_rows operations
     handlers: list[MetricsHandler] = field(default_factory=list)
@@ -375,6 +383,10 @@ class ActiveOperationMetric:
             cluster_id=self.cluster_id or DEFAULT_CLUSTER_ID,
             zone=self.zone or DEFAULT_ZONE,
             is_streaming=self.is_streaming,
+            project_id=self.project_id,
+            instance_id=self.instance_id,
+            table_id=self.table_id,
+            app_profile_id=self.app_profile_id,
             first_response_latency_ns=self.first_response_latency_ns,
             flow_throttling_time_ns=self.flow_throttling_time_ns,
         )

@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+import dataclasses
 import mock
 import pytest
 from grpc import StatusCode
@@ -117,42 +118,26 @@ class TestOpentelemetryMetricsHandler:
     def test_ctor_defaults(self):
         from google.cloud.bigtable import __version__ as CLIENT_VERSION
 
-        expected_instance = "my_instance"
-        expected_table = "my_table"
         with mock.patch.object(
             OpenTelemetryMetricsHandler, "_generate_client_uid"
         ) as uid_mock:
-            handler = self._make_one(
-                instance_id=expected_instance, table_id=expected_table
-            )
+            handler = self._make_one()
         assert isinstance(handler.otel, _OpenTelemetryInstruments)
-        assert handler.shared_labels["resource_instance"] == expected_instance
-        assert handler.shared_labels["resource_table"] == expected_table
-        assert handler.shared_labels["app_profile"] == "default"
         assert (
             handler.shared_labels["client_name"] == f"python-bigtable/{CLIENT_VERSION}"
         )
         assert handler.shared_labels["client_uid"] == uid_mock()
 
     def test_ctor_explicit(self):
-        expected_instance = "my_instance"
-        expected_table = "my_table"
         expected_version = "my_version"
         expected_uid = "my_uid"
-        expected_app_profile = "my_profile"
         expected_instruments = object()
         handler = self._make_one(
-            instance_id=expected_instance,
-            table_id=expected_table,
-            app_profile_id=expected_app_profile,
             client_uid=expected_uid,
             client_version=expected_version,
             instruments=expected_instruments,
         )
         assert handler.otel == expected_instruments
-        assert handler.shared_labels["resource_instance"] == expected_instance
-        assert handler.shared_labels["resource_table"] == expected_table
-        assert handler.shared_labels["app_profile"] == expected_app_profile
         assert (
             handler.shared_labels["client_name"]
             == f"python-bigtable/{expected_version}"
@@ -187,9 +172,7 @@ class TestOpentelemetryMetricsHandler:
 
     def test_on_operation_complete_operation_latencies(self):
         mock_instruments = mock.Mock(operation_latencies=mock.Mock())
-        handler = self._make_one(
-            instance_id="inst", table_id="table", instruments=mock_instruments
-        )
+        handler = self._make_one(instruments=mock_instruments)
         op = CompletedOperationMetric(
             op_type=OperationType.READ_ROWS,
             duration_ns=1234567,
@@ -212,6 +195,37 @@ class TestOpentelemetryMetricsHandler:
             {"streaming": str(op.is_streaming), **expected_labels},
         )
 
+    def test_on_operation_complete_dynamic_labels(self):
+        mock_instruments = mock.Mock(operation_latencies=mock.Mock())
+        handler = self._make_one(instruments=mock_instruments)
+        op = CompletedOperationMetric(
+            op_type=OperationType.READ_ROWS,
+            duration_ns=1234567,
+            completed_attempts=[],
+            final_status=StatusCode.OK,
+            cluster_id="cluster",
+            zone="zone",
+            is_streaming=True,
+            instance_id="dynamic_inst",
+            table_id="dynamic_table",
+            app_profile_id="dynamic_app",
+        )
+        handler.on_operation_complete(op)
+        expected_labels = {
+            "method": op.op_type.value,
+            "status": op.final_status.name,
+            "resource_zone": op.zone,
+            "resource_cluster": op.cluster_id,
+            "resource_instance": "dynamic_inst",
+            "resource_table": "dynamic_table",
+            "app_profile": "dynamic_app",
+            **handler.shared_labels,
+        }
+        mock_instruments.operation_latencies.record.assert_called_once_with(
+            op.duration_ns / 1e6,
+            {"streaming": str(op.is_streaming), **expected_labels},
+        )
+
     @pytest.mark.parametrize(
         "op_type,first_response_latency_ns,should_record",
         [
@@ -224,9 +238,7 @@ class TestOpentelemetryMetricsHandler:
         self, op_type, first_response_latency_ns, should_record
     ):
         mock_instruments = mock.Mock(first_response_latencies=mock.Mock())
-        handler = self._make_one(
-            instance_id="inst", table_id="table", instruments=mock_instruments
-        )
+        handler = self._make_one(instruments=mock_instruments)
         op = CompletedOperationMetric(
             op_type=op_type,
             duration_ns=1234567,
@@ -255,9 +267,7 @@ class TestOpentelemetryMetricsHandler:
     @pytest.mark.parametrize("attempts_count", [0, 1, 5])
     def test_on_operation_complete_retry_count(self, attempts_count):
         mock_instruments = mock.Mock(retry_count=mock.Mock())
-        handler = self._make_one(
-            instance_id="inst", table_id="table", instruments=mock_instruments
-        )
+        handler = self._make_one(instruments=mock_instruments)
         attempts = [mock.Mock()] * attempts_count
         op = CompletedOperationMetric(
             op_type=OperationType.READ_ROWS,
@@ -285,9 +295,7 @@ class TestOpentelemetryMetricsHandler:
 
     def test_on_attempt_complete_attempt_latencies(self):
         mock_instruments = mock.Mock(attempt_latencies=mock.Mock())
-        handler = self._make_one(
-            instance_id="inst", table_id="table", instruments=mock_instruments
-        )
+        handler = self._make_one(instruments=mock_instruments)
         attempt = CompletedAttemptMetric(duration_ns=1234567, end_status=StatusCode.OK)
         op = ActiveOperationMetric(
             op_type=OperationType.READ_ROWS,
@@ -319,9 +327,7 @@ class TestOpentelemetryMetricsHandler:
         self, is_first_attempt, flow_throttling_ns
     ):
         mock_instruments = mock.Mock(throttling_latencies=mock.Mock())
-        handler = self._make_one(
-            instance_id="inst", table_id="table", instruments=mock_instruments
-        )
+        handler = self._make_one(instruments=mock_instruments)
         attempt = CompletedAttemptMetric(
             duration_ns=1234567,
             end_status=StatusCode.OK,
@@ -342,9 +348,7 @@ class TestOpentelemetryMetricsHandler:
 
     def test_on_attempt_complete_application_latencies(self):
         mock_instruments = mock.Mock(application_latencies=mock.Mock())
-        handler = self._make_one(
-            instance_id="inst", table_id="table", instruments=mock_instruments
-        )
+        handler = self._make_one(instruments=mock_instruments)
         attempt = CompletedAttemptMetric(
             duration_ns=1234567,
             end_status=StatusCode.OK,
@@ -369,9 +373,7 @@ class TestOpentelemetryMetricsHandler:
         mock_instruments = mock.Mock(
             server_latencies=mock.Mock(), connectivity_error_count=mock.Mock()
         )
-        handler = self._make_one(
-            instance_id="inst", table_id="table", instruments=mock_instruments
-        )
+        handler = self._make_one(instruments=mock_instruments)
         attempt = CompletedAttemptMetric(
             duration_ns=1234567,
             end_status=StatusCode.OK,

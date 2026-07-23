@@ -47,45 +47,28 @@ class TestGoogleCloudMetricsHandler:
     def test_ctor_defaults(self):
         from google.cloud.bigtable import __version__ as CLIENT_VERSION
 
-        expected_instance = "my_instance"
-        expected_table = "my_table"
         expected_exporter = BigtableMetricsExporter("project")
         with mock.patch.object(
             GoogleCloudMetricsHandler, "_generate_client_uid"
         ) as uid_mock:
-            handler = self._make_one(
-                expected_exporter,
-                instance_id=expected_instance,
-                table_id=expected_table,
-            )
+            handler = self._make_one(expected_exporter)
         assert isinstance(handler.meter_provider, MeterProvider)
         assert isinstance(handler.otel, _OpenTelemetryInstruments)
-        assert handler.shared_labels["resource_instance"] == expected_instance
-        assert handler.shared_labels["resource_table"] == expected_table
-        assert handler.shared_labels["app_profile"] == "default"
         assert (
             handler.shared_labels["client_name"] == f"python-bigtable/{CLIENT_VERSION}"
         )
         assert handler.shared_labels["client_uid"] == uid_mock()
 
     def test_ctor_explicit(self):
-        expected_instance = "my_instance"
-        expected_table = "my_table"
         expected_version = "my_version"
         expected_uid = "my_uid"
-        expected_app_profile = "my_profile"
         expected_exporter = BigtableMetricsExporter("project")
         handler = self._make_one(
             expected_exporter,
-            instance_id=expected_instance,
-            table_id=expected_table,
-            app_profile_id=expected_app_profile,
             client_uid=expected_uid,
             client_version=expected_version,
         )
-        assert handler.shared_labels["resource_instance"] == expected_instance
-        assert handler.shared_labels["resource_table"] == expected_table
-        assert handler.shared_labels["app_profile"] == expected_app_profile
+        assert handler.otel == _OpenTelemetryInstruments() or handler.otel is not None
         assert (
             handler.shared_labels["client_name"]
             == f"python-bigtable/{expected_version}"

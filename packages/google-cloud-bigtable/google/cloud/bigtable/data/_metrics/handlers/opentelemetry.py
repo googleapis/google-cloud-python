@@ -125,9 +125,6 @@ class OpenTelemetryMetricsHandler(MetricsHandler):
     def __init__(
         self,
         *,
-        instance_id: str,
-        table_id: str,
-        app_profile_id: str | None = None,
         client_uid: str | None = None,
         client_version: str | None = None,
         instruments: _OpenTelemetryInstruments | None = None,
@@ -139,9 +136,24 @@ class OpenTelemetryMetricsHandler(MetricsHandler):
         self.shared_labels = {
             "client_name": f"python-bigtable/{client_version}",
             "client_uid": client_uid or self._generate_client_uid(),
+        }
+
+    def _get_operation_labels(
+        self, op: ActiveOperationMetric | CompletedOperationMetric
+    ) -> dict[str, str]:
+        project_id = getattr(op, "project_id", None)
+        instance_id = getattr(op, "instance_id", None)
+        table_id = getattr(op, "table_id", None)
+        app_profile = getattr(op, "app_profile_id", None) or "default"
+        operation_labels = {
+            "resource_project": project_id,
             "resource_instance": instance_id,
             "resource_table": table_id,
-            "app_profile": app_profile_id or "default",
+            "app_profile": app_profile,
+        }
+        return {
+            **self.shared_labels,
+            **{k: v for k, v in operation_labels.items() if v},
         }
 
     @staticmethod
@@ -175,7 +187,7 @@ class OpenTelemetryMetricsHandler(MetricsHandler):
             "status": op.final_status.name,
             "resource_zone": op.zone,
             "resource_cluster": op.cluster_id,
-            **self.shared_labels,
+            **self._get_operation_labels(op),
         }
         is_streaming = str(op.is_streaming)
 
@@ -208,7 +220,7 @@ class OpenTelemetryMetricsHandler(MetricsHandler):
             "method": op.op_type.value,
             "resource_zone": op.zone or DEFAULT_ZONE,  # fallback to default if unset
             "resource_cluster": op.cluster_id or DEFAULT_CLUSTER_ID,
-            **self.shared_labels,
+            **self._get_operation_labels(op),
         }
         status = attempt.end_status.name
         is_streaming = str(op.is_streaming)

@@ -1083,9 +1083,9 @@ class TestTable:
         instance_key = _WarmedInstanceKey(table.instance_name, table.app_profile_id)
         assert instance_key in client._active_instances
         assert client._instance_owners[instance_key] == {id(table)}
-        assert isinstance(table._metrics, BigtableClientSideMetricsController)
-        assert len(table._metrics.handlers) == 1
-        assert isinstance(table._metrics.handlers[0], GoogleCloudMetricsHandler)
+        assert isinstance(client._metrics, BigtableClientSideMetricsController)
+        assert len(client._metrics.handlers) == 1
+        assert isinstance(client._metrics.handlers[0], GoogleCloudMetricsHandler)
         assert table.default_operation_timeout == expected_operation_timeout
         assert table.default_attempt_timeout == expected_attempt_timeout
         assert (
@@ -1286,7 +1286,7 @@ class TestTable:
         client = self._make_client()
         table = self._make_one(client)
         with mock.patch.object(
-            table._metrics, "close", mock.Mock()
+            client._metrics, "close", mock.Mock()
         ) as metric_close_mock:
             with mock.patch.object(
                 client, "_remove_instance_registration"
@@ -1295,6 +1295,8 @@ class TestTable:
                 remove_mock.assert_called_once_with(
                     table.instance_id, table.app_profile_id, id(table)
                 )
+                metric_close_mock.assert_not_called()
+                client.close()
                 metric_close_mock.assert_called_once()
 
 
@@ -1374,9 +1376,9 @@ class TestAuthorizedView(CrossSync._Sync_Impl.TestTable):
         instance_key = _WarmedInstanceKey(view.instance_name, view.app_profile_id)
         assert instance_key in client._active_instances
         assert client._instance_owners[instance_key] == {id(view)}
-        assert isinstance(view._metrics, BigtableClientSideMetricsController)
-        assert len(view._metrics.handlers) == 1
-        assert isinstance(view._metrics.handlers[0], GoogleCloudMetricsHandler)
+        assert isinstance(client._metrics, BigtableClientSideMetricsController)
+        assert len(client._metrics.handlers) == 1
+        assert isinstance(client._metrics.handlers[0], GoogleCloudMetricsHandler)
         assert view.default_operation_timeout == expected_operation_timeout
         assert view.default_attempt_timeout == expected_attempt_timeout
         assert (
