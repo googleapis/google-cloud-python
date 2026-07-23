@@ -78,6 +78,7 @@ version = { attr = "google.api_core.version.__version__" }
 include = ["google*"]
 
 [tool.setuptools.package-data]
+"google.api_core" = ["py.typed"]
 "*" = ["py.typed"]
 
 [tool.mypy]
