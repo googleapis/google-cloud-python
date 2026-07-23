@@ -117,7 +117,6 @@ exclude_patterns = [
     "**/.nox/**/*",
     "samples/AUTHORING_GUIDE.md",
     "samples/CONTRIBUTING.md",
-    "samples/**/snippets/README*",
 ]
 
 # The reST default role (used for this markup: `text`) to use for all
