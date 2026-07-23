@@ -57,7 +57,7 @@ def _get_env_bool(name: str) -> bool | None:
         return None
 
 
-def _has_provider(
+def _has_feature_key(
     *, configuration: ClientOptions | dict[str, Any] | None, feature_key: str
 ) -> bool:
     """Checks if a specific feature key is present and not None in configuration."""
@@ -104,8 +104,8 @@ def resolve_feature_flags(
         ValueError: If a provider is provided for an experimental feature without enabling the experimental environment variable.
     """
 
-    # Check for programmatic feature provider
-    has_provider = _has_provider(
+    # Check for programmatic feature configuration
+    has_feature = _has_feature_key(
         configuration=configuration, feature_key=feature_key
     )
 
@@ -117,8 +117,8 @@ def resolve_feature_flags(
     #   1. EXPERIMENTAL Environment Variable
     #   2. Fail Fast if Provider present but EXPERIMENTAL Environment Variable is not enabled
     if "EXPERIMENTAL" in env_var:
-        # Fail Fast if provider present but experimental environment variable is not enabled
-        if env_var_setting is not True and has_provider:
+        # Fail Fast if feature key present but experimental environment variable is not enabled
+        if env_var_setting is not True and has_feature:
             raise FeatureGatingError(
                 f"Experimental feature requires {env_var} to be set to 'true' to use programmatic providers."
             )
@@ -127,11 +127,11 @@ def resolve_feature_flags(
 
     # GENERAL AVAILABILITY PATH:
     # Resolution Hierarchy:
-    #   1. Programmatic Provider
+    #   1. Programmatic Configuration (Feature Key)
     #   2. Environment Variable
 
-    # Check Programmatic Provider
-    if has_provider:
+    # Check Programmatic Configuration
+    if has_feature:
         return True
 
     # Check Environment Variable
