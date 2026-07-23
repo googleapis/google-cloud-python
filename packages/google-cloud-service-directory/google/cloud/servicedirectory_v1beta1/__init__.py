@@ -23,6 +23,23 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.cloud.servicedirectory_v1beta1.services.lookup_service",
+    "google.cloud.servicedirectory_v1beta1.services.registration_service",
+    "google.cloud.servicedirectory_v1beta1.types.endpoint",
+    "google.cloud.servicedirectory_v1beta1.types.lookup_service",
+    "google.cloud.servicedirectory_v1beta1.types.namespace",
+    "google.cloud.servicedirectory_v1beta1.types.registration_service",
+    "google.cloud.servicedirectory_v1beta1.types.service",
+}
+
+
 from .services.lookup_service import LookupServiceAsyncClient, LookupServiceClient
 from .services.registration_service import (
     RegistrationServiceAsyncClient,

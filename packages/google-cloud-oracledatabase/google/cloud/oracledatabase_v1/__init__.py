@@ -23,6 +23,49 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.cloud.oracledatabase_v1.services.oracle_database",
+    "google.cloud.oracledatabase_v1.types.autonomous_database",
+    "google.cloud.oracledatabase_v1.types.autonomous_database_character_set",
+    "google.cloud.oracledatabase_v1.types.autonomous_db_backup",
+    "google.cloud.oracledatabase_v1.types.autonomous_db_version",
+    "google.cloud.oracledatabase_v1.types.common",
+    "google.cloud.oracledatabase_v1.types.database",
+    "google.cloud.oracledatabase_v1.types.database_character_set",
+    "google.cloud.oracledatabase_v1.types.db_node",
+    "google.cloud.oracledatabase_v1.types.db_server",
+    "google.cloud.oracledatabase_v1.types.db_system",
+    "google.cloud.oracledatabase_v1.types.db_system_initial_storage_size",
+    "google.cloud.oracledatabase_v1.types.db_system_shape",
+    "google.cloud.oracledatabase_v1.types.db_version",
+    "google.cloud.oracledatabase_v1.types.entitlement",
+    "google.cloud.oracledatabase_v1.types.exadata_infra",
+    "google.cloud.oracledatabase_v1.types.exadb_vm_cluster",
+    "google.cloud.oracledatabase_v1.types.exascale_db_storage_vault",
+    "google.cloud.oracledatabase_v1.types.gi_version",
+    "google.cloud.oracledatabase_v1.types.goldengate_connection",
+    "google.cloud.oracledatabase_v1.types.goldengate_connection_assignment",
+    "google.cloud.oracledatabase_v1.types.goldengate_connection_type",
+    "google.cloud.oracledatabase_v1.types.goldengate_deployment",
+    "google.cloud.oracledatabase_v1.types.goldengate_deployment_environment",
+    "google.cloud.oracledatabase_v1.types.goldengate_deployment_type",
+    "google.cloud.oracledatabase_v1.types.goldengate_deployment_version",
+    "google.cloud.oracledatabase_v1.types.location_metadata",
+    "google.cloud.oracledatabase_v1.types.minor_version",
+    "google.cloud.oracledatabase_v1.types.odb_network",
+    "google.cloud.oracledatabase_v1.types.odb_subnet",
+    "google.cloud.oracledatabase_v1.types.oracledatabase",
+    "google.cloud.oracledatabase_v1.types.pluggable_database",
+    "google.cloud.oracledatabase_v1.types.vm_cluster",
+}
+
+
 from .services.oracle_database import OracleDatabaseAsyncClient, OracleDatabaseClient
 from .types.autonomous_database import (
     AllConnectionStrings,

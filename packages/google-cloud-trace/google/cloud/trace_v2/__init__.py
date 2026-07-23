@@ -23,6 +23,19 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.cloud.trace_v2.services.trace_service",
+    "google.cloud.trace_v2.types.trace",
+    "google.cloud.trace_v2.types.tracing",
+}
+
+
 from .services.trace_service import TraceServiceAsyncClient, TraceServiceClient
 from .types.trace import AttributeValue, Module, Span, StackTrace, TruncatableString
 from .types.tracing import BatchWriteSpansRequest

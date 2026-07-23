@@ -23,6 +23,31 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.cloud.netapp_v1.services.net_app",
+    "google.cloud.netapp_v1.types.active_directory",
+    "google.cloud.netapp_v1.types.backup",
+    "google.cloud.netapp_v1.types.backup_policy",
+    "google.cloud.netapp_v1.types.backup_vault",
+    "google.cloud.netapp_v1.types.cloud_netapp_service",
+    "google.cloud.netapp_v1.types.common",
+    "google.cloud.netapp_v1.types.host_group",
+    "google.cloud.netapp_v1.types.kms",
+    "google.cloud.netapp_v1.types.ontap",
+    "google.cloud.netapp_v1.types.quota_rule",
+    "google.cloud.netapp_v1.types.replication",
+    "google.cloud.netapp_v1.types.snapshot",
+    "google.cloud.netapp_v1.types.storage_pool",
+    "google.cloud.netapp_v1.types.volume",
+}
+
+
 from .services.net_app import NetAppAsyncClient, NetAppClient
 from .types.active_directory import (
     ActiveDirectory,

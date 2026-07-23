@@ -23,6 +23,20 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.cloud.texttospeech_v1.services.text_to_speech",
+    "google.cloud.texttospeech_v1.services.text_to_speech_long_audio_synthesize",
+    "google.cloud.texttospeech_v1.types.cloud_tts",
+    "google.cloud.texttospeech_v1.types.cloud_tts_lrs",
+}
+
+
 from .services.text_to_speech import TextToSpeechAsyncClient, TextToSpeechClient
 from .services.text_to_speech_long_audio_synthesize import (
     TextToSpeechLongAudioSynthesizeAsyncClient,

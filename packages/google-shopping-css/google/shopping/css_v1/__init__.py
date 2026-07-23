@@ -23,6 +23,27 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.shopping.css_v1.services.account_labels_service",
+    "google.shopping.css_v1.services.accounts_service",
+    "google.shopping.css_v1.services.css_product_inputs_service",
+    "google.shopping.css_v1.services.css_products_service",
+    "google.shopping.css_v1.services.quota_service",
+    "google.shopping.css_v1.types.accounts",
+    "google.shopping.css_v1.types.accounts_labels",
+    "google.shopping.css_v1.types.css_product_common",
+    "google.shopping.css_v1.types.css_product_inputs",
+    "google.shopping.css_v1.types.css_products",
+    "google.shopping.css_v1.types.quota",
+}
+
+
 from .services.account_labels_service import (
     AccountLabelsServiceAsyncClient,
     AccountLabelsServiceClient,

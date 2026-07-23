@@ -177,6 +177,7 @@ def mypy(session):
         f"--config-file={MYPY_CONFIG_FILE}",
         "-p",
         "google",
+        "--check-untyped-defs",
         *session.posargs,
     )
 

@@ -23,6 +23,43 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.ai.generativelanguage_v1alpha.services.cache_service",
+    "google.ai.generativelanguage_v1alpha.services.discuss_service",
+    "google.ai.generativelanguage_v1alpha.services.file_service",
+    "google.ai.generativelanguage_v1alpha.services.generative_service",
+    "google.ai.generativelanguage_v1alpha.services.model_service",
+    "google.ai.generativelanguage_v1alpha.services.permission_service",
+    "google.ai.generativelanguage_v1alpha.services.prediction_service",
+    "google.ai.generativelanguage_v1alpha.services.retriever_service",
+    "google.ai.generativelanguage_v1alpha.services.text_service",
+    "google.ai.generativelanguage_v1alpha.types.cache_service",
+    "google.ai.generativelanguage_v1alpha.types.cached_content",
+    "google.ai.generativelanguage_v1alpha.types.citation",
+    "google.ai.generativelanguage_v1alpha.types.content",
+    "google.ai.generativelanguage_v1alpha.types.discuss_service",
+    "google.ai.generativelanguage_v1alpha.types.file",
+    "google.ai.generativelanguage_v1alpha.types.file_service",
+    "google.ai.generativelanguage_v1alpha.types.generative_service",
+    "google.ai.generativelanguage_v1alpha.types.model",
+    "google.ai.generativelanguage_v1alpha.types.model_service",
+    "google.ai.generativelanguage_v1alpha.types.permission",
+    "google.ai.generativelanguage_v1alpha.types.permission_service",
+    "google.ai.generativelanguage_v1alpha.types.prediction_service",
+    "google.ai.generativelanguage_v1alpha.types.retriever",
+    "google.ai.generativelanguage_v1alpha.types.retriever_service",
+    "google.ai.generativelanguage_v1alpha.types.safety",
+    "google.ai.generativelanguage_v1alpha.types.text_service",
+    "google.ai.generativelanguage_v1alpha.types.tuned_model",
+}
+
+
 from .services.cache_service import CacheServiceAsyncClient, CacheServiceClient
 from .services.discuss_service import DiscussServiceAsyncClient, DiscussServiceClient
 from .services.file_service import FileServiceAsyncClient, FileServiceClient

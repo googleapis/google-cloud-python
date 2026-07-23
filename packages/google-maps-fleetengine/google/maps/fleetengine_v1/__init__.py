@@ -23,6 +23,25 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.maps.fleetengine_v1.services.trip_service",
+    "google.maps.fleetengine_v1.services.vehicle_service",
+    "google.maps.fleetengine_v1.types.fleetengine",
+    "google.maps.fleetengine_v1.types.header",
+    "google.maps.fleetengine_v1.types.traffic",
+    "google.maps.fleetengine_v1.types.trip_api",
+    "google.maps.fleetengine_v1.types.trips",
+    "google.maps.fleetengine_v1.types.vehicle_api",
+    "google.maps.fleetengine_v1.types.vehicles",
+}
+
+
 from .services.trip_service import TripServiceAsyncClient, TripServiceClient
 from .services.vehicle_service import VehicleServiceAsyncClient, VehicleServiceClient
 from .types.fleetengine import (

@@ -23,6 +23,40 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.cloud.appengine_admin_v1.services.applications",
+    "google.cloud.appengine_admin_v1.services.authorized_certificates",
+    "google.cloud.appengine_admin_v1.services.authorized_domains",
+    "google.cloud.appengine_admin_v1.services.domain_mappings",
+    "google.cloud.appengine_admin_v1.services.firewall",
+    "google.cloud.appengine_admin_v1.services.instances",
+    "google.cloud.appengine_admin_v1.services.services",
+    "google.cloud.appengine_admin_v1.services.versions",
+    "google.cloud.appengine_admin_v1.types.app_yaml",
+    "google.cloud.appengine_admin_v1.types.appengine",
+    "google.cloud.appengine_admin_v1.types.application",
+    "google.cloud.appengine_admin_v1.types.audit_data",
+    "google.cloud.appengine_admin_v1.types.certificate",
+    "google.cloud.appengine_admin_v1.types.deploy",
+    "google.cloud.appengine_admin_v1.types.deployed_files",
+    "google.cloud.appengine_admin_v1.types.domain",
+    "google.cloud.appengine_admin_v1.types.domain_mapping",
+    "google.cloud.appengine_admin_v1.types.firewall",
+    "google.cloud.appengine_admin_v1.types.instance",
+    "google.cloud.appengine_admin_v1.types.location",
+    "google.cloud.appengine_admin_v1.types.network_settings",
+    "google.cloud.appengine_admin_v1.types.operation",
+    "google.cloud.appengine_admin_v1.types.service",
+    "google.cloud.appengine_admin_v1.types.version",
+}
+
+
 from .services.applications import ApplicationsAsyncClient, ApplicationsClient
 from .services.authorized_certificates import (
     AuthorizedCertificatesAsyncClient,

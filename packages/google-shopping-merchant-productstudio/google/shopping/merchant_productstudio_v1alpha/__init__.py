@@ -25,6 +25,21 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.shopping.merchant_productstudio_v1alpha.services.image_service",
+    "google.shopping.merchant_productstudio_v1alpha.services.text_suggestions_service",
+    "google.shopping.merchant_productstudio_v1alpha.types.image",
+    "google.shopping.merchant_productstudio_v1alpha.types.productstudio_common",
+    "google.shopping.merchant_productstudio_v1alpha.types.textsuggestions",
+}
+
+
 from .services.image_service import ImageServiceAsyncClient, ImageServiceClient
 from .services.text_suggestions_service import (
     TextSuggestionsServiceAsyncClient,

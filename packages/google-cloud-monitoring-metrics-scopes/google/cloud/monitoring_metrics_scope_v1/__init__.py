@@ -23,6 +23,19 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.cloud.monitoring_metrics_scope_v1.services.metrics_scopes",
+    "google.cloud.monitoring_metrics_scope_v1.types.metrics_scope",
+    "google.cloud.monitoring_metrics_scope_v1.types.metrics_scopes",
+}
+
+
 from .services.metrics_scopes import MetricsScopesAsyncClient, MetricsScopesClient
 from .types.metrics_scope import MetricsScope, MonitoredProject
 from .types.metrics_scopes import (

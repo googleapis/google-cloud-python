@@ -23,6 +23,71 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.cloud.dialogflowcx_v3.services.agents",
+    "google.cloud.dialogflowcx_v3.services.changelogs",
+    "google.cloud.dialogflowcx_v3.services.deployments",
+    "google.cloud.dialogflowcx_v3.services.entity_types",
+    "google.cloud.dialogflowcx_v3.services.environments",
+    "google.cloud.dialogflowcx_v3.services.examples",
+    "google.cloud.dialogflowcx_v3.services.experiments",
+    "google.cloud.dialogflowcx_v3.services.flows",
+    "google.cloud.dialogflowcx_v3.services.generators",
+    "google.cloud.dialogflowcx_v3.services.intents",
+    "google.cloud.dialogflowcx_v3.services.pages",
+    "google.cloud.dialogflowcx_v3.services.playbooks",
+    "google.cloud.dialogflowcx_v3.services.security_settings_service",
+    "google.cloud.dialogflowcx_v3.services.session_entity_types",
+    "google.cloud.dialogflowcx_v3.services.sessions",
+    "google.cloud.dialogflowcx_v3.services.test_cases",
+    "google.cloud.dialogflowcx_v3.services.tools",
+    "google.cloud.dialogflowcx_v3.services.transition_route_groups",
+    "google.cloud.dialogflowcx_v3.services.versions",
+    "google.cloud.dialogflowcx_v3.services.webhooks",
+    "google.cloud.dialogflowcx_v3.types.advanced_settings",
+    "google.cloud.dialogflowcx_v3.types.agent",
+    "google.cloud.dialogflowcx_v3.types.audio_config",
+    "google.cloud.dialogflowcx_v3.types.changelog",
+    "google.cloud.dialogflowcx_v3.types.code_block",
+    "google.cloud.dialogflowcx_v3.types.data_store_connection",
+    "google.cloud.dialogflowcx_v3.types.deployment",
+    "google.cloud.dialogflowcx_v3.types.entity_type",
+    "google.cloud.dialogflowcx_v3.types.environment",
+    "google.cloud.dialogflowcx_v3.types.example",
+    "google.cloud.dialogflowcx_v3.types.experiment",
+    "google.cloud.dialogflowcx_v3.types.flow",
+    "google.cloud.dialogflowcx_v3.types.fulfillment",
+    "google.cloud.dialogflowcx_v3.types.gcs",
+    "google.cloud.dialogflowcx_v3.types.generative_settings",
+    "google.cloud.dialogflowcx_v3.types.generator",
+    "google.cloud.dialogflowcx_v3.types.import_strategy",
+    "google.cloud.dialogflowcx_v3.types.inline",
+    "google.cloud.dialogflowcx_v3.types.intent",
+    "google.cloud.dialogflowcx_v3.types.page",
+    "google.cloud.dialogflowcx_v3.types.parameter_definition",
+    "google.cloud.dialogflowcx_v3.types.playbook",
+    "google.cloud.dialogflowcx_v3.types.response_message",
+    "google.cloud.dialogflowcx_v3.types.safety_settings",
+    "google.cloud.dialogflowcx_v3.types.security_settings",
+    "google.cloud.dialogflowcx_v3.types.session",
+    "google.cloud.dialogflowcx_v3.types.session_entity_type",
+    "google.cloud.dialogflowcx_v3.types.test_case",
+    "google.cloud.dialogflowcx_v3.types.tool",
+    "google.cloud.dialogflowcx_v3.types.tool_call",
+    "google.cloud.dialogflowcx_v3.types.trace",
+    "google.cloud.dialogflowcx_v3.types.transition_route_group",
+    "google.cloud.dialogflowcx_v3.types.validation_message",
+    "google.cloud.dialogflowcx_v3.types.version",
+    "google.cloud.dialogflowcx_v3.types.webhook",
+}
+
+
 from .services.agents import AgentsAsyncClient, AgentsClient
 from .services.changelogs import ChangelogsAsyncClient, ChangelogsClient
 from .services.deployments import DeploymentsAsyncClient, DeploymentsClient

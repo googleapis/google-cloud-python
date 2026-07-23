@@ -23,6 +23,42 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.apps.chat_v1.services.chat_service",
+    "google.apps.chat_v1.types.action_status",
+    "google.apps.chat_v1.types.annotation",
+    "google.apps.chat_v1.types.attachment",
+    "google.apps.chat_v1.types.audience",
+    "google.apps.chat_v1.types.availability",
+    "google.apps.chat_v1.types.chat_service",
+    "google.apps.chat_v1.types.contextual_addon",
+    "google.apps.chat_v1.types.deletion_metadata",
+    "google.apps.chat_v1.types.event_payload",
+    "google.apps.chat_v1.types.group",
+    "google.apps.chat_v1.types.history_state",
+    "google.apps.chat_v1.types.matched_url",
+    "google.apps.chat_v1.types.membership",
+    "google.apps.chat_v1.types.message",
+    "google.apps.chat_v1.types.reaction",
+    "google.apps.chat_v1.types.section",
+    "google.apps.chat_v1.types.slash_command",
+    "google.apps.chat_v1.types.space",
+    "google.apps.chat_v1.types.space_event",
+    "google.apps.chat_v1.types.space_notification_setting",
+    "google.apps.chat_v1.types.space_read_state",
+    "google.apps.chat_v1.types.space_setup",
+    "google.apps.chat_v1.types.thread_read_state",
+    "google.apps.chat_v1.types.user",
+    "google.apps.chat_v1.types.widgets",
+}
+
+
 from .services.chat_service import ChatServiceAsyncClient, ChatServiceClient
 from .types.action_status import ActionStatus
 from .types.annotation import (

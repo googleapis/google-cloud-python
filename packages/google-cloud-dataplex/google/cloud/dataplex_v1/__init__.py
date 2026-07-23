@@ -23,6 +23,47 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.cloud.dataplex_v1.services.business_glossary_service",
+    "google.cloud.dataplex_v1.services.catalog_service",
+    "google.cloud.dataplex_v1.services.cmek_service",
+    "google.cloud.dataplex_v1.services.content_service",
+    "google.cloud.dataplex_v1.services.data_product_service",
+    "google.cloud.dataplex_v1.services.data_scan_service",
+    "google.cloud.dataplex_v1.services.data_taxonomy_service",
+    "google.cloud.dataplex_v1.services.dataplex_service",
+    "google.cloud.dataplex_v1.services.metadata_service",
+    "google.cloud.dataplex_v1.types.analyze",
+    "google.cloud.dataplex_v1.types.approval_workflow",
+    "google.cloud.dataplex_v1.types.business_glossary",
+    "google.cloud.dataplex_v1.types.catalog",
+    "google.cloud.dataplex_v1.types.cmek",
+    "google.cloud.dataplex_v1.types.content",
+    "google.cloud.dataplex_v1.types.data_discovery",
+    "google.cloud.dataplex_v1.types.data_documentation",
+    "google.cloud.dataplex_v1.types.data_products",
+    "google.cloud.dataplex_v1.types.data_profile",
+    "google.cloud.dataplex_v1.types.data_quality",
+    "google.cloud.dataplex_v1.types.data_quality_rule_template",
+    "google.cloud.dataplex_v1.types.data_taxonomy",
+    "google.cloud.dataplex_v1.types.datascans",
+    "google.cloud.dataplex_v1.types.datascans_common",
+    "google.cloud.dataplex_v1.types.logs",
+    "google.cloud.dataplex_v1.types.metadata_",
+    "google.cloud.dataplex_v1.types.processing",
+    "google.cloud.dataplex_v1.types.resources",
+    "google.cloud.dataplex_v1.types.security",
+    "google.cloud.dataplex_v1.types.service",
+    "google.cloud.dataplex_v1.types.tasks",
+}
+
+
 from .services.business_glossary_service import (
     BusinessGlossaryServiceAsyncClient,
     BusinessGlossaryServiceClient,

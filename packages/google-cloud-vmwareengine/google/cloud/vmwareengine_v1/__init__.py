@@ -23,6 +23,19 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.cloud.vmwareengine_v1.services.vmware_engine",
+    "google.cloud.vmwareengine_v1.types.vmwareengine",
+    "google.cloud.vmwareengine_v1.types.vmwareengine_resources",
+}
+
+
 from .services.vmware_engine import VmwareEngineAsyncClient, VmwareEngineClient
 from .types.vmwareengine import (
     CreateClusterRequest,

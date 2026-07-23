@@ -23,6 +23,28 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.cloud.securitycenter_v1p1beta1.services.security_center",
+    "google.cloud.securitycenter_v1p1beta1.types.asset",
+    "google.cloud.securitycenter_v1p1beta1.types.finding",
+    "google.cloud.securitycenter_v1p1beta1.types.folder",
+    "google.cloud.securitycenter_v1p1beta1.types.notification_config",
+    "google.cloud.securitycenter_v1p1beta1.types.notification_message",
+    "google.cloud.securitycenter_v1p1beta1.types.organization_settings",
+    "google.cloud.securitycenter_v1p1beta1.types.resource",
+    "google.cloud.securitycenter_v1p1beta1.types.run_asset_discovery_response",
+    "google.cloud.securitycenter_v1p1beta1.types.security_marks",
+    "google.cloud.securitycenter_v1p1beta1.types.securitycenter_service",
+    "google.cloud.securitycenter_v1p1beta1.types.source",
+}
+
+
 from .services.security_center import SecurityCenterAsyncClient, SecurityCenterClient
 from .types.asset import Asset
 from .types.finding import Finding
