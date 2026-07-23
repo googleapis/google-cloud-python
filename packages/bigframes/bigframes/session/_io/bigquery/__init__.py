@@ -68,6 +68,7 @@ def create_job_configs_labels(
         job_configs_labels = dict(job_configs_labels)
 
     if api_methods and "bigframes-api" not in job_configs_labels:
+        api_methods = list(api_methods)
         colab_idx = next(
             (i for i, m in enumerate(api_methods) if "read_gbq_colab" in m), None
         )
