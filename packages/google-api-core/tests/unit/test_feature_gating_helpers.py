@@ -13,8 +13,8 @@
 # limitations under the License.
 
 import pytest
-from google.api_core import feature_gating_helpers
-from google.api_core.feature_gating_helpers import (
+from google.api_core import _feature_gating_helpers
+from google.api_core._feature_gating_helpers import (
     _get_env_bool,
     _strtobool,
 )
@@ -72,7 +72,7 @@ def test_resolve_feature_flags_ga_enabled_via_env(monkeypatch):
     monkeypatch.setenv("GOOGLE_SDK_PYTHON_TRACING_ENABLED", "true")
 
     # Action
-    result = feature_gating_helpers.resolve_feature_flags(
+    result = _feature_gating_helpers.resolve_feature_flags(
         env_var="GOOGLE_SDK_PYTHON_TRACING_ENABLED",
         feature_key="tracer_provider",
         configuration=None,
@@ -112,7 +112,7 @@ def test_resolve_feature_flags_exp_enabled_with_provider(monkeypatch):
     monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "true")
     configuration = {"tracer_provider": object()}
 
-    result = feature_gating_helpers.resolve_feature_flags(
+    result = _feature_gating_helpers.resolve_feature_flags(
         env_var="GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED",
         feature_key="tracer_provider",
         configuration=configuration,
@@ -124,7 +124,7 @@ def test_resolve_feature_flags_exp_enabled_without_provider(monkeypatch):
     """Verify that experimental feature is enabled if the experimental environment variable is enabled and NO provider is provided."""
     monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "true")
 
-    result = feature_gating_helpers.resolve_feature_flags(
+    result = _feature_gating_helpers.resolve_feature_flags(
         env_var="GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED",
         feature_key="tracer_provider",
         configuration=None,
@@ -136,7 +136,7 @@ def test_resolve_feature_flags_exp_disabled_without_provider(monkeypatch):
     """Verify that experimental feature is disabled if the experimental environment variable is disabled and NO provider is provided."""
     monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "false")
 
-    result = feature_gating_helpers.resolve_feature_flags(
+    result = _feature_gating_helpers.resolve_feature_flags(
         env_var="GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED",
         feature_key="tracer_provider",
         configuration=None,
@@ -150,7 +150,7 @@ def test_resolve_feature_flags_ga_enabled_via_provider(monkeypatch):
     monkeypatch.setenv("GOOGLE_SDK_PYTHON_TRACING_ENABLED", "false")
     configuration = {"tracer_provider": object()}
 
-    result = feature_gating_helpers.resolve_feature_flags(
+    result = _feature_gating_helpers.resolve_feature_flags(
         env_var="GOOGLE_SDK_PYTHON_TRACING_ENABLED",
         feature_key="tracer_provider",
         configuration=configuration,
@@ -167,7 +167,7 @@ def test_resolve_feature_flags_ga_fallback_to_false(monkeypatch, env_val):
         monkeypatch.setenv("GOOGLE_SDK_PYTHON_TRACING_ENABLED", env_val)
     else:
         monkeypatch.delenv("GOOGLE_SDK_PYTHON_TRACING_ENABLED", raising=False)
-    result = feature_gating_helpers.resolve_feature_flags(
+    result = _feature_gating_helpers.resolve_feature_flags(
         env_var="GOOGLE_SDK_PYTHON_TRACING_ENABLED",
         feature_key="tracer_provider",
         configuration=None,
@@ -191,7 +191,7 @@ class _MockOptions:
 def test_resolve_feature_flags_options_without_key(configuration):
     """Verify behavior when configuration is present but missing the provider key."""
     # GA Path: should fall through to env var / fallback
-    result = feature_gating_helpers.resolve_feature_flags(
+    result = _feature_gating_helpers.resolve_feature_flags(
         env_var="GOOGLE_SDK_PYTHON_TRACING_ENABLED",
         feature_key="tracer_provider",
         configuration=configuration,
@@ -205,7 +205,7 @@ def test_resolve_feature_flags_rejects_dunder_keys(monkeypatch):
     # If the guardrail is missing, getattr might return it and return True
     configuration = {"__class__": "some_value"}
 
-    result = feature_gating_helpers.resolve_feature_flags(
+    result = _feature_gating_helpers.resolve_feature_flags(
         env_var="GOOGLE_SDK_PYTHON_TRACING_ENABLED",
         feature_key="__class__",
         configuration=configuration,
@@ -215,7 +215,7 @@ def test_resolve_feature_flags_rejects_dunder_keys(monkeypatch):
     class MockWithClass:
         __class__ = "some_value"
 
-    result = feature_gating_helpers.resolve_feature_flags(
+    result = _feature_gating_helpers.resolve_feature_flags(
         env_var="GOOGLE_SDK_PYTHON_TRACING_ENABLED",
         feature_key="__class__",
         configuration=MockWithClass(),
