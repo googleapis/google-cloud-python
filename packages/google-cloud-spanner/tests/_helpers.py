@@ -20,6 +20,9 @@ try:
     )
     from opentelemetry.sdk.trace.sampling import TraceIdRatioBased
     from opentelemetry.trace.status import StatusCode
+    from opentelemetry.resource.detector.gcp import (  # noqa: F401
+        GoogleCloudResourceDetector,
+    )
 
     trace.set_tracer_provider(TracerProvider(sampler=TraceIdRatioBased(1.0)))
 
