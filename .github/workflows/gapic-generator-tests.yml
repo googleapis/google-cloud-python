@@ -82,7 +82,7 @@ jobs:
         run: |
           sudo apt-get update && sudo apt-get install -y curl pandoc unzip
           sudo mkdir -p /usr/src/protoc/ && sudo chown -R ${USER} /usr/src/
-          curl --location https://github.com/google/protobuf/releases/download/v${PROTOC_VERSION}/protoc-${PROTOC_VERSION}-linux-x86_64.zip --output /usr/src/protoc/protoc.zip
+          curl --fail --silent --show-error --location --retry 5 --retry-delay 5 --retry-connrefused https://github.com/google/protobuf/releases/download/v${PROTOC_VERSION}/protoc-${PROTOC_VERSION}-linux-x86_64.zip --output /usr/src/protoc/protoc.zip
           cd /usr/src/protoc/ && unzip protoc.zip
           sudo ln -s /usr/src/protoc/bin/protoc /usr/local/bin/protoc
       - name: Run Nox
@@ -198,7 +198,7 @@ jobs:
         run: |
           sudo apt-get update && sudo apt-get install -y curl pandoc unzip
           sudo mkdir -p /usr/src/protoc/ && sudo chown -R ${USER} /usr/src/
-          curl --location https://github.com/google/protobuf/releases/download/v${PROTOC_VERSION}/protoc-${PROTOC_VERSION}-linux-x86_64.zip --output /usr/src/protoc/protoc.zip
+          curl --fail --silent --show-error --location --retry 5 --retry-delay 5 --retry-connrefused https://github.com/google/protobuf/releases/download/v${PROTOC_VERSION}/protoc-${PROTOC_VERSION}-linux-x86_64.zip --output /usr/src/protoc/protoc.zip
           cd /usr/src/protoc/ && unzip protoc.zip
           sudo ln -s /usr/src/protoc/bin/protoc /usr/local/bin/protoc
       - name: Run Tests
