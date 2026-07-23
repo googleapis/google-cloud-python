@@ -16,7 +16,18 @@
 import logging as std_logging
 from collections import OrderedDict
 import re
-from typing import Dict, Callable, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Callable,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.cloud.redis_v1 import gapic_version as package_version
 
@@ -24,8 +35,8 @@ from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
-from google.auth import credentials as ga_credentials   # type: ignore
-from google.oauth2 import service_account              # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.oauth2 import service_account  # type: ignore
 import google.protobuf
 
 
@@ -34,10 +45,10 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.cloud.location import locations_pb2 # type: ignore
+from google.cloud.location import locations_pb2  # type: ignore
 from google.cloud.redis_v1.services.cloud_redis import pagers
 from google.cloud.redis_v1.types import cloud_redis
-from google.longrunning import operations_pb2 # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 import google.api_core.operation as operation  # type: ignore
 import google.api_core.operation_async as operation_async  # type: ignore
 import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
@@ -49,11 +60,13 @@ from .client import CloudRedisClient
 
 try:
     from google.api_core import client_logging  # type: ignore
+
     CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
 except ImportError:  # pragma: NO COVER
     CLIENT_LOGGING_SUPPORTED = False
 
 _LOGGER = std_logging.getLogger(__name__)
+
 
 class CloudRedisAsyncClient:
     """Configures and manages Cloud Memorystore for Redis instances
@@ -90,16 +103,24 @@ class CloudRedisAsyncClient:
 
     instance_path = staticmethod(CloudRedisClient.instance_path)
     parse_instance_path = staticmethod(CloudRedisClient.parse_instance_path)
-    common_billing_account_path = staticmethod(CloudRedisClient.common_billing_account_path)
-    parse_common_billing_account_path = staticmethod(CloudRedisClient.parse_common_billing_account_path)
+    common_billing_account_path = staticmethod(
+        CloudRedisClient.common_billing_account_path
+    )
+    parse_common_billing_account_path = staticmethod(
+        CloudRedisClient.parse_common_billing_account_path
+    )
     common_folder_path = staticmethod(CloudRedisClient.common_folder_path)
     parse_common_folder_path = staticmethod(CloudRedisClient.parse_common_folder_path)
     common_organization_path = staticmethod(CloudRedisClient.common_organization_path)
-    parse_common_organization_path = staticmethod(CloudRedisClient.parse_common_organization_path)
+    parse_common_organization_path = staticmethod(
+        CloudRedisClient.parse_common_organization_path
+    )
     common_project_path = staticmethod(CloudRedisClient.common_project_path)
     parse_common_project_path = staticmethod(CloudRedisClient.parse_common_project_path)
     common_location_path = staticmethod(CloudRedisClient.common_location_path)
-    parse_common_location_path = staticmethod(CloudRedisClient.parse_common_location_path)
+    parse_common_location_path = staticmethod(
+        CloudRedisClient.parse_common_location_path
+    )
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -141,7 +162,9 @@ class CloudRedisAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
+    def get_mtls_endpoint_and_cert_source(
+        cls, client_options: Optional[ClientOptions] = None
+    ):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -204,12 +227,16 @@ class CloudRedisAsyncClient:
 
     get_transport_class = CloudRedisClient.get_transport_class
 
-    def __init__(self, *,
-            credentials: Optional[ga_credentials.Credentials] = None,
-            transport: Optional[Union[str, CloudRedisTransport, Callable[..., CloudRedisTransport]]] = "grpc_asyncio",
-            client_options: Optional[ClientOptions] = None,
-            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-            ) -> None:
+    def __init__(
+        self,
+        *,
+        credentials: Optional[ga_credentials.Credentials] = None,
+        transport: Optional[
+            Union[str, CloudRedisTransport, Callable[..., CloudRedisTransport]]
+        ] = "grpc_asyncio",
+        client_options: Optional[ClientOptions] = None,
+        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+    ) -> None:
         """Instantiates the cloud redis async client.
 
         Args:
@@ -267,31 +294,39 @@ class CloudRedisAsyncClient:
             transport=transport,
             client_options=client_options,
             client_info=client_info,
-
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+            std_logging.DEBUG
+        ):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.cloud.redis_v1.CloudRedisAsyncClient`.",
-                extra = {
+                extra={
                     "serviceName": "google.cloud.redis.v1.CloudRedis",
-                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
+                    "universeDomain": getattr(
+                        self._client._transport._credentials, "universe_domain", ""
+                    ),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
-                } if hasattr(self._client._transport, "_credentials") else {
+                    "credentialsInfo": getattr(
+                        self.transport._credentials, "get_cred_info", lambda: None
+                    )(),
+                }
+                if hasattr(self._client._transport, "_credentials")
+                else {
                     "serviceName": "google.cloud.redis.v1.CloudRedis",
                     "credentialsType": None,
-                }
+                },
             )
 
-    async def list_instances(self,
-            request: Optional[Union[cloud_redis.ListInstancesRequest, dict]] = None,
-            *,
-            parent: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> pagers.ListInstancesAsyncPager:
+    async def list_instances(
+        self,
+        request: Optional[Union[cloud_redis.ListInstancesRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.ListInstancesAsyncPager:
         r"""Lists all Redis instances owned by a project in either the
         specified location (region) or all locations.
 
@@ -364,10 +399,14 @@ class CloudRedisAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
-            raise ValueError("If the `request` argument is set, then none of "
-                             "the individual field arguments should be set.")
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -381,14 +420,14 @@ class CloudRedisAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport.list_instances]
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_instances
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("parent", request.parent),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
         )
 
         # Validate the universe domain.
@@ -416,14 +455,15 @@ class CloudRedisAsyncClient:
         # Done; return the response.
         return response
 
-    async def get_instance(self,
-            request: Optional[Union[cloud_redis.GetInstanceRequest, dict]] = None,
-            *,
-            name: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> cloud_redis.Instance:
+    async def get_instance(
+        self,
+        request: Optional[Union[cloud_redis.GetInstanceRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> cloud_redis.Instance:
         r"""Gets the details of a specific Redis instance.
 
         .. code-block:: python
@@ -480,10 +520,14 @@ class CloudRedisAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
-            raise ValueError("If the `request` argument is set, then none of "
-                             "the individual field arguments should be set.")
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -497,14 +541,14 @@ class CloudRedisAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport.get_instance]
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_instance
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("name", request.name),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
 
         # Validate the universe domain.
@@ -521,14 +565,15 @@ class CloudRedisAsyncClient:
         # Done; return the response.
         return response
 
-    async def get_instance_auth_string(self,
-            request: Optional[Union[cloud_redis.GetInstanceAuthStringRequest, dict]] = None,
-            *,
-            name: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> cloud_redis.InstanceAuthString:
+    async def get_instance_auth_string(
+        self,
+        request: Optional[Union[cloud_redis.GetInstanceAuthStringRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> cloud_redis.InstanceAuthString:
         r"""Gets the AUTH string for a Redis instance. If AUTH is
         not enabled for the instance the response will be empty.
         This information is not included in the details returned
@@ -588,10 +633,14 @@ class CloudRedisAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
-            raise ValueError("If the `request` argument is set, then none of "
-                             "the individual field arguments should be set.")
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -605,14 +654,14 @@ class CloudRedisAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport.get_instance_auth_string]
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_instance_auth_string
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("name", request.name),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
 
         # Validate the universe domain.
@@ -629,16 +678,17 @@ class CloudRedisAsyncClient:
         # Done; return the response.
         return response
 
-    async def create_instance(self,
-            request: Optional[Union[cloud_redis.CreateInstanceRequest, dict]] = None,
-            *,
-            parent: Optional[str] = None,
-            instance_id: Optional[str] = None,
-            instance: Optional[cloud_redis.Instance] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> operation_async.AsyncOperation:
+    async def create_instance(
+        self,
+        request: Optional[Union[cloud_redis.CreateInstanceRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        instance_id: Optional[str] = None,
+        instance: Optional[cloud_redis.Instance] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation_async.AsyncOperation:
         r"""Creates a Redis instance based on the specified tier and memory
         size.
 
@@ -744,10 +794,14 @@ class CloudRedisAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, instance_id, instance]
-        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
-            raise ValueError("If the `request` argument is set, then none of "
-                             "the individual field arguments should be set.")
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -765,14 +819,14 @@ class CloudRedisAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport.create_instance]
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_instance
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("parent", request.parent),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
         )
 
         # Validate the universe domain.
@@ -797,15 +851,16 @@ class CloudRedisAsyncClient:
         # Done; return the response.
         return response
 
-    async def update_instance(self,
-            request: Optional[Union[cloud_redis.UpdateInstanceRequest, dict]] = None,
-            *,
-            update_mask: Optional[field_mask_pb2.FieldMask] = None,
-            instance: Optional[cloud_redis.Instance] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> operation_async.AsyncOperation:
+    async def update_instance(
+        self,
+        request: Optional[Union[cloud_redis.UpdateInstanceRequest, dict]] = None,
+        *,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        instance: Optional[cloud_redis.Instance] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation_async.AsyncOperation:
         r"""Updates the metadata and configuration of a specific
         Redis instance.
         Completed longrunning.Operation will contain the new
@@ -895,10 +950,14 @@ class CloudRedisAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [update_mask, instance]
-        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
-            raise ValueError("If the `request` argument is set, then none of "
-                             "the individual field arguments should be set.")
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -914,14 +973,16 @@ class CloudRedisAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport.update_instance]
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_instance
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("instance.name", request.instance.name),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("instance.name", request.instance.name),)
+            ),
         )
 
         # Validate the universe domain.
@@ -946,15 +1007,16 @@ class CloudRedisAsyncClient:
         # Done; return the response.
         return response
 
-    async def upgrade_instance(self,
-            request: Optional[Union[cloud_redis.UpgradeInstanceRequest, dict]] = None,
-            *,
-            name: Optional[str] = None,
-            redis_version: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> operation_async.AsyncOperation:
+    async def upgrade_instance(
+        self,
+        request: Optional[Union[cloud_redis.UpgradeInstanceRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        redis_version: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation_async.AsyncOperation:
         r"""Upgrades Redis instance to the newer Redis version
         specified in the request.
 
@@ -1029,10 +1091,14 @@ class CloudRedisAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name, redis_version]
-        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
-            raise ValueError("If the `request` argument is set, then none of "
-                             "the individual field arguments should be set.")
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1048,14 +1114,14 @@ class CloudRedisAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport.upgrade_instance]
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.upgrade_instance
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("name", request.name),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
 
         # Validate the universe domain.
@@ -1080,15 +1146,16 @@ class CloudRedisAsyncClient:
         # Done; return the response.
         return response
 
-    async def import_instance(self,
-            request: Optional[Union[cloud_redis.ImportInstanceRequest, dict]] = None,
-            *,
-            name: Optional[str] = None,
-            input_config: Optional[cloud_redis.InputConfig] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> operation_async.AsyncOperation:
+    async def import_instance(
+        self,
+        request: Optional[Union[cloud_redis.ImportInstanceRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        input_config: Optional[cloud_redis.InputConfig] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation_async.AsyncOperation:
         r"""Import a Redis RDB snapshot file from Cloud Storage
         into a Redis instance.
         Redis may stop serving during this operation. Instance
@@ -1173,10 +1240,14 @@ class CloudRedisAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name, input_config]
-        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
-            raise ValueError("If the `request` argument is set, then none of "
-                             "the individual field arguments should be set.")
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1192,14 +1263,14 @@ class CloudRedisAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport.import_instance]
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.import_instance
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("name", request.name),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
 
         # Validate the universe domain.
@@ -1224,15 +1295,16 @@ class CloudRedisAsyncClient:
         # Done; return the response.
         return response
 
-    async def export_instance(self,
-            request: Optional[Union[cloud_redis.ExportInstanceRequest, dict]] = None,
-            *,
-            name: Optional[str] = None,
-            output_config: Optional[cloud_redis.OutputConfig] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> operation_async.AsyncOperation:
+    async def export_instance(
+        self,
+        request: Optional[Union[cloud_redis.ExportInstanceRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        output_config: Optional[cloud_redis.OutputConfig] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation_async.AsyncOperation:
         r"""Export Redis instance data into a Redis RDB format
         file in Cloud Storage.
         Redis will continue serving during this operation.
@@ -1314,10 +1386,14 @@ class CloudRedisAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name, output_config]
-        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
-            raise ValueError("If the `request` argument is set, then none of "
-                             "the individual field arguments should be set.")
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1333,14 +1409,14 @@ class CloudRedisAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport.export_instance]
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.export_instance
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("name", request.name),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
 
         # Validate the universe domain.
@@ -1365,15 +1441,18 @@ class CloudRedisAsyncClient:
         # Done; return the response.
         return response
 
-    async def failover_instance(self,
-            request: Optional[Union[cloud_redis.FailoverInstanceRequest, dict]] = None,
-            *,
-            name: Optional[str] = None,
-            data_protection_mode: Optional[cloud_redis.FailoverInstanceRequest.DataProtectionMode] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> operation_async.AsyncOperation:
+    async def failover_instance(
+        self,
+        request: Optional[Union[cloud_redis.FailoverInstanceRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        data_protection_mode: Optional[
+            cloud_redis.FailoverInstanceRequest.DataProtectionMode
+        ] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation_async.AsyncOperation:
         r"""Initiates a failover of the primary node to current
         replica node for a specific STANDARD tier Cloud
         Memorystore for Redis instance.
@@ -1449,10 +1528,14 @@ class CloudRedisAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name, data_protection_mode]
-        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
-            raise ValueError("If the `request` argument is set, then none of "
-                             "the individual field arguments should be set.")
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1468,14 +1551,14 @@ class CloudRedisAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport.failover_instance]
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.failover_instance
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("name", request.name),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
 
         # Validate the universe domain.
@@ -1500,14 +1583,15 @@ class CloudRedisAsyncClient:
         # Done; return the response.
         return response
 
-    async def delete_instance(self,
-            request: Optional[Union[cloud_redis.DeleteInstanceRequest, dict]] = None,
-            *,
-            name: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> operation_async.AsyncOperation:
+    async def delete_instance(
+        self,
+        request: Optional[Union[cloud_redis.DeleteInstanceRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation_async.AsyncOperation:
         r"""Deletes a specific Redis instance.  Instance stops
         serving and data is deleted.
 
@@ -1581,10 +1665,14 @@ class CloudRedisAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
-            raise ValueError("If the `request` argument is set, then none of "
-                             "the individual field arguments should be set.")
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1598,14 +1686,14 @@ class CloudRedisAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_instance]
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_instance
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("name", request.name),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
 
         # Validate the universe domain.
@@ -1630,16 +1718,19 @@ class CloudRedisAsyncClient:
         # Done; return the response.
         return response
 
-    async def reschedule_maintenance(self,
-            request: Optional[Union[cloud_redis.RescheduleMaintenanceRequest, dict]] = None,
-            *,
-            name: Optional[str] = None,
-            reschedule_type: Optional[cloud_redis.RescheduleMaintenanceRequest.RescheduleType] = None,
-            schedule_time: Optional[timestamp_pb2.Timestamp] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> operation_async.AsyncOperation:
+    async def reschedule_maintenance(
+        self,
+        request: Optional[Union[cloud_redis.RescheduleMaintenanceRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        reschedule_type: Optional[
+            cloud_redis.RescheduleMaintenanceRequest.RescheduleType
+        ] = None,
+        schedule_time: Optional[timestamp_pb2.Timestamp] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation_async.AsyncOperation:
         r"""Reschedule maintenance for a given instance in a
         given project and location.
 
@@ -1722,10 +1813,14 @@ class CloudRedisAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name, reschedule_type, schedule_time]
-        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
         if request is not None and has_flattened_params:
-            raise ValueError("If the `request` argument is set, then none of "
-                             "the individual field arguments should be set.")
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1743,14 +1838,14 @@ class CloudRedisAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport.reschedule_maintenance]
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.reschedule_maintenance
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("name", request.name),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
 
         # Validate the universe domain.
@@ -1817,8 +1912,7 @@ class CloudRedisAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("name", request_pb.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
@@ -1826,7 +1920,11 @@ class CloudRedisAsyncClient:
 
         # Send the request.
         response = await rpc(
-            request_pb, retry=retry, timeout=timeout, metadata=metadata,)
+            request_pb,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1873,8 +1971,7 @@ class CloudRedisAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("name", request_pb.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
@@ -1882,7 +1979,11 @@ class CloudRedisAsyncClient:
 
         # Send the request.
         response = await rpc(
-            request_pb, retry=retry, timeout=timeout, metadata=metadata,)
+            request_pb,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1933,15 +2034,19 @@ class CloudRedisAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("name", request_pb.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
 
         # Send the request.
-        await rpc(request_pb, retry=retry, timeout=timeout, metadata=metadata,)
+        await rpc(
+            request_pb,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
     async def cancel_operation(
         self,
@@ -1988,15 +2093,19 @@ class CloudRedisAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("name", request_pb.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
 
         # Send the request.
-        await rpc(request_pb, retry=retry, timeout=timeout, metadata=metadata,)
+        await rpc(
+            request_pb,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
     async def wait_operation(
         self,
@@ -2046,8 +2155,7 @@ class CloudRedisAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("name", request_pb.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
@@ -2055,7 +2163,11 @@ class CloudRedisAsyncClient:
 
         # Send the request.
         response = await rpc(
-            request_pb, retry=retry, timeout=timeout, metadata=metadata,)
+            request_pb,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2102,8 +2214,7 @@ class CloudRedisAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("name", request_pb.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
@@ -2111,7 +2222,11 @@ class CloudRedisAsyncClient:
 
         # Send the request.
         response = await rpc(
-            request_pb, retry=retry, timeout=timeout, metadata=metadata,)
+            request_pb,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2158,8 +2273,7 @@ class CloudRedisAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("name", request_pb.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
@@ -2167,7 +2281,11 @@ class CloudRedisAsyncClient:
 
         # Send the request.
         response = await rpc(
-            request_pb, retry=retry, timeout=timeout, metadata=metadata,)
+            request_pb,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2178,10 +2296,11 @@ class CloudRedisAsyncClient:
     async def __aexit__(self, exc_type, exc, tb):
         await self.transport.close()
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
+
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
-__all__ = (
-    "CloudRedisAsyncClient",
-)
+__all__ = ("CloudRedisAsyncClient",)

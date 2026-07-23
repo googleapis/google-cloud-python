@@ -17,6 +17,6 @@ from .client import IAMCredentialsClient
 from .async_client import IAMCredentialsAsyncClient
 
 __all__ = (
-    'IAMCredentialsClient',
-    'IAMCredentialsAsyncClient',
+    "IAMCredentialsClient",
+    "IAMCredentialsAsyncClient",
 )

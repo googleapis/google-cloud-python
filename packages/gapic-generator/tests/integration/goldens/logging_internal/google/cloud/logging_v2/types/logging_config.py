@@ -24,61 +24,61 @@ import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package='google.logging.v2',
+    package="google.logging.v2",
     manifest={
-        'OperationState',
-        'LifecycleState',
-        'IndexType',
-        'IndexConfig',
-        'LogBucket',
-        'LogView',
-        'LogSink',
-        'BigQueryDataset',
-        'Link',
-        'BigQueryOptions',
-        'ListBucketsRequest',
-        'ListBucketsResponse',
-        'CreateBucketRequest',
-        'UpdateBucketRequest',
-        'GetBucketRequest',
-        'DeleteBucketRequest',
-        'UndeleteBucketRequest',
-        'ListViewsRequest',
-        'ListViewsResponse',
-        'CreateViewRequest',
-        'UpdateViewRequest',
-        'GetViewRequest',
-        'DeleteViewRequest',
-        'ListSinksRequest',
-        'ListSinksResponse',
-        'GetSinkRequest',
-        'CreateSinkRequest',
-        'UpdateSinkRequest',
-        'DeleteSinkRequest',
-        'CreateLinkRequest',
-        'DeleteLinkRequest',
-        'ListLinksRequest',
-        'ListLinksResponse',
-        'GetLinkRequest',
-        'LogExclusion',
-        'ListExclusionsRequest',
-        'ListExclusionsResponse',
-        'GetExclusionRequest',
-        'CreateExclusionRequest',
-        'UpdateExclusionRequest',
-        'DeleteExclusionRequest',
-        'GetCmekSettingsRequest',
-        'UpdateCmekSettingsRequest',
-        'CmekSettings',
-        'GetSettingsRequest',
-        'UpdateSettingsRequest',
-        'Settings',
-        'CopyLogEntriesRequest',
-        'CopyLogEntriesMetadata',
-        'CopyLogEntriesResponse',
-        'BucketMetadata',
-        'LinkMetadata',
-        'LocationMetadata',
+        "OperationState",
+        "LifecycleState",
+        "IndexType",
+        "IndexConfig",
+        "LogBucket",
+        "LogView",
+        "LogSink",
+        "BigQueryDataset",
+        "Link",
+        "BigQueryOptions",
+        "ListBucketsRequest",
+        "ListBucketsResponse",
+        "CreateBucketRequest",
+        "UpdateBucketRequest",
+        "GetBucketRequest",
+        "DeleteBucketRequest",
+        "UndeleteBucketRequest",
+        "ListViewsRequest",
+        "ListViewsResponse",
+        "CreateViewRequest",
+        "UpdateViewRequest",
+        "GetViewRequest",
+        "DeleteViewRequest",
+        "ListSinksRequest",
+        "ListSinksResponse",
+        "GetSinkRequest",
+        "CreateSinkRequest",
+        "UpdateSinkRequest",
+        "DeleteSinkRequest",
+        "CreateLinkRequest",
+        "DeleteLinkRequest",
+        "ListLinksRequest",
+        "ListLinksResponse",
+        "GetLinkRequest",
+        "LogExclusion",
+        "ListExclusionsRequest",
+        "ListExclusionsResponse",
+        "GetExclusionRequest",
+        "CreateExclusionRequest",
+        "UpdateExclusionRequest",
+        "DeleteExclusionRequest",
+        "GetCmekSettingsRequest",
+        "UpdateCmekSettingsRequest",
+        "CmekSettings",
+        "GetSettingsRequest",
+        "UpdateSettingsRequest",
+        "Settings",
+        "CopyLogEntriesRequest",
+        "CopyLogEntriesMetadata",
+        "CopyLogEntriesResponse",
+        "BucketMetadata",
+        "LinkMetadata",
+        "LocationMetadata",
     },
 )
 
@@ -107,6 +107,7 @@ class OperationState(proto.Enum):
         OPERATION_STATE_CANCELLED (6):
             The operation was cancelled by the user.
     """
+
     OPERATION_STATE_UNSPECIFIED = 0
     OPERATION_STATE_SCHEDULED = 1
     OPERATION_STATE_WAITING_FOR_PERMISSIONS = 2
@@ -140,6 +141,7 @@ class LifecycleState(proto.Enum):
         FAILED (5):
             The resource is in an INTERNAL error state.
     """
+
     LIFECYCLE_STATE_UNSPECIFIED = 0
     ACTIVE = 1
     DELETE_REQUESTED = 2
@@ -160,6 +162,7 @@ class IndexType(proto.Enum):
         INDEX_TYPE_INTEGER (2):
             The index is a integer-type index.
     """
+
     INDEX_TYPE_UNSPECIFIED = 0
     INDEX_TYPE_STRING = 1
     INDEX_TYPE_INTEGER = 2
@@ -191,10 +194,10 @@ class IndexConfig(proto.Message):
         proto.STRING,
         number=1,
     )
-    type_: 'IndexType' = proto.Field(
+    type_: "IndexType" = proto.Field(
         proto.ENUM,
         number=2,
-        enum='IndexType',
+        enum="IndexType",
     )
     create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
@@ -300,10 +303,10 @@ class LogBucket(proto.Message):
         proto.BOOL,
         number=9,
     )
-    lifecycle_state: 'LifecycleState' = proto.Field(
+    lifecycle_state: "LifecycleState" = proto.Field(
         proto.ENUM,
         number=12,
-        enum='LifecycleState',
+        enum="LifecycleState",
     )
     analytics_enabled: bool = proto.Field(
         proto.BOOL,
@@ -313,15 +316,15 @@ class LogBucket(proto.Message):
         proto.STRING,
         number=15,
     )
-    index_configs: MutableSequence['IndexConfig'] = proto.RepeatedField(
+    index_configs: MutableSequence["IndexConfig"] = proto.RepeatedField(
         proto.MESSAGE,
         number=17,
-        message='IndexConfig',
+        message="IndexConfig",
     )
-    cmek_settings: 'CmekSettings' = proto.Field(
+    cmek_settings: "CmekSettings" = proto.Field(
         proto.MESSAGE,
         number=19,
-        message='CmekSettings',
+        message="CmekSettings",
     )
 
 
@@ -500,6 +503,7 @@ class LogSink(proto.Message):
             sink.
             This field may not be present for older sinks.
     """
+
     class VersionFormat(proto.Enum):
         r"""Deprecated. This is unused.
 
@@ -512,6 +516,7 @@ class LogSink(proto.Message):
             V1 (2):
                 ``LogEntry`` version 1 format.
         """
+
         VERSION_FORMAT_UNSPECIFIED = 0
         V2 = 1
         V1 = 2
@@ -536,10 +541,10 @@ class LogSink(proto.Message):
         proto.BOOL,
         number=19,
     )
-    exclusions: MutableSequence['LogExclusion'] = proto.RepeatedField(
+    exclusions: MutableSequence["LogExclusion"] = proto.RepeatedField(
         proto.MESSAGE,
         number=16,
-        message='LogExclusion',
+        message="LogExclusion",
     )
     output_version_format: VersionFormat = proto.Field(
         proto.ENUM,
@@ -554,11 +559,11 @@ class LogSink(proto.Message):
         proto.BOOL,
         number=9,
     )
-    bigquery_options: 'BigQueryOptions' = proto.Field(
+    bigquery_options: "BigQueryOptions" = proto.Field(
         proto.MESSAGE,
         number=12,
-        oneof='options',
-        message='BigQueryOptions',
+        oneof="options",
+        message="BigQueryOptions",
     )
     create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
@@ -644,15 +649,15 @@ class Link(proto.Message):
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    lifecycle_state: 'LifecycleState' = proto.Field(
+    lifecycle_state: "LifecycleState" = proto.Field(
         proto.ENUM,
         number=4,
-        enum='LifecycleState',
+        enum="LifecycleState",
     )
-    bigquery_dataset: 'BigQueryDataset' = proto.Field(
+    bigquery_dataset: "BigQueryDataset" = proto.Field(
         proto.MESSAGE,
         number=5,
-        message='BigQueryDataset',
+        message="BigQueryDataset",
     )
 
 
@@ -755,10 +760,10 @@ class ListBucketsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    buckets: MutableSequence['LogBucket'] = proto.RepeatedField(
+    buckets: MutableSequence["LogBucket"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message='LogBucket',
+        message="LogBucket",
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -800,10 +805,10 @@ class CreateBucketRequest(proto.Message):
         proto.STRING,
         number=2,
     )
-    bucket: 'LogBucket' = proto.Field(
+    bucket: "LogBucket" = proto.Field(
         proto.MESSAGE,
         number=3,
-        message='LogBucket',
+        message="LogBucket",
     )
 
 
@@ -842,10 +847,10 @@ class UpdateBucketRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    bucket: 'LogBucket' = proto.Field(
+    bucket: "LogBucket" = proto.Field(
         proto.MESSAGE,
         number=2,
-        message='LogBucket',
+        message="LogBucket",
     )
     update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
@@ -985,10 +990,10 @@ class ListViewsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    views: MutableSequence['LogView'] = proto.RepeatedField(
+    views: MutableSequence["LogView"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message='LogView',
+        message="LogView",
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -1027,10 +1032,10 @@ class CreateViewRequest(proto.Message):
         proto.STRING,
         number=2,
     )
-    view: 'LogView' = proto.Field(
+    view: "LogView" = proto.Field(
         proto.MESSAGE,
         number=3,
-        message='LogView',
+        message="LogView",
     )
 
 
@@ -1066,10 +1071,10 @@ class UpdateViewRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    view: 'LogView' = proto.Field(
+    view: "LogView" = proto.Field(
         proto.MESSAGE,
         number=2,
-        message='LogView',
+        message="LogView",
     )
     update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
@@ -1181,10 +1186,10 @@ class ListSinksResponse(proto.Message):
     def raw_page(self):
         return self
 
-    sinks: MutableSequence['LogSink'] = proto.RepeatedField(
+    sinks: MutableSequence["LogSink"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message='LogSink',
+        message="LogSink",
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -1259,10 +1264,10 @@ class CreateSinkRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    sink: 'LogSink' = proto.Field(
+    sink: "LogSink" = proto.Field(
         proto.MESSAGE,
         number=2,
-        message='LogSink',
+        message="LogSink",
     )
     unique_writer_identity: bool = proto.Field(
         proto.BOOL,
@@ -1331,10 +1336,10 @@ class UpdateSinkRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    sink: 'LogSink' = proto.Field(
+    sink: "LogSink" = proto.Field(
         proto.MESSAGE,
         number=2,
-        message='LogSink',
+        message="LogSink",
     )
     unique_writer_identity: bool = proto.Field(
         proto.BOOL,
@@ -1399,10 +1404,10 @@ class CreateLinkRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    link: 'Link' = proto.Field(
+    link: "Link" = proto.Field(
         proto.MESSAGE,
         number=2,
-        message='Link',
+        message="Link",
     )
     link_id: str = proto.Field(
         proto.STRING,
@@ -1481,10 +1486,10 @@ class ListLinksResponse(proto.Message):
     def raw_page(self):
         return self
 
-    links: MutableSequence['Link'] = proto.RepeatedField(
+    links: MutableSequence["Link"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message='Link',
+        message="Link",
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -1643,10 +1648,10 @@ class ListExclusionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    exclusions: MutableSequence['LogExclusion'] = proto.RepeatedField(
+    exclusions: MutableSequence["LogExclusion"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message='LogExclusion',
+        message="LogExclusion",
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -1708,10 +1713,10 @@ class CreateExclusionRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    exclusion: 'LogExclusion' = proto.Field(
+    exclusion: "LogExclusion" = proto.Field(
         proto.MESSAGE,
         number=2,
-        message='LogExclusion',
+        message="LogExclusion",
     )
 
 
@@ -1752,10 +1757,10 @@ class UpdateExclusionRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    exclusion: 'LogExclusion' = proto.Field(
+    exclusion: "LogExclusion" = proto.Field(
         proto.MESSAGE,
         number=2,
-        message='LogExclusion',
+        message="LogExclusion",
     )
     update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
@@ -1874,10 +1879,10 @@ class UpdateCmekSettingsRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    cmek_settings: 'CmekSettings' = proto.Field(
+    cmek_settings: "CmekSettings" = proto.Field(
         proto.MESSAGE,
         number=2,
-        message='CmekSettings',
+        message="CmekSettings",
     )
     update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
@@ -2073,10 +2078,10 @@ class UpdateSettingsRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    settings: 'Settings' = proto.Field(
+    settings: "Settings" = proto.Field(
         proto.MESSAGE,
         number=2,
-        message='Settings',
+        message="Settings",
     )
     update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
@@ -2249,19 +2254,19 @@ class CopyLogEntriesMetadata(proto.Message):
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    state: 'OperationState' = proto.Field(
+    state: "OperationState" = proto.Field(
         proto.ENUM,
         number=3,
-        enum='OperationState',
+        enum="OperationState",
     )
     cancellation_requested: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
-    request: 'CopyLogEntriesRequest' = proto.Field(
+    request: "CopyLogEntriesRequest" = proto.Field(
         proto.MESSAGE,
         number=5,
-        message='CopyLogEntriesRequest',
+        message="CopyLogEntriesRequest",
     )
     progress: int = proto.Field(
         proto.INT32,
@@ -2324,22 +2329,22 @@ class BucketMetadata(proto.Message):
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    state: 'OperationState' = proto.Field(
+    state: "OperationState" = proto.Field(
         proto.ENUM,
         number=3,
-        enum='OperationState',
+        enum="OperationState",
     )
-    create_bucket_request: 'CreateBucketRequest' = proto.Field(
+    create_bucket_request: "CreateBucketRequest" = proto.Field(
         proto.MESSAGE,
         number=4,
-        oneof='request',
-        message='CreateBucketRequest',
+        oneof="request",
+        message="CreateBucketRequest",
     )
-    update_bucket_request: 'UpdateBucketRequest' = proto.Field(
+    update_bucket_request: "UpdateBucketRequest" = proto.Field(
         proto.MESSAGE,
         number=5,
-        oneof='request',
-        message='UpdateBucketRequest',
+        oneof="request",
+        message="UpdateBucketRequest",
     )
 
 
@@ -2380,22 +2385,22 @@ class LinkMetadata(proto.Message):
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    state: 'OperationState' = proto.Field(
+    state: "OperationState" = proto.Field(
         proto.ENUM,
         number=3,
-        enum='OperationState',
+        enum="OperationState",
     )
-    create_link_request: 'CreateLinkRequest' = proto.Field(
+    create_link_request: "CreateLinkRequest" = proto.Field(
         proto.MESSAGE,
         number=4,
-        oneof='request',
-        message='CreateLinkRequest',
+        oneof="request",
+        message="CreateLinkRequest",
     )
-    delete_link_request: 'DeleteLinkRequest' = proto.Field(
+    delete_link_request: "DeleteLinkRequest" = proto.Field(
         proto.MESSAGE,
         number=5,
-        oneof='request',
-        message='DeleteLinkRequest',
+        oneof="request",
+        message="DeleteLinkRequest",
     )
 
 

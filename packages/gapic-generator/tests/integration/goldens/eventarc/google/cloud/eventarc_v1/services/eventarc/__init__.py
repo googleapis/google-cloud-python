@@ -17,6 +17,6 @@ from .client import EventarcClient
 from .async_client import EventarcAsyncClient
 
 __all__ = (
-    'EventarcClient',
-    'EventarcAsyncClient',
+    "EventarcClient",
+    "EventarcAsyncClient",
 )

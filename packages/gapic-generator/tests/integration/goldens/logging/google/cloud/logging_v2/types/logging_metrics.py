@@ -25,15 +25,15 @@ import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package='google.logging.v2',
+    package="google.logging.v2",
     manifest={
-        'LogMetric',
-        'ListLogMetricsRequest',
-        'ListLogMetricsResponse',
-        'GetLogMetricRequest',
-        'CreateLogMetricRequest',
-        'UpdateLogMetricRequest',
-        'DeleteLogMetricRequest',
+        "LogMetric",
+        "ListLogMetricsRequest",
+        "ListLogMetricsResponse",
+        "GetLogMetricRequest",
+        "CreateLogMetricRequest",
+        "UpdateLogMetricRequest",
+        "DeleteLogMetricRequest",
     },
 )
 
@@ -180,6 +180,7 @@ class LogMetric(proto.Message):
             updated this metric. The v2 format is used by
             default and cannot be changed.
     """
+
     class ApiVersion(proto.Enum):
         r"""Logging API version.
 
@@ -189,6 +190,7 @@ class LogMetric(proto.Message):
             V1 (1):
                 Logging API v1.
         """
+
         V2 = 0
         V1 = 1
 
@@ -302,10 +304,10 @@ class ListLogMetricsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    metrics: MutableSequence['LogMetric'] = proto.RepeatedField(
+    metrics: MutableSequence["LogMetric"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message='LogMetric',
+        message="LogMetric",
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -353,10 +355,10 @@ class CreateLogMetricRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    metric: 'LogMetric' = proto.Field(
+    metric: "LogMetric" = proto.Field(
         proto.MESSAGE,
         number=2,
-        message='LogMetric',
+        message="LogMetric",
     )
 
 
@@ -383,10 +385,10 @@ class UpdateLogMetricRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    metric: 'LogMetric' = proto.Field(
+    metric: "LogMetric" = proto.Field(
         proto.MESSAGE,
         number=2,
-        message='LogMetric',
+        message="LogMetric",
     )
 
 

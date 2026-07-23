@@ -25,14 +25,14 @@ from .rest import EventarcRestInterceptor
 
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[EventarcTransport]]
-_transport_registry['grpc'] = EventarcGrpcTransport
-_transport_registry['grpc_asyncio'] = EventarcGrpcAsyncIOTransport
-_transport_registry['rest'] = EventarcRestTransport
+_transport_registry["grpc"] = EventarcGrpcTransport
+_transport_registry["grpc_asyncio"] = EventarcGrpcAsyncIOTransport
+_transport_registry["rest"] = EventarcRestTransport
 
 __all__ = (
-    'EventarcTransport',
-    'EventarcGrpcTransport',
-    'EventarcGrpcAsyncIOTransport',
-    'EventarcRestTransport',
-    'EventarcRestInterceptor',
+    "EventarcTransport",
+    "EventarcGrpcTransport",
+    "EventarcGrpcAsyncIOTransport",
+    "EventarcRestTransport",
+    "EventarcRestInterceptor",
 )

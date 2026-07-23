@@ -32,27 +32,27 @@ import google.rpc.code_pb2 as code_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package='google.cloud.asset.v1',
+    package="google.cloud.asset.v1",
     manifest={
-        'TemporalAsset',
-        'TimeWindow',
-        'AssetEnrichment',
-        'Asset',
-        'Resource',
-        'RelatedAssets',
-        'RelationshipAttributes',
-        'RelatedAsset',
-        'Tag',
-        'EffectiveTagDetails',
-        'ResourceSearchResult',
-        'VersionedResource',
-        'AttachedResource',
-        'RelatedResources',
-        'RelatedResource',
-        'IamPolicySearchResult',
-        'IamPolicyAnalysisState',
-        'ConditionEvaluation',
-        'IamPolicyAnalysisResult',
+        "TemporalAsset",
+        "TimeWindow",
+        "AssetEnrichment",
+        "Asset",
+        "Resource",
+        "RelatedAssets",
+        "RelationshipAttributes",
+        "RelatedAsset",
+        "Tag",
+        "EffectiveTagDetails",
+        "ResourceSearchResult",
+        "VersionedResource",
+        "AttachedResource",
+        "RelatedResources",
+        "RelatedResource",
+        "IamPolicySearchResult",
+        "IamPolicyAnalysisState",
+        "ConditionEvaluation",
+        "IamPolicyAnalysisResult",
     },
 )
 
@@ -77,6 +77,7 @@ class TemporalAsset(proto.Message):
             PRESENT. Currently this is only set for responses in
             Real-Time Feed.
     """
+
     class PriorAssetState(proto.Enum):
         r"""State of prior asset.
 
@@ -92,35 +93,36 @@ class TemporalAsset(proto.Message):
             DELETED (4):
                 prior_asset is a deletion.
         """
+
         PRIOR_ASSET_STATE_UNSPECIFIED = 0
         PRESENT = 1
         INVALID = 2
         DOES_NOT_EXIST = 3
         DELETED = 4
 
-    window: 'TimeWindow' = proto.Field(
+    window: "TimeWindow" = proto.Field(
         proto.MESSAGE,
         number=1,
-        message='TimeWindow',
+        message="TimeWindow",
     )
     deleted: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
-    asset: 'Asset' = proto.Field(
+    asset: "Asset" = proto.Field(
         proto.MESSAGE,
         number=3,
-        message='Asset',
+        message="Asset",
     )
     prior_asset_state: PriorAssetState = proto.Field(
         proto.ENUM,
         number=4,
         enum=PriorAssetState,
     )
-    prior_asset: 'Asset' = proto.Field(
+    prior_asset: "Asset" = proto.Field(
         proto.MESSAGE,
         number=5,
-        message='Asset',
+        message="Asset",
     )
 
 
@@ -167,7 +169,7 @@ class AssetEnrichment(proto.Message):
     resource_owners: asset_enrichment_resourceowners.ResourceOwners = proto.Field(
         proto.MESSAGE,
         number=7,
-        oneof='EnrichmentData',
+        oneof="EnrichmentData",
         message=asset_enrichment_resourceowners.ResourceOwners,
     )
 
@@ -281,10 +283,10 @@ class Asset(proto.Message):
         proto.STRING,
         number=2,
     )
-    resource: 'Resource' = proto.Field(
+    resource: "Resource" = proto.Field(
         proto.MESSAGE,
         number=3,
-        message='Resource',
+        message="Resource",
     )
     iam_policy: policy_pb2.Policy = proto.Field(
         proto.MESSAGE,
@@ -299,19 +301,19 @@ class Asset(proto.Message):
     access_policy: access_policy_pb2.AccessPolicy = proto.Field(
         proto.MESSAGE,
         number=7,
-        oneof='access_context_policy',
+        oneof="access_context_policy",
         message=access_policy_pb2.AccessPolicy,
     )
     access_level: access_level_pb2.AccessLevel = proto.Field(
         proto.MESSAGE,
         number=8,
-        oneof='access_context_policy',
+        oneof="access_context_policy",
         message=access_level_pb2.AccessLevel,
     )
     service_perimeter: service_perimeter_pb2.ServicePerimeter = proto.Field(
         proto.MESSAGE,
         number=9,
-        oneof='access_context_policy',
+        oneof="access_context_policy",
         message=service_perimeter_pb2.ServicePerimeter,
     )
     os_inventory: inventory_pb2.Inventory = proto.Field(
@@ -319,15 +321,15 @@ class Asset(proto.Message):
         number=12,
         message=inventory_pb2.Inventory,
     )
-    related_assets: 'RelatedAssets' = proto.Field(
+    related_assets: "RelatedAssets" = proto.Field(
         proto.MESSAGE,
         number=13,
-        message='RelatedAssets',
+        message="RelatedAssets",
     )
-    related_asset: 'RelatedAsset' = proto.Field(
+    related_asset: "RelatedAsset" = proto.Field(
         proto.MESSAGE,
         number=15,
-        message='RelatedAsset',
+        message="RelatedAsset",
     )
     ancestors: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
@@ -426,15 +428,15 @@ class RelatedAssets(proto.Message):
             The peer resources of the relationship.
     """
 
-    relationship_attributes: 'RelationshipAttributes' = proto.Field(
+    relationship_attributes: "RelationshipAttributes" = proto.Field(
         proto.MESSAGE,
         number=1,
-        message='RelationshipAttributes',
+        message="RelationshipAttributes",
     )
-    assets: MutableSequence['RelatedAsset'] = proto.RepeatedField(
+    assets: MutableSequence["RelatedAsset"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
-        message='RelatedAsset',
+        message="RelatedAsset",
     )
 
 
@@ -619,10 +621,10 @@ class EffectiveTagDetails(proto.Message):
         number=1,
         optional=True,
     )
-    effective_tags: MutableSequence['Tag'] = proto.RepeatedField(
+    effective_tags: MutableSequence["Tag"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
-        message='Tag',
+        message="Tag",
     )
 
 
@@ -1091,21 +1093,21 @@ class ResourceSearchResult(proto.Message):
         proto.STRING,
         number=19,
     )
-    versioned_resources: MutableSequence['VersionedResource'] = proto.RepeatedField(
+    versioned_resources: MutableSequence["VersionedResource"] = proto.RepeatedField(
         proto.MESSAGE,
         number=16,
-        message='VersionedResource',
+        message="VersionedResource",
     )
-    attached_resources: MutableSequence['AttachedResource'] = proto.RepeatedField(
+    attached_resources: MutableSequence["AttachedResource"] = proto.RepeatedField(
         proto.MESSAGE,
         number=20,
-        message='AttachedResource',
+        message="AttachedResource",
     )
-    relationships: MutableMapping[str, 'RelatedResources'] = proto.MapField(
+    relationships: MutableMapping[str, "RelatedResources"] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=21,
-        message='RelatedResources',
+        message="RelatedResources",
     )
     tag_keys: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
@@ -1119,20 +1121,20 @@ class ResourceSearchResult(proto.Message):
         proto.STRING,
         number=26,
     )
-    tags: MutableSequence['Tag'] = proto.RepeatedField(
+    tags: MutableSequence["Tag"] = proto.RepeatedField(
         proto.MESSAGE,
         number=29,
-        message='Tag',
+        message="Tag",
     )
-    effective_tags: MutableSequence['EffectiveTagDetails'] = proto.RepeatedField(
+    effective_tags: MutableSequence["EffectiveTagDetails"] = proto.RepeatedField(
         proto.MESSAGE,
         number=30,
-        message='EffectiveTagDetails',
+        message="EffectiveTagDetails",
     )
-    enrichments: MutableSequence['AssetEnrichment'] = proto.RepeatedField(
+    enrichments: MutableSequence["AssetEnrichment"] = proto.RepeatedField(
         proto.MESSAGE,
         number=31,
-        message='AssetEnrichment',
+        message="AssetEnrichment",
     )
     parent_asset_type: str = proto.Field(
         proto.STRING,
@@ -1208,10 +1210,10 @@ class AttachedResource(proto.Message):
         proto.STRING,
         number=1,
     )
-    versioned_resources: MutableSequence['VersionedResource'] = proto.RepeatedField(
+    versioned_resources: MutableSequence["VersionedResource"] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
-        message='VersionedResource',
+        message="VersionedResource",
     )
 
 
@@ -1224,10 +1226,10 @@ class RelatedResources(proto.Message):
             resource.
     """
 
-    related_resources: MutableSequence['RelatedResource'] = proto.RepeatedField(
+    related_resources: MutableSequence["RelatedResource"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message='RelatedResource',
+        message="RelatedResource",
     )
 
 
@@ -1365,11 +1367,13 @@ class IamPolicySearchResult(proto.Message):
                 number=1,
             )
 
-        matched_permissions: MutableMapping[str, 'IamPolicySearchResult.Explanation.Permissions'] = proto.MapField(
+        matched_permissions: MutableMapping[
+            str, "IamPolicySearchResult.Explanation.Permissions"
+        ] = proto.MapField(
             proto.STRING,
             proto.MESSAGE,
             number=1,
-            message='IamPolicySearchResult.Explanation.Permissions',
+            message="IamPolicySearchResult.Explanation.Permissions",
         )
 
     resource: str = proto.Field(
@@ -1442,6 +1446,7 @@ class ConditionEvaluation(proto.Message):
         evaluation_value (google.cloud.asset_v1.types.ConditionEvaluation.EvaluationValue):
             The evaluation result.
     """
+
     class EvaluationValue(proto.Enum):
         r"""Value of this expression.
 
@@ -1457,6 +1462,7 @@ class ConditionEvaluation(proto.Message):
                 expression contains variables that are either missing input
                 values or have not been supported by Policy Analyzer yet.
         """
+
         EVALUATION_VALUE_UNSPECIFIED = 0
         TRUE = 1
         FALSE = 2
@@ -1513,10 +1519,10 @@ class IamPolicyAnalysisResult(proto.Message):
             proto.STRING,
             number=1,
         )
-        analysis_state: 'IamPolicyAnalysisState' = proto.Field(
+        analysis_state: "IamPolicyAnalysisState" = proto.Field(
             proto.MESSAGE,
             number=2,
-            message='IamPolicyAnalysisState',
+            message="IamPolicyAnalysisState",
         )
 
     class Access(proto.Message):
@@ -1545,17 +1551,17 @@ class IamPolicyAnalysisResult(proto.Message):
         role: str = proto.Field(
             proto.STRING,
             number=1,
-            oneof='oneof_access',
+            oneof="oneof_access",
         )
         permission: str = proto.Field(
             proto.STRING,
             number=2,
-            oneof='oneof_access',
+            oneof="oneof_access",
         )
-        analysis_state: 'IamPolicyAnalysisState' = proto.Field(
+        analysis_state: "IamPolicyAnalysisState" = proto.Field(
             proto.MESSAGE,
             number=3,
-            message='IamPolicyAnalysisState',
+            message="IamPolicyAnalysisState",
         )
 
     class Identity(proto.Message):
@@ -1582,10 +1588,10 @@ class IamPolicyAnalysisResult(proto.Message):
             proto.STRING,
             number=1,
         )
-        analysis_state: 'IamPolicyAnalysisState' = proto.Field(
+        analysis_state: "IamPolicyAnalysisState" = proto.Field(
             proto.MESSAGE,
             number=2,
-            message='IamPolicyAnalysisState',
+            message="IamPolicyAnalysisState",
         )
 
     class Edge(proto.Message):
@@ -1659,25 +1665,31 @@ class IamPolicyAnalysisResult(proto.Message):
                 defined in the above IAM policy binding.
         """
 
-        resources: MutableSequence['IamPolicyAnalysisResult.Resource'] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=1,
-            message='IamPolicyAnalysisResult.Resource',
+        resources: MutableSequence["IamPolicyAnalysisResult.Resource"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=1,
+                message="IamPolicyAnalysisResult.Resource",
+            )
         )
-        accesses: MutableSequence['IamPolicyAnalysisResult.Access'] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=2,
-            message='IamPolicyAnalysisResult.Access',
+        accesses: MutableSequence["IamPolicyAnalysisResult.Access"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=2,
+                message="IamPolicyAnalysisResult.Access",
+            )
         )
-        resource_edges: MutableSequence['IamPolicyAnalysisResult.Edge'] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=3,
-            message='IamPolicyAnalysisResult.Edge',
+        resource_edges: MutableSequence["IamPolicyAnalysisResult.Edge"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=3,
+                message="IamPolicyAnalysisResult.Edge",
+            )
         )
-        condition_evaluation: 'ConditionEvaluation' = proto.Field(
+        condition_evaluation: "ConditionEvaluation" = proto.Field(
             proto.MESSAGE,
             number=4,
-            message='ConditionEvaluation',
+            message="ConditionEvaluation",
         )
 
     class IdentityList(proto.Message):
@@ -1705,15 +1717,19 @@ class IamPolicyAnalysisResult(proto.Message):
                 enabled in request.
         """
 
-        identities: MutableSequence['IamPolicyAnalysisResult.Identity'] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=1,
-            message='IamPolicyAnalysisResult.Identity',
+        identities: MutableSequence["IamPolicyAnalysisResult.Identity"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=1,
+                message="IamPolicyAnalysisResult.Identity",
+            )
         )
-        group_edges: MutableSequence['IamPolicyAnalysisResult.Edge'] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=2,
-            message='IamPolicyAnalysisResult.Edge',
+        group_edges: MutableSequence["IamPolicyAnalysisResult.Edge"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=2,
+                message="IamPolicyAnalysisResult.Edge",
+            )
         )
 
     attached_resource_full_name: str = proto.Field(

@@ -23,11 +23,11 @@ from .grpc_asyncio import MetricsServiceV2GrpcAsyncIOTransport
 
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[MetricsServiceV2Transport]]
-_transport_registry['grpc'] = MetricsServiceV2GrpcTransport
-_transport_registry['grpc_asyncio'] = MetricsServiceV2GrpcAsyncIOTransport
+_transport_registry["grpc"] = MetricsServiceV2GrpcTransport
+_transport_registry["grpc_asyncio"] = MetricsServiceV2GrpcAsyncIOTransport
 
 __all__ = (
-    'MetricsServiceV2Transport',
-    'MetricsServiceV2GrpcTransport',
-    'MetricsServiceV2GrpcAsyncIOTransport',
+    "MetricsServiceV2Transport",
+    "MetricsServiceV2GrpcTransport",
+    "MetricsServiceV2GrpcAsyncIOTransport",
 )

@@ -24,7 +24,9 @@ from google.cloud.eventarc_v1.types import channel_connection as gce_channel_con
 from google.cloud.eventarc_v1.types import discovery
 from google.cloud.eventarc_v1.types import enrollment as gce_enrollment
 from google.cloud.eventarc_v1.types import google_api_source as gce_google_api_source
-from google.cloud.eventarc_v1.types import google_channel_config as gce_google_channel_config
+from google.cloud.eventarc_v1.types import (
+    google_channel_config as gce_google_channel_config,
+)
 from google.cloud.eventarc_v1.types import message_bus as gce_message_bus
 from google.cloud.eventarc_v1.types import pipeline as gce_pipeline
 from google.cloud.eventarc_v1.types import trigger as gce_trigger
@@ -33,57 +35,57 @@ import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package='google.cloud.eventarc.v1',
+    package="google.cloud.eventarc.v1",
     manifest={
-        'GetTriggerRequest',
-        'ListTriggersRequest',
-        'ListTriggersResponse',
-        'CreateTriggerRequest',
-        'UpdateTriggerRequest',
-        'DeleteTriggerRequest',
-        'GetChannelRequest',
-        'ListChannelsRequest',
-        'ListChannelsResponse',
-        'CreateChannelRequest',
-        'UpdateChannelRequest',
-        'DeleteChannelRequest',
-        'GetProviderRequest',
-        'ListProvidersRequest',
-        'ListProvidersResponse',
-        'GetChannelConnectionRequest',
-        'ListChannelConnectionsRequest',
-        'ListChannelConnectionsResponse',
-        'CreateChannelConnectionRequest',
-        'DeleteChannelConnectionRequest',
-        'UpdateGoogleChannelConfigRequest',
-        'GetGoogleChannelConfigRequest',
-        'GetMessageBusRequest',
-        'ListMessageBusesRequest',
-        'ListMessageBusesResponse',
-        'ListMessageBusEnrollmentsRequest',
-        'ListMessageBusEnrollmentsResponse',
-        'CreateMessageBusRequest',
-        'UpdateMessageBusRequest',
-        'DeleteMessageBusRequest',
-        'GetEnrollmentRequest',
-        'ListEnrollmentsRequest',
-        'ListEnrollmentsResponse',
-        'CreateEnrollmentRequest',
-        'UpdateEnrollmentRequest',
-        'DeleteEnrollmentRequest',
-        'GetPipelineRequest',
-        'ListPipelinesRequest',
-        'ListPipelinesResponse',
-        'CreatePipelineRequest',
-        'UpdatePipelineRequest',
-        'DeletePipelineRequest',
-        'GetGoogleApiSourceRequest',
-        'ListGoogleApiSourcesRequest',
-        'ListGoogleApiSourcesResponse',
-        'CreateGoogleApiSourceRequest',
-        'UpdateGoogleApiSourceRequest',
-        'DeleteGoogleApiSourceRequest',
-        'OperationMetadata',
+        "GetTriggerRequest",
+        "ListTriggersRequest",
+        "ListTriggersResponse",
+        "CreateTriggerRequest",
+        "UpdateTriggerRequest",
+        "DeleteTriggerRequest",
+        "GetChannelRequest",
+        "ListChannelsRequest",
+        "ListChannelsResponse",
+        "CreateChannelRequest",
+        "UpdateChannelRequest",
+        "DeleteChannelRequest",
+        "GetProviderRequest",
+        "ListProvidersRequest",
+        "ListProvidersResponse",
+        "GetChannelConnectionRequest",
+        "ListChannelConnectionsRequest",
+        "ListChannelConnectionsResponse",
+        "CreateChannelConnectionRequest",
+        "DeleteChannelConnectionRequest",
+        "UpdateGoogleChannelConfigRequest",
+        "GetGoogleChannelConfigRequest",
+        "GetMessageBusRequest",
+        "ListMessageBusesRequest",
+        "ListMessageBusesResponse",
+        "ListMessageBusEnrollmentsRequest",
+        "ListMessageBusEnrollmentsResponse",
+        "CreateMessageBusRequest",
+        "UpdateMessageBusRequest",
+        "DeleteMessageBusRequest",
+        "GetEnrollmentRequest",
+        "ListEnrollmentsRequest",
+        "ListEnrollmentsResponse",
+        "CreateEnrollmentRequest",
+        "UpdateEnrollmentRequest",
+        "DeleteEnrollmentRequest",
+        "GetPipelineRequest",
+        "ListPipelinesRequest",
+        "ListPipelinesResponse",
+        "CreatePipelineRequest",
+        "UpdatePipelineRequest",
+        "DeletePipelineRequest",
+        "GetGoogleApiSourceRequest",
+        "ListGoogleApiSourcesRequest",
+        "ListGoogleApiSourcesResponse",
+        "CreateGoogleApiSourceRequest",
+        "UpdateGoogleApiSourceRequest",
+        "DeleteGoogleApiSourceRequest",
+        "OperationMetadata",
     },
 )
 
@@ -655,10 +657,12 @@ class ListChannelConnectionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    channel_connections: MutableSequence[gce_channel_connection.ChannelConnection] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=gce_channel_connection.ChannelConnection,
+    channel_connections: MutableSequence[gce_channel_connection.ChannelConnection] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=gce_channel_connection.ChannelConnection,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -1551,10 +1555,12 @@ class ListGoogleApiSourcesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    google_api_sources: MutableSequence[gce_google_api_source.GoogleApiSource] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=gce_google_api_source.GoogleApiSource,
+    google_api_sources: MutableSequence[gce_google_api_source.GoogleApiSource] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=gce_google_api_source.GoogleApiSource,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

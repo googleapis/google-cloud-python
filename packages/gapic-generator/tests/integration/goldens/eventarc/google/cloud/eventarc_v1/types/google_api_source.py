@@ -24,9 +24,9 @@ import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package='google.cloud.eventarc.v1',
+    package="google.cloud.eventarc.v1",
     manifest={
-        'GoogleApiSource',
+        "GoogleApiSource",
     },
 )
 
@@ -184,13 +184,13 @@ class GoogleApiSource(proto.Message):
     organization_subscription: OrganizationSubscription = proto.Field(
         proto.MESSAGE,
         number=12,
-        oneof='wide_scope_subscription',
+        oneof="wide_scope_subscription",
         message=OrganizationSubscription,
     )
     project_subscriptions: ProjectSubscriptions = proto.Field(
         proto.MESSAGE,
         number=13,
-        oneof='wide_scope_subscription',
+        oneof="wide_scope_subscription",
         message=ProjectSubscriptions,
     )
 

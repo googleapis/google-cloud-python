@@ -48,37 +48,122 @@ def test_compat_fallback_implementations():
         # get_default_mtls_endpoint tests
         assert fallback.get_default_mtls_endpoint(None) is None
         assert fallback.get_default_mtls_endpoint("") == ""
-        assert fallback.get_default_mtls_endpoint("foo.googleapis.com") == "foo.mtls.googleapis.com"
-        assert fallback.get_default_mtls_endpoint("foo.sandbox.googleapis.com") == "foo.mtls.sandbox.googleapis.com"
-        assert fallback.get_default_mtls_endpoint("foo.mtls.googleapis.com") == "foo.mtls.googleapis.com"
-        assert fallback.get_default_mtls_endpoint("custom.domain.com") == "custom.domain.com"
-        assert fallback.get_default_mtls_endpoint(":::invalid-url:::") == ":::invalid-url:::"
+        assert (
+            fallback.get_default_mtls_endpoint("foo.googleapis.com")
+            == "foo.mtls.googleapis.com"
+        )
+        assert (
+            fallback.get_default_mtls_endpoint("foo.sandbox.googleapis.com")
+            == "foo.mtls.sandbox.googleapis.com"
+        )
+        assert (
+            fallback.get_default_mtls_endpoint("foo.mtls.googleapis.com")
+            == "foo.mtls.googleapis.com"
+        )
+        assert (
+            fallback.get_default_mtls_endpoint("custom.domain.com")
+            == "custom.domain.com"
+        )
+        assert (
+            fallback.get_default_mtls_endpoint(":::invalid-url:::")
+            == ":::invalid-url:::"
+        )
 
         # get_api_endpoint tests
-        assert fallback.get_api_endpoint("https://override.com", None, "googleapis.com", "auto", "googleapis.com", "mtls.com", "https://{UNIVERSE_DOMAIN}") == "https://override.com"
-        assert fallback.get_api_endpoint(None, lambda: (b"", b""), "googleapis.com", "always", "googleapis.com", "mtls.com", "https://{UNIVERSE_DOMAIN}") == "mtls.com"
-        assert fallback.get_api_endpoint(None, lambda: (b"", b""), "googleapis.com", "auto", "googleapis.com", "mtls.com", "https://{UNIVERSE_DOMAIN}") == "mtls.com"
+        assert (
+            fallback.get_api_endpoint(
+                "https://override.com",
+                None,
+                "googleapis.com",
+                "auto",
+                "googleapis.com",
+                "mtls.com",
+                "https://{UNIVERSE_DOMAIN}",
+            )
+            == "https://override.com"
+        )
+        assert (
+            fallback.get_api_endpoint(
+                None,
+                lambda: (b"", b""),
+                "googleapis.com",
+                "always",
+                "googleapis.com",
+                "mtls.com",
+                "https://{UNIVERSE_DOMAIN}",
+            )
+            == "mtls.com"
+        )
+        assert (
+            fallback.get_api_endpoint(
+                None,
+                lambda: (b"", b""),
+                "googleapis.com",
+                "auto",
+                "googleapis.com",
+                "mtls.com",
+                "https://{UNIVERSE_DOMAIN}",
+            )
+            == "mtls.com"
+        )
         with pytest.raises(MutualTLSChannelError):
-            fallback.get_api_endpoint(None, lambda: (b"", b""), "otheruniverse.com", "always", "googleapis.com", "mtls.com", "https://{UNIVERSE_DOMAIN}")
-        assert fallback.get_api_endpoint(None, None, "googleapis.com", "never", "googleapis.com", "mtls.com", "https://{UNIVERSE_DOMAIN}") == "https://googleapis.com"
+            fallback.get_api_endpoint(
+                None,
+                lambda: (b"", b""),
+                "otheruniverse.com",
+                "always",
+                "googleapis.com",
+                "mtls.com",
+                "https://{UNIVERSE_DOMAIN}",
+            )
+        assert (
+            fallback.get_api_endpoint(
+                None,
+                None,
+                "googleapis.com",
+                "never",
+                "googleapis.com",
+                "mtls.com",
+                "https://{UNIVERSE_DOMAIN}",
+            )
+            == "https://googleapis.com"
+        )
 
         # get_universe_domain tests
-        assert fallback.get_universe_domain("custom.com", None, "googleapis.com") == "custom.com"
-        assert fallback.get_universe_domain(None, "env.com", "googleapis.com") == "env.com"
-        assert fallback.get_universe_domain(None, None, "googleapis.com") == "googleapis.com"
+        assert (
+            fallback.get_universe_domain("custom.com", None, "googleapis.com")
+            == "custom.com"
+        )
+        assert (
+            fallback.get_universe_domain(None, "env.com", "googleapis.com") == "env.com"
+        )
+        assert (
+            fallback.get_universe_domain(None, None, "googleapis.com")
+            == "googleapis.com"
+        )
         with pytest.raises(ValueError):
             fallback.get_universe_domain("   ", None, "googleapis.com")
 
         # use_client_cert_effective tests
-        with mock.patch("google.auth.transport.mtls.should_use_client_cert", return_value=True, create=True):
+        with mock.patch(
+            "google.auth.transport.mtls.should_use_client_cert",
+            return_value=True,
+            create=True,
+        ):
             assert fallback.use_client_cert_effective() is True
 
         with mock.patch.object(fallback, "mtls", spec=object()):
-            with mock.patch.dict("os.environ", {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
+            with mock.patch.dict(
+                "os.environ", {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}
+            ):
                 assert fallback.use_client_cert_effective() is True
-            with mock.patch.dict("os.environ", {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
+            with mock.patch.dict(
+                "os.environ", {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}
+            ):
                 assert fallback.use_client_cert_effective() is False
-            with mock.patch.dict("os.environ", {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "invalid"}):
+            with mock.patch.dict(
+                "os.environ", {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "invalid"}
+            ):
                 with pytest.raises(ValueError):
                     fallback.use_client_cert_effective()
 
@@ -87,8 +172,16 @@ def test_compat_fallback_implementations():
         assert fallback.get_client_cert_source(cert_fn, True) == cert_fn
         assert fallback.get_client_cert_source(None, False) is None
 
-        with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=True, create=True):
-            with mock.patch("google.auth.transport.mtls.default_client_cert_source", return_value=cert_fn, create=True):
+        with mock.patch(
+            "google.auth.transport.mtls.has_default_client_cert_source",
+            return_value=True,
+            create=True,
+        ):
+            with mock.patch(
+                "google.auth.transport.mtls.default_client_cert_source",
+                return_value=cert_fn,
+                create=True,
+            ):
                 assert fallback.get_client_cert_source(None, True) == cert_fn
 
         with mock.patch.object(fallback, "mtls", spec=object()):
@@ -96,7 +189,13 @@ def test_compat_fallback_implementations():
                 fallback.get_client_cert_source(None, True)
 
         # read_environment_variables tests
-        with mock.patch.dict("os.environ", {"GOOGLE_API_USE_MTLS_ENDPOINT": "always", "GOOGLE_CLOUD_UNIVERSE_DOMAIN": "myuniverse.com"}):
+        with mock.patch.dict(
+            "os.environ",
+            {
+                "GOOGLE_API_USE_MTLS_ENDPOINT": "always",
+                "GOOGLE_CLOUD_UNIVERSE_DOMAIN": "myuniverse.com",
+            },
+        ):
             use_cert, use_mtls, universe = fallback.read_environment_variables()
             assert use_mtls == "always"
             assert universe == "myuniverse.com"
@@ -131,6 +230,7 @@ def test_compat_fallback_implementations():
         class DummyPopulated:
             def __init__(self):
                 self.request_id = "val"
+
         p_existing = DummyPopulated()
         fallback.setup_request_id(p_existing, "request_id", is_proto3_optional=False)
         assert p_existing.request_id == "val"
@@ -138,6 +238,7 @@ def test_compat_fallback_implementations():
         class NonOptPlain:
             def __init__(self):
                 self.request_id = ""
+
         nop = NonOptPlain()
         fallback.setup_request_id(nop, "request_id", is_proto3_optional=False)
         assert nop.request_id != ""
@@ -146,6 +247,7 @@ def test_compat_fallback_implementations():
             def __init__(self):
                 self.request_id = ""
                 self._has = False
+
             def HasField(self, name):
                 if not self._has:
                     return False
@@ -161,15 +263,20 @@ def test_compat_fallback_implementations():
 
         w1 = DummyWrapper()
         fallback.setup_request_id(w1, "request_id", is_proto3_optional=True)
-        assert getattr(w1, "request_id", None) is not None or getattr(w1._pb, "request_id", None) != ""
+        assert (
+            getattr(w1, "request_id", None) is not None
+            or getattr(w1._pb, "request_id", None) != ""
+        )
 
         class BadProto:
             def HasField(self, name):
                 raise AttributeError()
+
         class BadWrapper:
             def __init__(self):
                 self._pb = BadProto()
                 self.request_id = None
+
         bw = BadWrapper()
         fallback.setup_request_id(bw, "request_id", is_proto3_optional=True)
         assert bw.request_id is not None
@@ -177,8 +284,10 @@ def test_compat_fallback_implementations():
         class SetProto:
             def __init__(self):
                 self.request_id = "already_set"
+
             def HasField(self, name):
                 return True
+
         sp = SetProto()
         fallback.setup_request_id(sp, "request_id", is_proto3_optional=True)
         assert sp.request_id == "already_set"
@@ -186,6 +295,7 @@ def test_compat_fallback_implementations():
         class SetProtoNonOpt:
             def __init__(self):
                 self.request_id = "already_set"
+
         sp_non_opt = SetProtoNonOpt()
         fallback.setup_request_id(sp_non_opt, "request_id", is_proto3_optional=False)
         assert sp_non_opt.request_id == "already_set"

@@ -17,6 +17,6 @@ from .client import CloudRedisClient
 from .async_client import CloudRedisAsyncClient
 
 __all__ = (
-    'CloudRedisClient',
-    'CloudRedisAsyncClient',
+    "CloudRedisClient",
+    "CloudRedisAsyncClient",
 )

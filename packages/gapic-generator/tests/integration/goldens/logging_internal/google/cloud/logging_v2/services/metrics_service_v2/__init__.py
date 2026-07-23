@@ -17,6 +17,6 @@ from .client import BaseMetricsServiceV2Client
 from .async_client import BaseMetricsServiceV2AsyncClient
 
 __all__ = (
-    'BaseMetricsServiceV2Client',
-    'BaseMetricsServiceV2AsyncClient',
+    "BaseMetricsServiceV2Client",
+    "BaseMetricsServiceV2AsyncClient",
 )

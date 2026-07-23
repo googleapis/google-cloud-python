@@ -17,6 +17,6 @@ from .client import AssetServiceClient
 from .async_client import AssetServiceAsyncClient
 
 __all__ = (
-    'AssetServiceClient',
-    'AssetServiceAsyncClient',
+    "AssetServiceClient",
+    "AssetServiceAsyncClient",
 )

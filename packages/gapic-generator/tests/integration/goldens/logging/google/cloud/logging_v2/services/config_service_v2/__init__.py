@@ -17,6 +17,6 @@ from .client import ConfigServiceV2Client
 from .async_client import ConfigServiceV2AsyncClient
 
 __all__ = (
-    'ConfigServiceV2Client',
-    'ConfigServiceV2AsyncClient',
+    "ConfigServiceV2Client",
+    "ConfigServiceV2AsyncClient",
 )

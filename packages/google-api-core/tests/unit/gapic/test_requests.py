@@ -43,6 +43,33 @@ class MockValueErrorRequest:
         raise ValueError("Mismatched field")
 
 
+class MockProtoPlusRequest:
+    def __init__(self, pb_has_field=False, pb_raises=False, request_id=None):
+        if request_id is not None:
+            self.request_id = request_id
+
+        if pb_raises:
+
+            class FailingPb:
+                def HasField(self, key):
+                    raise AttributeError("No HasField on _pb")
+
+            self._pb = FailingPb()
+        else:
+
+            class MockPb:
+                def __init__(self, has_field):
+                    self._has_field = has_field
+
+                def HasField(self, key):
+                    return self._has_field
+
+            self._pb = MockPb(pb_has_field)
+
+    def HasField(self, key):
+        raise AttributeError("Proto-plus object HasField fails")
+
+
 # --- Parameterized Test ---
 
 UUID_REGEX = r"[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}"
@@ -62,6 +89,14 @@ UUID_REGEX = r"[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{1
         (MockProtoRequest(request_id="already_set"), True, "already_set"),
         # ValueError case
         (MockValueErrorRequest(), True, "uuid"),
+        # ProtoPlus _pb cases
+        (MockProtoPlusRequest(pb_has_field=False), True, "uuid"),
+        (
+            MockProtoPlusRequest(pb_has_field=True, request_id="already_set"),
+            True,
+            "already_set",
+        ),
+        (MockProtoPlusRequest(pb_raises=True), True, "uuid"),
         # Dict cases
         ({}, True, "uuid"),
         ({"request_id": None}, True, "uuid"),
@@ -82,6 +117,9 @@ UUID_REGEX = r"[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{1
         "proto3_optional_not_in_request_proto",
         "proto3_optional_already_in_request_proto",
         "value_error_fallback",
+        "proto_plus_pb_not_set",
+        "proto_plus_pb_already_set",
+        "proto_plus_pb_raises",
         "dict_proto3_optional_not_in_request",
         "dict_proto3_optional_value_none",
         "dict_proto3_optional_already_in_request",

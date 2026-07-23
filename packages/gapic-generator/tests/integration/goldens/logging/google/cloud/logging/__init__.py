@@ -18,12 +18,24 @@ from google.cloud.logging import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.logging_v2.services.config_service_v2.client import ConfigServiceV2Client
-from google.cloud.logging_v2.services.config_service_v2.async_client import ConfigServiceV2AsyncClient
-from google.cloud.logging_v2.services.logging_service_v2.client import LoggingServiceV2Client
-from google.cloud.logging_v2.services.logging_service_v2.async_client import LoggingServiceV2AsyncClient
-from google.cloud.logging_v2.services.metrics_service_v2.client import MetricsServiceV2Client
-from google.cloud.logging_v2.services.metrics_service_v2.async_client import MetricsServiceV2AsyncClient
+from google.cloud.logging_v2.services.config_service_v2.client import (
+    ConfigServiceV2Client,
+)
+from google.cloud.logging_v2.services.config_service_v2.async_client import (
+    ConfigServiceV2AsyncClient,
+)
+from google.cloud.logging_v2.services.logging_service_v2.client import (
+    LoggingServiceV2Client,
+)
+from google.cloud.logging_v2.services.logging_service_v2.async_client import (
+    LoggingServiceV2AsyncClient,
+)
+from google.cloud.logging_v2.services.metrics_service_v2.client import (
+    MetricsServiceV2Client,
+)
+from google.cloud.logging_v2.services.metrics_service_v2.async_client import (
+    MetricsServiceV2AsyncClient,
+)
 
 from google.cloud.logging_v2.types.log_entry import LogEntry
 from google.cloud.logging_v2.types.log_entry import LogEntryOperation
@@ -34,8 +46,12 @@ from google.cloud.logging_v2.types.logging import ListLogEntriesRequest
 from google.cloud.logging_v2.types.logging import ListLogEntriesResponse
 from google.cloud.logging_v2.types.logging import ListLogsRequest
 from google.cloud.logging_v2.types.logging import ListLogsResponse
-from google.cloud.logging_v2.types.logging import ListMonitoredResourceDescriptorsRequest
-from google.cloud.logging_v2.types.logging import ListMonitoredResourceDescriptorsResponse
+from google.cloud.logging_v2.types.logging import (
+    ListMonitoredResourceDescriptorsRequest,
+)
+from google.cloud.logging_v2.types.logging import (
+    ListMonitoredResourceDescriptorsResponse,
+)
 from google.cloud.logging_v2.types.logging import TailLogEntriesRequest
 from google.cloud.logging_v2.types.logging import TailLogEntriesResponse
 from google.cloud.logging_v2.types.logging import WriteLogEntriesPartialErrors
@@ -102,86 +118,87 @@ from google.cloud.logging_v2.types.logging_metrics import ListLogMetricsResponse
 from google.cloud.logging_v2.types.logging_metrics import LogMetric
 from google.cloud.logging_v2.types.logging_metrics import UpdateLogMetricRequest
 
-__all__ = ('ConfigServiceV2Client',
-    'ConfigServiceV2AsyncClient',
-    'LoggingServiceV2Client',
-    'LoggingServiceV2AsyncClient',
-    'MetricsServiceV2Client',
-    'MetricsServiceV2AsyncClient',
-    'LogEntry',
-    'LogEntryOperation',
-    'LogEntrySourceLocation',
-    'LogSplit',
-    'DeleteLogRequest',
-    'ListLogEntriesRequest',
-    'ListLogEntriesResponse',
-    'ListLogsRequest',
-    'ListLogsResponse',
-    'ListMonitoredResourceDescriptorsRequest',
-    'ListMonitoredResourceDescriptorsResponse',
-    'TailLogEntriesRequest',
-    'TailLogEntriesResponse',
-    'WriteLogEntriesPartialErrors',
-    'WriteLogEntriesRequest',
-    'WriteLogEntriesResponse',
-    'BigQueryDataset',
-    'BigQueryOptions',
-    'BucketMetadata',
-    'CmekSettings',
-    'CopyLogEntriesMetadata',
-    'CopyLogEntriesRequest',
-    'CopyLogEntriesResponse',
-    'CreateBucketRequest',
-    'CreateExclusionRequest',
-    'CreateLinkRequest',
-    'CreateSinkRequest',
-    'CreateViewRequest',
-    'DeleteBucketRequest',
-    'DeleteExclusionRequest',
-    'DeleteLinkRequest',
-    'DeleteSinkRequest',
-    'DeleteViewRequest',
-    'GetBucketRequest',
-    'GetCmekSettingsRequest',
-    'GetExclusionRequest',
-    'GetLinkRequest',
-    'GetSettingsRequest',
-    'GetSinkRequest',
-    'GetViewRequest',
-    'IndexConfig',
-    'Link',
-    'LinkMetadata',
-    'ListBucketsRequest',
-    'ListBucketsResponse',
-    'ListExclusionsRequest',
-    'ListExclusionsResponse',
-    'ListLinksRequest',
-    'ListLinksResponse',
-    'ListSinksRequest',
-    'ListSinksResponse',
-    'ListViewsRequest',
-    'ListViewsResponse',
-    'LocationMetadata',
-    'LogBucket',
-    'LogExclusion',
-    'LogSink',
-    'LogView',
-    'Settings',
-    'UndeleteBucketRequest',
-    'UpdateBucketRequest',
-    'UpdateCmekSettingsRequest',
-    'UpdateExclusionRequest',
-    'UpdateSettingsRequest',
-    'UpdateSinkRequest',
-    'UpdateViewRequest',
-    'IndexType',
-    'LifecycleState',
-    'OperationState',
-    'CreateLogMetricRequest',
-    'DeleteLogMetricRequest',
-    'GetLogMetricRequest',
-    'ListLogMetricsRequest',
-    'ListLogMetricsResponse',
-    'LogMetric',
-    'UpdateLogMetricRequest',
+__all__ = (
+    "ConfigServiceV2Client",
+    "ConfigServiceV2AsyncClient",
+    "LoggingServiceV2Client",
+    "LoggingServiceV2AsyncClient",
+    "MetricsServiceV2Client",
+    "MetricsServiceV2AsyncClient",
+    "LogEntry",
+    "LogEntryOperation",
+    "LogEntrySourceLocation",
+    "LogSplit",
+    "DeleteLogRequest",
+    "ListLogEntriesRequest",
+    "ListLogEntriesResponse",
+    "ListLogsRequest",
+    "ListLogsResponse",
+    "ListMonitoredResourceDescriptorsRequest",
+    "ListMonitoredResourceDescriptorsResponse",
+    "TailLogEntriesRequest",
+    "TailLogEntriesResponse",
+    "WriteLogEntriesPartialErrors",
+    "WriteLogEntriesRequest",
+    "WriteLogEntriesResponse",
+    "BigQueryDataset",
+    "BigQueryOptions",
+    "BucketMetadata",
+    "CmekSettings",
+    "CopyLogEntriesMetadata",
+    "CopyLogEntriesRequest",
+    "CopyLogEntriesResponse",
+    "CreateBucketRequest",
+    "CreateExclusionRequest",
+    "CreateLinkRequest",
+    "CreateSinkRequest",
+    "CreateViewRequest",
+    "DeleteBucketRequest",
+    "DeleteExclusionRequest",
+    "DeleteLinkRequest",
+    "DeleteSinkRequest",
+    "DeleteViewRequest",
+    "GetBucketRequest",
+    "GetCmekSettingsRequest",
+    "GetExclusionRequest",
+    "GetLinkRequest",
+    "GetSettingsRequest",
+    "GetSinkRequest",
+    "GetViewRequest",
+    "IndexConfig",
+    "Link",
+    "LinkMetadata",
+    "ListBucketsRequest",
+    "ListBucketsResponse",
+    "ListExclusionsRequest",
+    "ListExclusionsResponse",
+    "ListLinksRequest",
+    "ListLinksResponse",
+    "ListSinksRequest",
+    "ListSinksResponse",
+    "ListViewsRequest",
+    "ListViewsResponse",
+    "LocationMetadata",
+    "LogBucket",
+    "LogExclusion",
+    "LogSink",
+    "LogView",
+    "Settings",
+    "UndeleteBucketRequest",
+    "UpdateBucketRequest",
+    "UpdateCmekSettingsRequest",
+    "UpdateExclusionRequest",
+    "UpdateSettingsRequest",
+    "UpdateSinkRequest",
+    "UpdateViewRequest",
+    "IndexType",
+    "LifecycleState",
+    "OperationState",
+    "CreateLogMetricRequest",
+    "DeleteLogMetricRequest",
+    "GetLogMetricRequest",
+    "ListLogMetricsRequest",
+    "ListLogMetricsResponse",
+    "LogMetric",
+    "UpdateLogMetricRequest",
 )

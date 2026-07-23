@@ -25,14 +25,14 @@ from .rest import IAMCredentialsRestInterceptor
 
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[IAMCredentialsTransport]]
-_transport_registry['grpc'] = IAMCredentialsGrpcTransport
-_transport_registry['grpc_asyncio'] = IAMCredentialsGrpcAsyncIOTransport
-_transport_registry['rest'] = IAMCredentialsRestTransport
+_transport_registry["grpc"] = IAMCredentialsGrpcTransport
+_transport_registry["grpc_asyncio"] = IAMCredentialsGrpcAsyncIOTransport
+_transport_registry["rest"] = IAMCredentialsRestTransport
 
 __all__ = (
-    'IAMCredentialsTransport',
-    'IAMCredentialsGrpcTransport',
-    'IAMCredentialsGrpcAsyncIOTransport',
-    'IAMCredentialsRestTransport',
-    'IAMCredentialsRestInterceptor',
+    "IAMCredentialsTransport",
+    "IAMCredentialsGrpcTransport",
+    "IAMCredentialsGrpcAsyncIOTransport",
+    "IAMCredentialsRestTransport",
+    "IAMCredentialsRestInterceptor",
 )

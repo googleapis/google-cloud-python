@@ -17,6 +17,6 @@ from .client import LoggingServiceV2Client
 from .async_client import LoggingServiceV2AsyncClient
 
 __all__ = (
-    'LoggingServiceV2Client',
-    'LoggingServiceV2AsyncClient',
+    "LoggingServiceV2Client",
+    "LoggingServiceV2AsyncClient",
 )

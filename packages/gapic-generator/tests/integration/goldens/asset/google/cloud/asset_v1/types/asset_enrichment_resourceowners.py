@@ -21,9 +21,9 @@ import proto  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package='google.cloud.asset.v1',
+    package="google.cloud.asset.v1",
     manifest={
-        'ResourceOwners',
+        "ResourceOwners",
     },
 )
 

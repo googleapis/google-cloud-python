@@ -17,6 +17,6 @@ from .client import StorageBatchOperationsClient
 from .async_client import StorageBatchOperationsAsyncClient
 
 __all__ = (
-    'StorageBatchOperationsClient',
-    'StorageBatchOperationsAsyncClient',
+    "StorageBatchOperationsClient",
+    "StorageBatchOperationsAsyncClient",
 )

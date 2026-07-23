@@ -25,14 +25,14 @@ from .rest import AssetServiceRestInterceptor
 
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[AssetServiceTransport]]
-_transport_registry['grpc'] = AssetServiceGrpcTransport
-_transport_registry['grpc_asyncio'] = AssetServiceGrpcAsyncIOTransport
-_transport_registry['rest'] = AssetServiceRestTransport
+_transport_registry["grpc"] = AssetServiceGrpcTransport
+_transport_registry["grpc_asyncio"] = AssetServiceGrpcAsyncIOTransport
+_transport_registry["rest"] = AssetServiceRestTransport
 
 __all__ = (
-    'AssetServiceTransport',
-    'AssetServiceGrpcTransport',
-    'AssetServiceGrpcAsyncIOTransport',
-    'AssetServiceRestTransport',
-    'AssetServiceRestInterceptor',
+    "AssetServiceTransport",
+    "AssetServiceGrpcTransport",
+    "AssetServiceGrpcAsyncIOTransport",
+    "AssetServiceRestTransport",
+    "AssetServiceRestInterceptor",
 )

@@ -24,25 +24,25 @@ import google.rpc.code_pb2 as code_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package='google.cloud.storagebatchoperations.v1',
+    package="google.cloud.storagebatchoperations.v1",
     manifest={
-        'Job',
-        'BucketOperation',
-        'BucketList',
-        'Manifest',
-        'PrefixList',
-        'PutObjectHold',
-        'DeleteObject',
-        'RewriteObject',
-        'ObjectRetention',
-        'PutMetadata',
-        'ObjectCustomContextPayload',
-        'CustomContextUpdates',
-        'UpdateObjectCustomContext',
-        'ErrorSummary',
-        'ErrorLogEntry',
-        'Counters',
-        'LoggingConfig',
+        "Job",
+        "BucketOperation",
+        "BucketList",
+        "Manifest",
+        "PrefixList",
+        "PutObjectHold",
+        "DeleteObject",
+        "RewriteObject",
+        "ObjectRetention",
+        "PutMetadata",
+        "ObjectCustomContextPayload",
+        "CustomContextUpdates",
+        "UpdateObjectCustomContext",
+        "ErrorSummary",
+        "ErrorLogEntry",
+        "Counters",
+        "LoggingConfig",
     },
 )
 
@@ -129,6 +129,7 @@ class Job(proto.Message):
             to different quota limits than single-bucket
             jobs.
     """
+
     class State(proto.Enum):
         r"""Describes state of a job.
 
@@ -146,6 +147,7 @@ class Job(proto.Message):
             QUEUED (5):
                 Queued but not yet started.
         """
+
         STATE_UNSPECIFIED = 0
         RUNNING = 1
         SUCCEEDED = 2
@@ -161,46 +163,46 @@ class Job(proto.Message):
         proto.STRING,
         number=2,
     )
-    bucket_list: 'BucketList' = proto.Field(
+    bucket_list: "BucketList" = proto.Field(
         proto.MESSAGE,
         number=19,
-        oneof='source',
-        message='BucketList',
+        oneof="source",
+        message="BucketList",
     )
-    put_object_hold: 'PutObjectHold' = proto.Field(
+    put_object_hold: "PutObjectHold" = proto.Field(
         proto.MESSAGE,
         number=5,
-        oneof='transformation',
-        message='PutObjectHold',
+        oneof="transformation",
+        message="PutObjectHold",
     )
-    delete_object: 'DeleteObject' = proto.Field(
+    delete_object: "DeleteObject" = proto.Field(
         proto.MESSAGE,
         number=6,
-        oneof='transformation',
-        message='DeleteObject',
+        oneof="transformation",
+        message="DeleteObject",
     )
-    put_metadata: 'PutMetadata' = proto.Field(
+    put_metadata: "PutMetadata" = proto.Field(
         proto.MESSAGE,
         number=8,
-        oneof='transformation',
-        message='PutMetadata',
+        oneof="transformation",
+        message="PutMetadata",
     )
-    rewrite_object: 'RewriteObject' = proto.Field(
+    rewrite_object: "RewriteObject" = proto.Field(
         proto.MESSAGE,
         number=20,
-        oneof='transformation',
-        message='RewriteObject',
+        oneof="transformation",
+        message="RewriteObject",
     )
-    update_object_custom_context: 'UpdateObjectCustomContext' = proto.Field(
+    update_object_custom_context: "UpdateObjectCustomContext" = proto.Field(
         proto.MESSAGE,
         number=23,
-        oneof='transformation',
-        message='UpdateObjectCustomContext',
+        oneof="transformation",
+        message="UpdateObjectCustomContext",
     )
-    logging_config: 'LoggingConfig' = proto.Field(
+    logging_config: "LoggingConfig" = proto.Field(
         proto.MESSAGE,
         number=9,
-        message='LoggingConfig',
+        message="LoggingConfig",
     )
     create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
@@ -217,15 +219,15 @@ class Job(proto.Message):
         number=12,
         message=timestamp_pb2.Timestamp,
     )
-    counters: 'Counters' = proto.Field(
+    counters: "Counters" = proto.Field(
         proto.MESSAGE,
         number=13,
-        message='Counters',
+        message="Counters",
     )
-    error_summaries: MutableSequence['ErrorSummary'] = proto.RepeatedField(
+    error_summaries: MutableSequence["ErrorSummary"] = proto.RepeatedField(
         proto.MESSAGE,
         number=14,
-        message='ErrorSummary',
+        message="ErrorSummary",
     )
     state: State = proto.Field(
         proto.ENUM,
@@ -311,6 +313,7 @@ class BucketOperation(proto.Message):
         state (google.cloud.storagebatchoperations_v1.types.BucketOperation.State):
             Output only. State of the BucketOperation.
     """
+
     class State(proto.Enum):
         r"""Describes state of the BucketOperation.
 
@@ -328,6 +331,7 @@ class BucketOperation(proto.Message):
             FAILED (5):
                 Terminated due to an unrecoverable failure.
         """
+
         STATE_UNSPECIFIED = 0
         QUEUED = 1
         RUNNING = 2
@@ -343,47 +347,47 @@ class BucketOperation(proto.Message):
         proto.STRING,
         number=2,
     )
-    prefix_list: 'PrefixList' = proto.Field(
+    prefix_list: "PrefixList" = proto.Field(
         proto.MESSAGE,
         number=3,
-        oneof='object_configuration',
-        message='PrefixList',
+        oneof="object_configuration",
+        message="PrefixList",
     )
-    manifest: 'Manifest' = proto.Field(
+    manifest: "Manifest" = proto.Field(
         proto.MESSAGE,
         number=4,
-        oneof='object_configuration',
-        message='Manifest',
+        oneof="object_configuration",
+        message="Manifest",
     )
-    put_object_hold: 'PutObjectHold' = proto.Field(
+    put_object_hold: "PutObjectHold" = proto.Field(
         proto.MESSAGE,
         number=11,
-        oneof='transformation',
-        message='PutObjectHold',
+        oneof="transformation",
+        message="PutObjectHold",
     )
-    delete_object: 'DeleteObject' = proto.Field(
+    delete_object: "DeleteObject" = proto.Field(
         proto.MESSAGE,
         number=12,
-        oneof='transformation',
-        message='DeleteObject',
+        oneof="transformation",
+        message="DeleteObject",
     )
-    put_metadata: 'PutMetadata' = proto.Field(
+    put_metadata: "PutMetadata" = proto.Field(
         proto.MESSAGE,
         number=13,
-        oneof='transformation',
-        message='PutMetadata',
+        oneof="transformation",
+        message="PutMetadata",
     )
-    rewrite_object: 'RewriteObject' = proto.Field(
+    rewrite_object: "RewriteObject" = proto.Field(
         proto.MESSAGE,
         number=14,
-        oneof='transformation',
-        message='RewriteObject',
+        oneof="transformation",
+        message="RewriteObject",
     )
-    update_object_custom_context: 'UpdateObjectCustomContext' = proto.Field(
+    update_object_custom_context: "UpdateObjectCustomContext" = proto.Field(
         proto.MESSAGE,
         number=15,
-        oneof='transformation',
-        message='UpdateObjectCustomContext',
+        oneof="transformation",
+        message="UpdateObjectCustomContext",
     )
     create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
@@ -400,15 +404,15 @@ class BucketOperation(proto.Message):
         number=7,
         message=timestamp_pb2.Timestamp,
     )
-    counters: 'Counters' = proto.Field(
+    counters: "Counters" = proto.Field(
         proto.MESSAGE,
         number=8,
-        message='Counters',
+        message="Counters",
     )
-    error_summaries: MutableSequence['ErrorSummary'] = proto.RepeatedField(
+    error_summaries: MutableSequence["ErrorSummary"] = proto.RepeatedField(
         proto.MESSAGE,
         number=9,
-        message='ErrorSummary',
+        message="ErrorSummary",
     )
     state: State = proto.Field(
         proto.ENUM,
@@ -458,17 +462,17 @@ class BucketList(proto.Message):
             proto.STRING,
             number=1,
         )
-        prefix_list: 'PrefixList' = proto.Field(
+        prefix_list: "PrefixList" = proto.Field(
             proto.MESSAGE,
             number=2,
-            oneof='object_configuration',
-            message='PrefixList',
+            oneof="object_configuration",
+            message="PrefixList",
         )
-        manifest: 'Manifest' = proto.Field(
+        manifest: "Manifest" = proto.Field(
             proto.MESSAGE,
             number=3,
-            oneof='object_configuration',
-            message='Manifest',
+            oneof="object_configuration",
+            message="Manifest",
         )
 
     buckets: MutableSequence[Bucket] = proto.RepeatedField(
@@ -537,6 +541,7 @@ class PutObjectHold(proto.Message):
             object's time in the bucket for the purposes of
             the retention period.
     """
+
     class HoldStatus(proto.Enum):
         r"""Describes the status of the hold.
 
@@ -549,6 +554,7 @@ class PutObjectHold(proto.Message):
             UNSET (2):
                 Releases the hold.
         """
+
         HOLD_STATUS_UNSPECIFIED = 0
         SET = 1
         UNSET = 2
@@ -643,6 +649,7 @@ class ObjectRetention(proto.Message):
 
             This field is a member of `oneof`_ ``_retention_mode``.
     """
+
     class RetentionMode(proto.Enum):
         r"""Describes the retention mode.
 
@@ -654,6 +661,7 @@ class ObjectRetention(proto.Message):
             UNLOCKED (2):
                 Sets the retention mode to unlocked.
         """
+
         RETENTION_MODE_UNSPECIFIED = 0
         LOCKED = 1
         UNLOCKED = 2
@@ -783,11 +791,11 @@ class PutMetadata(proto.Message):
         proto.STRING,
         number=7,
     )
-    object_retention: 'ObjectRetention' = proto.Field(
+    object_retention: "ObjectRetention" = proto.Field(
         proto.MESSAGE,
         number=8,
         optional=True,
-        message='ObjectRetention',
+        message="ObjectRetention",
     )
 
 
@@ -829,11 +837,11 @@ class CustomContextUpdates(proto.Message):
             present in both ``updates`` and ``keys_to_clear``.
     """
 
-    updates: MutableMapping[str, 'ObjectCustomContextPayload'] = proto.MapField(
+    updates: MutableMapping[str, "ObjectCustomContextPayload"] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=1,
-        message='ObjectCustomContextPayload',
+        message="ObjectCustomContextPayload",
     )
     keys_to_clear: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
@@ -865,16 +873,16 @@ class UpdateObjectCustomContext(proto.Message):
             This field is a member of `oneof`_ ``action``.
     """
 
-    custom_context_updates: 'CustomContextUpdates' = proto.Field(
+    custom_context_updates: "CustomContextUpdates" = proto.Field(
         proto.MESSAGE,
         number=1,
-        oneof='action',
-        message='CustomContextUpdates',
+        oneof="action",
+        message="CustomContextUpdates",
     )
     clear_all: bool = proto.Field(
         proto.BOOL,
         number=2,
-        oneof='action',
+        oneof="action",
     )
 
 
@@ -900,10 +908,10 @@ class ErrorSummary(proto.Message):
         proto.INT64,
         number=2,
     )
-    error_log_entries: MutableSequence['ErrorLogEntry'] = proto.RepeatedField(
+    error_log_entries: MutableSequence["ErrorLogEntry"] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
-        message='ErrorLogEntry',
+        message="ErrorLogEntry",
     )
 
 
@@ -1018,6 +1026,7 @@ class LoggingConfig(proto.Message):
             Required. States in which Action are
             logged.If empty, no logs are generated.
     """
+
     class LoggableAction(proto.Enum):
         r"""Loggable actions types.
 
@@ -1028,6 +1037,7 @@ class LoggingConfig(proto.Message):
                 The corresponding transform action in this
                 job.
         """
+
         LOGGABLE_ACTION_UNSPECIFIED = 0
         TRANSFORM = 6
 
@@ -1046,6 +1056,7 @@ class LoggingConfig(proto.Message):
                 actions are logged as
                 [ERROR][google.logging.type.LogSeverity.ERROR].
         """
+
         LOGGABLE_ACTION_STATE_UNSPECIFIED = 0
         SUCCEEDED = 1
         FAILED = 2

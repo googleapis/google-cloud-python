@@ -21,9 +21,8 @@ import operator
 import os
 import re
 import uuid
-from typing import Any, Callable, Dict, List, Optional, Tuple, Union
+from typing import Any, Callable, Dict, List, Optional, Tuple
 from google.auth.exceptions import MutualTLSChannelError
-import google.protobuf.message
 
 
 try:
@@ -73,14 +72,18 @@ except ImportError:  # pragma: NO COVER
         api_endpoint: Optional[str] = None
         if api_override is not None:
             api_endpoint = api_override
-        elif use_mtls_endpoint == "always" or (use_mtls_endpoint == "auto" and client_cert_source):
+        elif use_mtls_endpoint == "always" or (
+            use_mtls_endpoint == "auto" and client_cert_source
+        ):
             if universe_domain != default_universe:
                 raise MutualTLSChannelError(
                     f"mTLS is not supported in any universe other than {default_universe}."
                 )
             api_endpoint = default_mtls_endpoint
         else:
-            api_endpoint = default_endpoint_template.format(UNIVERSE_DOMAIN=universe_domain)
+            api_endpoint = default_endpoint_template.format(
+                UNIVERSE_DOMAIN=universe_domain
+            )
         return api_endpoint  # type: ignore[return-value]
 
     def get_universe_domain(  # type: ignore[misc]
@@ -113,7 +116,9 @@ except ImportError:  # pragma: NO COVER
         if hasattr(mtls, "should_use_client_cert"):
             return mtls.should_use_client_cert()
         else:
-            use_client_cert_str = os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false").lower()
+            use_client_cert_str = os.getenv(
+                "GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"
+            ).lower()
             if use_client_cert_str not in ("true", "false"):
                 raise ValueError(
                     "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be"
@@ -159,7 +164,9 @@ try:
 except ImportError:  # pragma: NO COVER
     # TODO(https://github.com/googleapis/google-cloud-python/issues/17813): Request ID setup helper was introduced in google-api-core 2.26.0.
     # Remove this fallback definition when google-api-core >= 2.26.0 becomes the minimum required version in generated client setup dependencies.
-    def setup_request_id(request: Any, field_name: str, is_proto3_optional: bool) -> None:
+    def setup_request_id(
+        request: Any, field_name: str, is_proto3_optional: bool
+    ) -> None:
         """Populate a UUID4 field in the request if it is not already set.
 
         Args:
@@ -216,7 +223,9 @@ except ImportError:  # pragma: NO COVER
             raise TypeError("flatten_query_params must be called with dict object")
         return _flatten(obj, key_path=[], strict=strict)
 
-    def _flatten(obj: Any, key_path: List[str], strict: bool = False) -> List[Tuple[str, Any]]:
+    def _flatten(
+        obj: Any, key_path: List[str], strict: bool = False
+    ) -> List[Tuple[str, Any]]:
         if obj is None:
             return []
         if isinstance(obj, dict):
@@ -232,17 +241,23 @@ except ImportError:  # pragma: NO COVER
             raise ValueError("query params may not contain repeated dicts or lists")
         return True
 
-    def _flatten_value(obj: Any, key_path: List[str], strict: bool = False) -> List[Tuple[str, Any]]:
+    def _flatten_value(
+        obj: Any, key_path: List[str], strict: bool = False
+    ) -> List[Tuple[str, Any]]:
         return [(".".join(key_path), _canonicalize(obj, strict=strict))]
 
-    def _flatten_dict(obj: Dict[str, Any], key_path: List[str], strict: bool = False) -> List[Tuple[str, Any]]:
+    def _flatten_dict(
+        obj: Dict[str, Any], key_path: List[str], strict: bool = False
+    ) -> List[Tuple[str, Any]]:
         items = (
             _flatten(value, key_path=key_path + [key], strict=strict)
             for key, value in obj.items()
         )
         return functools.reduce(operator.concat, items, [])  # type: ignore[arg-type]
 
-    def _flatten_list(elems: List[Any], key_path: List[str], strict: bool = False) -> List[Tuple[str, Any]]:
+    def _flatten_list(
+        elems: List[Any], key_path: List[str], strict: bool = False
+    ) -> List[Tuple[str, Any]]:
         items = (
             _flatten_value(elem, key_path=key_path, strict=strict)
             for elem in elems
@@ -276,10 +291,12 @@ except ImportError:  # pragma: NO COVER
 
         query_params_json = {}
         if transcoded_request.get("query_params") is not None:
-            query_params_json = json.loads(json_format.MessageToJson(
-                transcoded_request["query_params"],
-                use_integers_for_enums=rest_numeric_enums,
-            ))
+            query_params_json = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=rest_numeric_enums,
+                )
+            )
 
         if required_fields_default_values:
             for k, v in required_fields_default_values.items():
