@@ -14,7 +14,7 @@ import google.protobuf.message
 
 
 try:
-    from google.api_core.universe import (
+    from google.api_core.universe import (  # type: ignore
         get_default_mtls_endpoint,
         get_api_endpoint,
         get_universe_domain,
@@ -47,7 +47,7 @@ except ImportError:  # pragma: NO COVER
 
         return api_endpoint.replace(".googleapis.com", ".mtls.googleapis.com")
 
-    def get_api_endpoint(
+    def get_api_endpoint(  # type: ignore[misc]
         api_override: Optional[str],
         client_cert_source: Optional[Callable[[], Tuple[bytes, bytes]]],
         universe_domain: str,
@@ -55,8 +55,9 @@ except ImportError:  # pragma: NO COVER
         default_universe: str,
         default_mtls_endpoint: Optional[str],
         default_endpoint_template: str,
-    ) -> Optional[str]:
+    ) -> str:
         """Return the API endpoint used by the client."""
+        api_endpoint: Optional[str] = None
         if api_override is not None:
             api_endpoint = api_override
         elif use_mtls_endpoint == "always" or (use_mtls_endpoint == "auto" and client_cert_source):
@@ -67,26 +68,24 @@ except ImportError:  # pragma: NO COVER
             api_endpoint = default_mtls_endpoint
         else:
             api_endpoint = default_endpoint_template.format(UNIVERSE_DOMAIN=universe_domain)
-        return api_endpoint
+        return api_endpoint  # type: ignore[return-value]
 
-    def get_universe_domain(
-        client_universe_domain: Optional[str],
-        universe_domain_env: Optional[str],
-        default_universe: str,
+    def get_universe_domain(  # type: ignore[misc]
+        *potential_universes: Optional[str],
+        default_universe: str = "googleapis.com",
     ) -> str:
         """Return the universe domain used by the client."""
-        universe_domain = default_universe
-        if client_universe_domain is not None:
-            universe_domain = client_universe_domain
-        elif universe_domain_env is not None:
-            universe_domain = universe_domain_env
-        if len(universe_domain.strip()) == 0:
-            raise ValueError("Universe Domain cannot be an empty string.") 
-        return universe_domain
+        resolved = next(
+            (x.strip() for x in potential_universes if x is not None),
+            default_universe,
+        )
+        if not resolved:
+            raise ValueError("Universe Domain cannot be an empty string.")
+        return resolved
 
 
 try:
-    from google.api_core.gapic_v1.config import (
+    from google.api_core.gapic_v1.config import (  # type: ignore
         use_client_cert_effective,
         get_client_cert_source,
         read_environment_variables,
@@ -147,7 +146,7 @@ try:
 except ImportError:  # pragma: NO COVER
     # TODO(https://github.com/googleapis/google-cloud-python/issues/17813): Request ID setup helper was introduced in google-api-core 2.26.0.
     # Remove this fallback definition when google-api-core >= 2.26.0 becomes the minimum required version in generated client setup dependencies.
-    def setup_request_id(request, field_name: str, is_proto3_optional: bool):
+    def setup_request_id(request: Any, field_name: str, is_proto3_optional: bool) -> None:
         """Populate a UUID4 field in the request if it is not already set.
 
         Args:
@@ -190,7 +189,7 @@ except ImportError:  # pragma: NO COVER
 
 
 try:
-    from google.api_core.rest_helpers import (
+    from google.api_core.rest_helpers import (  # type: ignore
         flatten_query_params,
         transcode_request,
     )
@@ -199,12 +198,12 @@ except ImportError:  # pragma: NO COVER
     from google.protobuf import json_format  # type: ignore
     from google.api_core import path_template  # type: ignore
 
-    def flatten_query_params(obj, strict=False):
+    def flatten_query_params(obj: Any, strict: bool = False) -> List[Tuple[str, Any]]:  # type: ignore[misc]
         if obj is not None and not isinstance(obj, dict):
             raise TypeError("flatten_query_params must be called with dict object")
         return _flatten(obj, key_path=[], strict=strict)
 
-    def _flatten(obj, key_path, strict=False):
+    def _flatten(obj: Any, key_path: List[str], strict: bool = False) -> List[Tuple[str, Any]]:
         if obj is None:
             return []
         if isinstance(obj, dict):
@@ -213,32 +212,32 @@ except ImportError:  # pragma: NO COVER
             return _flatten_list(obj, key_path=key_path, strict=strict)
         return _flatten_value(obj, key_path=key_path, strict=strict)
 
-    def _is_primitive_value(obj):
+    def _is_primitive_value(obj: Any) -> bool:
         if obj is None:
             return False
         if isinstance(obj, (list, dict)):
             raise ValueError("query params may not contain repeated dicts or lists")
         return True
 
-    def _flatten_value(obj, key_path, strict=False):
+    def _flatten_value(obj: Any, key_path: List[str], strict: bool = False) -> List[Tuple[str, Any]]:
         return [(".".join(key_path), _canonicalize(obj, strict=strict))]
 
-    def _flatten_dict(obj, key_path, strict=False):
+    def _flatten_dict(obj: Dict[str, Any], key_path: List[str], strict: bool = False) -> List[Tuple[str, Any]]:
         items = (
             _flatten(value, key_path=key_path + [key], strict=strict)
             for key, value in obj.items()
         )
-        return functools.reduce(operator.concat, items, [])
+        return functools.reduce(operator.concat, items, [])  # type: ignore[arg-type]
 
-    def _flatten_list(elems, key_path, strict=False):
+    def _flatten_list(elems: List[Any], key_path: List[str], strict: bool = False) -> List[Tuple[str, Any]]:
         items = (
             _flatten_value(elem, key_path=key_path, strict=strict)
             for elem in elems
             if _is_primitive_value(elem)
         )
-        return functools.reduce(operator.concat, items, [])
+        return functools.reduce(operator.concat, items, [])  # type: ignore[arg-type]
 
-    def _canonicalize(obj, strict=False):
+    def _canonicalize(obj: Any, strict: bool = False) -> Any:
         if strict:
             value = str(obj)
             if isinstance(obj, bool):
@@ -246,7 +245,7 @@ except ImportError:  # pragma: NO COVER
             return value
         return obj
 
-    def transcode_request(
+    def transcode_request(  # type: ignore[misc]
         http_options: List[Dict[str, str]],
         request: Any,
         required_fields_default_values: Optional[Dict[str, Any]] = None,

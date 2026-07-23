@@ -14,6 +14,7 @@
 # limitations under the License.
 
 import re
+from unittest import mock
 
 import pytest
 
@@ -113,9 +114,6 @@ def test_setup_request_id(request_obj, is_proto3_optional, expected):
         assert value == expected
 
 
-from unittest import mock
-
-
 def test_setup_request_id_assertion_strictness():
     # Mock uuid.uuid4 to return a UUID with trailing characters
     with mock.patch("uuid.uuid4") as mock_uuid:
@@ -127,4 +125,6 @@ def test_setup_request_id_assertion_strictness():
         # If test_setup_request_id uses re.fullmatch, it will fail (raise AssertionError), so pytest.raises passes.
         # If test_setup_request_id uses re.match, it will NOT fail, so pytest.raises fails!
         with pytest.raises(AssertionError):
-            test_setup_request_id(MockRequest(), is_proto3_optional=True, expected="uuid")
+            test_setup_request_id(
+                MockRequest(), is_proto3_optional=True, expected="uuid"
+            )
