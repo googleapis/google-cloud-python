@@ -618,7 +618,13 @@ def showcase_mypy(
         session.chdir(lib)
 
         # Run the tests.
-        session.run("mypy", "-p", "google", "--check-untyped-defs")
+        session.run(
+            "mypy",
+            f"--config-file={MYPY_CONFIG_FILE}",
+            "-p",
+            "google",
+            "--check-untyped-defs",
+        )
 
 
 @nox.session(python=NEWEST_PYTHON)
