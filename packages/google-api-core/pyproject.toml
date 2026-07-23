@@ -77,6 +77,9 @@ version = { attr = "google.api_core.version.__version__" }
 # benchmarks, etc.
 include = ["google*"]
 
+[tool.setuptools.package-data]
+"*" = ["py.typed"]
+
 [tool.mypy]
 python_version = "3.14"
 namespace_packages = true
