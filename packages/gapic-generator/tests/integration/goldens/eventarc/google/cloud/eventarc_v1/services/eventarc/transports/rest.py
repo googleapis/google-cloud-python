@@ -52,6 +52,8 @@ from google.longrunning import operations_pb2  # type: ignore
 
 
 from .rest_base import _BaseEventarcRestTransport
+from google.cloud.eventarc_v1.eventarc._compat import transcode_request
+from google.cloud.eventarc_v1._compat import transcode_request
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 
 try:
@@ -2208,12 +2210,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             http_options = _BaseEventarcRestTransport._BaseCreateChannel._get_http_options()
 
             request, metadata = self._interceptor.pre_create_channel(request, metadata)
-            transcoded_request = _BaseEventarcRestTransport._BaseCreateChannel._get_transcoded_request(http_options, request)
-
-            body = _BaseEventarcRestTransport._BaseCreateChannel._get_request_body_json(transcoded_request)
-
-            # Jsonify the query params
-            query_params = _BaseEventarcRestTransport._BaseCreateChannel._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                _BaseEventarcRestTransport._BaseCreateChannel._REQUIRED_FIELDS_DEFAULT_VALUES,
+                False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -2332,12 +2334,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             http_options = _BaseEventarcRestTransport._BaseCreateChannelConnection._get_http_options()
 
             request, metadata = self._interceptor.pre_create_channel_connection(request, metadata)
-            transcoded_request = _BaseEventarcRestTransport._BaseCreateChannelConnection._get_transcoded_request(http_options, request)
-
-            body = _BaseEventarcRestTransport._BaseCreateChannelConnection._get_request_body_json(transcoded_request)
-
-            # Jsonify the query params
-            query_params = _BaseEventarcRestTransport._BaseCreateChannelConnection._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                _BaseEventarcRestTransport._BaseCreateChannelConnection._REQUIRED_FIELDS_DEFAULT_VALUES,
+                False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -2456,12 +2458,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             http_options = _BaseEventarcRestTransport._BaseCreateEnrollment._get_http_options()
 
             request, metadata = self._interceptor.pre_create_enrollment(request, metadata)
-            transcoded_request = _BaseEventarcRestTransport._BaseCreateEnrollment._get_transcoded_request(http_options, request)
-
-            body = _BaseEventarcRestTransport._BaseCreateEnrollment._get_request_body_json(transcoded_request)
-
-            # Jsonify the query params
-            query_params = _BaseEventarcRestTransport._BaseCreateEnrollment._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                _BaseEventarcRestTransport._BaseCreateEnrollment._REQUIRED_FIELDS_DEFAULT_VALUES,
+                False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -2580,12 +2582,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             http_options = _BaseEventarcRestTransport._BaseCreateGoogleApiSource._get_http_options()
 
             request, metadata = self._interceptor.pre_create_google_api_source(request, metadata)
-            transcoded_request = _BaseEventarcRestTransport._BaseCreateGoogleApiSource._get_transcoded_request(http_options, request)
-
-            body = _BaseEventarcRestTransport._BaseCreateGoogleApiSource._get_request_body_json(transcoded_request)
-
-            # Jsonify the query params
-            query_params = _BaseEventarcRestTransport._BaseCreateGoogleApiSource._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                _BaseEventarcRestTransport._BaseCreateGoogleApiSource._REQUIRED_FIELDS_DEFAULT_VALUES,
+                False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -2704,12 +2706,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             http_options = _BaseEventarcRestTransport._BaseCreateMessageBus._get_http_options()
 
             request, metadata = self._interceptor.pre_create_message_bus(request, metadata)
-            transcoded_request = _BaseEventarcRestTransport._BaseCreateMessageBus._get_transcoded_request(http_options, request)
-
-            body = _BaseEventarcRestTransport._BaseCreateMessageBus._get_request_body_json(transcoded_request)
-
-            # Jsonify the query params
-            query_params = _BaseEventarcRestTransport._BaseCreateMessageBus._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                _BaseEventarcRestTransport._BaseCreateMessageBus._REQUIRED_FIELDS_DEFAULT_VALUES,
+                False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -2828,12 +2830,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             http_options = _BaseEventarcRestTransport._BaseCreatePipeline._get_http_options()
 
             request, metadata = self._interceptor.pre_create_pipeline(request, metadata)
-            transcoded_request = _BaseEventarcRestTransport._BaseCreatePipeline._get_transcoded_request(http_options, request)
-
-            body = _BaseEventarcRestTransport._BaseCreatePipeline._get_request_body_json(transcoded_request)
-
-            # Jsonify the query params
-            query_params = _BaseEventarcRestTransport._BaseCreatePipeline._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                _BaseEventarcRestTransport._BaseCreatePipeline._REQUIRED_FIELDS_DEFAULT_VALUES,
+                False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -2952,12 +2954,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             http_options = _BaseEventarcRestTransport._BaseCreateTrigger._get_http_options()
 
             request, metadata = self._interceptor.pre_create_trigger(request, metadata)
-            transcoded_request = _BaseEventarcRestTransport._BaseCreateTrigger._get_transcoded_request(http_options, request)
-
-            body = _BaseEventarcRestTransport._BaseCreateTrigger._get_request_body_json(transcoded_request)
-
-            # Jsonify the query params
-            query_params = _BaseEventarcRestTransport._BaseCreateTrigger._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                _BaseEventarcRestTransport._BaseCreateTrigger._REQUIRED_FIELDS_DEFAULT_VALUES,
+                False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -3075,10 +3077,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             http_options = _BaseEventarcRestTransport._BaseDeleteChannel._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_channel(request, metadata)
-            transcoded_request = _BaseEventarcRestTransport._BaseDeleteChannel._get_transcoded_request(http_options, request)
-
-            # Jsonify the query params
-            query_params = _BaseEventarcRestTransport._BaseDeleteChannel._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                _BaseEventarcRestTransport._BaseDeleteChannel._REQUIRED_FIELDS_DEFAULT_VALUES,
+                False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -3196,10 +3200,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             http_options = _BaseEventarcRestTransport._BaseDeleteChannelConnection._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_channel_connection(request, metadata)
-            transcoded_request = _BaseEventarcRestTransport._BaseDeleteChannelConnection._get_transcoded_request(http_options, request)
-
-            # Jsonify the query params
-            query_params = _BaseEventarcRestTransport._BaseDeleteChannelConnection._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                _BaseEventarcRestTransport._BaseDeleteChannelConnection._REQUIRED_FIELDS_DEFAULT_VALUES,
+                False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -3317,10 +3323,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             http_options = _BaseEventarcRestTransport._BaseDeleteEnrollment._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_enrollment(request, metadata)
-            transcoded_request = _BaseEventarcRestTransport._BaseDeleteEnrollment._get_transcoded_request(http_options, request)
-
-            # Jsonify the query params
-            query_params = _BaseEventarcRestTransport._BaseDeleteEnrollment._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                _BaseEventarcRestTransport._BaseDeleteEnrollment._REQUIRED_FIELDS_DEFAULT_VALUES,
+                False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -3438,10 +3446,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             http_options = _BaseEventarcRestTransport._BaseDeleteGoogleApiSource._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_google_api_source(request, metadata)
-            transcoded_request = _BaseEventarcRestTransport._BaseDeleteGoogleApiSource._get_transcoded_request(http_options, request)
-
-            # Jsonify the query params
-            query_params = _BaseEventarcRestTransport._BaseDeleteGoogleApiSource._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                _BaseEventarcRestTransport._BaseDeleteGoogleApiSource._REQUIRED_FIELDS_DEFAULT_VALUES,
+                False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -3559,10 +3569,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             http_options = _BaseEventarcRestTransport._BaseDeleteMessageBus._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_message_bus(request, metadata)
-            transcoded_request = _BaseEventarcRestTransport._BaseDeleteMessageBus._get_transcoded_request(http_options, request)
-
-            # Jsonify the query params
-            query_params = _BaseEventarcRestTransport._BaseDeleteMessageBus._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                _BaseEventarcRestTransport._BaseDeleteMessageBus._REQUIRED_FIELDS_DEFAULT_VALUES,
+                False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -3680,10 +3692,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             http_options = _BaseEventarcRestTransport._BaseDeletePipeline._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_pipeline(request, metadata)
-            transcoded_request = _BaseEventarcRestTransport._BaseDeletePipeline._get_transcoded_request(http_options, request)
-
-            # Jsonify the query params
-            query_params = _BaseEventarcRestTransport._BaseDeletePipeline._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                _BaseEventarcRestTransport._BaseDeletePipeline._REQUIRED_FIELDS_DEFAULT_VALUES,
+                False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -3801,10 +3815,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             http_options = _BaseEventarcRestTransport._BaseDeleteTrigger._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_trigger(request, metadata)
-            transcoded_request = _BaseEventarcRestTransport._BaseDeleteTrigger._get_transcoded_request(http_options, request)
-
-            # Jsonify the query params
-            query_params = _BaseEventarcRestTransport._BaseDeleteTrigger._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                _BaseEventarcRestTransport._BaseDeleteTrigger._REQUIRED_FIELDS_DEFAULT_VALUES,
+                False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -3927,10 +3943,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             http_options = _BaseEventarcRestTransport._BaseGetChannel._get_http_options()
 
             request, metadata = self._interceptor.pre_get_channel(request, metadata)
-            transcoded_request = _BaseEventarcRestTransport._BaseGetChannel._get_transcoded_request(http_options, request)
-
-            # Jsonify the query params
-            query_params = _BaseEventarcRestTransport._BaseGetChannel._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                _BaseEventarcRestTransport._BaseGetChannel._REQUIRED_FIELDS_DEFAULT_VALUES,
+                False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -4054,10 +4072,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             http_options = _BaseEventarcRestTransport._BaseGetChannelConnection._get_http_options()
 
             request, metadata = self._interceptor.pre_get_channel_connection(request, metadata)
-            transcoded_request = _BaseEventarcRestTransport._BaseGetChannelConnection._get_transcoded_request(http_options, request)
-
-            # Jsonify the query params
-            query_params = _BaseEventarcRestTransport._BaseGetChannelConnection._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                _BaseEventarcRestTransport._BaseGetChannelConnection._REQUIRED_FIELDS_DEFAULT_VALUES,
+                False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -4180,10 +4200,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             http_options = _BaseEventarcRestTransport._BaseGetEnrollment._get_http_options()
 
             request, metadata = self._interceptor.pre_get_enrollment(request, metadata)
-            transcoded_request = _BaseEventarcRestTransport._BaseGetEnrollment._get_transcoded_request(http_options, request)
-
-            # Jsonify the query params
-            query_params = _BaseEventarcRestTransport._BaseGetEnrollment._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                _BaseEventarcRestTransport._BaseGetEnrollment._REQUIRED_FIELDS_DEFAULT_VALUES,
+                False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -4303,10 +4325,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             http_options = _BaseEventarcRestTransport._BaseGetGoogleApiSource._get_http_options()
 
             request, metadata = self._interceptor.pre_get_google_api_source(request, metadata)
-            transcoded_request = _BaseEventarcRestTransport._BaseGetGoogleApiSource._get_transcoded_request(http_options, request)
-
-            # Jsonify the query params
-            query_params = _BaseEventarcRestTransport._BaseGetGoogleApiSource._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                _BaseEventarcRestTransport._BaseGetGoogleApiSource._REQUIRED_FIELDS_DEFAULT_VALUES,
+                False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -4431,10 +4455,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             http_options = _BaseEventarcRestTransport._BaseGetGoogleChannelConfig._get_http_options()
 
             request, metadata = self._interceptor.pre_get_google_channel_config(request, metadata)
-            transcoded_request = _BaseEventarcRestTransport._BaseGetGoogleChannelConfig._get_transcoded_request(http_options, request)
-
-            # Jsonify the query params
-            query_params = _BaseEventarcRestTransport._BaseGetGoogleChannelConfig._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                _BaseEventarcRestTransport._BaseGetGoogleChannelConfig._REQUIRED_FIELDS_DEFAULT_VALUES,
+                False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -4559,10 +4585,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             http_options = _BaseEventarcRestTransport._BaseGetMessageBus._get_http_options()
 
             request, metadata = self._interceptor.pre_get_message_bus(request, metadata)
-            transcoded_request = _BaseEventarcRestTransport._BaseGetMessageBus._get_transcoded_request(http_options, request)
-
-            # Jsonify the query params
-            query_params = _BaseEventarcRestTransport._BaseGetMessageBus._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                _BaseEventarcRestTransport._BaseGetMessageBus._REQUIRED_FIELDS_DEFAULT_VALUES,
+                False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -4681,10 +4709,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             http_options = _BaseEventarcRestTransport._BaseGetPipeline._get_http_options()
 
             request, metadata = self._interceptor.pre_get_pipeline(request, metadata)
-            transcoded_request = _BaseEventarcRestTransport._BaseGetPipeline._get_transcoded_request(http_options, request)
-
-            # Jsonify the query params
-            query_params = _BaseEventarcRestTransport._BaseGetPipeline._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                _BaseEventarcRestTransport._BaseGetPipeline._REQUIRED_FIELDS_DEFAULT_VALUES,
+                False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -4803,10 +4833,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             http_options = _BaseEventarcRestTransport._BaseGetProvider._get_http_options()
 
             request, metadata = self._interceptor.pre_get_provider(request, metadata)
-            transcoded_request = _BaseEventarcRestTransport._BaseGetProvider._get_transcoded_request(http_options, request)
-
-            # Jsonify the query params
-            query_params = _BaseEventarcRestTransport._BaseGetProvider._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                _BaseEventarcRestTransport._BaseGetProvider._REQUIRED_FIELDS_DEFAULT_VALUES,
+                False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -4925,10 +4957,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             http_options = _BaseEventarcRestTransport._BaseGetTrigger._get_http_options()
 
             request, metadata = self._interceptor.pre_get_trigger(request, metadata)
-            transcoded_request = _BaseEventarcRestTransport._BaseGetTrigger._get_transcoded_request(http_options, request)
-
-            # Jsonify the query params
-            query_params = _BaseEventarcRestTransport._BaseGetTrigger._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                _BaseEventarcRestTransport._BaseGetTrigger._REQUIRED_FIELDS_DEFAULT_VALUES,
+                False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -5047,10 +5081,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             http_options = _BaseEventarcRestTransport._BaseListChannelConnections._get_http_options()
 
             request, metadata = self._interceptor.pre_list_channel_connections(request, metadata)
-            transcoded_request = _BaseEventarcRestTransport._BaseListChannelConnections._get_transcoded_request(http_options, request)
-
-            # Jsonify the query params
-            query_params = _BaseEventarcRestTransport._BaseListChannelConnections._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                _BaseEventarcRestTransport._BaseListChannelConnections._REQUIRED_FIELDS_DEFAULT_VALUES,
+                False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -5167,10 +5203,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             http_options = _BaseEventarcRestTransport._BaseListChannels._get_http_options()
 
             request, metadata = self._interceptor.pre_list_channels(request, metadata)
-            transcoded_request = _BaseEventarcRestTransport._BaseListChannels._get_transcoded_request(http_options, request)
-
-            # Jsonify the query params
-            query_params = _BaseEventarcRestTransport._BaseListChannels._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                _BaseEventarcRestTransport._BaseListChannels._REQUIRED_FIELDS_DEFAULT_VALUES,
+                False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -5287,10 +5325,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             http_options = _BaseEventarcRestTransport._BaseListEnrollments._get_http_options()
 
             request, metadata = self._interceptor.pre_list_enrollments(request, metadata)
-            transcoded_request = _BaseEventarcRestTransport._BaseListEnrollments._get_transcoded_request(http_options, request)
-
-            # Jsonify the query params
-            query_params = _BaseEventarcRestTransport._BaseListEnrollments._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                _BaseEventarcRestTransport._BaseListEnrollments._REQUIRED_FIELDS_DEFAULT_VALUES,
+                False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -5409,10 +5449,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             http_options = _BaseEventarcRestTransport._BaseListGoogleApiSources._get_http_options()
 
             request, metadata = self._interceptor.pre_list_google_api_sources(request, metadata)
-            transcoded_request = _BaseEventarcRestTransport._BaseListGoogleApiSources._get_transcoded_request(http_options, request)
-
-            # Jsonify the query params
-            query_params = _BaseEventarcRestTransport._BaseListGoogleApiSources._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                _BaseEventarcRestTransport._BaseListGoogleApiSources._REQUIRED_FIELDS_DEFAULT_VALUES,
+                False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -5532,10 +5574,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             http_options = _BaseEventarcRestTransport._BaseListMessageBusEnrollments._get_http_options()
 
             request, metadata = self._interceptor.pre_list_message_bus_enrollments(request, metadata)
-            transcoded_request = _BaseEventarcRestTransport._BaseListMessageBusEnrollments._get_transcoded_request(http_options, request)
-
-            # Jsonify the query params
-            query_params = _BaseEventarcRestTransport._BaseListMessageBusEnrollments._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                _BaseEventarcRestTransport._BaseListMessageBusEnrollments._REQUIRED_FIELDS_DEFAULT_VALUES,
+                False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -5654,10 +5698,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             http_options = _BaseEventarcRestTransport._BaseListMessageBuses._get_http_options()
 
             request, metadata = self._interceptor.pre_list_message_buses(request, metadata)
-            transcoded_request = _BaseEventarcRestTransport._BaseListMessageBuses._get_transcoded_request(http_options, request)
-
-            # Jsonify the query params
-            query_params = _BaseEventarcRestTransport._BaseListMessageBuses._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                _BaseEventarcRestTransport._BaseListMessageBuses._REQUIRED_FIELDS_DEFAULT_VALUES,
+                False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -5776,10 +5822,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             http_options = _BaseEventarcRestTransport._BaseListPipelines._get_http_options()
 
             request, metadata = self._interceptor.pre_list_pipelines(request, metadata)
-            transcoded_request = _BaseEventarcRestTransport._BaseListPipelines._get_transcoded_request(http_options, request)
-
-            # Jsonify the query params
-            query_params = _BaseEventarcRestTransport._BaseListPipelines._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                _BaseEventarcRestTransport._BaseListPipelines._REQUIRED_FIELDS_DEFAULT_VALUES,
+                False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -5896,10 +5944,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             http_options = _BaseEventarcRestTransport._BaseListProviders._get_http_options()
 
             request, metadata = self._interceptor.pre_list_providers(request, metadata)
-            transcoded_request = _BaseEventarcRestTransport._BaseListProviders._get_transcoded_request(http_options, request)
-
-            # Jsonify the query params
-            query_params = _BaseEventarcRestTransport._BaseListProviders._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                _BaseEventarcRestTransport._BaseListProviders._REQUIRED_FIELDS_DEFAULT_VALUES,
+                False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -6016,10 +6066,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             http_options = _BaseEventarcRestTransport._BaseListTriggers._get_http_options()
 
             request, metadata = self._interceptor.pre_list_triggers(request, metadata)
-            transcoded_request = _BaseEventarcRestTransport._BaseListTriggers._get_transcoded_request(http_options, request)
-
-            # Jsonify the query params
-            query_params = _BaseEventarcRestTransport._BaseListTriggers._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                _BaseEventarcRestTransport._BaseListTriggers._REQUIRED_FIELDS_DEFAULT_VALUES,
+                False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -6140,12 +6192,11 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             http_options = _BaseEventarcRestTransport._BaseUpdateChannel._get_http_options()
 
             request, metadata = self._interceptor.pre_update_channel(request, metadata)
-            transcoded_request = _BaseEventarcRestTransport._BaseUpdateChannel._get_transcoded_request(http_options, request)
-
-            body = _BaseEventarcRestTransport._BaseUpdateChannel._get_request_body_json(transcoded_request)
-
-            # Jsonify the query params
-            query_params = _BaseEventarcRestTransport._BaseUpdateChannel._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                rest_numeric_enums=False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -6264,12 +6315,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             http_options = _BaseEventarcRestTransport._BaseUpdateEnrollment._get_http_options()
 
             request, metadata = self._interceptor.pre_update_enrollment(request, metadata)
-            transcoded_request = _BaseEventarcRestTransport._BaseUpdateEnrollment._get_transcoded_request(http_options, request)
-
-            body = _BaseEventarcRestTransport._BaseUpdateEnrollment._get_request_body_json(transcoded_request)
-
-            # Jsonify the query params
-            query_params = _BaseEventarcRestTransport._BaseUpdateEnrollment._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                _BaseEventarcRestTransport._BaseUpdateEnrollment._REQUIRED_FIELDS_DEFAULT_VALUES,
+                False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -6388,12 +6439,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             http_options = _BaseEventarcRestTransport._BaseUpdateGoogleApiSource._get_http_options()
 
             request, metadata = self._interceptor.pre_update_google_api_source(request, metadata)
-            transcoded_request = _BaseEventarcRestTransport._BaseUpdateGoogleApiSource._get_transcoded_request(http_options, request)
-
-            body = _BaseEventarcRestTransport._BaseUpdateGoogleApiSource._get_request_body_json(transcoded_request)
-
-            # Jsonify the query params
-            query_params = _BaseEventarcRestTransport._BaseUpdateGoogleApiSource._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                _BaseEventarcRestTransport._BaseUpdateGoogleApiSource._REQUIRED_FIELDS_DEFAULT_VALUES,
+                False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -6518,12 +6569,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             http_options = _BaseEventarcRestTransport._BaseUpdateGoogleChannelConfig._get_http_options()
 
             request, metadata = self._interceptor.pre_update_google_channel_config(request, metadata)
-            transcoded_request = _BaseEventarcRestTransport._BaseUpdateGoogleChannelConfig._get_transcoded_request(http_options, request)
-
-            body = _BaseEventarcRestTransport._BaseUpdateGoogleChannelConfig._get_request_body_json(transcoded_request)
-
-            # Jsonify the query params
-            query_params = _BaseEventarcRestTransport._BaseUpdateGoogleChannelConfig._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                _BaseEventarcRestTransport._BaseUpdateGoogleChannelConfig._REQUIRED_FIELDS_DEFAULT_VALUES,
+                False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -6644,12 +6695,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             http_options = _BaseEventarcRestTransport._BaseUpdateMessageBus._get_http_options()
 
             request, metadata = self._interceptor.pre_update_message_bus(request, metadata)
-            transcoded_request = _BaseEventarcRestTransport._BaseUpdateMessageBus._get_transcoded_request(http_options, request)
-
-            body = _BaseEventarcRestTransport._BaseUpdateMessageBus._get_request_body_json(transcoded_request)
-
-            # Jsonify the query params
-            query_params = _BaseEventarcRestTransport._BaseUpdateMessageBus._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                _BaseEventarcRestTransport._BaseUpdateMessageBus._REQUIRED_FIELDS_DEFAULT_VALUES,
+                False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -6768,12 +6819,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             http_options = _BaseEventarcRestTransport._BaseUpdatePipeline._get_http_options()
 
             request, metadata = self._interceptor.pre_update_pipeline(request, metadata)
-            transcoded_request = _BaseEventarcRestTransport._BaseUpdatePipeline._get_transcoded_request(http_options, request)
-
-            body = _BaseEventarcRestTransport._BaseUpdatePipeline._get_request_body_json(transcoded_request)
-
-            # Jsonify the query params
-            query_params = _BaseEventarcRestTransport._BaseUpdatePipeline._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                _BaseEventarcRestTransport._BaseUpdatePipeline._REQUIRED_FIELDS_DEFAULT_VALUES,
+                False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -6892,12 +6943,11 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             http_options = _BaseEventarcRestTransport._BaseUpdateTrigger._get_http_options()
 
             request, metadata = self._interceptor.pre_update_trigger(request, metadata)
-            transcoded_request = _BaseEventarcRestTransport._BaseUpdateTrigger._get_transcoded_request(http_options, request)
-
-            body = _BaseEventarcRestTransport._BaseUpdateTrigger._get_request_body_json(transcoded_request)
-
-            # Jsonify the query params
-            query_params = _BaseEventarcRestTransport._BaseUpdateTrigger._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                rest_numeric_enums=False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -7327,10 +7377,11 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             http_options = _BaseEventarcRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BaseEventarcRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
-
-            # Jsonify the query params
-            query_params = _BaseEventarcRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                rest_numeric_enums=False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -7445,10 +7496,11 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             http_options = _BaseEventarcRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseEventarcRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
-
-            # Jsonify the query params
-            query_params = _BaseEventarcRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                rest_numeric_enums=False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -7563,10 +7615,11 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             http_options = _BaseEventarcRestTransport._BaseGetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
-            transcoded_request = _BaseEventarcRestTransport._BaseGetIamPolicy._get_transcoded_request(http_options, request)
-
-            # Jsonify the query params
-            query_params = _BaseEventarcRestTransport._BaseGetIamPolicy._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                rest_numeric_enums=False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -7682,12 +7735,11 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             http_options = _BaseEventarcRestTransport._BaseSetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
-            transcoded_request = _BaseEventarcRestTransport._BaseSetIamPolicy._get_transcoded_request(http_options, request)
-
-            body = _BaseEventarcRestTransport._BaseSetIamPolicy._get_request_body_json(transcoded_request)
-
-            # Jsonify the query params
-            query_params = _BaseEventarcRestTransport._BaseSetIamPolicy._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                rest_numeric_enums=False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -7803,12 +7855,11 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             http_options = _BaseEventarcRestTransport._BaseTestIamPermissions._get_http_options()
 
             request, metadata = self._interceptor.pre_test_iam_permissions(request, metadata)
-            transcoded_request = _BaseEventarcRestTransport._BaseTestIamPermissions._get_transcoded_request(http_options, request)
-
-            body = _BaseEventarcRestTransport._BaseTestIamPermissions._get_request_body_json(transcoded_request)
-
-            # Jsonify the query params
-            query_params = _BaseEventarcRestTransport._BaseTestIamPermissions._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                rest_numeric_enums=False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -7921,12 +7972,11 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             http_options = _BaseEventarcRestTransport._BaseCancelOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
-            transcoded_request = _BaseEventarcRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
-
-            body = _BaseEventarcRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
-
-            # Jsonify the query params
-            query_params = _BaseEventarcRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                rest_numeric_enums=False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -8015,10 +8065,11 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             http_options = _BaseEventarcRestTransport._BaseDeleteOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_operation(request, metadata)
-            transcoded_request = _BaseEventarcRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
-
-            # Jsonify the query params
-            query_params = _BaseEventarcRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                rest_numeric_enums=False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -8110,10 +8161,11 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             http_options = _BaseEventarcRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseEventarcRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
-
-            # Jsonify the query params
-            query_params = _BaseEventarcRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                rest_numeric_enums=False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -8228,10 +8280,11 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             http_options = _BaseEventarcRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseEventarcRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
-
-            # Jsonify the query params
-            query_params = _BaseEventarcRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                rest_numeric_enums=False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])

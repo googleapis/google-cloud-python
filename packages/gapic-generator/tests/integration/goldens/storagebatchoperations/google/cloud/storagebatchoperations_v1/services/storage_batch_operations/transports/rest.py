@@ -42,6 +42,8 @@ from google.longrunning import operations_pb2  # type: ignore
 
 
 from .rest_base import _BaseStorageBatchOperationsRestTransport
+from google.cloud.storagebatchoperations_v1.storage_batch_operations._compat import transcode_request
+from google.cloud.storagebatchoperations_v1._compat import transcode_request
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 
 try:
@@ -693,12 +695,12 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             http_options = _BaseStorageBatchOperationsRestTransport._BaseCancelJob._get_http_options()
 
             request, metadata = self._interceptor.pre_cancel_job(request, metadata)
-            transcoded_request = _BaseStorageBatchOperationsRestTransport._BaseCancelJob._get_transcoded_request(http_options, request)
-
-            body = _BaseStorageBatchOperationsRestTransport._BaseCancelJob._get_request_body_json(transcoded_request)
-
-            # Jsonify the query params
-            query_params = _BaseStorageBatchOperationsRestTransport._BaseCancelJob._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                _BaseStorageBatchOperationsRestTransport._BaseCancelJob._REQUIRED_FIELDS_DEFAULT_VALUES,
+                False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -818,12 +820,12 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             http_options = _BaseStorageBatchOperationsRestTransport._BaseCreateJob._get_http_options()
 
             request, metadata = self._interceptor.pre_create_job(request, metadata)
-            transcoded_request = _BaseStorageBatchOperationsRestTransport._BaseCreateJob._get_transcoded_request(http_options, request)
-
-            body = _BaseStorageBatchOperationsRestTransport._BaseCreateJob._get_request_body_json(transcoded_request)
-
-            # Jsonify the query params
-            query_params = _BaseStorageBatchOperationsRestTransport._BaseCreateJob._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                _BaseStorageBatchOperationsRestTransport._BaseCreateJob._REQUIRED_FIELDS_DEFAULT_VALUES,
+                False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -933,10 +935,12 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             http_options = _BaseStorageBatchOperationsRestTransport._BaseDeleteJob._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_job(request, metadata)
-            transcoded_request = _BaseStorageBatchOperationsRestTransport._BaseDeleteJob._get_transcoded_request(http_options, request)
-
-            # Jsonify the query params
-            query_params = _BaseStorageBatchOperationsRestTransport._BaseDeleteJob._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                _BaseStorageBatchOperationsRestTransport._BaseDeleteJob._REQUIRED_FIELDS_DEFAULT_VALUES,
+                False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -1025,10 +1029,12 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             http_options = _BaseStorageBatchOperationsRestTransport._BaseGetBucketOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_bucket_operation(request, metadata)
-            transcoded_request = _BaseStorageBatchOperationsRestTransport._BaseGetBucketOperation._get_transcoded_request(http_options, request)
-
-            # Jsonify the query params
-            query_params = _BaseStorageBatchOperationsRestTransport._BaseGetBucketOperation._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                _BaseStorageBatchOperationsRestTransport._BaseGetBucketOperation._REQUIRED_FIELDS_DEFAULT_VALUES,
+                False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -1146,10 +1152,12 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             http_options = _BaseStorageBatchOperationsRestTransport._BaseGetJob._get_http_options()
 
             request, metadata = self._interceptor.pre_get_job(request, metadata)
-            transcoded_request = _BaseStorageBatchOperationsRestTransport._BaseGetJob._get_transcoded_request(http_options, request)
-
-            # Jsonify the query params
-            query_params = _BaseStorageBatchOperationsRestTransport._BaseGetJob._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                _BaseStorageBatchOperationsRestTransport._BaseGetJob._REQUIRED_FIELDS_DEFAULT_VALUES,
+                False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -1268,10 +1276,12 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             http_options = _BaseStorageBatchOperationsRestTransport._BaseListBucketOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_bucket_operations(request, metadata)
-            transcoded_request = _BaseStorageBatchOperationsRestTransport._BaseListBucketOperations._get_transcoded_request(http_options, request)
-
-            # Jsonify the query params
-            query_params = _BaseStorageBatchOperationsRestTransport._BaseListBucketOperations._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                _BaseStorageBatchOperationsRestTransport._BaseListBucketOperations._REQUIRED_FIELDS_DEFAULT_VALUES,
+                False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -1387,10 +1397,12 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             http_options = _BaseStorageBatchOperationsRestTransport._BaseListJobs._get_http_options()
 
             request, metadata = self._interceptor.pre_list_jobs(request, metadata)
-            transcoded_request = _BaseStorageBatchOperationsRestTransport._BaseListJobs._get_transcoded_request(http_options, request)
-
-            # Jsonify the query params
-            query_params = _BaseStorageBatchOperationsRestTransport._BaseListJobs._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                _BaseStorageBatchOperationsRestTransport._BaseListJobs._REQUIRED_FIELDS_DEFAULT_VALUES,
+                False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -1566,10 +1578,11 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             http_options = _BaseStorageBatchOperationsRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BaseStorageBatchOperationsRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
-
-            # Jsonify the query params
-            query_params = _BaseStorageBatchOperationsRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                rest_numeric_enums=False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -1684,10 +1697,11 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             http_options = _BaseStorageBatchOperationsRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseStorageBatchOperationsRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
-
-            # Jsonify the query params
-            query_params = _BaseStorageBatchOperationsRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                rest_numeric_enums=False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -1800,12 +1814,11 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             http_options = _BaseStorageBatchOperationsRestTransport._BaseCancelOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
-            transcoded_request = _BaseStorageBatchOperationsRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
-
-            body = _BaseStorageBatchOperationsRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
-
-            # Jsonify the query params
-            query_params = _BaseStorageBatchOperationsRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                rest_numeric_enums=False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -1894,10 +1907,11 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             http_options = _BaseStorageBatchOperationsRestTransport._BaseDeleteOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_operation(request, metadata)
-            transcoded_request = _BaseStorageBatchOperationsRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
-
-            # Jsonify the query params
-            query_params = _BaseStorageBatchOperationsRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                rest_numeric_enums=False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -1989,10 +2003,11 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             http_options = _BaseStorageBatchOperationsRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseStorageBatchOperationsRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
-
-            # Jsonify the query params
-            query_params = _BaseStorageBatchOperationsRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                rest_numeric_enums=False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -2107,10 +2122,11 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             http_options = _BaseStorageBatchOperationsRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseStorageBatchOperationsRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
-
-            # Jsonify the query params
-            query_params = _BaseStorageBatchOperationsRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                rest_numeric_enums=False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])

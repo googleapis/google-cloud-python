@@ -40,6 +40,8 @@ from google.longrunning import operations_pb2  # type: ignore
 
 
 from .rest_base import _BaseCloudRedisRestTransport
+from google.cloud.redis_v1.cloud_redis._compat import transcode_request
+from google.cloud.redis_v1._compat import transcode_request
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 
 try:
@@ -682,12 +684,12 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             http_options = _BaseCloudRedisRestTransport._BaseCreateInstance._get_http_options()
 
             request, metadata = self._interceptor.pre_create_instance(request, metadata)
-            transcoded_request = _BaseCloudRedisRestTransport._BaseCreateInstance._get_transcoded_request(http_options, request)
-
-            body = _BaseCloudRedisRestTransport._BaseCreateInstance._get_request_body_json(transcoded_request)
-
-            # Jsonify the query params
-            query_params = _BaseCloudRedisRestTransport._BaseCreateInstance._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                _BaseCloudRedisRestTransport._BaseCreateInstance._REQUIRED_FIELDS_DEFAULT_VALUES,
+                False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -805,10 +807,12 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             http_options = _BaseCloudRedisRestTransport._BaseDeleteInstance._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_instance(request, metadata)
-            transcoded_request = _BaseCloudRedisRestTransport._BaseDeleteInstance._get_transcoded_request(http_options, request)
-
-            # Jsonify the query params
-            query_params = _BaseCloudRedisRestTransport._BaseDeleteInstance._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                _BaseCloudRedisRestTransport._BaseDeleteInstance._REQUIRED_FIELDS_DEFAULT_VALUES,
+                False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -923,10 +927,12 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             http_options = _BaseCloudRedisRestTransport._BaseGetInstance._get_http_options()
 
             request, metadata = self._interceptor.pre_get_instance(request, metadata)
-            transcoded_request = _BaseCloudRedisRestTransport._BaseGetInstance._get_transcoded_request(http_options, request)
-
-            # Jsonify the query params
-            query_params = _BaseCloudRedisRestTransport._BaseGetInstance._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                _BaseCloudRedisRestTransport._BaseGetInstance._REQUIRED_FIELDS_DEFAULT_VALUES,
+                False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -1045,10 +1051,12 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             http_options = _BaseCloudRedisRestTransport._BaseListInstances._get_http_options()
 
             request, metadata = self._interceptor.pre_list_instances(request, metadata)
-            transcoded_request = _BaseCloudRedisRestTransport._BaseListInstances._get_transcoded_request(http_options, request)
-
-            # Jsonify the query params
-            query_params = _BaseCloudRedisRestTransport._BaseListInstances._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                _BaseCloudRedisRestTransport._BaseListInstances._REQUIRED_FIELDS_DEFAULT_VALUES,
+                False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -1169,12 +1177,12 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             http_options = _BaseCloudRedisRestTransport._BaseUpdateInstance._get_http_options()
 
             request, metadata = self._interceptor.pre_update_instance(request, metadata)
-            transcoded_request = _BaseCloudRedisRestTransport._BaseUpdateInstance._get_transcoded_request(http_options, request)
-
-            body = _BaseCloudRedisRestTransport._BaseUpdateInstance._get_request_body_json(transcoded_request)
-
-            # Jsonify the query params
-            query_params = _BaseCloudRedisRestTransport._BaseUpdateInstance._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                _BaseCloudRedisRestTransport._BaseUpdateInstance._REQUIRED_FIELDS_DEFAULT_VALUES,
+                False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -1332,10 +1340,11 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             http_options = _BaseCloudRedisRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BaseCloudRedisRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
-
-            # Jsonify the query params
-            query_params = _BaseCloudRedisRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                rest_numeric_enums=False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -1450,10 +1459,11 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             http_options = _BaseCloudRedisRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseCloudRedisRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
-
-            # Jsonify the query params
-            query_params = _BaseCloudRedisRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                rest_numeric_enums=False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -1565,10 +1575,11 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             http_options = _BaseCloudRedisRestTransport._BaseCancelOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
-            transcoded_request = _BaseCloudRedisRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
-
-            # Jsonify the query params
-            query_params = _BaseCloudRedisRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                rest_numeric_enums=False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -1657,10 +1668,11 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             http_options = _BaseCloudRedisRestTransport._BaseDeleteOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_operation(request, metadata)
-            transcoded_request = _BaseCloudRedisRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
-
-            # Jsonify the query params
-            query_params = _BaseCloudRedisRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                rest_numeric_enums=False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -1752,10 +1764,11 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             http_options = _BaseCloudRedisRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseCloudRedisRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
-
-            # Jsonify the query params
-            query_params = _BaseCloudRedisRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                rest_numeric_enums=False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -1870,10 +1883,11 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             http_options = _BaseCloudRedisRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseCloudRedisRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
-
-            # Jsonify the query params
-            query_params = _BaseCloudRedisRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                rest_numeric_enums=False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
@@ -1989,12 +2003,11 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             http_options = _BaseCloudRedisRestTransport._BaseWaitOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_wait_operation(request, metadata)
-            transcoded_request = _BaseCloudRedisRestTransport._BaseWaitOperation._get_transcoded_request(http_options, request)
-
-            body = _BaseCloudRedisRestTransport._BaseWaitOperation._get_request_body_json(transcoded_request)
-
-            # Jsonify the query params
-            query_params = _BaseCloudRedisRestTransport._BaseWaitOperation._get_query_params_json(transcoded_request)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                rest_numeric_enums=False,
+            )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
