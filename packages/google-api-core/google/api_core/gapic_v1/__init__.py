@@ -30,7 +30,6 @@ __lazy_modules__: Set[str] = {
 }
 __all__ = ["client_info", "requests", "routing_header"]
 
-
 if _has_grpc:
     __lazy_modules__.update(
         {
