@@ -132,6 +132,8 @@ def test_get_response_ignores_private_files():
                 ]
             )
             assert len(cgr.file) == 1
+            assert cgr.file[0].name == "foo/bar/baz.py"
+            assert cgr.file[0].content == "I am a template result.\n"
 
 
 def test_get_response_renders_allowed_private_templates():
