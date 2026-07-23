@@ -12,7 +12,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import bigframes.core.expression as ex
+import bigframes.core.identifiers as ids
+import bigframes.core.ordering as order
 from bigframes.core import sql
+
+
+def test_ordering_clause_escapes_backtick_in_column_name():
+    ordering = order.OrderingExpression(ex.DerefOp(ids.ColumnId("col`,(SELECT 1))--")))
+    result = sql.ordering_clause([ordering])
+    assert result == "ORDER BY `col\\`,(SELECT 1))--` ASC NULLS LAST"
+
+
+def test_ordering_clause_leaves_plain_column_name_unchanged():
+    ordering = order.OrderingExpression(ex.DerefOp(ids.ColumnId("my_col")))
+    result = sql.ordering_clause([ordering])
+    assert result == "ORDER BY `my_col` ASC NULLS LAST"
 
 
 def test_create_vector_search_sql_simple():
