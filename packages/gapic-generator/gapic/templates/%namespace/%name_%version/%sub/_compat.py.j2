@@ -20,7 +20,8 @@ try:
         get_universe_domain,
     )
 except ImportError:
-    # TODO(https://github.com/googleapis/google-cloud-python/issues/17813): Remove these fallbacks when google-api-core >= 2.18.0 is the minimum required version.
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/17813): Universe domain support was introduced in google-api-core 2.18.0.
+    # Remove these fallback definitions when google-api-core >= 2.18.0 becomes the minimum required version in generated client setup dependencies.
     def get_default_mtls_endpoint(api_endpoint: Optional[str]) -> Optional[str]:
         """Converts api endpoint to mTLS endpoint."""
         if not api_endpoint:
