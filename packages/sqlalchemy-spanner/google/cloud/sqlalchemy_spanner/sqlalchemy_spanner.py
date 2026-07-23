@@ -120,6 +120,8 @@ _type_map = {
     "TIMESTAMP": types.TIMESTAMP,
     "ARRAY": types.ARRAY,
     "JSON": types.JSON,
+    "TOKENLIST": types.String,
+    "UUID": types.UUID,
 }
 
 
@@ -136,6 +138,7 @@ _type_map_inv = {
     types.String: "STRING",
     types.TIME: "TIME",
     types.TIMESTAMP: "TIMESTAMP",
+    types.UUID: "UUID",
     types.Integer: "INT64",
     types.NullType: "INT64",
 }
@@ -709,12 +712,16 @@ class SpannerDDLCompiler(DDLCompiler):
             options = index.dialect_options["spanner"]
             if "storing" in options:
                 storing = options["storing"]
-                storing_columns = [
-                    index.table.c[col] if isinstance(col, str) else col
-                    for col in storing
-                ]
+                storing_names = []
+                for col in storing:
+                    if isinstance(col, str):
+                        storing_names.append(col)
+                    elif hasattr(col, "name"):
+                        storing_names.append(col.name)
+                    else:
+                        storing_names.append(str(col))
                 text += " STORING (%s)" % ", ".join(
-                    [self.preparer.quote(c.name) for c in storing_columns]
+                    [self.preparer.quote(name) for name in storing_names]
                 )
 
             interleave_in = options.get("interleave_in")
@@ -813,6 +820,12 @@ class SpannerTypeCompiler(GenericTypeCompiler):
 
     def visit_BIGINT(self, type_, **kw):
         return "INT64"
+
+    def visit_UUID(self, type_, **kw):
+        return "UUID"
+
+    def visit_uuid(self, type_, **kw):
+        return "UUID"
 
     def visit_JSON(self, type_, **kw):
         return "JSON"
@@ -1300,6 +1313,7 @@ class SpannerDialect(DefaultDialect):
                 {table_type_query}
                 {schema_filter_query}
                 i.index_type != 'PRIMARY_KEY'
+                AND i.index_type != 'SEARCH'
                 AND i.spanner_is_managed = FALSE
             GROUP BY i.table_catalog, i.table_schema, i.table_name,
                      i.index_name, i.is_unique
@@ -1324,7 +1338,8 @@ class SpannerDialect(DefaultDialect):
                     "column_names": row[3],
                     "unique": row[4],
                     "column_sorting": {
-                        col: order.lower() for col, order in zip(row[3], row[5])
+                        col: (order.lower() if order else None)
+                        for col, order in zip(row[3], row[5])
                     },
                     "include_columns": include_columns if include_columns else [],
                     "dialect_options": dialect_options,
